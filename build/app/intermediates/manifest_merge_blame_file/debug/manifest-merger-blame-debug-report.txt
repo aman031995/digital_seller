@@ -1,0 +1,750 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.tycho.tychostreams"
+4    android:versionCode="1"
+5    android:versionName="1.0.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+9        android:targetSdkVersion="33" />
+10    <!--
+11         The INTERNET permission is required for development. Specifically,
+12         the Flutter tool needs it to communicate with the running application
+13         to allow setting breakpoints, to provide hot reload, etc.
+14    -->
+15    <uses-permission android:name="android.permission.INTERNET" />
+15-->D:\hEMANT\tychostreams\android\app\src\main\AndroidManifest.xml:7:5-67
+15-->D:\hEMANT\tychostreams\android\app\src\main\AndroidManifest.xml:7:22-64
+16    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+16-->D:\hEMANT\tychostreams\android\app\src\main\AndroidManifest.xml:4:5-80
+16-->D:\hEMANT\tychostreams\android\app\src\main\AndroidManifest.xml:4:22-77
+17    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+17-->D:\hEMANT\tychostreams\android\app\src\main\AndroidManifest.xml:5:5-81
+17-->D:\hEMANT\tychostreams\android\app\src\main\AndroidManifest.xml:5:22-78
+18    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+18-->D:\hEMANT\tychostreams\android\app\src\main\AndroidManifest.xml:6:5-71
+18-->D:\hEMANT\tychostreams\android\app\src\main\AndroidManifest.xml:6:22-68
+19    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+19-->D:\hEMANT\tychostreams\android\app\src\main\AndroidManifest.xml:8:5-77
+19-->D:\hEMANT\tychostreams\android\app\src\main\AndroidManifest.xml:8:22-74
+20    <uses-permission android:name="com.android.vending.BILLING" />
+20-->D:\hEMANT\tychostreams\android\app\src\main\AndroidManifest.xml:9:5-67
+20-->D:\hEMANT\tychostreams\android\app\src\main\AndroidManifest.xml:9:22-64
+21    <uses-permission android:name="android.permission.WAKE_LOCK" />
+21-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:10:5-68
+21-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:10:22-65
+22    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- Permissions options for the `notification` group -->
+22-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:11:5-79
+22-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:11:22-76
+23    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+23-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:13:5-77
+23-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:13:22-74
+24
+25    <queries>
+25-->[:file_picker] D:\hEMANT\tychostreams\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:11:5-17:15
+26        <intent>
+26-->[:file_picker] D:\hEMANT\tychostreams\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:12:9-16:18
+27            <action android:name="android.intent.action.GET_CONTENT" />
+27-->[:file_picker] D:\hEMANT\tychostreams\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-72
+27-->[:file_picker] D:\hEMANT\tychostreams\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:13:21-69
+28
+29            <data android:mimeType="*/*" />
+29-->[:file_picker] D:\hEMANT\tychostreams\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-44
+29-->[:file_picker] D:\hEMANT\tychostreams\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:15:19-41
+30        </intent>
+31        <intent>
+31-->[com.android.billingclient:billing:5.1.0] C:\Users\tycho\.gradle\caches\transforms-3\4d4e6aef1533e05ba8a2536f4063ae59\transformed\jetified-billing-5.1.0\AndroidManifest.xml:17:9-19:18
+32            <action android:name="com.android.vending.billing.InAppBillingService.BIND" />
+32-->[com.android.billingclient:billing:5.1.0] C:\Users\tycho\.gradle\caches\transforms-3\4d4e6aef1533e05ba8a2536f4063ae59\transformed\jetified-billing-5.1.0\AndroidManifest.xml:18:13-91
+32-->[com.android.billingclient:billing:5.1.0] C:\Users\tycho\.gradle\caches\transforms-3\4d4e6aef1533e05ba8a2536f4063ae59\transformed\jetified-billing-5.1.0\AndroidManifest.xml:18:21-88
+33        </intent>
+34
+35        <package android:name="com.facebook.katana" />
+35-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:18:9-55
+35-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:18:18-52
+36    </queries> <!-- Required by older versions of Google Play services to create IID tokens -->
+37    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+37-->[com.google.firebase:firebase-messaging:23.1.1] C:\Users\tycho\.gradle\caches\transforms-3\66de4305226ff0cb8bffa4b4ba4a8b75\transformed\jetified-firebase-messaging-23.1.1\AndroidManifest.xml:28:5-82
+37-->[com.google.firebase:firebase-messaging:23.1.1] C:\Users\tycho\.gradle\caches\transforms-3\66de4305226ff0cb8bffa4b4ba4a8b75\transformed\jetified-firebase-messaging-23.1.1\AndroidManifest.xml:28:22-79
+38    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+38-->[com.google.android.gms:play-services-measurement-api:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\9fe8d1b46c71e9b954a639d6f927ec09\transformed\jetified-play-services-measurement-api-21.2.0\AndroidManifest.xml:25:5-79
+38-->[com.google.android.gms:play-services-measurement-api:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\9fe8d1b46c71e9b954a639d6f927ec09\transformed\jetified-play-services-measurement-api-21.2.0\AndroidManifest.xml:25:22-76
+39    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+39-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:27:5-81
+39-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:27:22-78
+40    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE" />
+40-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:26:5-110
+40-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:26:22-107
+41
+42    <application
+43        android:name="android.app.Application"
+44        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+44-->[androidx.core:core:1.8.0] C:\Users\tycho\.gradle\caches\transforms-3\42e6491f5f37d2219727138ee1097e2e\transformed\core-1.8.0\AndroidManifest.xml:24:18-86
+45        android:debuggable="true"
+46        android:icon="@mipmap/ic_launcher"
+47        android:label="tycho_streams"
+48        android:supportsRtl="true" >
+48-->[com.facebook.android:facebook-login:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\6cff0fa114c7d9ffea3d67655094d1d5\transformed\jetified-facebook-login-15.2.0\AndroidManifest.xml:16:18-44
+49        <meta-data
+50            android:name="com.facebook.sdk.ApplicationId"
+51            android:value="@string/facebook_app_id" />
+52        <meta-data
+53            android:name="com.facebook.sdk.ClientToken"
+54            android:value="@string/facebook_client_token" />
+55
+56        <activity
+57            android:name="com.facebook.FacebookActivity"
+58            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+59            android:label="@string/app_name"
+60            android:theme="@style/com_facebook_activity_theme" />
+60-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:25:13-63
+61        <activity
+62            android:name="com.facebook.CustomTabActivity"
+63            android:exported="true" >
+64            <intent-filter>
+65                <action android:name="android.intent.action.VIEW" />
+65-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:32:17-69
+65-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:32:25-66
+66
+67                <category android:name="android.intent.category.DEFAULT" />
+67-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:34:17-76
+67-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:34:27-73
+68                <category android:name="android.intent.category.BROWSABLE" />
+68-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:35:17-78
+68-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:35:27-75
+69
+70                <data android:scheme="@string/fb_login_protocol_scheme" />
+70-->[:file_picker] D:\hEMANT\tychostreams\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-44
+71            </intent-filter>
+72            <intent-filter>
+72-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:31:13-40:29
+73                <action android:name="android.intent.action.VIEW" />
+73-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:32:17-69
+73-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:32:25-66
+74
+75                <category android:name="android.intent.category.DEFAULT" />
+75-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:34:17-76
+75-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:34:27-73
+76                <category android:name="android.intent.category.BROWSABLE" />
+76-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:35:17-78
+76-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:35:27-75
+77
+78                <data
+78-->[:file_picker] D:\hEMANT\tychostreams\build\file_picker\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-44
+79                    android:host="cct.com.tycho.tychostreams"
+80                    android:scheme="fbconnect" />
+81            </intent-filter>
+82        </activity>
+83        <activity
+84            android:name="com.tycho.tychostreams.MainActivity"
+85            android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+86            android:exported="true"
+87            android:hardwareAccelerated="true"
+88            android:launchMode="singleTop"
+89            android:theme="@style/LaunchTheme"
+90            android:windowSoftInputMode="adjustResize" >
+91
+92            <!--
+93                 Specifies an Android theme to apply to this Activity as soon as
+94                 the Android process has started. This theme is visible to the user
+95                 while the Flutter UI initializes. After that, this theme continues
+96                 to determine the Window background behind the Flutter UI.
+97            -->
+98            <meta-data
+99                android:name="io.flutter.embedding.android.NormalTheme"
+100                android:resource="@style/NormalTheme" />
+101
+102            <intent-filter>
+103                <action android:name="android.intent.action.MAIN" />
+104
+105                <category android:name="android.intent.category.LAUNCHER" />
+106            </intent-filter>
+107        </activity>
+108        <!--
+109             Don't delete the meta-data below.
+110             This is used by the Flutter tool to generate GeneratedPluginRegistrant.java
+111        -->
+112        <meta-data
+113            android:name="flutterEmbedding"
+114            android:value="2" />
+115
+116        <service
+116-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:16:9-19:72
+117            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingBackgroundService"
+117-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:17:13-107
+118            android:exported="false"
+118-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:18:13-37
+119            android:permission="android.permission.BIND_JOB_SERVICE" />
+119-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:19:13-69
+120        <service
+120-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:20:9-26:19
+121            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingService"
+121-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:21:13-97
+122            android:exported="false" >
+122-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:22:13-37
+123            <intent-filter>
+123-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:23:13-25:29
+124                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+124-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:24:17-78
+124-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:24:25-75
+125            </intent-filter>
+126        </service>
+127
+128        <receiver
+128-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:28:9-35:20
+129            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingReceiver"
+129-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:29:13-98
+130            android:exported="true"
+130-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:30:13-36
+131            android:permission="com.google.android.c2dm.permission.SEND" >
+131-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:31:13-73
+132            <intent-filter>
+132-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:32:13-34:29
+133                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+133-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:33:17-81
+133-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:33:25-78
+134            </intent-filter>
+135        </receiver>
+136
+137        <service
+137-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:37:9-41:19
+138            android:name="com.google.firebase.components.ComponentDiscoveryService"
+138-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:37:18-89
+139            android:directBootAware="true"
+139-->[com.google.firebase:firebase-common:20.3.0] C:\Users\tycho\.gradle\caches\transforms-3\17f61bb9398e1f5c13b56fc5aeeddc14\transformed\jetified-firebase-common-20.3.0\AndroidManifest.xml:34:13-43
+140            android:exported="false" >
+140-->[com.google.firebase:firebase-analytics-ktx:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\0131fc0741f18b1316f82d5c3c63e061\transformed\jetified-firebase-analytics-ktx-21.2.0\AndroidManifest.xml:10:13-37
+141            <meta-data
+141-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:38:13-40:85
+142                android:name="com.google.firebase.components:io.flutter.plugins.firebase.messaging.FlutterFirebaseAppRegistrar"
+142-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:39:17-128
+143                android:value="com.google.firebase.components.ComponentRegistrar" />
+143-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:40:17-82
+144            <meta-data
+144-->[:firebase_core] D:\hEMANT\tychostreams\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-13:85
+145                android:name="com.google.firebase.components:io.flutter.plugins.firebase.core.FlutterFirebaseCoreRegistrar"
+145-->[:firebase_core] D:\hEMANT\tychostreams\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:12:17-124
+146                android:value="com.google.firebase.components.ComponentRegistrar" />
+146-->[:firebase_core] D:\hEMANT\tychostreams\build\firebase_core\intermediates\merged_manifest\debug\AndroidManifest.xml:13:17-82
+147            <meta-data
+147-->[com.google.firebase:firebase-analytics-ktx:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\0131fc0741f18b1316f82d5c3c63e061\transformed\jetified-firebase-analytics-ktx-21.2.0\AndroidManifest.xml:11:13-13:85
+148                android:name="com.google.firebase.components:com.google.firebase.analytics.ktx.FirebaseAnalyticsKtxRegistrar"
+148-->[com.google.firebase:firebase-analytics-ktx:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\0131fc0741f18b1316f82d5c3c63e061\transformed\jetified-firebase-analytics-ktx-21.2.0\AndroidManifest.xml:12:17-126
+149                android:value="com.google.firebase.components.ComponentRegistrar" />
+149-->[com.google.firebase:firebase-analytics-ktx:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\0131fc0741f18b1316f82d5c3c63e061\transformed\jetified-firebase-analytics-ktx-21.2.0\AndroidManifest.xml:13:17-82
+150            <meta-data
+150-->[com.google.firebase:firebase-common-ktx:20.3.0] C:\Users\tycho\.gradle\caches\transforms-3\49e24fbc43ca8d91b086670d3cb456c6\transformed\jetified-firebase-common-ktx-20.3.0\AndroidManifest.xml:14:13-16:85
+151                android:name="com.google.firebase.components:com.google.firebase.ktx.FirebaseCommonKtxRegistrar"
+151-->[com.google.firebase:firebase-common-ktx:20.3.0] C:\Users\tycho\.gradle\caches\transforms-3\49e24fbc43ca8d91b086670d3cb456c6\transformed\jetified-firebase-common-ktx-20.3.0\AndroidManifest.xml:15:17-113
+152                android:value="com.google.firebase.components.ComponentRegistrar" />
+152-->[com.google.firebase:firebase-common-ktx:20.3.0] C:\Users\tycho\.gradle\caches\transforms-3\49e24fbc43ca8d91b086670d3cb456c6\transformed\jetified-firebase-common-ktx-20.3.0\AndroidManifest.xml:16:17-82
+153            <meta-data
+153-->[com.google.firebase:firebase-messaging:23.1.1] C:\Users\tycho\.gradle\caches\transforms-3\66de4305226ff0cb8bffa4b4ba4a8b75\transformed\jetified-firebase-messaging-23.1.1\AndroidManifest.xml:55:13-57:85
+154                android:name="com.google.firebase.components:com.google.firebase.messaging.FirebaseMessagingRegistrar"
+154-->[com.google.firebase:firebase-messaging:23.1.1] C:\Users\tycho\.gradle\caches\transforms-3\66de4305226ff0cb8bffa4b4ba4a8b75\transformed\jetified-firebase-messaging-23.1.1\AndroidManifest.xml:56:17-119
+155                android:value="com.google.firebase.components.ComponentRegistrar" />
+155-->[com.google.firebase:firebase-messaging:23.1.1] C:\Users\tycho\.gradle\caches\transforms-3\66de4305226ff0cb8bffa4b4ba4a8b75\transformed\jetified-firebase-messaging-23.1.1\AndroidManifest.xml:57:17-82
+156            <meta-data
+156-->[com.google.firebase:firebase-datatransport:18.1.7] C:\Users\tycho\.gradle\caches\transforms-3\3cf916311ea46cca191077538f98d969\transformed\jetified-firebase-datatransport-18.1.7\AndroidManifest.xml:27:13-29:85
+157                android:name="com.google.firebase.components:com.google.firebase.datatransport.TransportRegistrar"
+157-->[com.google.firebase:firebase-datatransport:18.1.7] C:\Users\tycho\.gradle\caches\transforms-3\3cf916311ea46cca191077538f98d969\transformed\jetified-firebase-datatransport-18.1.7\AndroidManifest.xml:28:17-115
+158                android:value="com.google.firebase.components.ComponentRegistrar" />
+158-->[com.google.firebase:firebase-datatransport:18.1.7] C:\Users\tycho\.gradle\caches\transforms-3\3cf916311ea46cca191077538f98d969\transformed\jetified-firebase-datatransport-18.1.7\AndroidManifest.xml:29:17-82
+159            <meta-data
+159-->[com.google.firebase:firebase-iid:21.1.0] C:\Users\tycho\.gradle\caches\transforms-3\1db1b2873326ed90786bb9c16ff9ea36\transformed\jetified-firebase-iid-21.1.0\AndroidManifest.xml:32:13-34:85
+160                android:name="com.google.firebase.components:com.google.firebase.iid.Registrar"
+160-->[com.google.firebase:firebase-iid:21.1.0] C:\Users\tycho\.gradle\caches\transforms-3\1db1b2873326ed90786bb9c16ff9ea36\transformed\jetified-firebase-iid-21.1.0\AndroidManifest.xml:33:17-96
+161                android:value="com.google.firebase.components.ComponentRegistrar" />
+161-->[com.google.firebase:firebase-iid:21.1.0] C:\Users\tycho\.gradle\caches\transforms-3\1db1b2873326ed90786bb9c16ff9ea36\transformed\jetified-firebase-iid-21.1.0\AndroidManifest.xml:34:17-82
+162            <meta-data
+162-->[com.google.android.gms:play-services-measurement-api:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\9fe8d1b46c71e9b954a639d6f927ec09\transformed\jetified-play-services-measurement-api-21.2.0\AndroidManifest.xml:31:13-33:85
+163                android:name="com.google.firebase.components:com.google.firebase.analytics.connector.internal.AnalyticsConnectorRegistrar"
+163-->[com.google.android.gms:play-services-measurement-api:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\9fe8d1b46c71e9b954a639d6f927ec09\transformed\jetified-play-services-measurement-api-21.2.0\AndroidManifest.xml:32:17-139
+164                android:value="com.google.firebase.components.ComponentRegistrar" />
+164-->[com.google.android.gms:play-services-measurement-api:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\9fe8d1b46c71e9b954a639d6f927ec09\transformed\jetified-play-services-measurement-api-21.2.0\AndroidManifest.xml:33:17-82
+165            <meta-data
+165-->[com.google.firebase:firebase-installations:17.1.0] C:\Users\tycho\.gradle\caches\transforms-3\7bcf2b0de095e1d4f0223c6097bbca15\transformed\jetified-firebase-installations-17.1.0\AndroidManifest.xml:17:13-19:85
+166                android:name="com.google.firebase.components:com.google.firebase.installations.FirebaseInstallationsRegistrar"
+166-->[com.google.firebase:firebase-installations:17.1.0] C:\Users\tycho\.gradle\caches\transforms-3\7bcf2b0de095e1d4f0223c6097bbca15\transformed\jetified-firebase-installations-17.1.0\AndroidManifest.xml:18:17-127
+167                android:value="com.google.firebase.components.ComponentRegistrar" />
+167-->[com.google.firebase:firebase-installations:17.1.0] C:\Users\tycho\.gradle\caches\transforms-3\7bcf2b0de095e1d4f0223c6097bbca15\transformed\jetified-firebase-installations-17.1.0\AndroidManifest.xml:19:17-82
+168        </service>
+169
+170        <provider
+170-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:43:9-47:38
+171            android:name="io.flutter.plugins.firebase.messaging.FlutterFirebaseMessagingInitProvider"
+171-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:44:13-102
+172            android:authorities="com.tycho.tychostreams.flutterfirebasemessaginginitprovider"
+172-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:45:13-88
+173            android:exported="false"
+173-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:46:13-37
+174            android:initOrder="99" />
+174-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:47:13-35
+175        <provider
+175-->[:image_picker_android] D:\hEMANT\tychostreams\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-18:20
+176            android:name="io.flutter.plugins.imagepicker.ImagePickerFileProvider"
+176-->[:image_picker_android] D:\hEMANT\tychostreams\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-82
+177            android:authorities="com.tycho.tychostreams.flutter.image_provider"
+177-->[:image_picker_android] D:\hEMANT\tychostreams\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-74
+178            android:exported="false"
+178-->[:image_picker_android] D:\hEMANT\tychostreams\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-37
+179            android:grantUriPermissions="true" >
+179-->[:image_picker_android] D:\hEMANT\tychostreams\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-47
+180            <meta-data
+180-->[:image_picker_android] D:\hEMANT\tychostreams\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-17:75
+181                android:name="android.support.FILE_PROVIDER_PATHS"
+181-->[:image_picker_android] D:\hEMANT\tychostreams\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:16:17-67
+182                android:resource="@xml/flutter_image_picker_file_paths" />
+182-->[:image_picker_android] D:\hEMANT\tychostreams\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:17:17-72
+183        </provider>
+184        <provider
+184-->[:share] D:\hEMANT\tychostreams\build\share\intermediates\merged_manifest\debug\AndroidManifest.xml:10:9-18:20
+185            android:name="io.flutter.plugins.share.ShareFileProvider"
+185-->[:share] D:\hEMANT\tychostreams\build\share\intermediates\merged_manifest\debug\AndroidManifest.xml:11:13-70
+186            android:authorities="com.tycho.tychostreams.flutter.share_provider"
+186-->[:share] D:\hEMANT\tychostreams\build\share\intermediates\merged_manifest\debug\AndroidManifest.xml:12:13-74
+187            android:exported="false"
+187-->[:share] D:\hEMANT\tychostreams\build\share\intermediates\merged_manifest\debug\AndroidManifest.xml:13:13-37
+188            android:grantUriPermissions="true" >
+188-->[:share] D:\hEMANT\tychostreams\build\share\intermediates\merged_manifest\debug\AndroidManifest.xml:14:13-47
+189            <meta-data
+189-->[:image_picker_android] D:\hEMANT\tychostreams\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:15:13-17:75
+190                android:name="android.support.FILE_PROVIDER_PATHS"
+190-->[:image_picker_android] D:\hEMANT\tychostreams\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:16:17-67
+191                android:resource="@xml/flutter_share_file_paths" />
+191-->[:image_picker_android] D:\hEMANT\tychostreams\build\image_picker_android\intermediates\merged_manifest\debug\AndroidManifest.xml:17:17-72
+192        </provider>
+193
+194        <uses-library
+194-->[androidx.window:window:1.0.0-beta04] C:\Users\tycho\.gradle\caches\transforms-3\36a45b2abb854eca36c578fbec6ed4df\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:25:9-27:40
+195            android:name="androidx.window.extensions"
+195-->[androidx.window:window:1.0.0-beta04] C:\Users\tycho\.gradle\caches\transforms-3\36a45b2abb854eca36c578fbec6ed4df\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:26:13-54
+196            android:required="false" />
+196-->[androidx.window:window:1.0.0-beta04] C:\Users\tycho\.gradle\caches\transforms-3\36a45b2abb854eca36c578fbec6ed4df\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:27:13-37
+197        <uses-library
+197-->[androidx.window:window:1.0.0-beta04] C:\Users\tycho\.gradle\caches\transforms-3\36a45b2abb854eca36c578fbec6ed4df\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:28:9-30:40
+198            android:name="androidx.window.sidecar"
+198-->[androidx.window:window:1.0.0-beta04] C:\Users\tycho\.gradle\caches\transforms-3\36a45b2abb854eca36c578fbec6ed4df\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:29:13-51
+199            android:required="false" />
+199-->[androidx.window:window:1.0.0-beta04] C:\Users\tycho\.gradle\caches\transforms-3\36a45b2abb854eca36c578fbec6ed4df\transformed\jetified-window-1.0.0-beta04\AndroidManifest.xml:30:13-37
+200
+201        <meta-data
+201-->[com.android.billingclient:billing:5.1.0] C:\Users\tycho\.gradle\caches\transforms-3\4d4e6aef1533e05ba8a2536f4063ae59\transformed\jetified-billing-5.1.0\AndroidManifest.xml:23:9-25:37
+202            android:name="com.google.android.play.billingclient.version"
+202-->[com.android.billingclient:billing:5.1.0] C:\Users\tycho\.gradle\caches\transforms-3\4d4e6aef1533e05ba8a2536f4063ae59\transformed\jetified-billing-5.1.0\AndroidManifest.xml:24:13-73
+203            android:value="5.1.0" />
+203-->[com.android.billingclient:billing:5.1.0] C:\Users\tycho\.gradle\caches\transforms-3\4d4e6aef1533e05ba8a2536f4063ae59\transformed\jetified-billing-5.1.0\AndroidManifest.xml:25:13-34
+204
+205        <activity
+205-->[com.android.billingclient:billing:5.1.0] C:\Users\tycho\.gradle\caches\transforms-3\4d4e6aef1533e05ba8a2536f4063ae59\transformed\jetified-billing-5.1.0\AndroidManifest.xml:27:9-31:75
+206            android:name="com.android.billingclient.api.ProxyBillingActivity"
+206-->[com.android.billingclient:billing:5.1.0] C:\Users\tycho\.gradle\caches\transforms-3\4d4e6aef1533e05ba8a2536f4063ae59\transformed\jetified-billing-5.1.0\AndroidManifest.xml:28:13-78
+207            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+207-->[com.android.billingclient:billing:5.1.0] C:\Users\tycho\.gradle\caches\transforms-3\4d4e6aef1533e05ba8a2536f4063ae59\transformed\jetified-billing-5.1.0\AndroidManifest.xml:29:13-96
+208            android:exported="false"
+208-->[com.android.billingclient:billing:5.1.0] C:\Users\tycho\.gradle\caches\transforms-3\4d4e6aef1533e05ba8a2536f4063ae59\transformed\jetified-billing-5.1.0\AndroidManifest.xml:30:13-37
+209            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+209-->[com.android.billingclient:billing:5.1.0] C:\Users\tycho\.gradle\caches\transforms-3\4d4e6aef1533e05ba8a2536f4063ae59\transformed\jetified-billing-5.1.0\AndroidManifest.xml:31:13-72
+210
+211        <receiver
+211-->[com.google.firebase:firebase-messaging:23.1.1] C:\Users\tycho\.gradle\caches\transforms-3\66de4305226ff0cb8bffa4b4ba4a8b75\transformed\jetified-firebase-messaging-23.1.1\AndroidManifest.xml:31:9-38:20
+212            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+212-->[com.google.firebase:firebase-messaging:23.1.1] C:\Users\tycho\.gradle\caches\transforms-3\66de4305226ff0cb8bffa4b4ba4a8b75\transformed\jetified-firebase-messaging-23.1.1\AndroidManifest.xml:32:13-78
+213            android:exported="true"
+213-->[com.google.firebase:firebase-messaging:23.1.1] C:\Users\tycho\.gradle\caches\transforms-3\66de4305226ff0cb8bffa4b4ba4a8b75\transformed\jetified-firebase-messaging-23.1.1\AndroidManifest.xml:33:13-36
+214            android:permission="com.google.android.c2dm.permission.SEND" >
+214-->[com.google.firebase:firebase-messaging:23.1.1] C:\Users\tycho\.gradle\caches\transforms-3\66de4305226ff0cb8bffa4b4ba4a8b75\transformed\jetified-firebase-messaging-23.1.1\AndroidManifest.xml:34:13-73
+215            <intent-filter>
+215-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:32:13-34:29
+216                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+216-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:33:17-81
+216-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:33:25-78
+217            </intent-filter>
+218        </receiver>
+219        <!--
+220             FirebaseMessagingService performs security checks at runtime,
+221             but set to not exported to explicitly avoid allowing another app to call it.
+222        -->
+223        <service
+223-->[com.google.firebase:firebase-messaging:23.1.1] C:\Users\tycho\.gradle\caches\transforms-3\66de4305226ff0cb8bffa4b4ba4a8b75\transformed\jetified-firebase-messaging-23.1.1\AndroidManifest.xml:44:9-51:19
+224            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+224-->[com.google.firebase:firebase-messaging:23.1.1] C:\Users\tycho\.gradle\caches\transforms-3\66de4305226ff0cb8bffa4b4ba4a8b75\transformed\jetified-firebase-messaging-23.1.1\AndroidManifest.xml:45:13-82
+225            android:directBootAware="true"
+225-->[com.google.firebase:firebase-messaging:23.1.1] C:\Users\tycho\.gradle\caches\transforms-3\66de4305226ff0cb8bffa4b4ba4a8b75\transformed\jetified-firebase-messaging-23.1.1\AndroidManifest.xml:46:13-43
+226            android:exported="false" >
+226-->[com.google.firebase:firebase-messaging:23.1.1] C:\Users\tycho\.gradle\caches\transforms-3\66de4305226ff0cb8bffa4b4ba4a8b75\transformed\jetified-firebase-messaging-23.1.1\AndroidManifest.xml:47:13-37
+227            <intent-filter android:priority="-500" >
+227-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:23:13-25:29
+228                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+228-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:24:17-78
+228-->[:firebase_messaging] D:\hEMANT\tychostreams\build\firebase_messaging\intermediates\merged_manifest\debug\AndroidManifest.xml:24:25-75
+229            </intent-filter>
+230        </service>
+231        <service
+231-->[com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\tycho\.gradle\caches\transforms-3\b575f61dd6993583ac7c69c3796215af\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:28:9-34:19
+232            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+232-->[com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\tycho\.gradle\caches\transforms-3\b575f61dd6993583ac7c69c3796215af\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:29:13-103
+233            android:exported="false" >
+233-->[com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\tycho\.gradle\caches\transforms-3\b575f61dd6993583ac7c69c3796215af\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:30:13-37
+234            <meta-data
+234-->[com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\tycho\.gradle\caches\transforms-3\b575f61dd6993583ac7c69c3796215af\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:31:13-33:39
+235                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+235-->[com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\tycho\.gradle\caches\transforms-3\b575f61dd6993583ac7c69c3796215af\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:32:17-94
+236                android:value="cct" />
+236-->[com.google.android.datatransport:transport-backend-cct:3.1.8] C:\Users\tycho\.gradle\caches\transforms-3\b575f61dd6993583ac7c69c3796215af\transformed\jetified-transport-backend-cct-3.1.8\AndroidManifest.xml:33:17-36
+237        </service>
+238        <service
+238-->[com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\tycho\.gradle\caches\transforms-3\2f15c8034f6aea8b10122d8249b4c9b9\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:26:9-30:19
+239            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+239-->[com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\tycho\.gradle\caches\transforms-3\2f15c8034f6aea8b10122d8249b4c9b9\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:27:13-117
+240            android:exported="false"
+240-->[com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\tycho\.gradle\caches\transforms-3\2f15c8034f6aea8b10122d8249b4c9b9\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:28:13-37
+241            android:permission="android.permission.BIND_JOB_SERVICE" >
+241-->[com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\tycho\.gradle\caches\transforms-3\2f15c8034f6aea8b10122d8249b4c9b9\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:29:13-69
+242        </service>
+243
+244        <receiver
+244-->[com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\tycho\.gradle\caches\transforms-3\2f15c8034f6aea8b10122d8249b4c9b9\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:32:9-34:40
+245            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+245-->[com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\tycho\.gradle\caches\transforms-3\2f15c8034f6aea8b10122d8249b4c9b9\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:33:13-132
+246            android:exported="false" />
+246-->[com.google.android.datatransport:transport-runtime:3.1.8] C:\Users\tycho\.gradle\caches\transforms-3\2f15c8034f6aea8b10122d8249b4c9b9\transformed\jetified-transport-runtime-3.1.8\AndroidManifest.xml:34:13-37
+247
+248        <provider
+248-->[com.google.firebase:firebase-common:20.3.0] C:\Users\tycho\.gradle\caches\transforms-3\17f61bb9398e1f5c13b56fc5aeeddc14\transformed\jetified-firebase-common-20.3.0\AndroidManifest.xml:25:9-30:39
+249            android:name="com.google.firebase.provider.FirebaseInitProvider"
+249-->[com.google.firebase:firebase-common:20.3.0] C:\Users\tycho\.gradle\caches\transforms-3\17f61bb9398e1f5c13b56fc5aeeddc14\transformed\jetified-firebase-common-20.3.0\AndroidManifest.xml:26:13-77
+250            android:authorities="com.tycho.tychostreams.firebaseinitprovider"
+250-->[com.google.firebase:firebase-common:20.3.0] C:\Users\tycho\.gradle\caches\transforms-3\17f61bb9398e1f5c13b56fc5aeeddc14\transformed\jetified-firebase-common-20.3.0\AndroidManifest.xml:27:13-72
+251            android:directBootAware="true"
+251-->[com.google.firebase:firebase-common:20.3.0] C:\Users\tycho\.gradle\caches\transforms-3\17f61bb9398e1f5c13b56fc5aeeddc14\transformed\jetified-firebase-common-20.3.0\AndroidManifest.xml:28:13-43
+252            android:exported="false"
+252-->[com.google.firebase:firebase-common:20.3.0] C:\Users\tycho\.gradle\caches\transforms-3\17f61bb9398e1f5c13b56fc5aeeddc14\transformed\jetified-firebase-common-20.3.0\AndroidManifest.xml:29:13-37
+253            android:initOrder="100" />
+253-->[com.google.firebase:firebase-common:20.3.0] C:\Users\tycho\.gradle\caches\transforms-3\17f61bb9398e1f5c13b56fc5aeeddc14\transformed\jetified-firebase-common-20.3.0\AndroidManifest.xml:30:13-36
+254
+255        <activity android:name="com.facebook.CustomTabMainActivity" />
+255-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:26:9-71
+255-->[com.facebook.android:facebook-common:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\e7048733cc1aa41749d4a0a90e046790\transformed\jetified-facebook-common-15.2.0\AndroidManifest.xml:26:19-68
+256
+257        <provider
+257-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:31:9-39:20
+258            android:name="androidx.startup.InitializationProvider"
+258-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:32:13-67
+259            android:authorities="com.tycho.tychostreams.androidx-startup"
+259-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:33:13-68
+260            android:exported="false" >
+260-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:34:13-37
+261            <meta-data
+261-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:36:13-38:52
+262                android:name="androidx.work.WorkManagerInitializer"
+262-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:37:17-68
+263                android:value="androidx.startup" />
+263-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:38:17-49
+264        </provider>
+265
+266        <service
+266-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:41:9-46:35
+267            android:name="androidx.work.impl.background.systemalarm.SystemAlarmService"
+267-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:42:13-88
+268            android:directBootAware="false"
+268-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:43:13-44
+269            android:enabled="@bool/enable_system_alarm_service_default"
+269-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:44:13-72
+270            android:exported="false" />
+270-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:45:13-37
+271        <service
+271-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:47:9-53:35
+272            android:name="androidx.work.impl.background.systemjob.SystemJobService"
+272-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:48:13-84
+273            android:directBootAware="false"
+273-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:49:13-44
+274            android:enabled="@bool/enable_system_job_service_default"
+274-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:50:13-70
+275            android:exported="true"
+275-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:51:13-36
+276            android:permission="android.permission.BIND_JOB_SERVICE" />
+276-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:52:13-69
+277        <service
+277-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:54:9-59:35
+278            android:name="androidx.work.impl.foreground.SystemForegroundService"
+278-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:55:13-81
+279            android:directBootAware="false"
+279-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:56:13-44
+280            android:enabled="@bool/enable_system_foreground_service_default"
+280-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:57:13-77
+281            android:exported="false" />
+281-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:58:13-37
+282
+283        <receiver
+283-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:61:9-66:35
+284            android:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver"
+284-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:62:13-88
+285            android:directBootAware="false"
+285-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:63:13-44
+286            android:enabled="true"
+286-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:64:13-35
+287            android:exported="false" />
+287-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:65:13-37
+288        <receiver
+288-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:67:9-77:20
+289            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy"
+289-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:68:13-106
+290            android:directBootAware="false"
+290-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:69:13-44
+291            android:enabled="false"
+291-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:70:13-36
+292            android:exported="false" >
+292-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:71:13-37
+293            <intent-filter>
+293-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:73:13-76:29
+294                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+294-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:74:17-87
+294-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:74:25-84
+295                <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+295-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:75:17-90
+295-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:75:25-87
+296            </intent-filter>
+297        </receiver>
+298        <receiver
+298-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:78:9-88:20
+299            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy"
+299-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:79:13-104
+300            android:directBootAware="false"
+300-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:80:13-44
+301            android:enabled="false"
+301-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:81:13-36
+302            android:exported="false" >
+302-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:82:13-37
+303            <intent-filter>
+303-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:84:13-87:29
+304                <action android:name="android.intent.action.BATTERY_OKAY" />
+304-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:85:17-77
+304-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:85:25-74
+305                <action android:name="android.intent.action.BATTERY_LOW" />
+305-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:86:17-76
+305-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:86:25-73
+306            </intent-filter>
+307        </receiver>
+308        <receiver
+308-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:89:9-99:20
+309            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy"
+309-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:90:13-104
+310            android:directBootAware="false"
+310-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:91:13-44
+311            android:enabled="false"
+311-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:92:13-36
+312            android:exported="false" >
+312-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:93:13-37
+313            <intent-filter>
+313-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:95:13-98:29
+314                <action android:name="android.intent.action.DEVICE_STORAGE_LOW" />
+314-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:96:17-83
+314-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:96:25-80
+315                <action android:name="android.intent.action.DEVICE_STORAGE_OK" />
+315-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:97:17-82
+315-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:97:25-79
+316            </intent-filter>
+317        </receiver>
+318        <receiver
+318-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:100:9-109:20
+319            android:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy"
+319-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:101:13-103
+320            android:directBootAware="false"
+320-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:102:13-44
+321            android:enabled="false"
+321-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:103:13-36
+322            android:exported="false" >
+322-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:104:13-37
+323            <intent-filter>
+323-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:106:13-108:29
+324                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+324-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:107:17-79
+324-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:107:25-76
+325            </intent-filter>
+326        </receiver>
+327        <receiver
+327-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:110:9-121:20
+328            android:name="androidx.work.impl.background.systemalarm.RescheduleReceiver"
+328-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:111:13-88
+329            android:directBootAware="false"
+329-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:112:13-44
+330            android:enabled="false"
+330-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:113:13-36
+331            android:exported="false" >
+331-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:114:13-37
+332            <intent-filter>
+332-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:116:13-120:29
+333                <action android:name="android.intent.action.BOOT_COMPLETED" />
+333-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:117:17-79
+333-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:117:25-76
+334                <action android:name="android.intent.action.TIME_SET" />
+334-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:118:17-73
+334-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:118:25-70
+335                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+335-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:119:17-81
+335-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:119:25-78
+336            </intent-filter>
+337        </receiver>
+338        <receiver
+338-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:122:9-131:20
+339            android:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver"
+339-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:123:13-99
+340            android:directBootAware="false"
+340-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:124:13-44
+341            android:enabled="@bool/enable_system_alarm_service_default"
+341-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:125:13-72
+342            android:exported="false" >
+342-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:126:13-37
+343            <intent-filter>
+343-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:128:13-130:29
+344                <action android:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
+344-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:129:17-98
+344-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:129:25-95
+345            </intent-filter>
+346        </receiver>
+347        <receiver
+347-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:132:9-142:20
+348            android:name="androidx.work.impl.diagnostics.DiagnosticsReceiver"
+348-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:133:13-78
+349            android:directBootAware="false"
+349-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:134:13-44
+350            android:enabled="true"
+350-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:135:13-35
+351            android:exported="true"
+351-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:136:13-36
+352            android:permission="android.permission.DUMP" >
+352-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:137:13-57
+353            <intent-filter>
+353-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:139:13-141:29
+354                <action android:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+354-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:140:17-88
+354-->[androidx.work:work-runtime:2.7.0] C:\Users\tycho\.gradle\caches\transforms-3\3e2d3a738b3b073c593cc75fc8cf05e0\transformed\work-runtime-2.7.0\AndroidManifest.xml:140:25-85
+355            </intent-filter>
+356        </receiver>
+357
+358        <activity
+358-->[com.google.android.gms:play-services-auth:20.4.1] C:\Users\tycho\.gradle\caches\transforms-3\cfcef290f4544b1d1241a9797c7dbe32\transformed\jetified-play-services-auth-20.4.1\AndroidManifest.xml:23:9-27:75
+359            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+359-->[com.google.android.gms:play-services-auth:20.4.1] C:\Users\tycho\.gradle\caches\transforms-3\cfcef290f4544b1d1241a9797c7dbe32\transformed\jetified-play-services-auth-20.4.1\AndroidManifest.xml:24:13-93
+360            android:excludeFromRecents="true"
+360-->[com.google.android.gms:play-services-auth:20.4.1] C:\Users\tycho\.gradle\caches\transforms-3\cfcef290f4544b1d1241a9797c7dbe32\transformed\jetified-play-services-auth-20.4.1\AndroidManifest.xml:25:13-46
+361            android:exported="false"
+361-->[com.google.android.gms:play-services-auth:20.4.1] C:\Users\tycho\.gradle\caches\transforms-3\cfcef290f4544b1d1241a9797c7dbe32\transformed\jetified-play-services-auth-20.4.1\AndroidManifest.xml:26:13-37
+362            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+362-->[com.google.android.gms:play-services-auth:20.4.1] C:\Users\tycho\.gradle\caches\transforms-3\cfcef290f4544b1d1241a9797c7dbe32\transformed\jetified-play-services-auth-20.4.1\AndroidManifest.xml:27:13-72
+363        <!--
+364            Service handling Google Sign-In user revocation. For apps that do not integrate with
+365            Google Sign-In, this service will never be started.
+366        -->
+367        <service
+367-->[com.google.android.gms:play-services-auth:20.4.1] C:\Users\tycho\.gradle\caches\transforms-3\cfcef290f4544b1d1241a9797c7dbe32\transformed\jetified-play-services-auth-20.4.1\AndroidManifest.xml:33:9-37:51
+368            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+368-->[com.google.android.gms:play-services-auth:20.4.1] C:\Users\tycho\.gradle\caches\transforms-3\cfcef290f4544b1d1241a9797c7dbe32\transformed\jetified-play-services-auth-20.4.1\AndroidManifest.xml:34:13-89
+369            android:exported="true"
+369-->[com.google.android.gms:play-services-auth:20.4.1] C:\Users\tycho\.gradle\caches\transforms-3\cfcef290f4544b1d1241a9797c7dbe32\transformed\jetified-play-services-auth-20.4.1\AndroidManifest.xml:35:13-36
+370            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION"
+370-->[com.google.android.gms:play-services-auth:20.4.1] C:\Users\tycho\.gradle\caches\transforms-3\cfcef290f4544b1d1241a9797c7dbe32\transformed\jetified-play-services-auth-20.4.1\AndroidManifest.xml:36:13-107
+371            android:visibleToInstantApps="true" />
+371-->[com.google.android.gms:play-services-auth:20.4.1] C:\Users\tycho\.gradle\caches\transforms-3\cfcef290f4544b1d1241a9797c7dbe32\transformed\jetified-play-services-auth-20.4.1\AndroidManifest.xml:37:13-48
+372
+373        <activity
+373-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\tycho\.gradle\caches\transforms-3\27ed75583d8888cfd149af38bb71ea35\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
+374            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+374-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\tycho\.gradle\caches\transforms-3\27ed75583d8888cfd149af38bb71ea35\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:20:19-85
+375            android:exported="false"
+375-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\tycho\.gradle\caches\transforms-3\27ed75583d8888cfd149af38bb71ea35\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:22:19-43
+376            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+376-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\tycho\.gradle\caches\transforms-3\27ed75583d8888cfd149af38bb71ea35\transformed\jetified-play-services-base-18.0.1\AndroidManifest.xml:21:19-78
+377
+378        <receiver
+378-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:29:9-33:20
+379            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+379-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:30:13-85
+380            android:enabled="true"
+380-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:31:13-35
+381            android:exported="false" >
+381-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:32:13-37
+382        </receiver>
+383
+384        <service
+384-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:35:9-38:40
+385            android:name="com.google.android.gms.measurement.AppMeasurementService"
+385-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:36:13-84
+386            android:enabled="true"
+386-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:37:13-35
+387            android:exported="false" />
+387-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:38:13-37
+388        <service
+388-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:39:9-43:72
+389            android:name="com.google.android.gms.measurement.AppMeasurementJobService"
+389-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:40:13-87
+390            android:enabled="true"
+390-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:41:13-35
+391            android:exported="false"
+391-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:42:13-37
+392            android:permission="android.permission.BIND_JOB_SERVICE" />
+392-->[com.google.android.gms:play-services-measurement:21.2.0] C:\Users\tycho\.gradle\caches\transforms-3\847b32b408afbc752888409c4ca8a94a\transformed\jetified-play-services-measurement-21.2.0\AndroidManifest.xml:43:13-69
+393
+394        <meta-data
+394-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\tycho\.gradle\caches\transforms-3\4c5cefc4bced38f73a0cc4404fde07b9\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:21:9-23:69
+395            android:name="com.google.android.gms.version"
+395-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\tycho\.gradle\caches\transforms-3\4c5cefc4bced38f73a0cc4404fde07b9\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:22:13-58
+396            android:value="@integer/google_play_services_version" />
+396-->[com.google.android.gms:play-services-basement:18.1.0] C:\Users\tycho\.gradle\caches\transforms-3\4c5cefc4bced38f73a0cc4404fde07b9\transformed\jetified-play-services-basement-18.1.0\AndroidManifest.xml:23:13-66
+397        <!--
+398         The initialization ContentProvider will call FacebookSdk.sdkInitialize automatically
+399         with the application context. This config is merged in with the host app's manifest,
+400         but there can only be one provider with the same authority activated at any given
+401         point; so if the end user has two or more different apps that use Facebook SDK, only the
+402         first one will be able to use the provider. To work around this problem, we use the
+403         following placeholder in the authority to identify each host application as if it was
+404         a completely different provider.
+405        -->
+406        <provider
+406-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:29:9-32:40
+407            android:name="com.facebook.internal.FacebookInitProvider"
+407-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:30:13-70
+408            android:authorities="com.tycho.tychostreams.FacebookInitProvider"
+408-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:31:13-72
+409            android:exported="false" />
+409-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:32:13-37
+410
+411        <receiver
+411-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:34:9-40:20
+412            android:name="com.facebook.CurrentAccessTokenExpirationBroadcastReceiver"
+412-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:35:13-86
+413            android:exported="false" >
+413-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:36:13-37
+414            <intent-filter>
+414-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:37:13-39:29
+415                <action android:name="com.facebook.sdk.ACTION_CURRENT_ACCESS_TOKEN_CHANGED" />
+415-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:38:17-95
+415-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:38:25-92
+416            </intent-filter>
+417        </receiver>
+418        <receiver
+418-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:41:9-47:20
+419            android:name="com.facebook.AuthenticationTokenManager$CurrentAuthenticationTokenChangedBroadcastReceiver"
+419-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:42:13-118
+420            android:exported="false" >
+420-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:43:13-37
+421            <intent-filter>
+421-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:44:13-46:29
+422                <action android:name="com.facebook.sdk.ACTION_CURRENT_AUTHENTICATION_TOKEN_CHANGED" />
+422-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:45:17-103
+422-->[com.facebook.android:facebook-core:15.2.0] C:\Users\tycho\.gradle\caches\transforms-3\56ebeb00d73425efba1d865347ad53b7\transformed\jetified-facebook-core-15.2.0\AndroidManifest.xml:45:25-100
+423            </intent-filter>
+424        </receiver>
+425
+426        <service
+426-->[androidx.room:room-runtime:2.2.5] C:\Users\tycho\.gradle\caches\transforms-3\8a1500cb3787aec0b63bce10eec467f0\transformed\room-runtime-2.2.5\AndroidManifest.xml:25:9-28:40
+427            android:name="androidx.room.MultiInstanceInvalidationService"
+427-->[androidx.room:room-runtime:2.2.5] C:\Users\tycho\.gradle\caches\transforms-3\8a1500cb3787aec0b63bce10eec467f0\transformed\room-runtime-2.2.5\AndroidManifest.xml:26:13-74
+428            android:directBootAware="true"
+428-->[androidx.room:room-runtime:2.2.5] C:\Users\tycho\.gradle\caches\transforms-3\8a1500cb3787aec0b63bce10eec467f0\transformed\room-runtime-2.2.5\AndroidManifest.xml:27:13-43
+429            android:exported="false" />
+429-->[androidx.room:room-runtime:2.2.5] C:\Users\tycho\.gradle\caches\transforms-3\8a1500cb3787aec0b63bce10eec467f0\transformed\room-runtime-2.2.5\AndroidManifest.xml:28:13-37
+430    </application>
+431
+432</manifest>

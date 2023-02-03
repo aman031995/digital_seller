@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "746850038788",
+    "project_id": "tychostreams",
+    "storage_bucket": "tychostreams.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:746850038788:android:d208dab9d62eae8a407151",
+        "android_client_info": {
+          "package_name": "com.tycho.tychostreams"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "746850038788-67jr50a20kbpiqgk90q2mhqdvffeehmh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tycho.tychostreams",
+            "certificate_hash": "9fc07ea34a4b36319ae5a985ee77a36bccdeb5a1"
+          }
+        },
+        {
+          "client_id": "746850038788-ee4ca1cnqi6va4bhnou8071n1ec1vaoa.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmD5GIlgFJpmF4-tJNztkHtzK2hYx6uyY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "746850038788-ee4ca1cnqi6va4bhnou8071n1ec1vaoa.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

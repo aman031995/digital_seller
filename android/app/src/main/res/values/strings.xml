@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Tycho Streams</string>
+    <string name="facebook_app_id" translatable="false">1251942898735243</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb1251942898735243</string>
+    <string name="facebook_client_token" translatable="false">224dbd8d86d5ffef86442890607df438</string>
+</resources>
