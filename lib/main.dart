@@ -5,6 +5,10 @@ import 'package:provider/provider.dart';
 import 'package:tycho_streams/repository/subscription_provider.dart';
 import 'package:tycho_streams/utilities/route_service/routes.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
+import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';
+import 'package:tycho_streams/view/WebScreen/Recommended.dart';
+import 'package:tycho_streams/view/WebScreen/ViewAll.dart';
+import 'package:tycho_streams/view/screens/splash_screen.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 import 'package:tycho_streams/viewmodel/profile_view_model.dart';
@@ -42,7 +46,15 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           builder: EasyLoading.init(),
           debugShowCheckedModeBanner: false,
-          initialRoute: RoutesName.splash,
+          initialRoute: '/',
+          routes:
+          {
+            '/': (context) => SplashScreen(),
+            '/': (context) => HomePageWeb(),
+            '/ViewAll': (context) => ViewAll(),
+            '/Recommended' :(context)=>Recommended()
+
+          },
           onGenerateRoute: Routes.generateRoute,
         ));
   }

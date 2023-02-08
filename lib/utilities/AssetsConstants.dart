@@ -1,19 +1,25 @@
 class AssetsConstants {
-  static String ic_splashScreen = "assets/images/ic_splashScreen.png";
-  static String icLogo = "assets/images/app_logo.png";
-  static String icFashion = "assets/images/ic_fashion.png";
+  static String ic_splashScreen = "images/ic_splashScreen.png";
+  static String icLogo = "images/app_logo.png";
+  static String icFashion = "images/ic_fashion.png";
+  static String icSearch="images/ic_search.png";
+  static String icLogin="images/login.png";
+  static String icSignup="images/signup.png";
+  static String icplay="images/play.png";
+  static String icadd="images/add.png";
 
-  static String icEyeFill = "assets/images/ic_eyeFill.png";
-  static String ic_passwordHide = "assets/images/ic_passwordHide.png";
-  static String icError = "assets/images/ic_error.png";
-  static String icBack = "assets/images/ic_Back.png";
-  static String icGoogle = "assets/images/ic_google.png";
-  static String icFacebook = "assets/images/ic_facebook.png";
-  static String icApple = "assets/images/ic_apple.png";
 
-  static String icHome = "assets/images/ic_home.png";
-  static String icSelectHome = "assets/images/ic_select_home.png";
-  static String icCategory = "assets/images/ic_category.png";
+  static String icEyeFill = "images/ic_eyeFill.png";
+  static String ic_passwordHide = "images/ic_passwordHide.png";
+  static String icError = "images/ic_error.png";
+  static String icBack = "images/ic_Back.png";
+  static String icGoogle = "images/ic_google.png";
+  static String icFacebook = "images/ic_facebook.png";
+  static String icApple = "images/ic_apple.png";
+
+  static String icHome = "images/ic_home.png";
+  static String icSelectHome = "images/ic_select_home.png";
+  static String icCategory = "images/ic_category.png";
   static String icSelectCategory = "assets/images/ic_select_category.png";
   static String icForum = "assets/images/ic_forum.png";
   static String icSelectForum = "assets/images/ic_select_forum.png";

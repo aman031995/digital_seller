@@ -21,6 +21,7 @@ class AppTextField extends StatefulWidget {
   TextInputType? keyBoardType;
   int? maxLength;
   double? height;
+  double? width;
   bool? isEnable;
   bool? isColor;
   ValueChanged<String>? onChanged;
@@ -42,6 +43,7 @@ class AppTextField extends StatefulWidget {
       this.maxLength,
       this.isShowPassword,
       this.height,
+        this.width,
       this.isEnable,
       this.isColor,
       this.onChanged,
@@ -61,6 +63,7 @@ class _CustomTextFieldState extends State<AppTextField> {
     return Container(
       margin: EdgeInsets.only(left: 10, right: 10),
       height: widget.height,
+      width: widget.width,
       child: Theme(
         data: new ThemeData(
           primaryColor: THEME_COLOR,

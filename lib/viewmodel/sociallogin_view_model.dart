@@ -1,4 +1,8 @@
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -11,7 +15,6 @@ import 'package:tycho_streams/network/result.dart';
 import 'package:tycho_streams/repository/sociallogin_provider.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
-import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/screens/bottom_navigation.dart';
 import 'package:tycho_streams/view/widgets/social_login_update.dart';
 
@@ -21,7 +24,14 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
     'email',
   ],
 );
+final FirebaseAuth _auth = FirebaseAuth.instance;
+final GoogleSignIn googleSignIn = GoogleSignIn();
 
+String? uid;
+String? name;
+String? userEmail;
+String? imageUrl;
+String? accesstoken;
 class SocialLoginViewModel with ChangeNotifier {
   final _socialRepo = SocialLoginProvider();
 
@@ -29,7 +39,41 @@ class SocialLoginViewModel with ChangeNotifier {
   UserInfoModel? get userInfoModel => _userInfoModel;
 
   Future<void> handleSignOut() => _googleSignIn.disconnect();
+  Future<User?> signInWithGoogle(context) async {
+    await Firebase.initializeApp();
+    User? user;
+    if (kIsWeb) {
+      GoogleAuthProvider authProvider = GoogleAuthProvider();
 
+      try {
+        final UserCredential userCredential =
+        await _auth.signInWithPopup(authProvider);
+
+        user = userCredential.user;
+      } catch (e) {
+        print(e);
+      }
+    }
+
+    if (user != null) {
+      uid = user.uid;
+      name = user.displayName;
+      userEmail = user.email;
+      imageUrl = user.photoURL;
+      accesstoken=user.refreshToken;
+      socialLoginPressed(
+          context,
+          uid!,
+          accesstoken!,
+           "",
+          "google",
+          userEmail!,
+          name!);
+
+    }
+
+    return user;
+  }
   Future<void> loginWithGoogle(BuildContext context) async {
     try {
       await FirebaseMessaging.instance.getToken().then((value) {
@@ -37,12 +81,12 @@ class SocialLoginViewModel with ChangeNotifier {
           userData?.authentication.then((googleKey) async {
             socialLoginPressed(
                 context,
-                userData.id,
-                googleKey.accessToken!,
+                uid!,
+                accesstoken!,
                 value ?? "",
                 "google",
-                _googleSignIn.currentUser!.email,
-                _googleSignIn.currentUser!.displayName!);
+                userEmail!,
+                name!);
           }).catchError((err) {
             ToastMessage.message(err.toString());
             print('inner error');
@@ -110,9 +154,7 @@ class SocialLoginViewModel with ChangeNotifier {
   }
 
   updateSocialDetail(BuildContext context, SocialLoginViewModel socialVM,
-      String? userEmail, String? phone) async{
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? userId = sharedPreferences.getString('userId');
+      String? userEmail, String? phone, String? userId) async{
     _socialRepo.loginUpdate(userId!, userEmail!, phone!, context,
         (result, isSuccess) {
       AppIndicator.loadingIndicator();
@@ -140,10 +182,9 @@ class SocialLoginViewModel with ChangeNotifier {
       if (isSuccess) {
         AppIndicator.disposeIndicator();
         UserInfoModel? userInfoModel;
-        userInfoModel =
-            ((result as SuccessState).value as ASResponseModal).dataModal;
+        userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         if (userInfoModel!.firstTimeSocial == false) {
-          // AppDataManager.getInstance.updateUserDetails(userInfoModel);
+          AppDataManager.getInstance.updateUserDetails(userInfoModel);
           AppDataManager.setFirstTimeValue();
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)));

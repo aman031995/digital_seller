@@ -159,7 +159,7 @@ class _LoginUserUpdateState extends State<SocialLoginUpdate> {
 
   //---------Details verify to Register Home-----------
   updateButtonPressed(BuildContext context, SocialLoginViewModel socialVM, String? userEmail, String? phone) async {
-    socialVM.updateSocialDetail(context, socialVM, userEmail, phone);
+    socialVM.updateSocialDetail(context, socialVM, userEmail, phone, userId);
   }
 
 
