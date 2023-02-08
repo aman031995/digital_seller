@@ -12,7 +12,17 @@ import 'package:tycho_streams/viewmodel/sociallogin_view_model.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+      options: FirebaseOptions(
+        apiKey: "AIzaSyBaAbG2eNrQR2e1JmJcLj0N4QoKSv59Sb0",
+        authDomain: "tychostreams.firebaseapp.com",
+        storageBucket: "tychostreams.appspot.com",
+        projectId: "tychostreams",
+        messagingSenderId: "746850038788",
+        appId: "1:746850038788:web:0e231dc5e9ead255407151",
+      )
+
+  );
   runApp(const   MyApp());
 }
 

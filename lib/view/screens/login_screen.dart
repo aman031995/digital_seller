@@ -201,10 +201,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 isGoogle = false;
               }),
               SizedBox(width: 10),
-              Platform.isIOS ? socialNetworkButton(AssetsConstants.icApple, () {
-                // loginWithFB(context, fcmToken!);
-                // isGoogle = false;
-              }) : SizedBox(),
+              // Platform.isIOS ? socialNetworkButton(AssetsConstants.icApple, () {
+              //   // loginWithFB(context, fcmToken!);
+              //   // isGoogle = false;
+              // }) : SizedBox(),
             ],
           ),
         ],
