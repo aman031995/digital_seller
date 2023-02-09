@@ -7,20 +7,17 @@ class CustomTextStyle {
 
   // GILROY FONTS
 
-  static var textFormFieldGILROYBold = TextStyle(
-      fontSize: 16, fontFamily: "GilroyBold",);
+  static var textFormFieldInterBold = TextStyle(
+      fontSize: 16, fontFamily: "InterBold",);
 
-  static var textFormFieldGILROYLight = TextStyle(
-      fontSize: 16, fontFamily: " GilroyLight");
+  static var textFormFieldInterMedium = TextStyle(
+      fontSize: 16, fontFamily: "InterMedium",);
 
-  static var textFormFieldGILROYMedium = TextStyle(
-      fontSize: 16, fontFamily: "GilroyMedium",);
-
-  static var textFormFieldGILROYRegular = TextStyle(
-      fontSize: 16, fontFamily: "GilroyRegular");
+  static var textFormFieldInterRegular = TextStyle(
+      fontSize: 16, fontFamily: "InterRegular");
 
 
-  static var textFormFieldGILROYSemiBOLD = TextStyle(
-      fontSize: 16, fontFamily: "GilroySemiBold");
+  static var textFormFieldInterSemiBOLD = TextStyle(
+      fontSize: 16, fontFamily: "InterSemiBold");
 
 }

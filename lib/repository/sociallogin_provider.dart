@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/model/data/UserInfoModel.dart';
 import 'package:tycho_streams/network/ASRequestModal.dart';
 import 'package:tycho_streams/network/ASResponseModal.dart';
@@ -19,7 +18,7 @@ class SocialLoginProvider{
       "phone": phone
     };
     ASRequestModal requestModal = ASRequestModal.withInputParams(
-        inputParams, 'NetworkConstants.kUpdateSocial', RequestType.post,
+        inputParams, NetworkConstants.kSocialUpdate, RequestType.put,
         context: context, modalClass: "ABC");
     appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
       if (isSuccess) {
@@ -55,7 +54,7 @@ class SocialLoginProvider{
       "login_type": "",
       "deviceToken": deviceToken,
       "userEmail": userEmail,
-      "Name": userName,
+      "name": userName,
     };
     ASRequestModal requestModal = ASRequestModal.withInputParams(
       inputParams,

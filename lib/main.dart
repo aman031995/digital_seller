@@ -4,7 +4,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:tycho_streams/repository/subscription_provider.dart';
 import 'package:tycho_streams/utilities/route_service/routes.dart';
-import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';
 import 'package:tycho_streams/view/WebScreen/Recommended.dart';
 import 'package:tycho_streams/view/WebScreen/ViewAll.dart';
@@ -55,7 +54,6 @@ class MyApp extends StatelessWidget {
             '/Recommended' :(context)=>Recommended()
 
           },
-          onGenerateRoute: Routes.generateRoute,
         ));
   }
 }

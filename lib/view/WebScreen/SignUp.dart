@@ -34,7 +34,14 @@ class _SignUpState extends State<SignUp> {
       isName = false,
       isPassword = false,
       isValidate = false;
-
+  @override
+  void dispose() {
+    super.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    nameController.dispose();
+    passwordController.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -69,7 +76,7 @@ class _SignUpState extends State<SignUp> {
                     AppBoldFont(
                         msg: 'Get Started', color: BLACK_COLOR, fontSize: 30),
                     SizedBox(height: SizeConfig.screenHeight * .02),
-                    AppLightFont(
+                    AppRegularFont(
                         msg: "Lets register yourself to make profile.",
                         color: Colors.black,
                         fontSize: 18),
@@ -104,7 +111,7 @@ class _SignUpState extends State<SignUp> {
                               'Create Account',
                               SizeConfig.screenWidth / 4,
                               60.0,
-                              THEME_BUTTON,
+                              LIGHT_THEME_COLOR,
                               WHITE_COLOR,
                               18,
                               10,
@@ -128,7 +135,7 @@ class _SignUpState extends State<SignUp> {
                         AppRegularFont(
                             msg: 'Already have an account?', color: TEXT_COLOR),
                         appTextButton(context, 'Login', Alignment.bottomRight,
-                            THEME_BUTTON, 16, true, onPressed: () {
+                            Colors.red, 16, true, onPressed: () {
                               Navigator.pop(context);
                               showDialog(
                                   context: context,
@@ -262,15 +269,18 @@ class _SignUpState extends State<SignUp> {
 
   Widget socialLoginView(SocialLoginViewModel socialVM) {
     return Container(
+      width: SizeConfig.screenWidth / 4,
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: SizeConfig.screenWidth * 0.15,
-                child: Divider(
-                  color: BLACK_COLOR,
+              Expanded(
+                child: Container(
+                  width: SizeConfig.screenWidth * 0.15,
+                  child: Divider(
+                    color: BLACK_COLOR,
+                  ),
                 ),
               ),
               Padding(

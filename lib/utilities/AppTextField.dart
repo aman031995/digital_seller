@@ -82,11 +82,11 @@ class _CustomTextFieldState extends State<AppTextField> {
               LengthLimitingTextInputFormatter(widget.maxLength),
             ],
             controller: widget.controller,
-            style: TextStyle(color: TEXT_COLOR, fontSize: 18),
+            style: TextStyle(color: widget.isEnable == false ? GREY_COLOR : TEXT_COLOR, fontSize: 18),
             onSubmitted: widget.onSubmitted,
             decoration: new InputDecoration(
               errorText: widget.errorText,
-              errorStyle: CustomTextStyle.textFormFieldGILROYMedium
+              errorStyle: CustomTextStyle.textFormFieldInterMedium
                   .copyWith(color: RED_COLOR, fontSize: 12),
               errorMaxLines: 3,
               focusedErrorBorder: OutlineInputBorder(
@@ -125,19 +125,16 @@ class _CustomTextFieldState extends State<AppTextField> {
                         });
                       },
                     )
-                  : IconButton(
-                      icon: widget.isTick == false ? Container() : Container(),
-                      onPressed: () {},
-                    ),
+                  : null,
               labelText: widget.labelText,
-              contentPadding: EdgeInsets.only(left: 25.0, top: 15),
-              labelStyle: CustomTextStyle.textFormFieldGILROYMedium.copyWith(
+              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+              labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
                   color: widget.isColor == true
                       ? TEXT_COLOR
                       : TEXTFIELD_BORDER_COLOR,
                   fontSize: 17),
               prefixText: widget.prefixText,
-              suffixStyle: CustomTextStyle.textFormFieldGILROYMedium
+              suffixStyle: CustomTextStyle.textFormFieldInterMedium
                   .copyWith(color: TEXT_COLOR, fontSize: 17),
               prefixStyle: TextStyle(color: TEXT_COLOR, fontSize: 20),
             ),

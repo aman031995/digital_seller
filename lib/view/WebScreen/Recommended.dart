@@ -33,7 +33,7 @@ class _RecommendedState extends State<Recommended> {
                 SizedBox(width: SizeConfig.screenWidth*.02),
                 AppBoldFont(msg: 'Contact US', color: BLACK_COLOR, fontSize: 20),
                 Expanded(child: SizedBox(width: SizeConfig.screenWidth*.12)),
-                Image.asset(AssetsConstants.icSearch,height: 40),SizedBox(width: SizeConfig.screenWidth*.02),
+              //  Image.asset(AssetsConstants.icSearch,height: 40),SizedBox(width: SizeConfig.screenWidth*.02),
                 GestureDetector(
                     onTap: (){
                       showDialog(
@@ -44,7 +44,7 @@ class _RecommendedState extends State<Recommended> {
                             return SignUp();
                           });
                     },
-                    child: Image.asset(AssetsConstants.icSignup,height: 40)),SizedBox(width: SizeConfig.screenWidth*.01),
+                    child: Image.asset("AssetsConstants.icSignup",height: 40)),SizedBox(width: SizeConfig.screenWidth*.01),
                 GestureDetector(
                     onTap: (){
 
@@ -56,7 +56,7 @@ class _RecommendedState extends State<Recommended> {
                             return LoginUp();
                           });
                     },
-                    child: Image.asset(AssetsConstants.icLogin,height: 40)),SizedBox(width: SizeConfig.screenWidth*.02),
+                    child: Image.asset("AssetsConstants.icLogin",height: 40)),SizedBox(width: SizeConfig.screenWidth*.02),
               ],
             ),
           )
@@ -75,7 +75,8 @@ class _RecommendedState extends State<Recommended> {
                 )),
                 Positioned(
                     top:SizeConfig.screenHeight/3.5,left: SizeConfig.screenWidth*0.02,
-                    child: AppLightFont(msg: " Details about time and duration",fontSize: 18,color: Colors.white)),
+                    child: AppRegularFont(msg: " Details about time and duration",fontSize: 18,color: Colors.white)
+                ),
                 Positioned(
                     top:SizeConfig.screenHeight/3.2,left: SizeConfig.screenWidth*0.02,
 
@@ -96,7 +97,7 @@ class _RecommendedState extends State<Recommended> {
                   top:SizeConfig.screenHeight/2.8,left: SizeConfig.screenWidth*0.02,
                   child: Container(
                     width: SizeConfig.screenWidth*0.39,
-                    child: AppLightFont(
+                    child: AppRegularFont(
                        color: Colors.white,
                         msg: "Lorem Ipsum is simply dummy text of the printing and typesetting industryLorem Ipsum has been the industry's standard dummy text ever since the 1500s,when an unknown printer took a galley of type and scrambled it to make a typespecimen book"),
                   ),

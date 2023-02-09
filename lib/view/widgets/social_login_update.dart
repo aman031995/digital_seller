@@ -1,4 +1,4 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tycho_streams/bloc_validation/Bloc_Validation.dart';
@@ -31,7 +31,7 @@ class _LoginUserUpdateState extends State<SocialLoginUpdate> {
   @override
   void initState() {
     // TODO: implement initState
-    getFCMToken();
+   // getFCMToken();
     super.initState();
     userId = widget.userId!;
     popupEmailController!.text = widget.userEmail!;
@@ -39,11 +39,11 @@ class _LoginUserUpdateState extends State<SocialLoginUpdate> {
     setState(() {});
   }
 
-  void getFCMToken() {
-    FirebaseMessaging.instance.getToken().then((value) {
-      widget.token = value;
-    });
-  }
+  // void getFCMToken() {
+  //   FirebaseMessaging.instance.getToken().then((value) {
+  //     widget.token = value;
+  //   });
+  // }
 
   validateUpdateFields() {
     validation.sinkEmail.add(widget.userEmail!);
@@ -59,7 +59,7 @@ class _LoginUserUpdateState extends State<SocialLoginUpdate> {
       child: SingleChildScrollView(
         child: Container(
           color: LIGHT_THEME_BACKGROUND,
-          height: 310,
+          height: 350,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -87,7 +87,7 @@ class _LoginUserUpdateState extends State<SocialLoginUpdate> {
                           isShowCountryCode: true,
                           isShowPassword: false,
                           secureText: false,
-                          isEnable: popupEmailController?.text != '' ? false : true,
+                          isEnable: widget.userEmail != '' ? false : true,
                           isTick: isValidate,
                           keyBoardType: TextInputType.emailAddress,
                           maxLength: 50,
@@ -115,7 +115,7 @@ class _LoginUserUpdateState extends State<SocialLoginUpdate> {
                           secureText: false,
                           isTick: isValidate,
                           keyBoardType: TextInputType.phone,
-                          maxLength: 50,
+                          maxLength: 10,
                           errorText: snapshot.hasError
                               ? snapshot.error.toString()
                               : null,
@@ -139,12 +139,12 @@ class _LoginUserUpdateState extends State<SocialLoginUpdate> {
                               StringConstant.update,
                               SizeConfig.screenWidth! * 0.85,
                               60,
-                              THEME_BUTTON,
+                              THEME_COLOR,
                               BUTTON_TEXT_COLOR,
                               17,
                               10,
                               snapshot.data != true ? false : true, onTap: () {
-                            snapshot.data != true ? null : updateButtonPressed(context, socialVM, popupEmailController?.text, popupPhoneController?.text);
+                            snapshot.data != true ? null : updateButtonPressed(context, socialVM, popupEmailController?.text, popupPhoneController?.text, userId);
                           });
                         }),
                   ),
@@ -158,9 +158,7 @@ class _LoginUserUpdateState extends State<SocialLoginUpdate> {
   }
 
   //---------Details verify to Register Home-----------
-  updateButtonPressed(BuildContext context, SocialLoginViewModel socialVM, String? userEmail, String? phone) async {
+  updateButtonPressed(BuildContext context, SocialLoginViewModel socialVM, String? userEmail, String? phone, String? userId) async {
     socialVM.updateSocialDetail(context, socialVM, userEmail, phone, userId);
   }
-
-
 }

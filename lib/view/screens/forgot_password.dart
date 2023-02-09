@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:tycho_streams/bloc_validation/Bloc_Validation.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AppTextField.dart';
+import 'package:tycho_streams/utilities/AppToast.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
@@ -37,7 +39,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     final authVM = Provider.of<AuthViewModel>(context);
     return Scaffold(
         backgroundColor: LIGHT_THEME_BACKGROUND,
-        appBar: getAppBarWithBackBtn(''),
+        appBar: getAppBarWithBackBtn(title: '', isBackBtn: true, context: context),
         body: forgotPasswordSection(authVM));
   }
 
@@ -52,12 +54,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             children: [
               Container(
                   alignment: Alignment.topLeft,
-                  child: AppMediumFont(
+                  child: AppBoldFont(
                       msg: StringConstant.forgotPassword,
                       fontSize: 28,
                       color: TEXT_COLOR)),
               Container(
-                  width: SizeConfig.screenWidth! * 0.8,
+                  width: SizeConfig.screenWidth * 0.8,
                   margin: const EdgeInsets.only(
                     top: 6,
                     left: 20,
@@ -82,7 +84,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           secureText: false,
                           isColor: isPhone,
                           isTick: false,
-                          maxLength: 100,
+                          maxLength: 10,
                           errorText: snapshot.hasError
                               ? snapshot.error.toString()
                               : null,
@@ -104,15 +106,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       return appButton(
                           context,
                           StringConstant.send,
-                          SizeConfig.screenWidth! * 0.90,
+                          SizeConfig.screenWidth * 0.90,
                           60,
-                          THEME_BUTTON,
+                          LIGHT_THEME_COLOR,
                           BUTTON_TEXT_COLOR,
                           16,
                           10,
                           snapshot.data != true ? false : true, onTap: () {
                         snapshot.data != true
-                            ? null
+                            ? ToastMessage.message(StringConstant.fillOut)
                             : sendButtonPressed(authVM, phoneController!.text);
                       });
                     }),

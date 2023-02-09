@@ -10,7 +10,9 @@ import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/WebScreen/SignUp.dart';
+import 'package:tycho_streams/view/widgets/social_login_view.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
+import 'package:tycho_streams/viewmodel/sociallogin_view_model.dart';
 class LoginUp extends StatefulWidget {
   const LoginUp({Key? key}) : super(key: key);
 
@@ -34,6 +36,7 @@ class _LoginUpState extends State<LoginUp> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final authVM = Provider.of<AuthViewModel>(context);
+    final socialVM = Provider.of<SocialLoginViewModel>(context);
     return AlertDialog(
         elevation: 8,
         shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
@@ -43,7 +46,7 @@ class _LoginUpState extends State<LoginUp> {
               Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(20),bottomLeft: Radius.circular(20))),
-                height: SizeConfig.screenHeight! / 1.3,
+                height: SizeConfig.screenHeight / 1.3,
                 width: SizeConfig.screenWidth * 0.29,
                 child: Image.asset(
                   'images/LoginPageLogo.png',
@@ -52,16 +55,16 @@ class _LoginUpState extends State<LoginUp> {
               ),
               Container(
 
-                height: SizeConfig.screenHeight! / 1.3,
+                height: SizeConfig.screenHeight / 1.3,
                 decoration: BoxDecoration( color: Colors.white,
                     borderRadius: BorderRadius.only(topRight: Radius.circular(20),bottomRight: Radius.circular(20))),
                 width: SizeConfig.screenWidth * 0.36,
                 child: Column(
                   children: [
-                    SizedBox(height: SizeConfig.screenHeight! * .05),
+                    SizedBox(height: SizeConfig.screenHeight * .05),
                     AppBoldFont(msg: 'Login', color: BLACK_COLOR, fontSize: 30),
                     SizedBox(height: SizeConfig.screenHeight * .02),
-                    AppLightFont(
+                    AppRegularFont(
                         msg: "Enter your credentials to continue with us.",
                         color: Colors.black,
                         fontSize: 18),
@@ -97,7 +100,7 @@ class _LoginUpState extends State<LoginUp> {
                               'Login',
                               SizeConfig.screenWidth / 4,
                               60.0,
-                              THEME_BUTTON,
+                              LIGHT_THEME_COLOR,
                               WHITE_COLOR,
                               18,
                               10,
@@ -113,7 +116,7 @@ class _LoginUpState extends State<LoginUp> {
                           });
                         }),
                     SizedBox(height: SizeConfig.screenHeight * .03),
-                    socialLoginView(),
+                    socialLoginView(socialVM),
                     SizedBox(height: SizeConfig.screenHeight * .03),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -121,7 +124,7 @@ class _LoginUpState extends State<LoginUp> {
                         AppRegularFont(
                             msg: 'Already have an account?', color: TEXT_COLOR),
                         appTextButton(context, 'Create', Alignment.bottomRight,
-                            THEME_BUTTON, 16, true, onPressed: () {
+                         Colors.redAccent, 16, true, onPressed: () {
                           Navigator.pop(context);
                               showDialog(
                                   context: context,
@@ -201,53 +204,92 @@ class _LoginUpState extends State<LoginUp> {
     authVM.register(name, email, phone, password, context);
   }
 
-  socialLoginView() {
+  // socialLoginView() {
+  //   return Container(
+  //     width: SizeConfig.screenWidth / 4,
+  //     child: Column(
+  //       children: [
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: [
+  //             Container(
+  //               width: SizeConfig.screenWidth * 0.09,
+  //               child: Divider(
+  //                 color: BLACK_COLOR,
+  //               ),
+  //             ),
+  //             Padding(
+  //               padding: EdgeInsets.only(left: 10, right: 10),
+  //               child: AppMediumFont(
+  //                   msg: StringConstant.orContinueWith,
+  //                   color: TEXT_COLOR,
+  //                   fontSize: 14),
+  //             ),
+  //             Expanded(
+  //               child: Container(
+  //                 width: SizeConfig.screenWidth * 0.09,
+  //                 child: Divider(
+  //                   color: BLACK_COLOR,
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //         SizedBox(height: 20),
+  //         SocialLoginView(),
+  //         // Row(
+  //         //   mainAxisAlignment: MainAxisAlignment.center,
+  //         //   children: [
+  //         //     socialNetworkButton(AssetsConstants.icGoogle, () {
+  //         //       // isGoogle = true;
+  //         //       // loginWithGoogle(context, fcmToken!, true);
+  //         //     }),
+  //         //     SizedBox(width: 10),
+  //         //     socialNetworkButton(AssetsConstants.icFacebook, () {
+  //         //       // loginWithFB(context, fcmToken!);
+  //         //       // isGoogle = false;
+  //         //     }),
+  //         //     SizedBox(width: 10),
+  //         //   ],
+  //         // ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  Widget socialLoginView(SocialLoginViewModel socialVM) {
     return Container(
-      width: SizeConfig.screenWidth / 4,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          width: SizeConfig.screenWidth / 4,
+          child: Column(
             children: [
-              Container(
-                width: SizeConfig.screenWidth * 0.09,
-                child: Divider(
-                  color: BLACK_COLOR,
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: AppMediumFont(
-                    msg: StringConstant.orContinueWith,
-                    color: TEXT_COLOR,
-                    fontSize: 14),
-              ),
-              Expanded(
-                child: Container(
-                  width: SizeConfig.screenWidth * 0.09,
-                  child: Divider(
-                    color: BLACK_COLOR,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: SizeConfig.screenWidth * 0.09,
+                    child: Divider(
+                      color: BLACK_COLOR,
+                    ),
                   ),
-                ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10, right: 10),
+                    child: AppMediumFont(
+                        msg: StringConstant.orContinueWith,
+                        color: TEXT_COLOR,
+                        fontSize: 14),
+                  ),
+                  Expanded(
+                    child: Container(
+                      width: SizeConfig.screenWidth * 0.09,
+                      child: Divider(
+                        color: BLACK_COLOR,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ],
-          ),
           SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              socialNetworkButton(AssetsConstants.icGoogle, () {
-                // isGoogle = true;
-                // loginWithGoogle(context, fcmToken!, true);
-              }),
-              SizedBox(width: 10),
-              socialNetworkButton(AssetsConstants.icFacebook, () {
-                // loginWithFB(context, fcmToken!);
-                // isGoogle = false;
-              }),
-              SizedBox(width: 10),
-            ],
-          ),
+          SocialLoginView(socialLoginViewModel: socialVM)
         ],
       ),
     );

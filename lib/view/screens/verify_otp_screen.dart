@@ -10,7 +10,6 @@ import 'package:tycho_streams/utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/utilities/TextStyling.dart';
-import 'package:tycho_streams/utilities/Validator.dart';
 import 'package:tycho_streams/view/widgets/AppNavigationBar.dart';
 import 'package:tycho_streams/view/widgets/PinEntryTextFiled.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
@@ -46,6 +45,16 @@ class _VerifyOtpState extends State<VerifyOtp> {
 
   void initState() {
     super.initState();
+    startTimer();
+  }
+
+  void dispose() {
+    timer?.cancel();
+    otpValue = '';
+    super.dispose();
+  }
+
+  startTimer() {
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       if (secondsRemaining != 0) {
         setState(() {
@@ -59,12 +68,6 @@ class _VerifyOtpState extends State<VerifyOtp> {
     });
   }
 
-  void dispose() {
-    timer?.cancel();
-    otpValue = '';
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -74,7 +77,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
       otpValue!.length == 4 ? isOTPInput = true : isOTPInput = false;
     }
     return Scaffold(
-        appBar: getAppBarWithBackBtn(''),
+        appBar: getAppBarWithBackBtn(title: '', isBackBtn: true, context: context),
         backgroundColor: LIGHT_THEME_BACKGROUND, body: verificationSection(authVM));
   }
 
@@ -88,20 +91,20 @@ class _VerifyOtpState extends State<VerifyOtp> {
               Container(
                   alignment: Alignment.topLeft,
                   child: AppBoldFont(
-                      msg: 'Verify OTP', fontSize: 26, color: TEXT_COLOR)),
+                      msg: 'Code verification', fontSize: 26, color: TEXT_COLOR)),
               SizedBox(height: 5),
               headerTextWidget(),
               SizedBox(height: 10),
               Container(
                 height: 100,
-                width: SizeConfig.screenWidth! - 50,
+                width: SizeConfig.screenWidth - 50,
                 child: PinEntryTextFiledView(),
               ),
               SizedBox(height: 10),
               isOTPInput == true ? Container() : errorText(),
               SizedBox(height: 10),
-              appButton(context, 'Verify', 300, 60.0, THEME_BUTTON,
-                  BUTTON_TEXT_COLOR, 16, 10.0, isOTPInput, onTap: () {
+              appButton(context, 'Verify', 280, 60.0, LIGHT_THEME_COLOR,
+                  BUTTON_TEXT_COLOR, 16, 5.0, isOTPInput, onTap: () {
                 checkVerificationValidate(authVM);
               }),
               SizedBox(height: 10),
@@ -141,7 +144,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
         child: AppMediumFont(
             textAlign: TextAlign.left,
             msg:
-                'Please check your email we have sent\n you a 4-digit code to verify.',
+                'Please check your phone we have sent\n you a 4-digit code to verify.',
             color: TEXT_COLOR,
             fontSize: 14,
             maxLines: 2));
@@ -150,7 +153,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
   TextSpan headerText(String text, double fontSize) {
     return TextSpan(
       text: text,
-      style: CustomTextStyle.textFormFieldGILROYMedium
+      style: CustomTextStyle.textFormFieldInterMedium
           .copyWith(color: BLACK_COLOR, fontSize: fontSize),
     );
   }
@@ -167,31 +170,31 @@ class _VerifyOtpState extends State<VerifyOtp> {
                       text: TextSpan(children: [
                     TextSpan(
                         text: 'Resend OTP ',
-                        style: CustomTextStyle.textFormFieldGILROYBold
+                        style: CustomTextStyle.textFormFieldInterRegular
                             .copyWith(color: THEME_COLOR, fontSize: 16)),
                     TextSpan(
                         text: 'in ',
-                        style: CustomTextStyle.textFormFieldGILROYRegular
+                        style: CustomTextStyle.textFormFieldInterRegular
                             .copyWith(color: TEXT_COLOR, fontSize: 16)),
                     TextSpan(
                         text: '00:$secondsRemaining',
-                        style: CustomTextStyle.textFormFieldGILROYMedium
+                        style: CustomTextStyle.textFormFieldInterMedium
                             .copyWith(color: BLACK_COLOR, fontSize: 16)),
                     TextSpan(
                         text: " seconds",
-                        style: CustomTextStyle.textFormFieldGILROYRegular
+                        style: CustomTextStyle.textFormFieldInterRegular
                             .copyWith(color: TEXT_COLOR, fontSize: 16))
                   ])))
               : Text(""),
           enableResend == true
               ? Container(
-                  width: SizeConfig.screenWidth!,
+                  width: SizeConfig.screenWidth,
                   alignment: Alignment.center,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       AppMediumFont(
-                          msg: 'Resend Otp', color: TEXT_COLOR, fontSize: 16),
+                          msg: 'Resend Otp', color: BLACK_COLOR, fontSize: 16),
                       TextButton(
                         child: AppBoldFont(
                             msg: 'Resend' + ' >',
@@ -214,7 +217,12 @@ class _VerifyOtpState extends State<VerifyOtp> {
   }
 
   _resendCode(AuthViewModel authVM) {
-    authVM.resendOtp(widget.mobileNo!, context);
+    authVM.resendOtp(widget.mobileNo!, context, (result, isSuccess) {
+      if (isSuccess) {
+        enableResend = false;
+        startTimer();
+      }
+    });
   }
 
   checkVerificationValidate(AuthViewModel authVM) async {

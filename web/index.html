@@ -40,6 +40,25 @@
   <script src="flutter.js" defer></script>
 </head>
 <body>
+<script type="module">
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+  import { getAuth } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js'
+  import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js'
+  import { getMessaging } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-messaging.js";
+
+
+var firebaseConfig = {
+  apiKey: "AIzaSyBaAbG2eNrQR2e1JmJcLj0N4QoKSv59Sb0",
+  authDomain: "tychostreams.firebaseapp.com",
+  projectId: "tychostreams",
+  storageBucket: "tychostreams.appspot.com",
+  messagingSenderId: "746850038788",
+  appId: "1:746850038788:web:0e231dc5e9ead255407151",
+  measurementId: "G-2Q4LD5W403"
+};
+
+</script>
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
@@ -54,23 +73,6 @@
       });
     });
   </script>
-  <script type="module">
 
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
-  import { getAuth } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js'
-  import { getFirestore } from 'https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js'
-
-
-var firebaseConfig = {
-  apiKey: "AIzaSyBaAbG2eNrQR2e1JmJcLj0N4QoKSv59Sb0",
-  authDomain: "tychostreams.firebaseapp.com",
-  projectId: "tychostreams",
-  storageBucket: "tychostreams.appspot.com",
-  messagingSenderId: "746850038788",
-  appId: "1:746850038788:web:0e231dc5e9ead255407151",
-  measurementId: "G-2Q4LD5W403"
-};
-
-</script>
 </body>
 </html>

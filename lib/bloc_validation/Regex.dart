@@ -25,8 +25,7 @@ class Regex {
   }
 
   static bool isPassword(String password) {
-    String value = "";
-    // String value = r'(^[a-z0-9A-Z@!#$%^&*?]*$)';
+    String value = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
     RegExp regExp = RegExp(value);
     return regExp.hasMatch(password);
   }

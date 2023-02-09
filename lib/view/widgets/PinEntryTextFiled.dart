@@ -25,10 +25,10 @@ class PinPutViewState extends State<PinPutView> {
     width: 65,
     height: 55,
     textStyle: const TextStyle(
-        fontSize: 20.0, color: BLACK_COLOR, fontFamily: 'GilroyBold'),
+        fontSize: 20.0, color: TEXT_BLACK_COLOR, fontFamily: 'GilroyBold'),
     decoration: BoxDecoration(
-      border: Border.all(color: APP_TEXT_LIGHT_COLOR, width: 2),
-      borderRadius: BorderRadius.circular(30),
+      border: Border.all(color: LIGHT_THEME_COLOR, width: 2),
+      borderRadius: BorderRadius.circular(5),
     ),
   );
 
@@ -70,8 +70,8 @@ class PinPutViewState extends State<PinPutView> {
   Widget boxedPinPutWithPreFilledSymbol(BuildContext context) {
     final BoxDecoration pinPutDecoration = BoxDecoration(
       color: WHITE_COLOR,
-      border: Border.all(color: TEXTFIELD_BORDER_COLOR, width: 2),
-      borderRadius: BorderRadius.circular(30.0),
+      border: Border.all(color: THEME_COLOR, width: 2),
+      borderRadius: BorderRadius.circular(5.0),
     );
     return Container(
       padding: EdgeInsets.only(left: 20.0, right: 20.0),
@@ -80,8 +80,8 @@ class PinPutViewState extends State<PinPutView> {
         length: 4,
         defaultPinTheme: defaultPinTheme,
         focusedPinTheme: defaultPinTheme.copyDecorationWith(
-          border: Border.all(color: GREEN_COLOR, width: 2),
-          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: BLACK_COLOR, width: 2),
+          borderRadius: BorderRadius.circular(5),
         ),
         onSubmitted: (String pin) {
           otpValue = pin;

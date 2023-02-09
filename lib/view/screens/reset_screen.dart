@@ -4,7 +4,9 @@ import 'package:tycho_streams/bloc_validation/Bloc_Validation.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AppTextField.dart';
+import 'package:tycho_streams/utilities/AppToast.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
+import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/widgets/AppNavigationBar.dart';
@@ -25,12 +27,19 @@ class _ResetPasswordState extends State<ResetPassword> {
   bool isPassword2 = false, isPassword = false, isValidate = false;
 
   @override
+  void dispose() {
+    super.dispose();
+    newPasswordController.dispose();
+    confirmPasswordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final authVM = Provider.of<AuthViewModel>(context);
     return Scaffold(
       backgroundColor: LIGHT_THEME_BACKGROUND,
-      appBar: getAppBarWithBackBtn(''),
+      appBar: getAppBarWithBackBtn(title: '', isBackBtn: true, context: context),
       body: SafeArea(
         child: Column(
           children: [
@@ -97,16 +106,16 @@ class _ResetPasswordState extends State<ResetPassword> {
                 builder: (context, snapshot) {
                   return appButton(
                       context,
-                      'Login',
-                      SizeConfig.screenWidth! * 0.93,
+                      'Reset',
+                      SizeConfig.screenWidth * 0.9,
                       60.0,
-                      THEME_BUTTON,
+                      LIGHT_THEME_COLOR,
                       WHITE_COLOR,
                       18,
                       10,
                       snapshot.data != true ? false : true, onTap: () {
                     snapshot.data != true
-                        ? null
+                        ? ToastMessage.message(StringConstant.fillOut)
                         : resetBtnPressed(authVM, newPasswordController.text,
                             confirmPasswordController.text);
                   });

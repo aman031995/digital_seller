@@ -56,7 +56,7 @@ class ValidationBloc {
   Stream<bool> get registerUser => Rx.combineLatest4(firstName, email, phoneNo, password, (a, b, c, d) => true);
   Stream<bool> get checkUserInfoValidate => Rx.combineLatest2(email, phoneNo, (a, b) => true);
   Stream<bool> get submitValid => Rx.combineLatest2(emailAndMobile, password, (e, p) => true);
-  Stream<bool> get validateUserEditProfile => Rx.combineLatest3(firstName, phoneNo, address, (a, b, c) => true);
+  Stream<bool> get validateUserEditProfile => Rx.combineLatest2(firstName, phoneNo, (a, b) => true);
 
   final validateFullName =
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
@@ -164,12 +164,12 @@ class ValidationBloc {
 
   final validatePassword =
       StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
-    if (value.length >= 6 && value.length != 0) {
+    if (value.length >= 8 && value.length != 0) {
       Regex.isPassword(value)
           ? sink.add(value)
-          : sink.addError('Password must be at least 6 characters long.');
-    } else if (value.length < 6 && value.length > 0) {
-      sink.addError('Password must be at least 6 characters long.');
+          : sink.addError('Password should be combination of one uppercase , one lower case, one special char, min 8 digit.');
+    } else if (value.length < 8 && value.length > 0) {
+      sink.addError('Password should be combination of one uppercase , one lower case, one special char, min 8 digit.');
     }
   });
 

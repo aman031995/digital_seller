@@ -1,18 +1,21 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tycho_streams/bloc_validation/Bloc_Validation.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AppTextField.dart';
-import 'package:tycho_streams/utilities/AssetsConstants.dart';
+import 'package:tycho_streams/utilities/AppToast.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
+import 'package:tycho_streams/view/screens/login_screen.dart';
+import 'package:tycho_streams/view/widgets/AppNavigationBar.dart';
+import 'package:tycho_streams/view/widgets/social_login_view.dart';
 import 'package:tycho_streams/view/widgets/terms_condition.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
+import 'package:tycho_streams/viewmodel/sociallogin_view_model.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -34,11 +37,39 @@ class _RegisterScreenState extends State<RegisterScreen> {
       isValidate = false;
 
   @override
+  void dispose() {
+    super.dispose();
+    phoneController.dispose();
+    emailController.dispose();
+    nameController.dispose();
+    passwordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final authVM = Provider.of<AuthViewModel>(context);
+    final socialVM = Provider.of<SocialLoginViewModel>(context);
     return Scaffold(
+      appBar: getAppBarWithBackBtn(title: '',isBackBtn: true, context: context),
       backgroundColor: LIGHT_THEME_BACKGROUND,
+      bottomNavigationBar: Container(
+        height: 40,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AppRegularFont(
+                msg: 'Already have an account?', color: TEXT_COLOR),
+            appTextButton(context, 'Login', Alignment.bottomRight,
+                THEME_COLOR, 16, true, onPressed: () {
+                  // Navigator.pushNamedAndRemoveUntil(context, RoutesName.login, (route) => false);
+                  // Navigator.push(context,
+                  //     MaterialPageRoute(builder: (_) => LoginScreen()));
+                      GoRouter.of(context).pushNamed(RoutesName.login);
+                }),
+          ],
+        ),
+      ),
       body: SafeArea(
           child: SingleChildScrollView(
         child: Column(
@@ -67,15 +98,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   return appButton(
                       context,
                       'Create Account',
-                      SizeConfig.screenWidth! * 0.93,
+                      SizeConfig.screenWidth * 0.9,
                       60.0,
-                      THEME_BUTTON,
+                      LIGHT_THEME_COLOR,
                       WHITE_COLOR,
                       18,
                       10,
                       snapshot.data != true ? false : true, onTap: () {
                     snapshot.data != true
-                        ? null
+                        ? ToastMessage.message(StringConstant.fillOut)
                         : registerButtonPressed(
                             authVM,
                             nameController.text,
@@ -85,19 +116,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   });
                 }),
             SizedBox(height: 20),
-            socialLoginView(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AppRegularFont(
-                    msg: 'Already have an account?', color: TEXT_COLOR),
-                appTextButton(context, 'Login', Alignment.bottomRight,
-                    THEME_BUTTON, 16, true, onPressed: () {
-                  Navigator.pushNamed(context, RoutesName.login);
-                }),
-              ],
-            ),
-            SizedBox(height: 30),
+            socialLoginView(socialVM),
           ],
         ),
       )),
@@ -206,17 +225,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
         const SizedBox(height: 15),
         Container(
             alignment: Alignment.topLeft,
-            child: termsAndCondition(context, SizeConfig.screenWidth!)),
+            child: TermsConditionAgreement(width: SizeConfig.screenWidth)),
       ],
     );
   }
 
   registerButtonPressed(AuthViewModel authVM, String name, String email,
       String phone, String password) {
-    authVM.register(name, email, phone, password, context);
+    authVM.register(name, phone, email, password, context);
   }
 
-  Widget socialLoginView() {
+  Widget socialLoginView(SocialLoginViewModel socialVM) {
     return Container(
       child: Column(
         children: [
@@ -245,25 +264,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             ],
           ),
           SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              socialNetworkButton(AssetsConstants.icGoogle, () {
-                // isGoogle = true;
-                // loginWithGoogle(context, fcmToken!, true);
-              }),
-              SizedBox(width: 10),
-              socialNetworkButton(AssetsConstants.icFacebook, () {
-                // loginWithFB(context, fcmToken!);
-                // isGoogle = false;
-              }),
-              SizedBox(width: 10),
-              // Platform.isIOS ? socialNetworkButton(AssetsConstants.icApple, () {
-              //   // loginWithFB(context, fcmToken!);
-              //   // isGoogle = false;
-              // }) : SizedBox(),
-            ],
-          ),
+          SocialLoginView(socialLoginViewModel: socialVM)
         ],
       ),
     );

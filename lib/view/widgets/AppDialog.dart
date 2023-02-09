@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
+import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -39,7 +40,7 @@ class AppDialog {
                 height: 35,
                 color: DIVIDER_COLOR,
               ),
-              dialogueButton(StringConstant.settings, LIGHT_GREEN_COLOR, onTap: () {
+              dialogueButton(StringConstant.settings, THEME_COLOR, onTap: () {
                 openAppSettings();
               })
             ],
@@ -83,6 +84,45 @@ class AppDialog {
       ],
     );
     showDialog(context: context, builder: (BuildContext context) {return alert;});
+  }
+
+  static deleteDialogue(BuildContext context, {VoidCallback? onTap}) {
+    Stack(
+      children: [
+        alert = AlertDialog(
+          backgroundColor: LIGHT_THEME_BACKGROUND,
+          title: AppBoldFont(msg: StringConstant.deleteAccountTitle, fontSize: 22,color: TEXT_COLOR,textAlign: TextAlign.center),
+          titlePadding: EdgeInsets.only(left: 20,right: 20,top: 10),
+          content: AppRegularFont(msg: StringConstant.deleteAccountMessage, fontSize: 14,color: TEXT_COLOR,textAlign: TextAlign.center,maxLines: 2),
+          contentPadding: EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 15),
+          actions: [
+            Container(
+              width: SizeConfig.screenWidth! * 0.8,
+              padding: EdgeInsets.all(8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  cancelButton(35, 110, StringConstant.cancel, () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  }),
+                  SizedBox(
+                    width: 14,
+                  ),
+                  confirmButton(35, 110, StringConstant.confirm, onTap!),
+                ],
+              ),
+            )
+          ],
+        ),
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
 
@@ -147,11 +187,11 @@ confirmButton(double height, double width, String msg, VoidCallback callback) {
       height: height,
       width: width,
       decoration: BoxDecoration(
-        color: LIGHT_GREEN_COLOR,
+        color: THEME_COLOR,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Center(
-        child: AppRegularFont(msg: msg, color: APP_TEXT_COLOR),
+        child: AppRegularFont(msg: msg, color: WHITE_COLOR),
       ),
     ),
   );
@@ -173,3 +213,19 @@ cancelButton(double height, double width, String msg, VoidCallback callback) {
   );
 }
 
+
+Widget textButton(BuildContext context, String title,
+    {VoidCallback? onApply}) {
+  return GestureDetector(
+    onTap: onApply,
+    child: Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        color: WHITE_COLOR,
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      // decoration: buttonDecoration,
+      child: AppBoldFont(msg: title, fontSize: 14, color: TEXT_COLOR),
+    ),
+  );
+}

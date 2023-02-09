@@ -49,7 +49,7 @@ class AppDataManager {
   saveUserDetailsInCache(UserInfoModel userInfoModel) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("userId", userInfoModel.userId.toString());
-    if (userInfoModel.loginToken != null) {
+    if (userInfoModel.loginToken != '') {
       sharedPreferences.setString("token", userInfoModel.loginToken ?? '');
     }
     sharedPreferences.setString("name", userInfoModel.name ?? '');

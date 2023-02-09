@@ -97,12 +97,12 @@ class _BottomNavigationState extends State<BottomNavigation> {
           selectedLabelStyle: _currentPageIndex == 0 ||
               _currentPageIndex == 1 ||
               _currentPageIndex == 2
-              ? CustomTextStyle.textFormFieldGILROYMedium
+              ? CustomTextStyle.textFormFieldInterMedium
               .copyWith(color: BUTTON_ONCLICK_COLOR, fontSize: 15)
-              : CustomTextStyle.textFormFieldGILROYMedium
+              : CustomTextStyle.textFormFieldInterMedium
               .copyWith(color: BLACK_COLOR, fontSize: 15),
           type: BottomNavigationBarType.fixed,
-          fixedColor: TEXT_COLOR,
+          fixedColor: THEME_COLOR,
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:provider/provider.dart';
 import 'package:tycho_streams/repository/subscription_provider.dart';
+import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:process_run/shell.dart';
@@ -61,7 +62,7 @@ class _SubscriptionPageState extends State<SubscriptionPage> {
       ));
     }
     return Scaffold(
-      backgroundColor: const Color(0xff0D141D),
+      backgroundColor: LIGHT_THEME_BACKGROUND,
       body: SafeArea(
         child: Stack(
           children: stack,

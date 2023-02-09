@@ -1,7 +1,6 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -40,7 +39,6 @@ class SocialLoginViewModel with ChangeNotifier {
 
   Future<void> handleSignOut() => _googleSignIn.disconnect();
   Future<User?> signInWithGoogle(context) async {
-    await Firebase.initializeApp();
     User? user;
     if (kIsWeb) {
       GoogleAuthProvider authProvider = GoogleAuthProvider();
@@ -65,7 +63,7 @@ class SocialLoginViewModel with ChangeNotifier {
           context,
           uid!,
           accesstoken!,
-           "",
+          "",
           "google",
           userEmail!,
           name!);
@@ -74,98 +72,102 @@ class SocialLoginViewModel with ChangeNotifier {
 
     return user;
   }
+
+
   Future<void> loginWithGoogle(BuildContext context) async {
-    try {
-      await FirebaseMessaging.instance.getToken().then((value) {
-        _googleSignIn.signIn().then((userData) async {
-          userData?.authentication.then((googleKey) async {
-            socialLoginPressed(
-                context,
-                uid!,
-                accesstoken!,
-                value ?? "",
-                "google",
-                userEmail!,
-                name!);
-          }).catchError((err) {
-            ToastMessage.message(err.toString());
-            print('inner error');
-          });
-        }).catchError((err) {
-          ToastMessage.message(err.toString());
-          print('error occurred');
-        });
-      });
-    } catch (error) {
-      ToastMessage.message(error.toString());
-      print(error);
-    }
+    // try {
+    //   await FirebaseMessaging.instance.getToken().then((value) {
+    //     _googleSignIn.signIn().then((userData) async {
+    //       userData?.authentication.then((googleKey) async {
+    //         socialLoginPressed(
+    //             context,
+    //             uid!,
+    //             accesstoken!,
+    //             value ?? "",
+    //             "google",
+    //             userEmail!,
+    //             name!);
+    //       }).catchError((err) {
+    //         ToastMessage.message(err.toString());
+    //         print('inner error');
+    //       });
+    //     }).catchError((err) {
+    //       ToastMessage.message(err.toString());
+    //       print('error occurred');
+    //     });
+    //   });
+    // } catch (error) {
+    //   ToastMessage.message(error.toString());
+    //   print(error);
+    // }
   }
 
 // for facebook login
   Future<void> loginWithFB(BuildContext context) async {
     AccessToken? _accessToken;
-    await FirebaseMessaging.instance.getToken().then((value) {
-      FacebookAuth.instance.logOut();
-      FacebookAuth.instance.login().then((result) async {
-        if (result.status == LoginStatus.success) {
-          _accessToken = result.accessToken;
-          final userData = await FacebookAuth.instance.getUserData();
-          socialLoginPressed(
-            context,
-            _accessToken!.userId,
-            _accessToken!.token,
-            value ?? "",
-            "facebook",
-            userData['email'] ?? '',
-            userData['name'],
-          );
-        } else {
-          ToastMessage.message(result.message);
-          print(result.status);
-          print(result.message);
-        }
-      });
-    });
+    // await FirebaseMessaging.instance.getToken().then((value) {
+    //   FacebookAuth.instance.logOut();
+    //   FacebookAuth.instance.login().then((result) async {
+    //     if (result.status == LoginStatus.success) {
+    //       _accessToken = result.accessToken;
+    //       final userData = await FacebookAuth.instance.getUserData();
+    //       socialLoginPressed(
+    //         context,
+    //         _accessToken!.userId,
+    //         _accessToken!.token,
+    //         value ?? "",
+    //         "facebook",
+    //         userData['email'] ?? '',
+    //         userData['name'],
+    //       );
+    //     } else {
+    //       ToastMessage.message(result.message);
+    //       print(result.status);
+    //       print(result.message);
+    //     }
+    //   });
+    // });
   }
 
   Future<void> loginWithApple(BuildContext context) async {
-    await FirebaseMessaging.instance.getToken().then((value) async {
-      final credential = await SignInWithApple.getAppleIDCredential(scopes: [
-        AppleIDAuthorizationScopes.email,
-        AppleIDAuthorizationScopes.fullName
-      ]);
-      var lastName =
-          credential.familyName != null ? (" " + credential.familyName!) : "";
-      if (credential.email == null) {
-        socialLoginPressed(context, credential.userIdentifier!,
-            credential.identityToken!, value ?? "", "apple", '', '');
-      } else {
-        socialLoginPressed(
-            context,
-            credential.userIdentifier ?? "",
-            credential.identityToken ?? "",
-            value ?? "",
-            "apple",
-            credential.email!,
-            credential.givenName ?? "" + lastName);
-      }
-    });
+    // await FirebaseMessaging.instance.getToken().then((value) async {
+    //   final credential = await SignInWithApple.getAppleIDCredential(scopes: [
+    //     AppleIDAuthorizationScopes.email,
+    //     AppleIDAuthorizationScopes.fullName
+    //   ]);
+    //   var lastName =
+    //       credential.familyName != null ? (" " + credential.familyName!) : "";
+    //   if (credential.email == null) {
+    //     socialLoginPressed(context, credential.userIdentifier!,
+    //         credential.identityToken!, value ?? "", "apple", '', '');
+    //   } else {
+    //     socialLoginPressed(
+    //         context,
+    //         credential.userIdentifier ?? "",
+    //         credential.identityToken ?? "",
+    //         value ?? "",
+    //         "apple",
+    //         credential.email!,
+    //         credential.givenName ?? "" + lastName);
+    //   }
+    // });
   }
+
 
   updateSocialDetail(BuildContext context, SocialLoginViewModel socialVM,
       String? userEmail, String? phone, String? userId) async{
     _socialRepo.loginUpdate(userId!, userEmail!, phone!, context,
-        (result, isSuccess) {
-      AppIndicator.loadingIndicator();
-      if (isSuccess) {
-        AppIndicator.disposeIndicator();
-        _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-        AppDataManager.getInstance.updateUserDetails(userInfoModel!);
-        AppDataManager.setFirstTimeValue();
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)));
-      }
-    });
+            (result, isSuccess) {
+          AppIndicator.loadingIndicator();
+          if (isSuccess) {
+            AppIndicator.disposeIndicator();
+            _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+            AppDataManager.getInstance.updateUserDetails(userInfoModel!);
+            AppDataManager.setFirstTimeValue();
+            Navigator.pushNamed(context,  '/');
+           // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)));
+          }
+        });
   }
 
   socialLoginPressed(
@@ -179,51 +181,53 @@ class SocialLoginViewModel with ChangeNotifier {
     AppIndicator.loadingIndicator();
     _socialRepo.loginWithSocialMedia(socialID, accessToken, provider,
         deviceToken, userEmail, userName, context, (result, isSuccess) {
-      if (isSuccess) {
-        AppIndicator.disposeIndicator();
-        UserInfoModel? userInfoModel;
-        userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-        if (userInfoModel!.firstTimeSocial == false) {
-          AppDataManager.getInstance.updateUserDetails(userInfoModel);
-          AppDataManager.setFirstTimeValue();
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)));
-          notifyListeners();
-        } else {
-          if (provider == "google") {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) => SocialLoginUpdate(
-                    userEmail: userInfoModel?.email,
-                    userId: userInfoModel?.userId.toString()));
-          } else if (provider == "facebook") {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) => SocialLoginUpdate(
-                    userEmail: userInfoModel?.email,
-                    userId: userInfoModel!.userId.toString()));
-          } else if (provider == "apple") {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) => SocialLoginUpdate(
+          if (isSuccess) {
+            AppIndicator.disposeIndicator();
+            UserInfoModel? userInfoModel;
+            userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+            if (userInfoModel!.firstTimeSocial == false) {
+              AppDataManager.getInstance.updateUserDetails(userInfoModel);
+              AppDataManager.setFirstTimeValue();
+              Navigator.pushNamed(context,  '/');
+              // GoRouter.of(context).pushReplacementNamed(RoutesName.bottomNavigation);
+              // Navigator.pushReplacement(context,
+              //     MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)));
+              notifyListeners();
+            } else {
+              if (provider == "google") {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) => SocialLoginUpdate(
+                        userEmail: userInfoModel?.email,
+                        userId: userInfoModel?.userId.toString()));
+              } else if (provider == "facebook") {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) => SocialLoginUpdate(
+                        userEmail: userInfoModel?.email,
+                        userId: userInfoModel!.userId.toString()));
+              } else if (provider == "apple") {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) => SocialLoginUpdate(
                       userEmail: userEmail,
                       userId: userInfoModel!.userId.toString(),
                     ));
+              }
+            }
+            notifyListeners();
+          } else {
+            var response = (result as SuccessState).value;
+            // if (provider == "apple" && userEmail == '') {
+            //   successDialog(context, StringConstant.appleAlertTitle,
+            //       response["message"], false, onOkayTap: () {
+            //     Navigator.pop(context, true);
+            //   });
+            // } else {
+            ToastMessage.message(response['message']);
+            notifyListeners();
+            // }
           }
-        }
-        notifyListeners();
-      } else {
-        var response = (result as SuccessState).value;
-        // if (provider == "apple" && userEmail == '') {
-        //   successDialog(context, StringConstant.appleAlertTitle,
-        //       response["message"], false, onOkayTap: () {
-        //     Navigator.pop(context, true);
-        //   });
-        // } else {
-        ToastMessage.message(response['message']);
-        notifyListeners();
-        // }
-      }
-    });
+        });
   }
 }

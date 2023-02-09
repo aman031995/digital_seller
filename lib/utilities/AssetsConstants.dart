@@ -8,7 +8,6 @@ class AssetsConstants {
   static String icplay="images/play.png";
   static String icadd="images/add.png";
 
-
   static String icEyeFill = "images/ic_eyeFill.png";
   static String ic_passwordHide = "images/ic_passwordHide.png";
   static String icError = "images/ic_error.png";
@@ -17,22 +16,23 @@ class AssetsConstants {
   static String icFacebook = "images/ic_facebook.png";
   static String icApple = "images/ic_apple.png";
 
+
   static String icHome = "images/ic_home.png";
   static String icSelectHome = "images/ic_select_home.png";
   static String icCategory = "images/ic_category.png";
-  static String icSelectCategory = "assets/images/ic_select_category.png";
-  static String icForum = "assets/images/ic_forum.png";
-  static String icSelectForum = "assets/images/ic_select_forum.png";
-  static String icProfile = "assets/images/ic_profile.png";
-  static String icSelectProfile = "assets/images/ic_select_profile.png";
+  static String icSelectCategory = "images/ic_select_category.png";
+  static String icForum = "images/ic_forum.png";
+  static String icSelectForum = "images/ic_select_forum.png";
+  static String icProfile = "images/ic_profile.png";
+  static String icSelectProfile = "images/ic_select_profile.png";
 
-  static String icEditProfile = "assets/images/ic_editprofile.png";
-  static String icSettings = "assets/images/ic_settings.png";
-  static String icDeleteAccount = "assets/images/ic_delete.png";
-  static String icPrivacyPolicy = "assets/images/ic_privacypolicy.png";
-  static String icTermsCondition = "assets/images/ic_termscondition.png";
-  static String icLogout = "assets/images/ic_logout.png";
-  static String icAddImage = "assets/images/ic_icAdd.png";
+  static String icEditProfile = "images/ic_editprofile.png";
+  static String icSettings = "images/ic_settings.png";
+  static String icDeleteAccount = "images/ic_delete.png";
+  static String icPrivacyPolicy = "images/ic_privacypolicy.png";
+  static String icTermsCondition = "images/ic_termscondition.png";
+  static String icLogout = "images/ic_logout.png";
+  static String icAddImage = "images/ic_icAdd.png";
 
   // Added B Aman Singh -------------------------
   static String icNotification = "assets/images/ic_notificationIcon.png";
@@ -40,9 +40,12 @@ class AssetsConstants {
   static String icFamily = "assets/images/ic_Family.png";
   static String icTalkShow = "assets/images/feAudioPlayer2.png";
   static String icTravel = "assets/images/ic_Travel.png";
-  static String icSports = "assets/images/ic_Sports.png";
-  static String icAdventure = "assets/images/ic_Adventure.png";
-  static String icKids = "assets/images/ic_kids.png";
-  static String icDrama = "assets/images/ic_dramaMask.png";
+  static String icSports = "images/ic_Sports.png";
+  static String icAdventure = "images/ic_Adventure.png";
+  static String icKids = "images/ic_kids.png";
+  static String icDrama = "images/ic_dramaMask.png";
+  static String icFrontArrow = "images/ic_ForwordArrow.png";
+  static String icNextArrow = "images/ic_next_arrow.png";
+  static String icBackArrow = "images/ic_BackArrow.png";
 
 }

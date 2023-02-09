@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tycho_streams/Utilities/AssetsConstants.dart';
 
 import 'AppColor.dart';
 import 'TextHelper.dart';
@@ -28,18 +29,26 @@ Widget appButton(
       margin: EdgeInsets.only(bottom: 5),
       height: _height,
       decoration: BoxDecoration(
-        color: isSelected == true ? Colors.green : bgColor,
+        color: isSelected == true ? THEME_COLOR : bgColor,
         borderRadius: BorderRadius.all(
-          Radius.circular(12.0),
+          Radius.circular(5.0),
         ),
       ),
       child: TextButton(
         onPressed: onTap,
-        child: AppBoldFont(
-            msg: title,
-            color: isSelected == true ? Colors.white : textColor,
-            fontSize: fontSize,
-            textAlign: TextAlign.center),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            AppBoldFont(
+                msg: title,
+                color: isSelected == true ? Colors.white : textColor,
+                fontSize: fontSize,
+                textAlign: TextAlign.center),
+            SizedBox(width: 5,),
+            Image.asset("images/ic_ForwordArrow.png", width: 15, height: 15,),
+          ],
+        ),
       ),
     ),
   );

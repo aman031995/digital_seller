@@ -9,12 +9,16 @@ import 'package:tycho_streams/network/result.dart';
 class AuthRepository {
   Future<Result>? register(
       String phone,
+      String email,
       BuildContext context,
       NetworkResponseHandler responseHandler) {
     AppNetwork appNetwork = AppNetwork();
-    var inputParams = {"phone": phone};
+    var inputParams = {
+      "phone": phone,
+      "email": email,
+    };
     ASRequestModal requestModal = ASRequestModal.withInputParams(
-        inputParams, NetworkConstants.kRegister, RequestType.post,
+        inputParams, NetworkConstants.kCheckUserAlreadyRegister, RequestType.post,
         context: context, modalClass: "ABC");
     appNetwork.getNetworkResponse(requestModal,context, (result, isSuccess) {
       if (isSuccess) {

@@ -1,9 +1,12 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
+import 'package:tycho_streams/utilities/three_arched_circle.dart';
+import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 
 class CommonCarousel extends StatefulWidget with ChangeNotifier {
   CommonCarousel({Key? key}) : super(key: key);
@@ -15,29 +18,41 @@ class CommonCarousel extends StatefulWidget with ChangeNotifier {
 class _CommonCarouselState extends State<CommonCarousel> {
   final CarouselController carouselController = CarouselController();
   FocusNode carouselFocus = FocusNode();
-  FocusNode focus = FocusNode();
   TextEditingController? editingController = TextEditingController();
   int current = 0;
+  final HomeViewModel homeViewModel = HomeViewModel();
 
-  final List<String> images = [
-    'assets/images/carousel2.png',
-    'assets/images/carousel2.png',
-    'assets/images/carousel2.png',
-    'assets/images/carousel2.png',
-    'assets/images/carousel2.png',
-  ];
+  @override
+  void initState() {
+    // TODO: implement initState
+    homeViewModel.getBannerLists(context);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          homePageTopBar(),
-          carouselImages(),
-        ],
-      ),
-    );
+    final homePageVM = Provider.of<HomeViewModel>(context);
+    return ChangeNotifierProvider<HomeViewModel>(
+        create: (BuildContext context) => homeViewModel,
+        child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
+          return SingleChildScrollView(
+            child: Column(
+              children: [
+                homePageTopBar(),
+                homeViewModel.bannerDataModal != null
+                    ? carouselImages()
+                    : Container(
+                        height: SizeConfig.screenHeight * 0.3,
+                        child: Center(
+                          child: ThreeArchedCircle(color: THEME_COLOR, size: 50.0)
+                        ),
+                      ),
+              ],
+            ),
+          );
+        }));
+    ;
   }
 
   Widget homePageTopBar() {
@@ -48,30 +63,30 @@ class _CommonCarouselState extends State<CommonCarousel> {
         children: [
           Image.asset(AssetsConstants.icLogo, height: 50, width: 50),
           Container(
-              height: 50,
-              width: SizeConfig.screenWidth! * 0.65,
-              margin: EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 5),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.transparent, width: 2.0),
-              ),
-              child: new TextField(
-                  maxLines: editingController!.text.length > 2 ? 2 : 1,
-                  controller: editingController,
-                  decoration: new InputDecoration(
-                      hintText: StringConstant.search,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      hintStyle: TextStyle(color: GREY_COLOR)),
-                  onChanged: (m) {},
-                ),
-              ),
+            height: 50,
+            width: SizeConfig.screenWidth! * 0.65,
+            margin: EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 5),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.transparent, width: 2.0),
+            ),
+            child: new TextField(
+              maxLines: editingController!.text.length > 2 ? 2 : 1,
+              controller: editingController,
+              decoration: new InputDecoration(
+                  hintText: StringConstant.search,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  hintStyle: TextStyle(color: GREY_COLOR)),
+              onChanged: (m) {},
+            ),
+          ),
           Container(
               height: 50,
               width: 50,
               decoration: BoxDecoration(
-                color: BOX_COLOR,
+                color: THEME_COLOR,
                 borderRadius: BorderRadius.circular(10.0),
               ),
               child: Image.asset(
@@ -86,42 +101,44 @@ class _CommonCarouselState extends State<CommonCarousel> {
 
   Widget carouselImages() {
     var imageSliders = generateImageTiles(context);
-    return Column(
-      children: [
-        Container(
-          height: 200,
-          margin: const EdgeInsets.only(top: 15, left: 10, right: 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: CarouselSlider(
-            items: imageSliders,
-            options: CarouselOptions(
-                scrollDirection: Axis.horizontal,
-                scrollPhysics: PageScrollPhysics(),
-                viewportFraction: 1,
-                enlargeCenterPage: true,
-                autoPlay: true,
-                autoPlayInterval: Duration(seconds: 10),
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    current = index;
-                  });
-                }),
-            carouselController: carouselController,
-          ),
-        ),
-        SizedBox(
-          height: 5,
-        ),
-        Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: _buildIndicator(),
-          ),
-        ),
-      ],
-    );
+    return Container(
+        height: SizeConfig.screenHeight * 0.25,
+        width: SizeConfig.screenWidth,
+        margin: EdgeInsets.only(left: 5.0),
+        padding: EdgeInsets.only(left: 15.0),
+        child: Stack(
+          children: [
+            CarouselSlider(
+              items: imageSliders,
+              options: CarouselOptions(
+                  scrollDirection: Axis.horizontal,
+                  scrollPhysics: PageScrollPhysics(),
+                  // viewportFraction: 1,
+                  enlargeCenterPage: true,
+                  autoPlay: true,
+                  autoPlayInterval: Duration(seconds: 5),
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      current = index;
+                    });
+                  }),
+              carouselController: carouselController,
+            ),
+            Positioned(
+              left: 160,
+              bottom: 5,
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _buildIndicator(),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+          ],
+        ));
   }
 
   Widget _indicator(bool isActive) {
@@ -131,7 +148,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
       width: 12,
       margin: EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
-          color: isActive == true ? THEME_BUTTON : GREY_COLOR,
+          color: isActive == true ? THEME_COLOR : GREY_COLOR,
           borderRadius: BorderRadius.circular(5)),
     );
   }
@@ -149,26 +166,32 @@ class _CommonCarouselState extends State<CommonCarousel> {
   }
 
   getCarouselIndicator() {
-    if (images.length <= 6) {
-      return images.length;
+    if (homeViewModel.bannerDataModal!.bannerList!.length < 5) {
+      return homeViewModel.bannerDataModal!.bannerList!.length;
     } else {
       return 6;
     }
   }
 
   List<Widget> generateImageTiles(BuildContext context) {
-    return images
+    return homeViewModel.bannerDataModal!.bannerList!
         .map((element) => InkWell(
             focusNode: carouselFocus,
             onTap: () {
               print(current);
             },
             child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+                image: DecorationImage(
+                  image: NetworkImage(element.bannerFile ?? ""),
+                  fit: BoxFit.fill,
+                  alignment: Alignment.topCenter,
                 ),
-                child: Image.asset(element,
-                    fit: BoxFit.fill, height: SizeConfig.screenHeight))))
+              ),
+              // child: Image.network(element.bannerFile ?? "",
+              //     fit: BoxFit.fill, height: SizeConfig.screenHeight)
+            )))
         .toList();
   }
 }

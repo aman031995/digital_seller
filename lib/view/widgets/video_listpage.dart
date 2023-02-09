@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tycho_streams/model/data/data_sample.dart';
-import 'package:tycho_streams/repository/subscription_provider.dart';
+import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
-import 'package:tycho_streams/view/screens/ViewAllListPages.dart';
-import 'package:tycho_streams/view/screens/subscription_page.dart';
+import 'package:tycho_streams/utilities/three_arched_circle.dart';
+import 'package:tycho_streams/view/screens/MovieListCommonWidget.dart';
+import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 
 class VideoListPage extends StatefulWidget {
-  const VideoListPage({Key? key}) : super(key: key);
+  bool? isDetail;
+
+  VideoListPage({Key? key, this.isDetail}) : super(key: key);
 
   @override
   State<VideoListPage> createState() => _VideoListPageState();
@@ -15,120 +17,79 @@ class VideoListPage extends StatefulWidget {
 
 class _VideoListPageState extends State<VideoListPage> {
   ScrollController scrollController = ScrollController();
-  bool isTopTen = false;
+  final HomeViewModel homeView = HomeViewModel();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    // if (widget.isDetail == true) {
+    //   TrayDataModel? trayData;
+    //   trayData = null;
+    //   homeView.getHomePageData(context, trayData);
+    // } else {
+      homeView.getTrayData(context,widget.isDetail);
+    // }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final subscriptionVM = Provider.of<SubscriptionProvider>(context);
-    return SingleChildScrollView(
-      controller: scrollController,
-      child: Column(
-        children: [
-          contentWidget(
-            title: ' Trending',
-            videoList: ListView(
-              scrollDirection: Axis.horizontal,
-              children: myList(subscriptionVM, false),
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          contentWidget(
-            title: ' Top 10',
-            isTopTen: true,
-            videoList: ListView(
-              scrollDirection: Axis.horizontal,
-              children: myList(subscriptionVM, true),
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          contentWidget(
-            title: ' Watching',
-            videoList: ListView(
-              scrollDirection: Axis.horizontal,
-              children: myList(subscriptionVM, false),
-            ),
-          ),
-        ],
-      ),
-    );
+    final subscriptionVM = Provider.of<HomeViewModel>(context);
+    return ChangeNotifierProvider<HomeViewModel>(
+        create: (BuildContext context) => homeView,
+        child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
+          return homeViewModel.homePageDataModel != null
+              ? Container(
+                  height: (SizeConfig.screenHeight *
+                      0.185 *
+                      trayHeight(homeViewModel)),
+                  width: SizeConfig.screenWidth,
+                  margin: EdgeInsets.only(left: 15),
+                  child: ListView.builder(
+                      itemCount: homeViewModel.trayDataModel?.length ?? homeViewModel.homePageDataModel?.videoList?.length,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) {
+                        return getTrayType(homeViewModel)
+                            ? Container(
+                                child: MovieListCommonWidget(
+                                  trayId: homeViewModel.trayDataModel?[index].trayId,
+                                trayIdentifier: homeViewModel.trayDataModel?[index].trayIdentifier,
+                                trayTitle: homeViewModel.trayDataModel?[index].trayTitle,
+                                isButtom: true,
+                                isSubtitle: homeViewModel.trayDataModel![index].trayTitle!.contains("Fan Favourite")
+                                    ? true
+                                    : false,
+                                platformMovieData: homeViewModel
+                                    .trayDataModel?[index]
+                                    .platformData(),
+                              ))
+                            : ThreeArchedCircle(color: THEME_COLOR, size: 45.0);
+                      }),
+                )
+              : Center(
+                  child: Container(),
+                );
+        }));
   }
 
-  contentWidget({String? title, Widget? videoList, bool? isTopTen}) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.only(left: 15, top: 12, right: 15),
-          alignment: Alignment.topLeft,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                '$title',
-                style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold),
-              ),
-              GestureDetector(
-                onTap: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => ViewAllListPages(
-                          moviesList: [],
-                        ),
-                      ));
-                },
-                child: Text(
-                  'See All',
-                  style: const TextStyle(fontSize: 12, color: Colors.black),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            margin: EdgeInsets.only(left: 15, top: 5),
-            height: isTopTen == true
-                ? SizeConfig.screenHeight! * 0.15
-                : SizeConfig.screenHeight! * 0.25,
-            child: videoList),
-      ],
-    );
+  getTrayType(HomeViewModel homeViewModel){
+    if(widget.isDetail == true){
+      return homeViewModel.homePageDataModel?.videoList?.isNotEmpty;
+    }else{
+      return homeViewModel.trayDataModel?.isNotEmpty;
+    }
   }
 
-  myList(SubscriptionProvider subscriptionVM, bool isTopTen) {
-    return marvelAction.entries.map((element) {
-      return InkWell(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => SubscriptionPage(),
-              ));
-        },
-        child: Container(
-          width: isTopTen == true
-              ? SizeConfig.screenHeight! * 0.22
-              : SizeConfig.screenHeight! * 0.18,
-          height: SizeConfig.screenHeight! * 0.25,
-          child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: Image.network(element.key, fit: BoxFit.fill))),
-        ),
-      );
-    }).toList();
+  int trayHeight(HomeViewModel homeViewModel) {
+    int count = 0;
+    homeViewModel.trayDataModel?.forEach((element) {
+      if (element.platformData() != null) {
+        if (element.platformData()!.content!.isNotEmpty) {
+          count += 1;
+        }
+      }
+    });
+    return count;
   }
 }

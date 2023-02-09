@@ -1,16 +1,19 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tycho_streams/bloc_validation/Bloc_Validation.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AppTextField.dart';
+import 'package:tycho_streams/utilities/AppToast.dart';
 import 'package:tycho_streams/utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
+import 'package:tycho_streams/view/screens/forgot_password.dart';
+import 'package:tycho_streams/view/screens/register_screen.dart';
+import 'package:tycho_streams/view/widgets/social_login_view.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 import 'package:tycho_streams/viewmodel/sociallogin_view_model.dart';
 
@@ -28,11 +31,35 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isPhone = false, isPassword = false, isValidate = false;
 
   @override
+  void dispose() {
+    super.dispose();
+    phoneController.dispose();
+    passwordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final authVM = Provider.of<AuthViewModel>(context);
     final socialVM = Provider.of<SocialLoginViewModel>(context);
     return Scaffold(
+      bottomNavigationBar: Container(
+        height: 40,
+        margin: EdgeInsets.only(bottom: 10),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AppRegularFont(
+                msg: "Don't have an account?", color: TEXT_BLACK_COLOR),
+            appTextButton(context, 'Create', Alignment.bottomCenter,
+                THEME_COLOR, 16, true, onPressed: () {
+                  // Navigator.pushNamedAndRemoveUntil(context, RoutesName.register, (route) => false);
+                  // Navigator.push(context, MaterialPageRoute(builder: (_) => RegisterScreen()));
+                  GoRouter.of(context).pushNamed(RoutesName.register);
+                }),
+          ],
+        ),
+      ),
       backgroundColor: LIGHT_THEME_BACKGROUND,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -98,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         onSubmitted: (m) {});
                   }),
-              SizedBox(height: 15),
+              // SizedBox(height: 15),
               Container(
                 margin: EdgeInsets.only(left: 10, right: 15),
                 child: appTextButton(
@@ -108,7 +135,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     TEXT_BLACK_COLOR,
                     16,
                     true, onPressed: () {
-                  Navigator.pushNamed(context, RoutesName.forgot);
+                  // Navigator.push(context, MaterialPageRoute(builder: (_) => ForgotPassword()));
+                  GoRouter.of(context).pushNamed(RoutesName.forgot);
                 }),
               ),
               SizedBox(height: 20),
@@ -118,33 +146,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     return appButton(
                         context,
                         'Login',
-                        SizeConfig.screenWidth! * 0.93,
+                        SizeConfig.screenWidth * 0.9,
                         60.0,
-                        THEME_BUTTON,
+                        LIGHT_THEME_COLOR,
                         WHITE_COLOR,
                         18,
                         10,
                         snapshot.data != true ? false : true, onTap: () {
                       snapshot.data != true
-                          ? null
+                          ? ToastMessage.message(StringConstant.fillOut)
                           : loginButtonPressed(authVM, phoneController.text,
                               passwordController.text);
                     });
                   }),
-              SizedBox(height: 20),
+              SizedBox(height: 30),
               socialLoginView(socialVM),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  AppRegularFont(
-                      msg: 'Dont have an account?', color: TEXT_BLACK_COLOR),
-                  appTextButton(context, 'Create', Alignment.bottomRight,
-                      THEME_BUTTON, 16, true, onPressed: () {
-                    Navigator.pushNamed(context, RoutesName.register);
-                  }),
-                ],
-              ),
-              // SizedBox(height: 30),
             ],
           ),
         ),
@@ -165,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                width: SizeConfig.screenWidth! * 0.15,
+                width: SizeConfig.screenWidth * 0.15,
                 child: Divider(
                   color: BLACK_COLOR,
                 ),
@@ -178,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     fontSize: 14),
               ),
               Container(
-                width: SizeConfig.screenWidth! * 0.15,
+                width: SizeConfig.screenWidth * 0.15,
                 child: Divider(
                   color: BLACK_COLOR,
                 ),
@@ -186,27 +202,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
           SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              socialNetworkButton(AssetsConstants.icGoogle, () {
-                isGoogle = true;
-                socialVM.loginWithGoogle(context);
-                // loginWithGoogle(context, fcmToken!, true);
-              }),
-              SizedBox(width: 10),
-              socialNetworkButton(AssetsConstants.icFacebook, () {
-                socialVM.loginWithFB(context);
-                // loginWithFB(context, fcmToken!);
-                isGoogle = false;
-              }),
-              SizedBox(width: 10),
-              // Platform.isIOS ? socialNetworkButton(AssetsConstants.icApple, () {
-              //   // loginWithFB(context, fcmToken!);
-              //   // isGoogle = false;
-              // }) : SizedBox(),
-            ],
-          ),
+          SocialLoginView(socialLoginViewModel: socialVM)
         ],
       ),
     );

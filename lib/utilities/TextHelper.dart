@@ -1,35 +1,26 @@
 import 'package:flutter/material.dart';
 import 'TextStyling.dart';
 
+
 Text AppBoldFont(
     {@required String? msg,
     double? fontSize,
+        FontWeight? fontWeight,
     int? maxLines,
     TextAlign? textAlign,
     Color? color}) {
   return Text(msg!,
       maxLines: maxLines,
       textAlign: textAlign,
-      style: CustomTextStyle.textFormFieldGILROYBold
-          .copyWith(color: color, fontSize: fontSize));
+      style: CustomTextStyle.textFormFieldInterBold
+          .copyWith(color: color, fontSize: fontSize, fontWeight: fontWeight));
 }
 
-Text AppLightFont(
-    {@required String? msg,
-    double? fontSize,
-    int? maxLines,
-    TextAlign? textAlign,
-    Color? color}) {
-  return Text(msg!,
-      maxLines: maxLines,
-      textAlign: textAlign,
-      style: CustomTextStyle.textFormFieldGILROYLight
-          .copyWith(color: color, fontSize: fontSize));
-}
 
 Text AppMediumFont(
     {@required String? msg,
     double? fontSize,
+        FontWeight? fontWeight,
     int? maxLines,
     TextAlign? textAlign,
     Color? color,
@@ -38,13 +29,14 @@ Text AppMediumFont(
       maxLines: maxLines,
       textAlign: textAlign,
       overflow: overflowBar,
-      style: CustomTextStyle.textFormFieldGILROYMedium
-          .copyWith(color: color, fontSize: fontSize));
+      style: CustomTextStyle.textFormFieldInterMedium
+          .copyWith(color: color, fontSize: fontSize, fontWeight: fontWeight));
 }
 
 Text AppRegularFont(
     {@required String? msg,
     double? fontSize,
+        FontWeight? fontWeight,
     int? maxLines,
     TextAlign? textAlign,
     TextOverflow? overflowBar,
@@ -53,13 +45,14 @@ Text AppRegularFont(
       overflow: overflowBar,
       maxLines: maxLines,
       textAlign: textAlign,
-      style: CustomTextStyle.textFormFieldGILROYRegular
-          .copyWith(color: color, fontSize: fontSize));
+      style: CustomTextStyle.textFormFieldInterRegular
+          .copyWith(color: color, fontSize: fontSize, fontWeight: fontWeight));
 }
 
 Text AppSemiBoldFont(
     {@required String? msg,
     double? fontSize,
+        FontWeight? fontWeight,
     int? maxLines,
     TextAlign? textAlign,
     Color? color,
@@ -67,7 +60,7 @@ Text AppSemiBoldFont(
   return Text(msg!,
       maxLines: maxLines,
       textAlign: textAlign,
-      style: CustomTextStyle.textFormFieldGILROYSemiBOLD
-          .copyWith(color: color, fontSize: fontSize),
+      style: CustomTextStyle.textFormFieldInterSemiBOLD
+          .copyWith(color: color, fontSize: fontSize, fontWeight: fontWeight,),
       overflow: overflowBar);
 }
