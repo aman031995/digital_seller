@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tycho_streams/model/data/TermsPrivacyModel.dart';
 import 'package:tycho_streams/model/data/UserInfoModel.dart';
 import 'package:tycho_streams/network/ASResponseModal.dart';
@@ -77,7 +76,7 @@ class ProfileViewModel with ChangeNotifier {
         AppDataManager.getInstance.updateUserDetails(userInfoModel!);
         ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)));
-        GoRouter.of(context).pushReplacementNamed(RoutesName.bottomNavigation);
+       // GoRouter.of(context).pushReplacementNamed(RoutesName.bottomNavigation);
         notifyListeners();
       }
     });

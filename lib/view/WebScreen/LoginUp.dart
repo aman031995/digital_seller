@@ -4,6 +4,7 @@ import 'package:tycho_streams/bloc_validation/Bloc_Validation.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AppTextField.dart';
+import 'package:tycho_streams/utilities/AppToast.dart';
 import 'package:tycho_streams/utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
@@ -92,8 +93,9 @@ class _LoginUpState extends State<LoginUp> {
                       ),
                     ),
                     SizedBox(height: SizeConfig.screenHeight * .03),
+
                     StreamBuilder(
-                        stream: validation.registerUser,
+                        stream:validation.checkUserLogin,
                         builder: (context, snapshot) {
                           return appButton(
                               context,
@@ -106,12 +108,8 @@ class _LoginUpState extends State<LoginUp> {
                               10,
                               snapshot.data != true ? false : true, onTap: () {
                             snapshot.data != true
-                                ? null
-                                : registerButtonPressed(
-                                authVM,
-                                nameController.text,
-                                emailController.text,
-                                phoneController.text,
+                                ? ToastMessage.message(StringConstant.fillOut)
+                                : loginButtonPressed(authVM, phoneController.text,
                                 passwordController.text);
                           });
                         }),
@@ -147,40 +145,63 @@ class _LoginUpState extends State<LoginUp> {
       children: [
         SizedBox(height: SizeConfig.screenHeight * .03),
         StreamBuilder(
-            stream: validation.email,
+            stream: validation.phoneNo,
             builder: (context, snapshot) {
               return AppTextField(
                   maxLine: null,
-                  prefixText: '',
-                  width: SizeConfig.screenWidth / 4,
-                  controller: emailController,
-                  labelText: 'Email',
+                  prefixText: '',    width: SizeConfig.screenWidth / 4,
+                  controller: phoneController,
+                  labelText: 'Phone Number',
                   isShowCountryCode: true,
                   isShowPassword: false,
                   secureText: false,
-                  isColor: isEmail,
+                  isColor: false,
                   isTick: false,
-                  maxLength: 100,
+                  maxLength: 10,
                   errorText:
                   snapshot.hasError ? snapshot.error.toString() : null,
                   onChanged: (m) {
-                    validation.sinkEmail.add(m);
-                    isEmail = true;
+                    validation.sinkPhoneNo.add(m);
+                    isPhone = true;
                     setState(() {});
                   },
-                  keyBoardType: TextInputType.emailAddress,
+                  keyBoardType: TextInputType.phone,
                   onSubmitted: (m) {});
             }),
+        // StreamBuilder(
+        //     stream: validation.email,
+        //     builder: (context, snapshot) {
+        //       return AppTextField(
+        //           maxLine: null,
+        //           prefixText: '',
+        //
+        //           controller: emailController,
+        //           labelText: 'Email',
+        //           isShowCountryCode: true,
+        //           isShowPassword: false,
+        //           secureText: false,
+        //           isColor: isEmail,
+        //           isTick: false,
+        //           maxLength: 100,
+        //           errorText:
+        //           snapshot.hasError ? snapshot.error.toString() : null,
+        //           onChanged: (m) {
+        //             validation.sinkEmail.add(m);
+        //             isEmail = true;
+        //             setState(() {});
+        //           },
+        //           keyBoardType: TextInputType.emailAddress,
+        //           onSubmitted: (m) {});
+        //     }),
         SizedBox(height: SizeConfig.screenHeight * .03),
         StreamBuilder(
             stream: validation.password,
             builder: (context, snapshot) {
               return AppTextField(
                   maxLine: 1,
-                  width: SizeConfig.screenWidth / 4,
                   controller: passwordController,
                   labelText: 'Password',
-                  prefixText: '',
+                  prefixText: '',    width: SizeConfig.screenWidth / 4,
                   isShowPassword: true,
                   isTick: true,
                   isColor: isPassword,
@@ -194,15 +215,39 @@ class _LoginUpState extends State<LoginUp> {
                   },
                   onSubmitted: (m) {});
             }),
+        // StreamBuilder(
+        //     stream: validation.password,
+        //     builder: (context, snapshot) {
+        //       return AppTextField(
+        //           maxLine: 1,
+        //           width: SizeConfig.screenWidth / 4,
+        //           controller: passwordController,
+        //           labelText: 'Password',
+        //           prefixText: '',
+        //           isShowPassword: true,
+        //           isTick: true,
+        //           isColor: isPassword,
+        //           keyBoardType: TextInputType.visiblePassword,
+        //           errorText:
+        //           snapshot.hasError ? snapshot.error.toString() : null,
+        //           onChanged: (m) {
+        //             validation.sinkPassword.add(m);
+        //             isPassword = true;
+        //             setState(() {});
+        //           },
+        //           onSubmitted: (m) {});
+        //     }),
         const SizedBox(height: 15),
       ],
     );
   }
-
-  registerButtonPressed(AuthViewModel authVM, String name, String email,
-      String phone, String password) {
-    authVM.register(name, email, phone, password, context);
+  loginButtonPressed(AuthViewModel authVM, String phone, String password) {
+    authVM.login(phone, password, context);
   }
+  // registerButtonPressed(AuthViewModel authVM, String name, String email,
+  //     String phone, String password) {
+  //   authVM.register(name, email, phone, password, context);
+  // }
 
   // socialLoginView() {
   //   return Container(

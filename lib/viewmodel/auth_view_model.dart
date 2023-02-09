@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:tycho_streams/model/data/UserInfoModel.dart';
 import 'package:tycho_streams/network/ASResponseModal.dart';
 import 'package:tycho_streams/network/AppDataManager.dart';
@@ -9,6 +8,7 @@ import 'package:tycho_streams/repository/auth_repository.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/screens/bottom_navigation.dart';
+import 'package:tycho_streams/view/screens/reset_screen.dart';
 import 'package:tycho_streams/view/screens/verify_otp_screen.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 
@@ -27,7 +27,8 @@ class AuthViewModel with ChangeNotifier {
         AppDataManager.getInstance.updateUserDetails(userInfoModel!);
         print('Login api Successfully');
         AppIndicator.disposeIndicator();
-        GoRouter.of(context).pushReplacementNamed(RoutesName.bottomNavigation);
+        Navigator.pushNamed(context, '/');
+        // GoRouter.of(context).pushReplacementNamed(RoutesName.bottomNavigation);
         // Navigator.pushReplacement(context,
         //     MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)));
         notifyListeners();
@@ -41,12 +42,6 @@ class AuthViewModel with ChangeNotifier {
     _authRepo.register(phone, email, context, (result, isSuccess) {
       if (isSuccess) {
         AppIndicator.disposeIndicator();
-        // GoRouter.of(context).pushNamed(RoutesName.verifyOtp, params: {
-        //   'phone': phone,
-        //   'name': name,
-        //   'email': email,
-        //   'password': password,
-        // });
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -66,12 +61,12 @@ class AuthViewModel with ChangeNotifier {
     _authRepo.verifyOTP(phone, otp, context, (result, isSuccess) {
       if (isSuccess) {
         AppIndicator.disposeIndicator();
-        _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-        AppDataManager.getInstance.updateUserDetails(userInfoModel!);
-        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+        ToastMessage.message(
+            ((result as SuccessState).value as ASResponseModal).message);
         print('otp verified Successfully');
         if (isForgotPW == true) {
-          GoRouter.of(context).pushNamed(RoutesName.reset_password, params: {'phone' : phone});
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (_) => ResetPassword(phone: phone)));
         } else {
           registerUser(context, name, phone, password, email);
         }
@@ -79,6 +74,26 @@ class AuthViewModel with ChangeNotifier {
       }
     });
   }
+  // Future<void> verifyOTP(BuildContext context, String phone, String otp,
+  //     {bool? isForgotPW, String? name, String? email, String? password}) async {
+  //   AppIndicator.loadingIndicator();
+  //   _authRepo.verifyOTP(phone, otp, context, (result, isSuccess) {
+  //     if (isSuccess) {
+  //       AppIndicator.disposeIndicator();
+  //       _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+  //       AppDataManager.getInstance.updateUserDetails(userInfoModel!);
+  //       ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+  //       print('otp verified Successfully');
+  //       if (isForgotPW == true) {
+  //         Navigator.pushNamed(context, '/');
+  //        // GoRouter.of(context).pushNamed(RoutesName.reset_password, params: {'phone' : phone});
+  //       } else {
+  //         registerUser(context, name, phone, password, email);
+  //       }
+  //       notifyListeners();
+  //     }
+  //   });
+  // }
 
   registerUser(BuildContext context, String? name, String? phone,
       String? password, String? email) {
@@ -91,7 +106,8 @@ class AuthViewModel with ChangeNotifier {
         ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
         print('Register api Successfully');
         AppIndicator.disposeIndicator();
-        GoRouter.of(context).pushReplacementNamed(RoutesName.bottomNavigation);
+        Navigator.pushNamed(context, '/');
+       // GoRouter.of(context).pushReplacementNamed(RoutesName.bottomNavigation);
         // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)));
         notifyListeners();
       }
@@ -138,7 +154,8 @@ class AuthViewModel with ChangeNotifier {
         print('forgot password api Successfully');
         ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
         AppIndicator.disposeIndicator();
-        GoRouter.of(context).pushReplacementNamed(RoutesName.login);
+        // GoRouter.of(context).pushReplacementNamed(RoutesName.login);
+        //
         notifyListeners();
       }
     });

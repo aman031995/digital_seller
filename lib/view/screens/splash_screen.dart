@@ -39,9 +39,9 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var isPhone = sharedPreferences.getString('phone');
     if (isPhone != null) {
-      GoRouter.of(context).pushReplacementNamed(RoutesName.bottomNavigation);
+     // GoRouter.of(context).pushReplacementNamed(RoutesName.bottomNavigation);
     } else {
-      GoRouter.of(context).pushReplacementNamed(RoutesName.login);
+     // GoRouter.of(context).pushReplacementNamed(RoutesName.login);
     }
   }
 }

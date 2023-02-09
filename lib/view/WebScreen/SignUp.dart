@@ -4,6 +4,7 @@ import 'package:tycho_streams/bloc_validation/Bloc_Validation.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AppTextField.dart';
+import 'package:tycho_streams/utilities/AppToast.dart';
 import 'package:tycho_streams/utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
@@ -34,14 +35,6 @@ class _SignUpState extends State<SignUp> {
       isName = false,
       isPassword = false,
       isValidate = false;
-  @override
-  void dispose() {
-    super.dispose();
-    phoneController.dispose();
-    emailController.dispose();
-    nameController.dispose();
-    passwordController.dispose();
-  }
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -80,7 +73,8 @@ class _SignUpState extends State<SignUp> {
                         msg: "Lets register yourself to make profile.",
                         color: Colors.black,
                         fontSize: 18),
-                    registerForm(), SizedBox(height: SizeConfig.screenHeight * .01),
+                    registerForm(),
+                    SizedBox(height: SizeConfig.screenHeight * .01),
                     Container(
                       padding:
                           EdgeInsets.only(left: SizeConfig.screenWidth * 0.05),
@@ -115,9 +109,10 @@ class _SignUpState extends State<SignUp> {
                               WHITE_COLOR,
                               18,
                               10,
-                              snapshot.data != true ? false : true, onTap: () {
+                              snapshot.data != true ? false : true,
+                              onTap: () {
                             snapshot.data != true
-                                ? null
+                                ? ToastMessage.message(StringConstant.fillOut)
                                 : registerButtonPressed(
                                     authVM,
                                     nameController.text,
@@ -264,7 +259,7 @@ class _SignUpState extends State<SignUp> {
 
   registerButtonPressed(AuthViewModel authVM, String name, String email,
       String phone, String password) {
-    authVM.register(name, email, phone, password, context);
+    authVM.register(name,phone, email, password, context);
   }
 
   Widget socialLoginView(SocialLoginViewModel socialVM) {
