@@ -8,7 +8,7 @@ class CustomTextStyle {
   // GILROY FONTS
 
   static var textFormFieldInterBold = TextStyle(
-      fontSize: 16, fontFamily: "InterBold",);
+      fontSize: 26, fontFamily: "InterBold",);
 
   static var textFormFieldInterMedium = TextStyle(
       fontSize: 16, fontFamily: "InterMedium",);

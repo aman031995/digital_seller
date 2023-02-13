@@ -97,7 +97,7 @@ class AppDialog {
           contentPadding: EdgeInsets.only(left: 20,right: 20,top: 10,bottom: 15),
           actions: [
             Container(
-              width: SizeConfig.screenWidth! * 0.8,
+              width: SizeConfig.screenWidth * 0.8,
               padding: EdgeInsets.all(8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -225,7 +225,7 @@ Widget textButton(BuildContext context, String title,
         borderRadius: BorderRadius.circular(8.0),
       ),
       // decoration: buttonDecoration,
-      child: AppBoldFont(msg: title, fontSize: 14, color: TEXT_COLOR),
+      child: AppBoldFont(msg: title, fontSize: 20, color: TEXT_COLOR),
     ),
   );
 }

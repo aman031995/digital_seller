@@ -26,4 +26,5 @@ class NetworkConstants{
   static String kGetTrayData = "getTrayOrder?appId={APP_ID}";
   static String kGetCategoryData = "getAllCategory?appId={APP_ID}&pageNum={PAGE_NUM}";
   static String kGetCategoryDetails = "getCategoryDetails?appId={APP_ID}&categoryId={CATEGORY_ID}&pageNum={PAGE_NUM}";
+  static String kgetMoreLikeThis = 'getMoreLikesVideoList?videoId={VIDEO_ID}';
 }

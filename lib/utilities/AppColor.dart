@@ -16,6 +16,7 @@ const ADVENTURE_GRADIENT = Color(0xff346C8C);
 const SPORTS_GRADIENT = Color(0xff308C7E);
 const TRAVEL_GRADIENT = Color(0xff4A8C30);
 const LIGHT_THEME_COLOR = Color(0xffB1D7E6);
+const FORUM_TEXT_COLOR = Color(0xff285187);
 
 // ---------------------------------------------------------
 
@@ -39,7 +40,7 @@ const TRANSPARENT_COLOR = Color(0xff00000000);
 //------------- App Color------------
 const BACK_BUTTON_COLOR = Color(0xffD2C6F9);
 const BUTTON_OFF_COLOR = Color(0xffF2EFFC);
-const TEXTFIELD_BORDER_COLOR = Color(0xffC8C3D7);
+const TEXTFIELD_BORDER_COLOR = Color(0xff21252926);
 const YELLOW_COLOR = Color(0xffeaad34);
 
 const BUTTON_TEXT_COLOR = Color(0xffEDE7F6);

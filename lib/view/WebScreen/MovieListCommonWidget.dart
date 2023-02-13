@@ -3,10 +3,9 @@ import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
-import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
-import 'package:tycho_streams/view/screens/DetailPage.dart';
-import 'package:tycho_streams/view/screens/MovieCardCommonWidget.dart';
-import 'package:tycho_streams/view/screens/ViewAllListPages.dart';
+import 'package:tycho_streams/view/WebScreen/MovieCardCommonWidget.dart';
+
+import 'package:tycho_streams/view/WebScreen/ViewAllListPages.dart';
 import 'package:tycho_streams/view/widgets/AppDialog.dart';
 
 class MovieListCommonWidget extends StatefulWidget {

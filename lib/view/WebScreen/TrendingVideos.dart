@@ -1,14 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:tycho_streams/utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/WebScreen/OnHover.dart';
+import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 
 class TrendingVideos extends StatefulWidget {
   String? Videos;
- TrendingVideos({Key? key,this.Videos}) : super(key: key);
+  bool? isDetail;
+ TrendingVideos({Key? key,this.Videos,this.isDetail}) : super(key: key);
 
   @override
   State<TrendingVideos> createState() => _TrendingVideosState();
@@ -16,12 +19,14 @@ class TrendingVideos extends StatefulWidget {
 
 class _TrendingVideosState extends State<TrendingVideos> {
   late AutoScrollController controller;
+  final HomeViewModel homeView = HomeViewModel();
   List<String> title=['The Sunset','Mountains hills','Beautiful Beache','Green valley','Black Heads','The Sunset','Mountains hills','Beautiful Beache','Green valley','Black Heads','Mountains hills','Beautiful Beache'];
   List<String> images=["images/Trending1.png","images/Trending2.png","images/Trending3.png","images/Trending4.png","images/Trending5.png","images/Trending1.png",
     "images/Trending1.png","images/Trending2.png","images/Trending3.png","images/Trending4.png","images/Trending5.png","images/Trending1.png",
   ];
   int counter = 5;
   void initState() {
+    homeView.getTrayData(context);
     super.initState();
     controller = AutoScrollController(
         viewportBoundaryGetter: () =>
@@ -35,7 +40,11 @@ class _TrendingVideosState extends State<TrendingVideos> {
   }
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return ChangeNotifierProvider<HomeViewModel>(
+        create: (BuildContext context) => homeView,
+        child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
+          return
+      Container(
       padding: EdgeInsets.only(right: 100,left: 100),
       child: Column(
         children: [
@@ -66,7 +75,8 @@ class _TrendingVideosState extends State<TrendingVideos> {
                   padding: EdgeInsets.only(
                       left:  0),
                   scrollDirection: Axis.horizontal,
-                  itemCount:12,
+                  itemCount: homeViewModel.trayDataModel?.length ?? homeViewModel.homePageDataModel?.videoList?.length,
+                  physics: NeverScrollableScrollPhysics(),
                   itemExtent: 300,
                   controller: controller,
                   itemBuilder: (context, index) {
@@ -173,7 +183,17 @@ class _TrendingVideosState extends State<TrendingVideos> {
           )
         ],
       ),
-    );
+    );}));
+
+
+
+  }
+  getTrayType(HomeViewModel homeViewModel){
+    if(widget.isDetail == true){
+      return homeViewModel.homePageDataModel?.videoList?.isNotEmpty;
+    }else{
+      return homeViewModel.trayDataModel?.isNotEmpty;
+    }
   }
   Future _nextCounter() async {
     setState(() => counter = (counter + 1));

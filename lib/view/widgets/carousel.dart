@@ -18,7 +18,6 @@ class CommonCarousel extends StatefulWidget with ChangeNotifier {
 class _CommonCarouselState extends State<CommonCarousel> {
   final CarouselController carouselController = CarouselController();
   FocusNode carouselFocus = FocusNode();
-  TextEditingController? editingController = TextEditingController();
   int current = 0;
   final HomeViewModel homeViewModel = HomeViewModel();
 
@@ -39,11 +38,10 @@ class _CommonCarouselState extends State<CommonCarousel> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                homePageTopBar(),
                 homeViewModel.bannerDataModal != null
                     ? carouselImages()
                     : Container(
-                        height: SizeConfig.screenHeight * 0.3,
+                        height: SizeConfig.screenHeight * 0.25,
                         child: Center(
                           child: ThreeArchedCircle(color: THEME_COLOR, size: 50.0)
                         ),
@@ -55,65 +53,20 @@ class _CommonCarouselState extends State<CommonCarousel> {
     ;
   }
 
-  Widget homePageTopBar() {
-    return Container(
-      color: Colors.white,
-      margin: EdgeInsets.only(left: 15, right: 10),
-      child: Row(
-        children: [
-          Image.asset(AssetsConstants.icLogo, height: 50, width: 50),
-          Container(
-            height: 50,
-            width: SizeConfig.screenWidth! * 0.65,
-            margin: EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 5),
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.transparent, width: 2.0),
-            ),
-            child: new TextField(
-              maxLines: editingController!.text.length > 2 ? 2 : 1,
-              controller: editingController,
-              decoration: new InputDecoration(
-                  hintText: StringConstant.search,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  hintStyle: TextStyle(color: GREY_COLOR)),
-              onChanged: (m) {},
-            ),
-          ),
-          Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                color: THEME_COLOR,
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Image.asset(
-                AssetsConstants.icNotification,
-                height: 45,
-                width: 45,
-              ))
-        ],
-      ),
-    );
-  }
-
   Widget carouselImages() {
     var imageSliders = generateImageTiles(context);
     return Container(
-        height: SizeConfig.screenHeight * 0.25,
+        height: SizeConfig.screenHeight * 0.20,
         width: SizeConfig.screenWidth,
-        margin: EdgeInsets.only(left: 5.0),
-        padding: EdgeInsets.only(left: 15.0),
-        child: Stack(
+        margin: EdgeInsets.only(left: 15.0,right: 15.0, top: 10.0),
+        child: Column(
           children: [
             CarouselSlider(
               items: imageSliders,
               options: CarouselOptions(
                   scrollDirection: Axis.horizontal,
                   scrollPhysics: PageScrollPhysics(),
-                  // viewportFraction: 1,
+                  viewportFraction: 1,
                   enlargeCenterPage: true,
                   autoPlay: true,
                   autoPlayInterval: Duration(seconds: 5),
@@ -124,19 +77,25 @@ class _CommonCarouselState extends State<CommonCarousel> {
                   }),
               carouselController: carouselController,
             ),
-            Positioned(
-              left: 160,
-              bottom: 5,
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: _buildIndicator(),
-                ),
-              ),
-            ),
+            // Positioned(
+            //   left: 160,
+            //   bottom: 5,
+            //   child: Center(
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: _buildIndicator(),
+            //     ),
+            //   ),
+            // ),
             SizedBox(
               height: 5,
             ),
+            Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: _buildIndicator(),
+              ),
+            )
           ],
         ));
   }

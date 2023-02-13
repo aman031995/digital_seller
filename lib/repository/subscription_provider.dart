@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:tycho_streams/model/data/consumable_store.dart';
-import 'package:tycho_streams/view/videoplayer/SamplePlayer.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 
 import 'package:in_app_purchase_android/billing_client_wrappers.dart';
@@ -272,12 +271,12 @@ class SubscriptionProvider with ChangeNotifier {
           if (purchaseDetails.productID == kConsumableId) {
             print('============================ Purchase Successful ========================');
             AppIndicator.disposeIndicator();
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) =>
-                      SamplePlayer(url: 'assets/videos/video_sample.mp4'),
-                ));
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //       builder: (_) =>
+            //           SamplePlayer(url: 'assets/videos/video_sample.mp4'),
+            //     ));
             notifyListeners();
           }
           verifyPreviousPurchases();

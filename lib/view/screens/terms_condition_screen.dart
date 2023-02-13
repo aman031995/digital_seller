@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tycho_streams/model/data/TermsPrivacyModel.dart';
-import 'package:tycho_streams/network/AppNetwork.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
@@ -10,7 +8,6 @@ import 'no_internet.dart';
 class TermsAndConditionsPage extends StatefulWidget {
   String title;
   String description;
-  // List<TermsPrivacyModel>? model;
 
   TermsAndConditionsPage({
     Key? key,
@@ -23,7 +20,6 @@ class TermsAndConditionsPage extends StatefulWidget {
 }
 
 class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
-  // PrivacyModal? privacy;
   String? checkInternet;
 
   @override
@@ -55,7 +51,7 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
     //   });
     // });
     return Scaffold(
-      backgroundColor: LIGHT_THEME_BACKGROUND,
+      backgroundColor: WHITE_COLOR,
       appBar: getAppBarWithBackBtn(title: widget.title, isBackBtn: true, context: context),
       body: checkInternet == "Offline"
           ? const NOInternetScreen()
@@ -71,8 +67,4 @@ class _TermsAndConditionsPageState extends State<TermsAndConditionsPage> {
       ),
     );
   }
-
-  // String text() {
-  //   return privacy?.content ?? "";
-  // }
 }

@@ -49,7 +49,7 @@ class _TermsConditionAgreementState extends State<TermsConditionAgreement> {
                             termsAndConditionText(
                                 StringConstant.termsAndCondition,
                                 16,
-                                TEXT_BLACK_COLOR, () {
+                                THEME_COLOR, () {
                               Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
                                   builder: (_) => TermsAndConditionsPage(
                                     title: '${viewmodel.termsPrivacyModel?[1].pageTitle}',
@@ -59,7 +59,7 @@ class _TermsConditionAgreementState extends State<TermsConditionAgreement> {
                             termsAndConditionText(
                                 'and ', 16, GREY_COLOR, () {}),
                             termsAndConditionText(
-                                StringConstant.privacy, 16, TEXT_BLACK_COLOR,
+                                StringConstant.privacy, 16, THEME_COLOR,
                                 () {
                                   Navigator.of(context, rootNavigator: true).push(MaterialPageRoute(
                                       builder: (_) => TermsAndConditionsPage(
