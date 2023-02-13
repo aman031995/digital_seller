@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ChangeValue with ChangeNotifier {
+class YoutubeProvider with ChangeNotifier {
 
   bool? isCommentAdded, isGalleryImage = false;
   bool? isPlay;

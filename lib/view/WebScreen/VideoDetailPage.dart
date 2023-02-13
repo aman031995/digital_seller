@@ -3,7 +3,6 @@ import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/view/CustomPlayer/StreamPlayer.dart';
 
-
 class VideoDetailPage extends StatefulWidget {
   VideoList? element;
    VideoDetailPage({Key? key,this.element}) : super(key: key);

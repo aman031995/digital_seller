@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
+import 'package:tycho_streams/view/WebScreen/OnHover.dart';
 import 'package:tycho_streams/view/screens/DetailPage.dart';
 
 class CardMovieHome extends StatefulWidget {
@@ -37,9 +38,15 @@ class _CardMovieHomeState extends State<CardMovieHome> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Container(
-      width: SizeConfig.screenHeight * 0.25,
-      height: SizeConfig.screenHeight * 0.25,
+    return
+      OnHover(
+        builder: (isHovered) {
+      bool _heigth = isHovered;
+      return
+      Container(
+      width: SizeConfig.screenHeight * 0.27,
+      height: SizeConfig.screenHeight * 0.27,
+      padding: EdgeInsets.only(left:_heigth?1: 10,right:_heigth?1: 10,top:_heigth?1: 10,bottom:_heigth?1: 10),
       child: InkWell(
         onTap: () {
           Navigator.of(context, rootNavigator: true)
@@ -48,7 +55,7 @@ class _CardMovieHomeState extends State<CardMovieHome> {
               new MovieDetailPage(
                 platformMovieData: widget.moviesList,
                 // movieID: 'mZ5lbn9FWAQ',
-                movieID: widget.moviesList?.videoUrl,
+                movieID: widget.moviesList?.youtubeVideoId,
               )));
         },
         child: Card(
@@ -58,8 +65,9 @@ class _CardMovieHomeState extends State<CardMovieHome> {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Image.network(widget.image ?? '',
-                    fit: BoxFit.fill))),
+                    fit: BoxFit.cover))),
       ),
-    );
+    );},
+          hovered: Matrix4.identity()..translate(0, 0, 0));
   }
 }

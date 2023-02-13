@@ -3,6 +3,7 @@ import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
+import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
 import 'package:tycho_streams/view/screens/DetailPage.dart';
 import 'package:tycho_streams/view/screens/MovieCardCommonWidget.dart';
 import 'package:tycho_streams/view/screens/ViewAllListPages.dart';
@@ -51,22 +52,29 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
                     : Container(),
                 Container(
                   height: (widget.platformMovieData!.content!.isNotEmpty)
-                      ? SizeConfig.screenWidth * 0.3
+                      ? SizeConfig.screenHeight * 0.3
                       : 0.0,
                   child: widget.platformMovieData?.content != null
                       ? ListView.builder(
                           physics: BouncingScrollPhysics(),
-                          itemCount: widget.platformMovieData?.content?.length,
+                          itemCount:
+                              widget.platformMovieData!.content!.length > 9
+                                  ? 10
+                                  : widget.platformMovieData?.content?.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int index) {
                             return CardMovieHome(
                               onTap: (fadeInImage) {},
                               trayId: widget.trayId,
-                              movieID: widget.platformMovieData?.content?[index].videoId,
-                              title: widget.platformMovieData?.content?[index].videoTitle,
-                              image: widget.platformMovieData?.content?[index].thumbnail,
+                              movieID: widget
+                                  .platformMovieData?.content?[index].videoId,
+                              title: widget.platformMovieData?.content?[index]
+                                  .videoTitle,
+                              image: widget
+                                  .platformMovieData?.content?[index].thumbnail,
                               index: index,
-                              moviesList: widget.platformMovieData?.content?[index],
+                              moviesList:
+                                  widget.platformMovieData?.content?[index],
                             );
                           },
                         )
@@ -81,8 +89,8 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
   movieCardTopBAR(
       BuildContext context, String title, bool isSubTitle, bool isButton) {
     return Container(
-      height: isSubTitle ? 60 : 30,
-      margin: EdgeInsets.only(right: 15),
+      height: isSubTitle ? 70 : 40,
+    margin: EdgeInsets.only(right: 25,left: 10,top: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -90,19 +98,21 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppBoldFont(msg: title, fontSize: 16, color: TEXT_COLOR),
-              widget.platformMovieData!.content!.length > 8 ?  textButton(context, "See All", onApply: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => ViewAllListPages(
-                        trayId: widget.trayId,
-                        moviesList: widget.platformMovieData?.content,
-                        title: widget.trayTitle ?? "",
-                        isCategory: false,
-                      ),
-                    ));
-              }): SizedBox()
+              AppBoldFont(msg: title, fontSize: 30, color: TEXT_COLOR),
+              widget.platformMovieData!.content!.length > 8
+                  ? textButton(context, "See All", onApply: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => SeeAllListPages(
+                              trayId: widget.trayId,
+                              moviesList: widget.platformMovieData?.content,
+                              title: widget.trayTitle ?? "",
+                              isCategory: false,
+                            ),
+                          ));
+                    })
+                  : SizedBox()
             ],
           ),
         ],
