@@ -46,7 +46,7 @@ Widget appButton(
                 fontSize: fontSize,
                 textAlign: TextAlign.center),
             SizedBox(width: 5,),
-            Image.asset("assets/images/ic_ForwordArrow.png", width: 15, height: 15,),
+            Image.asset("images/ic_ForwordArrow.png", width: 15, height: 15,),
           ],
         ),
       ),

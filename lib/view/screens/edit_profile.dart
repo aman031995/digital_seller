@@ -57,9 +57,9 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   validateEditDetails() {
-    validation.sinkFirstName.add(name ?? '');
-    validation.sinkPhoneNo.add(phone ?? '');
-    validation.sinkAddress.add(address ?? '');
+    validation.sinkFirstName.add(name!);
+    validation.sinkPhoneNo.add(phone!);
+    validation.sinkAddress.add(address!);
   }
 
   @override
@@ -79,7 +79,7 @@ class _EditProfileState extends State<EditProfile> {
     child: Consumer<ProfileViewModel>(builder: (context, viewmodel, _){
       return Scaffold(
         appBar: getAppBarWithBackBtn(title : StringConstant.editProfile, isBackBtn: true, context: context),
-        backgroundColor: WHITE_COLOR,
+        backgroundColor: LIGHT_THEME_BACKGROUND,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(

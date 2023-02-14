@@ -55,7 +55,7 @@ class ViewAll extends StatelessWidget {
                   width: 1200,
                     child: GridView.builder(
                       padding: EdgeInsets.zero,
-                          shrinkWrap: true,
+shrinkWrap: true,
                       itemCount: 12,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
 

@@ -76,7 +76,7 @@ class _ThreeArchedCircleState extends State<ThreeArchedCircle>
     );
 
     return Container(
-      height: 150,
+      height: 180,
       width: 320 ,
       color: Colors.transparent,
       child:  Column(

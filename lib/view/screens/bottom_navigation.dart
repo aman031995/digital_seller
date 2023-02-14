@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/TextStyling.dart';
-import 'package:tycho_streams/view/screens/ForumPage.dart';
 import 'package:tycho_streams/view/screens/home_page.dart';
 import 'package:tycho_streams/view/screens/profile_page.dart';
 import 'package:tycho_streams/view/screens/category_screen.dart';
@@ -31,7 +30,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
     super.initState();
     _pages.add(HomePage());
     _pages.add(CategoryScreen());
-    _pages.add(ForumViewPage());
     _pages.add(ProfilePage());
   }
 
@@ -89,14 +87,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
             ),
             BottomNavigationBarItem(
               backgroundColor: WHITE_COLOR,
-              icon: Image.asset(AssetsConstants.icForum,
-                  width: 20, height: 20),
-              label: 'Forum',
-              activeIcon: Image.asset(AssetsConstants.icSelectForum,
-                  width: 23, height: 23),
-            ),
-            BottomNavigationBarItem(
-              backgroundColor: WHITE_COLOR,
               icon: Image.asset(AssetsConstants.icProfile,
                 width: 20, height: 20),
               label: 'Profile',
@@ -106,8 +96,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           ],
           selectedLabelStyle: _currentPageIndex == 0 ||
               _currentPageIndex == 1 ||
-              _currentPageIndex == 2 ||
-              _currentPageIndex == 3
+              _currentPageIndex == 2
               ? CustomTextStyle.textFormFieldInterMedium
               .copyWith(color: BUTTON_ONCLICK_COLOR, fontSize: 15)
               : CustomTextStyle.textFormFieldInterMedium

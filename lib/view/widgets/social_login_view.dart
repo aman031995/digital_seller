@@ -21,7 +21,12 @@ class _SocialLoginViewState extends State<SocialLoginView> {
       children: [
         socialNetworkButton(AssetsConstants.icGoogle, () {
           isGoogle = true;
-          widget.socialLoginViewModel?.loginWithGoogle(context);
+
+         widget.socialLoginViewModel?.signInWithGoogle(context).then((result) {
+           print(result);
+
+
+         });
         }),
         SizedBox(width: 10),
         socialNetworkButton(AssetsConstants.icFacebook, () {
@@ -29,11 +34,13 @@ class _SocialLoginViewState extends State<SocialLoginView> {
           isGoogle = false;
         }),
         SizedBox(width: 10),
-        Platform.isIOS ? socialNetworkButton(AssetsConstants.icApple, () {
-          // loginWithFB(context, fcmToken!);
-          // isGoogle = false;
-        }) : SizedBox(),
+        // Platform.isIOS ? socialNetworkButton(AssetsConstants.icApple, () {
+        //   // loginWithFB(context, fcmToken!);
+        //   // isGoogle = false;
+        // }) : SizedBox(),
       ],
     );
   }
+
+
 }

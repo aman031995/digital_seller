@@ -1,144 +1,114 @@
 import 'package:carousel_slider/carousel_slider.dart';
+
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tycho_streams/utilities/AppColor.dart';
-import 'package:tycho_streams/utilities/AssetsConstants.dart';
+import 'package:flutter/services.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
-import 'package:tycho_streams/utilities/StringConstants.dart';
-import 'package:tycho_streams/utilities/three_arched_circle.dart';
-import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 
-class CommonCarousel extends StatefulWidget with ChangeNotifier {
-  CommonCarousel({Key? key}) : super(key: key);
 
+class CommonCarousel extends StatefulWidget {
   @override
-  State<CommonCarousel> createState() => _CommonCarouselState();
+  _CommonCarouselState createState() => _CommonCarouselState();
 }
 
 class _CommonCarouselState extends State<CommonCarousel> {
-  final CarouselController carouselController = CarouselController();
-  FocusNode carouselFocus = FocusNode();
-  int current = 0;
-  final HomeViewModel homeViewModel = HomeViewModel();
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    homeViewModel.getBannerLists(context);
-    super.initState();
+
+  final CarouselController carouselController = CarouselController();
+  int _current = 0;
+  final List<String> images = [
+    'images/carousel.png',
+    'images/carousel.png',
+    'images/carousel.png',
+    'images/carousel.png',
+    'images/carousel.png',
+
+  ];
+
+  List<Widget> generateImageTiles() {
+    return images
+        .map((element) => Stack(
+          children: [
+            Container(
+              height: 650,width: 2500,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
+              child: Image.asset(element,
+                  fit: BoxFit.cover,
+                 // alignment: Alignment.topCenter,
+                  //height: SizeConfig.screenHeight
+                ),
+            ),
+          ],
+        )
+            )
+        .toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    final homePageVM = Provider.of<HomeViewModel>(context);
-    return ChangeNotifierProvider<HomeViewModel>(
-        create: (BuildContext context) => homeViewModel,
-        child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                homeViewModel.bannerDataModal != null
-                    ? carouselImages()
-                    : Container(
-                  height: SizeConfig.screenHeight * 0.3,
-                  child: Center(
-                      child: ThreeArchedCircle(color: THEME_COLOR, size: 50.0)
-                  ),
-                ),
-              ],
+    var imageSliders = generateImageTiles();
+    return  Stack(
+          children: [
+            Container(
+              height:730, width: 2500,
+             decoration: BoxDecoration(
+               borderRadius: BorderRadius.circular(5)
+             ),
+             padding: const EdgeInsets.only(top: 15),
+             child: CarouselSlider(
+               items: imageSliders,
+               disableGesture: true,
+               options: CarouselOptions(
+                   scrollDirection: Axis.horizontal,
+                   scrollPhysics: PageScrollPhysics(),
+                   viewportFraction:  0.99,
+                   enlargeCenterPage: true,
+                   autoPlayCurve: Curves.linear,
+                   aspectRatio:16/9,
+                   autoPlay: true,
+                   onPageChanged: (index, reason) {
+                     setState(() {
+                       _current = index;
+                     });
+                   }),
+               carouselController: carouselController,
+             ),
             ),
-          );
-        }));
-    ;
-  }
-
-  Widget carouselImages() {
-    var imageSliders = generateImageTiles(context);
-    return Stack(
-      children: [
-        Container(
-          height:700, width: 2500,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5)
-          ),
-          padding: const EdgeInsets.only(top: 15),
-          child: CarouselSlider(
-            items: imageSliders,
-            disableGesture: true,
-            options: CarouselOptions(
-                scrollDirection: Axis.horizontal,
-                scrollPhysics: PageScrollPhysics(),
-                viewportFraction:  0.99,
-                enlargeCenterPage: true,
-                autoPlayCurve: Curves.linear,
-                aspectRatio:16/9,
-                autoPlay: true,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    current = index;
-                  });
-                }),
-            carouselController: carouselController,
-          ),
-        ),
-        Positioned(
-          left: 30,top: 350,
-          child: Container(
-              child: InkWell(
-                  child: Image.asset(
-                    'images/prev.png',
-                    height: 25,
-                    width: 35,
-                    color: Theme.of(context).primaryColorLight,
-                  ),
-                  onTap: previous
-              )
-          ),
-        ),
-        Positioned(
-          top: 350,right: 30,
-          child: Container(
-              color: Colors.transparent,
-              child:  InkWell(
-                  child: Image.asset(
-                    'images/next.png',
-                    height: 25,
-                    width: 35,
-                    color: Theme.of(context).primaryColorLight,
-                  ),
-                  onTap:next
-              )
-          ),
-        // )
-        )],
-
-  );
-}
-
-
-  List<Widget> generateImageTiles(BuildContext context) {
-    return homeViewModel.bannerDataModal!.bannerList!
-        .map((element) =>  Stack(
-      children: [
-        Container(
-          height: 650,width: 2500,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
-          child: Image.network(element.bannerFile?? " ",
-            fit: BoxFit.fill,
-            // alignment: Alignment.topCenter,
-            //height: SizeConfig.screenHeight
-          ),
-        ),
+            Positioned(
+              left: 30,top: 350,
+              child: Container(
+                  child: InkWell(
+                      child: Image.asset(
+                        'images/prev.png',
+                        height: 25,
+                        width: 35,
+                        color: Theme.of(context).primaryColorLight,
+                      ),
+                      onTap: previous
+                  )
+              ),
+            ),
+            Positioned(
+              top: 350,right: 30,
+              child: Container(
+                color: Colors.transparent,
+                child:  InkWell(
+                    child: Image.asset(
+                      'images/next.png',
+                      height: 25,
+                      width: 35,
+                      color: Theme.of(context).primaryColorLight,
+                    ),
+                    onTap:next
+                )
+              ),
+            )
       ],
-    )
-    )
-        .toList();
+    );
   }
 
   void next() =>
-      carouselController.nextPage(duration: Duration(milliseconds: 500));
+      carouselController.nextPage(duration: Duration(milliseconds: 200));
 
   void previous() =>
-      carouselController.previousPage(duration: Duration(milliseconds: 500));
+      carouselController.previousPage(duration: Duration(milliseconds: 200));
 }
