@@ -8,7 +8,6 @@ import 'package:tycho_streams/utilities/AppToast.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
-import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/widgets/AppNavigationBar.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 
@@ -41,86 +40,89 @@ class _ResetPasswordState extends State<ResetPassword> {
       backgroundColor: LIGHT_THEME_BACKGROUND,
       appBar: getAppBarWithBackBtn(title: '', isBackBtn: true, context: context),
       body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(height: 35),
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 12),
-                alignment: Alignment.topLeft,
-                child: AppBoldFont(
-                    msg: 'Reset', color: BLACK_COLOR, fontSize: 30)),
-            Container(
-                padding: EdgeInsets.symmetric(horizontal: 12),
-                alignment: Alignment.topLeft,
-                child: AppRegularFont(
-                    msg: 'Enter your new password to login again.',
-                    color: BLACK_COLOR,
-                    fontSize: 18)),
-            SizedBox(height: 55),
-            StreamBuilder(
-                stream: validation.password,
-                builder: (context, snapshot) {
-                  return AppTextField(
-                      maxLine: 1,
-                      controller: newPasswordController,
-                      labelText: 'New Password',
-                      prefixText: '',
-                      isShowPassword: true,
-                      isTick: true,
-                      isColor: isPassword,
-                      keyBoardType: TextInputType.visiblePassword,
-                      errorText:
-                          snapshot.hasError ? snapshot.error.toString() : null,
-                      onChanged: (m) {
-                        validation.sinkPassword.add(m);
-                        isPassword = true;
-                        setState(() {});
-                      },
-                      onSubmitted: (m) {});
-                }),
-            SizedBox(height: 15),
-            StreamBuilder(
-                stream: validation.confirmPassword,
-                builder: (context, snapshot) {
-                  return AppTextField(
-                      maxLine: 1,
-                      controller: confirmPasswordController,
-                      labelText: 'Confirm Password',
-                      prefixText: '',
-                      isShowPassword: true,
-                      isTick: true,
-                      isColor: isPassword2,
-                      keyBoardType: TextInputType.visiblePassword,
-                      errorText:
-                          snapshot.hasError ? snapshot.error.toString() : null,
-                      onChanged: (m) {
-                        validation.sinkConfirmPassword.add(m);
-                        isPassword2 = true;
-                        setState(() {});
-                      },
-                      onSubmitted: (m) {});
-                }),
-            SizedBox(height: 20),
-            StreamBuilder(
-                stream: validation.checkResetPasswordValidate,
-                builder: (context, snapshot) {
-                  return appButton(
-                      context,
-                      'Reset',
-                      SizeConfig.screenWidth * 0.9,
-                      60.0,
-                      LIGHT_THEME_COLOR,
-                      WHITE_COLOR,
-                      18,
-                      10,
-                      snapshot.data != true ? false : true, onTap: () {
-                    snapshot.data != true
-                        ? ToastMessage.message(StringConstant.fillOut)
-                        : resetBtnPressed(authVM, newPasswordController.text,
-                            confirmPasswordController.text);
-                  });
-                }),
-          ],
+        child: Container(
+          margin: const EdgeInsets.only(left: 10, right: 10),
+          child: Column(
+            children: [
+              SizedBox(height: 25),
+              Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  alignment: Alignment.topLeft,
+                  child: AppBoldFont(
+                      msg: StringConstant.reset, color: BLACK_COLOR, fontSize: 30)),
+              Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  alignment: Alignment.topLeft,
+                  child: AppRegularFont(
+                      msg: StringConstant.enterNewPassword,
+                      color: BLACK_COLOR,
+                      fontSize: 18)),
+              SizedBox(height: 55),
+              StreamBuilder(
+                  stream: validation.password,
+                  builder: (context, snapshot) {
+                    return AppTextField(
+                        maxLine: 1,
+                        controller: newPasswordController,
+                        labelText: StringConstant.newPassword,
+                        prefixText: '',
+                        isShowPassword: true,
+                        isTick: true,
+                        isColor: isPassword,
+                        keyBoardType: TextInputType.visiblePassword,
+                        errorText:
+                        snapshot.hasError ? snapshot.error.toString() : null,
+                        onChanged: (m) {
+                          validation.sinkPassword.add(m);
+                          isPassword = true;
+                          setState(() {});
+                        },
+                        onSubmitted: (m) {});
+                  }),
+              SizedBox(height: 15),
+              StreamBuilder(
+                  stream: validation.confirmPassword,
+                  builder: (context, snapshot) {
+                    return AppTextField(
+                        maxLine: 1,
+                        controller: confirmPasswordController,
+                        labelText: StringConstant.confirmPassword,
+                        prefixText: '',
+                        isShowPassword: true,
+                        isTick: true,
+                        isColor: isPassword2,
+                        keyBoardType: TextInputType.visiblePassword,
+                        errorText:
+                        snapshot.hasError ? snapshot.error.toString() : null,
+                        onChanged: (m) {
+                          validation.sinkConfirmPassword.add(m);
+                          isPassword2 = true;
+                          setState(() {});
+                        },
+                        onSubmitted: (m) {});
+                  }),
+              SizedBox(height: 55),
+              StreamBuilder(
+                  stream: validation.checkResetPasswordValidate,
+                  builder: (context, snapshot) {
+                    return appButton(
+                        context,
+                        StringConstant.reset,
+                        SizeConfig.screenWidth * 0.9,
+                        60.0,
+                        LIGHT_THEME_COLOR,
+                        WHITE_COLOR,
+                        18,
+                        10,
+                        snapshot.data != true ? false : true, onTap: () {
+                      snapshot.data != true
+                          ? ToastMessage.message(StringConstant.fillOut)
+                          : resetBtnPressed(authVM, newPasswordController.text,
+                          confirmPasswordController.text);
+                    });
+                  }),
+            ],
+          ),
         ),
       ),
     );

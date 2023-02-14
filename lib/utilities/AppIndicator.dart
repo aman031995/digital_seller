@@ -9,7 +9,7 @@ class AppIndicator {
       ..displayDuration = const Duration(milliseconds: 2000)
       ..indicatorType = EasyLoadingIndicatorType.ring
       ..loadingStyle = EasyLoadingStyle.custom
-      ..indicatorSize = 100.0
+      ..indicatorSize = 45.0
       ..radius = 8.0
       ..progressColor = Colors.white
       ..backgroundColor = Colors.white
@@ -17,7 +17,7 @@ class AppIndicator {
       ..textColor = Colors.black12
       ..maskColor = Colors.white.withOpacity(0.5)
       ..maskType = EasyLoadingMaskType.custom
-      ..indicatorWidget = ThreeArchedCircle(color: THEME_COLOR, size: 90.0)
+      ..indicatorWidget = ThreeArchedCircle(color: THEME_COLOR, size: 45.0)
       ..userInteractions = false;
     EasyLoading.show();
   }

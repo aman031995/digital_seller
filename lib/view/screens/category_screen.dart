@@ -4,7 +4,7 @@ import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/three_arched_circle.dart';
-import 'package:tycho_streams/view/screens/ViewAllListPages.dart';
+import 'package:tycho_streams/view/WebScreen/ViewAllListPages.dart';
 import 'package:tycho_streams/view/widgets/AppNavigationBar.dart';
 import 'package:tycho_streams/view/widgets/profile_bottom_view.dart';
 import 'package:tycho_streams/viewmodel/CategoryViewModel.dart';
@@ -56,7 +56,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (_) => ViewAllListPages(
+                                    builder: (_) => SeeAllListPages(
                                       moviesList: [],
                                       title: categoryView
                                               .categoryDataModel!

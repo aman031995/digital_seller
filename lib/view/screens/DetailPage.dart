@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
-import 'package:tycho_streams/view/YoutubePlayer/YoutubePlayerFlutter.dart';
-import 'package:tycho_streams/view/screens/MovieDetailTitleSection.dart';
+import 'package:tycho_streams/view/CustomPlayer/YoutubePlayer/YoutubePlayerFlutter.dart';
+import 'package:tycho_streams/view/WebScreen/MovieDetailTitleSection.dart';
 
 // double maxHeight = 700;
 
@@ -27,10 +26,14 @@ class _MovieDetailPageState extends State<MovieDetailPage>
   @override
   void initState() {
     super.initState();
-    // SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]);
     _tabController = TabController(length: 2, vsync: this);
   }
-
 
   @override
   void dispose() {
@@ -40,11 +43,33 @@ class _MovieDetailPageState extends State<MovieDetailPage>
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return
-      // movieDetailModel != null
-      //   ?
-    Scaffold(backgroundColor: THEME_BACKGROUND, body: movieDetails());
-        // : CircularProgressIndicator();
+    return Scaffold(
+      // appBar: movieDetails(),
+      backgroundColor: THEME_BACKGROUND,
+      body: OrientationBuilder(builder: (context, orientation) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            orientation == Orientation.portrait
+                ? SizedBox(
+                    height: 30,
+                  )
+                : SizedBox(),
+            Container(
+              width: SizeConfig.screenWidth,
+              height:  SizeConfig.screenWidth /4,
+              child:
+                  YouTubePlayerSection(videoID: widget.movieID, isDetail: true),
+            ),
+            Expanded(
+              child: MovieDetailTitleSection(
+                  isWall: true, movieDetailModel: widget.platformMovieData),
+            )
+          ],
+        );
+      }),
+    );
   }
 
   movieDetails() {
@@ -60,37 +85,18 @@ class _MovieDetailPageState extends State<MovieDetailPage>
                 height: 35,
               ),
               Stack(
-                children: [
-                  Container(
-                    width: SizeConfig.screenWidth,
-                    height: SizeConfig.screenWidth / 1.77,
-                    child: YouTubePlayerSection(
-                        videoID: widget.movieID,
-                        isDetail: true),
-                  ),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: Container(
-                        height: 60,
-                        width: 60,
-                        color: Colors.transparent,
-                      ))
-                ],
+                children: [],
               ),
             ],
           ),
         ),
       ),
-      SliverPadding(
-          padding: EdgeInsets.only(top: 10),
-          sliver: SliverList(
-              delegate: SliverChildListDelegate([
-            MovieDetailTitleSection(
-                isWall: true,
-                movieDetailModel: widget.platformMovieData),
-          ])))
+      // SliverPadding(
+      //     padding: EdgeInsets.only(top: 10),
+      //     sliver: SliverList(
+      //         delegate: SliverChildListDelegate([
+
+      //     ])))
     ]);
   }
 }
-

@@ -41,6 +41,11 @@ class VideoList {
   String? videoTitle;
   String? videoDescription;
   String? thumbnail;
+  String? videoSource;
+  String? publishedAt;
+  int? videoCategory;
+  bool? isYoutube;
+  String? youtubeVideoId;
 
   VideoList(
       {this.id,
@@ -52,7 +57,12 @@ class VideoList {
         this.videoFor,
         this.videoTitle,
         this.videoDescription,
-        this.thumbnail});
+        this.thumbnail,
+        this.videoSource,
+        this.publishedAt,
+        this.videoCategory,
+        this.isYoutube,
+        this.youtubeVideoId});
 
   VideoList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -65,6 +75,11 @@ class VideoList {
     videoTitle = json['videoTitle'];
     videoDescription = json['videoDescription'];
     thumbnail = json['thumbnail'];
+    videoSource = json['videoSource'];
+    publishedAt = json['publishedAt'];
+    videoCategory = json['videoCategory'];
+    isYoutube = json['isYoutube'];
+    youtubeVideoId = json['youtubeVideoId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -79,6 +94,11 @@ class VideoList {
     data['videoTitle'] = this.videoTitle;
     data['videoDescription'] = this.videoDescription;
     data['thumbnail'] = this.thumbnail;
+    data['videoSource'] = this.videoSource;
+    data['publishedAt'] = this.publishedAt;
+    data['videoCategory'] = this.videoCategory;
+    data['isYoutube'] = this.isYoutube;
+    data['youtubeVideoId'] = this.youtubeVideoId;
     return data;
   }
 }

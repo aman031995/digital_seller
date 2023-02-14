@@ -1,5 +1,8 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:json_cache/json_cache.dart';
 import 'package:tycho_streams/model/data/TermsPrivacyModel.dart';
 import 'package:tycho_streams/model/data/UserInfoModel.dart';
 import 'package:tycho_streams/network/ASResponseModal.dart';
@@ -8,10 +11,9 @@ import 'package:tycho_streams/network/result.dart';
 import 'package:tycho_streams/repository/profile_repository.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
-import 'package:tycho_streams/utilities/route_service/routes_name.dart';
+import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/view/screens/bottom_navigation.dart';
 import 'package:tycho_streams/view/screens/login_screen.dart';
-import 'package:tycho_streams/view/widgets/profile_bottom_view.dart';
 
 class ProfileViewModel with ChangeNotifier {
   final _profileRepo = ProfileRepository();
@@ -26,22 +28,13 @@ class ProfileViewModel with ChangeNotifier {
     AppIndicator.loadingIndicator();
     _profileRepo.getTermsPrivacy(context, (result, isSuccess) {
       if (isSuccess) {
-        _termsPrivacyModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        _termsPrivacyModel =
+            ((result as SuccessState).value as ASResponseModal).dataModal;
         print('Terms Privacy api Successfully');
-        if(names.length == 4){
-          addItemOnList(_termsPrivacyModel);
-        }
         notifyListeners();
         AppIndicator.disposeIndicator();
       }
     });
-  }
-
-  void addItemOnList(List<TermsPrivacyModel>? termsPrivacyModel) {
-    for (var i = 0; i < termsPrivacyModel!.length; i++) {
-        names.insert(3, termsPrivacyModel[i].pageTitle!);
-        namesIcon.insert(3, termsPrivacyModel[i].pageIcon!);
-    }
   }
 
   Future<void> imageUpload(BuildContext context, result) async {
@@ -49,18 +42,48 @@ class ProfileViewModel with ChangeNotifier {
     var imageToUpload = File(result.path);
     _profileRepo.uploadImage([imageToUpload.path], context,
         (result, isSuccess) {
-      _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+      _userInfoModel =
+          ((result as SuccessState).value as ASResponseModal).dataModal;
       notifyListeners();
     });
   }
 
+  // getUserDetails(BuildContext context) async {
+  //   final box = await Hive.openBox<String>('appBox');
+  //   final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
+  //   if (await jsonCache.contains(StringConstant.kUserDetails)) {
+  //     CacheDataManager.getCachedData(key: StringConstant.kUserDetails).then((jsonData) {
+  //       _userInfoModel = UserInfoModel.fromJson(jsonData!['data']);
+  //       print('From Cached UserData');
+  //       notifyListeners();
+  //     });
+  //     CacheDataManager.getCachedData(key: 'privacy_terms').then((jsonData) {
+  //       var items = <TermsPrivacyModel>[];
+  //       jsonData?['data'].forEach((element) {
+  //         items.add(TermsPrivacyModel.fromJson(element));
+  //       });
+  //       _termsPrivacyModel = items;
+  //       print('From Cached Privacy and Terms');
+  //       notifyListeners();
+  //     });
+  //   } else {
+  //     getProfileDetails(context);
+  //   }
+  // }
+
   Future<void> getProfileDetails(BuildContext context) async {
     AppIndicator.loadingIndicator();
-    getTermsPrivacy(context);
+    _profileRepo.getTermsPrivacy(context, (result, isSuccess) {
+      if (isSuccess) {
+        _termsPrivacyModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        print('Terms Privacy api Successfully');
+      }
+    });
     _profileRepo.getUserProfileDetails(context, (result, isSuccess) {
       if (isSuccess) {
         _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         notifyListeners();
+        AppIndicator.disposeIndicator();
       }
     });
   }
@@ -72,11 +95,13 @@ class ProfileViewModel with ChangeNotifier {
         (result, isSuccess) {
       if (isSuccess) {
         AppIndicator.disposeIndicator();
-        _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        _userInfoModel =
+            ((result as SuccessState).value as ASResponseModal).dataModal;
         AppDataManager.getInstance.updateUserDetails(userInfoModel!);
-        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
-        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)));
-       // GoRouter.of(context).pushReplacementNamed(RoutesName.bottomNavigation);
+        ToastMessage.message(
+            ((result as SuccessState).value as ASResponseModal).message);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)));
         notifyListeners();
       }
     });
@@ -88,7 +113,8 @@ class ProfileViewModel with ChangeNotifier {
       if (isSuccess) {
         AppIndicator.disposeIndicator();
         AppDataManager.deleteSavedDetails();
-        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+        ToastMessage.message(
+            ((result as SuccessState).value as ASResponseModal).message);
         Navigator.of(context, rootNavigator: true).pop();
         await Future.delayed(const Duration(seconds: 1)).then((value) =>
             Navigator.pushAndRemoveUntil(

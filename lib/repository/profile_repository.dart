@@ -5,9 +5,11 @@ import 'package:tycho_streams/model/data/UserInfoModel.dart';
 import 'package:tycho_streams/network/ASRequestModal.dart';
 import 'package:tycho_streams/network/ASResponseModal.dart';
 import 'package:tycho_streams/network/AppNetwork.dart';
+import 'package:tycho_streams/network/CacheDataManager.dart';
 import 'package:tycho_streams/network/NetworkConstants.dart';
 import 'package:tycho_streams/network/result.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
+import 'package:tycho_streams/utilities/StringConstants.dart';
 
 class ProfileRepository {
   Future<Result?> getTermsPrivacy(
@@ -27,6 +29,7 @@ class ProfileRepository {
             items.add(TermsPrivacyModel.fromJson(element));
           });
           response.dataModal = items;
+          // CacheDataManager.cacheData(key: StringConstant.kPrivacyTerms, jsonData: map);
           responseHandler(Result.success(response), isSuccess);
         }
       } else {
@@ -83,6 +86,7 @@ class ProfileRepository {
             (result as SuccessState).value as Map<String, dynamic>;
         if (map['data'] is Map<String, dynamic>) {
           response.dataModal = UserInfoModel.fromJson(map['data']);
+          // CacheDataManager.cacheData(key: StringConstant.kUserDetails, jsonData: map);
         }
         networkResponseHandler(Result.success(response), isSuccess);
       }

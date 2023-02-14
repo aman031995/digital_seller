@@ -149,7 +149,8 @@ class _LoginUpState extends State<LoginUp> {
             builder: (context, snapshot) {
               return AppTextField(
                   maxLine: null,
-                  prefixText: '',    width: SizeConfig.screenWidth / 4,
+                  prefixText: '',
+                  width: SizeConfig.screenWidth / 4,
                   controller: phoneController,
                   labelText: 'Phone Number',
                   isShowCountryCode: true,

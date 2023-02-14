@@ -1,13 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tycho_streams/model/data/TermsPrivacyModel.dart';
 import 'package:tycho_streams/utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
-import 'package:tycho_streams/view/screens/bottom_navigation.dart';
-import 'package:tycho_streams/viewmodel/profile_view_model.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -39,9 +35,9 @@ class _SplashScreenState extends State<SplashScreen> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var isPhone = sharedPreferences.getString('phone');
     if (isPhone != null) {
-     // GoRouter.of(context).pushReplacementNamed(RoutesName.bottomNavigation);
+      Navigator.pushNamedAndRemoveUntil(context, RoutesName.bottomNavigation, (route) => false);
     } else {
-     // GoRouter.of(context).pushReplacementNamed(RoutesName.login);
+      Navigator.pushNamedAndRemoveUntil(context, RoutesName.login, (route) => false);
     }
   }
 }

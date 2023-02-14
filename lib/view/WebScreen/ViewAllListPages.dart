@@ -159,10 +159,10 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                               )));
                                 },
                                 child:
-    OnHover(
-    builder: (isHovered) {
-    bool _heigth = isHovered;
-    return Container(
+                          OnHover(
+                      builder: (isHovered) {
+                                   bool _heigth = isHovered;
+                                   return Container(
                                   padding: EdgeInsets.only(left:_heigth?0: 10,right:_heigth?0: 10,top: _heigth?0:10,bottom:_heigth?0: 10),
                                   height: SizeConfig.screenHeight * 0.5,
                                   child: Card(

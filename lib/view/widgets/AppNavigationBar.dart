@@ -25,21 +25,13 @@ AppBar getAppBarWithBackBtn(
                         child: Image.asset(AssetsConstants.icBackArrow,
                             color: BLACK_COLOR, width: 15, height: 15)),
                   ),
-                  SizedBox(width: 3),
-                  title == ''
-                      ? AppMediumFont(
-                          msg: 'Back',
-                          color: TEXT_COLOR,
-                          fontSize: 17,
-                          textAlign: TextAlign.start)
-                      : Container(),
                 ],
               ),
             ),
           )
         : Container(),
     centerTitle: true,
-    title: AppRegularFont(
+    title: AppBoldFont(
         msg: title ?? '',
         color: TEXT_COLOR,
         fontSize: 17,

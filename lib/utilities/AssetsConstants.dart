@@ -7,6 +7,7 @@ class AssetsConstants {
   static String icSignup="images/signup.png";
   static String icplay="images/play.png";
   static String icadd="images/add.png";
+  static String icSLoginUser='images/LoginUser.png';
 
   static String icEyeFill = "images/ic_eyeFill.png";
   static String ic_passwordHide = "images/ic_passwordHide.png";
@@ -47,5 +48,9 @@ class AssetsConstants {
   static String icFrontArrow = "images/ic_ForwordArrow.png";
   static String icNextArrow = "images/ic_next_arrow.png";
   static String icBackArrow = "images/ic_BackArrow.png";
-
+  static String ic_ForumLikeButton = "images/ic_ForumLikeHeart.png";
+  static String ic_SaveIcon = "images/ic_SaveIcon.png";
+  static String ic_SendButtonIcon = "images/ic_SendIcon.png";
+  static String ic_ShareIcon = "images/ic_ShareIcon.png";
+  static String ic_NotFoundLogo = "images/ic_NotFoundLogo.png";
 }
