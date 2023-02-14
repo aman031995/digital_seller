@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -48,7 +46,6 @@ class MyApp extends StatelessWidget {
           builder: EasyLoading.init(),
           debugShowCheckedModeBanner: false,
           initialRoute: '/',
-          scrollBehavior: MyCustomScrollBehavior(),
           routes:
           {
             '/': (context) => SplashScreen(),
@@ -59,12 +56,4 @@ class MyApp extends StatelessWidget {
           },
         ));
   }
-}
-class MyCustomScrollBehavior extends MaterialScrollBehavior {
-  // Override behavior methods and getters like dragDevices
-  @override
-  Set<PointerDeviceKind> get dragDevices => {
-    PointerDeviceKind.touch,
-    PointerDeviceKind.mouse,
-  };
 }

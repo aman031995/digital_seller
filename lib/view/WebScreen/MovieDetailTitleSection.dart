@@ -6,9 +6,8 @@ import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/utilities/three_arched_circle.dart';
-import 'package:tycho_streams/view/WebScreen/OnHover.dart';
 import 'package:tycho_streams/view/screens/DetailPage.dart';
-import 'package:tycho_streams/view/WebScreen/ViewAllListPages.dart';
+import 'package:tycho_streams/view/screens/ViewAllListPages.dart';
 import 'package:tycho_streams/view/widgets/AppDialog.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 
@@ -40,17 +39,17 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
     return Container(
       color: WHITE_COLOR,
       height: SizeConfig.screenHeight * 0.7,
-      padding: EdgeInsets.only(top: 10, left: 20),
+      padding: EdgeInsets.only(top: 5, left: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppRegularFont(
               msg: widget.movieDetailModel?.videoTitle,
-              maxLines: 1,
+              maxLines: 2,
               color: Colors.black,
-              fontSize: 20),
+              fontSize: 18),
           SizedBox(
-            height: 10,
+            height: 15,
           ),
           ReadMoreText(
             widget.movieDetailModel?.videoDescription ?? '',
@@ -82,7 +81,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
       children: [
         titleBar('More Like This', homeViewModel),
         Container(
-          height: 250,
+          height: 140,
           width: SizeConfig.screenWidth,
           child: homeViewModel.homePageDataModel?.videoList != null
               ? ListView.builder(
@@ -94,44 +93,32 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (context, index) {
                     return InkWell(
-                        onTap: () {
-                          Navigator.of(context, rootNavigator: true)
-                              .push(MaterialPageRoute(
-                                  builder: (context) => new MovieDetailPage(
-                                        platformMovieData: homeViewModel
-                                            .homePageDataModel
-                                            ?.videoList?[index],
-                                        // movieID: 'mZ5lbn9FWAQ',
-                                        movieID: homeViewModel.homePageDataModel
-                                            ?.videoList?[index].youtubeVideoId,
-                                      )));
-                        },
-                        child: OnHover(
-                            builder: (isHovered) {
-                              bool _heigth = isHovered;
-                              return Container(
-                                width: SizeConfig.screenWidth * 0.20,
-                                height: SizeConfig.screenHeight * 5.07,
-                                padding: EdgeInsets.only(
-                                    right: _heigth ? 1 : 10,
-                                    top: _heigth ? 1 : 10,
-                                    bottom: _heigth ? 1 : 10),
-                                child: Card(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15.0),
-                                    ),
-                                    child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(15),
-                                        child: Image.network(
-                                            homeViewModel
-                                                    .homePageDataModel
-                                                    ?.videoList?[index]
-                                                    .thumbnail ??
-                                                '',
-                                            fit: BoxFit.fill))),
-                              );
-                            },
-                            hovered: Matrix4.identity()..translate(0, 0, 0)));
+                      onTap: () {
+                        Navigator.of(context, rootNavigator: true)
+                            .push(MaterialPageRoute(
+                                builder: (context) => new MovieDetailPage(
+                                      platformMovieData: homeViewModel
+                                          .homePageDataModel?.videoList?[index],
+                                      // movieID: 'mZ5lbn9FWAQ',
+                                      movieID: homeViewModel.homePageDataModel
+                                          ?.videoList?[index].youtubeVideoId,
+                                    )));
+                      },
+                      child: Container(
+                        width: 200,
+                        child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Image.network(
+                                    homeViewModel.homePageDataModel
+                                            ?.videoList?[index].thumbnail ??
+                                        '',
+                                    fit: BoxFit.fill))),
+                      ),
+                    );
                   })
               : Container(
                   height: SizeConfig.screenHeight * 0.3,
@@ -149,7 +136,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppBoldFont(msg: title, fontSize: 30, color: TEXT_COLOR),
+          AppBoldFont(msg: title, fontSize: 16, color: TEXT_COLOR),
           homeViewModel.homePageDataModel!.videoList!.length > 8
               ? textButton(context, "See All", onApply: () {
                   Navigator.push(

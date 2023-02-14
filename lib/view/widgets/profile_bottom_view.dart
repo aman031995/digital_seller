@@ -6,8 +6,6 @@ List<String> names = [
   StringConstant.editProfile,
   StringConstant.settings,
   StringConstant.deleteAccount,
-  StringConstant.termsAndCondition,
-  StringConstant.privacyPolicy,
   StringConstant.logout,
 ];
 
@@ -15,8 +13,6 @@ List<String> namesIcon = [
   AssetsConstants.icEditProfile,
   AssetsConstants.icSettings,
   AssetsConstants.icDeleteAccount,
-  AssetsConstants.icTermsCondition,
-  AssetsConstants.icPrivacyPolicy,
   AssetsConstants.icLogout,
 ];
 

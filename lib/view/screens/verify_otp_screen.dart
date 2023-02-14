@@ -8,7 +8,6 @@ import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
-import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/utilities/TextStyling.dart';
 import 'package:tycho_streams/view/widgets/AppNavigationBar.dart';
@@ -78,10 +77,8 @@ class _VerifyOtpState extends State<VerifyOtp> {
       otpValue!.length == 4 ? isOTPInput = true : isOTPInput = false;
     }
     return Scaffold(
-        appBar:
-            getAppBarWithBackBtn(title: '', isBackBtn: true, context: context),
-        backgroundColor: LIGHT_THEME_BACKGROUND,
-        body: verificationSection(authVM));
+        appBar: getAppBarWithBackBtn(title: '', isBackBtn: true, context: context),
+        backgroundColor: LIGHT_THEME_BACKGROUND, body: verificationSection(authVM));
   }
 
   Widget verificationSection(AuthViewModel authVM) {
@@ -90,14 +87,11 @@ class _VerifyOtpState extends State<VerifyOtp> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 20),
+              SizedBox(height: 30),
               Container(
-                  margin: EdgeInsets.only(left: 10),
                   alignment: Alignment.topLeft,
                   child: AppBoldFont(
-                      msg: StringConstant.verification,
-                      fontSize: 26,
-                      color: TEXT_COLOR)),
+                      msg: 'Code verification', fontSize: 26, color: TEXT_COLOR)),
               SizedBox(height: 5),
               headerTextWidget(),
               SizedBox(height: 10),
@@ -109,7 +103,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
               SizedBox(height: 10),
               isOTPInput == true ? Container() : errorText(),
               SizedBox(height: 10),
-              appButton(context, StringConstant.verify, 280, 60.0, LIGHT_THEME_COLOR,
+              appButton(context, 'Verify', 280, 60.0, LIGHT_THEME_COLOR,
                   BUTTON_TEXT_COLOR, 16, 5.0, isOTPInput, onTap: () {
                 checkVerificationValidate(authVM);
               }),
@@ -146,11 +140,11 @@ class _VerifyOtpState extends State<VerifyOtp> {
 
   Widget headerTextWidget() {
     return Container(
-        margin: EdgeInsets.only(left: 10),
         alignment: Alignment.topLeft,
         child: AppMediumFont(
             textAlign: TextAlign.left,
-            msg: StringConstant.codeVerify,
+            msg:
+                'Please check your phone we have sent\n you a 4-digit code to verify.',
             color: TEXT_COLOR,
             fontSize: 14,
             maxLines: 2));
@@ -200,10 +194,10 @@ class _VerifyOtpState extends State<VerifyOtp> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       AppMediumFont(
-                          msg: StringConstant.resendOtp, color: BLACK_COLOR, fontSize: 16),
+                          msg: 'Resend Otp', color: BLACK_COLOR, fontSize: 16),
                       TextButton(
                         child: AppBoldFont(
-                            msg: StringConstant.resend + ' >',
+                            msg: 'Resend' + ' >',
                             color: THEME_COLOR,
                             fontSize: 16),
                         onPressed: () {
@@ -223,13 +217,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
   }
 
   _resendCode(AuthViewModel authVM) {
-    authVM.resendOtp(
-        widget.name ?? '',
-        widget.email ?? '',
-        widget.password ?? '',
-        widget.mobileNo ?? '',
-        widget.isForgotPassword!,
-        context, (result, isSuccess) {
+    authVM.resendOtp(widget.mobileNo!, context, (result, isSuccess) {
       if (isSuccess) {
         enableResend = false;
         startTimer();

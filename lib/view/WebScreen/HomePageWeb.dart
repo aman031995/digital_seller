@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tycho_streams/model/data/UserInfoModel.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
@@ -10,10 +9,8 @@ import 'package:tycho_streams/view/WebScreen/SignUp.dart';
 import 'package:tycho_streams/view/WebScreen/TopList.dart';
 import 'package:tycho_streams/view/WebScreen/TrendingVideos.dart';
 import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
-import 'package:tycho_streams/view/widgets/video_listpage.dart';
 class HomePageWeb extends StatefulWidget {
-
- HomePageWeb({Key? key}) : super(key: key);
+  const HomePageWeb({Key? key}) : super(key: key);
 
   @override
   State<HomePageWeb> createState() => _HomePageWebState();
@@ -50,10 +47,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                             return SignUp();
                           });
                     },
-                    child: Image.asset(AssetsConstants.icSignup,height: 40)),
-
-
-                SizedBox(width: SizeConfig.screenWidth*.01),
+                    child: Image.asset(AssetsConstants.icSignup,height: 40)),SizedBox(width: SizeConfig.screenWidth*.01),
                 GestureDetector(
                     onTap: (){
 
@@ -75,11 +69,11 @@ class _HomePageWebState extends State<HomePageWeb> {
               child: Column(
                 children: [
                   CommonCarousel(),
-                  VideoListPage(),
-                  // TrendingVideos(Videos:"TrendingVideos"),
-                  // TrendingVideos(Videos:"LateshMoviews"),
-                  // TopList(),
-
+                  TrendingVideos(Videos:"TrendingVideos"),
+                  TrendingVideos(Videos:"LateshMoviews"),
+                  TopList(),
+                  SizedBox(height: 40),
+                  footerDesktop()
 
                 ],
               )

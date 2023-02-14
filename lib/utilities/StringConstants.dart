@@ -1,31 +1,19 @@
 class StringConstant {
-  // **************Cached Model Keys ***************
-  static String kBannerList = "banner_list";
-  static String kCategoryList = "category_list";
-  static String kPrivacyTerms = "privacy_terms";
-  static String kUserDetails = "user_details";
-  static String kHomePageData = "homepage_data";
-
 // **************Login Page ***************
   static String mobileNumber = "Mobile Number";
   static String forgotPassword = "   Forgot Password?";
-  static String forgotPass = "Forgot Password";
   static String password = "Password";
-  static String phone = "Phone";
-  static String phoneNumber = 'Phone Number';
   static String register = "Register";
   static String signOut = 'Sign Out';
   static String update = 'Update';
   static String deleteAccountTitle = "Are you sure ?";
   static String deleteAccountMessage = "This Account connot be recovered once deleted.";
-  static String dontHaveAccount = "Don't have an account?";
 
   //  *********** Registration Page *************
   static String firstName = "First Name";
-  static String name = "Name";
   static String lastName = "Last Name";
   static String cName = "Company Name";
-  static String verification = 'Code verification';
+  static String verification = " Verification Code";
   static String email = "Email";
   static String description = "Description";
   static String enterOtp91 = "Enter OTP 4-digit code you received on ";
@@ -45,31 +33,23 @@ class StringConstant {
   static String enterOtpText =
       "Please check your phone number we will send you a verification code.";
   static String send = "Send";
-  static String resend = "Resend";
-  static String resendOtp = "Resend OTP";
+  static String resend = "Resend OTP";
   static String verify = "Verify";
-  static String codeVerify = 'Please check your phone we have sent\n you a 4-digit code to verify.';
   static String enterNewAndCurrentPassword = "Enter new password and confirm to reset your password.";
   static String newPassword = "New Password";
-  static String confirmPassword = "Confirm Password";
+  static String confirmPassword = "Confirm New Password";
   static String setNewPassword = "Set New Password";
   static String passwordMatch =
       "New passwords does not match with confirm password";
   static String changePassword = "Change Password";
-  static String enterNewPassword = 'Enter your new password to login again.';
 
 ///////////////////////////
   static String signUp = "Sign Up";
   static String signIn = "Sign In";
   static String login = "Login";
-  static String enterCredentials = 'Enter your credential to login.';
-  static String alreadyAccount = 'Already have an account?';
 
   static String getStart = "Get Started";
-  static String reset = 'Reset';
-  static String createAccount = 'Create Account';
-  static String create = 'Create';
-  static String letsRegister = 'Lets register your self to make profile. ';
+  static String createAccount = 'Create an Account';
   static String orContinueWith = "Or, continue with";
   static String delete = "Delete";
   static String share = "Share";
@@ -115,8 +95,5 @@ class StringConstant {
   static String kids = "Kids";
   static String drama = "Drama";
   static String profile = "Profile";
-  static String notFoundMsg = "There is no data , sorry try again \n any time later.";
-  static String tryAgain  = "Try Again";
-  static String forumTitle = "Forum";
 
 }

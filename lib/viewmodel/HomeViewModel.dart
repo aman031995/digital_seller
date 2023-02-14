@@ -10,41 +10,46 @@ class HomeViewModel with ChangeNotifier {
   final _homePageRepo = HomePageRepository();
 
   BannerDataModel? _bannerDataModal;
+
   BannerDataModel? get bannerDataModal => _bannerDataModal;
 
   HomePageDataModel? _homePageDataModel;
+
   HomePageDataModel? get homePageDataModel => _homePageDataModel;
 
   List<TrayDataModel>? _trayDataModel;
+
   List<TrayDataModel>? get trayDataModel => _trayDataModel;
-
-  BannerDataModel? bannerValueCheck;
-  HomePageDataModel? homePageValueCheck;
-
-  // getBanner(BuildContext context) async{
-  //   final box = await Hive.openBox<String>('appBox');
-  //   final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
-  //
-  //   if (await jsonCache.contains(StringConstant.kBannerList)) {
-  //     CacheDataManager.getCachedData(key: StringConstant.kBannerList).then((jsonData) {
-  //       _bannerDataModal = BannerDataModel.fromJson(jsonData!['data']);
-  //       print('From Cached BannerList');
-  //       notifyListeners();
-  //     });
-  //   } else {
-  //     getBannerLists(context);
-  //   }
-  // }
 
   Future<void> getBannerLists(BuildContext context) async {
     // AppIndicator.loadingIndicator();
     _homePageRepo.getBannerData(context, (result, isSuccess) {
       if (isSuccess) {
-        _bannerDataModal = ((result as SuccessState).value as ASResponseModal).dataModal;
-        bannerValueCheck = _bannerDataModal;
+        _bannerDataModal =
+            ((result as SuccessState).value as ASResponseModal).dataModal;
         notifyListeners();
       }
     });
+  }
+
+  Future<void> getPaginationVideoList(
+      BuildContext context,int trayId,int pageNum)async {
+    _homePageRepo.getHomePageData(trayId ??  1, pageNum, context,
+            (result, isSuccess) {
+          if (isSuccess) {
+            _homePageDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+            ASResponseModal responseModal =
+            (result as SuccessState).value as ASResponseModal;
+            _homePageDataModel = responseModal.dataModal;
+            TrayDataModel? element;
+            PlatformMovieData platformMovieData = new PlatformMovieData(
+                element?.trayIdentifier ?? '',
+                element?.trayIdentifier ?? '',
+                _homePageDataModel!.videoList!);
+            element?.updatePlatformData(platformMovieData);
+            notifyListeners();
+          }
+        });
   }
 
   Future<void> getHomePageData(
@@ -53,39 +58,34 @@ class HomeViewModel with ChangeNotifier {
     _homePageRepo.getHomePageData(element?.trayId ?? 1, 1, context,
         (result, isSuccess) {
       if (isSuccess) {
-        // _homePageDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-        ASResponseModal responseModal = (result as SuccessState).value as ASResponseModal;
+        _homePageDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        ASResponseModal responseModal =
+            (result as SuccessState).value as ASResponseModal;
         _homePageDataModel = responseModal.dataModal;
         PlatformMovieData platformMovieData = new PlatformMovieData(
             element?.trayIdentifier ?? '',
             element?.trayIdentifier ?? '',
             _homePageDataModel!.videoList!);
         element?.updatePlatformData(platformMovieData);
-        homePageValueCheck = _homePageDataModel;
         notifyListeners();
       }
     });
   }
 
-  Future<void> getTrayData(BuildContext context) async {
+  Future<void> getTrayData(BuildContext context, bool? isDetail) async {
     _homePageRepo.getTrayDataList(context, (result, isSuccess) {
       if (isSuccess) {
-        _trayDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-          _trayDataModel?.forEach((element) {
+        _trayDataModel =
+            ((result as SuccessState).value as ASResponseModal).dataModal;
+        if (isDetail == true) {
+          getHomePageData(context, _trayDataModel?[0]);
+        } else {
+          _trayDataModel!.forEach((element) {
             getHomePageData(context, element);
           });
+        }
         notifyListeners();
       }
     });
-  }
-
-  Future<void> getMoreLikeThis(BuildContext context, String videoId)async{
-    _homePageRepo.getMoreLikeThisData(videoId ?? '', context,
-            (result, isSuccess) {
-          if (isSuccess) {
-            _homePageDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-            notifyListeners();
-          }
-        });
   }
 }

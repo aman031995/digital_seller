@@ -24,7 +24,7 @@ Widget noDataFoundMessage(BuildContext context){
             Padding(
               padding: const EdgeInsets.all(10),
               child: Image.asset(
-                "images/ic_NotFoundLogo.png",
+                AssetsConstants.ic_NotFoundLogo,
                 height: SizeConfig.screenHeight * 0.2,
                 width: 300,
               ),
