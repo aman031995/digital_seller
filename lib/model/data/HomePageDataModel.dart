@@ -43,7 +43,7 @@ class VideoList {
   String? thumbnail;
   String? videoSource;
   String? publishedAt;
-  int? videoCategory;
+  String? videoCategory;
   bool? isYoutube;
   String? youtubeVideoId;
 

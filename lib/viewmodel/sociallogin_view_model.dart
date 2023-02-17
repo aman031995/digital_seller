@@ -185,7 +185,8 @@ class SocialLoginViewModel with ChangeNotifier {
             if (userInfoModel!.firstTimeSocial == false) {
               AppDataManager.getInstance.updateUserDetails(userInfoModel);
               AppDataManager.setFirstTimeValue();
-              Navigator.pushNamed(context,  '/');
+              Navigator.pop(context);
+              Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (route) => false);
               // GoRouter.of(context).pushReplacementNamed(RoutesName.bottomNavigation);
               // Navigator.pushReplacement(context,
               //     MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)));

@@ -31,6 +31,7 @@ class AuthViewModel with ChangeNotifier {
         print('Login api Successfully');
         AppIndicator.disposeIndicator();
         isLogin=true;
+        Navigator.pop(context);
      Navigator.pushNamed(context,'/HomePage');
         // Navigator.pushNamedAndRemoveUntil(context, RoutesName.bottomNavigation, (route) => false);
         notifyListeners();
