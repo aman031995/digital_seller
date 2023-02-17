@@ -30,7 +30,7 @@ class _SocialLoginViewState extends State<SocialLoginView> {
         }),
         SizedBox(width: 10),
         socialNetworkButton(AssetsConstants.icFacebook, () {
-          widget.socialLoginViewModel?.loginWithFB(context);
+        widget.socialLoginViewModel?.loginWithFB(context);
           isGoogle = false;
         }),
         SizedBox(width: 10),

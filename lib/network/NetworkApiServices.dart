@@ -22,12 +22,14 @@ class NetworkApiServices  {
       } else {
         if (response.statusCode == 200) {
           dynamic responseJson = json.decode(response.body.toString());
+          LogsMessage.logMessage(message: response.request, level: Level.info);
           LogsMessage.logMessage(message: responseJson, level: Level.info);
           networkResponseHandler(Result.success(responseJson), true);
         } else {
           //error
           AppIndicator.disposeIndicator();
           dynamic responseJson = json.decode(response.body.toString());
+          LogsMessage.logMessage(message: response.request, level: Level.error);
           LogsMessage.logMessage(message: responseJson, level: Level.error);
           return Result.error("Book list not available");
         }
@@ -209,10 +211,6 @@ class NetworkApiServices  {
 
   static void logoutButtonPressed(BuildContext context) async {
     AppDataManager.deleteSavedDetails();
-    await Future.delayed(const Duration(seconds: 1)).then((value) =>
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (_) => LoginScreen()),
-                (route) => false));
+    Navigator.pushNamed(context, '/');
   }
 }

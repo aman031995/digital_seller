@@ -74,28 +74,6 @@ class _SignUpState extends State<SignUp> {
                         color: Colors.black,
                         fontSize: 18),
                     registerForm(),
-                    SizedBox(height: SizeConfig.screenHeight * .01),
-                    Container(
-                      padding:
-                          EdgeInsets.only(left: SizeConfig.screenWidth * 0.05),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Checkbox(
-                            checkColor: Colors.greenAccent,
-                            activeColor: Colors.red,
-                            value: false,
-                            onChanged: (bool? value) {},
-                          ),
-                          Container(
-                              width: SizeConfig.screenWidth / 4.3,
-                              child: Text(
-                                  'By signing you are agree to our Terms & conditions and privacy policy.',
-                                  style: TextStyle(fontSize: 16.0))),
-                        ],
-                      ),
-                    ),
                     SizedBox(height: SizeConfig.screenHeight * .02),
                     StreamBuilder(
                         stream: validation.registerUser,

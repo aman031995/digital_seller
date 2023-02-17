@@ -65,16 +65,16 @@ class MyAppRouter {
           ),
         ],
       ),
-      GoRoute(
-        name: RoutesName.bottomNavigation,
-        path: '/bottom_navigation',
-        pageBuilder: (context, state) {
-          return MaterialPage(
-              child: BottomNavigation(
-            index: 0,
-          ));
-        },
-      ),
+      // GoRoute(
+      //   name: RoutesName.bottomNavigation,
+      //   path: '/bottom_navigation',
+      //   pageBuilder: (context, state) {
+      //     return MaterialPage(
+      //         child: BottomNavigation(
+      //       index: 0,
+      //     ));
+      //   },
+      // ),
       GoRoute(
         name: RoutesName.editProfile,
         path: '/edit_profile',

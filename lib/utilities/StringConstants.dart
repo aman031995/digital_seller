@@ -96,4 +96,43 @@ class StringConstant {
   static String drama = "Drama";
   static String profile = "Profile";
 
-}
+  // **************Cached Model Keys ***************
+  static String kBannerList = "banner_list";
+  static String kCategoryList = "category_list";
+  static String kPrivacyTerms = "privacy_terms";
+  static String kUserDetails = "user_details";
+  static String kHomePageData = "homepage_data";
+
+// **************Login Page ***************
+
+  static String forgotPass = "Forgot Password";
+
+  static String phone = "Phone";
+  static String phoneNumber = 'Phone Number';
+
+  static String dontHaveAccount = "Don't have an account?";
+
+
+  static String resendOtp = "Resend OTP";
+
+  static String codeVerify = 'Please check your phone we have sent\n you a 4-digit code to verify.';
+
+
+  static String enterNewPassword = 'Enter your new password to login again.';
+
+  static String enterCredentials = 'Enter your credential to login.';
+  static String alreadyAccount = 'Already have an account?';
+
+  static String reset = 'Reset';
+
+  static String create = 'Create';
+  static String letsRegister = 'Lets register your self to make profile. ';
+
+
+  // New Strings added By Aman Singh ----------------
+
+  static String notFoundMsg = "There is no data , sorry try again \n any time later.";
+  static String tryAgain  = "Try Again";
+  static String forumTitle = "Forum";
+
+  }

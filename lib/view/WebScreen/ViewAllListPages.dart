@@ -18,6 +18,7 @@ import 'package:tycho_streams/view/screens/subscription_page.dart';
 import 'package:tycho_streams/view/widgets/AppNavigationBar.dart';
 import 'package:tycho_streams/viewmodel/CategoryViewModel.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
+import 'package:tycho_streams/viewmodel/sociallogin_view_model.dart';
 
 class SeeAllListPages extends StatefulWidget {
   int? trayId;
@@ -91,8 +92,22 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                       AppBoldFont(msg: 'Contact US', color: BLACK_COLOR, fontSize: 20),
                       Expanded(child: SizedBox(width: SizeConfig.screenWidth*.12)),
                       Image.asset(AssetsConstants.icSearch,height: 40),SizedBox(width: SizeConfig.screenWidth*.02),
+                      // GestureDetector(
+                      //     onTap: (){
+                      //       showDialog(
+                      //           context: context,
+                      //           barrierDismissible: true,
+                      //           barrierColor: Colors.black87,
+                      //           builder: (BuildContext context) {
+                      //             return SignUp();
+                      //           });
+                      //     },
+                      //     child: Image.asset(AssetsConstants.icSignup,height: 40)),
+
+                      name=="a"?
                       GestureDetector(
-                          onTap: (){
+                          onTap: () {
+                            Navigator.pop(context);
                             showDialog(
                                 context: context,
                                 barrierDismissible: true,
@@ -101,9 +116,8 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                   return SignUp();
                                 });
                           },
-                          child: Image.asset(AssetsConstants.icSignup,height: 40)),
-
-
+                          child:  Image.asset(AssetsConstants.icSignup, height: 40)
+                      ): Text(name!,style: TextStyle(color: Colors.black,fontSize: 40),),
                       SizedBox(width: SizeConfig.screenWidth*.01),
                       GestureDetector(
                           onTap: (){
@@ -183,7 +197,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                 );}, hovered: Matrix4.identity()..translate(0, 0, 0)),
                               );
                             })
-                        : noDataFoundMessage(context)
+                        : Container()
                     : Container(
                         height: SizeConfig.screenHeight * 0.8,
                         child: Center(

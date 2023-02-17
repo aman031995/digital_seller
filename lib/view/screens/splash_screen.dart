@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/model/data/TermsPrivacyModel.dart';
 import 'package:tycho_streams/utilities/AssetsConstants.dart';
@@ -41,6 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (isPhone != null) {
      // GoRouter.of(context).pushReplacementNamed(RoutesName.bottomNavigation);
     } else {
+      Navigator.pushNamed(context,  '/HomePage');
      // GoRouter.of(context).pushReplacementNamed(RoutesName.login);
     }
   }

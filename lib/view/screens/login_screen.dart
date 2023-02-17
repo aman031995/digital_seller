@@ -53,9 +53,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 msg: "Don't have an account?", color: TEXT_BLACK_COLOR),
             appTextButton(context, 'Create', Alignment.bottomCenter,
                 THEME_COLOR, 16, true, onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
                   // Navigator.pushNamedAndRemoveUntil(context, RoutesName.register, (route) => false);
                   // Navigator.push(context, MaterialPageRoute(builder: (_) => RegisterScreen()));
-                  GoRouter.of(context).pushNamed(RoutesName.register);
+                 // GoRouter.of(context).pushNamed(RoutesName.register);
                 }),
           ],
         ),
@@ -135,6 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TEXT_BLACK_COLOR,
                     16,
                     true, onPressed: () {
+                 // Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
                   // Navigator.push(context, MaterialPageRoute(builder: (_) => ForgotPassword()));
                   GoRouter.of(context).pushNamed(RoutesName.forgot);
                 }),

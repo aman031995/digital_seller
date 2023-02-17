@@ -1,5 +1,6 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -104,30 +105,26 @@ class SocialLoginViewModel with ChangeNotifier {
 
 // for facebook login
   Future<void> loginWithFB(BuildContext context) async {
-    AccessToken? _accessToken;
-    // await FirebaseMessaging.instance.getToken().then((value) {
-    //   FacebookAuth.instance.logOut();
-    //   FacebookAuth.instance.login().then((result) async {
-    //     if (result.status == LoginStatus.success) {
-    //       _accessToken = result.accessToken;
-    //       final userData = await FacebookAuth.instance.getUserData();
-    //       socialLoginPressed(
-    //         context,
-    //         _accessToken!.userId,
-    //         _accessToken!.token,
-    //         value ?? "",
-    //         "facebook",
-    //         userData['email'] ?? '',
-    //         userData['name'],
-    //       );
-    //     } else {
-    //       ToastMessage.message(result.message);
-    //       print(result.status);
-    //       print(result.message);
-    //     }
-    //   });
-    // });
+
+    final LoginResult result = await FacebookAuth.instance.login();
+    if (result.status == LoginStatus.success) {
+      final userData = await FacebookAuth.instance.getUserData();
+      var fbname = userData['name'];
+      var fbmail = userData['email'];
+      var fbImage=userData['picture']["data"]["url"];
+      // userid(na: fbname,id: fbmail,pic: fbImage);
+      print(fbmail);
+      print(fbname);
+      // Navigator.of(context).pushReplacement(
+      //     MaterialPageRoute(builder: (context) => const MapHomeScreen()));
+    } else {
+      // print(result.status);
+      // print(result.message);
+    }
+
   }
+
+
 
   Future<void> loginWithApple(BuildContext context) async {
     // await FirebaseMessaging.instance.getToken().then((value) async {

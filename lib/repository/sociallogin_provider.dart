@@ -8,7 +8,6 @@ import 'package:tycho_streams/network/result.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
 
 class SocialLoginProvider{
-
   Future<Result>? loginUpdate(String userId, String userEmail, String phone,
       BuildContext context, NetworkResponseHandler responseHandler) {
     AppNetwork appNetwork = AppNetwork();
