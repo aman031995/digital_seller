@@ -49,13 +49,13 @@ class HomePageRepository {
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
-      // "Authorization": "Bearer " + sharedPreferences.get("token").toString()
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
+       "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+      // "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
-      "{USER_ID}" : "9d4bae72-a172-4dbb-842d-56242c03bffb",
-      "{APP_ID}": "7a72f14a-314c-4038-a7ec-b36e64f1ebd1",
+      "{USER_ID}" : sharedPreferences.get("userId").toString(),
+      "{APP_ID}": "2dMuXTB2YPQ",
       "{VIDEO_FOR}" : '1',
       "{PAGE_NUM}" : '1'
     };
@@ -82,8 +82,8 @@ class HomePageRepository {
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
-
-     "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+     //"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
@@ -117,7 +117,8 @@ class HomePageRepository {
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+     // "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
@@ -147,7 +148,8 @@ class HomePageRepository {
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+      //"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
@@ -177,7 +179,8 @@ class HomePageRepository {
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+     // "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {

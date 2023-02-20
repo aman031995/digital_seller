@@ -112,7 +112,7 @@ class _SignUpState extends State<SignUp> {
                               Navigator.pop(context);
                               showDialog(
                                   context: context,
-                                  barrierDismissible: true,
+                                  barrierDismissible:false,
                                   barrierColor: Colors.black87,
                                   builder: (BuildContext context) {
                                     return LoginUp();

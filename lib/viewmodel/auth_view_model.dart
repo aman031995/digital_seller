@@ -32,8 +32,7 @@ class AuthViewModel with ChangeNotifier {
         AppIndicator.disposeIndicator();
         isLogin=true;
         Navigator.pop(context);
-     Navigator.pushNamed(context,'/HomePage');
-        // Navigator.pushNamedAndRemoveUntil(context, RoutesName.bottomNavigation, (route) => false);
+        Navigator.pushNamedAndRemoveUntil(context,'/HomePage', (route) => false);
         notifyListeners();
       }
     });

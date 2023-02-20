@@ -68,10 +68,13 @@ String name="a";
 
                   SingleChildScrollView(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                      SizedBox(height: 50),
                     CommonCarousel(),
                     VideoListPage(),
+                        SizedBox(height: 50),
                     footerDesktop()
                       ],
                     ),
@@ -105,10 +108,9 @@ String name="a";
                         name=="a"?
                         GestureDetector(
                             onTap: () {
-                              Navigator.pop(context);
                                  showDialog(
                                   context: context,
-                                  barrierDismissible: true,
+                                  barrierDismissible:false,
                                   barrierColor: Colors.black87,
                                   builder: (BuildContext context) {
                                     return SignUp();
@@ -120,12 +122,11 @@ String name="a";
                         SizedBox(width: SizeConfig.screenWidth * .01),
                         GestureDetector(
                             onTap: () {
-                              Navigator.pop(context);
                               name=="a"?
 
                               showDialog(
                                   context: context,
-                                  barrierDismissible: true,
+                                  barrierDismissible: false,
                                   barrierColor: Colors.black87,
                                   builder: (BuildContext context) {
                                     return LoginUp();

@@ -63,9 +63,7 @@ class MyApp extends StatelessWidget {
           initialRoute: '/HomePage',
           routes:
           {
-            '/HomePage': (context) => HomePageWeb(),
-            '/ViewAll': (context) => ViewAll(),
-            '/Recommended' :(context)=>Recommended()
+            '/HomePage':(context)=>HomePageWeb(),
 
           },
         ));

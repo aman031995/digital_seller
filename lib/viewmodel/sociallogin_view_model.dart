@@ -161,7 +161,7 @@ class SocialLoginViewModel with ChangeNotifier {
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             AppDataManager.getInstance.updateUserDetails(userInfoModel!);
             AppDataManager.setFirstTimeValue();
-            Navigator.pushNamed(context,  '/');
+            Navigator.pushNamed(context,  '/HomePage');
            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)));
           }
         });

@@ -71,7 +71,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final subscriptionVM = Provider.of<SubscriptionProvider>(context);
+    //final subscriptionVM = Provider.of<SubscriptionProvider>(context);
     return ChangeNotifierProvider<CategoryViewModel>(
         create: (BuildContext context) => categoryView,
         child: Consumer<CategoryViewModel>(builder: (context, categoryView, _) {
@@ -103,34 +103,34 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                       //           });
                       //     },
                       //     child: Image.asset(AssetsConstants.icSignup,height: 40)),
-
-                      name=="a"?
-                      GestureDetector(
-                          onTap: () {
-                            Navigator.pop(context);
-                            showDialog(
-                                context: context,
-                                barrierDismissible: true,
-                                barrierColor: Colors.black87,
-                                builder: (BuildContext context) {
-                                  return SignUp();
-                                });
-                          },
-                          child:  Image.asset(AssetsConstants.icSignup, height: 40)
-                      ): Text(name!,style: TextStyle(color: Colors.black,fontSize: 40),),
-                      SizedBox(width: SizeConfig.screenWidth*.01),
-                      GestureDetector(
-                          onTap: (){
-
-                            showDialog(
-                                context: context,
-                                barrierDismissible: true,
-                                barrierColor: Colors.black87,
-                                builder: (BuildContext context) {
-                                  return LoginUp();
-                                });
-                          },
-                          child: Image.asset(AssetsConstants.icLogin,height: 40)),SizedBox(width: SizeConfig.screenWidth*.02),
+                      //
+                      // name=="a"?
+                      // GestureDetector(
+                      //     onTap: () {
+                      //       Navigator.pop(context);
+                      //       showDialog(
+                      //           context: context,
+                      //           barrierDismissible: true,
+                      //           barrierColor: Colors.black87,
+                      //           builder: (BuildContext context) {
+                      //             return SignUp();
+                      //           });
+                      //     },
+                      //     child:  Image.asset(AssetsConstants.icSignup, height: 40)
+                      // ): Text(name!,style: TextStyle(color: Colors.black,fontSize: 40),),
+                      // SizedBox(width: SizeConfig.screenWidth*.01),
+                      // GestureDetector(
+                      //     onTap: (){
+                      //
+                      //       showDialog(
+                      //           context: context,
+                      //           barrierDismissible: true,
+                      //           barrierColor: Colors.black87,
+                      //           builder: (BuildContext context) {
+                      //             return LoginUp();
+                      //           });
+                      //     },
+                      //     child: Image.asset(AssetsConstants.icLogin,height: 40)),SizedBox(width: SizeConfig.screenWidth*.02),
                     ],
                   ),
                 )
