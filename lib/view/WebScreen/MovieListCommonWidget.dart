@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
+import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/view/WebScreen/MovieCardCommonWidget.dart';
@@ -44,6 +45,8 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
     return widget.platformMovieData != null
         ? Container(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 widget.platformMovieData!.content!.isNotEmpty
                     ? movieCardTopBAR(context, widget.trayTitle!,
@@ -51,7 +54,7 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
                     : Container(),
                 Container(
                   height: (widget.platformMovieData!.content!.isNotEmpty)
-                      ? SizeConfig.screenHeight * 0.3
+                      ? ResponsiveWidget.isMediumScreen(context)?200 :SizeConfig.screenHeight * 0.3
                       : 0.0,
                   child: widget.platformMovieData?.content != null
                       ? ListView.builder(
@@ -89,7 +92,7 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
       BuildContext context, String title, bool isSubTitle, bool isButton) {
     return Container(
       height: isSubTitle ? 70 : 40,
-    margin: EdgeInsets.only(right: 25,left: 10,top: 20),
+    margin: EdgeInsets.only(right: 25,left: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -97,7 +100,7 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppBoldFont(msg: title, fontSize: 30, color: TEXT_COLOR),
+              AppBoldFont(msg: title, fontSize: ResponsiveWidget.isMediumScreen(context)? 18:30, color: TEXT_COLOR),
               widget.platformMovieData!.content!.length > 8
                   ? textButton(context, "See All", onApply: () {
                       Navigator.push(

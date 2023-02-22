@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AssetsConstants.dart';
+import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/three_arched_circle.dart';
@@ -35,18 +36,12 @@ class _CommonCarouselState extends State<CommonCarousel> {
     return ChangeNotifierProvider<HomeViewModel>(
         create: (BuildContext context) => homeViewModel,
         child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
-          return SingleChildScrollView(
-            child: Column(
-              children: [
-                homeViewModel.bannerDataModal != null
-                    ? carouselImages()
-                    : Container(
-                  height: SizeConfig.screenHeight * 0.3,
-                  child: Center(
-                      child: ThreeArchedCircle(color: THEME_COLOR, size: 50.0)
-                  ),
-                ),
-              ],
+          return homeViewModel.bannerDataModal != null
+              ? ResponsiveWidget.isMediumScreen(context)?carouselImage() :carouselImages()
+              : Container(
+            height: SizeConfig.screenHeight * 0.3,
+            child: Center(
+                child: ThreeArchedCircle(color: THEME_COLOR, size: 50.0)
             ),
           );
         }));
@@ -59,7 +54,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
     return Stack(
       children: [
         Container(
-          height:700, width: 2500,
+          height:  700,width: 2500,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5)
           ),
@@ -114,8 +109,48 @@ class _CommonCarouselState extends State<CommonCarousel> {
         )],
     );
   }
-
-
+  Widget carouselImage() {
+    var imageSliders = generateImageTile(context);
+    return CarouselSlider(
+      items: imageSliders,
+      options: CarouselOptions(
+          scrollDirection: Axis.horizontal,
+          scrollPhysics: PageScrollPhysics(),
+          viewportFraction: 1,
+          aspectRatio: 2,
+          enlargeCenterPage: true,
+          autoPlay: true,
+          autoPlayInterval: Duration(seconds: 5),
+          onPageChanged: (index, reason) {
+            setState(() {
+              current = index;
+            });
+          }),
+      carouselController: carouselController,
+    );
+  }
+  List<Widget> generateImageTile(BuildContext context) {
+    return homeViewModel.bannerDataModal!.bannerList!
+        .map((element) => InkWell(
+        focusNode: carouselFocus,
+        onTap: () {
+          print(current);
+        },
+        child: Container(
+          margin: EdgeInsets.only(left: 10,right: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            image: DecorationImage(
+              image: NetworkImage(element.bannerFile ?? ""),
+              // alignment: Alignment.topCenter,
+              fit: BoxFit.fill
+            ),
+          ),
+          // child: Image.network(element.bannerFile ?? "",
+          //     fit: BoxFit.fill, height: SizeConfig.screenHeight)
+        )))
+        .toList();
+  }
   List<Widget> generateImageTiles(BuildContext context) {
     return homeViewModel.bannerDataModal!.bannerList!
         .map((element) =>  Stack(

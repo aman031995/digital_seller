@@ -1,9 +1,15 @@
+
+
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tycho_streams/Utilities/AssetsConstants.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
+import 'package:tycho_streams/network/AppDataManager.dart';
+import 'package:tycho_streams/network/CacheDataManager.dart';
 import 'package:tycho_streams/repository/subscription_provider.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
+import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
@@ -43,6 +49,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
   final CategoryViewModel categoryView = CategoryViewModel();
   final HomeViewModel homeView = HomeViewModel();
   ScrollController _scrollController = ScrollController();
+  TextEditingController? editingController = TextEditingController();
 
   bool onNotification(ScrollNotification notification) {
     // if (notification is ScrollUpdateNotification) {
@@ -67,7 +74,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
     }
     super.initState();
   }
-
+  final List<String> genderItems = ['My Acount', 'Logout'];
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -76,114 +83,169 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
         create: (BuildContext context) => categoryView,
         child: Consumer<CategoryViewModel>(builder: (context, categoryView, _) {
           return Scaffold(
-            appBar:  PreferredSize(preferredSize: Size.fromHeight(60),
-                child: Container(
-                  padding: EdgeInsets.only(top: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(width: 40),
-                      Image.asset(AssetsConstants.icLogo,height: 40),
-                      Expanded(child: SizedBox(width: SizeConfig.screenWidth*.12)),
-                      AppBoldFont(msg: 'Home', color: BLACK_COLOR, fontSize: 20),
-                      SizedBox(width: SizeConfig.screenWidth*.02),
-                      AppBoldFont(msg: 'Upcoming', color: BLACK_COLOR, fontSize: 20),
-                      SizedBox(width: SizeConfig.screenWidth*.02),
-                      AppBoldFont(msg: 'Contact US', color: BLACK_COLOR, fontSize: 20),
-                      Expanded(child: SizedBox(width: SizeConfig.screenWidth*.12)),
-                      Image.asset(AssetsConstants.icSearch,height: 40),SizedBox(width: SizeConfig.screenWidth*.02),
-                      // GestureDetector(
-                      //     onTap: (){
-                      //       showDialog(
-                      //           context: context,
-                      //           barrierDismissible: true,
-                      //           barrierColor: Colors.black87,
-                      //           builder: (BuildContext context) {
-                      //             return SignUp();
-                      //           });
-                      //     },
-                      //     child: Image.asset(AssetsConstants.icSignup,height: 40)),
-                      //
-                      // name=="a"?
-                      // GestureDetector(
-                      //     onTap: () {
-                      //       Navigator.pop(context);
-                      //       showDialog(
-                      //           context: context,
-                      //           barrierDismissible: true,
-                      //           barrierColor: Colors.black87,
-                      //           builder: (BuildContext context) {
-                      //             return SignUp();
-                      //           });
-                      //     },
-                      //     child:  Image.asset(AssetsConstants.icSignup, height: 40)
-                      // ): Text(name!,style: TextStyle(color: Colors.black,fontSize: 40),),
-                      // SizedBox(width: SizeConfig.screenWidth*.01),
-                      // GestureDetector(
-                      //     onTap: (){
-                      //
-                      //       showDialog(
-                      //           context: context,
-                      //           barrierDismissible: true,
-                      //           barrierColor: Colors.black87,
-                      //           builder: (BuildContext context) {
-                      //             return LoginUp();
-                      //           });
-                      //     },
-                      //     child: Image.asset(AssetsConstants.icLogin,height: 40)),SizedBox(width: SizeConfig.screenWidth*.02),
-                    ],
-                  ),
-                )
+            appBar:  ResponsiveWidget.isMediumScreen(context)?homePageTopBar():  PreferredSize(
+              preferredSize: Size.fromHeight(80),
+              child: Container(
+                height:70,color: Colors.white,
+                padding: EdgeInsets.only(top: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: 40),
+                    Image.asset(AssetsConstants.icLogo, height: 40),
+                    Expanded(
+                        child:
+                        SizedBox(width: SizeConfig.screenWidth * .12)),
+                    AppBoldFont(
+                        msg: 'Home', color: BLACK_COLOR, fontSize: 20),
+                    SizedBox(width: SizeConfig.screenWidth * .02),
+                    AppBoldFont(
+                        msg: 'Upcoming', color: BLACK_COLOR, fontSize: 20),
+                    SizedBox(width: SizeConfig.screenWidth * .02),
+                    AppBoldFont(
+                        msg: 'Contact US',
+                        color: BLACK_COLOR,
+                        fontSize: 20),
+                    Expanded(
+                        child:
+                        SizedBox(width: SizeConfig.screenWidth * .12)),
+                    Image.asset(AssetsConstants.icSearch, height: 40),
+                    SizedBox(width: SizeConfig.screenWidth * .08),
+
+                  ],
+                ),
+              ),
             ),
             body: SingleChildScrollView(
-              child:
 
-              contentWidget(
-                  videoList: NotificationListener(
-                onNotification: (notification) {
-                  if (notification is ScrollEndNotification) {
-                    print(_scrollController.position.pixels);
-                  }
-                  return false;
-                },
-                child: categoryView != null
-                    ? categoryView.getPreviousPageList.length > 0
-                        ? GridView.builder(
-                            physics: AlwaysScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            controller: _scrollController,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 4,
-                                    crossAxisSpacing: 9.0,
-                                    mainAxisSpacing: 5.0,
-                                    childAspectRatio: 1.5),
-                            itemCount: categoryView.getPreviousPageList.length,
-                            itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
-                                  Navigator.of(context, rootNavigator: true)
-                                      .push(MaterialPageRoute(
-                                          builder: (context) =>
-                                              new MovieDetailPage(
-                                                platformMovieData:
-                                                categoryView.getPreviousPageList[index],
-                                                movieID: categoryView.getPreviousPageList[index]
-                                                    .youtubeVideoId,
-                                              )));
-                                },
-                                child:
-    OnHover(
-    builder: (isHovered) {
-    bool _heigth = isHovered;
-    return Container(
-                                  padding: EdgeInsets.only(left:_heigth?0: 10,right:_heigth?0: 10,top: _heigth?0:10,bottom:_heigth?0: 10),
-                                  height: SizeConfig.screenHeight * 0.5,
-                                  child: Card(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15.0),
-                                      ),
+
+              child:   ResponsiveWidget.isMediumScreen(context)?contentsWidget( videoList: NotificationListener(
+              onNotification: (notification) {
+                if (notification is ScrollEndNotification) {
+                  print(_scrollController.position.pixels);
+                }
+                return false;
+              },
+              child: categoryView != null
+                  ? categoryView.getPreviousPageList.length > 0
+                  ? SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          width: 250,
+                          child: GridView.builder(
+                          physics: ScrollPhysics(),
+                          shrinkWrap: true,
+                          controller: _scrollController,
+                          gridDelegate:
+                          SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 1,
+                              crossAxisSpacing: 5,
+                              mainAxisSpacing:  15,
+                              childAspectRatio: 1.8),
+                          itemCount: categoryView.getPreviousPageList.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.of(context, rootNavigator: true)
+                                    .push(MaterialPageRoute(
+                                    builder: (context) =>
+                                    new MovieDetailPage(
+                                      platformMovieData: categoryView
+                                          .getPreviousPageList[index],
+                                      movieID: categoryView
+                                          .getPreviousPageList[index]
+                                          .youtubeVideoId,
+                                    )));
+                              },
+                              child: OnHover(
+                                  builder: (isHovered) {
+                                    bool _heigth = isHovered;
+                                    return Container(
+                                      child: ClipRRect(
+                                          borderRadius:
+                                          BorderRadius.circular(15),
+                                          child: Image.network(
+                                            categoryView
+                                                .getPreviousPageList[
+                                            index]
+                                                .thumbnail ??
+                                                "",
+                                            fit: BoxFit.fill)),
+                                    );
+                                  },
+                                  hovered: Matrix4.identity()
+                                    ..translate(0, 0, 0)),
+                            );
+                          }),
+                        ),
+                        SizedBox(height: 40),
+                        footerMobile(context)
+                      ],
+                    ),
+                  )
+                  : Container()
+                  : Container(
+                height: SizeConfig.screenHeight * 0.8,
+                child: Center(
+                  child:
+                  ThreeArchedCircle(color: THEME_COLOR, size: 45.0),
+                ),
+              ),
+            )) :
+            contentWidget(
+                 videoList: NotificationListener(
+              onNotification: (notification) {
+                if (notification is ScrollEndNotification) {
+                  print(_scrollController.position.pixels);
+                }
+                return false;
+              },
+              child: categoryView != null
+                  ? categoryView.getPreviousPageList.length > 0
+                      ? GridView.builder(
+                          physics: AlwaysScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          controller: _scrollController,
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount:
+                                      ResponsiveWidget.isMediumScreen(context)
+                                          ? 1
+                                          : 4,
+                                  crossAxisSpacing: ResponsiveWidget.isMediumScreen(context)?5:9.0,
+                                  mainAxisSpacing:  ResponsiveWidget.isMediumScreen(context)?15:5.0,
+                                  childAspectRatio: ResponsiveWidget.isMediumScreen(context)
+                                      ? 1.8:1.5),
+                          itemCount: categoryView.getPreviousPageList.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () {
+                                Navigator.of(context, rootNavigator: true)
+                                    .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            new MovieDetailPage(
+                                              platformMovieData: categoryView
+                                                  .getPreviousPageList[index],
+                                              movieID: categoryView
+                                                  .getPreviousPageList[index]
+                                                  .youtubeVideoId,
+                                            )));
+                              },
+                              child: OnHover(
+                                  builder: (isHovered) {
+                                    bool _heigth = isHovered;
+                                    return Container(
+                                      margin: EdgeInsets.only(left: 25,right: 25),
+                                      padding: EdgeInsets.only(
+                                          left:ResponsiveWidget.isMediumScreen(context)?0: _heigth ? 20 :10,
+                                          right: ResponsiveWidget.isMediumScreen(context)? 0:_heigth ? 20 :10,
+                                          top: ResponsiveWidget.isMediumScreen(context)? 0:_heigth ? 20 :10,
+                                          bottom: ResponsiveWidget.isMediumScreen(context)?0: _heigth ? 20 :10),
+                                      height: ResponsiveWidget.isMediumScreen(
+                                              context)
+                                          ? 1000
+                                          : SizeConfig.screenHeight * 0.5,
                                       child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(15),
@@ -193,22 +255,73 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                                           index]
                                                       .thumbnail ??
                                                   "",
-                                              fit: BoxFit.fill))),
-                                );}, hovered: Matrix4.identity()..translate(0, 0, 0)),
-                              );
-                            })
-                        : Container()
-                    : Container(
-                        height: SizeConfig.screenHeight * 0.8,
-                        child: Center(
-                          child:
-                              ThreeArchedCircle(color: THEME_COLOR, size: 45.0),
-                        ),
+                                              fit: BoxFit.fill,width: 50,height: 50,)),
+                                    );
+                                  },
+                                  hovered: Matrix4.identity()
+                                    ..translate(0, 0, 0)),
+                            );
+                          })
+                      : Container()
+                  : Container(
+                      height: SizeConfig.screenHeight * 0.8,
+                      child: Center(
+                        child:
+                            ThreeArchedCircle(color: THEME_COLOR, size: 45.0),
                       ),
-              )),
-            ),
+                    ),
+            ))),
           );
         }));
+  }
+
+  homePageTopBar() {
+    return AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: WHITE_COLOR,
+        title: Stack(children: <Widget>[
+          Container(
+              margin: EdgeInsets.only(top: 15.0, bottom: 10.0),
+              child: Row(children: [
+                GestureDetector(
+                    onTap: () {},
+                    child: Image.asset(AssetsConstants.icLogo,
+                        height: 50, width: 50)),
+                Expanded(child: SizedBox(width: SizeConfig.screenWidth * 0.09)),
+                Container(
+                    height: 50,
+                    width: SizeConfig.screenWidth * 0.64,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: TRANSPARENT_COLOR, width: 2.0),
+                    ),
+                    child: new TextField(
+                      maxLines: editingController!.text.length > 2 ? 2 : 1,
+                      controller: editingController,
+                      decoration: new InputDecoration(
+                          hintText: StringConstant.search,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          hintStyle: TextStyle(color: GREY_COLOR)),
+                      onChanged: (m) {},
+                    )),
+                Expanded(child: SizedBox(width: SizeConfig.screenWidth * 0.13)),
+                Container(
+                    height: 50,
+                    width: 50,
+                    decoration: BoxDecoration(
+                      color: LIGHT_THEME_COLOR,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Image.asset(
+                      AssetsConstants.icNotification,
+                      height: 45,
+                      width: 45,
+                    ))
+              ]))
+        ]));
   }
 
   contentWidget({Widget? videoList}) {
@@ -216,19 +329,45 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 20,top: 30),
-          child: AppBoldFont(msg: widget.title??""),
+          padding: EdgeInsets.only(left: 40, top: 30),
+          child: AppBoldFont(msg: widget.title ?? "",fontSize: 22),
         ),
         Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
             ),
-            margin: EdgeInsets.only(left: 20, top: 5, right: 20),
+            margin: EdgeInsets.only(left: 20, top: 15, right: 20),
             height: SizeConfig.screenHeight,
             child: videoList),
         SizedBox(height: 40),
-        footerDesktop()
+    footerDesktop()
       ],
     );
+  }
+  contentsWidget({Widget? videoList}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(left: 40, top: 30,bottom: 20),
+          child: AppBoldFont(msg: widget.title ?? "",fontSize: 18),
+        ),
+        Center(
+          child: Container(
+            width: SizeConfig.screenWidth,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: videoList),
+        ),
+
+      ],
+    );
+  }
+  logoutButtonPressed() async {
+    AppDataManager.deleteSavedDetails();
+    CacheDataManager.clearCachedData();
+    await Future.delayed(const Duration(milliseconds:100)).then((value) =>Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (route) => false));
+
   }
 }

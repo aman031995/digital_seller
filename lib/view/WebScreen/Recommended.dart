@@ -107,7 +107,7 @@ class _RecommendedState extends State<Recommended> {
             SizedBox(height: 25),
             TrendingVideos(Videos: "Recommmended Videos"),
             SizedBox(height: 40),
-            footerDesktop()
+            //footerDesktop()
           ],
 
         ),

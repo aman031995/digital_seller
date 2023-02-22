@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tycho_streams/Utilities/AssetsConstants.dart';
+import 'package:tycho_streams/utilities/Responsive.dart';
 
 import 'AppColor.dart';
 import 'TextHelper.dart';
@@ -103,14 +104,14 @@ Widget appTextButton(
           onPressed: onPressed));
 }
 
-Widget socialNetworkButton(String image, GestureTapCallback? ontap) {
+Widget socialNetworkButton(String image, GestureTapCallback? ontap,BuildContext context) {
   return GestureDetector(
     onTap: ontap,
     child: Image(
       image: AssetImage(image),
       fit: BoxFit.fill,
-      height: 45,
-      width: 60,
+      height:ResponsiveWidget.isMediumScreen(context)?35 : 45,
+      width: ResponsiveWidget.isMediumScreen(context)?50:60,
     ),
   );
 }

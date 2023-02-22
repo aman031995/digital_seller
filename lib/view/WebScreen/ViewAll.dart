@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AssetsConstants.dart';
+import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/view/WebScreen/OnHover.dart';
@@ -122,7 +123,7 @@ shrinkWrap: true,
                       },
                     )),
                 SizedBox(height: 40),
-                footerDesktop()
+                ResponsiveWidget.isMediumScreen(context)? footerMobile(context):footerDesktop()
               ],
             ),
           ),

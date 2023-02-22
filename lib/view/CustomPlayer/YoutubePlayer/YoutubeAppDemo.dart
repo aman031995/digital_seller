@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class YoutubeAppDemo extends StatefulWidget {
@@ -53,16 +54,19 @@ class _YoutubeAppDemoState extends State<YoutubeAppDemo> {
         return Scaffold(
           body: LayoutBuilder(
             builder: (context, constraints) {
-              if (kIsWeb && constraints.maxWidth > 750) {
+              if (kIsWeb && constraints.maxWidth > 370) {
                 return Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      flex: 1,
-                      child: Container(),
+                         flex: ResponsiveWidget.isMediumScreen(context)?1:1,
+
+                      child: Container(
+                        color: Colors.black,
+                      ),
                     ),
                     Expanded(
-                      flex: 3,
+                      flex: ResponsiveWidget.isMediumScreen(context)?5:3,
                       child: Column(
                         children: [
                           player,
@@ -71,12 +75,15 @@ class _YoutubeAppDemoState extends State<YoutubeAppDemo> {
                       ),
                     ),
                     Expanded(
-                      flex: 1,
-                      child: Container(),
+                      flex: ResponsiveWidget.isMediumScreen(context)?1:1,
+                      child: Container(
+                        color: Colors.black,
+                      ),
                     ),
                   ],
                 );
               }
+
 
               return ListView(
                 children: [

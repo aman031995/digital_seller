@@ -35,7 +35,7 @@ class AssetsConstants {
   static String icAddImage = "images/ic_icAdd.png";
 
   // Added B Aman Singh -------------------------
-  static String icNotification = "assets/images/ic_notificationIcon.png";
+  static String icNotification = "images/ic_notificationIcon.png";
   static String icRomance = "assets/images/ic_RomanceHeart.png";
   static String icFamily = "assets/images/ic_Family.png";
   static String icTalkShow = "assets/images/feAudioPlayer2.png";

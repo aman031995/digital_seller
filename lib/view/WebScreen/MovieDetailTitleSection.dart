@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
+import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/utilities/three_arched_circle.dart';
@@ -39,7 +40,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
     SizeConfig().init(context);
     return Container(
       color: WHITE_COLOR,
-      height:SizeConfig.screenHeight*0.45,
+      height:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight*0.45,
       padding: EdgeInsets.only(top: 10, left: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +49,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
               msg: widget.movieDetailModel?.videoTitle,
               maxLines: 1,
               color: Colors.black,
-              fontSize: 20),
+              fontSize: ResponsiveWidget.isMediumScreen(context)?16:20),
           SizedBox(
             height: 10,
           ),
@@ -82,7 +83,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
       children: [
         titleBar('More Like This', homeViewModel),
         Container(
-          height: 250,
+          height: ResponsiveWidget.isMediumScreen(context)? 200:250,
           width: SizeConfig.screenWidth,
           child: homeViewModel.homePageDataModel?.videoList != null
               ? ListView.builder(
@@ -110,8 +111,8 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
                             builder: (isHovered) {
                               bool _heigth = isHovered;
                               return Container(
-                                width: SizeConfig.screenWidth * 0.20,
-                                height: SizeConfig.screenHeight * 5.07,
+                                width:ResponsiveWidget.isMediumScreen(context)? 250 : SizeConfig.screenWidth * 0.20,
+                                height:ResponsiveWidget.isMediumScreen(context)? 200 : SizeConfig.screenHeight * 5.07,
                                 padding: EdgeInsets.only(
                                     right: _heigth ? 1 : 10,
                                     top: _heigth ? 1 : 10,
@@ -149,7 +150,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppBoldFont(msg: title, fontSize: 30, color: TEXT_COLOR),
+          AppBoldFont(msg: title, fontSize:ResponsiveWidget.isMediumScreen(context)?18: 30, color: TEXT_COLOR),
           homeViewModel.homePageDataModel!.videoList!.length > 8
               ? textButton(context, "See All", onApply: () {
                   Navigator.push(

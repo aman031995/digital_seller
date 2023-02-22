@@ -55,9 +55,9 @@ class HomePageRepository {
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
       "{USER_ID}" : sharedPreferences.get("userId").toString(),
-      "{APP_ID}": "2dMuXTB2YPQ",
+      "{APP_ID}": "7a72f14a-314c-4038-a7ec-b36e64f1ebd1",
       "{VIDEO_FOR}" : '1',
-      "{PAGE_NUM}" : '1'
+      "{PAGE_NUM}" :"1"
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
         urlParams, NetworkConstants.kGetHomePageData, RequestType.get,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
+import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/view/CustomPlayer/YoutubePlayer/YoutubeAppDemo.dart';
 import 'package:tycho_streams/view/CustomPlayer/YoutubePlayer/YoutubePlayerFlutter.dart';
@@ -54,15 +55,18 @@ class _MovieDetailPageState extends State<MovieDetailPage>
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: 20),
-                Container(
-                  width: SizeConfig.screenWidth,
-                  height:  SizeConfig.screenWidth /2.9,
-                  child:YoutubeAppDemo(videoID: widget.movieID,)
-                ),
+
+           Container(
+                   width: SizeConfig.screenWidth,
+                   height:  ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth /2.47:SizeConfig.screenWidth /2.959,
+                   child:
+                   YoutubeAppDemo(videoID: widget.movieID,)
+               ),
+
                   MovieDetailTitleSection(
                       isWall: true, movieDetailModel: widget.platformMovieData),
-                SizedBox(height: 40),
-                footerDesktop()
+                SizedBox(height: 20),
+                ResponsiveWidget.isMediumScreen(context)? footerMobile(context):footerDesktop()
               ],
             ),
           ),

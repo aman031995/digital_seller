@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:tycho_streams/model/data/HomePageDataModel.dart';
+import 'package:tycho_streams/view/CustomPlayer/StreamPlayer.dart';
 import 'package:tycho_streams/view/CustomPlayer/YoutubePlayer/CommonWidget.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class YouTubePlayerSection extends StatefulWidget {
   String? videoID;
   bool? isDetail;
+  VideoList? platformMovieData;
 
-  YouTubePlayerSection({this.videoID, this.isDetail});
+  YouTubePlayerSection({this.videoID, this.isDetail,this.platformMovieData});
 
   @override
   _YouTubePlayerSectionState createState() => _YouTubePlayerSectionState();
@@ -205,9 +208,9 @@ class _YouTubePlayerSectionState extends State<YouTubePlayerSection> {
         alignment: Alignment.center,
         child: FittedBox(
           fit: BoxFit.fill,
-          child: YoutubePlayer(
+          child: widget.platformMovieData?.isYoutube == true? YoutubePlayer(
             controller: _controller!,
-          ),
+          ):VideoApp(element: widget.platformMovieData),
         ),
       ),
     );

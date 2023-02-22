@@ -27,12 +27,12 @@ class _SocialLoginViewState extends State<SocialLoginView> {
 
 
          });
-        }),
+        },context),
         SizedBox(width: 10),
         socialNetworkButton(AssetsConstants.icFacebook, () {
         widget.socialLoginViewModel?.loginWithFB(context);
           isGoogle = false;
-        }),
+        },context),
         SizedBox(width: 10),
         // Platform.isIOS ? socialNetworkButton(AssetsConstants.icApple, () {
         //   // loginWithFB(context, fcmToken!);
