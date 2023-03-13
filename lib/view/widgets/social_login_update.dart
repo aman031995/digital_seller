@@ -66,7 +66,7 @@ class _LoginUserUpdateState extends State<SocialLoginUpdate> {
               Container(
                 margin: const EdgeInsets.only(top: 20),
                 child: AppMediumFont(
-                    msg: 'Update',
+                    context,msg: 'Update',
                     color: TEXT_COLOR,
                     fontSize: 20.0,
                     textAlign: TextAlign.center),
@@ -137,10 +137,9 @@ class _LoginUserUpdateState extends State<SocialLoginUpdate> {
                           return appButton(
                               context,
                               StringConstant.update,
-                              SizeConfig.screenWidth! * 0.85,
+                              SizeConfig.screenWidth * 0.85,
                               60,
                               THEME_COLOR,
-                              BUTTON_TEXT_COLOR,
                               17,
                               10,
                               snapshot.data != true ? false : true, onTap: () {

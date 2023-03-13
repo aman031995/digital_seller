@@ -1,5 +1,7 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:multilevel_drawer/multilevel_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/network/AppDataManager.dart';
@@ -10,19 +12,15 @@ import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
+import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/WebScreen/CommonCarousel.dart';
 import 'package:tycho_streams/view/WebScreen/LoginUp.dart';
-import 'package:tycho_streams/view/WebScreen/OnHover.dart';
 import 'package:tycho_streams/view/WebScreen/SignUp.dart';
-import 'package:tycho_streams/view/WebScreen/TopList.dart';
-import 'package:tycho_streams/view/WebScreen/TrendingVideos.dart';
 import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
-import 'package:tycho_streams/view/screens/login_screen.dart';
-import 'package:tycho_streams/view/widgets/app_menu.dart';
 import 'package:tycho_streams/view/widgets/video_listpage.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
-import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 import 'package:tycho_streams/viewmodel/profile_view_model.dart';
+import 'package:universal_html/html.dart' as html;
 bool isLogin=false;
 String name="a";
 class HomePageWeb extends StatefulWidget {
@@ -33,166 +31,192 @@ class HomePageWeb extends StatefulWidget {
 }
 
 class _HomePageWebState extends State<HomePageWeb> {
-  ProfileViewModel profileViewModel = ProfileViewModel();
   final List<String> genderItems = ['My Acount', 'Logout'];
-
   HomeViewModel homeViewModel = HomeViewModel();
   TextEditingController? editingController = TextEditingController();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   @override
   void initState() {
-    getUserDetail();
-    super.initState();
-    getUserDetail();
+    homeViewModel.getAppConfigData(context);
     User();
 
+    super.initState();
   }
 
-  getUserDetail() {
-    if(isLogin != false){
-    profileViewModel.getProfileDetails(context);
-  }}
 
+  Future<bool> _willPopScopeCall() async {
+// code to show toast or modal
+    return true; // return true to exit app or return false to cancel exit
+  }
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
-      appBar:ResponsiveWidget.isMediumScreen(context)? homePageTopBar():null,
-      backgroundColor: WHITE_COLOR,
-      extendBodyBehindAppBar: true,
-      body: ChangeNotifierProvider<ProfileViewModel>(
-          create: (BuildContext context) => profileViewModel,
-          child: Consumer<ProfileViewModel>(builder: (context, viewmodel, _) {
-            return Scaffold(
-                key: _scaffoldKey,
-                backgroundColor: WHITE_COLOR,
-                drawer:ResponsiveWidget.isMediumScreen(context)?AppMenu(homeViewModel: homeViewModel):Container() ,
-                body: Stack(
+    return   WillPopScope( onWillPop:_willPopScopeCall,
+    child:ChangeNotifierProvider(
+        create: (BuildContext context) => homeViewModel,
+        child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
+          return Scaffold(
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar:ResponsiveWidget.isMediumScreen(context)? AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
+        iconTheme: IconThemeData(color:Colors.black,  size: 28),
+        title:  Image.asset(AssetsConstants.icLogo,height: 50,),
+        actions: [
+          Container(
+              height: 15,
+              width:SizeConfig.screenWidth/1.8,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                border: Border.all(color: TRANSPARENT_COLOR, width: 2.0),
+              ),
+              child: new TextField(
+                maxLines: editingController!.text.length > 2 ? 2 : 1,
+                controller: editingController,
+                decoration: new InputDecoration(
+                    hintText: StringConstant.search,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    hintStyle: TextStyle(color: GREY_COLOR)),
+                onChanged: (m) {},
+              )),
+
+
+          SizedBox(width: 15)
+        ]):
+      PreferredSize(child: Container(
+        height:70,color: Theme.of(context).primaryColor,
+        padding: EdgeInsets.only(top: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(width: 40),
+            Image.asset(AssetsConstants.icLogo, height: 40),
+            Expanded(
+                child:
+                SizedBox(width: SizeConfig.screenWidth * .12)),
+            AppBoldFont(
+                context,msg: 'Home', fontSize: 20),
+            SizedBox(width: SizeConfig.screenWidth * .02),
+            AppBoldFont(
+                context,msg: 'Upcoming', fontSize: 20),
+            SizedBox(width: SizeConfig.screenWidth * .02),
+            GestureDetector(
+              onTap: (){
+                Navigator.pushNamed(context, '/contactUs');
+              },
+              child: AppBoldFont(
+                  context,msg: 'Contact US',
+                  fontSize: 20),
+            ),
+            Expanded(
+                child:
+                SizedBox(width: SizeConfig.screenWidth * .12)),
+            Image.asset(AssetsConstants.icSearch, height: 40),
+            SizedBox(width: SizeConfig.screenWidth * .02),
+            name=="a"?
+            GestureDetector(
+                onTap: () {
+                  showDialog(
+                      context: context,
+                      barrierDismissible:false,
+                      barrierColor: Colors.black87,
+                      builder: (BuildContext context) {
+                        return SignUp();
+                      });
+                },
+                child:  Image.asset(AssetsConstants.icSignup, height: 40)
+            ): AppBoldFont(
+                context,msg: name, fontSize: 40),
+
+            //Text(name,style: TextStyle(color:  fontSize: 40),),
+
+            name=="a"? SizedBox(width: SizeConfig.screenWidth * .01):SizedBox(),
+            GestureDetector(
+              onTap: () {
+                name=="a"?
+
+                showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    barrierColor: Colors.black87,
+                    builder: (BuildContext context) {
+                      return LoginUp();
+                    }):null;
+
+              },
+
+              child:   name=="a"? Image.asset(AssetsConstants.icLogin,
+                  height: 40):   Container(
+                width: 120,
+                child: DropdownButtonFormField2(
+                  hint: Image.asset('images/LoginUser.png', height: 40,color:Theme.of(context).accentColor,),
+iconStyleData: IconStyleData(
+  iconDisabledColor: Colors.transparent,
+  iconEnabledColor: Colors.transparent
+
+),
+                  decoration: InputDecoration(
+                      isDense: true,
+                      contentPadding: EdgeInsets.zero,
+                      border:InputBorder.none
+                  ),
+                  isExpanded: true,
+                  items: genderItems
+                      .map((item) => DropdownMenuItem<String>(
+                    value: item,
+                    child: Text(
+                      item,
+                      style: TextStyle(
+                          fontSize: 16, color: Colors.black87),
+                    ),
+                  )).toList(),
+                  onChanged: (String? value) {
+                    switch(value) {
+                      case 'My Acount' :
+                        break;
+                      case 'Logout' :
+                        logoutButtonPressed();
+                        break;
+                    }     // selectedValue = value.toString();
+                  },
+                ),
+              ),),
+            SizedBox(width: SizeConfig.screenWidth * .02),
+          ],
+        ),
+      ), preferredSize: Size.fromHeight(80)),
+        key: _scaffoldKey,
+      drawer:ResponsiveWidget.isMediumScreen(context)?MobileMenu(context):Container() ,
+      body:  Stack(
+            children: [
+
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
-                    SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 50),
-                      CommonCarousel(),
-                      VideoListPage(),
-                        ],
-                      ),
-                    ),
-                    ResponsiveWidget.isMediumScreen(context)?Container()         :
-
-                    Container(
-                      height:70,color: Colors.white,
-                      padding: EdgeInsets.only(top: 8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(width: 40),
-                          Image.asset(AssetsConstants.icLogo, height: 40),
-                          Expanded(
-                              child:
-                              SizedBox(width: SizeConfig.screenWidth * .12)),
-                          AppBoldFont(
-                              msg: 'Home', color: BLACK_COLOR, fontSize: 20),
-                          SizedBox(width: SizeConfig.screenWidth * .02),
-                          AppBoldFont(
-                              msg: 'Upcoming', color: BLACK_COLOR, fontSize: 20),
-                          SizedBox(width: SizeConfig.screenWidth * .02),
-                          AppBoldFont(
-                              msg: 'Contact US',
-                              color: BLACK_COLOR,
-                              fontSize: 20),
-                          Expanded(
-                              child:
-                              SizedBox(width: SizeConfig.screenWidth * .12)),
-                          Image.asset(AssetsConstants.icSearch, height: 40),
-                          SizedBox(width: SizeConfig.screenWidth * .02),
-                          name=="a"?
-                          GestureDetector(
-                              onTap: () {
-                                   showDialog(
-                                    context: context,
-                                    barrierDismissible:false,
-                                    barrierColor: Colors.black87,
-                                    builder: (BuildContext context) {
-                                      return SignUp();
-                                    });
-                              },
-                              child:  Image.asset(AssetsConstants.icSignup, height: 40)
-                          ): Text(name,style: TextStyle(color: Colors.black,fontSize: 40),),
-
-                          SizedBox(width: SizeConfig.screenWidth * .01),
-                          GestureDetector(
-                              onTap: () {
-                                name=="a"?
-
-                                showDialog(
-                                    context: context,
-                                    barrierDismissible: false,
-                                    barrierColor: Colors.black87,
-                                    builder: (BuildContext context) {
-                                      return LoginUp();
-                                    }):null;
-
-                              },
-
-                              child:   name=="a"? Image.asset(AssetsConstants.icLogin,
-                                  height: 40):   Container(
-                                width: 120,
-                                child: DropdownButtonFormField2(
-                                  hint: Image.asset('images/LoginUser.png', height: 40),
-                                  buttonDecoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                  ),
-                                  decoration: InputDecoration(
-                                      isDense: true,
-                                      contentPadding: EdgeInsets.zero,
-                                      border:InputBorder.none
-                                  ),
-                                  isExpanded: true,
-                                  buttonHeight: 60,
-                                  buttonPadding: EdgeInsets.only(left: 0, right: 0),
-                                  dropdownDecoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  items: genderItems
-                                      .map((item) => DropdownMenuItem<String>(
-                                    value: item,
-                                    child: Text(
-                                      item,
-                                      style: TextStyle(
-                                          fontSize: 16, color: Colors.black87),
-                                    ),
-                                  )).toList(),
-                                  onChanged: (String? value) {
-                                    switch(value) {
-                                      case 'My Acount' :
-                                        break;
-                                      case 'Logout' :
-                                        logoutButtonPressed();
-                                        break;
-                                    }     // selectedValue = value.toString();
-                                  },
-                                ),
-                              ),),
-                          SizedBox(width: SizeConfig.screenWidth * .02),
-                        ],
-                      ),
-                    ),
+                    SizedBox(height: 10),
+                CommonCarousel(),
+                VideoListPage(),
+                    // name=="a"?  ResponsiveWidget.isMediumScreen(context)?   Container(
+                    //   margin:  EdgeInsets.only(top: 120)  ,
+                    //     height: 300,child: footerMobile(context)): Container(height:200,child: footerDesktop()): Container()
                   ],
-                ));
-          })),
-    );
+                ),
+              ),
+             // ResponsiveWidget.isMediumScreen(context)?Container()         :
+
+
+            ],
+          ));})));
   }
 
   logoutButtonPressed() async {
     AppDataManager.deleteSavedDetails();
     CacheDataManager.clearCachedData();
-   await Future.delayed(const Duration(milliseconds:100)).then((value) =>Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (route) => false));
-
+    GoRouter.of(context).pushNamed(RoutesName.home);
   }
   User() async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -200,65 +224,74 @@ class _HomePageWebState extends State<HomePageWeb> {
     name=="null"? name="a":name;
     print(name);
   }
-  homePageTopBar() {
-    return AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        backgroundColor: WHITE_COLOR,
-        title: Stack(children: <Widget>[
-          Container(
-              margin: EdgeInsets.only(top: 25.0, bottom: 25.0),
-              child: Row(children: [
-                GestureDetector(
-                    onTap: () {
-                      if (_scaffoldKey.currentState?.isDrawerOpen == false) {
-                        _scaffoldKey.currentState?.openDrawer();
-                      } else {
-                        _scaffoldKey.currentState?.openEndDrawer();
-                      }
-                    },
-                    child: Image.asset(AssetsConstants.icLogo,
-                        height: 50, width: 50)),
-                  Expanded(child: SizedBox(width: SizeConfig.screenWidth*0.10)),
-                Container(
-                    height: 50,
-                    width: SizeConfig.screenWidth * 0.64,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: TRANSPARENT_COLOR, width: 2.0),
-                    ),
-                    child: new TextField(
-                      maxLines: editingController!.text.length > 2 ? 2 : 1,
-                      controller: editingController,
-                      decoration: new InputDecoration(
-                          hintText: StringConstant.search,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          hintStyle: TextStyle(color: GREY_COLOR)),
-                      onChanged: (m) {},
-                    )),
-                  Expanded(child: SizedBox(width: SizeConfig.screenWidth*0.13)),
-                Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      color: LIGHT_THEME_COLOR,
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Image.asset(
-                      AssetsConstants.icNotification,
-                      height: 45,
-                      width: 45,
-                    ))
-              ]))
-        ]));
+  Widget MobileMenu(BuildContext context){
+    return MultiLevelDrawer(
+      backgroundColor:Theme.of(context).scaffoldBackgroundColor,
+      rippleColor:Theme.of(context).primaryColorDark,
+      subMenuBackgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      divisionColor: Theme.of(context).primaryColorLight,
+      header: Container(
+        height: 150,
+        child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Image.asset(
+                  AssetsConstants.icLogo,
+                  width: 100,
+                  height: 100,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                //  Text("Alif Baata",style: TextStyle(color: Theme.of(context).primaryColorLight))
+              ],
+            )),
+      ),
+      children: [
+        MLMenuItem(
+            trailing: Icon(Icons.arrow_right,color: Theme.of(context).primaryColorLight),
+            leading: Icon(Icons.home_filled,color: Theme.of(context).primaryColorLight,),
+            content: Text(" Home",style: TextStyle(color: Theme.of(context).primaryColorLight)),
+            onClick: (){
+
+            }),
+        name=="a"?   MLMenuItem(
+            trailing: Icon(Icons.login_sharp,color: Theme.of(context).primaryColorLight),
+            leading: Icon(Icons.upcoming_sharp,color: Theme.of(context).primaryColorLight,),
+
+            content: Text(" Login",style: TextStyle(color: Theme.of(context).primaryColorLight)),
+            onClick: () {
+              Navigator.pop(context);
+              showDialog(
+                  context: context,
+                  barrierDismissible:false,
+                  barrierColor: Colors.black87,
+                  builder: (BuildContext context) {
+                    return LoginUp();
+                  }
+              );
+            }):MLMenuItem(
+          trailing: Icon(Icons.login_outlined,color: Theme.of(context).primaryColorLight),
+          leading: Icon(Icons.upcoming_sharp,color: Theme.of(context).primaryColorLight,),
+
+          content: Text("Logout",style: TextStyle(color: Theme.of(context).primaryColorLight)),
+          onClick: () {
+            logoutButtonPressed();
+          },
+        ),
+
+        MLMenuItem(
+            leading: Icon(Icons.contacts,color: Theme.of(context).primaryColorLight,),
+            trailing: Icon(Icons.arrow_right,color: Theme.of(context).primaryColorLight),
+            content:Text(" Contact Us",style: TextStyle(color: Theme.of(context).primaryColorLight)),
+            onClick: () {
+
+            }),
+      ],
+    );
   }
+
 }
-// class Pref{
-// Future remove(String Msg)  async{
-//   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-//   sharedPreferences.remove(Msg);
-// }
-// }
+
 

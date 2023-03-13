@@ -31,7 +31,6 @@ class _VideoListPageState extends State<VideoListPage> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final subscriptionVM = Provider.of<HomeViewModel>(context);
     return ChangeNotifierProvider<HomeViewModel>(
         create: (BuildContext context) => homeView,
         child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {

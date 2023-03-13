@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tycho_streams/Utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 
 import 'AppColor.dart';
@@ -13,7 +12,6 @@ Widget appButton(
     double _height,
     Color bgColor,
     //Color borderColor,
-    Color textColor,
     double fontSize,
     double circular,
     bool isSelected,
@@ -42,8 +40,9 @@ Widget appButton(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             AppBoldFont(
+              context,
                 msg: title,
-                color: isSelected == true ? Colors.white : textColor,
+                color: isSelected == true ? Colors.white : Theme.of(context).accentColor,
                 fontSize: fontSize,
                 textAlign: TextAlign.center),
             SizedBox(width: 5,),
@@ -55,34 +54,23 @@ Widget appButton(
   );
 }
 
-Widget backButton({required VoidCallback onTap}) {
-  return Container(
-    margin: EdgeInsets.only(left: 20, bottom: 5),
-    height: 53,
-    width: 120,
-    child: ElevatedButton.icon(
-        onPressed: onTap,
-        icon: Icon(
-          Icons.arrow_back,
-          color: APP_TEXT_COLOR,
-        ),
-        //icon data for elevated button
-        label: AppMediumFont(msg: 'Back', fontSize: 17, color: APP_TEXT_COLOR),
-        //label text
-        style: ElevatedButton.styleFrom(
-          primary: BACK_BUTTON_COLOR,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-        )),
-  );
-}
+Widget AppButton(BuildContext context,String msg,{VoidCallback? onPressed}){
+  return TextButton(
+      onPressed: onPressed,
+      style: ButtonStyle(
+          alignment: Alignment.center,
+          overlayColor: MaterialStateColor.resolveWith(
+                  (states) => Color(0xffA31621))),
+      child:  Text(
 
+        msg,
+        style: TextStyle(color:Theme.of(context).accentColor,fontSize: ResponsiveWidget.isMediumScreen(context)? 16:20),
+      ));
+}
 Widget appTextButton(
   BuildContext context,
   String title,
   Alignment alignment,
-  Color textColor,
   double fontSize,
   bool type, {
   VoidCallback? onPressed,
@@ -91,14 +79,14 @@ Widget appTextButton(
       alignment: alignment,
       child: TextButton(
           child: type == true
-              ? AppMediumFont(
+              ? AppMediumFont(       context,
                   msg: title,
-                  color: textColor,
+                  color: Theme.of(context).accentColor,
                   fontSize: fontSize,
                   textAlign: TextAlign.center)
-              : AppMediumFont(
+              : AppMediumFont(       context,
                   msg: title,
-                  color: textColor,
+                  color: Theme.of(context).accentColor,
                   fontSize: fontSize,
                   textAlign: TextAlign.center),
           onPressed: onPressed));
@@ -112,6 +100,20 @@ Widget socialNetworkButton(String image, GestureTapCallback? ontap,BuildContext 
       fit: BoxFit.fill,
       height:ResponsiveWidget.isMediumScreen(context)?35 : 45,
       width: ResponsiveWidget.isMediumScreen(context)?50:60,
+    ),
+  );
+}
+Widget textButton(BuildContext context, String title,
+    {VoidCallback? onApply}) {
+  return GestureDetector(
+    onTap: onApply,
+    child: Container(
+      alignment: Alignment.center,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      // decoration: buttonDecoration,
+      child: AppBoldFont(context,msg: title, fontSize: 14, color: TEXT_COLOR),
     ),
   );
 }

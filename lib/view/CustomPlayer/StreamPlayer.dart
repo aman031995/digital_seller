@@ -105,7 +105,7 @@ class _VideoAppState extends State<VideoApp> {
                             _controller,
                             allowScrubbing: true,
                             colors: const VideoProgressColors(
-                              backgroundColor: Colors.white,
+                              backgroundColor: Colors.black,
                               // bufferedColor: Colors.yellow,
                               playedColor: Color(0xff18BAE8),
                             ),
@@ -183,7 +183,7 @@ class _ControlsOverlayState extends State<_ControlsOverlay> {
                   },
                   child: const Icon(
                     Icons.replay_10_rounded,
-                    color: Colors.white,
+                    
                   ),
                 ),
                 const SizedBox(
@@ -198,7 +198,7 @@ class _ControlsOverlayState extends State<_ControlsOverlay> {
                         },
                         child: const Icon(
                           Icons.pause,
-                          color: Colors.white,
+                          
                           size: 25.0,
                           semanticLabel: 'Pause',
                         ),
@@ -211,7 +211,7 @@ class _ControlsOverlayState extends State<_ControlsOverlay> {
                         },
                         child: const Icon(
                           Icons.play_arrow,
-                          color: Colors.white,
+                          
                           size: 25.0,
                           semanticLabel: 'Play',
                         ),
@@ -228,7 +228,7 @@ class _ControlsOverlayState extends State<_ControlsOverlay> {
                   },
                   child: const Icon(
                     Icons.forward_10_rounded,
-                    color: Colors.white,
+                    
                   ),
                 )
               ],
@@ -279,7 +279,7 @@ class _ControlsOverlayState extends State<_ControlsOverlay> {
                     },
                     icon: Icon(
                       Icons.fullscreen,
-                      color: Colors.white,
+                      
                     )))),
       ],
     );
@@ -325,7 +325,7 @@ class _ControlsOverlayTop extends StatelessWidget {
                 padding: EdgeInsets.only(left: 8.0),
                 child: Icon(
                   Icons.arrow_back_outlined,
-                  color: Colors.white,
+                  
                   size: 20,
                 ),
               ),

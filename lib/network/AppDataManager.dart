@@ -68,9 +68,6 @@ class AppDataManager {
     sharedPreferences.remove("phone");
     sharedPreferences.remove("firstTime");
     sharedPreferences.remove("isAlert");
-    sharedPreferences.clear();
-
-
     // SocialLoginManager.handleSignOut();
   }
 }

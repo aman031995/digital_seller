@@ -16,6 +16,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SingleChildScrollView(
         child: Column(
           children: [

@@ -4,10 +4,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tycho_streams/model/data/AppConfigModel.dart';
 import 'package:tycho_streams/model/data/BannerDataModel.dart';
 import 'package:tycho_streams/model/data/CategoryDataModel.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/model/data/TrayDataModel.dart';
+import 'package:tycho_streams/model/data/notification_model.dart';
 import 'package:tycho_streams/network/ASRequestModal.dart';
 import 'package:tycho_streams/network/ASResponseModal.dart';
 import 'package:tycho_streams/network/AppNetwork.dart';
@@ -22,7 +24,7 @@ class HomePageRepository {
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
+      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJkZDA1NjNlYi1iZjUxLTQ2YjEtYmM1YS00MTNkZTVjZWExYzAiLCJpYXQiOjE2NzgzNzY1NzksImV4cCI6MTY3OTY3MjU3OX0.N67fcMcDuHRqqSOAeviO5Ue_nD5Lt6xSUVquBCgtJGw "
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {"{APP_ID}": "ID-e2946157-ebc3-4ba"};
@@ -33,7 +35,7 @@ class HomePageRepository {
       if (isSuccess) {
         var response = ASResponseModal.fromResult(result);
         Map<String, dynamic> map =
-            (result as SuccessState).value as Map<String, dynamic>;
+        (result as SuccessState).value as Map<String, dynamic>;
         if (map["data"] is Map<String, dynamic>) {
           response.dataModal = BannerDataModel.fromJson(map["data"]);
           // CacheDataManager.cacheData(key: StringConstant.kBannerList, jsonData: map);
@@ -49,15 +51,14 @@ class HomePageRepository {
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
-       "Authorization": "Bearer " + sharedPreferences.get("token").toString()
-      // "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
       "{USER_ID}" : sharedPreferences.get("userId").toString(),
-      "{APP_ID}": "7a72f14a-314c-4038-a7ec-b36e64f1ebd1",
-      "{VIDEO_FOR}" : '1',
-      "{PAGE_NUM}" :"1"
+      "{APP_ID}": "b07e2bbc-3ad9-441f-86fe-59caff940d1d",
+      "{VIDEO_FOR}" : '$videoFor',
+      "{PAGE_NUM}" : '$pageNum',
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
         urlParams, NetworkConstants.kGetHomePageData, RequestType.get,
@@ -66,7 +67,7 @@ class HomePageRepository {
       if (isSuccess) {
         var response = ASResponseModal.fromResult(result);
         Map<String, dynamic> map =
-            (result as SuccessState).value as Map<String, dynamic>;
+        (result as SuccessState).value as Map<String, dynamic>;
         if (map["data"] is Map<String, dynamic>) {
           response.dataModal = HomePageDataModel.fromJson(map["data"]);
           // CacheDataManager.cacheData(key: StringConstant.kHomePageData, jsonData: map);
@@ -83,7 +84,6 @@ class HomePageRepository {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
       "Authorization": "Bearer " + sharedPreferences.get("token").toString()
-     //"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
@@ -118,7 +118,6 @@ class HomePageRepository {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
       "Authorization": "Bearer " + sharedPreferences.get("token").toString()
-     // "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
@@ -149,7 +148,6 @@ class HomePageRepository {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
       "Authorization": "Bearer " + sharedPreferences.get("token").toString()
-      //"Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
@@ -180,7 +178,6 @@ class HomePageRepository {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
       "Authorization": "Bearer " + sharedPreferences.get("token").toString()
-     // "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MmZkN2NhOS04YWFlLTQ5ZmEtOGNhMS01NzY5OTQ4NGU4MWYiLCJpYXQiOjE2NzYyNzE1NTMsImV4cCI6MTY3NzU2NzU1M30.BdLL60iW-NvOwlcbATvkYvjcsWYX663G98V7oAo2oFQ "
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
@@ -203,4 +200,61 @@ class HomePageRepository {
       }
     });
   }
+
+  Future<Result?> getAppConfiguration(
+      BuildContext context, NetworkResponseHandler responseHandler) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var header = {
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+    };
+
+    AppNetwork appNetwork = AppNetwork();
+    Map<String, String> urlParams = {
+      "{APP_ID}" : 'b07e2bbc-3ad9-441f-86fe-59caff940d1d',
+    };
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.kGetAppConfig, RequestType.get,
+        headers: header);
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map =
+        (result as SuccessState).value as Map<String, dynamic>;
+        if (map["data"] is Map<String, dynamic>) {
+          response.dataModal = AppConfigModel.fromJson(map["data"]);
+          CacheDataManager.cacheData(key: StringConstant.kAppConfig, jsonData: map);
+        }
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
+
+  Future<Result?> getNotification(int pageNum,
+      BuildContext context, NetworkResponseHandler responseHandler) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    AppNetwork appNetwork = AppNetwork();
+    Map<String, String> urlParams = {
+      "{APP_ID}" : '7a72f14a-314c-4038-a7ec-b36e64f1ebd1',
+      "{USER_ID}" : "203d96e8-11c1-422e-8453-199de344687a",
+      "{PAGE_NUM}": '$pageNum'
+    };
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.kGetNotification, RequestType.get);
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map =
+        (result as SuccessState).value as Map<String, dynamic>;
+        if (map["data"] is Map<String, dynamic>) {
+          response.dataModal = NotificationModel.fromJson(map["data"]);
+        }
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
 }
+

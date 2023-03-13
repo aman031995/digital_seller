@@ -5,7 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:tycho_streams/network/AppDataManager.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:tycho_streams/utilities/LogsMessage.dart';
-import 'package:tycho_streams/view/screens/login_screen.dart';
+
 
 import 'ASRequestModal.dart';
 import 'NetworkConstants.dart';
@@ -211,6 +211,10 @@ class NetworkApiServices  {
 
   static void logoutButtonPressed(BuildContext context) async {
     AppDataManager.deleteSavedDetails();
-    Navigator.pushNamed(context, '/');
+    // await Future.delayed(const Duration(seconds: 1)).then((value) =>
+    //     Navigator.pushAndRemoveUntil(
+    //         context,
+    //         MaterialPageRoute(builder: (_) => LoginScreen()),
+    //             (route) => false));
   }
 }

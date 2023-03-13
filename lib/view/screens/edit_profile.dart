@@ -253,7 +253,7 @@ class _EditProfileState extends State<EditProfile> {
                                 SizeConfig.screenWidth * 0.85,
                                 60,
                                 LIGHT_THEME_COLOR,
-                                WHITE_COLOR,
+
                                 20,
                                 10,
                                 snapshot.data != true ? false : true,

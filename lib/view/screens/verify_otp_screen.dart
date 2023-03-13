@@ -103,7 +103,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
             Container(
                 margin: EdgeInsets.only(left: 10),
                 alignment: Alignment.topCenter,
-                child: AppBoldFont(
+                child: AppBoldFont(context,
                     msg: StringConstant.verification,
                     fontSize: 26,
                     color: TEXT_COLOR)),
@@ -120,7 +120,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
             isOTPInput == true ? Container() : errorText(),
             SizedBox(height: 30),
             appButton(context, StringConstant.verify, 280, 60.0, LIGHT_THEME_COLOR,
-                BUTTON_TEXT_COLOR, 16, 5.0, isOTPInput, onTap: () {
+                 16, 5.0, isOTPInput, onTap: () {
                   checkVerificationValidate(authVM);
                 }),
             SizedBox(height: 10),
@@ -142,7 +142,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
           ),
           Container(
             child: AppMediumFont(
-                msg: errorPin,
+                context,msg: errorPin,
                 color: RED_COLOR,
                 fontSize: 16,
                 maxLines: 3),
@@ -158,7 +158,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
         margin: EdgeInsets.only(left: 10),
         alignment: Alignment.topCenter,
         child: AppMediumFont(
-            textAlign: TextAlign.left,
+            context,textAlign: TextAlign.left,
             msg: StringConstant.codeVerify,
             color: TEXT_COLOR,
             fontSize: 14,
@@ -209,10 +209,10 @@ class _VerifyOtpState extends State<VerifyOtp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AppMediumFont(
-                    msg: StringConstant.resendOtp, color: BLACK_COLOR, fontSize: 16),
+                    context,msg: StringConstant.resendOtp, color: BLACK_COLOR, fontSize: 16),
                 TextButton(
                   child: AppBoldFont(
-                      msg: StringConstant.resend + ' >',
+                      context,msg: StringConstant.resend + ' >',
                       color: THEME_COLOR,
                       fontSize: 16),
                   onPressed: () {

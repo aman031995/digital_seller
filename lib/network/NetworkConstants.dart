@@ -27,4 +27,10 @@ class NetworkConstants{
   static String kGetCategoryData = "getAllCategory?appId={APP_ID}&pageNum={PAGE_NUM}";
   static String kGetCategoryDetails = "getCategoryDetails?appId={APP_ID}&categoryId={CATEGORY_ID}&pageNum={PAGE_NUM}";
   static String kgetMoreLikeThis = 'getMoreLikesVideoList?videoId={VIDEO_ID}';
+
+  static String kGetAppConfig = 'getAppConfigurations?appId={APP_ID}';
+  static String kGetNotification = 'get-all-notification?appId={APP_ID}&userId={USER_ID}&pageNum={PAGE_NUM}';
+
+  static String kCartDetail = "add-and-update-cart";
+  static String kGetCartList = "getall-cart?userId={USER_ID}";
 }

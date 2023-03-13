@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:tycho_streams/main.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
+import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/view/WebScreen/MovieCardCommonWidget.dart';
 
-import 'package:tycho_streams/view/WebScreen/ViewAllListPages.dart';
-import 'package:tycho_streams/view/widgets/AppDialog.dart';
+
 
 class MovieListCommonWidget extends StatefulWidget {
   int? trayId;
@@ -100,19 +101,20 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppBoldFont(msg: title, fontSize: ResponsiveWidget.isMediumScreen(context)? 18:30, color: TEXT_COLOR),
+              AppBoldFont(context,msg: title, fontSize: ResponsiveWidget.isMediumScreen(context)? 18:30, color: TEXT_COLOR),
               widget.platformMovieData!.content!.length > 8
-                  ? textButton(context, "See All", onApply: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => SeeAllListPages(
-                              trayId: widget.trayId,
-                              moviesList: widget.platformMovieData?.content,
-                              title: widget.trayTitle ?? "",
-                              isCategory: false,
-                            ),
-                          ));
+                  ? textButton(context, "See All", onApply: () async {
+
+                // Navigator.push(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: (_) => SeeAllListPages(
+                //               trayId: widget.trayId,
+                //               moviesList: widget.platformMovieData?.content,
+                //               title: widget.trayTitle ?? "",
+                //               isCategory: false,
+                //             ),
+                //           ));
                     })
                   : SizedBox()
             ],

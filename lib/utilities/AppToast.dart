@@ -10,7 +10,7 @@ class ToastMessage {
         gravity: ToastGravity.BOTTOM,
         timeInSecForIosWeb: 1,
         backgroundColor: TOAST_COLOR,
-        textColor: Colors.white,
+        textColor: Colors.black,
         fontSize: 16.0
     );
   }

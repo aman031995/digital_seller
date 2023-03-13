@@ -28,7 +28,7 @@ AppBar getAppBarWithBackBtn(
                   SizedBox(width: 3),
                   title == ''
                       ? AppMediumFont(
-                          msg: 'Back',
+                      context,msg: 'Back',
                           color: TEXT_COLOR,
                           fontSize: 17,
                           textAlign: TextAlign.start)
@@ -40,7 +40,7 @@ AppBar getAppBarWithBackBtn(
         : Container(),
     centerTitle: true,
     title: AppRegularFont(
-        msg: title ?? '',
+        context,msg: title ?? '',
         color: TEXT_COLOR,
         fontSize: 17,
         textAlign: TextAlign.start),

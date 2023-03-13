@@ -32,7 +32,6 @@ class _CommonCarouselState extends State<CommonCarousel> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final homePageVM = Provider.of<HomeViewModel>(context);
     return ChangeNotifierProvider<HomeViewModel>(
         create: (BuildContext context) => homeViewModel,
         child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
@@ -57,7 +56,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
 
   Widget homePageTopBar() {
     return Container(
-      color: Colors.white,
+      
       margin: EdgeInsets.only(left: 15, right: 10),
       child: Row(
         children: [

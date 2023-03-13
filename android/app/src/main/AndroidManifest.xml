@@ -11,7 +11,8 @@
    <application
         android:label="tycho_streams"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+     >
 
        <meta-data
            android:name="com.facebook.sdk.ApplicationId"

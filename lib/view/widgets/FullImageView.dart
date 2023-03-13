@@ -28,7 +28,7 @@ class _FullImageState extends State<FullImage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor:  Theme.of(context).scaffoldBackgroundColor,
         body: GestureDetector(
           child: Stack(
             children: <Widget>[
@@ -39,7 +39,7 @@ class _FullImageState extends State<FullImage> {
                 child: IconButton(
                     icon: Icon(
                       Icons.close,
-                      color: Colors.white,
+                      
                       size: 30.0,
                     ),
                     onPressed: () {

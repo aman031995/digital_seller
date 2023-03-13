@@ -32,7 +32,6 @@ class _CommonCarouselState extends State<CommonCarousel> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final homePageVM = Provider.of<HomeViewModel>(context);
     return ChangeNotifierProvider<HomeViewModel>(
         create: (BuildContext context) => homeViewModel,
         child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
@@ -86,7 +85,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
                     'images/prev.png',
                     height: 25,
                     width: 35,
-                    color: Theme.of(context).primaryColorLight,
+                    color:Colors.black
                   ),
                   onTap: previous
               )
@@ -101,7 +100,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
                     'images/next.png',
                     height: 25,
                     width: 35,
-                    color: Theme.of(context).primaryColorLight,
+                    color: Colors.black
                   ),
                   onTap:next
               )

@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
+import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
+import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/utilities/three_arched_circle.dart';
+import 'package:tycho_streams/view/WebScreen/DetailPage.dart';
 import 'package:tycho_streams/view/WebScreen/OnHover.dart';
-import 'package:tycho_streams/view/screens/DetailPage.dart';
+
 import 'package:tycho_streams/view/WebScreen/ViewAllListPages.dart';
 import 'package:tycho_streams/view/widgets/AppDialog.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 
 class MovieDetailTitleSection extends StatefulWidget {
   bool? isWall;
-  VideoList? movieDetailModel;
+  String? movieDetailModel;
+  String? Title;
+  String? Desc;
 
-  MovieDetailTitleSection({this.isWall, this.movieDetailModel});
+  MovieDetailTitleSection({this.isWall, this.movieDetailModel,this.Title,this.Desc});
 
   @override
   _MovieDetailTitleSectionState createState() =>
@@ -30,33 +36,36 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
 
   @override
   void initState() {
-    homeView.getMoreLikeThis(context, widget.movieDetailModel?.videoId ?? '');
+    setState((){});
+    homeView.getMoreLikeThis(context, widget.movieDetailModel ?? '');
     // TODO: implement initState
     super.initState();
   }
-
+//806b4763-e6e6-4f6a-9e6e-8ac30cf11d9c
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Container(
-      color: WHITE_COLOR,
+    return
+
+      Container(
+        color: Theme.of(context).scaffoldBackgroundColor,
       height:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight*0.45,
       padding: EdgeInsets.only(top: 10, left: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppRegularFont(
-              msg: widget.movieDetailModel?.videoTitle,
+              context,msg: widget.Title,
               maxLines: 1,
-              color: Colors.black,
+              
               fontSize: ResponsiveWidget.isMediumScreen(context)?16:20),
           SizedBox(
             height: 10,
           ),
           ReadMoreText(
-            widget.movieDetailModel?.videoDescription ?? '',
+            widget.Desc ?? '',
             trimLines: 2,
-            style: TextStyle(color: TEXT_COLOR),
+            style: TextStyle(color: Theme.of(context).accentColor),
             colorClickableText: THEME_COLOR,
             trimMode: TrimMode.Line,
             trimCollapsedText: '...Read more',
@@ -67,8 +76,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
           ),
           ChangeNotifierProvider<HomeViewModel>(
               create: (BuildContext context) => homeView,
-              child:
-                  Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
+              child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
                 return homeViewModel.homePageDataModel != null
                     ? moreVideoList(homeViewModel)
                     : SizedBox();
@@ -96,16 +104,29 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
                   itemBuilder: (context, index) {
                     return InkWell(
                         onTap: () {
-                          Navigator.of(context, rootNavigator: true)
-                              .push(MaterialPageRoute(
-                                  builder: (context) => new MovieDetailPage(
-                                        platformMovieData: homeViewModel
-                                            .homePageDataModel
-                                            ?.videoList?[index],
-                                        // movieID: 'mZ5lbn9FWAQ',
-                                        movieID: homeViewModel.homePageDataModel
-                                            ?.videoList?[index].youtubeVideoId,
-                                      )));
+                          setState((){});
+                          setState((){
+                            GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParams: {
+                              'movieID':'${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}',
+                              'VideoId':'${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
+                              'Title':'${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}',
+                              'Desc':'${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
+                              // 'platformMovieData':'${widget.moviesList}'
+                          });
+
+                          });
+
+
+                          // Navigator.of(context, rootNavigator: true)
+                          //     .push(MaterialPageRoute(
+                          //         builder: (context) => new MovieDetailPage(
+                          //               // platformMovieData: homeViewModel
+                          //               //     .homePageDataModel
+                          //               //     ?.videoList?[index],
+                          //               // movieID: 'mZ5lbn9FWAQ',
+                          //               movieID: homeViewModel.homePageDataModel
+                          //                   ?.videoList?[index].youtubeVideoId,
+                          //             )));
                         },
                         child: OnHover(
                             builder: (isHovered) {
@@ -150,19 +171,13 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppBoldFont(msg: title, fontSize:ResponsiveWidget.isMediumScreen(context)?18: 30, color: TEXT_COLOR),
+          AppBoldFont(context,msg: title, fontSize:ResponsiveWidget.isMediumScreen(context)?18: 30, color: TEXT_COLOR),
           homeViewModel.homePageDataModel!.videoList!.length > 8
               ? textButton(context, "See All", onApply: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => SeeAllListPages(
-                          moviesList:
-                              homeViewModel.homePageDataModel!.videoList,
-                          title: title ?? "",
-                          isCategory: false,
-                        ),
-                      ));
+            GoRouter.of(context).pushNamed(RoutesName.seaAll,queryParams: {
+              'VideoId':'${widget.movieDetailModel}',
+              'title':'${title}',
+            });
                 })
               : SizedBox()
         ],

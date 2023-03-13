@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tycho_streams/bloc_validation/Bloc_Validation.dart';
 import 'package:tycho_streams/network/AppDataManager.dart';
@@ -14,7 +15,8 @@ import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/WebScreen/SignUp.dart';
-import 'package:tycho_streams/view/screens/forgot_password.dart';
+import 'package:tycho_streams/view/WebScreen/forgot_password.dart';
+
 import 'package:tycho_streams/view/widgets/social_login_view.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 import 'package:tycho_streams/viewmodel/sociallogin_view_model.dart';
@@ -47,7 +49,7 @@ class _LoginUpState extends State<LoginUp> {
         elevation: 8,
         contentPadding: EdgeInsets.zero,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        backgroundColor: Colors.transparent,
+        backgroundColor:Colors.transparent,
         content: Container(
           height: 450,
           decoration: BoxDecoration(
@@ -58,7 +60,7 @@ class _LoginUpState extends State<LoginUp> {
               child: Column(
                 children: [
                   SizedBox(height: SizeConfig.screenHeight * .02),
-                  AppBoldFont(msg: 'Login', color: BLACK_COLOR, fontSize: 18),
+                  AppBoldFont(context,msg: 'Login', color: BLACK_COLOR, fontSize: 18),
                   SizedBox(height: SizeConfig.screenHeight * .02),
                   registerMobileForm(),
                   SizedBox(height: SizeConfig.screenHeight * .01),
@@ -68,7 +70,6 @@ class _LoginUpState extends State<LoginUp> {
                         context,
                         StringConstant.forgotPass,
                         Alignment.centerRight,
-                        TEXT_BLACK_COLOR,
                         16,
                         true, onPressed: () {
                       Navigator.pop(context);
@@ -93,7 +94,6 @@ class _LoginUpState extends State<LoginUp> {
                             SizeConfig.screenWidth / 1.5,
                             60.0,
                             LIGHT_THEME_COLOR,
-                            WHITE_COLOR,
                             18,
                             10,
                             snapshot.data != true ? false : true, onTap: () {
@@ -111,9 +111,9 @@ class _LoginUpState extends State<LoginUp> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       AppRegularFont(
-                          msg: 'Already have an account?', color: TEXT_COLOR,fontSize: 16),
+                          context,msg: 'Already have an account?', color: TEXT_COLOR,fontSize: 16),
                       appTextButton(context, 'Create', Alignment.bottomRight,
-                          Colors.redAccent, 14, true, onPressed: () {
+                           14, true, onPressed: () {
                             Navigator.pop(context);
                             showDialog(
                                 context: context,
@@ -132,6 +132,9 @@ class _LoginUpState extends State<LoginUp> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         backgroundColor: Colors.transparent,
         content: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white),
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
             decoration: BoxDecoration(
@@ -148,7 +151,7 @@ class _LoginUpState extends State<LoginUp> {
           Container(
             height: SizeConfig.screenHeight / 1.3,
             decoration: BoxDecoration(
-                color: Colors.white,
+                
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(20),
                     bottomRight: Radius.circular(20))),
@@ -156,11 +159,11 @@ class _LoginUpState extends State<LoginUp> {
             child: Column(
               children: [
                 SizedBox(height: SizeConfig.screenHeight * .05),
-                AppBoldFont(msg: 'Login', color: BLACK_COLOR, fontSize: 30),
+                AppBoldFont(context,msg: 'Login', color: BLACK_COLOR, fontSize: 30),
                 SizedBox(height: SizeConfig.screenHeight * .02),
                 AppRegularFont(
-                    msg: "Enter your credentials to continue with us.",
-                    color: Colors.black,
+                    context,msg: "Enter your credentials to continue with us.",
+                    
                     fontSize: 18),
                 registerForm(),
                 Container(
@@ -169,7 +172,6 @@ class _LoginUpState extends State<LoginUp> {
                       context,
                       StringConstant.forgotPass,
                       Alignment.centerRight,
-                      TEXT_BLACK_COLOR,
                       16,
                       true, onPressed: () {
                     Navigator.pop(context);
@@ -194,7 +196,6 @@ class _LoginUpState extends State<LoginUp> {
                           SizeConfig.screenWidth / 4,
                           60.0,
                           LIGHT_THEME_COLOR,
-                          WHITE_COLOR,
                           18,
                           10,
                           snapshot.data != true ? false : true, onTap: () {
@@ -211,9 +212,8 @@ class _LoginUpState extends State<LoginUp> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AppRegularFont(
-                        msg: 'Already have an account?', color: TEXT_COLOR),
-                    appTextButton(context, 'Create', Alignment.bottomRight,
-                        Colors.redAccent, 16, true, onPressed: () {
+                        context,msg: 'Already have an account?', color: TEXT_COLOR),
+                    appTextButton(context, 'Create', Alignment.bottomRight, 16, true, onPressed: () {
                       Navigator.pop(context);
                       showDialog(
                           context: context,
@@ -364,7 +364,7 @@ class _LoginUpState extends State<LoginUp> {
               Padding(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: AppMediumFont(
-                    msg: StringConstant.orContinueWith,
+                    context,msg: StringConstant.orContinueWith,
                     color: TEXT_COLOR,
                     fontSize: 14),
               ),
@@ -399,7 +399,7 @@ class _LoginUpState extends State<LoginUp> {
               Padding(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: AppMediumFont(
-                    msg: StringConstant.orContinueWith,
+                    context,msg: StringConstant.orContinueWith,
                     color: TEXT_COLOR,
                     fontSize: 14),
               ),

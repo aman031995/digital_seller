@@ -1,43 +1,39 @@
 
-
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tycho_streams/Utilities/AssetsConstants.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/network/AppDataManager.dart';
 import 'package:tycho_streams/network/CacheDataManager.dart';
-import 'package:tycho_streams/repository/subscription_provider.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
+import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/utilities/three_arched_circle.dart';
-import 'package:tycho_streams/view/WebScreen/LoginUp.dart';
+import 'package:tycho_streams/view/WebScreen/DesktopAppBar.dart';
+import 'package:tycho_streams/view/WebScreen/DetailPage.dart';
 import 'package:tycho_streams/view/WebScreen/OnHover.dart';
-import 'package:tycho_streams/view/WebScreen/SignUp.dart';
 import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
-import 'package:tycho_streams/view/screens/DetailPage.dart';
-import 'package:tycho_streams/view/screens/NoDataFoundPage.dart';
-import 'package:tycho_streams/view/screens/subscription_page.dart';
-import 'package:tycho_streams/view/widgets/AppNavigationBar.dart';
 import 'package:tycho_streams/viewmodel/CategoryViewModel.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
-import 'package:tycho_streams/viewmodel/sociallogin_view_model.dart';
+
 
 class SeeAllListPages extends StatefulWidget {
   int? trayId;
   List<VideoList>? moviesList;
   String? categoryWiseId, title;
   bool? isCategory;
-
+  String? VideoId;
   SeeAllListPages(
       {Key? key,
       this.trayId,
       this.moviesList,
       this.categoryWiseId,
       this.title,
+        this.VideoId,
       this.isCategory})
       : super(key: key);
 
@@ -50,7 +46,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
   final HomeViewModel homeView = HomeViewModel();
   ScrollController _scrollController = ScrollController();
   TextEditingController? editingController = TextEditingController();
-
+  HomeViewModel homeViewModel = HomeViewModel();
   bool onNotification(ScrollNotification notification) {
     // if (notification is ScrollUpdateNotification) {
     if (_scrollController.hasClients) {
@@ -66,12 +62,13 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
 
   @override
   void initState() {
+    homeView.getMoreLikeThis(context, widget.VideoId ?? '');
     // TODO: implement initState
-    if (widget.isCategory == true) {
-      categoryView.getCategoryDetails(context, widget.categoryWiseId ?? "", 1);
-    } else {
-      categoryView.getMovieList(context, widget.moviesList);
-    }
+    // if (widget.isCategory == true) {
+    //   categoryView.getCategoryDetails(context, widget.categoryWiseId ?? "", 1);
+    // } else {
+    //   categoryView.getMovieList(context, widget.moviesList);
+    // }
     super.initState();
   }
   final List<String> genderItems = ['My Acount', 'Logout'];
@@ -79,56 +76,27 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     //final subscriptionVM = Provider.of<SubscriptionProvider>(context);
-    return ChangeNotifierProvider<CategoryViewModel>(
-        create: (BuildContext context) => categoryView,
-        child: Consumer<CategoryViewModel>(builder: (context, categoryView, _) {
+    return ChangeNotifierProvider<HomeViewModel>(
+        create: (BuildContext context) => homeView,
+        child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
           return Scaffold(
-            appBar:  ResponsiveWidget.isMediumScreen(context)?homePageTopBar():  PreferredSize(
-              preferredSize: Size.fromHeight(80),
-              child: Container(
-                height:70,color: Colors.white,
-                padding: EdgeInsets.only(top: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(width: 40),
-                    Image.asset(AssetsConstants.icLogo, height: 40),
-                    Expanded(
-                        child:
-                        SizedBox(width: SizeConfig.screenWidth * .12)),
-                    AppBoldFont(
-                        msg: 'Home', color: BLACK_COLOR, fontSize: 20),
-                    SizedBox(width: SizeConfig.screenWidth * .02),
-                    AppBoldFont(
-                        msg: 'Upcoming', color: BLACK_COLOR, fontSize: 20),
-                    SizedBox(width: SizeConfig.screenWidth * .02),
-                    AppBoldFont(
-                        msg: 'Contact US',
-                        color: BLACK_COLOR,
-                        fontSize: 20),
-                    Expanded(
-                        child:
-                        SizedBox(width: SizeConfig.screenWidth * .12)),
-                    Image.asset(AssetsConstants.icSearch, height: 40),
-                    SizedBox(width: SizeConfig.screenWidth * .08),
-
-                  ],
-                ),
-              ),
-            ),
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+           // drawer:ResponsiveWidget.isMediumScreen(context)?AppMenu(homeViewModel: homeViewModel):Container() ,
+            appBar: PreferredSize(preferredSize: Size.fromHeight( ResponsiveWidget.isMediumScreen(context)? 50:80),
+                child: DesktopAppBar()),
             body: SingleChildScrollView(
 
 
-              child:   ResponsiveWidget.isMediumScreen(context)?contentsWidget( videoList: NotificationListener(
+              child:   ResponsiveWidget.isMediumScreen(context)?
+              contentsWidget( videoList: NotificationListener(
               onNotification: (notification) {
                 if (notification is ScrollEndNotification) {
                   print(_scrollController.position.pixels);
                 }
                 return false;
               },
-              child: categoryView != null
-                  ? categoryView.getPreviousPageList.length > 0
-                  ? SingleChildScrollView(
+              child: homeViewModel.homePageDataModel != null
+                  ?  SingleChildScrollView(
                     child: Column(
                       children: [
                         Container(
@@ -143,34 +111,45 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                               crossAxisSpacing: 5,
                               mainAxisSpacing:  15,
                               childAspectRatio: 1.8),
-                          itemCount: categoryView.getPreviousPageList.length,
+                          itemCount:  homeViewModel.homePageDataModel!.videoList!.length,
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
-                                Navigator.of(context, rootNavigator: true)
-                                    .push(MaterialPageRoute(
-                                    builder: (context) =>
-                                    new MovieDetailPage(
-                                      platformMovieData: categoryView
-                                          .getPreviousPageList[index],
-                                      movieID: categoryView
-                                          .getPreviousPageList[index]
-                                          .youtubeVideoId,
-                                    )));
+                                GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParams: {
+                                  'movieID':"${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}",
+                                  'VideoId':'${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
+                                  'Title':"${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}",
+                                  'Desc':'${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
+                                  // 'movieID':'${homeViewModel.homePageDataModel?.moviesList?.youtubeVideoId}',
+                                  // 'VideoId':'${widget.moviesList?.videoId}',
+                                  // 'Title':'${widget.moviesList?.videoTitle}',
+                                  // 'Desc':'${widget.moviesList?.videoDescription}'
+                                  // 'platformMovieData':'${widget.moviesList}'
+                                });
+                                // Navigator.of(context, rootNavigator: true)
+                                //     .push(MaterialPageRoute(
+                                //     builder: (context) =>
+                                //     new DetailPage(
+                                //       // platformMovieData: categoryView
+                                //       //     .getPreviousPageList[index],
+                                //       movieID: categoryView
+                                //           .getPreviousPageList[index]
+                                //           .youtubeVideoId,
+                                //     )));
+
                               },
                               child: OnHover(
                                   builder: (isHovered) {
-                                    bool _heigth = isHovered;
                                     return Container(
                                       child: ClipRRect(
                                           borderRadius:
                                           BorderRadius.circular(15),
                                           child: Image.network(
-                                            categoryView
-                                                .getPreviousPageList[
-                                            index]
-                                                .thumbnail ??
-                                                "",
+                                              homeViewModel
+                                                  .homePageDataModel
+                                                  ?.videoList?[index]
+                                                  .thumbnail ??
+                                                  '',
                                             fit: BoxFit.fill)),
                                     );
                                   },
@@ -184,7 +163,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                       ],
                     ),
                   )
-                  : Container()
+
                   : Container(
                 height: SizeConfig.screenHeight * 0.8,
                 child: Center(
@@ -201,9 +180,8 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                 }
                 return false;
               },
-              child: categoryView != null
-                  ? categoryView.getPreviousPageList.length > 0
-                      ? GridView.builder(
+              child: homeViewModel.homePageDataModel != null
+                  ?  GridView.builder(
                           physics: AlwaysScrollableScrollPhysics(),
                           shrinkWrap: true,
                           controller: _scrollController,
@@ -217,20 +195,31 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                   mainAxisSpacing:  ResponsiveWidget.isMediumScreen(context)?15:5.0,
                                   childAspectRatio: ResponsiveWidget.isMediumScreen(context)
                                       ? 1.8:1.5),
-                          itemCount: categoryView.getPreviousPageList.length,
+                          itemCount:  homeViewModel.homePageDataModel!.videoList!.length,
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
-                                Navigator.of(context, rootNavigator: true)
-                                    .push(MaterialPageRoute(
-                                        builder: (context) =>
-                                            new MovieDetailPage(
-                                              platformMovieData: categoryView
-                                                  .getPreviousPageList[index],
-                                              movieID: categoryView
-                                                  .getPreviousPageList[index]
-                                                  .youtubeVideoId,
-                                            )));
+                                GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParams: {
+                                  'movieID':"${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}",
+                                  'VideoId':'${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
+                                  'Title':"${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}",
+                                  'Desc':'${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
+                                  // 'movieID':'${homeViewModel.homePageDataModel?.moviesList?.youtubeVideoId}',
+                                  // 'VideoId':'${widget.moviesList?.videoId}',
+                                  // 'Title':'${widget.moviesList?.videoTitle}',
+                                  // 'Desc':'${widget.moviesList?.videoDescription}'
+                                  // 'platformMovieData':'${widget.moviesList}'
+                                });
+                                // Navigator.of(context, rootNavigator: true)
+                                //     .push(MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             new DetailPage(
+                                //               // platformMovieData: categoryView
+                                //               //     .getPreviousPageList[index],
+                                //               movieID: categoryView
+                                //                   .getPreviousPageList[index]
+                                //                   .youtubeVideoId,
+                                //             )));
                               },
                               child: OnHover(
                                   builder: (isHovered) {
@@ -250,11 +239,11 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                           borderRadius:
                                               BorderRadius.circular(15),
                                           child: Image.network(
-                                              categoryView
-                                                      .getPreviousPageList[
-                                                          index]
-                                                      .thumbnail ??
-                                                  "",
+                                            homeViewModel
+                                                .homePageDataModel
+                                                ?.videoList?[index]
+                                                .thumbnail ??
+                                                '',
                                               fit: BoxFit.fill,width: 50,height: 50,)),
                                     );
                                   },
@@ -262,7 +251,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                     ..translate(0, 0, 0)),
                             );
                           })
-                      : Container()
+
                   : Container(
                       height: SizeConfig.screenHeight * 0.8,
                       child: Center(
@@ -330,7 +319,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
       children: [
         Padding(
           padding: EdgeInsets.only(left: 40, top: 30),
-          child: AppBoldFont(msg: widget.title ?? "",fontSize: 22),
+          child: AppBoldFont(context,msg: widget.title ?? "",fontSize: 22),
         ),
         Container(
             decoration: BoxDecoration(
@@ -350,7 +339,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
       children: [
         Padding(
           padding: EdgeInsets.only(left: 40, top: 30,bottom: 20),
-          child: AppBoldFont(msg: widget.title ?? "",fontSize: 18),
+          child: AppBoldFont(context,msg: widget.title ?? "",fontSize: 18),
         ),
         Center(
           child: Container(

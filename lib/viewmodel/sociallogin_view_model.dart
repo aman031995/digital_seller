@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
@@ -15,7 +16,8 @@ import 'package:tycho_streams/network/result.dart';
 import 'package:tycho_streams/repository/sociallogin_provider.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
-import 'package:tycho_streams/view/screens/bottom_navigation.dart';
+import 'package:tycho_streams/utilities/route_service/routes_name.dart';
+
 import 'package:tycho_streams/view/widgets/social_login_update.dart';
 
 bool isGoogle = false;
@@ -161,7 +163,9 @@ class SocialLoginViewModel with ChangeNotifier {
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             AppDataManager.getInstance.updateUserDetails(userInfoModel!);
             AppDataManager.setFirstTimeValue();
-            Navigator.pushNamed(context,  '/HomePage');
+            notifyListeners();
+            GoRouter.of(context).pushNamed(RoutesName.home);
+            notifyListeners();
            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)));
           }
         });
@@ -186,7 +190,9 @@ class SocialLoginViewModel with ChangeNotifier {
               AppDataManager.getInstance.updateUserDetails(userInfoModel);
               AppDataManager.setFirstTimeValue();
               Navigator.pop(context);
-              Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (route) => false);
+              notifyListeners();
+              GoRouter.of(context).pushNamed(RoutesName.home);
+             // Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (route) => false);
               // GoRouter.of(context).pushReplacementNamed(RoutesName.bottomNavigation);
               // Navigator.pushReplacement(context,
               //     MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)));

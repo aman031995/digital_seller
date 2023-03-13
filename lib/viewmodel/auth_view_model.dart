@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tycho_streams/model/data/UserInfoModel.dart';
 import 'package:tycho_streams/network/ASResponseModal.dart';
 import 'package:tycho_streams/network/AppDataManager.dart';
@@ -7,9 +8,10 @@ import 'package:tycho_streams/network/result.dart';
 import 'package:tycho_streams/repository/auth_repository.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
-import 'package:tycho_streams/view/screens/bottom_navigation.dart';
-import 'package:tycho_streams/view/screens/login_screen.dart';
-import 'package:tycho_streams/view/screens/reset_screen.dart';
+import 'package:tycho_streams/utilities/route_service/routes_name.dart';
+import 'package:tycho_streams/view/WebScreen/reset_screen.dart';
+
+
 import 'package:tycho_streams/view/screens/verify_otp_screen.dart';
 
 import '../view/WebScreen/HomePageWeb.dart';
@@ -33,8 +35,11 @@ class AuthViewModel with ChangeNotifier {
         isLogin=true;
         Navigator.pop(context);
         notifyListeners();
-        Navigator.pushNamed(context,'/HomePage');
-        notifyListeners();
+        GoRouter.of(context).pushNamed(RoutesName.home);
+
+        //     .pushNamedAndRemoveUntil('/HomePage', (Route<dynamic> route) => false);
+        //Navigator.pushNamedAndRemoveUntil(context,'/HomePage');
+       // notifyListeners();
       }
     });
   }
@@ -52,11 +57,11 @@ class AuthViewModel with ChangeNotifier {
             barrierColor: Colors.black87,
             builder: (BuildContext context) {
               return VerifyOtp(
-                    mobileNo: phone,
-                    name: name,
-                    email: email,
-                    password: password,
-                    isForgotPassword: false);});
+                  mobileNo: phone,
+                  name: name,
+                  email: email,
+                  password: password,
+                  isForgotPassword: false);});
         notifyListeners();
       }
     });
@@ -91,25 +96,25 @@ class AuthViewModel with ChangeNotifier {
 
   registerUser(BuildContext context, String? name, String? phone, String? password, String? email) {
     _authRepo.registerUser(name!, email!, phone!, password!, context,
-        (result, isSuccess) {
-      if (isSuccess) {
-        AppIndicator.disposeIndicator();
-        _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-        AppDataManager.getInstance.updateUserDetails(userInfoModel!);
-        ToastMessage.message(
-            ((result as SuccessState).value as ASResponseModal).message);
-        print('Register api Successfully');
-        AppIndicator.disposeIndicator();
-        isLogin=true;
-        Navigator.pop(context);
-        Navigator.pushNamed(context, '/HomePage');
+            (result, isSuccess) {
+          if (isSuccess) {
+            AppIndicator.disposeIndicator();
+            _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+            AppDataManager.getInstance.updateUserDetails(userInfoModel!);
+            ToastMessage.message(
+                ((result as SuccessState).value as ASResponseModal).message);
+            print('Register api Successfully');
+            AppIndicator.disposeIndicator();
+            isLogin=true;
+            Navigator.pop(context);
+            GoRouter.of(context).pushNamed(RoutesName.home);
 
-        // Navigator.pushNamedAndRemoveUntil(context, RoutesName.login, (route) => false);
-        // Navigator.pushAndRemoveUntil(context,
-        //     MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)), (route) => false);
-        notifyListeners();
-      }
-    });
+            // Navigator.pushNamedAndRemoveUntil(context, RoutesName.login, (route) => false);
+            // Navigator.pushAndRemoveUntil(context,
+            //     MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)), (route) => false);
+            notifyListeners();
+          }
+        });
   }
 
   Future<void> resendOtp(
@@ -136,11 +141,11 @@ class AuthViewModel with ChangeNotifier {
             barrierColor: Colors.black87,
             builder: (BuildContext context) {
               return VerifyOtp(
-                    name: name,
-                    email: email,
-                    password: password,
-                    mobileNo: phone,
-                    isForgotPassword: isForgotPassword);});
+                  name: name,
+                  email: email,
+                  password: password,
+                  mobileNo: phone,
+                  isForgotPassword: isForgotPassword);});
         notifyListeners();
       }
     });
@@ -172,15 +177,16 @@ class AuthViewModel with ChangeNotifier {
       String confirmPassword, BuildContext context) async {
     AppIndicator.loadingIndicator();
     _authRepo.resetPassword(email, newPassword, confirmPassword, context,
-        (result, isSuccess) {
-      if (isSuccess) {
-        print('forgot password api Successfully');
-        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
-        AppIndicator.disposeIndicator();
-        Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (route) => false);
-       // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => LoginScreen()), (route) => false);
-        notifyListeners();
-      }
-    });
+            (result, isSuccess) {
+          if (isSuccess) {
+            print('forgot password api Successfully');
+            ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+            AppIndicator.disposeIndicator();
+            GoRouter.of(context).pushNamed(RoutesName.home);
+          //  Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (route) => false);
+            // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => LoginScreen()), (route) => false);
+            notifyListeners();
+          }
+        });
   }
 }

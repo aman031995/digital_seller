@@ -12,7 +12,7 @@ import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/WebScreen/LoginUp.dart';
-import 'package:tycho_streams/view/screens/register_screen.dart';
+
 import 'package:tycho_streams/view/widgets/social_login_view.dart';
 import 'package:tycho_streams/view/widgets/terms_condition.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
@@ -57,11 +57,11 @@ class _SignUpState extends State<SignUp> {
                 children: [
                   SizedBox(height: SizeConfig.screenHeight * .02),
                   AppBoldFont(
-                      msg: 'Get Started', color: BLACK_COLOR, fontSize: 18),
+                      context,msg: 'Get Started', fontSize: 18),
                   SizedBox(height: SizeConfig.screenHeight * .01),
                   AppRegularFont(
-                      msg: "Lets register yourself to make profile.",
-                      color: Colors.black,
+                      context,msg: "Lets register yourself to make profile.",
+                      
                       fontSize: 14),
                   SizedBox(height: SizeConfig.screenHeight * .01),
                   registerMobileForm(),
@@ -75,7 +75,7 @@ class _SignUpState extends State<SignUp> {
                             SizeConfig.screenWidth / 1.5,
                             60.0,
                             LIGHT_THEME_COLOR,
-                            WHITE_COLOR,
+
                             18,
                             10,
                             snapshot.data != true ? false : true,
@@ -97,9 +97,9 @@ class _SignUpState extends State<SignUp> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       AppRegularFont(
-                          msg: 'Already have an account?', color: TEXT_COLOR,fontSize: 14),
+                          context,msg: 'Already have an account?', color: TEXT_COLOR,fontSize: 14),
                       appTextButton(context, 'Login', Alignment.bottomRight,
-                          Colors.red, 16, true, onPressed: () {
+                        16, true, onPressed: () {
                             Navigator.pop(context);
                             showDialog(
                                 context: context,
@@ -119,9 +119,10 @@ class _SignUpState extends State<SignUp> {
         shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         content: Container(
             decoration: BoxDecoration(
-               borderRadius: BorderRadius.circular(20)),
+               borderRadius: BorderRadius.circular(20),
+            color: Colors.white),
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ResponsiveWidget.isMediumScreen(context)? Container() :   Container(
+              Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(20),bottomLeft: Radius.circular(20))),
                 height: SizeConfig.screenHeight / 1.3,
@@ -133,18 +134,18 @@ class _SignUpState extends State<SignUp> {
               ),
               Container(
                 height: SizeConfig.screenHeight / 1.3,
-                decoration: BoxDecoration( color: Colors.white,
+                decoration: BoxDecoration(
                     borderRadius: BorderRadius.only(topRight: Radius.circular(20),bottomRight: Radius.circular(20))),
                 width: SizeConfig.screenWidth * 0.36,
                 child: Column(
                   children: [
                     SizedBox(height: SizeConfig.screenHeight * .05),
                     AppBoldFont(
-                        msg: 'Get Started', color: BLACK_COLOR, fontSize: 30),
+                        context,msg: 'Get Started', color: BLACK_COLOR, fontSize: 30),
                     SizedBox(height: SizeConfig.screenHeight * .02),
                     AppRegularFont(
-                        msg: "Lets register yourself to make profile.",
-                        color: Colors.black,
+                        context,msg: "Lets register yourself to make profile.",
+                        
                         fontSize: 18),
                     registerForm(),
                     SizedBox(height: SizeConfig.screenHeight * .02),
@@ -157,7 +158,7 @@ class _SignUpState extends State<SignUp> {
                               SizeConfig.screenWidth / 4,
                               60.0,
                               LIGHT_THEME_COLOR,
-                              WHITE_COLOR,
+
                               18,
                               10,
                               snapshot.data != true ? false : true,
@@ -179,9 +180,9 @@ class _SignUpState extends State<SignUp> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AppRegularFont(
-                            msg: 'Already have an account?', color: TEXT_COLOR),
+                            context,msg: 'Already have an account?', color: TEXT_COLOR),
                         appTextButton(context, 'Login', Alignment.bottomRight,
-                            Colors.red, 16, true, onPressed: () {
+                             16, true, onPressed: () {
                               Navigator.pop(context);
                               showDialog(
                                   context: context,
@@ -269,7 +270,7 @@ class _SignUpState extends State<SignUp> {
                   secureText: false,
                   isColor: isPhone,
                   isTick: false,
-                  maxLength: 100,
+                  maxLength: 10,
                   errorText:
                       snapshot.hasError ? snapshot.error.toString() : null,
                   onChanged: (m) {
@@ -436,7 +437,7 @@ class _SignUpState extends State<SignUp> {
               Padding(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: AppMediumFont(
-                    msg: StringConstant.orContinueWith,
+                    context,msg: StringConstant.orContinueWith,
                     color: TEXT_COLOR,
                     fontSize: 14),
               ),
@@ -475,8 +476,8 @@ class _SignUpState extends State<SignUp> {
               Padding(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: AppMediumFont(
-                    msg: StringConstant.orContinueWith,
-                    color: TEXT_COLOR,
+                    context,msg: StringConstant.orContinueWith,
+
                     fontSize: 14),
               ),
               Expanded(

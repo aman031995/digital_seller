@@ -8,9 +8,8 @@ import 'package:tycho_streams/network/result.dart';
 import 'package:tycho_streams/repository/profile_repository.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
-import 'package:tycho_streams/utilities/route_service/routes_name.dart';
-import 'package:tycho_streams/view/screens/bottom_navigation.dart';
-import 'package:tycho_streams/view/screens/login_screen.dart';
+
+
 import 'package:tycho_streams/view/widgets/profile_bottom_view.dart';
 
 class ProfileViewModel with ChangeNotifier {
@@ -90,11 +89,11 @@ class ProfileViewModel with ChangeNotifier {
         AppDataManager.deleteSavedDetails();
         ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
         Navigator.of(context, rootNavigator: true).pop();
-        await Future.delayed(const Duration(seconds: 1)).then((value) =>
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (_) => LoginScreen()),
-                (route) => false));
+     //   await Future.delayed(const Duration(seconds: 1)).then((value) =>
+            // Navigator.pushAndRemoveUntil(
+            //     context,
+            //     MaterialPageRoute(builder: (_) => LoginScreen()),
+            //     (route) => false));
         notifyListeners();
       }
     });

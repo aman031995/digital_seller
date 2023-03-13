@@ -3,6 +3,7 @@ import 'package:pinput/pinput.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/view/screens/verify_otp_screen.dart';
 
+
 class PinEntryTextFiledView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
