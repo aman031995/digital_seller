@@ -33,8 +33,7 @@ class _footerDesktopState extends State<footerDesktop> {
             children: [
               Container(width: MediaQuery.of(context).size.width * .04),
               AppButton(context, 'About Us',  onPressed: () {
-                GoRouter.of(context).go(RoutesName.AboutUs);
-                //GoRouter.of(context).pushNamed(RoutesName.AboutUs);
+                GoRouter.of(context).pushNamed(RoutesName.AboutUs);
                }),
               Container(width: MediaQuery.of(context).size.width * .02),
               AppButton(context, 'Terms Of Use', onPressed: () {

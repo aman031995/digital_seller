@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/model/data/UserInfoModel.dart';
 import 'package:tycho_streams/network/ASResponseModal.dart';
 import 'package:tycho_streams/network/AppDataManager.dart';
+import 'package:tycho_streams/network/CacheDataManager.dart';
 import 'package:tycho_streams/network/NetworkConstants.dart';
 import 'package:tycho_streams/network/result.dart';
 import 'package:tycho_streams/repository/auth_repository.dart';
@@ -21,7 +23,12 @@ class AuthViewModel with ChangeNotifier {
 
   UserInfoModel? _userInfoModel;
   UserInfoModel? get userInfoModel => _userInfoModel;
-
+  User() async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    name=sharedPreferences.get('name').toString() ?? " ";
+    name=="null"? name="a":name;
+    print(name);
+  }
   Future<void> login(
       String phone, String password, BuildContext context) async {
     AppIndicator.loadingIndicator();
@@ -35,6 +42,7 @@ class AuthViewModel with ChangeNotifier {
         isLogin=true;
         Navigator.pop(context);
         notifyListeners();
+        User();
         GoRouter.of(context).pushNamed(RoutesName.home);
 
         //     .pushNamedAndRemoveUntil('/HomePage', (Route<dynamic> route) => false);
@@ -42,6 +50,11 @@ class AuthViewModel with ChangeNotifier {
        // notifyListeners();
       }
     });
+  }
+  logoutButtonPressed(BuildContext context) async {
+    AppDataManager.deleteSavedDetails();
+    CacheDataManager.clearCachedData();
+    GoRouter.of(context).pushNamed(RoutesName.home);
   }
 
   Future<void> register(String name, String phone, String email,
@@ -107,6 +120,7 @@ class AuthViewModel with ChangeNotifier {
             AppIndicator.disposeIndicator();
             isLogin=true;
             Navigator.pop(context);
+            User();
             GoRouter.of(context).pushNamed(RoutesName.home);
 
             // Navigator.pushNamedAndRemoveUntil(context, RoutesName.login, (route) => false);

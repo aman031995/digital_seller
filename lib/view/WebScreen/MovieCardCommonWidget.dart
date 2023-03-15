@@ -54,26 +54,13 @@ class _CardMovieHomeState extends State<CardMovieHome> {
       padding: EdgeInsets.only(left:_heigth?1: 10,right:_heigth?1: 10,top:_heigth?1: 10,bottom:_heigth?1: 10),
       child: InkWell(
         onTap: () {
-          // Navigator.of(context, rootNavigator: true)
-          //     .push(MaterialPageRoute(
-          //     builder: (context) =>
-          //     new MovieDetailPage(
-          //       VideoId: widget.moviesList?.videoId,
-          //       Title: widget.moviesList?.videoTitle,
-          //       Desc: widget.moviesList?.videoDescription,
-          //       // platformMovieData: widget.moviesList,
-          //       // movieID: 'mZ5lbn9FWAQ',
-          //       movieID: widget.moviesList?.youtubeVideoId,
-          //     )));
-
-
-          setState(() {  GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParams: {
+          GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParams: {
             'movieID':'${widget.moviesList?.youtubeVideoId}',
             'VideoId':'${widget.moviesList?.videoId}',
             'Title':'${widget.moviesList?.videoTitle}',
             'Desc':'${widget.moviesList?.videoDescription}'
-            // 'platformMovieData':'${widget.moviesList}'
-          });});
+
+          });
         },
         //9c5757df-6dea-44ad-9578-2df898ef7733
         child: Card(

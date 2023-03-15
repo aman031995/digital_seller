@@ -19,6 +19,7 @@ import 'package:tycho_streams/view/WebScreen/SignUp.dart';
 import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
 import 'package:tycho_streams/view/widgets/video_listpage.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
+import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 import 'package:tycho_streams/viewmodel/profile_view_model.dart';
 import 'package:universal_html/html.dart' as html;
 bool isLogin=false;
@@ -38,7 +39,7 @@ class _HomePageWebState extends State<HomePageWeb> {
   @override
   void initState() {
     homeViewModel.getAppConfigData(context);
-    User();
+
 
     super.initState();
   }
@@ -52,6 +53,7 @@ class _HomePageWebState extends State<HomePageWeb> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    final authVM = Provider.of<AuthViewModel>(context);
     return   WillPopScope( onWillPop:_willPopScopeCall,
     child:ChangeNotifierProvider(
         create: (BuildContext context) => homeViewModel,
@@ -177,7 +179,11 @@ iconStyleData: IconStyleData(
                       case 'My Acount' :
                         break;
                       case 'Logout' :
-                        logoutButtonPressed();
+                        authVM.logoutButtonPressed(context);
+                        name="a";
+                        setState(() {
+                          
+                        });
                         break;
                     }     // selectedValue = value.toString();
                   },
@@ -213,18 +219,19 @@ iconStyleData: IconStyleData(
           ));})));
   }
 
-  logoutButtonPressed() async {
-    AppDataManager.deleteSavedDetails();
-    CacheDataManager.clearCachedData();
-    GoRouter.of(context).pushNamed(RoutesName.home);
-  }
-  User() async{
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    name=sharedPreferences.get('name').toString() ?? " ";
-    name=="null"? name="a":name;
-    print(name);
-  }
+  // logoutButtonPressed() async {
+  //   AppDataManager.deleteSavedDetails();
+  //   CacheDataManager.clearCachedData();
+  //   GoRouter.of(context).pushNamed(RoutesName.home);
+  // }
+  // User() async{
+  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   name=sharedPreferences.get('name').toString() ?? " ";
+  //   name=="null"? name="a":name;
+  //   print(name);
+  // }
   Widget MobileMenu(BuildContext context){
+    final authVM = Provider.of<AuthViewModel>(context);
     return MultiLevelDrawer(
       backgroundColor:Theme.of(context).scaffoldBackgroundColor,
       rippleColor:Theme.of(context).primaryColorDark,
@@ -277,7 +284,11 @@ iconStyleData: IconStyleData(
 
           content: Text("Logout",style: TextStyle(color: Theme.of(context).primaryColorLight)),
           onClick: () {
-            logoutButtonPressed();
+            authVM.logoutButtonPressed(context);
+            name="a";
+            setState(() {
+
+            });
           },
         ),
 

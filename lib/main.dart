@@ -170,7 +170,8 @@ class _MyAppState extends State<MyApp> {
                   theme: ThemeData(
                       scaffoldBackgroundColor: viewmodel.appConfigModel?.androidConfig?.appTheme?.themeColor?.hex?.toColor(),
                       primaryColor: viewmodel.appConfigModel?.androidConfig?.appTheme?.primaryColor?.hex?.toColor(),
-                      fontFamily: viewmodel.appConfigModel?.androidConfig?.fontStyle?.fontFamily, colorScheme: ColorScheme.fromSwatch().copyWith(secondary: viewmodel.appConfigModel?.androidConfig?.appTheme?.secondaryColor?.hex?.toColor())),
+                      fontFamily: viewmodel.appConfigModel?.androidConfig?.fontStyle?.fontFamily,
+                     accentColor: viewmodel.appConfigModel?.androidConfig?.appTheme?.secondaryColor?.hex?.toColor()),
                   builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
                   scrollBehavior: MyCustomScrollBehavior(),
