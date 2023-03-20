@@ -6,6 +6,7 @@ class StringConstant {
   static String kUserDetails = "user_details";
   static String kHomePageData = "homepage_data";
   static String kAppConfig = "app_configuration";
+  static String kAppMenu = "app_menu";
 
 // **************Login Page ***************
   static String mobileNumber = "Mobile Number";

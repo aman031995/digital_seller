@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/view/WebScreen/DesktopAppBar.dart';
 import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';
 import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
+import 'package:tycho_streams/view/widgets/app_menu.dart';
+import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 class Terms extends StatefulWidget {
   const Terms({Key? key}) : super(key: key);
 
@@ -13,13 +16,21 @@ class Terms extends StatefulWidget {
 }
 
 class _TermsState extends State<Terms> {
+  HomeViewModel homeViewModel = HomeViewModel();
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
-      drawer: MobileMenu(context),
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+    return
+
+      ChangeNotifierProvider(
+          create: (BuildContext context) => homeViewModel,
+          child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
+      return
+      Scaffold(
+        drawer: AppMenu(homeViewModel: viewmodel),
+
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: PreferredSize(preferredSize: Size.fromHeight( ResponsiveWidget.isMediumScreen(context)? 50:80),
           child: DesktopAppBar()),
       body: SingleChildScrollView(
@@ -135,6 +146,6 @@ class _TermsState extends State<Terms> {
               ResponsiveWidget.isMediumScreen(context)?   footerMobile(context): footerDesktop()
             ]),
       ),
-    );
+    );}));
   }
 }

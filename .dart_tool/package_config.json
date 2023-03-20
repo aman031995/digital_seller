@@ -320,6 +320,12 @@
       "languageVersion": "2.12"
     },
     {
+      "name": "flutter_inappwebview",
+      "rootUri": "file:///C:/Users/admin/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_inappwebview-5.7.2+3",
+      "packageUri": "lib/",
+      "languageVersion": "2.14"
+    },
+    {
       "name": "flutter_plugin_android_lifecycle",
       "rootUri": "file:///C:/Users/admin/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.9",
       "packageUri": "lib/",
@@ -1148,7 +1154,7 @@
       "languageVersion": "2.18"
     }
   ],
-  "generated": "2023-03-20T11:18:56.894614Z",
+  "generated": "2023-03-20T13:48:47.181693Z",
   "generator": "pub",
   "generatorVersion": "2.19.2"
 }

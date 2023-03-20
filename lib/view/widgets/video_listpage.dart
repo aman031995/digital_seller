@@ -83,7 +83,7 @@ class _VideoListPageState extends State<VideoListPage> {
                                 child: ThreeArchedCircle(
                                      size: 50.0)),
                           ),
-                    const SizedBox(height: 50),
+                    const SizedBox(height: 70),
                     ResponsiveWidget.isMediumScreen(context)
                         ? footerMobile(context)
                         : const footerDesktop()

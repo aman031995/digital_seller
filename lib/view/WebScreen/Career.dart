@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
@@ -6,6 +7,8 @@ import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/view/WebScreen/DesktopAppBar.dart';
 import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';
 import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
+import 'package:tycho_streams/view/widgets/app_menu.dart';
+import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 class Career extends StatefulWidget {
   const Career({Key? key}) : super(key: key);
 
@@ -14,19 +17,24 @@ class Career extends StatefulWidget {
 }
 
 class _CareerState extends State<Career> {
+  HomeViewModel homeViewModel = HomeViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return
-      Scaffold(
+    return  ChangeNotifierProvider(
+        create: (BuildContext context) => homeViewModel,
+        child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
+      return
+        Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: PreferredSize(preferredSize: Size.fromHeight( ResponsiveWidget.isMediumScreen(context)? 50:70),
             child: DesktopAppBar()),
         // key: _scaffoldKey,
-        drawer: MobileMenu(context),
+          drawer: AppMenu(homeViewModel: viewmodel),
 
-        body: SingleChildScrollView(
+
+          body: SingleChildScrollView(
         child: Center(
           child: Column(
             children: [
@@ -149,6 +157,6 @@ class _CareerState extends State<Career> {
           ),
         ),
     ),
-      );
+      );}));
   }
 }

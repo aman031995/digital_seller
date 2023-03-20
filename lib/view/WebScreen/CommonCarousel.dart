@@ -6,7 +6,8 @@ import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/three_arched_circle.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
-
+import 'package:url_launcher/url_launcher.dart';
+String url='https://www.instagram.com';
 class CommonCarousel extends StatefulWidget with ChangeNotifier {
   CommonCarousel({Key? key}) : super(key: key);
 
@@ -106,8 +107,17 @@ class _CommonCarouselState extends State<CommonCarousel> {
   }
   List<Widget> generateImageTilesWeb(BuildContext context) {
     return homeViewModel.bannerDataModal!.bannerList!
-        .map((element) =>  Stack(
-      children: [
+        .map((element) =>  InkWell(
+      focusNode: carouselFocus,
+      onTap: () async {
+        print(current);
+        url = '${homeViewModel.bannerDataModal?.bannerList?[current].bannerUrl }';
+        if (await canLaunch(url)) {
+          await launch(url);
+        } else {
+          throw 'Could not launch $url';
+        }},
+      child:
         Container(
           height: 600,width: SizeConfig.screenWidth,
           margin: EdgeInsets.only(left: 0,right: 0,top: 0),
@@ -117,7 +127,6 @@ class _CommonCarouselState extends State<CommonCarousel> {
             //height: SizeConfig.screenHeight
           ),
         ),
-      ],
     )
     )
         .toList();
@@ -148,9 +157,14 @@ class _CommonCarouselState extends State<CommonCarousel> {
     return homeViewModel.bannerDataModal!.bannerList!
         .map((element) => InkWell(
         focusNode: carouselFocus,
-        onTap: () {
+        onTap: () async {
           print(current);
-        },
+          url = '${homeViewModel.bannerDataModal?.bannerList?[current].bannerUrl }';
+            if (await canLaunch(url)) {
+          await launch(url);
+          } else {
+          throw 'Could not launch $url';
+        }},
         child: Container(
           margin: EdgeInsets.only(left: 10,right: 10,top: 10),
           decoration: BoxDecoration(

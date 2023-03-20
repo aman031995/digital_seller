@@ -16,6 +16,8 @@ import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 
+import '../widgets/app_menu.dart';
+
 
 class DetailPage extends StatefulWidget {
   String? movieID;
@@ -30,6 +32,7 @@ String? Desc;
 
 class _MovieDetailPageState extends State<DetailPage> {
   String url='';
+  HomeViewModel homeViewModel = HomeViewModel();
   @override
   void initState() {
     setState((){
@@ -43,10 +46,16 @@ class _MovieDetailPageState extends State<DetailPage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
    // String url = 'https://www.youtube.com/embed/${widget.movieID}';
-    return Scaffold(
+    return ChangeNotifierProvider(
+        create: (BuildContext context) => homeViewModel,
+        child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
+      return
+
+      Scaffold(
         appBar: PreferredSize(preferredSize: Size.fromHeight( ResponsiveWidget.isMediumScreen(context)? 50:70),
             child: DesktopAppBar()),
-        drawer: MobileMenu(context),
+        drawer: ResponsiveWidget.isMediumScreen(context) ?AppMenu(homeViewModel: viewmodel):Container(),
+
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,      body: SingleChildScrollView(
             child: Container(
               child: Column(
@@ -67,7 +76,7 @@ class _MovieDetailPageState extends State<DetailPage> {
                 ],
               ),
             ),
-          ));
+          ));}));
   }
 
 

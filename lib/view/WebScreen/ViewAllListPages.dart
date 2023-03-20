@@ -18,6 +18,7 @@ import 'package:tycho_streams/view/WebScreen/DetailPage.dart';
 import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';
 import 'package:tycho_streams/view/WebScreen/OnHover.dart';
 import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
+import 'package:tycho_streams/view/widgets/app_menu.dart';
 import 'package:tycho_streams/viewmodel/CategoryViewModel.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 
@@ -77,7 +78,8 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             appBar: PreferredSize(preferredSize: Size.fromHeight( ResponsiveWidget.isMediumScreen(context)? 50:70),
                 child: DesktopAppBar()),
-            drawer: MobileMenu(context),
+            drawer: AppMenu(homeViewModel: homeViewModel),
+
             body: SingleChildScrollView(
                 child:   ResponsiveWidget.isMediumScreen(context)?
               contentsWidget( videoList: NotificationListener(

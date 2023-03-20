@@ -99,7 +99,7 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
       BuildContext context, String title, bool isSubTitle, bool isButton) {
     return Container(
       height: isSubTitle ? 70 : 40,
-    margin: EdgeInsets.only(right: 25,left: 10),
+    margin: EdgeInsets.only(right: 25,left: 10,top: 10,bottom: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -107,7 +107,7 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppBoldFont(context,msg: title, fontSize: ResponsiveWidget.isMediumScreen(context)? 18:30, color: TEXT_COLOR),
+              AppBoldFont(context,msg: title, fontSize: ResponsiveWidget.isMediumScreen(context)? 16:22, color: TEXT_COLOR),
               widget.platformMovieData!.content!.length > 8
                   ? textButton(context, "See All", onApply: () async {
 

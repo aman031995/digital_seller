@@ -9,6 +9,7 @@ import 'package:tycho_streams/model/data/BannerDataModel.dart';
 import 'package:tycho_streams/model/data/CategoryDataModel.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/model/data/TrayDataModel.dart';
+import 'package:tycho_streams/model/data/app_menu_model.dart';
 import 'package:tycho_streams/model/data/notification_model.dart';
 import 'package:tycho_streams/model/data/search_data_model.dart';
 import 'package:tycho_streams/network/ASRequestModal.dart';
@@ -288,36 +289,36 @@ class HomePageRepository {
     });
   }
 
-  // Future<Result?> getAppMenu(
-  //     BuildContext context, NetworkResponseHandler responseHandler) async {
-  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  //   var header = {
-  //     "Authorization": "Bearer " + sharedPreferences.get("token").toString()
-  //   };
-  //   AppNetwork appNetwork = AppNetwork();
-  //   Map<String, String> urlParams = {
-  //     "{APP_ID}": 'b07e2bbc-3ad9-441f-86fe-59caff940d1d',
-  //     "{DEVICE_TYPE}": 'android',
-  //   };
-  //   ASRequestModal requestModal = ASRequestModal.withUrlParams(
-  //       urlParams, NetworkConstants.kGetAppMenu, RequestType.get,
-  //       headers: header);
-  //   appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
-  //     if (isSuccess) {
-  //       var response = ASResponseModal.fromResult(result);
-  //       Map<String, dynamic> map =
-  //       (result as SuccessState).value as Map<String, dynamic>;
-  //       if (map["data"] is Map<String, dynamic>) {
-  //         response.dataModal = AppMenuModel.fromJson(map["data"]);
-  //         CacheDataManager.cacheData(
-  //             key: StringConstant.kAppMenu, jsonData: map);
-  //       }
-  //       responseHandler(Result.success(response), isSuccess);
-  //     } else {
-  //       responseHandler(result, isSuccess);
-  //     }
-  //   });
-  // }
+  Future<Result?> getAppMenu(
+      BuildContext context, NetworkResponseHandler responseHandler) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var header = {
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+    };
+    AppNetwork appNetwork = AppNetwork();
+    Map<String, String> urlParams = {
+      "{APP_ID}": 'b07e2bbc-3ad9-441f-86fe-59caff940d1d',
+      "{DEVICE_TYPE}": 'android',
+    };
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.kGetAppMenu, RequestType.get,
+        headers: header);
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map =
+        (result as SuccessState).value as Map<String, dynamic>;
+        if (map["data"] is Map<String, dynamic>) {
+          response.dataModal = AppMenuModel.fromJson(map["data"]);
+          CacheDataManager.cacheData(
+              key: StringConstant.kAppMenu, jsonData: map);
+        }
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
 }
 
 

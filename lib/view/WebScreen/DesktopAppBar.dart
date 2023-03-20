@@ -30,7 +30,7 @@ class _DesktopAppBarState extends State<DesktopAppBar> {
 
     AppBar(
       backgroundColor: Theme.of(context).cardColor,
-    iconTheme: const IconThemeData(color:Colors.black,  size: 28),
+    iconTheme: const IconThemeData(color:Colors.white54,  size: 28),
     title:  Image.asset(AssetsConstants.icLogo,height: 30),
     )
         :

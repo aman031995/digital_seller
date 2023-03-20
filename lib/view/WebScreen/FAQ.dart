@@ -1,6 +1,7 @@
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
@@ -10,6 +11,9 @@ import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';
 import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
 
 import 'dart:html' as html;
+
+import 'package:tycho_streams/view/widgets/app_menu.dart';
+import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 class FAQ extends StatefulWidget {
 
 
@@ -20,17 +24,25 @@ class FAQ extends StatefulWidget {
 }
 
 class _FAQState extends State<FAQ> {
+  HomeViewModel homeViewModel = HomeViewModel();
 
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return  Scaffold(
+    return
+      ChangeNotifierProvider(
+          create: (BuildContext context) => homeViewModel,
+          child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
+      return
+
+      Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: PreferredSize(preferredSize: Size.fromHeight( ResponsiveWidget.isMediumScreen(context)?50:80),
            child: DesktopAppBar()
         ),
-      drawer: MobileMenu(context),
-      body: SingleChildScrollView(
+        drawer: AppMenu(homeViewModel: viewmodel),
+
+        body: SingleChildScrollView(
         child:
         Center(
           child: Column(
@@ -126,114 +138,8 @@ class _FAQState extends State<FAQ> {
 
             ),
       ),
-    );
+    );}));
   }
-  // Desktopappbar(){
-  //   return Container(
-  //     color: Color(0xff00060E),
-  //     child:  Row(
-  //       mainAxisSize: MainAxisSize.min,
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [
-  //         Container(width: SizeConfig.screenWidth*.03),
-  //         Image.asset("images/TychoStreamA.png",height: 50),
-  //         Container(width: SizeConfig.screenWidth*.02),
-  //         TextButton(
-  //             onPressed: () {},
-  //             style: ButtonStyle(
-  //                 overlayColor: MaterialStateColor.resolveWith(
-  //                         (states) => Color(0xffA31621))),
-  //             child: const Text(
-  //               'Home',
-  //               style: TextStyle(color:  fontSize: 20),
-  //             )),
-  //         Container(width: MediaQuery.of(context).size.width*.02),
-  //         TextButton(
-  //             onPressed: () {},
-  //             style: ButtonStyle(
-  //                 overlayColor: MaterialStateColor.resolveWith(
-  //                         (states) => Color(0xffA31621))),
-  //             child: const Text('Episodes',
-  //                 style: TextStyle(color:  fontSize: 20))),
-  //         Container(width:  MediaQuery.of(context).size.width*.02),
-  //         TextButton(
-  //             onPressed: () {},
-  //             style: ButtonStyle(
-  //                 overlayColor: MaterialStateColor.resolveWith(
-  //                         (states) => Color(0xffA31621))),
-  //             child: const Text('Upcoming',
-  //                 style: TextStyle(color:  fontSize: 20))),
-  //         Container(width:  MediaQuery.of(context).size.width*.02),
-  //         TextButton(
-  //             onPressed: () {},
-  //             style: ButtonStyle(
-  //                 overlayColor: MaterialStateColor.resolveWith(
-  //                         (states) => Color(0xffA31621))),
-  //             child: const Text('Services',
-  //                 style: TextStyle(color:  fontSize: 20))),
-  //         Container(width:  MediaQuery.of(context).size.width*.02),
-  //         TextButton(
-  //             onPressed: () {},
-  //             style: ButtonStyle(
-  //                 overlayColor: MaterialStateColor.resolveWith(
-  //                         (states) => Color(0xffA31621))),
-  //             child: const Text('Contact Us',
-  //                 style: TextStyle(color:  fontSize: 20))),
-  //         Expanded(child: Container(width: MediaQuery.of(context).size.width*.43)),
-  //         Container(
-  //           height: 40,width:SizeConfig.screenWidth*.19,
-  //           child: TextField(
-  //             style: TextStyle(color: Colors.white),
-  //             decoration: new InputDecoration(
-  //
-  //               enabledBorder: UnderlineInputBorder(
-  //                 borderSide: BorderSide(color:  width: 2),
-  //               ),
-  //               focusedBorder: UnderlineInputBorder(
-  //                 borderSide: BorderSide(color:  width: 2),
-  //               ),
-  //
-  //               iconColor:
-  //               contentPadding: EdgeInsets.only(top: 2),
-  //               suffixIcon: Icon(Icons.search,color: Colors.white70,size: 24,),
-  //               hintText: "Search videos, episodes...",
-  //               hintStyle: TextStyle(color: Colors.white70),
-  //             ),
-  //             onChanged:null,
-  //             onSubmitted: null,
-  //           ),
-  //         ),
-  //         Container(width: SizeConfig.screenWidth*.03),   SizedBox(width: 20),
-  //         TextButton(
-  //             style: ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Colors.white)),
-  //             child: Container(
-  //               alignment: Alignment.center,
-  //               height: 40,
-  //               child: getMediumStyleText(
-  //                 msg: 'LOGIN',
-  //                 fontSize: 20,
-  //                 fontWeight: FontWeight.w500,
-  //                 ),
-  //             ),
-  //             onPressed: null),
-  //         SizedBox(width: 20),
-  //         TextButton(
-  //             style: ButtonStyle(backgroundColor: MaterialStatePropertyAll<Color>(Color(0xffC10B10))),
-  //             child: Container(
-  //               alignment: Alignment.center,
-  //               height: 40,
-  //               child: getMediumStyleText(
-  //                   msg: 'SUBSCRIPTION',
-  //                   fontSize: 20,
-  //                   fontWeight: FontWeight.w500,
-  //                   color: Colors.white),
-  //             ),
-  //             onPressed: null),
-  //         SizedBox(width: SizeConfig.screenWidth*.03),
-  //       ],
-  //     ),
-  //   );
-  // }
 }
 Widget dropdown(List<String> txt,BuildContext context) {
   return Container(
@@ -241,8 +147,28 @@ Widget dropdown(List<String> txt,BuildContext context) {
     width: ResponsiveWidget.isMediumScreen(context)?380:800,
     margin: EdgeInsets.only(bottom: 20,left: 10,right: 10),
     child: DropdownButtonFormField2(
-
+      // buttonStyleData: ButtonStyleData(
+      //   height: 50,
+      //   width: 160,
+      //   padding: const EdgeInsets.only(left: 14, right: 14),
+      //   decoration: BoxDecoration(
+      //     borderRadius: BorderRadius.circular(14),
+      //     border: Border.all(
+      //       color: Colors.black26,
+      //     ),
+      //     color: Colors.redAccent,
+      //   ),
+      //   elevation: 2,
+      // ),
+      dropdownStyleData: DropdownStyleData(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(14),
+            color: Colors.redAccent,
+          ),
+          ),
       decoration: InputDecoration(
+        filled: true,
+        fillColor: Theme.of(context).cardColor,
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(width: 1, color: Colors.red),
         ),
@@ -255,7 +181,7 @@ Widget dropdown(List<String> txt,BuildContext context) {
       //isExpanded: true,
       hint: Text(
         txt[0],
-        style: TextStyle(fontSize:ResponsiveWidget.isMediumScreen(context)?14: 18, color: Colors.black87),
+        style: TextStyle(fontSize:ResponsiveWidget.isMediumScreen(context)?14: 18, color: Theme.of(context).canvasColor.withOpacity(0.8),),
       ),
 isExpanded: true,
       items: txt
@@ -263,7 +189,7 @@ isExpanded: true,
         value: item,
         child: Text(
           item,
-          style: TextStyle(fontSize: ResponsiveWidget.isMediumScreen(context)?14:18, color: Colors.black87),
+          style: TextStyle(fontSize: ResponsiveWidget.isMediumScreen(context)?14:18, color:Theme.of(context).canvasColor.withOpacity(0.8),),
         ),
       ))
           .toList(),

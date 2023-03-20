@@ -1,24 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/view/WebScreen/DesktopAppBar.dart';
 import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';
 import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
+import 'package:tycho_streams/view/widgets/app_menu.dart';
+import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 class Privacy extends StatefulWidget {
-  const Privacy({Key? key}) : super(key: key);
+   Privacy({Key? key}) : super(key: key);
 
   @override
   State<Privacy> createState() => _PrivacyState();
 }
 
 class _PrivacyState extends State<Privacy> {
+  HomeViewModel homeViewModel = HomeViewModel();
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return
+    return  ChangeNotifierProvider(
+        create: (BuildContext context) => homeViewModel,
+        child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
+      return
       Scaffold(
-        drawer: MobileMenu(context),
+        drawer: AppMenu(homeViewModel: viewmodel),
+
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: PreferredSize(preferredSize: Size.fromHeight( ResponsiveWidget.isMediumScreen(context)? 50:70),
             child: DesktopAppBar()),
@@ -150,6 +158,6 @@ class _PrivacyState extends State<Privacy> {
           ),
         ),
     ),
-      );
+      );}));
   }
 }

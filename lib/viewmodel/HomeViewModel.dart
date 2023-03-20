@@ -9,6 +9,7 @@ import 'package:tycho_streams/model/data/AppConfigModel.dart';
 import 'package:tycho_streams/model/data/BannerDataModel.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/model/data/TrayDataModel.dart';
+import 'package:tycho_streams/model/data/app_menu_model.dart';
 import 'package:tycho_streams/model/data/notification_model.dart';
 import 'package:tycho_streams/model/data/search_data_model.dart';
 import 'package:tycho_streams/network/ASResponseModal.dart';
@@ -50,7 +51,8 @@ class HomeViewModel with ChangeNotifier {
 
   SearchDataModel? _newSearchDataModel;
   SearchDataModel? get newSearchDataModel => _newSearchDataModel;
-
+  AppMenuModel? _appMenuModel;
+  AppMenuModel? get appMenuModel => _appMenuModel;
   String? _isNetworkAvailable;
   String? get isNetworkAvailable => _isNetworkAvailable;
   int lastPage = 1, nextPage = 1;
@@ -169,6 +171,7 @@ class HomeViewModel with ChangeNotifier {
     _homePageRepo.getSearchApiData(searchKeyword, pageNum, context, (result, isSuccess) {
       if(isSuccess){
         _newSearchDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        message = ((result).value as ASResponseModal).message;
         if (_newSearchDataModel?.pagination?.current == 1) {
           lastPage = _newSearchDataModel?.pagination?.lastPage ?? 1;
           nextPage = _newSearchDataModel?.pagination?.next ?? 1;
@@ -176,7 +179,9 @@ class HomeViewModel with ChangeNotifier {
         } else {
           lastPage = _newSearchDataModel?.pagination?.lastPage ?? 1;
           nextPage = _newSearchDataModel?.pagination?.next ?? 1;
-          _searchDataModel?.searchList?.addAll(_newSearchDataModel!.searchList!);
+          if(_newSearchDataModel != null){
+            _searchDataModel?.searchList?.addAll(_newSearchDataModel!.searchList!);
+          }
         }
         isLoading = false;
         notifyListeners();
@@ -201,7 +206,31 @@ class HomeViewModel with ChangeNotifier {
       }
     });
   }
+  getAppMenuData(BuildContext context) async{
+    final box = await Hive.openBox<String>('appBox');
+    final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
+    if(await jsonCache.contains(StringConstant.kAppMenu)){
+      CacheDataManager.getCachedData(key: StringConstant.kAppMenu).then((jsonData) {
+        _appMenuModel = AppMenuModel.fromJson(jsonData!['data']);
+        print('From Cached AppConfig Data');
+        notifyListeners();
+      });
+    } else {
+      getAppMenu(context);
+    }
+  }
 
+  Future getAppMenu(BuildContext context) async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    _homePageRepo.getAppMenu(context, (result, isSuccess) {
+      if(isSuccess){
+        _appMenuModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        String? newMenuVersion = sharedPreferences.getString('newMenuVersion');
+        sharedPreferences.setString('oldMenuVersion', '${newMenuVersion}');
+        notifyListeners();
+      }
+    });
+  }
   Future<void> runIndicator(BuildContext context)async {
     isLoading = true;
     notifyListeners();
