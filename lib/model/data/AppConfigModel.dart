@@ -60,7 +60,6 @@ class AndroidConfig {
   Localization? localization;
   SocialLogin? socialLogin;
   AppMenu? appMenu;
-  List<Map<String, dynamic>>? appMenuItems = [];
 
   AndroidConfig(
       {this.images,
@@ -110,11 +109,8 @@ class AndroidConfig {
     socialLogin = json['socialLogin'] != null
         ? new SocialLogin.fromJson(json['socialLogin'])
         : null;
-    appMenu = json['appMenu'] != null ? new AppMenu.fromJson(json['appMenu']) : null;
-    if (json['appMenu'] != null) {
-      Map<String, dynamic> appMenuMap = json['appMenu'];
-      appMenuItems = appMenuMap.values.cast<Map<String, dynamic>>().toList();
-    }
+    appMenu =
+    json['appMenu'] != null ? new AppMenu.fromJson(json['appMenu']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -175,8 +171,9 @@ class AppTheme {
   ThemeColor? themeColor;
   ThemeColor? primaryColor;
   ThemeColor? secondaryColor;
+  ThemeColor? textColor;
 
-  AppTheme({this.themeColor, this.primaryColor, this.secondaryColor});
+  AppTheme({this.themeColor, this.primaryColor, this.secondaryColor, this.textColor});
 
   AppTheme.fromJson(Map<String, dynamic> json) {
     themeColor = json['themeColor'] != null
@@ -187,6 +184,9 @@ class AppTheme {
         : null;
     secondaryColor = json['secondaryColor'] != null
         ? new ThemeColor.fromJson(json['secondaryColor'])
+        : null;
+    textColor = json['textColor'] != null
+        ? new ThemeColor.fromJson(json['textColor'])
         : null;
   }
 
@@ -200,6 +200,9 @@ class AppTheme {
     }
     if (this.secondaryColor != null) {
       data['secondaryColor'] = this.secondaryColor!.toJson();
+    }
+    if (this.textColor != null) {
+      data['textColor'] = this.textColor!.toJson();
     }
     return data;
   }
@@ -235,7 +238,6 @@ class FontStyle {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['fontFamily'] = this.fontFamily;
     return data;
   }
 }
@@ -293,36 +295,12 @@ class Instagram {
 }
 
 class AppVersion {
-  Ios? ios;
-  Ios? android;
-
-  AppVersion({this.ios, this.android});
-
-  AppVersion.fromJson(Map<String, dynamic> json) {
-    ios = json['ios'] != null ? new Ios.fromJson(json['ios']) : null;
-    android =
-    json['android'] != null ? new Ios.fromJson(json['android']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.ios != null) {
-      data['ios'] = this.ios!.toJson();
-    }
-    if (this.android != null) {
-      data['android'] = this.android!.toJson();
-    }
-    return data;
-  }
-}
-
-class Ios {
   String? version;
   String? url;
 
-  Ios({this.version, this.url});
+  AppVersion({this.version, this.url});
 
-  Ios.fromJson(Map<String, dynamic> json) {
+  AppVersion.fromJson(Map<String, dynamic> json) {
     version = json['version'];
     url = json['url'];
   }
@@ -400,24 +378,24 @@ class Facebook {
 }
 
 class AppMenu {
-  HelpFaqs? helpFaqs;
-  HelpFaqs? shareApp;
+  ContactUs? contactUs;
+  ContactUs? shareApp;
 
-  AppMenu({this.helpFaqs, this.shareApp});
+  AppMenu({this.contactUs, this.shareApp});
 
   AppMenu.fromJson(Map<String, dynamic> json) {
-    helpFaqs = json['help_faqs'] != null
-        ? new HelpFaqs.fromJson(json['help_faqs'])
+    contactUs = json['contact_us'] != null
+        ? new ContactUs.fromJson(json['contact_us'])
         : null;
     shareApp = json['share_app'] != null
-        ? new HelpFaqs.fromJson(json['share_app'])
+        ? new ContactUs.fromJson(json['share_app'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.helpFaqs != null) {
-      data['help_faqs'] = this.helpFaqs!.toJson();
+    if (this.contactUs != null) {
+      data['contact_us'] = this.contactUs!.toJson();
     }
     if (this.shareApp != null) {
       data['share_app'] = this.shareApp!.toJson();
@@ -426,14 +404,14 @@ class AppMenu {
   }
 }
 
-class HelpFaqs {
+class ContactUs {
   String? alias;
   String? icon;
   String? subtitle;
 
-  HelpFaqs({this.alias, this.icon, this.subtitle});
+  ContactUs({this.alias, this.icon, this.subtitle});
 
-  HelpFaqs.fromJson(Map<String, dynamic> json) {
+  ContactUs.fromJson(Map<String, dynamic> json) {
     alias = json['alias'];
     icon = json['icon'];
     subtitle = json['subtitle'];

@@ -1,4 +1,7 @@
+
+
 import 'package:tycho_streams/model/data/BannerDataModel.dart';
+
 
 class HomePageDataModel {
   Pagination? pagination;

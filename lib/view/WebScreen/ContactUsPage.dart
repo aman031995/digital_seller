@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tycho_streams/Utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
+import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
-import 'dart:html' as html;
-// html.window.location.reload();
+
 class ContactUsPage extends StatefulWidget {
   const ContactUsPage({Key? key}) : super(key: key);
 
@@ -15,12 +16,9 @@ class ContactUsPage extends StatefulWidget {
 }
 
 class _ContactUsPageState extends State<ContactUsPage> {
-  void initState() {
-    html.window.location.reload();
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar:  ResponsiveWidget.isMediumScreen(context)?null:  PreferredSize(
@@ -36,16 +34,26 @@ class _ContactUsPageState extends State<ContactUsPage> {
               Expanded(
                   child:
                   SizedBox(width: SizeConfig.screenWidth * .12)),
-              AppBoldFont(
-                  context,msg: 'Home', color: BLACK_COLOR, fontSize: 20),
+              GestureDetector(
+                child: AppBoldFont(
+                    context,msg: 'Home', color: BLACK_COLOR, fontSize: 20),
+                onTap: (){
+                  GoRouter.of(context).pushNamed(RoutesName.home);
+                },
+              ),
               SizedBox(width: SizeConfig.screenWidth * .02),
               AppBoldFont(
                   context,msg: 'Upcoming', color: BLACK_COLOR, fontSize: 20),
               SizedBox(width: SizeConfig.screenWidth * .02),
-              AppBoldFont(
-                  context, msg: 'Contact US',
-                  color: BLACK_COLOR,
-                  fontSize: 20),
+              GestureDetector(
+                child: AppBoldFont(
+                    context, msg: 'Contact US',
+                    color: BLACK_COLOR,
+                    fontSize: 20),
+                onTap: (){
+                  GoRouter.of(context).pushNamed(RoutesName.ContactUsPage);
+                },
+              ),
               Expanded(
                   child:
                   SizedBox(width: SizeConfig.screenWidth * .12)),
@@ -56,10 +64,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
           ),
         ),
       ),
-      // appBar: PreferredSize(preferredSize: Size.fromHeight(ResponsiveWidget.isMediumScreen(context)? 50:80),
-      //     child: DesktopAppBar()),
-      // drawer: ResponsiveWidget.isMediumScreen(context)?
-      // MobileMenu(context):null,
+
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -87,7 +92,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
               padding:  EdgeInsets.only(left: 30,right: 30),
               child: contactUswidget('images/ContactUs.png', 'www.alifbaata.com'),
             ),
-            SizedBox(height: 250),
+            SizedBox(height: 300),
             ResponsiveWidget.isMediumScreen(context)?   footerMobile(context): footerDesktop()
           ],
         ),

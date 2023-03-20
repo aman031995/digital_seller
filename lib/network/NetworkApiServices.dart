@@ -5,6 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:tycho_streams/network/AppDataManager.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:tycho_streams/utilities/LogsMessage.dart';
+import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 
 
 import 'ASRequestModal.dart';
@@ -42,7 +43,7 @@ class NetworkApiServices  {
     // throw UnimplementedError("Fail");
   }
 
- static processPostRequest(requestModal, networkResponseHandler) async {
+  static processPostRequest(requestModal, networkResponseHandler) async {
     switch (requestModal.requestType) {
       case RequestType.multipartPost:
         {
@@ -158,7 +159,7 @@ class NetworkApiServices  {
     }
   }
 
- static processPutRequest(requestModal, networkResponseHandler) async {
+  static processPutRequest(requestModal, networkResponseHandler) async {
     try {
       final response = await http.put(Uri.parse(requestModal.operationUrl!),
           body: requestModal.jsonInputParameters(),
@@ -195,14 +196,12 @@ class NetworkApiServices  {
         //return Result<UserDetails>.success(Library.fromRawJson(response.body));
       } else {
         //error
-        AppIndicator.disposeIndicator();
         dynamic responseJson = json.decode(response.body.toString());
         LogsMessage.logMessage(message: responseJson, level: Level.error);
         //return Result.error("Book list not available");
         networkResponseHandler(Result.error("error"), false);
       }
     } catch (error) {
-      AppIndicator.disposeIndicator();
       LogsMessage.logMessage(message: error, level: Level.error);
       return networkResponseHandler(Result.error(error), false);
       //return Result.error("Book list not available");
@@ -211,10 +210,6 @@ class NetworkApiServices  {
 
   static void logoutButtonPressed(BuildContext context) async {
     AppDataManager.deleteSavedDetails();
-    // await Future.delayed(const Duration(seconds: 1)).then((value) =>
-    //     Navigator.pushAndRemoveUntil(
-    //         context,
-    //         MaterialPageRoute(builder: (_) => LoginScreen()),
-    //             (route) => false));
+       reloadPage();
   }
 }

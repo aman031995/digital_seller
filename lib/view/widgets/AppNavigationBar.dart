@@ -44,6 +44,6 @@ AppBar getAppBarWithBackBtn(
         color: TEXT_COLOR,
         fontSize: 17,
         textAlign: TextAlign.start),
-    backgroundColor: LIGHT_THEME_BACKGROUND,
+    backgroundColor: Theme.of(context).cardColor,
   );
 }

@@ -6,6 +6,7 @@ import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
+import 'package:tycho_streams/utilities/three_arched_circle.dart';
 import 'package:tycho_streams/view/WebScreen/MovieCardCommonWidget.dart';
 
 
@@ -81,7 +82,12 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
                             );
                           },
                         )
-                      : CircularProgressIndicator(),
+                      :  Container(
+                    height: SizeConfig.screenHeight * 0.35,
+                    child: Center(
+                        child: ThreeArchedCircle( size: 50.0)
+                    ),
+                  ),
                 ),
               ],
             ),

@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/model/data/UserInfoModel.dart';
 
+
 class AppDataManager {
   static AppDataManager? _instance;
 
@@ -11,7 +12,7 @@ class AppDataManager {
 
   updateUserDetails(UserInfoModel userInfoModel) {
     this._userDetails = userInfoModel;
-      saveUserDetailsInCache(userInfoModel);
+    saveUserDetailsInCache(userInfoModel);
   }
 
   static Future<String?> updatefirstTime() async {
@@ -26,7 +27,7 @@ class AppDataManager {
 
   static Future<int?> setFirstTimeAlert() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-   return sharedPreferences.getInt("isAlert");
+    return sharedPreferences.getInt("isAlert");
   }
 
   static Future<String?> loggedInUser() async {
@@ -55,6 +56,7 @@ class AppDataManager {
     sharedPreferences.setString("name", userInfoModel.name ?? '');
     sharedPreferences.setString("email", userInfoModel.email ?? '');
     sharedPreferences.setString("phone", userInfoModel.phone ?? '');
+    sharedPreferences.setString("address", userInfoModel.address ?? '');
     sharedPreferences.setString("profileImg", userInfoModel.profilePic ?? '');
   }
 
@@ -66,6 +68,7 @@ class AppDataManager {
     sharedPreferences.remove("profileImg");
     sharedPreferences.remove("email");
     sharedPreferences.remove("phone");
+    sharedPreferences.remove("address");
     sharedPreferences.remove("firstTime");
     sharedPreferences.remove("isAlert");
     // SocialLoginManager.handleSignOut();

@@ -94,7 +94,8 @@ class _VerifyOtpState extends State<VerifyOtp> {
         width: 500,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: Colors.white
+          color: Theme.of(context).cardColor.withOpacity(0.8),
+          border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.6))
         ),
         margin: EdgeInsets.only(left: 10, right: 10),
         child: Column(
@@ -119,7 +120,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
             resendPin(authVM),
             isOTPInput == true ? Container() : errorText(),
             SizedBox(height: 30),
-            appButton(context, StringConstant.verify, 280, 60.0, LIGHT_THEME_COLOR,
+            appButton(context, StringConstant.verify, 280, 60.0, LIGHT_THEME_COLOR,Theme.of(context).canvasColor,
                  16, 5.0, isOTPInput, onTap: () {
                   checkVerificationValidate(authVM);
                 }),
@@ -186,19 +187,19 @@ class _VerifyOtpState extends State<VerifyOtp> {
                     TextSpan(
                         text: 'Resend OTP ',
                         style: CustomTextStyle.textFormFieldInterRegular
-                            .copyWith(color: THEME_COLOR, fontSize: 16)),
+                            .copyWith(color: Theme.of(context).canvasColor, fontSize: 16)),
                     TextSpan(
                         text: 'in ',
                         style: CustomTextStyle.textFormFieldInterRegular
-                            .copyWith(color: TEXT_COLOR, fontSize: 16)),
+                            .copyWith(color: Theme.of(context).canvasColor, fontSize: 16)),
                     TextSpan(
                         text: '00:$secondsRemaining',
                         style: CustomTextStyle.textFormFieldInterMedium
-                            .copyWith(color: BLACK_COLOR, fontSize: 16)),
+                            .copyWith(color: Theme.of(context).primaryColor, fontSize: 16)),
                     TextSpan(
                         text: " seconds",
                         style: CustomTextStyle.textFormFieldInterRegular
-                            .copyWith(color: TEXT_COLOR, fontSize: 16))
+                            .copyWith(color: Theme.of(context).canvasColor, fontSize: 16))
                   ])))
               : Text(""),
           enableResend == true
@@ -211,10 +212,10 @@ class _VerifyOtpState extends State<VerifyOtp> {
                 AppMediumFont(
                     context,msg: StringConstant.resendOtp, color: BLACK_COLOR, fontSize: 16),
                 TextButton(
-                  child: AppBoldFont(
-                      context,msg: StringConstant.resend + ' >',
-                      color: THEME_COLOR,
-                      fontSize: 16),
+                  child: Text(
+                       StringConstant.resend + ' >',
+                     style: TextStyle( color: Theme.of(context).primaryColor,
+                      fontSize: 16, fontWeight: FontWeight.bold, fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily)),
                   onPressed: () {
                     if (enableResend == true) {
                       _resendCode(authVM);

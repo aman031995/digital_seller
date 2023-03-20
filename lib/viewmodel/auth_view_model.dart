@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tycho_streams/main.dart';
 import 'package:tycho_streams/model/data/UserInfoModel.dart';
 import 'package:tycho_streams/network/ASResponseModal.dart';
 import 'package:tycho_streams/network/AppDataManager.dart';
@@ -10,14 +10,14 @@ import 'package:tycho_streams/network/result.dart';
 import 'package:tycho_streams/repository/auth_repository.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
-import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/WebScreen/reset_screen.dart';
-
-
 import 'package:tycho_streams/view/screens/verify_otp_screen.dart';
-
 import '../view/WebScreen/HomePageWeb.dart';
+import 'dart:html' as html;
 
+void reloadPage() {
+  html.window.location.reload();
+}
 class AuthViewModel with ChangeNotifier {
   final _authRepo = AuthRepository();
 
@@ -25,13 +25,11 @@ class AuthViewModel with ChangeNotifier {
   UserInfoModel? get userInfoModel => _userInfoModel;
   User() async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    name=sharedPreferences.get('name').toString() ?? " ";
-    name=="null"? name="a":name;
-    print(name);
+    names=sharedPreferences.get('name').toString() ?? " ";
   }
   Future<void> login(
       String phone, String password, BuildContext context) async {
-    AppIndicator.loadingIndicator();
+    AppIndicator.loadingIndicator(context);
     _authRepo.login(phone, password, context, (result, isSuccess) {
       if (isSuccess) {
         _userInfoModel =
@@ -43,30 +41,26 @@ class AuthViewModel with ChangeNotifier {
         Navigator.pop(context);
         notifyListeners();
         User();
-        GoRouter.of(context).pushNamed(RoutesName.home);
-
-        //     .pushNamedAndRemoveUntil('/HomePage', (Route<dynamic> route) => false);
-        //Navigator.pushNamedAndRemoveUntil(context,'/HomePage');
-       // notifyListeners();
+        reloadPage();
+       notifyListeners();
       }
     });
   }
   logoutButtonPressed(BuildContext context) async {
     AppDataManager.deleteSavedDetails();
     CacheDataManager.clearCachedData();
-    GoRouter.of(context).pushNamed(RoutesName.home);
+    reloadPage();
   }
 
   Future<void> register(String name, String phone, String email,
       String password, BuildContext context) async {
-    AppIndicator.loadingIndicator();
+    AppIndicator.loadingIndicator(context);
     _authRepo.register(phone, email, context, (result, isSuccess) {
       if (isSuccess) {
         AppIndicator.disposeIndicator();
         Navigator.pop(context);
         showDialog(
             context: context,
-            barrierDismissible: true,
             barrierColor: Colors.black87,
             builder: (BuildContext context) {
               return VerifyOtp(
@@ -82,7 +76,7 @@ class AuthViewModel with ChangeNotifier {
 
   Future<void> verifyOTP(BuildContext context, String phone, String otp,
       {bool? isForgotPW, String? name, String? email, String? password}) async {
-    AppIndicator.loadingIndicator();
+    AppIndicator.loadingIndicator(context);
     _authRepo.verifyOTP(phone, otp, context, (result, isSuccess) {
       if (isSuccess) {
         AppIndicator.disposeIndicator();
@@ -93,12 +87,9 @@ class AuthViewModel with ChangeNotifier {
           Navigator.pop(context);
           showDialog(
               context: context,
-              barrierDismissible: true,
               barrierColor: Colors.black87,
               builder: (BuildContext context) {
                 return ResetPassword(phone: phone);});
-          // Navigator.of(context).pushReplacement(
-          //     MaterialPageRoute(builder: (_) => ResetPassword(phone: phone)));
         } else {
           registerUser(context, name, phone, password, email);
         }
@@ -121,11 +112,7 @@ class AuthViewModel with ChangeNotifier {
             isLogin=true;
             Navigator.pop(context);
             User();
-            GoRouter.of(context).pushNamed(RoutesName.home);
-
-            // Navigator.pushNamedAndRemoveUntil(context, RoutesName.login, (route) => false);
-            // Navigator.pushAndRemoveUntil(context,
-            //     MaterialPageRoute(builder: (_) => BottomNavigation(index: 0)), (route) => false);
+            reloadPage();
             notifyListeners();
           }
         });
@@ -133,40 +120,44 @@ class AuthViewModel with ChangeNotifier {
 
   Future<void> resendOtp(
       String name,
-      String email,
+      String? email,
       String password,
-      String phone,
+      String? phone,
       bool isForgotPassword,
       BuildContext context,
-      NetworkResponseHandler handler) async {
-    AppIndicator.loadingIndicator();
-    _authRepo.resendOTP(phone, context, (result, isSuccess) {
+      NetworkResponseHandler handler,
+      {bool? editPage}) async {
+    AppIndicator.loadingIndicator(context);
+    _authRepo.resendOTP('${phone != '' ? phone : email}', context, (result, isSuccess) {
       if (isSuccess) {
         AppIndicator.disposeIndicator();
-        _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        _userInfoModel =
+            ((result as SuccessState).value as ASResponseModal).dataModal;
         if (_userInfoModel != null) {
           AppDataManager.getInstance.updateUserDetails(userInfoModel!);
         }
-        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+        ToastMessage.message(
+            ((result as SuccessState).value as ASResponseModal).message);
         print('otp verified Successfully');
-        showDialog(
-            context: context,
-            barrierDismissible: true,
-            barrierColor: Colors.black87,
-            builder: (BuildContext context) {
-              return VerifyOtp(
-                  name: name,
-                  email: email,
-                  password: password,
-                  mobileNo: phone,
-                  isForgotPassword: isForgotPassword);});
+        if (editPage == true) {
+        } else {
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => VerifyOtp(
+                      name: name,
+                      email: email,
+                      password: password,
+                      mobileNo: phone,
+                      isForgotPassword: isForgotPassword)));
+        }
         notifyListeners();
       }
     });
   }
 
   Future<void> forgotPassword(String phone, BuildContext context) async {
-    AppIndicator.loadingIndicator();
+    AppIndicator.loadingIndicator(context);
     _authRepo.forgotPassword(phone, context, (result, isSuccess) {
       if (isSuccess) {
         print('forgot password api Successfully');
@@ -174,14 +165,9 @@ class AuthViewModel with ChangeNotifier {
         Navigator.pop(context);
         showDialog(
             context: context,
-            barrierDismissible: true,
             barrierColor: Colors.black87,
             builder: (BuildContext context) {
               return VerifyOtp(mobileNo: phone, isForgotPassword: true);});
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => VerifyOtp(mobileNo: phone, isForgotPassword: true)));
         notifyListeners();
       }
     });
@@ -189,16 +175,14 @@ class AuthViewModel with ChangeNotifier {
 
   Future<void> resetPassword(String email, String newPassword,
       String confirmPassword, BuildContext context) async {
-    AppIndicator.loadingIndicator();
+    AppIndicator.loadingIndicator(context);
     _authRepo.resetPassword(email, newPassword, confirmPassword, context,
             (result, isSuccess) {
           if (isSuccess) {
             print('forgot password api Successfully');
             ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
             AppIndicator.disposeIndicator();
-            GoRouter.of(context).pushNamed(RoutesName.home);
-          //  Navigator.pushNamedAndRemoveUntil(context, '/HomePage', (route) => false);
-            // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (_) => LoginScreen()), (route) => false);
+            reloadPage();
             notifyListeners();
           }
         });

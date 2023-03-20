@@ -10,7 +10,6 @@ import 'package:tycho_streams/network/NetworkConstants.dart';
 import 'package:tycho_streams/network/result.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
-
 class ProfileRepository {
   Future<Result?> getTermsPrivacy(
       BuildContext context, NetworkResponseHandler responseHandler) async {
@@ -29,7 +28,7 @@ class ProfileRepository {
             items.add(TermsPrivacyModel.fromJson(element));
           });
           response.dataModal = items;
-          // CacheDataManager.cacheData(key: StringConstant.kPrivacyTerms, jsonData: map);
+          CacheDataManager.cacheData(key: StringConstant.kPrivacyTerms, jsonData: map, isCacheRemove: true);
           responseHandler(Result.success(response), isSuccess);
         }
       } else {
@@ -54,17 +53,17 @@ class ProfileRepository {
         context: buildContext, headers: header);
     requestModal.addFileUploadRequestWithPathString(imagePath, key: 'file');
     appNetwork.getNetworkResponse(requestModal, buildContext,
-        (result, isSuccess) {
-      if (isSuccess) {
-        var response = ASResponseModal.fromResult(result);
-        Map<String, dynamic> map =
+            (result, isSuccess) {
+          if (isSuccess) {
+            var response = ASResponseModal.fromResult(result);
+            Map<String, dynamic> map =
             (result as SuccessState).value as Map<String, dynamic>;
-        if (map['data'] is Map<String, dynamic>) {
-          response.dataModal = UserInfoModel.fromJson(map['data']);
-        }
-        networkResponseHandler(Result.success(response), isSuccess);
-      }
-    });
+            if (map['data'] is Map<String, dynamic>) {
+              response.dataModal = UserInfoModel.fromJson(map['data']);
+            }
+            networkResponseHandler(Result.success(response), isSuccess);
+          }
+        });
   }
 
   Future<Result?> getUserProfileDetails(BuildContext buildContext,
@@ -79,21 +78,21 @@ class ProfileRepository {
         inputParams, NetworkConstants.getUserDetails, RequestType.get,
         context: buildContext, headers: header);
     appNetwork.getNetworkResponse(requestModal, buildContext,
-        (result, isSuccess) {
-      if (isSuccess) {
-        var response = ASResponseModal.fromResult(result);
-        Map<String, dynamic> map =
+            (result, isSuccess) {
+          if (isSuccess) {
+            var response = ASResponseModal.fromResult(result);
+            Map<String, dynamic> map =
             (result as SuccessState).value as Map<String, dynamic>;
-        if (map['data'] is Map<String, dynamic>) {
-          response.dataModal = UserInfoModel.fromJson(map['data']);
-          // CacheDataManager.cacheData(key: StringConstant.kUserDetails, jsonData: map);
-        }
-        networkResponseHandler(Result.success(response), isSuccess);
-      }
-    });
+            if (map['data'] is Map<String, dynamic>) {
+              response.dataModal = UserInfoModel.fromJson(map['data']);
+              CacheDataManager.cacheData(key: StringConstant.kUserDetails, jsonData: map, isCacheRemove: true);
+            }
+            networkResponseHandler(Result.success(response), isSuccess);
+          }
+        });
   }
 
-  Future<Result?> editProfile(String name, String phone, String address,
+  Future<Result?> editProfile(String name, String phone, String address, String email,
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     AppNetwork appNetwork = AppNetwork();
@@ -105,6 +104,7 @@ class ProfileRepository {
       "userId": sharedPreferences.get("userId").toString(),
       "name": name,
       "phone": phone,
+      "email": email,
       "address": address,
     };
     ASRequestModal requestModal = ASRequestModal.withInputParams(
@@ -114,9 +114,10 @@ class ProfileRepository {
       if (isSuccess) {
         var response = ASResponseModal.fromResult(result);
         Map<String, dynamic> map =
-            (result as SuccessState).value as Map<String, dynamic>;
+        (result as SuccessState).value as Map<String, dynamic>;
         if (map['data'] is Map<String, dynamic>) {
           response.dataModal = UserInfoModel.fromJson(map['data']);
+          CacheDataManager.clearCachedData(key: StringConstant.kUserDetails);
         }
         responseHandler(Result.success(response), isSuccess);
       } else {

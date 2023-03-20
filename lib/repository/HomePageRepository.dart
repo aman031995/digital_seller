@@ -10,13 +10,13 @@ import 'package:tycho_streams/model/data/CategoryDataModel.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/model/data/TrayDataModel.dart';
 import 'package:tycho_streams/model/data/notification_model.dart';
+import 'package:tycho_streams/model/data/search_data_model.dart';
 import 'package:tycho_streams/network/ASRequestModal.dart';
 import 'package:tycho_streams/network/ASResponseModal.dart';
 import 'package:tycho_streams/network/AppNetwork.dart';
 import 'package:tycho_streams/network/CacheDataManager.dart';
 import 'package:tycho_streams/network/NetworkConstants.dart';
 import 'package:tycho_streams/network/result.dart';
-import 'package:tycho_streams/utilities/AppToast.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 
 class HomePageRepository {
@@ -24,7 +24,7 @@ class HomePageRepository {
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
-      "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiJkZDA1NjNlYi1iZjUxLTQ2YjEtYmM1YS00MTNkZTVjZWExYzAiLCJpYXQiOjE2NzgzNzY1NzksImV4cCI6MTY3OTY3MjU3OX0.N67fcMcDuHRqqSOAeviO5Ue_nD5Lt6xSUVquBCgtJGw "
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {"{APP_ID}": "ID-e2946157-ebc3-4ba"};
@@ -55,10 +55,10 @@ class HomePageRepository {
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
-      "{USER_ID}" : sharedPreferences.get("userId").toString(),
+      "{USER_ID}": sharedPreferences.get("userId").toString(),
       "{APP_ID}": "b07e2bbc-3ad9-441f-86fe-59caff940d1d",
-      "{VIDEO_FOR}" : '$videoFor',
-      "{PAGE_NUM}" : '$pageNum',
+      "{VIDEO_FOR}": '$videoFor',
+      "{PAGE_NUM}": '$pageNum',
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
         urlParams, NetworkConstants.kGetHomePageData, RequestType.get,
@@ -113,8 +113,8 @@ class HomePageRepository {
     });
   }
 
-  Future<Result?> getCategoryList(int pageNum,
-      BuildContext context, NetworkResponseHandler responseHandler) async {
+  Future<Result?> getCategoryList(int pageNum, BuildContext context,
+      NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
       "Authorization": "Bearer " + sharedPreferences.get("token").toString()
@@ -122,7 +122,7 @@ class HomePageRepository {
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
       "{APP_ID}": "ID-e2946157-ebc3-4ba",
-      "{PAGE_NUM}" : '$pageNum'
+      "{PAGE_NUM}": '$pageNum'
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
         urlParams, NetworkConstants.kGetCategoryData, RequestType.get,
@@ -152,8 +152,8 @@ class HomePageRepository {
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
       "{APP_ID}": "ID-e2946157-ebc3-4ba",
-      "{CATEGORY_ID}" : '$categoryId',
-      "{PAGE_NUM}" : '$pageNum'
+      "{CATEGORY_ID}": '$categoryId',
+      "{PAGE_NUM}": '$pageNum'
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
         urlParams, NetworkConstants.kGetCategoryDetails, RequestType.get,
@@ -173,15 +173,15 @@ class HomePageRepository {
     });
   }
 
-  Future<Result?> getMoreLikeThisData(String videoId,
-      BuildContext context, NetworkResponseHandler responseHandler) async {
+  Future<Result?> getMoreLikeThisData(String videoId, BuildContext context,
+      NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
       "Authorization": "Bearer " + sharedPreferences.get("token").toString()
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
-      "{VIDEO_ID}" : '$videoId',
+      "{VIDEO_ID}": '$videoId',
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
         urlParams, NetworkConstants.kgetMoreLikeThis, RequestType.get,
@@ -210,7 +210,7 @@ class HomePageRepository {
 
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
-      "{APP_ID}" : 'b07e2bbc-3ad9-441f-86fe-59caff940d1d',
+      "{APP_ID}": 'b07e2bbc-3ad9-441f-86fe-59caff940d1d',
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
         urlParams, NetworkConstants.kGetAppConfig, RequestType.get,
@@ -222,7 +222,8 @@ class HomePageRepository {
         (result as SuccessState).value as Map<String, dynamic>;
         if (map["data"] is Map<String, dynamic>) {
           response.dataModal = AppConfigModel.fromJson(map["data"]);
-          CacheDataManager.cacheData(key: StringConstant.kAppConfig, jsonData: map);
+          CacheDataManager.cacheData(
+              key: StringConstant.kAppConfig, jsonData: map);
         }
         responseHandler(Result.success(response), isSuccess);
       } else {
@@ -231,13 +232,13 @@ class HomePageRepository {
     });
   }
 
-  Future<Result?> getNotification(int pageNum,
-      BuildContext context, NetworkResponseHandler responseHandler) async {
+  Future<Result?> getNotification(int pageNum, BuildContext context,
+      NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
-      "{APP_ID}" : '7a72f14a-314c-4038-a7ec-b36e64f1ebd1',
-      "{USER_ID}" : "203d96e8-11c1-422e-8453-199de344687a",
+      "{APP_ID}": '7a72f14a-314c-4038-a7ec-b36e64f1ebd1',
+      "{USER_ID}": "203d96e8-11c1-422e-8453-199de344687a",
       "{PAGE_NUM}": '$pageNum'
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
@@ -256,5 +257,67 @@ class HomePageRepository {
       }
     });
   }
+
+  Future<Result?> getSearchApiData(String search, int pageNum,
+      BuildContext context, NetworkResponseHandler responseHandler) async {
+    AppNetwork appNetwork = AppNetwork();
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var header = {
+      "x-access-token": sharedPreferences.get("token") as String,
+      "Content-Type": "application/json"
+    };
+    Map<String, String> urlParams = {
+      '{SEARCH_QUERY}': search,
+      "{PAGE_NUM}": '$pageNum'
+    };
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.kGetSearchData, RequestType.get,
+        headers: header);
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map =
+        (result as SuccessState).value as Map<String, dynamic>;
+        if (map["data"] is Map<String, dynamic>) {
+          response.dataModal = SearchDataModel.fromJson(map["data"]);
+        }
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
+
+  // Future<Result?> getAppMenu(
+  //     BuildContext context, NetworkResponseHandler responseHandler) async {
+  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   var header = {
+  //     "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+  //   };
+  //   AppNetwork appNetwork = AppNetwork();
+  //   Map<String, String> urlParams = {
+  //     "{APP_ID}": 'b07e2bbc-3ad9-441f-86fe-59caff940d1d',
+  //     "{DEVICE_TYPE}": 'android',
+  //   };
+  //   ASRequestModal requestModal = ASRequestModal.withUrlParams(
+  //       urlParams, NetworkConstants.kGetAppMenu, RequestType.get,
+  //       headers: header);
+  //   appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+  //     if (isSuccess) {
+  //       var response = ASResponseModal.fromResult(result);
+  //       Map<String, dynamic> map =
+  //       (result as SuccessState).value as Map<String, dynamic>;
+  //       if (map["data"] is Map<String, dynamic>) {
+  //         response.dataModal = AppMenuModel.fromJson(map["data"]);
+  //         CacheDataManager.cacheData(
+  //             key: StringConstant.kAppMenu, jsonData: map);
+  //       }
+  //       responseHandler(Result.success(response), isSuccess);
+  //     } else {
+  //       responseHandler(result, isSuccess);
+  //     }
+  //   });
+  // }
 }
+
 

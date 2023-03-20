@@ -77,6 +77,7 @@ class BannerList {
   String? bannerFile;
   String? bannerTitle;
   String? bannerDescription;
+  String? bannerUrl;
 
   BannerList(
       {this.id,
@@ -85,7 +86,8 @@ class BannerList {
         this.bannerId,
         this.bannerFile,
         this.bannerTitle,
-        this.bannerDescription});
+        this.bannerDescription,
+        this.bannerUrl});
 
   BannerList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -95,6 +97,7 @@ class BannerList {
     bannerFile = json['bannerFile'];
     bannerTitle = json['bannerTitle'];
     bannerDescription = json['bannerDescription'];
+    bannerUrl = json['bannerUrl'];
   }
 
   Map<String, dynamic> toJson() {
@@ -106,6 +109,7 @@ class BannerList {
     data['bannerFile'] = this.bannerFile;
     data['bannerTitle'] = this.bannerTitle;
     data['bannerDescription'] = this.bannerDescription;
+    data['bannerUrl'] = this.bannerUrl;
     return data;
   }
 }

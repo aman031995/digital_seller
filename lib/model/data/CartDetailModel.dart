@@ -1,35 +1,30 @@
-import 'package:tycho_streams/model/data/BannerDataModel.dart';
+
 
 class CartListDataModel {
-  Pagination? pagination;
   List<CartDetailModel>? cartList;
+  int? count;
 
-  CartListDataModel({this.pagination, this.cartList});
+  CartListDataModel({this.cartList, this.count});
 
   CartListDataModel.fromJson(Map<String, dynamic> json) {
-    pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
-        : null;
     if (json['cartList'] != null) {
       cartList = <CartDetailModel>[];
       json['cartList'].forEach((v) {
         cartList!.add(new CartDetailModel.fromJson(v));
       });
     }
+    count = json['count'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
-    }
     if (this.cartList != null) {
       data['cartList'] = this.cartList!.map((v) => v.toJson()).toList();
     }
+    data['count'] = this.count;
     return data;
   }
 }
-
 
 class CartDetailModel {
   int? id;
@@ -37,9 +32,10 @@ class CartDetailModel {
   String? cartId;
   String? productId;
   String? productName;
-  String? productImage;
+  String? imagePath;
   String? price;
   String? color;
+  String? size;
   int? quantity;
 
   CartDetailModel(
@@ -48,9 +44,10 @@ class CartDetailModel {
         this.cartId,
         this.productId,
         this.productName,
-        this.productImage,
+        this.imagePath,
         this.price,
         this.color,
+        this.size,
         this.quantity});
 
   CartDetailModel.fromJson(Map<String, dynamic> json) {
@@ -59,9 +56,10 @@ class CartDetailModel {
     cartId = json['cartId'];
     productId = json['productId'];
     productName = json['productName'];
-    productImage = json['productImage'];
+    imagePath = json['imagePath'];
     price = json['price'];
     color = json['color'];
+    size = json['size'];
     quantity = json['quantity'];
   }
 
@@ -72,10 +70,27 @@ class CartDetailModel {
     data['cartId'] = this.cartId;
     data['productId'] = this.productId;
     data['productName'] = this.productName;
-    data['productImage'] = this.productImage;
+    data['imagePath'] = this.imagePath;
     data['price'] = this.price;
     data['color'] = this.color;
+    data['size'] = this.size;
     data['quantity'] = this.quantity;
+    return data;
+  }
+}
+
+class ItemCountModel {
+  int? count;
+
+  ItemCountModel({this.count});
+
+  ItemCountModel.fromJson(Map<String, dynamic> json) {
+    count = json['count'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['count'] = this.count;
     return data;
   }
 }

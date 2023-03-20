@@ -44,7 +44,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
                     : Container(
                         height: SizeConfig.screenHeight * 0.3,
                         child: Center(
-                          child: ThreeArchedCircle(color: THEME_COLOR, size: 50.0)
+                          child: ThreeArchedCircle( size: 50.0)
                         ),
                       ),
               ],
@@ -63,7 +63,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
           Image.asset(AssetsConstants.icLogo, height: 50, width: 50),
           Container(
             height: 50,
-            width: SizeConfig.screenWidth! * 0.65,
+            width: SizeConfig.screenWidth * 0.65,
             margin: EdgeInsets.only(left: 5, right: 5, bottom: 5, top: 5),
             alignment: Alignment.center,
             decoration: BoxDecoration(

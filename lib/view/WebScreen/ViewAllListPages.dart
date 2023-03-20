@@ -15,6 +15,7 @@ import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/utilities/three_arched_circle.dart';
 import 'package:tycho_streams/view/WebScreen/DesktopAppBar.dart';
 import 'package:tycho_streams/view/WebScreen/DetailPage.dart';
+import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';
 import 'package:tycho_streams/view/WebScreen/OnHover.dart';
 import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
 import 'package:tycho_streams/viewmodel/CategoryViewModel.dart';
@@ -63,31 +64,22 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
   @override
   void initState() {
     homeView.getMoreLikeThis(context, widget.VideoId ?? '');
-    // TODO: implement initState
-    // if (widget.isCategory == true) {
-    //   categoryView.getCategoryDetails(context, widget.categoryWiseId ?? "", 1);
-    // } else {
-    //   categoryView.getMovieList(context, widget.moviesList);
-    // }
     super.initState();
   }
   final List<String> genderItems = ['My Acount', 'Logout'];
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    //final subscriptionVM = Provider.of<SubscriptionProvider>(context);
     return ChangeNotifierProvider<HomeViewModel>(
         create: (BuildContext context) => homeView,
         child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
           return Scaffold(
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-           // drawer:ResponsiveWidget.isMediumScreen(context)?AppMenu(homeViewModel: homeViewModel):Container() ,
-            appBar: PreferredSize(preferredSize: Size.fromHeight( ResponsiveWidget.isMediumScreen(context)? 50:80),
+            appBar: PreferredSize(preferredSize: Size.fromHeight( ResponsiveWidget.isMediumScreen(context)? 50:70),
                 child: DesktopAppBar()),
+            drawer: MobileMenu(context),
             body: SingleChildScrollView(
-
-
-              child:   ResponsiveWidget.isMediumScreen(context)?
+                child:   ResponsiveWidget.isMediumScreen(context)?
               contentsWidget( videoList: NotificationListener(
               onNotification: (notification) {
                 if (notification is ScrollEndNotification) {
@@ -168,7 +160,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                 height: SizeConfig.screenHeight * 0.8,
                 child: Center(
                   child:
-                  ThreeArchedCircle(color: THEME_COLOR, size: 45.0),
+                  ThreeArchedCircle( size: 45.0),
                 ),
               ),
             )) :
@@ -204,22 +196,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                   'VideoId':'${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
                                   'Title':"${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}",
                                   'Desc':'${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
-                                  // 'movieID':'${homeViewModel.homePageDataModel?.moviesList?.youtubeVideoId}',
-                                  // 'VideoId':'${widget.moviesList?.videoId}',
-                                  // 'Title':'${widget.moviesList?.videoTitle}',
-                                  // 'Desc':'${widget.moviesList?.videoDescription}'
-                                  // 'platformMovieData':'${widget.moviesList}'
                                 });
-                                // Navigator.of(context, rootNavigator: true)
-                                //     .push(MaterialPageRoute(
-                                //         builder: (context) =>
-                                //             new DetailPage(
-                                //               // platformMovieData: categoryView
-                                //               //     .getPreviousPageList[index],
-                                //               movieID: categoryView
-                                //                   .getPreviousPageList[index]
-                                //                   .youtubeVideoId,
-                                //             )));
                               },
                               child: OnHover(
                                   builder: (isHovered) {
@@ -253,10 +230,10 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                           })
 
                   : Container(
-                      height: SizeConfig.screenHeight * 0.8,
+                      height: SizeConfig.screenHeight * 1.5,
                       child: Center(
                         child:
-                            ThreeArchedCircle(color: THEME_COLOR, size: 45.0),
+                            ThreeArchedCircle( size: 45.0),
                       ),
                     ),
             ))),
@@ -328,7 +305,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
             margin: EdgeInsets.only(left: 20, top: 15, right: 20),
             height: SizeConfig.screenHeight,
             child: videoList),
-        SizedBox(height: 40),
+        SizedBox(height: 80),
     footerDesktop()
       ],
     );

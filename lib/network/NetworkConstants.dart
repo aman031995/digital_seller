@@ -33,4 +33,13 @@ class NetworkConstants{
 
   static String kCartDetail = "add-and-update-cart";
   static String kGetCartList = "getall-cart?userId={USER_ID}";
+  static String kGetProductList = "product-list";
+  static String kGetProductById = "get-by-product-id?productId={PRODUCT_ID}";
+
+  static String kGetSearchData = "search?query={SEARCH_QUERY}&pageNum={PAGE_NUM}";
+  static String kGetAppMenu = "getAppMenu?appId={APP_ID}&deviceType={DEVICE_TYPE}";
+  static String removeFromCart = "remove-cartItems";
+  static String getCartCount = 'cart-item-count?userId={USER_ID}&appId={APP_ID}';
+  static String getCheckOutData = 'check-out?userId={USER_ID}&appId={APP_ID}';
+  static String addNewAddress = 'add-address';
 }

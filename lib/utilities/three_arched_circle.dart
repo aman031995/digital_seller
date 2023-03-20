@@ -8,10 +8,10 @@ const double _kMinAngle = math.pi / 36;
 
 class ThreeArchedCircle extends StatefulWidget {
   final double size;
-  final Color color;
+  // final Color color;
   const ThreeArchedCircle({
     Key? key,
-    required this.color,
+    // required this.color,
     required this.size,
   }) : super(key: key);
 
@@ -35,7 +35,7 @@ class _ThreeArchedCircleState extends State<ThreeArchedCircle>
 
   @override
   Widget build(BuildContext context) {
-    final Color color = widget.color;
+    final Color color = Theme.of(context).primaryColor;
     final double size = widget.size;
     final double ringWidth = size * 0.05;
 

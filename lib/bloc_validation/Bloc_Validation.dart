@@ -59,12 +59,12 @@ class ValidationBloc {
   Stream<bool> get validateUserEditProfile => Rx.combineLatest2(firstName, phoneNo, (a, b) => true);
 
   final validateFullName =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if (value.length > 0) {
       Regex.isFullName(value)
           ? value.length >= 2
-              ? sink.add(value)
-              : sink.addError('Full Name should be atleast 2 character')
+          ? sink.add(value)
+          : sink.addError('Full Name should be atleast 2 character')
           : sink.addError('Full Name must be a-z and A-Z');
     }
   });
@@ -110,18 +110,18 @@ class ValidationBloc {
   });
 
   final validateDescription =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if (value.length > 0) {
       Regex.isDescription(value)
           ? value.length >= 10
-              ? sink.add(value)
-              : sink.addError('Description must be in 10 characters')
+          ? sink.add(value)
+          : sink.addError('Description must be in 10 characters')
           : sink.addError('Description must be in 10 characters');
     }
   });
 
   final validateTitle =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if (value.length > 0) {
       value.length >= 2
           ? sink.add(value)
@@ -130,18 +130,18 @@ class ValidationBloc {
   });
 
   final validateCompanyName =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if (value.length > 0) {
       Regex.isFullName(value)
           ? value.length >= 2
-              ? sink.add(value)
-              : sink.addError('Company Name should be atleast 2 character')
+          ? sink.add(value)
+          : sink.addError('Company Name should be atleast 2 character')
           : sink.addError('Company Name must be a-z and A-Z');
     }
   });
 
   final validateEmail =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if (value.length != 0) {
       Regex.isEmail(value)
           ? sink.add(value)
@@ -150,7 +150,7 @@ class ValidationBloc {
   });
 
   final validateEmailAndPhone =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if (value.length != 0) {
       if (!Regex.isEmail(value) && !Regex.isPhone(value)) {
         return sink.addError("Please enter a valid email or phone number.");
@@ -163,13 +163,13 @@ class ValidationBloc {
   });
 
   final validatePassword =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if (value.length >= 8 && value.length != 0) {
       Regex.isPassword(value)
           ? sink.add(value)
-          : sink.addError('Password should be combination of one uppercase , one lower case, one special char, min 8 digit.');
+          : sink.addError('Password should be combination of one uppercase, one lower case, one special char & one numeric, min 8 digit.');
     } else if (value.length < 8 && value.length > 0) {
-      sink.addError('Password should be combination of one uppercase , one lower case, one special char, min 8 digit.');
+      sink.addError('Password should be combination of one uppercase, one lower case, one special char & one numeric, min 8 digit.');
     }
   });
 

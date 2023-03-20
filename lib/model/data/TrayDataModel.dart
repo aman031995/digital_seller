@@ -1,5 +1,6 @@
-import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 
+
+import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 class TrayDataModel {
   int? trayId;
   String? trayTitle;

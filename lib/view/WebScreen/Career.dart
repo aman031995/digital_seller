@@ -4,6 +4,7 @@ import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/view/WebScreen/DesktopAppBar.dart';
+import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';
 import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
 class Career extends StatefulWidget {
   const Career({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class Career extends StatefulWidget {
 }
 
 class _CareerState extends State<Career> {
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -21,12 +23,14 @@ class _CareerState extends State<Career> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: PreferredSize(preferredSize: Size.fromHeight( ResponsiveWidget.isMediumScreen(context)? 50:70),
             child: DesktopAppBar()),
-        bottomNavigationBar:  ResponsiveWidget.isMediumScreen(context)?   Container(height:320,child: footerMobile(context)):    Container(height:180,child: footerDesktop()),
+        // key: _scaffoldKey,
+        drawer: MobileMenu(context),
+
         body: SingleChildScrollView(
         child: Center(
           child: Column(
             children: [
-              SizedBox(height:  ResponsiveWidget.isMediumScreen(context)?  30:50),
+              SizedBox(height:  ResponsiveWidget.isMediumScreen(context)?  30:70),
               Container(
                 padding: EdgeInsets.only(left: 10,right: 10),
                 height:  ResponsiveWidget.isMediumScreen(context)? 415 :515,
@@ -119,12 +123,13 @@ class _CareerState extends State<Career> {
                               appButton(context, "Cancel", ResponsiveWidget.isMediumScreen(context)? SizeConfig.screenWidth * .28:SizeConfig.screenWidth * .11,
                                   ResponsiveWidget.isMediumScreen(context)? SizeConfig.screenHeight * 0.04:40,
                                   Colors.blueAccent,
+                                  Theme.of(context).canvasColor,
                                   20,
                                   10, false),
                               appButton(context, "Submit", ResponsiveWidget.isMediumScreen(context)? SizeConfig.screenWidth * .28:SizeConfig.screenWidth * .11,
                                   ResponsiveWidget.isMediumScreen(context)? SizeConfig.screenHeight * 0.04:40,
                                   Colors.blueAccent,
-                                   
+                                  Theme.of(context).canvasColor,
                                   20,
                                   10, false)
                             ],
@@ -137,8 +142,8 @@ class _CareerState extends State<Career> {
                   ],
                 ),
               ),
-              SizedBox(height: 100),
-
+              SizedBox(height: 180),
+              ResponsiveWidget.isMediumScreen(context)?   footerMobile(context):   footerDesktop(),
 
             ],
           ),

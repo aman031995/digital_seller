@@ -266,7 +266,7 @@ class SubscriptionProvider with ChangeNotifier {
         AppIndicator.disposeIndicator();
         if (purchaseDetails.pendingCompletePurchase &&
             purchaseDetails.purchaseID != null) {
-          AppIndicator.loadingIndicator();
+          AppIndicator.loadingIndicator(context);
           await _inAppPurchase.completePurchase(purchaseDetails);
           if (purchaseDetails.productID == kConsumableId) {
             print('============================ Purchase Successful ========================');

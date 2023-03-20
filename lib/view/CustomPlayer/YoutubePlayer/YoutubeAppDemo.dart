@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
-import 'dart:html' as html;
+
 
 class YoutubeAppDemo extends StatefulWidget {
   String? videoID;
@@ -21,7 +21,7 @@ class _YoutubeAppDemoState extends State<YoutubeAppDemo> {
   void initState() {
     super.initState();
     _controller = YoutubePlayerController(
-      params: YoutubePlayerParams(
+      params: const YoutubePlayerParams(
         strictRelatedVideos: true,
         showControls: true,
         mute: false,

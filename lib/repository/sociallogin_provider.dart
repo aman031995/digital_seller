@@ -42,6 +42,7 @@ class SocialLoginProvider{
       String deviceToken,
       String userEmail,
       String userName,
+      String profilePic,
       BuildContext context,
       NetworkResponseHandler responseHandler) {
     AppNetwork appNetwork = AppNetwork();
@@ -54,6 +55,7 @@ class SocialLoginProvider{
       "deviceToken": deviceToken,
       "userEmail": userEmail,
       "name": userName,
+      "profilePic": profilePic,
     };
     ASRequestModal requestModal = ASRequestModal.withInputParams(
       inputParams,

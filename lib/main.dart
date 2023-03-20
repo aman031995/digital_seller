@@ -1,16 +1,19 @@
 import 'dart:ui';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/repository/subscription_provider.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/CustomPlayer/YoutubePlayer/CommonWidget.dart';
 import 'package:tycho_streams/view/WebScreen/AboutUs.dart';
 import 'package:tycho_streams/view/WebScreen/Career.dart';
+import 'package:tycho_streams/view/WebScreen/ContactUsPage.dart';
 import 'package:tycho_streams/view/WebScreen/DetailPage.dart';
 import 'package:tycho_streams/view/WebScreen/FAQ.dart';
 import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';
@@ -22,7 +25,8 @@ import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 import 'package:tycho_streams/viewmodel/profile_view_model.dart';
 import 'package:tycho_streams/viewmodel/sociallogin_view_model.dart';
 import 'package:url_strategy/url_strategy.dart';
-import 'dart:html' as html;
+
+String? names;
 Future<void> main() async {
   setPathUrlStrategy();
   await WidgetsFlutterBinding.ensureInitialized();
@@ -35,14 +39,6 @@ Future<void> main() async {
     messagingSenderId: "746850038788",
     appId: "1:746850038788:web:0e231dc5e9ead255407151",
   ));
-  if (kIsWeb) {
-    await FacebookAuth.i.webAndDesktopInitialize(
-      appId: "618109773188282",
-      cookie: true,
-      xfbml: true,
-      version: "v16.0",
-    );
-  }
   runApp(MyApp());
 }
 class MyApp extends StatefulWidget {
@@ -53,9 +49,13 @@ class MyApp extends StatefulWidget {
 }
 class _MyAppState extends State<MyApp> {
   HomeViewModel homeViewModel = HomeViewModel();
-  late GoRouter _router;
+  GoRouter? _router;
   @override
   void initState() {
+    User().whenComplete(() => (){
+    });
+    super.initState();
+    homeViewModel.getAppConfig(context);
     _router = GoRouter(
       routes: [
         GoRoute(
@@ -64,21 +64,31 @@ class _MyAppState extends State<MyApp> {
           pageBuilder: (context, state) {
             return MaterialPage(child: HomePageWeb());
           },
+
+        ),
+        GoRoute(
+          name: RoutesName.ContactUsPage,
+          path: '/ContactUsPage',
+          pageBuilder: (context, state) {
+            return MaterialPage(child: ContactUsPage());
+          },
         ),
         GoRoute(
           name: RoutesName.FAQ,
           path: '/FAQ',
           pageBuilder: (context, state) {
-            html.window.history.pushState(state.fullpath, '', state.fullpath);
-            return MaterialPage(child: FAQ());
+            return MaterialPage(child:  FAQ());
           },
+
         ),
+
         GoRoute(
           name: RoutesName.Career,
           path: '/Career',
           pageBuilder: (context, state) {
             return MaterialPage(child: Career());
           },
+
         ),
         GoRoute(
           name: RoutesName.Privacy,
@@ -110,13 +120,14 @@ class _MyAppState extends State<MyApp> {
             });
             return MaterialPage(
                 child: DetailPage(
-              movieID: state.queryParams['movieID'],
-              VideoId: state.queryParams['VideoId'],
-              Title: state.queryParams['Title'],
-              Desc: state.queryParams['Desc'],
-            ));
+                  movieID: state.queryParams['movieID'],
+                  VideoId: state.queryParams['VideoId'],
+                  Title: state.queryParams['Title'],
+                  Desc: state.queryParams['Desc'],
+                ));
           },
         ),
+
         GoRoute(
           name: RoutesName.seaAll,
           path: '/Seall',
@@ -126,32 +137,43 @@ class _MyAppState extends State<MyApp> {
             });
             return MaterialPage(
                 child: SeeAllListPages(
-              VideoId: state.queryParams['VideoId'],
-              title: state.queryParams['title'],
-            ));
+                  VideoId: state.queryParams['VideoId'],
+                  title: state.queryParams['title'],
+                ));
           },
+
         ),
       ],
+      redirect: ((context, state) {
+        if (names=="null") {
+          return '/';
+        } else {
+          return state.location;
+        }
+      }),
       initialLocation: _getCurrentLocation(),
       refreshListenable: _getRefreshListenable(),
     );
-    super.initState();
-    homeViewModel.getAppConfig(context);
+
   }
 
   String _getCurrentLocation() {
     final uri = Uri.base;
     return uri.path + uri.query;
   }
+
   ChangeNotifier _getRefreshListenable() {
     return ChangeNotifier()
       ..addListener(() {
-        if (_getCurrentLocation() != _router.location) {
-          _router.goNamed(_getCurrentLocation());
+        if (_getCurrentLocation() != _router?.location) {
+          _router?.goNamed(_getCurrentLocation());
         }
       });
   }
-
+ Future User() async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    names=sharedPreferences.get('name').toString();
+  }
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -166,18 +188,25 @@ class _MyAppState extends State<MyApp> {
         child: ChangeNotifierProvider<HomeViewModel>(
             create: (BuildContext context) => homeViewModel,
             child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
+              final themeColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.primaryColor?.hex;
+              final bgColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.themeColor?.hex;
+              final font = viewmodel.appConfigModel?.androidConfig?.fontStyle?.fontFamily;
+              final secondaryColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.secondaryColor?.hex;
+              final txtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.textColor?.hex;
               return MaterialApp.router(
                   theme: ThemeData(
-                      scaffoldBackgroundColor: viewmodel.appConfigModel?.androidConfig?.appTheme?.themeColor?.hex?.toColor(),
-                      primaryColor: viewmodel.appConfigModel?.androidConfig?.appTheme?.primaryColor?.hex?.toColor(),
-                      fontFamily: viewmodel.appConfigModel?.androidConfig?.fontStyle?.fontFamily,
-                     accentColor: viewmodel.appConfigModel?.androidConfig?.appTheme?.secondaryColor?.hex?.toColor()),
+                      scaffoldBackgroundColor: (bgColor)?.toColor(),
+                      primaryColor: (themeColor)?.toColor(),
+                      backgroundColor: (bgColor)?.toColor(),
+                      cardColor: (secondaryColor)?.toColor(),
+                      fontFamily: font,
+                      canvasColor : (txtColor)?.toColor()),
                   builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
                   scrollBehavior: MyCustomScrollBehavior(),
-                  routeInformationParser: _router.routeInformationParser,
-                  routerDelegate: _router.routerDelegate,
-                  routeInformationProvider: _router.routeInformationProvider);
+                  routeInformationParser: _router?.routeInformationParser,
+                  routerDelegate: _router?.routerDelegate,
+                  routeInformationProvider: _router?.routeInformationProvider);
             })));
   }
 }
@@ -186,8 +215,12 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
         PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
+        PointerDeviceKind.mouse,PointerDeviceKind.invertedStylus,
+    PointerDeviceKind.trackpad
       };
+
+
+
 }
 
 extension ColorExtension on String {

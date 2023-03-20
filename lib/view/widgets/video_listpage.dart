@@ -23,7 +23,6 @@ class _VideoListPageState extends State<VideoListPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     homeView.getTrayData(context);
     super.initState();
   }
@@ -36,47 +35,70 @@ class _VideoListPageState extends State<VideoListPage> {
         child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
           return homeViewModel.homePageDataModel != null
               ? Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Container(
-            height: ( ResponsiveWidget.isMediumScreen(context)?250.0 *
-                    trayHeight(homeViewModel)   :350.0 *
-                    trayHeight(homeViewModel)),
-            width: SizeConfig.screenWidth,
-            margin: EdgeInsets.only(left: 25,right: 25),
-            child: ListView.builder(
-                    itemCount: homeViewModel.trayDataModel?.length ?? homeViewModel.homePageDataModel?.videoList?.length,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return getTrayType(homeViewModel)
-                          ? Container(
-                          child: MovieListCommonWidget(
-                            trayId: homeViewModel.trayDataModel?[index].trayId,
-                            trayIdentifier: homeViewModel.trayDataModel?[index].trayIdentifier,
-                            trayTitle: homeViewModel.trayDataModel?[index].trayTitle,
-                            isButtom: true,
-                            isSubtitle: homeViewModel.trayDataModel![index].trayTitle!.contains("Fan Favourite")
-                                ? true
-                                : false,
-                            platformMovieData: homeViewModel.trayDataModel?[index].platformData(),
-                          ))
-                          : ThreeArchedCircle(color: THEME_COLOR, size: 45.0);
-                    }),
-          ),
-                  ResponsiveWidget.isMediumScreen(context)? footerMobile(context):footerDesktop()
-                ],
-              )
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    homeViewModel.homePageDataModel?.videoList != null
+                        ? Container(
+                            height: (ResponsiveWidget.isMediumScreen(context)
+                                ? 250.0 * trayHeight(homeViewModel)
+                                : 350.0 * trayHeight(homeViewModel)),
+                            width: SizeConfig.screenWidth,
+                            margin: EdgeInsets.only(left: 25, right: 25),
+                            child: ListView.builder(
+                                itemCount:
+                                    homeViewModel.trayDataModel?.length ??
+                                        homeViewModel.homePageDataModel
+                                            ?.videoList?.length,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return getTrayType(homeViewModel)
+                                      ? Container(
+                                          child: MovieListCommonWidget(
+                                          trayId: homeViewModel
+                                              .trayDataModel?[index].trayId,
+                                          trayIdentifier: homeViewModel
+                                              .trayDataModel?[index]
+                                              .trayIdentifier,
+                                          trayTitle: homeViewModel
+                                              .trayDataModel?[index].trayTitle,
+                                          isButtom: true,
+                                          isSubtitle: homeViewModel
+                                                  .trayDataModel![index]
+                                                  .trayTitle!
+                                                  .contains("Fan Favourite")
+                                              ? true
+                                              : false,
+                                          platformMovieData: homeViewModel
+                                              .trayDataModel?[index]
+                                              .platformData(),
+                                        ))
+                                      : ThreeArchedCircle(
+                                           size: 45.0);
+                                }),
+                          )
+                        : SizedBox(
+                            height: SizeConfig.screenHeight * 0.35,
+                            child: const Center(
+                                child: ThreeArchedCircle(
+                                     size: 50.0)),
+                          ),
+                    const SizedBox(height: 50),
+                    ResponsiveWidget.isMediumScreen(context)
+                        ? footerMobile(context)
+                        : const footerDesktop()
+                  ],
+                )
               : Center(
-            child: Container(),
-          );
+                  child: Container(),
+                );
         }));
   }
 
-  getTrayType(HomeViewModel homeViewModel){
-    if(widget.isDetail == true){
+  getTrayType(HomeViewModel homeViewModel) {
+    if (widget.isDetail == true) {
       return homeViewModel.homePageDataModel?.videoList?.isNotEmpty;
-    }else{
+    } else {
       return homeViewModel.trayDataModel?.isNotEmpty;
     }
   }

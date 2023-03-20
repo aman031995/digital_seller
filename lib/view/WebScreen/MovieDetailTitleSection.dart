@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:readmore/readmore.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
-import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
@@ -16,6 +15,7 @@ import 'package:tycho_streams/view/WebScreen/OnHover.dart';
 import 'package:tycho_streams/view/WebScreen/ViewAllListPages.dart';
 import 'package:tycho_streams/view/widgets/AppDialog.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
+import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 
 class MovieDetailTitleSection extends StatefulWidget {
   bool? isWall;
@@ -50,7 +50,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
       Container(
         color: Theme.of(context).scaffoldBackgroundColor,
       height:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight*0.45,
-      padding: EdgeInsets.only(top: 10, left: 20),
+      padding: EdgeInsets.only(top: 10, left: 30,right: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -58,28 +58,30 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
               context,msg: widget.Title,
               maxLines: 1,
               
-              fontSize: ResponsiveWidget.isMediumScreen(context)?16:20),
+              fontSize: ResponsiveWidget.isMediumScreen(context)?16:22),
           SizedBox(
             height: 10,
           ),
           ReadMoreText(
             widget.Desc ?? '',
             trimLines: 2,
-            style: TextStyle(color: Theme.of(context).accentColor),
+            style: TextStyle(color: Theme.of(context).accentColor,fontSize: 18),
             colorClickableText: THEME_COLOR,
             trimMode: TrimMode.Line,
             trimCollapsedText: '...Read more',
             trimExpandedText: ' Less',
-          ),
-          SizedBox(
-            height: 15,
           ),
           ChangeNotifierProvider<HomeViewModel>(
               create: (BuildContext context) => homeView,
               child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
                 return homeViewModel.homePageDataModel != null
                     ? moreVideoList(homeViewModel)
-                    : SizedBox();
+                    :  Container(
+                  height: SizeConfig.screenHeight * 0.35,
+                  child: Center(
+                      child: ThreeArchedCircle( size: 50.0)
+                  ),
+                );
               }))
         ],
       ),
@@ -91,7 +93,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
       children: [
         titleBar('More Like This', homeViewModel),
         Container(
-          height: ResponsiveWidget.isMediumScreen(context)? 200:250,
+          height: ResponsiveWidget.isMediumScreen(context)? 200:270,
           width: SizeConfig.screenWidth,
           child: homeViewModel.homePageDataModel?.videoList != null
               ? ListView.builder(
@@ -104,30 +106,18 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
                   itemBuilder: (context, index) {
                     return InkWell(
                         onTap: () {
-                          setState((){});
-                          setState((){
+
                             GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParams: {
-                              'movieID':'${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}',
-                              'VideoId':'${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
-                              'Title':'${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}',
-                              'Desc':'${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
-                              // 'platformMovieData':'${widget.moviesList}'
-                          });
+    'movieID':'${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}',
+    'VideoId':'${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
+    'Title':'${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}',
+    'Desc':'${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
+    });
 
-                          });
+                          },
 
 
-                          // Navigator.of(context, rootNavigator: true)
-                          //     .push(MaterialPageRoute(
-                          //         builder: (context) => new MovieDetailPage(
-                          //               // platformMovieData: homeViewModel
-                          //               //     .homePageDataModel
-                          //               //     ?.videoList?[index],
-                          //               // movieID: 'mZ5lbn9FWAQ',
-                          //               movieID: homeViewModel.homePageDataModel
-                          //                   ?.videoList?[index].youtubeVideoId,
-                          //             )));
-                        },
+
                         child: OnHover(
                             builder: (isHovered) {
                               bool _heigth = isHovered;
@@ -158,7 +148,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
               : Container(
                   height: SizeConfig.screenHeight * 0.3,
                   // width:SizeConfig.screenHeight * 0.3,
-                  child: ThreeArchedCircle(color: THEME_COLOR, size: 45.0)),
+                  child: ThreeArchedCircle( size: 45.0)),
         ),
       ],
     );
@@ -166,7 +156,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
 
   titleBar(String title, HomeViewModel homeViewModel) {
     return Container(
-      height: 30,
+      height: 50,
       margin: EdgeInsets.only(right: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

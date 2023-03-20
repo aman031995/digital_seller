@@ -10,6 +10,7 @@ import 'package:tycho_streams/model/data/BannerDataModel.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/model/data/TrayDataModel.dart';
 import 'package:tycho_streams/model/data/notification_model.dart';
+import 'package:tycho_streams/model/data/search_data_model.dart';
 import 'package:tycho_streams/network/ASResponseModal.dart';
 import 'package:tycho_streams/network/AppNetwork.dart';
 import 'package:tycho_streams/network/CacheDataManager.dart';
@@ -44,11 +45,17 @@ class HomeViewModel with ChangeNotifier {
   AppConfigModel? _appConfigModel;
   AppConfigModel? get appConfigModel => _appConfigModel;
 
+  SearchDataModel? _searchDataModel;
+  SearchDataModel? get searchDataModel => _searchDataModel;
+
+  SearchDataModel? _newSearchDataModel;
+  SearchDataModel? get newSearchDataModel => _newSearchDataModel;
+
   String? _isNetworkAvailable;
   String? get isNetworkAvailable => _isNetworkAvailable;
   int lastPage = 1, nextPage = 1;
   bool isLoading = false;
-
+  String? menuVersion, message;
   // getBanner(BuildContext context) async{
   //   final box = await Hive.openBox<String>('appBox');
   //   final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
@@ -65,7 +72,6 @@ class HomeViewModel with ChangeNotifier {
   // }
 
   Future<void> getBannerLists(BuildContext context) async {
-    // AppIndicator.loadingIndicator();
     _homePageRepo.getBannerData(context, (result, isSuccess) {
       if (isSuccess) {
         _bannerDataModal = ((result as SuccessState).value as ASResponseModal).dataModal;
@@ -106,7 +112,7 @@ class HomeViewModel with ChangeNotifier {
   }
 
   Future<void> getMoreLikeThis(BuildContext context, String videoId)async{
-    _homePageRepo.getMoreLikeThisData(videoId ?? '', context,
+    _homePageRepo.getMoreLikeThisData(videoId, context,
             (result, isSuccess) {
           if (isSuccess) {
             _homePageDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
@@ -159,6 +165,24 @@ class HomeViewModel with ChangeNotifier {
     }
   }
 
+  Future<void> getSearchData(BuildContext context, String searchKeyword, int pageNum) async{
+    _homePageRepo.getSearchApiData(searchKeyword, pageNum, context, (result, isSuccess) {
+      if(isSuccess){
+        _newSearchDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        if (_newSearchDataModel?.pagination?.current == 1) {
+          lastPage = _newSearchDataModel?.pagination?.lastPage ?? 1;
+          nextPage = _newSearchDataModel?.pagination?.next ?? 1;
+          _searchDataModel = _newSearchDataModel;
+        } else {
+          lastPage = _newSearchDataModel?.pagination?.lastPage ?? 1;
+          nextPage = _newSearchDataModel?.pagination?.next ?? 1;
+          _searchDataModel?.searchList?.addAll(_newSearchDataModel!.searchList!);
+        }
+        isLoading = false;
+        notifyListeners();
+      }
+    });
+  }
   void getNotification(BuildContext context, int pageNum){
     _homePageRepo.getNotification(pageNum,context, (result, isSuccess) {
       if(isSuccess){
@@ -187,4 +211,5 @@ class HomeViewModel with ChangeNotifier {
     isLoading = false;
     notifyListeners();
   }
+
 }

@@ -21,7 +21,7 @@ class _footerDesktopState extends State<footerDesktop> {
   Widget build(BuildContext context) {
     return   Container(
      // height: 200,
-       color:Theme.of(context).primaryColor,
+       color:Theme.of(context).cardColor,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(bottom: 30),
       child: Column(
@@ -46,7 +46,6 @@ class _footerDesktopState extends State<footerDesktop> {
 
 
             GoRouter.of(context).pushNamed(RoutesName.FAQ);
-              html.window.history.pushState("","" ,html.window.location.href);
               }),
               Container(width: MediaQuery.of(context).size.width * .02),
               AppButton(context, 'Careers', onPressed: () {
@@ -54,10 +53,10 @@ class _footerDesktopState extends State<footerDesktop> {
               Expanded(
                                    flex: 15,
                                    child: SizedBox(width: SizeConfig.screenWidth*0.22)),
-                               appTextButton(context, "Connect With Us", Alignment.center,
+                               appTextButton(context, "Connect With Us", Alignment.center,Theme.of(context).canvasColor,
                                      20, false),
                                SizedBox(width: 30),
-                               appTextButton(context, "Download Now", Alignment.center,
+                               appTextButton(context, "Download Now", Alignment.center,Theme.of(context).canvasColor,
                                      20, false),
                                Expanded(
                                    flex: 5,
@@ -128,7 +127,7 @@ class _footerDesktopState extends State<footerDesktop> {
 Widget footerMobile(BuildContext context){
   return Container(
 
-    color:Theme.of(context).primaryColor,
+    color:Theme.of(context).cardColor,
     width: MediaQuery.of(context).size.width,
     padding: EdgeInsets.only(bottom: 40),
     child: Column(

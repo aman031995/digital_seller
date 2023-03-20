@@ -7,6 +7,7 @@ import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/WebScreen/DetailPage.dart';
 import 'package:tycho_streams/view/WebScreen/OnHover.dart';
+import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 
 
 class CardMovieHome extends StatefulWidget {
@@ -61,6 +62,7 @@ class _CardMovieHomeState extends State<CardMovieHome> {
             'Desc':'${widget.moviesList?.videoDescription}'
 
           });
+
         },
         //9c5757df-6dea-44ad-9578-2df898ef7733
         child: Card(

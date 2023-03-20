@@ -43,10 +43,11 @@ class _ResetPasswordState extends State<ResetPassword> {
         shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         content: Container(
           decoration: BoxDecoration(
-              color: Colors.white,
-            borderRadius: BorderRadius.circular(20)
+              color: Theme.of(context).cardColor.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(width: 2, color: Theme.of(context).primaryColor)
           ),
-          height: 400,width: 500,
+          height: 415,width: 500,
           child: Column(
             children: [
               SizedBox(height: 35),
@@ -124,7 +125,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                           SizeConfig.screenWidth * 0.9,
                           60.0,
                           LIGHT_THEME_COLOR,
-
+                          Theme.of(context).canvasColor,
                           18,
                           10,
                           snapshot.data != true ? false : true, onTap: () {

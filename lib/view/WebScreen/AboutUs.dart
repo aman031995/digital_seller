@@ -4,6 +4,7 @@ import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/view/WebScreen/DesktopAppBar.dart';
+import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';
 import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
 
 class AboutUs extends StatelessWidget {
@@ -17,6 +18,7 @@ class AboutUs extends StatelessWidget {
           child: DesktopAppBar()
 
       ),
+      drawer: MobileMenu(context),
       body: SingleChildScrollView(
         child: Center(
           child: Column(children: [

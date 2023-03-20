@@ -1,10 +1,8 @@
-// import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tycho_streams/bloc_validation/Bloc_Validation.dart';
 import 'package:tycho_streams/model/data/UserInfoModel.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
-import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AppTextField.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
@@ -140,7 +138,7 @@ class _LoginUserUpdateState extends State<SocialLoginUpdate> {
                               SizeConfig.screenWidth * 0.85,
                               60,
                               THEME_COLOR,
-                              17,
+                              Theme.of(context).canvasColor,17,
                               10,
                               snapshot.data != true ? false : true, onTap: () {
                             snapshot.data != true ? null : updateButtonPressed(context, socialVM, popupEmailController?.text, popupPhoneController?.text, userId);

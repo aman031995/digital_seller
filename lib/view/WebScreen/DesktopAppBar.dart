@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tycho_streams/Utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
+import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 class DesktopAppBar extends StatefulWidget {
    DesktopAppBar({Key? key}) : super(key: key);
 
@@ -27,13 +29,13 @@ class _DesktopAppBarState extends State<DesktopAppBar> {
     return ResponsiveWidget.isMediumScreen(context)?
 
     AppBar(
-      backgroundColor: Theme.of(context).primaryColor,
-    iconTheme: IconThemeData(color:Colors.black,  size: 28),
+      backgroundColor: Theme.of(context).cardColor,
+    iconTheme: const IconThemeData(color:Colors.black,  size: 28),
     title:  Image.asset(AssetsConstants.icLogo,height: 30),
     )
         :
     Container(
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).cardColor,
       child:  Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -42,7 +44,7 @@ class _DesktopAppBarState extends State<DesktopAppBar> {
           Image.asset(AssetsConstants.icLogo,height: 50),
           SizedBox(width: SizeConfig.screenWidth*.02),
           AppButton(context,"Home", onPressed: (){
-
+            GoRouter.of(context).pushNamed(RoutesName.home);
           }),
           SizedBox(width:  MediaQuery.of(context).size.width*.02),
           AppButton(context, 'Upcoming', onPressed: (){
@@ -51,7 +53,7 @@ class _DesktopAppBarState extends State<DesktopAppBar> {
           }),
           SizedBox(width:  MediaQuery.of(context).size.width*.02),
           AppButton(context, 'Contact Us', onPressed: (){
-
+            GoRouter.of(context).pushNamed(RoutesName.ContactUsPage);
           }),
           Expanded(
               flex: 1,

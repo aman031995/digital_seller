@@ -49,7 +49,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         height: 350,
         width: 500,
         decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardColor.withOpacity(0.8),
+          border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.6)),
           borderRadius: BorderRadius.circular(20)
         ),
         margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
@@ -116,7 +117,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         StringConstant.send,
                         SizeConfig.screenWidth * 0.90,
                         60,
-                        LIGHT_THEME_COLOR,
+                        LIGHT_THEME_COLOR,Theme.of(context).canvasColor,
                         16,
                         10,
                         snapshot.data != true ? false : true, onTap: () {

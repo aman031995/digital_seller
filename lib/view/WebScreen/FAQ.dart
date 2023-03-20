@@ -6,6 +6,7 @@ import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/view/WebScreen/DesktopAppBar.dart';
+import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';
 import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
 
 import 'dart:html' as html;
@@ -19,7 +20,6 @@ class FAQ extends StatefulWidget {
 }
 
 class _FAQState extends State<FAQ> {
-  bool isLoading=false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +29,7 @@ class _FAQState extends State<FAQ> {
         appBar: PreferredSize(preferredSize: Size.fromHeight( ResponsiveWidget.isMediumScreen(context)?50:80),
            child: DesktopAppBar()
         ),
+      drawer: MobileMenu(context),
       body: SingleChildScrollView(
         child:
         Center(
@@ -236,7 +237,7 @@ class _FAQState extends State<FAQ> {
 }
 Widget dropdown(List<String> txt,BuildContext context) {
   return Container(
-    height: SizeConfig.screenHeight * .08,
+    height: SizeConfig.screenHeight * .05,
     width: ResponsiveWidget.isMediumScreen(context)?380:800,
     margin: EdgeInsets.only(bottom: 20,left: 10,right: 10),
     child: DropdownButtonFormField2(
@@ -254,9 +255,9 @@ Widget dropdown(List<String> txt,BuildContext context) {
       //isExpanded: true,
       hint: Text(
         txt[0],
-        style: TextStyle(fontSize:ResponsiveWidget.isMediumScreen(context)?14: 28, color: Colors.black87),
+        style: TextStyle(fontSize:ResponsiveWidget.isMediumScreen(context)?14: 18, color: Colors.black87),
       ),
-
+isExpanded: true,
       items: txt
           .map((item) => DropdownMenuItem<String>(
         value: item,

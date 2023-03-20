@@ -82,8 +82,8 @@ class ASRequestModal {
   ASRequestModal.withUrlAndInputParams(Map<String, dynamic> iParams,
       Map<String, String> urlParams, String rIdentifier, RequestType rType,
       {BuildContext? context,
-      Map<String, String>? headers,
-      Map<String, String>? fileUploadParams}) {
+        Map<String, String>? headers,
+        Map<String, String>? fileUploadParams}) {
     this.requestIdentifier = rIdentifier;
     this.requestType = rType;
     this.inputParameters = iParams;
@@ -109,9 +109,9 @@ class ASRequestModal {
   ASRequestModal.withInputParams(
       Map<String, dynamic> iParams, String rIdentifier, RequestType rType,
       {BuildContext? context,
-      String? modalClass,
-      Map<String, String>? headers,
-      Map<String, String>? fileUploadParams}) {
+        String? modalClass,
+        Map<String, String>? headers,
+        Map<String, String>? fileUploadParams}) {
     this.requestIdentifier = rIdentifier;
     this.requestType = rType;
     this.inputParameters = iParams;
@@ -127,3 +127,4 @@ class ASRequestModal {
     return JsonEncoder().convert(inputParameters);
   }
 }
+

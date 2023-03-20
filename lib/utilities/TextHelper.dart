@@ -16,7 +16,7 @@ Text AppBoldFont(
         maxLines: maxLines,
         textAlign: textAlign,
         style: CustomTextStyle.textFormFieldInterBold
-            .copyWith(color: Theme.of(context).accentColor, fontSize: fontSize, fontWeight: fontWeight,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily));
+            .copyWith(color: Theme.of(context).canvasColor, fontSize: fontSize, fontWeight: fontWeight,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily));
 }
 
 
@@ -34,7 +34,7 @@ Text AppMediumFont(
         textAlign: textAlign,
         overflow: overflowBar,
         style: CustomTextStyle.textFormFieldInterMedium
-            .copyWith(color: Theme.of(context).accentColor, fontSize: fontSize, fontWeight: fontWeight,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily));
+            .copyWith(color: Theme.of(context).canvasColor, fontSize: fontSize, fontWeight: fontWeight,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily));
 }
 
 Text AppRegularFont(
@@ -51,5 +51,5 @@ Text AppRegularFont(
         maxLines: maxLines,
         textAlign: textAlign,
         style: CustomTextStyle.textFormFieldInterRegular
-            .copyWith(color: Theme.of(context).accentColor, fontSize: fontSize, fontWeight: fontWeight,fontFamily: Theme.of(context).textTheme.labelLarge?.fontFamily));
+            .copyWith(color: Theme.of(context).canvasColor.withOpacity(0.8), fontSize: fontSize, fontWeight: fontWeight,fontFamily: Theme.of(context).textTheme.labelLarge?.fontFamily));
 }

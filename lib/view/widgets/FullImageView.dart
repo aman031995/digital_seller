@@ -29,10 +29,17 @@ class _FullImageState extends State<FullImage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor:  Theme.of(context).scaffoldBackgroundColor,
-        body: GestureDetector(
+        body: Container(
+          height: 500,
           child: Stack(
             children: <Widget>[
-              getImageView(),
+              Image.network(
+                'https://example.com/image.jpg',
+                width: 200,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
+              // getImageView(),
               Positioned(
                 top: 40.0,
                 right: 20.0,
@@ -59,6 +66,8 @@ class _FullImageState extends State<FullImage> {
 
   Widget getImageView() {
     return Container(
+      height: 500,
+        width: 500,
         child: PhotoViewGallery.builder(
           scrollPhysics: BouncingScrollPhysics(),
           builder: (BuildContext context, int indexss) {
@@ -74,7 +83,7 @@ class _FullImageState extends State<FullImage> {
             child: Container(
               width: 50.0,
               height: 50.0,
-              child: ThreeArchedCircle(color: THEME_COLOR, size: 45.0)
+              child: ThreeArchedCircle( size: 45.0)
             ),
           ),
           pageController: pageController,

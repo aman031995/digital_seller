@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+
+    For more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+
+    This is a placeholder for base href that will be replaced by the value of
+    the `--base-href` argument provided to `flutter build`.
+  -->
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter project.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="tycho_streams">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="app_logo.png"/>
+
+  <title>tycho_streams</title>
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    // The value below is injected by flutter build, do not touch.
+    var serviceWorkerVersion = '4110596653';
+  </script>
+
+
+  <!-- This script adds the flutter initialization JS code -->
+  <script src="flutter.js" defer></script>
+</head>
+<body>
+<script type="text/javascript">
+  window.flutterWebRenderer = "html";
+</script>
+<script>
+    window.addEventListener('load', function(ev) {
+      // Download main.dart.js
+      _flutter.loader.loadEntrypoint({
+        serviceWorker: {
+          serviceWorkerVersion: serviceWorkerVersion,
+        },
+        onEntrypointLoaded: function(engineInitializer) {
+          engineInitializer.initializeEngine().then(function(appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+<script type="module">
+
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-analytics.js";
+  import { getAuth } from 'https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js'
+
+
+  // Your web app's Firebase configuration
+
+var firebaseConfig = {
+  apiKey: "AIzaSyBaAbG2eNrQR2e1JmJcLj0N4QoKSv59Sb0",
+  authDomain: "tychostreams.firebaseapp.com",
+  projectId: "tychostreams",
+  storageBucket: "tychostreams.appspot.com",
+  messagingSenderId: "746850038788",
+  appId: "1:746850038788:web:0e231dc5e9ead255407151",
+  measurementId: "G-2Q4LD5W403"
+};
+
+</script>
+<script src="main.dart.js" type="application/javascript"></script>
+
+</body>
+</html>

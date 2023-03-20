@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
 typedef void ResponseHandler(dynamic result, bool isSuccess);
-
 class GetImageFile {
   static Future<void> pickImage(ImageSource imageSource, BuildContext context,
       ResponseHandler responseHandler) async {

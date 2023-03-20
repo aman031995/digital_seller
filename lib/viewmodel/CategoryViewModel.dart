@@ -53,7 +53,7 @@ class CategoryViewModel with ChangeNotifier{
   }
 
   Future<void> getCategoryDetails(BuildContext context, String categoryId, int pageNum) async {
-    AppIndicator.loadingIndicator();
+    AppIndicator.loadingIndicator(context);
     _categoryPageRepo.getCategoryWiseDetails(categoryId, pageNum, context, (result, isSuccess) {
       if (isSuccess) {
         _homePageDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
