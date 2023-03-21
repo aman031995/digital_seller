@@ -54,7 +54,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
     return Stack(
       children: [
         Container(
-          margin: EdgeInsets.only(top: 70),
+          margin: EdgeInsets.only(top: 10),
           height:  620,width: 2500,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5)
@@ -166,7 +166,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
           throw 'Could not launch $url';
         }},
         child: Container(
-          margin: EdgeInsets.only(left: 10,right: 10,top: 10),
+          margin: EdgeInsets.only(left: 10,right: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             image: DecorationImage(
