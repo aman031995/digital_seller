@@ -58,14 +58,14 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
               context,msg: widget.Title,
               maxLines: 1,
               
-              fontSize: ResponsiveWidget.isMediumScreen(context)?16:22),
+              fontSize: ResponsiveWidget.isMediumScreen(context)?16:18),
           SizedBox(
             height: 10,
           ),
           ReadMoreText(
             widget.Desc ?? '',
             trimLines: 2,
-            style: TextStyle(color: Theme.of(context).accentColor,fontSize: 18),
+            style: TextStyle(color: Theme.of(context).canvasColor,fontSize: 16),
             colorClickableText: THEME_COLOR,
             trimMode: TrimMode.Line,
             trimCollapsedText: '...Read more',
@@ -161,7 +161,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppBoldFont(context,msg: title, fontSize:ResponsiveWidget.isMediumScreen(context)?18: 30, color: TEXT_COLOR),
+          AppBoldFont(context,msg: title, fontSize:ResponsiveWidget.isMediumScreen(context)?14: 22, color: TEXT_COLOR),
           homeViewModel.homePageDataModel!.videoList!.length > 8
               ? textButton(context, "See All", onApply: () {
             GoRouter.of(context).pushNamed(RoutesName.seaAll,queryParams: {

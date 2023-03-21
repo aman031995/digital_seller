@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/main.dart';
 import 'package:tycho_streams/model/data/UserInfoModel.dart';
@@ -10,6 +11,7 @@ import 'package:tycho_streams/network/result.dart';
 import 'package:tycho_streams/repository/auth_repository.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
+import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/WebScreen/reset_screen.dart';
 import 'package:tycho_streams/view/screens/verify_otp_screen.dart';
 import '../view/WebScreen/HomePageWeb.dart';
@@ -49,6 +51,8 @@ class AuthViewModel with ChangeNotifier {
   logoutButtonPressed(BuildContext context) async {
     AppDataManager.deleteSavedDetails();
     CacheDataManager.clearCachedData();
+    isLogin=false;
+    GoRouter.of(context).pushNamed(RoutesName.home);
     reloadPage();
   }
 

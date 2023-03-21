@@ -27,6 +27,7 @@ import 'package:tycho_streams/viewmodel/sociallogin_view_model.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 String? names;
+
 Future<void> main() async {
   setPathUrlStrategy();
   await WidgetsFlutterBinding.ensureInitialized();
@@ -41,19 +42,21 @@ Future<void> main() async {
   ));
   runApp(MyApp());
 }
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
+
 class _MyAppState extends State<MyApp> {
   HomeViewModel homeViewModel = HomeViewModel();
   GoRouter? _router;
+
   @override
   void initState() {
-    User().whenComplete(() => (){
-    });
+    User();
     super.initState();
     homeViewModel.getAppConfig(context);
     _router = GoRouter(
@@ -64,52 +67,96 @@ class _MyAppState extends State<MyApp> {
           pageBuilder: (context, state) {
             return MaterialPage(child: HomePageWeb());
           },
-
         ),
         GoRoute(
           name: RoutesName.ContactUsPage,
           path: '/ContactUsPage',
           pageBuilder: (context, state) {
             return MaterialPage(child: ContactUsPage());
-          },
+          },   redirect: ((context, state) async {
+          SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token').toString().length>5) {
+            return null;
+          } else {
+            return '/';
+          }
+        })
         ),
         GoRoute(
           name: RoutesName.FAQ,
           path: '/FAQ',
           pageBuilder: (context, state) {
-            return MaterialPage(child:  FAQ());
-          },
-
+            return MaterialPage(child: FAQ());
+          },   redirect: ((context, state) async {
+          SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token').toString().length>5) {
+            return null;
+          } else {
+            return '/';
+          }
+        })
         ),
-
         GoRoute(
           name: RoutesName.Career,
           path: '/Career',
           pageBuilder: (context, state) {
             return MaterialPage(child: Career());
-          },
-
+          },   redirect: ((context, state) async {
+          SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token').toString().length>5) {
+            return null;
+          } else {
+            return '/';
+          }
+        })
         ),
         GoRoute(
           name: RoutesName.Privacy,
           path: '/Privacy',
           pageBuilder: (context, state) {
             return MaterialPage(child: Privacy());
-          },
+          },   redirect: ((context, state) async {
+          SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token').toString().length>5) {
+            return null;
+          } else {
+            return '/';
+          }
+        })
         ),
         GoRoute(
           name: RoutesName.Terms,
           path: '/Terms',
           pageBuilder: (context, state) {
             return MaterialPage(child: Terms());
-          },
+          },   redirect: ((context, state) async {
+          SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token').toString().length>5) {
+            return null;
+          } else {
+            return '/';
+          }
+        })
         ),
         GoRoute(
           name: RoutesName.AboutUs,
           path: '/AboutUs',
           pageBuilder: (context, state) {
             return MaterialPage(child: AboutUs());
-          },
+          },   redirect: ((context, state) async {
+          SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token').toString().length>5) {
+            return null;
+          } else {
+            return '/';
+          }
+        })
         ),
         GoRoute(
           name: RoutesName.DeatilPage,
@@ -120,41 +167,58 @@ class _MyAppState extends State<MyApp> {
             });
             return MaterialPage(
                 child: DetailPage(
-                  movieID: state.queryParams['movieID'],
-                  VideoId: state.queryParams['VideoId'],
-                  Title: state.queryParams['Title'],
-                  Desc: state.queryParams['Desc'],
-                ));
+              movieID: state.queryParams['movieID'],
+              VideoId: state.queryParams['VideoId'],
+              Title: state.queryParams['Title'],
+              Desc: state.queryParams['Desc'],
+            ));
           },
+            redirect: ((context, state) async {
+              SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
+              if (sharedPreferences.get('token').toString().length>5) {
+                return null;
+              } else {
+                return '/';
+              }
+            })
         ),
-
         GoRoute(
-          name: RoutesName.seaAll,
-          path: '/Seall',
-          pageBuilder: (context, state) {
-            state.queryParams.forEach((key, value) {
-              print("$key : $value");
-            });
-            return MaterialPage(
-                child: SeeAllListPages(
-                  VideoId: state.queryParams['VideoId'],
-                  title: state.queryParams['title'],
-                ));
-          },
-
+            name: RoutesName.seaAll,
+            path: '/Seall',
+            pageBuilder: (context, state) {
+              state.queryParams.forEach((key, value) {
+                print("$key : $value");
+              });
+              return MaterialPage(
+                  child: SeeAllListPages(
+                VideoId: state.queryParams['VideoId'],
+                title: state.queryParams['title'],
+              ));
+            },
+            redirect: ((context, state) async {
+              SharedPreferences sharedPreferences =
+                  await SharedPreferences.getInstance();
+              if (sharedPreferences.get('token').toString().length>5) {
+                return null;
+              } else {
+                return '/';
+              }
+            })
         ),
       ],
-      redirect: ((context, state) {
-        if (names=="null") {
-          return '/';
+      redirect: ((context, state) async {
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        if (sharedPreferences.get('token') != null) {
+          return null;
         } else {
-          return state.location;
+          return '/';
         }
       }),
       initialLocation: _getCurrentLocation(),
       refreshListenable: _getRefreshListenable(),
     );
-
   }
 
   String _getCurrentLocation() {
@@ -170,10 +234,12 @@ class _MyAppState extends State<MyApp> {
         }
       });
   }
- Future User() async{
+
+  User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    names=sharedPreferences.get('name').toString();
+    names = sharedPreferences.get('name').toString();
   }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -188,11 +254,16 @@ class _MyAppState extends State<MyApp> {
         child: ChangeNotifierProvider<HomeViewModel>(
             create: (BuildContext context) => homeViewModel,
             child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-              final themeColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.primaryColor?.hex;
-              final bgColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.themeColor?.hex;
-              final font = viewmodel.appConfigModel?.androidConfig?.fontStyle?.fontFamily;
-              final secondaryColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.secondaryColor?.hex;
-              final txtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.textColor?.hex;
+              final themeColor = viewmodel
+                  .appConfigModel?.androidConfig?.appTheme?.primaryColor?.hex;
+              final bgColor = viewmodel
+                  .appConfigModel?.androidConfig?.appTheme?.themeColor?.hex;
+              final font = viewmodel
+                  .appConfigModel?.androidConfig?.fontStyle?.fontFamily;
+              final secondaryColor = viewmodel
+                  .appConfigModel?.androidConfig?.appTheme?.secondaryColor?.hex;
+              final txtColor = viewmodel
+                  .appConfigModel?.androidConfig?.appTheme?.textColor?.hex;
               return MaterialApp.router(
                   theme: ThemeData(
                       scaffoldBackgroundColor: (bgColor)?.toColor(),
@@ -200,7 +271,7 @@ class _MyAppState extends State<MyApp> {
                       backgroundColor: (bgColor)?.toColor(),
                       cardColor: (secondaryColor)?.toColor(),
                       fontFamily: font,
-                      canvasColor : (txtColor)?.toColor()),
+                      canvasColor: (txtColor)?.toColor()),
                   builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
                   scrollBehavior: MyCustomScrollBehavior(),
@@ -215,12 +286,10 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
         PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,PointerDeviceKind.invertedStylus,
-    PointerDeviceKind.trackpad
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.invertedStylus,
+        PointerDeviceKind.trackpad
       };
-
-
-
 }
 
 extension ColorExtension on String {
