@@ -1,7 +1,7 @@
 class RoutesName {
 
   static const String home = 'homepage';
-
+  static const String sidemenu = 'sidemenupage';
   static const String FAQ = 'FAQ';
   static const String Career = 'Career';
   static const String Privacy = 'Privacy';

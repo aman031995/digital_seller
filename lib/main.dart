@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tycho_streams/view/WebScreen/RowSideMenu.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/repository/subscription_provider.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
@@ -62,7 +63,7 @@ class _MyAppState extends State<MyApp> {
           name: RoutesName.home,
           path: '/',
           pageBuilder: (context, state) {
-            return MaterialPage(child: HomePageWeb());
+            return MaterialPage(child: SidebarXExampleApp());
           },
 
         ),

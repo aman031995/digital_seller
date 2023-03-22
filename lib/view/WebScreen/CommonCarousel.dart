@@ -53,11 +53,12 @@ class _CommonCarouselState extends State<CommonCarousel> {
     var imageSliders = generateImageTilesWeb(context);
     return Stack(
       children: [
-        Container(
-          margin: EdgeInsets.only(top: 10),
-          height:  620,width: 2500,
+        Expanded(child: Container(
+          // margin: EdgeInsets.only(right: 3),
+          height:  620,width: SizeConfig.screenWidth / 1.05,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5)
+            // borderRadius: BorderRadius.circular(5),
+            color: Colors.green,
           ),
           child: CarouselSlider(
             items: imageSliders,
@@ -78,9 +79,9 @@ class _CommonCarouselState extends State<CommonCarousel> {
                 }),
             carouselController: carouselController,
           ),
-        ),
+        ),),
         Positioned(
-          left: 30,top: 295,
+          left: 160,top: 295,
           child: InkWell(
               child: Image.asset(
                 'images/prev.png',
@@ -118,13 +119,15 @@ class _CommonCarouselState extends State<CommonCarousel> {
           throw 'Could not launch $url';
         }},
       child:
-        Container(
-          height: 600,width: SizeConfig.screenWidth,
-          margin: EdgeInsets.only(left: 0,right: 0,top: 0),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
-          child: Image.network(element.bannerFile?? " ",
-            fit: BoxFit.fill
-            //height: SizeConfig.screenHeight
+        Expanded(
+          child: Container(
+            height: 600,width: SizeConfig.screenWidth / 1.05,
+            margin: EdgeInsets.only(top: 0),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
+            child: Image.network(element.bannerFile?? " ",
+              fit: BoxFit.fill
+              //height: SizeConfig.screenHeight
+            ),
           ),
         ),
     )
