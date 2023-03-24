@@ -41,16 +41,16 @@ class ProfileViewModel with ChangeNotifier {
     });
   }
 
-  // Future<void> imageUpload(BuildContext context, result) async {
-  //   AppIndicator.loadingIndicator(context);
-  //   var imageToUpload = File(result.path);
-  //   _profileRepo.uploadImage([imageToUpload.path], context,
-  //           (result, isSuccess) {
-  //         _userInfoModel =
-  //             ((result as SuccessState).value as ASResponseModal).dataModal;
-  //         notifyListeners();
-  //       });
-  // }
+  Future<void> imageUpload(BuildContext context, result) async {
+    AppIndicator.loadingIndicator(context);
+    var imageToUpload = File(result.path);
+    _profileRepo.uploadImage([imageToUpload.path], context,
+            (result, isSuccess) {
+          _userInfoModel =
+              ((result as SuccessState).value as ASResponseModal).dataModal;
+          notifyListeners();
+        });
+  }
 
   getUserDetails(BuildContext context) async {
     final box = await Hive.openBox<String>('appBox');

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tycho_streams/utilities/Responsive.dart';
 
 import 'AppColor.dart';
 import 'AssetsConstants.dart';
@@ -91,7 +92,7 @@ class _CustomTextFieldState extends State<AppTextField> {
               controller: widget.controller,
               style: TextStyle(
                   color: widget.isEnable == false ?Theme.of(context).primaryColor.withOpacity(0.6) : Theme.of(context).canvasColor,
-                  fontSize: 18),
+                  fontSize: ResponsiveWidget.isMediumScreen(context)?16:18),
               onSubmitted: widget.onSubmitted,
               decoration: new InputDecoration(
                 errorText: widget.errorText,

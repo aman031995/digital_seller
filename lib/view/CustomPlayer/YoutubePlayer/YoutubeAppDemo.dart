@@ -42,7 +42,7 @@ class _YoutubeAppDemoState extends State<YoutubeAppDemo> {
       builder: (context, player) {
         return ListView(
           itemExtent: ResponsiveWidget.isMediumScreen(context)
-              ? SizeConfig.screenWidth / 2.47
+              ? SizeConfig.screenWidth / 2
               : SizeConfig.screenWidth / 2.959,
           children: [
             player,

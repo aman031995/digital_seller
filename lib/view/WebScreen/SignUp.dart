@@ -65,7 +65,7 @@ class _SignUpState extends State<SignUp> {
         shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         content: Container(
             // width: 450,
-            height: SizeConfig.screenHeight/1.4,
+            height: SizeConfig.screenHeight/1.7,
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(20)
@@ -75,7 +75,7 @@ class _SignUpState extends State<SignUp> {
                 children: [
                   SizedBox(height: SizeConfig.screenHeight * .01),
                   AppBoldFont(
-                      context,msg: 'Get Started', fontSize: 18),
+                      context,msg: 'Get Started', fontSize: 16),
                   AppRegularFont(
                       context,msg: "Lets register yourself to make profile.",
                       fontSize: 14),
@@ -88,8 +88,8 @@ class _SignUpState extends State<SignUp> {
                         return appButton(
                             context,
                             'Create Account',
-                            SizeConfig.screenWidth / 1.5,
-                            60.0,
+                            SizeConfig.screenWidth / 1.4,
+                            50.0,
                             LIGHT_THEME_COLOR,
                             Theme.of(context).canvasColor,18,
                             10,

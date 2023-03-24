@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tycho_streams/Utilities/AssetsConstants.dart';
 import 'package:tycho_streams/main.dart';
+import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AppTextField.dart';
 
@@ -41,6 +42,7 @@ class _FAQState extends State<FAQ> {
   ScrollController scrollController = ScrollController();
   bool isSearch = false;
   int pageNum = 1;
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   @override
   void initState() {
     homeViewModel.getAppConfigData(context);
@@ -76,8 +78,12 @@ class _FAQState extends State<FAQ> {
           }
         },
         child: Scaffold(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          appBar:  PreferredSize(preferredSize: Size.fromHeight( 60),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          appBar:
+          ResponsiveWidget.isMediumScreen(context)
+              ? homePageTopBar()
+              :
+          PreferredSize(preferredSize: Size.fromHeight( 60),
               child: Container(
                 height: 55,
                 color: Theme.of(context).cardColor,
@@ -235,131 +241,244 @@ class _FAQState extends State<FAQ> {
                   ],
                 ),
               )),
-          drawer: AppMenu(homeViewModel: viewmodel),
+          body: Scaffold(
+    key: _scaffoldKey,
+            drawer: AppMenu(homeViewModel: viewmodel),
 
-          body: GestureDetector(
-            onTap: () {
-              if (isSearch == true) {
-                isSearch = false;
-                searchController?.clear();
-                setState(() {});
-              }
-              if( isLogins == true){
-                isLogins=false;
-                setState(() {
+            body: GestureDetector(
+              onTap: () {
+                if (isSearch == true) {
+                  isSearch = false;
+                  searchController?.clear();
+                  setState(() {});
+                }
+                if( isLogins == true){
+                  isLogins=false;
+                  setState(() {
 
-                });
-              }
-            },
-            child:
-            Stack(
-              children: [
-                SingleChildScrollView(
-                  child: Center(
-                    child: Column(
-                                      children: [
-                                        SizedBox(height: SizeConfig.screenHeight * .09),
-                                        AppBoldFont(
-                                          context,fontWeight: FontWeight.w700,
-                                          fontSize: ResponsiveWidget.isMediumScreen(context)? 30:50,
-                                          msg: "How can we help you ?",
-                                        ),
-                                        SizedBox(height: SizeConfig.screenHeight * .04),
-                                        Container(
-                                          height: SizeConfig.screenHeight * .05,
-                                            width: SizeConfig.screenWidth * .35,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(21),
-                                            border: Border.all(color:Colors.black)
+                  });
+                }
+              },
+              child:
+              Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Center(
+                      child: Column(
+                                        children: [
+                                          SizedBox(height: SizeConfig.screenHeight * .09),
+                                          AppBoldFont(
+                                            context,fontWeight: FontWeight.w700,
+                                            fontSize: ResponsiveWidget.isMediumScreen(context)? 30:50,
+                                            msg: "How can we help you ?",
                                           ),
-                                          child: TextField(
-
-                                            decoration: new InputDecoration(
-                                              filled: true,
-                                              fillColor:Colors.white,
-                                              iconColor:  Colors.black,
-                                              contentPadding: EdgeInsets.only(top: 2),
-                                              prefixIcon: Icon(Icons.search,color: Colors.black ),
-                                              hintText: "Start typing your search...",
-                                              hintStyle: TextStyle(color: Colors.black),
-                                              border: OutlineInputBorder(
-                                                  borderRadius: const BorderRadius.all(Radius.circular(20)),borderSide: BorderSide.none),
+                                          SizedBox(height: SizeConfig.screenHeight * .04),
+                                          Container(
+                                            height: SizeConfig.screenHeight * .05,
+                                              width: SizeConfig.screenWidth * .35,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(21),
+                                              border: Border.all(color:Colors.black)
                                             ),
-                                            onChanged: null,
-                                            onSubmitted: null,
+                                            child: TextField(
+
+                                              decoration: new InputDecoration(
+                                                filled: true,
+                                                fillColor:Colors.white,
+                                                iconColor:  Colors.black,
+                                                contentPadding: EdgeInsets.only(top: 2),
+                                                prefixIcon: Icon(Icons.search,color: Colors.black ),
+                                                hintText: "Start typing your search...",
+                                                hintStyle: TextStyle(color: Colors.black),
+                                                border: OutlineInputBorder(
+                                                    borderRadius: const BorderRadius.all(Radius.circular(20)),borderSide: BorderSide.none),
+                                              ),
+                                              onChanged: null,
+                                              onSubmitted: null,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(height: SizeConfig.screenHeight * .04),
-                                        AppBoldFont(
-                                          context,fontWeight: FontWeight.w600,
-                                          fontSize:ResponsiveWidget.isMediumScreen(context)?16: 36,
-                                          msg: "Getting Started",
-                                        ),
-                                        SizedBox(height: SizeConfig.screenHeight * .01),
-                                        AppRegularFont(context,
-                                            msg:
-                                                "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-                                            fontSize:ResponsiveWidget.isMediumScreen(context)?10: 20),
-                                        SizedBox(height: SizeConfig.screenHeight * .02),
-                                        dropdown([
-                                          'How do i cancel my subscription?',
-                                          'I found incorrect/outdated in',
-                                          'I need help with my Food online',
-                                          "There is a photo/review that ",
-                                          "The website/app are not working .",
-                                          "I would like to give feedback.",
-                                        ],context),
-                                        dropdown([
-                                          'How do i cancel my subscription?',
-                                          'I found incorrect/outdated in',
-                                          'I need help with my Food online',
-                                          "There is a photo/review that ",
-                                          "The website/app are not working .",
-                                          "I would like to give feedback.",
-                                        ],context),
-                                        dropdown([
-                                          'How do i cancel my subscription?',
-                                          'I found incorrect/outdated in',
-                                          'I need help with my Food online',
-                                          "There is a photo/review that ",
-                                          "The website/app are not working .",
-                                          "I would like to give feedback.",
-                                        ],context),
-                                        dropdown([
-                                          'How do i cancel my subscription?',
-                                          'I found incorrect/outdated in',
-                                          'I need help with my Food online',
-                                          "There is a photo/review that ",
-                                          "The website/app are not working .",
-                                          "I would like to give feedback.",
-                                        ],context),
-                                        dropdown([
-                                          'How do i cancel my subscription?',
-                                          'I found incorrect/outdated in',
-                                          'I need help with my Food online',
-                                          "There is a photo/review that ",
-                                          "The website/app are not working .",
-                                          "I would like to give feedback.",
-                                        ],context),
-                                        SizedBox(height:ResponsiveWidget.isMediumScreen(context)?40: 70),
-                                        ResponsiveWidget.isMediumScreen(context)?   footerMobile(context): footerDesktop()
-                                      ],
-                                    ),
+                                          SizedBox(height: SizeConfig.screenHeight * .04),
+                                          AppBoldFont(
+                                            context,fontWeight: FontWeight.w600,
+                                            fontSize:ResponsiveWidget.isMediumScreen(context)?16: 36,
+                                            msg: "Getting Started",
+                                          ),
+                                          SizedBox(height: SizeConfig.screenHeight * .01),
+                                          AppRegularFont(context,
+                                              msg:
+                                                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+                                              fontSize:ResponsiveWidget.isMediumScreen(context)?10: 20),
+                                          SizedBox(height: SizeConfig.screenHeight * .02),
+                                          dropdown([
+                                            'How do i cancel my subscription?',
+                                            'I found incorrect/outdated in',
+                                            'I need help with my Food online',
+                                            "There is a photo/review that ",
+                                            "The website/app are not working .",
+                                            "I would like to give feedback.",
+                                          ],context),
+                                          dropdown([
+                                            'How do i cancel my subscription?',
+                                            'I found incorrect/outdated in',
+                                            'I need help with my Food online',
+                                            "There is a photo/review that ",
+                                            "The website/app are not working .",
+                                            "I would like to give feedback.",
+                                          ],context),
+                                          dropdown([
+                                            'How do i cancel my subscription?',
+                                            'I found incorrect/outdated in',
+                                            'I need help with my Food online',
+                                            "There is a photo/review that ",
+                                            "The website/app are not working .",
+                                            "I would like to give feedback.",
+                                          ],context),
+                                          dropdown([
+                                            'How do i cancel my subscription?',
+                                            'I found incorrect/outdated in',
+                                            'I need help with my Food online',
+                                            "There is a photo/review that ",
+                                            "The website/app are not working .",
+                                            "I would like to give feedback.",
+                                          ],context),
+                                          dropdown([
+                                            'How do i cancel my subscription?',
+                                            'I found incorrect/outdated in',
+                                            'I need help with my Food online',
+                                            "There is a photo/review that ",
+                                            "The website/app are not working .",
+                                            "I would like to give feedback.",
+                                          ],context),
+                                          SizedBox(height:ResponsiveWidget.isMediumScreen(context)?40: 70),
+                                          ResponsiveWidget.isMediumScreen(context)?   footerMobile(context): footerDesktop()
+                                        ],
+                                      ),
 
 
-                      ),
-                ),
-                isLogins == true
-                    ? profile(context, setState)
-                    : Container(),
-                if (homeViewModel.searchDataModel != null)
-                  searchView(context, homeViewModel, isSearch, _scrollController, homeViewModel, searchController!, setState)
-              ],
+                        ),
+                  ),
+                  isLogins == true
+                      ? profile(context, setState)
+                      : Container(),
+                  if (homeViewModel.searchDataModel != null)
+                    searchView(context, homeViewModel, isSearch, _scrollController, homeViewModel, searchController!, setState)
+                ],
 
-        ),
           ),
+            ),
     ),
+        ),
       );}));
+  }
+
+  homePageTopBar() {
+    return AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Theme
+            .of(context)
+            .backgroundColor,
+        title: Stack(children: <Widget>[
+          Container(
+              child: Row(children: [
+                GestureDetector(
+                    onTap: () {
+                      names == "null"
+                          ? showDialog(context: context, barrierColor: Colors.black87, builder: (BuildContext context) {return const SignUp();}):
+
+                      _scaffoldKey.currentState?.isDrawerOpen == false?
+                      _scaffoldKey.currentState?.openDrawer()
+                          :
+                      _scaffoldKey.currentState?.openEndDrawer();
+
+                    },
+                    child: Container(
+                        height: 35,
+                        width: 35,
+                        decoration: BoxDecoration(
+                          color: Color(0xff001726),
+                        ),
+                        child: Image.asset(
+                          'images/ic_menu.png',
+                          height: 25,
+                          width: 25,
+                        ))),
+                Container(
+                    height: 45,
+                    width: SizeConfig.screenWidth * 0.58,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: TRANSPARENT_COLOR, width: 1.0),
+                    ),
+                    child: AppTextField(
+                        controller: searchController,
+                        maxLine: searchController!.text.length > 2 ? 2 : 1,
+                        textCapitalization: TextCapitalization.words,
+                        secureText: false,
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        maxLength: 30,
+                        labelText: 'Search videos, shorts, products',
+                        keyBoardType: TextInputType.text,
+                        onChanged: (m) {
+                          isSearch = true;
+                        },
+                        isTick: null)),
+                names == "null"
+                    ? ElevatedButton(onPressed: (){
+                  showDialog(
+                      context: context,
+                      barrierColor: Colors.black87,
+                      builder:
+                          (BuildContext context) {
+                        return const SignUp();
+                      });
+
+                }, child:Text(
+                  "Sign Up",style: TextStyle(
+                    color: Theme.of(context).canvasColor,fontSize: 16,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily
+                ),
+                ),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).cardColor),
+                        overlayColor: MaterialStateColor
+                            .resolveWith((states) =>
+                        Theme.of(context).primaryColor),
+                        fixedSize:
+                        MaterialStateProperty.all(Size(90, 35)),
+                        shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(
+                                    5.0
+                                )))
+                    ))
+                    : GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isLogins = true;
+                      if (isSearch == true) {
+                        isSearch = false;
+                        searchController?.clear();
+                        setState(() {});
+                      }
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      SizedBox(width: SizeConfig.screenWidth*0.1),
+                      Image.asset(
+                        'images/LoginUser.png',
+                        height: 30,
+                        color:
+                        Theme
+                            .of(context)
+                            .canvasColor,
+                      ),
+                    ],
+                  ),
+                ),
+              ]))
+        ]));
   }
 }
 Widget dropdown(List<String> txt,BuildContext context) {

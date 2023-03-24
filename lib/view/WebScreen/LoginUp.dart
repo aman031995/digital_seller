@@ -62,7 +62,7 @@ class _LoginUpState extends State<LoginUp> {
                     .of(context)
                     .cardColor,
                 content: Container(
-                    height: 450,
+                    height: 380,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(width: 2, color: Theme
