@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -51,7 +52,8 @@ class _HomePageWebState extends State<HomePageWeb> {
 
   User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    names = sharedPreferences.get('name').toString() ?? " ";
+    names = sharedPreferences.get('name').toString();
+    image=sharedPreferences.get('profileImg').toString();
   }
 
   @override
@@ -238,14 +240,16 @@ class _HomePageWebState extends State<HomePageWeb> {
                   child: Row(
                     children: [
                       SizedBox(width: SizeConfig.screenWidth*0.1),
-                      Image.asset(
-                        'images/LoginUser.png',
+                    Image.asset(
+                       AssetsConstants.icProfile,
                         height: 30,
-                        color:
-                        Theme
-                            .of(context)
-                            .canvasColor,
+                      color: Theme.of(context).canvasColor,
                       ),
+                    //   CachedNetworkImage(
+                    //     placeholder: (context, url) => const CircularProgressIndicator(),
+                    //     imageUrl: image!,
+                    //     height: 30,
+                    //   )
                     ],
                   ),
                 ),

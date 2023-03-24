@@ -349,11 +349,10 @@ class _EditProfileState extends State<EditProfile> {
 
                                   });
                                 },
-                                child: Image.asset(
-                                  'images/LoginUser.png',
+                                child:  Image.asset(
+                                  AssetsConstants.icProfile,
                                   height: 30,
-                                  color:
-                                  Theme.of(context).accentColor,
+                                  color: Theme.of(context).canvasColor,
                                 ),
                               ),
                               SizedBox(width: SizeConfig.screenWidth * .02),
@@ -999,12 +998,9 @@ class _EditProfileState extends State<EditProfile> {
                     children: [
                       SizedBox(width: SizeConfig.screenWidth*0.1),
                       Image.asset(
-                        'images/LoginUser.png',
+                        AssetsConstants.icProfile,
                         height: 30,
-                        color:
-                        Theme
-                            .of(context)
-                            .canvasColor,
+                        color: Theme.of(context).canvasColor,
                       ),
                     ],
                   ),

@@ -27,7 +27,7 @@ import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 import 'package:tycho_streams/viewmodel/profile_view_model.dart';
 import 'package:tycho_streams/viewmodel/sociallogin_view_model.dart';
 import 'package:url_strategy/url_strategy.dart';
-
+String? image;
 String? names;
 bool isLogin = false;
 bool isLogins = false;
@@ -109,7 +109,8 @@ class _MyAppState extends State<MyApp> {
           name: RoutesName.Terms,
           path: '/Terms',
           pageBuilder: (context, state) {
-            return MaterialPage(child: Terms());
+            return MaterialPage(child: Terms(
+            ));
           },
         ),
         GoRoute(

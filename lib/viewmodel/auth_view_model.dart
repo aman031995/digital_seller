@@ -28,6 +28,7 @@ class AuthViewModel with ChangeNotifier {
   User() async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     names=sharedPreferences.get('name').toString() ?? " ";
+    image=sharedPreferences.get('profileImg').toString();
   }
   Future<void> login(
       String phone, String password, BuildContext context) async {
@@ -64,6 +65,7 @@ class AuthViewModel with ChangeNotifier {
       if (isSuccess) {
         AppIndicator.disposeIndicator();
         Navigator.pop(context);
+        User();
         showDialog(
             context: context,
             builder: (BuildContext context) {

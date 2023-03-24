@@ -82,8 +82,7 @@ class _FAQState extends State<FAQ> {
           appBar:
           ResponsiveWidget.isMediumScreen(context)
               ? homePageTopBar()
-              :
-          PreferredSize(preferredSize: Size.fromHeight( 60),
+              : PreferredSize(preferredSize: Size.fromHeight( 60),
               child: Container(
                 height: 55,
                 color: Theme.of(context).cardColor,
@@ -231,10 +230,9 @@ class _FAQState extends State<FAQ> {
                         });
                       },
                       child: Image.asset(
-                        'images/LoginUser.png',
+                        AssetsConstants.icProfile,
                         height: 30,
-                        color:
-                        Theme.of(context).accentColor,
+                        color: Theme.of(context).canvasColor,
                       ),
                     ),
                     SizedBox(width: SizeConfig.screenWidth * .02),
@@ -269,13 +267,13 @@ class _FAQState extends State<FAQ> {
                                           SizedBox(height: SizeConfig.screenHeight * .09),
                                           AppBoldFont(
                                             context,fontWeight: FontWeight.w700,
-                                            fontSize: ResponsiveWidget.isMediumScreen(context)? 30:50,
+                                            fontSize: ResponsiveWidget.isMediumScreen(context)? 18:22,
                                             msg: "How can we help you ?",
                                           ),
                                           SizedBox(height: SizeConfig.screenHeight * .04),
                                           Container(
                                             height: SizeConfig.screenHeight * .05,
-                                              width: SizeConfig.screenWidth * .35,
+                                              width: ResponsiveWidget.isMediumScreen(context)?250 :SizeConfig.screenWidth * .35,
                                             decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(21),
                                               border: Border.all(color:Colors.black)
@@ -297,17 +295,17 @@ class _FAQState extends State<FAQ> {
                                               onSubmitted: null,
                                             ),
                                           ),
-                                          SizedBox(height: SizeConfig.screenHeight * .04),
+                                          SizedBox(height:ResponsiveWidget.isMediumScreen(context)? 15:SizeConfig.screenHeight * .04),
                                           AppBoldFont(
                                             context,fontWeight: FontWeight.w600,
-                                            fontSize:ResponsiveWidget.isMediumScreen(context)?16: 36,
+                                            fontSize:ResponsiveWidget.isMediumScreen(context)?16: 22,
                                             msg: "Getting Started",
                                           ),
                                           SizedBox(height: SizeConfig.screenHeight * .01),
-                                          AppRegularFont(context,
+                                          AppRegularFont(context,textAlign: TextAlign.center,
                                               msg:
-                                                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-                                              fontSize:ResponsiveWidget.isMediumScreen(context)?10: 20),
+                                                  "Lorem Ipsum is simply dummy text of the printing and type setting industry.",
+                                              fontSize:ResponsiveWidget.isMediumScreen(context)?14: 18),
                                           SizedBox(height: SizeConfig.screenHeight * .02),
                                           dropdown([
                                             'How do i cancel my subscription?',
@@ -467,12 +465,9 @@ class _FAQState extends State<FAQ> {
                     children: [
                       SizedBox(width: SizeConfig.screenWidth*0.1),
                       Image.asset(
-                        'images/LoginUser.png',
+                        AssetsConstants.icProfile,
                         height: 30,
-                        color:
-                        Theme
-                            .of(context)
-                            .canvasColor,
+                        color: Theme.of(context).canvasColor,
                       ),
                     ],
                   ),
@@ -484,22 +479,9 @@ class _FAQState extends State<FAQ> {
 Widget dropdown(List<String> txt,BuildContext context) {
   return Container(
     height: SizeConfig.screenHeight * .05,
-    width: ResponsiveWidget.isMediumScreen(context)?380:800,
+    width: ResponsiveWidget.isMediumScreen(context)?350:700,
     margin: EdgeInsets.only(bottom: 20,left: 10,right: 10),
     child: DropdownButtonFormField2(
-      // buttonStyleData: ButtonStyleData(
-      //   height: 50,
-      //   width: 160,
-      //   padding: const EdgeInsets.only(left: 14, right: 14),
-      //   decoration: BoxDecoration(
-      //     borderRadius: BorderRadius.circular(14),
-      //     border: Border.all(
-      //       color: Colors.black26,
-      //     ),
-      //     color: Colors.redAccent,
-      //   ),
-      //   elevation: 2,
-      // ),
       dropdownStyleData: DropdownStyleData(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(14),

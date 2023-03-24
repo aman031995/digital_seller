@@ -446,13 +446,10 @@ Widget Header(BuildContext context,setState){
                   }
                 });
               },
-              child: Image.asset(
-                'images/LoginUser.png',
+              child:  Image.asset(
+                AssetsConstants.icProfile,
                 height: 30,
-                color:
-                Theme
-                    .of(context)
-                    .accentColor,
+                color: Theme.of(context).canvasColor,
               ),
             ),
             SizedBox(
