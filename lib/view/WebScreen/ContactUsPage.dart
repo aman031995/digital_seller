@@ -20,14 +20,14 @@ import 'package:tycho_streams/view/widgets/search_view.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 
-class ContactUsPage extends StatefulWidget {
-  const ContactUsPage({Key? key}) : super(key: key);
+class AboutUsPage extends StatefulWidget {
+  const AboutUsPage({Key? key}) : super(key: key);
 
   @override
-  State<ContactUsPage> createState() => _ContactUsPageState();
+  State<AboutUsPage> createState() => _AboutUsPageState();
 }
 
-class _ContactUsPageState extends State<ContactUsPage> {
+class _AboutUsPageState extends State<AboutUsPage> {
   HomeViewModel homeViewModel = HomeViewModel();
   ScrollController _scrollController = ScrollController();
   bool isSearch = false;
@@ -88,7 +88,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
                   AppButton(context, 'Contact US',
                       onPressed: () {
                         GoRouter.of(context).pushNamed(
-                          RoutesName.ContactUsPage,
+                          RoutesName.Contact,
                         );
                       }),
                   Expanded(

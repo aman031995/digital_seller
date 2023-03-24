@@ -13,7 +13,7 @@ import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/repository/subscription_provider.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/CustomPlayer/YoutubePlayer/CommonWidget.dart';
-import 'package:tycho_streams/view/WebScreen/AboutUs.dart';
+
 import 'package:tycho_streams/view/WebScreen/Career.dart';
 import 'package:tycho_streams/view/WebScreen/ContactUsPage.dart';
 import 'package:tycho_streams/view/WebScreen/DetailPage.dart';
@@ -77,10 +77,10 @@ class _MyAppState extends State<MyApp> {
           },
         ),
         GoRoute(
-          name: RoutesName.ContactUsPage,
-          path: '/ContactUsPage',
+          name: RoutesName.AboutUsPage,
+          path: '/AboutUsPage',
           pageBuilder: (context, state) {
-            return MaterialPage(child: ContactUsPage());
+            return MaterialPage(child: AboutUsPage());
           },
 
         ),
@@ -92,10 +92,10 @@ class _MyAppState extends State<MyApp> {
           },
         ),
         GoRoute(
-          name: RoutesName.Career,
-          path: '/Career',
+          name: RoutesName.Contact,
+          path: '/Contact',
           pageBuilder: (context, state) {
-            return MaterialPage(child: Career());
+            return MaterialPage(child: Contact());
           },
         ),
         GoRoute(
@@ -117,13 +117,6 @@ class _MyAppState extends State<MyApp> {
           path: '/EditProfile',
           pageBuilder: (context, state) {
             return MaterialPage(child: EditProfile());
-          },
-        ),
-        GoRoute(
-          name: RoutesName.AboutUs,
-          path: '/AboutUs',
-          pageBuilder: (context, state) {
-            return MaterialPage(child: AboutUs());
           },
         ),
         GoRoute(

@@ -33,7 +33,7 @@ class _footerDesktopState extends State<footerDesktop> {
             children: [
               Container(width: MediaQuery.of(context).size.width * .04),
               AppButton(context, 'About Us',  onPressed: () {
-                GoRouter.of(context).pushNamed(RoutesName.AboutUs);
+                GoRouter.of(context).pushNamed(RoutesName.AboutUsPage);
                }),
               Container(width: MediaQuery.of(context).size.width * .02),
               AppButton(context, 'Terms Of Use', onPressed: () {
@@ -48,8 +48,6 @@ class _footerDesktopState extends State<footerDesktop> {
             GoRouter.of(context).pushNamed(RoutesName.FAQ);
               }),
               Container(width: MediaQuery.of(context).size.width * .02),
-              AppButton(context, 'Careers', onPressed: () {
-                GoRouter.of(context).pushNamed(RoutesName.Career);}),
               Expanded(
                                    flex: 15,
                                    child: SizedBox(width: SizeConfig.screenWidth*0.22)),
@@ -140,7 +138,7 @@ Widget footerMobile(BuildContext context){
           children: [
             SizedBox(width: 10),
             AppButton(context, 'About Us',  onPressed: () {
-              GoRouter.of(context).pushNamed(RoutesName.AboutUs);    }
+              GoRouter.of(context).pushNamed(RoutesName.AboutUsPage);    }
   
   ),
             AppButton(context, 'Terms Of Use', onPressed: () {
@@ -149,7 +147,6 @@ Widget footerMobile(BuildContext context){
             AppButton(context, 'PrivacyPolicy', onPressed: () {
               GoRouter.of(context).pushNamed(RoutesName.Privacy);}),
             MediaQuery.of(context).size.width < 417?Container():   AppButton(context, 'FAQ',  onPressed: () { GoRouter.of(context).pushNamed(RoutesName.FAQ);}),
-            MediaQuery.of(context).size.width < 510?  Container() :AppButton(context, 'Careers', onPressed: () {     GoRouter.of(context).pushNamed(RoutesName.Career);}), SizedBox(width: 25),
           ],
         ),
         Row(
@@ -157,7 +154,6 @@ Widget footerMobile(BuildContext context){
           children: [
             SizedBox(width:10),
             MediaQuery.of(context).size.width < 417?   AppButton(context, 'FAQ', onPressed: () { GoRouter.of(context).pushNamed(RoutesName.FAQ);}):Container(),
-            MediaQuery.of(context).size.width < 490?AppButton(context, 'Careers',onPressed: () {  GoRouter.of(context).pushNamed(RoutesName.Career);}): Container()
           ],
         ),
         SizedBox(height: 10),

@@ -221,7 +221,7 @@ Widget Header(BuildContext context,setState){
                         return const SignUp();
                       })
                       : GoRouter.of(context).pushNamed(
-                    RoutesName.ContactUsPage,
+                    RoutesName.Contact,
                   );
                 }),
             Expanded(

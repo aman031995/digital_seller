@@ -88,7 +88,7 @@ class _PrivacyState extends State<Privacy> {
                     AppButton(context, 'Contact US',
                         onPressed: () {
                           GoRouter.of(context).pushNamed(
-                            RoutesName.ContactUsPage,
+                            RoutesName.Contact,
                           );
                         }),
                     Expanded(

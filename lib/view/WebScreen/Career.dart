@@ -19,14 +19,14 @@ import 'package:tycho_streams/view/widgets/app_menu.dart';
 import 'package:tycho_streams/view/widgets/search_view.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
-class Career extends StatefulWidget {
-  const Career({Key? key}) : super(key: key);
+class Contact extends StatefulWidget {
+  const Contact({Key? key}) : super(key: key);
 
   @override
-  State<Career> createState() => _CareerState();
+  State<Contact> createState() => _ContactState();
 }
 
-class _CareerState extends State<Career> {
+class _ContactState extends State<Contact> {
   HomeViewModel homeViewModel = HomeViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   ScrollController _scrollController = ScrollController();
@@ -91,7 +91,7 @@ class _CareerState extends State<Career> {
                       AppButton(context, 'Contact US',
                           onPressed: () {
                             GoRouter.of(context).pushNamed(
-                              RoutesName.ContactUsPage,
+                              RoutesName.Contact,
                             );
                           }),
                       Expanded(

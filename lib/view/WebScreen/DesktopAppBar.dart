@@ -53,7 +53,7 @@ class _DesktopAppBarState extends State<DesktopAppBar> {
           }),
           SizedBox(width:  MediaQuery.of(context).size.width*.02),
           AppButton(context, 'Contact Us', onPressed: (){
-            GoRouter.of(context).pushNamed(RoutesName.ContactUsPage);
+            GoRouter.of(context).pushNamed(RoutesName.Contact);
           }),
           Expanded(
               flex: 1,

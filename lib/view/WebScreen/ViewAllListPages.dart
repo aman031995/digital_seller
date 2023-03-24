@@ -118,7 +118,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                         AppButton(context, 'Contact US',
                             onPressed: () {
                               GoRouter.of(context).pushNamed(
-                                RoutesName.ContactUsPage,
+                                RoutesName.Contact,
                               );
                             }),
                         Expanded(

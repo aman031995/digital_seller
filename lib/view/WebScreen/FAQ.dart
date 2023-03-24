@@ -96,7 +96,7 @@ class _FAQState extends State<FAQ> {
                     AppButton(context, 'Contact US',
                         onPressed: () {
                           GoRouter.of(context).pushNamed(
-                            RoutesName.ContactUsPage,
+                            RoutesName.Contact,
                           );
                         }),
                     Expanded(
