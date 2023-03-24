@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_cache/json_cache.dart';
 import 'package:tycho_streams/model/data/TermsPrivacyModel.dart';
@@ -13,8 +14,9 @@ import 'package:tycho_streams/repository/profile_repository.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
+import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
-
+import 'dart:html' as html;
 
 
 class ProfileViewModel with ChangeNotifier {
@@ -102,7 +104,7 @@ class ProfileViewModel with ChangeNotifier {
             AppDataManager.getInstance.updateUserDetails(userInfoModel!);
             ToastMessage.message(
                 ((result as SuccessState).value as ASResponseModal).message);
-            reloadPage();
+            GoRouter.of(context).pushNamed(RoutesName.home);
             notifyListeners();
           }
         });
@@ -122,6 +124,7 @@ class ProfileViewModel with ChangeNotifier {
         ToastMessage.message(
             ((result as SuccessState).value as ASResponseModal).message);
         Navigator.of(context, rootNavigator: true).pop();
+        GoRouter.of(context).pushNamed(RoutesName.home);
         // await Future.delayed(const Duration(seconds: 1)).then((value) =>
         //     Navigator.pushAndRemoveUntil(
         //         context,

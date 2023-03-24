@@ -97,8 +97,6 @@ class _LoginUpState extends State<LoginUp> {
                               Navigator.pop(context);
                               showDialog(
                                   context: context,
-                                  barrierDismissible: true,
-                                  barrierColor: Colors.black87,
                                   builder: (BuildContext context) {
                                     return const ForgotPassword();
                                   });
@@ -150,7 +148,6 @@ class _LoginUpState extends State<LoginUp> {
                                     Navigator.pop(context);
                                     showDialog(
                                         context: context,
-                                        barrierDismissible: false,
                                         barrierColor: Colors.black87,
                                         builder: (BuildContext context) {
                                           return const SignUp();
@@ -231,8 +228,6 @@ class _LoginUpState extends State<LoginUp> {
                                 Navigator.pop(context);
                                 showDialog(
                                     context: context,
-                                    barrierDismissible: true,
-                                    barrierColor: Colors.black87,
                                     builder: (BuildContext context) {
                                       return const ForgotPassword();
                                     });

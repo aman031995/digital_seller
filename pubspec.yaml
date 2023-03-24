@@ -72,6 +72,7 @@ dependencies:
   readmore: ^2.2.0
   json_cache: ^1.5.1
   youtube_player_iframe: 4.0.4
+  youtube_player_iframe_plus:
   url_strategy: ^0.2.0
   hive_flutter: ^1.1.0
   go_router:

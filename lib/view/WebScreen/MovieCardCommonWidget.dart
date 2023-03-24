@@ -1,14 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tycho_streams/main.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
-import 'package:tycho_streams/view/WebScreen/DetailPage.dart';
+
 import 'package:tycho_streams/view/WebScreen/OnHover.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
-
 
 class CardMovieHome extends StatefulWidget {
   int? trayId;
@@ -55,6 +55,17 @@ class _CardMovieHomeState extends State<CardMovieHome> {
       padding: EdgeInsets.only(left:_heigth?1: 10,right:_heigth?1: 10,top:_heigth?1: 10,bottom:_heigth?1: 10),
       child: InkWell(
         onTap: () {
+          if (isSearch == true)  {
+            isSearch = false;
+            searchController?.clear();
+            setState(() {});
+          }
+          if( isLogins == true){
+            isLogins=false;
+            setState(() {
+
+            });
+          }
           GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParams: {
             'movieID':'${widget.moviesList?.youtubeVideoId}',
             'VideoId':'${widget.moviesList?.videoId}',

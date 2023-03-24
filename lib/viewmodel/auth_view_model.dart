@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/main.dart';
 import 'package:tycho_streams/model/data/UserInfoModel.dart';
@@ -10,6 +11,7 @@ import 'package:tycho_streams/network/result.dart';
 import 'package:tycho_streams/repository/auth_repository.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
+import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/WebScreen/reset_screen.dart';
 import 'package:tycho_streams/view/screens/verify_otp_screen.dart';
 import '../view/WebScreen/HomePageWeb.dart';
@@ -41,7 +43,7 @@ class AuthViewModel with ChangeNotifier {
         Navigator.pop(context);
         notifyListeners();
         User();
-        reloadPage();
+        GoRouter.of(context).pushNamed(RoutesName.home);
        notifyListeners();
       }
     });
@@ -49,7 +51,10 @@ class AuthViewModel with ChangeNotifier {
   logoutButtonPressed(BuildContext context) async {
     AppDataManager.deleteSavedDetails();
     CacheDataManager.clearCachedData();
-    reloadPage();
+    isLogins = false;
+    isLogin=false;
+    GoRouter.of(context).pushNamed(RoutesName.home);
+     reloadPage();
   }
 
   Future<void> register(String name, String phone, String email,
@@ -61,7 +66,6 @@ class AuthViewModel with ChangeNotifier {
         Navigator.pop(context);
         showDialog(
             context: context,
-            barrierColor: Colors.black87,
             builder: (BuildContext context) {
               return VerifyOtp(
                   mobileNo: phone,
@@ -79,15 +83,14 @@ class AuthViewModel with ChangeNotifier {
     AppIndicator.loadingIndicator(context);
     _authRepo.verifyOTP(phone, otp, context, (result, isSuccess) {
       if (isSuccess) {
-        AppIndicator.disposeIndicator();
         ToastMessage.message(
             ((result as SuccessState).value as ASResponseModal).message);
         print('otp verified Successfully');
         if (isForgotPW == true) {
+          AppIndicator.disposeIndicator();
           Navigator.pop(context);
           showDialog(
               context: context,
-              barrierColor: Colors.black87,
               builder: (BuildContext context) {
                 return ResetPassword(phone: phone);});
         } else {
@@ -102,17 +105,16 @@ class AuthViewModel with ChangeNotifier {
     _authRepo.registerUser(name!, email!, phone!, password!, context,
             (result, isSuccess) {
           if (isSuccess) {
-            AppIndicator.disposeIndicator();
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             AppDataManager.getInstance.updateUserDetails(userInfoModel!);
             ToastMessage.message(
                 ((result as SuccessState).value as ASResponseModal).message);
+            isLogin=true;
+            User();
             print('Register api Successfully');
             AppIndicator.disposeIndicator();
-            isLogin=true;
+            GoRouter.of(context).pushNamed(RoutesName.home);
             Navigator.pop(context);
-            User();
-            reloadPage();
             notifyListeners();
           }
         });
@@ -141,15 +143,24 @@ class AuthViewModel with ChangeNotifier {
         print('otp verified Successfully');
         if (editPage == true) {
         } else {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (_) => VerifyOtp(
-                      name: name,
-                      email: email,
-                      password: password,
-                      mobileNo: phone,
-                      isForgotPassword: isForgotPassword)));
+          Navigator.pop(context);
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return VerifyOtp(name: name,
+                    email: email,
+                    password: password,
+                    mobileNo: phone,
+                    isForgotPassword: isForgotPassword);});
+          // Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (_) => VerifyOtp(
+          //             name: name,
+          //             email: email,
+          //             password: password,
+          //             mobileNo: phone,
+          //             isForgotPassword: isForgotPassword)));
         }
         notifyListeners();
       }
@@ -165,7 +176,6 @@ class AuthViewModel with ChangeNotifier {
         Navigator.pop(context);
         showDialog(
             context: context,
-            barrierColor: Colors.black87,
             builder: (BuildContext context) {
               return VerifyOtp(mobileNo: phone, isForgotPassword: true);});
         notifyListeners();
@@ -182,7 +192,10 @@ class AuthViewModel with ChangeNotifier {
             print('forgot password api Successfully');
             ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
             AppIndicator.disposeIndicator();
-            reloadPage();
+            Navigator.pop(context);
+             //
+             // Navigator.pushNamedAndRemoveUntil(context, RoutesName.home, (route) => false);
+            GoRouter.of(context).pushNamed(RoutesName.home);
             notifyListeners();
           }
         });

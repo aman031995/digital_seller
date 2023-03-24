@@ -22,7 +22,7 @@ class _YoutubeAppDemoState extends State<YoutubeAppDemo> {
     super.initState();
     _controller = YoutubePlayerController(
       params: const YoutubePlayerParams(
-        strictRelatedVideos: true,
+        strictRelatedVideos: false,
         showControls: true,
         mute: false,
         enableJavaScript: false,

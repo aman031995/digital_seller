@@ -53,12 +53,10 @@ class _CommonCarouselState extends State<CommonCarousel> {
     var imageSliders = generateImageTilesWeb(context);
     return Stack(
       children: [
-        Expanded(child: Container(
-          // margin: EdgeInsets.only(right: 3),
-          height:  620,width: SizeConfig.screenWidth / 1.05,
+        Container(
+          height:  620,width: 2500,
           decoration: BoxDecoration(
-            // borderRadius: BorderRadius.circular(5),
-            color: Colors.green,
+              borderRadius: BorderRadius.circular(5)
           ),
           child: CarouselSlider(
             items: imageSliders,
@@ -79,14 +77,14 @@ class _CommonCarouselState extends State<CommonCarousel> {
                 }),
             carouselController: carouselController,
           ),
-        ),),
+        ),
         Positioned(
-          left: 160,top: 295,
+          left: 30,top: 295,
           child: InkWell(
               child: Image.asset(
                 'images/prev.png',
-                height: 45,
-                width: 35,
+                height: 40,
+                width: 30,
                 color:Colors.white54
               ),
               onTap: previous
@@ -97,8 +95,8 @@ class _CommonCarouselState extends State<CommonCarousel> {
           child: InkWell(
               child: Image.asset(
                 'images/next.png',
-                height: 45,
-                width: 35,
+                height: 40,
+                width: 30,
                 color: Colors.white54
               ),
               onTap:next
@@ -119,15 +117,13 @@ class _CommonCarouselState extends State<CommonCarousel> {
           throw 'Could not launch $url';
         }},
       child:
-        Expanded(
-          child: Container(
-            height: 600,width: SizeConfig.screenWidth / 1.05,
-            margin: EdgeInsets.only(top: 0),
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
-            child: Image.network(element.bannerFile?? " ",
-              fit: BoxFit.fill
-              //height: SizeConfig.screenHeight
-            ),
+        Container(
+          height: 600,width: SizeConfig.screenWidth,
+          margin: EdgeInsets.only(left: 0,right: 0,top: 0),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
+          child: Image.network(element.bannerFile?? " ",
+            fit: BoxFit.fill
+            //height: SizeConfig.screenHeight
           ),
         ),
     )

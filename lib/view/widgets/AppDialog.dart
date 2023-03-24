@@ -161,7 +161,7 @@ class AppDialog {
             width: 420,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Colors.white
+                color: Theme.of(context).cardColor
             ),
             margin: EdgeInsets.only(left: 10, right: 10),
             child: Column(
@@ -174,9 +174,10 @@ class AppDialog {
                           msg: msg,
                           fontSize: 26,
                           color: TEXT_COLOR)),
+                  SizedBox(height: 20),
                   Container(
-                    height: 100,
-                    width: SizeConfig.screenWidth - 20,
+                    height: 60,
+                    width: 400,
                     child: PinEntryTextFiledView(),
                   ),
               Container(

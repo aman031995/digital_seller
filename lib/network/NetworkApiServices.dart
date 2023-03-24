@@ -210,6 +210,6 @@ class NetworkApiServices  {
 
   static void logoutButtonPressed(BuildContext context) async {
     AppDataManager.deleteSavedDetails();
-       reloadPage();
+
   }
 }

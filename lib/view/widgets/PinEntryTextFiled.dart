@@ -4,7 +4,6 @@ import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/view/screens/verify_otp_screen.dart';
 
 
-
 class PinEntryTextFiledView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -18,23 +17,34 @@ class PinPutView extends StatefulWidget {
 }
 
 class PinPutViewState extends State<PinPutView> {
+  final _formKey = GlobalKey<FormState>();
   final _pinPutController = TextEditingController();
   final _pinPutFocusNode = FocusNode();
   final _pageController = PageController();
   int _pageIndex = 0;
+  final defaultPinTheme = PinTheme(
+    width: 65,
+    height: 55,
+    textStyle: const TextStyle(
+        fontSize: 20.0, color: Colors.white, fontFamily: 'GilroyBold'),
+    decoration: BoxDecoration(
+      border: Border.all(color: LIGHT_THEME_COLOR, width: 2),
+      borderRadius: BorderRadius.circular(5),
+    ),
+  );
 
   final List<Widget> _pinPuts = [];
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      _pinPuts.addAll([boxedPinPutWithPreFilledSymbol(context)]);
-    });
+    _pinPuts.addAll([boxedPinPutWithPreFilledSymbol(context)]);
     super.initState();
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+      BuildContext context,
+      ) {
     return Stack(
       fit: StackFit.passthrough,
       children: <Widget>[
@@ -69,27 +79,9 @@ class PinPutViewState extends State<PinPutView> {
       child: Pinput(
         showCursor: true,
         length: 4,
-        defaultPinTheme: PinTheme(
-          width: 65,
-          height: 55,
-          textStyle: TextStyle(
-              fontSize: 20.0, color: Theme.of(context).canvasColor, fontFamily: 'GilroyBold'),
-          decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).canvasColor, width: 2),
-            borderRadius: BorderRadius.circular(5),
-          ),
-        ),
-        focusedPinTheme: PinTheme(
-          width: 65,
-          height: 55,
-          textStyle: TextStyle(
-              fontSize: 20.0, color: Theme.of(context).primaryColor, fontFamily: 'GilroyBold'),
-          decoration: BoxDecoration(
-            border: Border.all(color: Theme.of(context).primaryColor, width: 2),
-            borderRadius: BorderRadius.circular(5),
-          ),
-        ).copyDecorationWith(
-          border: Border.all(color: Theme.of(context).primaryColor, width: 2),
+        defaultPinTheme: defaultPinTheme,
+        focusedPinTheme: defaultPinTheme.copyDecorationWith(
+          border: Border.all(color: BLACK_COLOR, width: 2),
           borderRadius: BorderRadius.circular(5),
         ),
         onSubmitted: (String pin) {

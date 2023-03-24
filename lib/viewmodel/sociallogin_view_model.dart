@@ -118,6 +118,7 @@ class SocialLoginViewModel with ChangeNotifier {
             ((result as SuccessState).value as ASResponseModal).dataModal;
         AppDataManager.getInstance.updateUserDetails(userInfoModel!);
         AppDataManager.setFirstTimeValue();
+        GoRouter.of(context).pushNamed(RoutesName.home);
         reloadPage();
         notifyListeners();
       } else {

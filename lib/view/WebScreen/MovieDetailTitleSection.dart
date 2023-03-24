@@ -23,7 +23,8 @@ class MovieDetailTitleSection extends StatefulWidget {
   String? Title;
   String? Desc;
 
-  MovieDetailTitleSection({this.isWall, this.movieDetailModel,this.Title,this.Desc});
+  MovieDetailTitleSection(
+      {this.isWall, this.movieDetailModel, this.Title, this.Desc});
 
   @override
   _MovieDetailTitleSectionState createState() =>
@@ -36,36 +37,37 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
 
   @override
   void initState() {
-    setState((){});
+    setState(() {});
     homeView.getMoreLikeThis(context, widget.movieDetailModel ?? '');
     // TODO: implement initState
     super.initState();
   }
+
 //806b4763-e6e6-4f6a-9e6e-8ac30cf11d9c
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return
-
-      Container(
-        color: Theme.of(context).scaffoldBackgroundColor,
-      height:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenHeight*0.5 :SizeConfig.screenHeight*0.45,
-      padding: EdgeInsets.only(top: 10, left: 30,right: 30),
+    return Container(
+      color: Theme.of(context).scaffoldBackgroundColor,
+      height: ResponsiveWidget.isMediumScreen(context)
+          ? SizeConfig.screenHeight * 0.5
+          : SizeConfig.screenHeight * 0.45,
+      padding: EdgeInsets.only(top: 10, left: 30, right: 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppRegularFont(
-              context,msg: widget.Title,
+          AppRegularFont(context,
+              msg: widget.Title,
               maxLines: 1,
-              
-              fontSize: ResponsiveWidget.isMediumScreen(context)?16:22),
+              fontSize: ResponsiveWidget.isMediumScreen(context) ? 16 : 18),
           SizedBox(
             height: 10,
           ),
           ReadMoreText(
             widget.Desc ?? '',
             trimLines: 2,
-            style: TextStyle(color: Theme.of(context).accentColor,fontSize: 18),
+            style:
+                TextStyle(color: Theme.of(context).canvasColor, fontSize: 16),
             colorClickableText: THEME_COLOR,
             trimMode: TrimMode.Line,
             trimCollapsedText: '...Read more',
@@ -73,15 +75,14 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
           ),
           ChangeNotifierProvider<HomeViewModel>(
               create: (BuildContext context) => homeView,
-              child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
+              child:
+                  Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
                 return homeViewModel.homePageDataModel != null
                     ? moreVideoList(homeViewModel)
-                    :  Container(
-                  height: SizeConfig.screenHeight * 0.35,
-                  child: Center(
-                      child: ThreeArchedCircle( size: 50.0)
-                  ),
-                );
+                    : Container(
+                        height: SizeConfig.screenHeight * 0.35,
+                        child: Center(child: ThreeArchedCircle(size: 50.0)),
+                      );
               }))
         ],
       ),
@@ -93,7 +94,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
       children: [
         titleBar('More Like This', homeViewModel),
         Container(
-          height: ResponsiveWidget.isMediumScreen(context)? 200:270,
+          height: ResponsiveWidget.isMediumScreen(context) ? 200 : 270,
           width: SizeConfig.screenWidth,
           child: homeViewModel.homePageDataModel?.videoList != null
               ? ListView.builder(
@@ -106,24 +107,28 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
                   itemBuilder: (context, index) {
                     return InkWell(
                         onTap: () {
-
-                            GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParams: {
-    'movieID':'${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}',
-    'VideoId':'${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
-    'Title':'${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}',
-    'Desc':'${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
-    });
-
-                          },
-
-
-
+                          GoRouter.of(context)
+                              .pushNamed(RoutesName.DeatilPage, queryParams: {
+                            'movieID':
+                                '${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}',
+                            'VideoId':
+                                '${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
+                            'Title':
+                                '${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}',
+                            'Desc':
+                                '${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
+                          });
+                        },
                         child: OnHover(
                             builder: (isHovered) {
                               bool _heigth = isHovered;
                               return Container(
-                                width:ResponsiveWidget.isMediumScreen(context)? 250 : SizeConfig.screenWidth * 0.20,
-                                height:ResponsiveWidget.isMediumScreen(context)? 200 : SizeConfig.screenHeight * 5.07,
+                                width: ResponsiveWidget.isMediumScreen(context)
+                                    ? 250
+                                    : SizeConfig.screenWidth * 0.20,
+                                height: ResponsiveWidget.isMediumScreen(context)
+                                    ? 200
+                                    : SizeConfig.screenHeight * 5.07,
                                 padding: EdgeInsets.only(
                                     right: _heigth ? 1 : 10,
                                     top: _heigth ? 1 : 10,
@@ -148,7 +153,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
               : Container(
                   height: SizeConfig.screenHeight * 0.3,
                   // width:SizeConfig.screenHeight * 0.3,
-                  child: ThreeArchedCircle( size: 45.0)),
+                  child: ThreeArchedCircle(size: 45.0)),
         ),
       ],
     );
@@ -161,13 +166,17 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          AppBoldFont(context,msg: title, fontSize:ResponsiveWidget.isMediumScreen(context)?18: 30, color: TEXT_COLOR),
+          AppBoldFont(context,
+              msg: title,
+              fontSize: ResponsiveWidget.isMediumScreen(context) ? 14 : 22,
+              color: TEXT_COLOR),
           homeViewModel.homePageDataModel!.videoList!.length > 8
               ? textButton(context, "See All", onApply: () {
-            GoRouter.of(context).pushNamed(RoutesName.seaAll,queryParams: {
-              'VideoId':'${widget.movieDetailModel}',
-              'title':'${title}',
-            });
+                  GoRouter.of(context)
+                      .pushNamed(RoutesName.seaAll, queryParams: {
+                    'VideoId': '${widget.movieDetailModel}',
+                    'title': '${title}',
+                  });
                 })
               : SizedBox()
         ],

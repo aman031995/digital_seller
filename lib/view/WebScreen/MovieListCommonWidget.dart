@@ -68,7 +68,9 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int index) {
                             return CardMovieHome(
-                              onTap: (fadeInImage) {},
+                              onTap: (fadeInImage) {
+
+                              },
                               trayId: widget.trayId,
                               movieID: widget
                                   .platformMovieData?.content?[index].videoId,

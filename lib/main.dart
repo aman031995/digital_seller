@@ -7,7 +7,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tycho_streams/view/WebScreen/RowSideMenu.dart';
+import 'package:tycho_streams/view/WebScreen/EditProfile.dart';
+import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/repository/subscription_provider.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
@@ -28,6 +29,12 @@ import 'package:tycho_streams/viewmodel/sociallogin_view_model.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 String? names;
+bool isLogin = false;
+bool isLogins = false;
+bool isSearch = false;
+bool isProfile=false;
+bool isDelete=false;
+TextEditingController? searchController = TextEditingController();
 Future<void> main() async {
   setPathUrlStrategy();
   await WidgetsFlutterBinding.ensureInitialized();
@@ -42,30 +49,32 @@ Future<void> main() async {
   ));
   runApp(MyApp());
 }
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
+
 class _MyAppState extends State<MyApp> {
   HomeViewModel homeViewModel = HomeViewModel();
   GoRouter? _router;
+
   @override
   void initState() {
-    User().whenComplete(() => (){
-    });
+    User();
     super.initState();
     homeViewModel.getAppConfig(context);
+
     _router = GoRouter(
       routes: [
         GoRoute(
           name: RoutesName.home,
           path: '/',
           pageBuilder: (context, state) {
-            return MaterialPage(child: SidebarXExampleApp());
+            return MaterialPage(child: HomePageWeb());
           },
-
         ),
         GoRoute(
           name: RoutesName.ContactUsPage,
@@ -73,23 +82,21 @@ class _MyAppState extends State<MyApp> {
           pageBuilder: (context, state) {
             return MaterialPage(child: ContactUsPage());
           },
+
         ),
         GoRoute(
           name: RoutesName.FAQ,
           path: '/FAQ',
           pageBuilder: (context, state) {
-            return MaterialPage(child:  FAQ());
+            return MaterialPage(child: FAQ());
           },
-
         ),
-
         GoRoute(
           name: RoutesName.Career,
           path: '/Career',
           pageBuilder: (context, state) {
             return MaterialPage(child: Career());
           },
-
         ),
         GoRoute(
           name: RoutesName.Privacy,
@@ -103,6 +110,13 @@ class _MyAppState extends State<MyApp> {
           path: '/Terms',
           pageBuilder: (context, state) {
             return MaterialPage(child: Terms());
+          },
+        ),
+        GoRoute(
+          name: RoutesName.EditProfille,
+          path: '/EditProfile',
+          pageBuilder: (context, state) {
+            return MaterialPage(child: EditProfile());
           },
         ),
         GoRoute(
@@ -121,41 +135,64 @@ class _MyAppState extends State<MyApp> {
             });
             return MaterialPage(
                 child: DetailPage(
-                  movieID: state.queryParams['movieID'],
-                  VideoId: state.queryParams['VideoId'],
-                  Title: state.queryParams['Title'],
-                  Desc: state.queryParams['Desc'],
-                ));
+              movieID: state.queryParams['movieID'],
+              VideoId: state.queryParams['VideoId'],
+              Title: state.queryParams['Title'],
+              Desc: state.queryParams['Desc'],
+            ));
           },
-        ),
 
+        ),
         GoRoute(
-          name: RoutesName.seaAll,
-          path: '/Seall',
-          pageBuilder: (context, state) {
-            state.queryParams.forEach((key, value) {
-              print("$key : $value");
-            });
-            return MaterialPage(
-                child: SeeAllListPages(
-                  VideoId: state.queryParams['VideoId'],
-                  title: state.queryParams['title'],
-                ));
-          },
+            name: RoutesName.seaAll,
+            path: '/Seall',
+            pageBuilder: (context, state) {
+              state.queryParams.forEach((key, value) {
+                print("$key : $value");
+              });
+              return MaterialPage(
+                  child: SeeAllListPages(
+                VideoId: state.queryParams['VideoId'],
+                title: state.queryParams['title'],
+              ));
+            },
 
         ),
       ],
-      redirect: ((context, state) {
-        if (names=="null") {
-          return '/';
-        } else {
+      redirect: ((context, state) async {
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        if (sharedPreferences.get('token') != null) {
+          if (isSearch == true)  {
+            isSearch = false;
+            searchController?.clear();
+            setState(() {
+            });
+          }
+          if(isProfile==true){
+            isProfile=false;
+            setState(() {
+            });
+          }
+          if(isDelete==true){
+            isDelete=false;
+            setState(() {
+
+            });
+          }
+          if( isLogins == true){
+            isLogins=false;
+            setState(() {
+            });
+          }
           return state.location;
+        }
+        else {
+          return '/';
         }
       }),
       initialLocation: _getCurrentLocation(),
       refreshListenable: _getRefreshListenable(),
     );
-
   }
 
   String _getCurrentLocation() {
@@ -171,10 +208,12 @@ class _MyAppState extends State<MyApp> {
         }
       });
   }
- Future User() async{
+
+  User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    names=sharedPreferences.get('name').toString();
+    names = sharedPreferences.get('name').toString();
   }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -189,11 +228,16 @@ class _MyAppState extends State<MyApp> {
         child: ChangeNotifierProvider<HomeViewModel>(
             create: (BuildContext context) => homeViewModel,
             child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-              final themeColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.primaryColor?.hex;
-              final bgColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.themeColor?.hex;
-              final font = viewmodel.appConfigModel?.androidConfig?.fontStyle?.fontFamily;
-              final secondaryColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.secondaryColor?.hex;
-              final txtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.textColor?.hex;
+              final themeColor = viewmodel
+                  .appConfigModel?.androidConfig?.appTheme?.primaryColor?.hex;
+              final bgColor = viewmodel
+                  .appConfigModel?.androidConfig?.appTheme?.themeColor?.hex;
+              final font = viewmodel
+                  .appConfigModel?.androidConfig?.fontStyle?.fontFamily;
+              final secondaryColor = viewmodel
+                  .appConfigModel?.androidConfig?.appTheme?.secondaryColor?.hex;
+              final txtColor = viewmodel
+                  .appConfigModel?.androidConfig?.appTheme?.textColor?.hex;
               return MaterialApp.router(
                   theme: ThemeData(
                       scaffoldBackgroundColor: (bgColor)?.toColor(),
@@ -201,7 +245,7 @@ class _MyAppState extends State<MyApp> {
                       backgroundColor: (bgColor)?.toColor(),
                       cardColor: (secondaryColor)?.toColor(),
                       fontFamily: font,
-                      canvasColor : (txtColor)?.toColor()),
+                      canvasColor: (txtColor)?.toColor()),
                   builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
                   scrollBehavior: MyCustomScrollBehavior(),
@@ -216,12 +260,10 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
         PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,PointerDeviceKind.invertedStylus,
-    PointerDeviceKind.trackpad
+        PointerDeviceKind.mouse,
+        PointerDeviceKind.invertedStylus,
+        PointerDeviceKind.trackpad
       };
-
-
-
 }
 
 extension ColorExtension on String {
