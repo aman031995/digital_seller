@@ -2,6 +2,7 @@ import 'result.dart';
 
 typedef void NetworkResponseHandler(Result result, bool isSuccess);
 typedef void InternetResponseHandler(bool isSuccess, dynamic result);
+typedef void ApiCallback(dynamic response);
 
 class NetworkConstants{
   static String kAppBaseUrl = 'https://eacademyeducation.com:8011/api/';

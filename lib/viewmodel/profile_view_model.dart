@@ -1,22 +1,25 @@
-import 'dart:io';
+import 'dart:convert';
+import 'dart:html';
+import 'package:firebase_core_web/firebase_core_web_interop.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_cache/json_cache.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/model/data/TermsPrivacyModel.dart';
 import 'package:tycho_streams/model/data/UserInfoModel.dart';
 import 'package:tycho_streams/network/ASResponseModal.dart';
 import 'package:tycho_streams/network/AppDataManager.dart';
 import 'package:tycho_streams/network/CacheDataManager.dart';
+import 'package:tycho_streams/network/NetworkConstants.dart';
 import 'package:tycho_streams/network/result.dart';
 import 'package:tycho_streams/repository/profile_repository.dart';
 import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
-import 'package:tycho_streams/viewmodel/auth_view_model.dart';
-import 'dart:html' as html;
 
 
 class ProfileViewModel with ChangeNotifier {
@@ -40,17 +43,6 @@ class ProfileViewModel with ChangeNotifier {
       }
     });
   }
-
-  // Future<void> imageUpload(BuildContext context, result) async {
-  //   AppIndicator.loadingIndicator(context);
-  //   var imageToUpload = File(result.path);
-  //   _profileRepo.uploadImage([imageToUpload.path], context,
-  //           (result, isSuccess) {
-  //         _userInfoModel =
-  //             ((result as SuccessState).value as ASResponseModal).dataModal;
-  //         notifyListeners();
-  //       });
-  // }
 
   getUserDetails(BuildContext context) async {
     final box = await Hive.openBox<String>('appBox');
@@ -130,6 +122,27 @@ class ProfileViewModel with ChangeNotifier {
         //         context,
         //         MaterialPageRoute(builder: (_) => LoginScreen()),
         //             (route) => false));
+        notifyListeners();
+      }
+    });
+  }
+
+  Future<void> uploadProfileImage(BuildContext context) async {
+    var input = FileUploadInputElement()..accept = 'image/*';
+    input.click();
+    await input.onChange.first;
+    File file = input.files!.first;
+    var start = 0;
+    var end = file.size;
+    var blob = file.slice(start, end);
+    var reader = FileReader();
+    reader.readAsArrayBuffer(blob);
+    AppIndicator.loadingIndicator(context);
+    _profileRepo.uploadProfile(context, reader, file, (response) {
+      if(response != null){
+        _userInfoModel = UserInfoModel.fromJson(response);
+        print('Image uploaded successfully!');
+        AppIndicator.disposeIndicator();
         notifyListeners();
       }
     });

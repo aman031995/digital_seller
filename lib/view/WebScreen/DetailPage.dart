@@ -47,6 +47,7 @@ class _MovieDetailPageState extends State<DetailPage> {
   bool isSearch = false;
   int pageNum = 1;
   @override
+
   void initState() {
     setState((){
      url = 'https://www.youtube.com/embed/${widget.movieID}';
@@ -58,9 +59,10 @@ class _MovieDetailPageState extends State<DetailPage> {
     });
     super.initState();
   }
+
   void dispose() {
     _scrollController.dispose();
-    searchController?.dispose();
+    // searchController?.dispose();
     super.dispose();
   }
   @override

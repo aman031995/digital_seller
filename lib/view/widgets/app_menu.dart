@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -126,7 +127,7 @@ class _AppMenuState extends State<AppMenu> {
         //   }
         // });
       } else if (appMenu.url?.contains('terms-and-conditions') == true) {
-
+        GoRouter.of(context).pushNamed(RoutesName.FAQ);
         // Navigator.push(
         //     context,
         //     MaterialPageRoute(

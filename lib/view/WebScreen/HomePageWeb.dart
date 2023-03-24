@@ -98,7 +98,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                     child: Header(context,setState)),
                 key: _scaffoldKey,
                 drawer: ResponsiveWidget.isMediumScreen(context)
-                    ? Container()
+                    ? AppMenu(homeViewModel: viewmodel)
                     :AppMenu(homeViewModel: viewmodel),
                 body: Stack(
                   children: [
