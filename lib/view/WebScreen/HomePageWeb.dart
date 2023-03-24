@@ -40,7 +40,6 @@ class _HomePageWebState extends State<HomePageWeb> {
   int pageNum = 1;
 
   void initState() {
-    homeViewModel.getTrayData(context);
     homeViewModel.getAppConfigData(context);
     searchController?.addListener(() {
       homeViewModel.getSearchData(
@@ -52,15 +51,9 @@ class _HomePageWebState extends State<HomePageWeb> {
 
   User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    names = sharedPreferences.get('name').toString() ?? " ";
+    names = sharedPreferences.get('name').toString();
+    image=sharedPreferences.get('profileImg').toString();
   }
-
-  // @override
-  // void dispose() {
-  //
-  //   searchController?.clear();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -90,42 +83,45 @@ class _HomePageWebState extends State<HomePageWeb> {
               }
             },
             child: Scaffold(
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                appBar: ResponsiveWidget.isMediumScreen(context)
-                    ? homePageTopBar()
-                    :  PreferredSize(
-                    preferredSize: Size.fromHeight(60),
-                    child: Header(context,setState)),
-                key: _scaffoldKey,
-                drawer: ResponsiveWidget.isMediumScreen(context)
-                    ? AppMenu(homeViewModel: viewmodel)
-                    :AppMenu(homeViewModel: viewmodel),
-                body: Stack(
-                  children: [
-                    SingleChildScrollView(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CommonCarousel(),
-                          VideoListPage()
-                        ],
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              appBar: ResponsiveWidget.isMediumScreen(context)
+                  ? homePageTopBar()
+                  :  PreferredSize(
+                  preferredSize: Size.fromHeight(60),
+                  child: Header(context,setState)),
+              body: Scaffold(
+
+                  key: _scaffoldKey,
+                  drawer: ResponsiveWidget.isMediumScreen(context)
+                      ?AppMenu(homeViewModel: viewmodel)
+                      :AppMenu(homeViewModel: viewmodel),
+                  body: Stack(
+                    children: [
+                      SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CommonCarousel(),
+                            VideoListPage()
+                          ],
+                        ),
                       ),
-                    ),
-                    isLogins == true
-                        ? profile(context, setState)
-                        : Container(),
-                    if (viewmodel.searchDataModel != null)
-                      searchView(
-                          context,
-                          viewmodel,
-                          isSearch,
-                          _scrollController,
-                          homeViewModel,
-                          searchController!,
-                          setState)
-                  ],
-                )),
+                      isLogins == true
+                          ? profile(context, setState)
+                          : Container(),
+                      if (viewmodel.searchDataModel != null)
+                        searchView(
+                            context,
+                            viewmodel,
+                            isSearch,
+                            _scrollController,
+                            homeViewModel,
+                            searchController!,
+                            setState)
+                    ],
+                  )),
+            ),
           )
               : Container(
               height: SizeConfig.screenHeight * 1.5,
@@ -145,52 +141,47 @@ class _HomePageWebState extends State<HomePageWeb> {
             .backgroundColor,
         title: Stack(children: <Widget>[
           Container(
-              margin: EdgeInsets.only(top: 15.0, bottom: 15.0),
               child: Row(children: [
                 GestureDetector(
                     onTap: () {
-                      if (_scaffoldKey.currentState?.isDrawerOpen == false) {
-                        _scaffoldKey.currentState?.openDrawer();
-                      } else {
-                        _scaffoldKey.currentState?.openEndDrawer();
+                      if (isSearch == true) {
+                        isSearch = false;
+                        searchController?.clear();
+                        setState(() {});
                       }
+                      if( isLogins == true){
+                        isLogins=false;
+                        setState(() {
+
+                        });
+                      }
+    names == "null"
+    ? showDialog(context: context, barrierColor: Colors.black87, builder: (BuildContext context) {return const SignUp();}):
+
+    _scaffoldKey.currentState?.isDrawerOpen == false?
+                        _scaffoldKey.currentState?.openDrawer()
+                     :
+                        _scaffoldKey.currentState?.openEndDrawer();
+
                     },
                     child: Container(
-                        height: 45,
-                        width: 45,
-                        padding: EdgeInsets.all(10),
+                        height: 35,
+                        width: 35,
                         decoration: BoxDecoration(
                           color: Color(0xff001726),
-                          borderRadius: BorderRadius.circular(10.0),
+                          borderRadius: BorderRadius.circular(5)
                         ),
                         child: Image.asset(
                           'images/ic_menu.png',
-                          height: 32,
-                          width: 32,
-                        ))),
-                SizedBox(width: 3.0),
-                GestureDetector(
-                    onTap: () {
-                      GoRouter.of(context).pushNamed(RoutesName.home);
-                    },
-                    child: Container(
-                        height: 45,
-                        width: 45,
-                        decoration: BoxDecoration(
-                          color: Color(0xff001726),
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: Image.asset(
-                          AssetsConstants.icLogo,
-                          height: 50,
-                          width: 50,
+                          height: 25,
+                          width: 25,
                         ))),
                 Container(
-                    height: 55,
-                    width: SizeConfig.screenWidth * 0.64,
+                    height: 45,
+                    width: SizeConfig.screenWidth * 0.58,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      border: Border.all(color: TRANSPARENT_COLOR, width: 2.0),
+                      border: Border.all(color: TRANSPARENT_COLOR, width: 1.0),
                     ),
                     child: AppTextField(
                         controller: searchController,
@@ -205,7 +196,62 @@ class _HomePageWebState extends State<HomePageWeb> {
                           isSearch = true;
                         },
                         isTick: null)),
-                SizedBox(width: 3.0),
+                names == "null"
+                    ? ElevatedButton(onPressed: (){
+                  showDialog(
+                                context: context,
+                                barrierColor: Colors.black87,
+                                builder:
+                                    (BuildContext context) {
+                                  return const SignUp();
+                                });
+
+                }, child:Text(
+                  "Sign Up",style: TextStyle(
+                  color: Theme.of(context).canvasColor,fontSize: 16,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily
+                ),
+                ),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).cardColor),
+          overlayColor: MaterialStateColor
+              .resolveWith((states) =>
+          Theme.of(context).primaryColor),
+          fixedSize:
+          MaterialStateProperty.all(Size(90, 35)),
+          shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                  borderRadius:
+                  BorderRadius.circular(
+                      5.0
+                  )))
+                ))
+                    : GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isLogins = true;
+                      if (isSearch == true) {
+                        isSearch = false;
+                        searchController?.clear();
+                        setState(() {});
+                      }
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      SizedBox(width: SizeConfig.screenWidth*0.1),
+                    Image.asset(
+                       AssetsConstants.icProfile,
+                        height: 30,
+                      color: Theme.of(context).canvasColor,
+                      ),
+                    //   CachedNetworkImage(
+                    //     placeholder: (context, url) => const CircularProgressIndicator(),
+                    //     imageUrl: image!,
+                    //     height: 30,
+                    //   )
+                    ],
+                  ),
+                ),
               ]))
         ]));
   }

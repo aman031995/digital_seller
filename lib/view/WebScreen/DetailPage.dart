@@ -85,8 +85,8 @@ class _MovieDetailPageState extends State<DetailPage> {
                     children: [
                       const SizedBox(height: 20),
                       Container(
-                         width: SizeConfig.screenWidth/1.3,
-                         height: ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth /2.47:SizeConfig.screenWidth /2.959,
+                         width: ResponsiveWidget.isMediumScreen(context)?  SizeConfig.screenWidth: SizeConfig.screenWidth/1.3,
+                         height: ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth /2:SizeConfig.screenWidth /2.959,
                          child: YoutubeAppDemo(videoID: widget.movieID)
                      ),
                         MovieDetailTitleSection(

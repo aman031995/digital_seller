@@ -7,6 +7,7 @@ import 'package:tycho_streams/model/data/UserInfoModel.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AssetsConstants.dart';
+import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
@@ -80,6 +81,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
     return AlertDialog(
         elevation: 8,
         backgroundColor: Colors.transparent,
+        contentPadding: EdgeInsets.zero,
         shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     content: verificationSection(authVM));
 
@@ -106,13 +108,15 @@ class _VerifyOtpState extends State<VerifyOtp> {
                 alignment: Alignment.topCenter,
                 child: AppBoldFont(context,
                     msg: StringConstant.verification,
-                    fontSize: 26,
+                    fontSize:  ResponsiveWidget.isMediumScreen(context)
+                        ? 18 :26,
                     color: TEXT_COLOR)),
             SizedBox(height: 5),
             headerTextWidget(),
             SizedBox(height: 30),
             Container(
-              height: 60,
+              height:ResponsiveWidget.isMediumScreen(context)
+                  ?50: 60,
               width: 400,
               child: PinEntryTextFiledView(),
             ),
@@ -120,7 +124,9 @@ class _VerifyOtpState extends State<VerifyOtp> {
             resendPin(authVM),
             isOTPInput == true ? Container() : errorText(),
             SizedBox(height: 30),
-            appButton(context, StringConstant.verify, 280, 60.0, LIGHT_THEME_COLOR,Theme.of(context).canvasColor,
+            appButton(context, StringConstant.verify, ResponsiveWidget.isMediumScreen(context)
+                ?  SizeConfig.screenWidth*0.67  :SizeConfig.screenWidth * 0.90,ResponsiveWidget.isMediumScreen(context)
+                ? 50: 60.0, LIGHT_THEME_COLOR,Theme.of(context).canvasColor,
                  16, 5.0, isOTPInput, onTap: () {
                   checkVerificationValidate(authVM);
                 }),

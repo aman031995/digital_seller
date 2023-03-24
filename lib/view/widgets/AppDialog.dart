@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
+import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
@@ -310,7 +311,7 @@ confirmButton(BuildContext context,double height, double width, String msg, Void
         borderRadius: BorderRadius.circular(8),
       ),
       child: Center(
-        child: AppRegularFont(context,msg: msg, color: Theme.of(context).canvasColor),
+        child: AppRegularFont(context,msg: msg, color: Theme.of(context).canvasColor,fontSize: ResponsiveWidget.isMediumScreen(context)?16:22),
       ),
     ),
   );

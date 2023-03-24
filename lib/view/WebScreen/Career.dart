@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tycho_streams/main.dart';
+import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AppTextField.dart';
 import 'package:tycho_streams/utilities/AssetsConstants.dart';
@@ -72,7 +73,9 @@ class _ContactState extends State<Contact> {
           },
           child: Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            appBar:  PreferredSize(preferredSize: Size.fromHeight( 60),
+            appBar:  ResponsiveWidget.isMediumScreen(context)
+                ? homePageTopBar()
+                :  PreferredSize(preferredSize: Size.fromHeight( 60),
                 child: Container(
                   height: 55,
                   color: Theme.of(context).cardColor,
@@ -221,10 +224,9 @@ class _ContactState extends State<Contact> {
                           });
                         },
                         child: Image.asset(
-                          'images/LoginUser.png',
+                          AssetsConstants.icProfile,
                           height: 30,
-                          color:
-                          Theme.of(context).accentColor,
+                          color: Theme.of(context).canvasColor,
                         ),
                       ),
                       SizedBox(width: SizeConfig.screenWidth * .02),
@@ -232,8 +234,6 @@ class _ContactState extends State<Contact> {
                   ),
                 )),
             drawer: AppMenu(homeViewModel: viewmodel),
-
-
             body:  GestureDetector(
               onTap: () {
                 if (isSearch == true) {
@@ -441,5 +441,112 @@ class _ContactState extends State<Contact> {
             ),
       ),
         );}));
+  }
+
+  homePageTopBar() {
+    return AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Theme
+            .of(context)
+            .backgroundColor,
+        title: Stack(children: <Widget>[
+          Container(
+              child: Row(children: [
+                GestureDetector(
+                    onTap: () {
+                      names == "null"
+                          ? showDialog(context: context, barrierColor: Colors.black87, builder: (BuildContext context) {return const SignUp();}):
+
+                      _scaffoldKey.currentState?.isDrawerOpen == false?
+                      _scaffoldKey.currentState?.openDrawer()
+                          :
+                      _scaffoldKey.currentState?.openEndDrawer();
+
+                    },
+                    child: Container(
+                        height: 35,
+                        width: 35,
+                        decoration: BoxDecoration(
+                          color: Color(0xff001726),
+                        ),
+                        child: Image.asset(
+                          'images/ic_menu.png',
+                          height: 25,
+                          width: 25,
+                        ))),
+                Container(
+                    height: 45,
+                    width: SizeConfig.screenWidth * 0.58,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: TRANSPARENT_COLOR, width: 1.0),
+                    ),
+                    child: AppTextField(
+                        controller: searchController,
+                        maxLine: searchController!.text.length > 2 ? 2 : 1,
+                        textCapitalization: TextCapitalization.words,
+                        secureText: false,
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        maxLength: 30,
+                        labelText: 'Search videos, shorts, products',
+                        keyBoardType: TextInputType.text,
+                        onChanged: (m) {
+                          isSearch = true;
+                        },
+                        isTick: null)),
+                names == "null"
+                    ? ElevatedButton(onPressed: (){
+                  showDialog(
+                      context: context,
+                      barrierColor: Colors.black87,
+                      builder:
+                          (BuildContext context) {
+                        return const SignUp();
+                      });
+
+                }, child:Text(
+                  "Sign Up",style: TextStyle(
+                    color: Theme.of(context).canvasColor,fontSize: 16,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily
+                ),
+                ),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).cardColor),
+                        overlayColor: MaterialStateColor
+                            .resolveWith((states) =>
+                        Theme.of(context).primaryColor),
+                        fixedSize:
+                        MaterialStateProperty.all(Size(90, 35)),
+                        shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(
+                                    5.0
+                                )))
+                    ))
+                    : GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isLogins = true;
+                      if (isSearch == true) {
+                        isSearch = false;
+                        searchController?.clear();
+                        setState(() {});
+                      }
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      SizedBox(width: SizeConfig.screenWidth*0.1),
+                      Image.asset(
+                        AssetsConstants.icProfile,
+                        height: 30,
+                        color: Theme.of(context).canvasColor,
+                      ),
+                    ],
+                  ),
+                ),
+              ]))
+        ]));
   }
 }

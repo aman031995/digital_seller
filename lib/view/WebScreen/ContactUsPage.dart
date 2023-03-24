@@ -29,6 +29,7 @@ class AboutUsPage extends StatefulWidget {
 
 class _AboutUsPageState extends State<AboutUsPage> {
   HomeViewModel homeViewModel = HomeViewModel();
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   ScrollController _scrollController = ScrollController();
   bool isSearch = false;
   int pageNum = 1;
@@ -67,9 +68,12 @@ class _AboutUsPageState extends State<AboutUsPage> {
         }
       },
       child: Scaffold(
+        key: _scaffoldKey,
       drawer: AppMenu(homeViewModel: viewmodel),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        appBar:  PreferredSize(preferredSize: Size.fromHeight( 60),
+        appBar:   ResponsiveWidget.isMediumScreen(context)
+            ? homePageTopBar()
+            : PreferredSize(preferredSize: Size.fromHeight( 60),
             child: Container(
               height: 55,
               color: Theme.of(context).cardColor,
@@ -217,11 +221,10 @@ class _AboutUsPageState extends State<AboutUsPage> {
                         }
                       });
                     },
-                    child: Image.asset(
-                      'images/LoginUser.png',
+                    child:  Image.asset(
+                      AssetsConstants.icProfile,
                       height: 30,
-                      color:
-                      Theme.of(context).accentColor,
+                      color: Theme.of(context).canvasColor,
                     ),
                   ),
                   SizedBox(width: SizeConfig.screenWidth * .02),
@@ -234,11 +237,14 @@ class _AboutUsPageState extends State<AboutUsPage> {
               child: Column(
                 children: [
                   Container(
-                    padding:  EdgeInsets.only(left: 350,right: 350),
+                    padding:  EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context)
+                        ?25: 350,right:  ResponsiveWidget.isMediumScreen(context)
+                        ?25:350),
                     child: Column(
                       children: [
-                        SizedBox(height: 50),
-                        Text('About', style: TextStyle(fontWeight: FontWeight.w600, fontSize: ResponsiveWidget.isMediumScreen(context)?16:22, color:  Theme.of(context).canvasColor),),
+                        SizedBox(height:ResponsiveWidget.isMediumScreen(context)
+                            ?35: 50),
+                        Text('About Us', style: TextStyle(fontWeight: FontWeight.w600, fontSize: ResponsiveWidget.isMediumScreen(context)?16:22, color:  Theme.of(context).canvasColor),),
                         SizedBox(height: 20),
                         Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularized in the 1960s with the release of Letterset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', style: TextStyle(fontWeight: FontWeight.w400, fontSize: ResponsiveWidget.isMediumScreen(context)?14:18, color:  Theme.of(context).canvasColor)),
                         SizedBox(height: 20),
@@ -249,7 +255,8 @@ class _AboutUsPageState extends State<AboutUsPage> {
                         contactUswidget('images/ContactUs1.png', 'A-102, Sec-62, Noida UP 201301'),
                         SizedBox(height: 10),
                         contactUswidget('images/ContactUs.png', 'www.alifbaata.com'),
-                        SizedBox(height: 350),
+                        SizedBox(height: ResponsiveWidget.isMediumScreen(context)
+                            ?100: 350),
 
                       ],
                     ),
@@ -276,5 +283,111 @@ class _AboutUsPageState extends State<AboutUsPage> {
         Text(txt, style: TextStyle(fontWeight: FontWeight.w400, fontSize:ResponsiveWidget.isMediumScreen(context)? 16:22, color: Theme.of(context).canvasColor)),
       ],
     );
+  }
+  homePageTopBar() {
+    return AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: Theme
+            .of(context)
+            .backgroundColor,
+        title: Stack(children: <Widget>[
+          Container(
+              child: Row(children: [
+                GestureDetector(
+                    onTap: () {
+                      names == "null"
+                          ? showDialog(context: context, barrierColor: Colors.black87, builder: (BuildContext context) {return const SignUp();}):
+
+                      _scaffoldKey.currentState?.isDrawerOpen == false?
+                      _scaffoldKey.currentState?.openDrawer()
+                          :
+                      _scaffoldKey.currentState?.openEndDrawer();
+
+                    },
+                    child: Container(
+                        height: 35,
+                        width: 35,
+                        decoration: BoxDecoration(
+                          color: Color(0xff001726),
+                        ),
+                        child: Image.asset(
+                          'images/ic_menu.png',
+                          height: 25,
+                          width: 25,
+                        ))),
+                Container(
+                    height: 45,
+                    width: SizeConfig.screenWidth * 0.58,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: TRANSPARENT_COLOR, width: 1.0),
+                    ),
+                    child: AppTextField(
+                        controller: searchController,
+                        maxLine: searchController!.text.length > 2 ? 2 : 1,
+                        textCapitalization: TextCapitalization.words,
+                        secureText: false,
+                        floatingLabelBehavior: FloatingLabelBehavior.never,
+                        maxLength: 30,
+                        labelText: 'Search videos, shorts, products',
+                        keyBoardType: TextInputType.text,
+                        onChanged: (m) {
+                          isSearch = true;
+                        },
+                        isTick: null)),
+                names == "null"
+                    ? ElevatedButton(onPressed: (){
+                  showDialog(
+                      context: context,
+                      barrierColor: Colors.black87,
+                      builder:
+                          (BuildContext context) {
+                        return const SignUp();
+                      });
+
+                }, child:Text(
+                  "Sign Up",style: TextStyle(
+                    color: Theme.of(context).canvasColor,fontSize: 16,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily
+                ),
+                ),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).cardColor),
+                        overlayColor: MaterialStateColor
+                            .resolveWith((states) =>
+                        Theme.of(context).primaryColor),
+                        fixedSize:
+                        MaterialStateProperty.all(Size(90, 35)),
+                        shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.circular(
+                                    5.0
+                                )))
+                    ))
+                    : GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isLogins = true;
+                      if (isSearch == true) {
+                        isSearch = false;
+                        searchController?.clear();
+                        setState(() {});
+                      }
+                    });
+                  },
+                  child: Row(
+                    children: [
+                      SizedBox(width: SizeConfig.screenWidth*0.1),
+                      Image.asset(
+                        AssetsConstants.icProfile,
+                        height: 30,
+                        color: Theme.of(context).canvasColor,
+                      ),
+                    ],
+                  ),
+                ),
+              ]))
+        ]));
   }
 }

@@ -5,6 +5,7 @@ import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AppTextField.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
+import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
@@ -40,6 +41,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     return AlertDialog(
         elevation: 8,
         backgroundColor: Colors.transparent,
+        contentPadding: EdgeInsets.zero,
         shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         content: Container(
           decoration: BoxDecoration(
@@ -47,23 +49,30 @@ class _ResetPasswordState extends State<ResetPassword> {
             borderRadius: BorderRadius.circular(20),
             border: Border.all(width: 2, color: Theme.of(context).primaryColor)
           ),
-          height: 415,width: 500,
+          height:ResponsiveWidget.isMediumScreen(context)
+              ? 300 : 350,
+          width: ResponsiveWidget.isMediumScreen(context)
+              ? 600 :500,
           child: Column(
             children: [
-              SizedBox(height: 35),
+              SizedBox(height:ResponsiveWidget.isMediumScreen(context)
+                  ? 15 : 35),
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 12),
-                  alignment: Alignment.topLeft,
+                  alignment: Alignment.topCenter,
                   child: AppBoldFont(
-                      context,msg: 'Reset', color: BLACK_COLOR, fontSize: 30)),
+                      context,msg: 'Reset', color: BLACK_COLOR, fontSize:ResponsiveWidget.isMediumScreen(context)
+                      ?18: 30)),
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 12),
-                  alignment: Alignment.topLeft,
+                  alignment: Alignment.topCenter,
                   child: AppRegularFont(
                       context,msg: 'Enter your new password to login again.',
                       color: BLACK_COLOR,
-                      fontSize: 18)),
-              SizedBox(height: 55),
+                      fontSize:ResponsiveWidget.isMediumScreen(context)
+                          ?16: 18)),
+              SizedBox(height:ResponsiveWidget.isMediumScreen(context)
+                  ? 20 : 55),
               Container(
                 width: 400,
                 child: StreamBuilder(
@@ -115,15 +124,17 @@ class _ResetPasswordState extends State<ResetPassword> {
               ),
               SizedBox(height: 20),
               Container(
-                width: 400,
+                width: 250,
                 child: StreamBuilder(
                     stream: validation.checkResetPasswordValidate,
                     builder: (context, snapshot) {
                       return appButton(
                           context,
                           'Reset',
-                          SizeConfig.screenWidth * 0.9,
-                          60.0,
+                          ResponsiveWidget.isMediumScreen(context)
+                              ?  220  :   SizeConfig.screenWidth * 0.9,
+                          ResponsiveWidget.isMediumScreen(context)
+                              ? 50 :60.0,
                           LIGHT_THEME_COLOR,
                           Theme.of(context).canvasColor,
                           18,

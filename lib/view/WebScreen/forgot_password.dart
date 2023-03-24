@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:tycho_streams/bloc_validation/Bloc_Validation.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AppTextField.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
+import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
-import 'package:tycho_streams/view/widgets/AppNavigationBar.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 
 class ForgotPassword extends StatefulWidget {
@@ -40,20 +39,23 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     return AlertDialog(
         elevation: 8,
         backgroundColor: Colors.transparent,
+        contentPadding: EdgeInsets.zero,
         shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         content:  forgotPasswordSection(authVM));
   }
 
   Widget forgotPasswordSection(AuthViewModel authVM) {
     return Container(
-        height: 350,
-        width: 500,
+        height:ResponsiveWidget.isMediumScreen(context)
+            ? 300 : 350,
+        width: ResponsiveWidget.isMediumScreen(context)
+            ? 600 :500,
         decoration: BoxDecoration(
             color: Theme.of(context).cardColor.withOpacity(0.8),
           border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.6)),
           borderRadius: BorderRadius.circular(20)
         ),
-        margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
+        margin:  EdgeInsets.only(left:   10, right: 10, top: 10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -62,23 +64,28 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 alignment: Alignment.center,
                 child: AppBoldFont(
                     context,msg: StringConstant.forgotPassword,
-                    fontSize: 28,
+                    fontSize: ResponsiveWidget.isMediumScreen(context)
+                        ? 20 :28,
                     color: TEXT_COLOR)),
             SizedBox(height: 20),
             Container(
-                width: 400,
-                margin: const EdgeInsets.only(
+                width: ResponsiveWidget.isMediumScreen(context)
+                    ?500:400,
+                margin: EdgeInsets.only(
                   top: 6,
-                  left: 20,
+                  left: ResponsiveWidget.isMediumScreen(context)
+                      ?15: 20,
                 ),
                 child: AppMediumFont(
                     context,msg: StringConstant.enterOtpText,
-                    fontSize: 16,
+                    fontSize: ResponsiveWidget.isMediumScreen(context)
+                        ? 14 :16,
                     color: GREY_COLOR,
                     textAlign: TextAlign.start)),
             const SizedBox(height: 35),
             Container(
-              width: 400,
+              width: ResponsiveWidget.isMediumScreen(context)
+                  ?500:400,
               child: StreamBuilder(
                   stream: validation.phoneNo,
                   builder: (context, snapshot) {
@@ -115,8 +122,10 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     return appButton(
                         context,
                         StringConstant.send,
-                        SizeConfig.screenWidth * 0.90,
-                        60,
+                        ResponsiveWidget.isMediumScreen(context)
+                            ? SizeConfig.screenWidth*0.67 : SizeConfig.screenWidth * 0.90,
+                        ResponsiveWidget.isMediumScreen(context)
+                            ? 50 : 60,
                         LIGHT_THEME_COLOR,Theme.of(context).canvasColor,
                         16,
                         10,
