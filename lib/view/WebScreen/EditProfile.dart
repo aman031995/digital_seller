@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/bloc_validation/Bloc_Validation.dart';
+import 'package:tycho_streams/main.dart';
 import 'package:tycho_streams/model/data/UserInfoModel.dart';
 import 'package:tycho_streams/network/ASResponseModal.dart';
 import 'package:tycho_streams/network/result.dart';
@@ -17,6 +18,7 @@ import 'package:tycho_streams/utilities/AppIndicator.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AppTextField.dart';
 import 'package:tycho_streams/utilities/AppToast.dart';
+import 'package:tycho_streams/utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
@@ -56,6 +58,9 @@ class _EditProfileState extends State<EditProfile> {
   bool enableEmailField = false;
   bool enableEmailVerifyButton = false;
   final _authRepo = AuthRepository();
+  HomeViewModel homeViewModel = HomeViewModel();
+  ScrollController scrollController = ScrollController();
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
   final validation = ValidationBloc();
   String? name;
@@ -358,30 +363,16 @@ class _EditProfileState extends State<EditProfile> {
                                                   width: 80,
                                                   height: 80,
                                                   child: ClipOval(
-                                                      child: _profileImage?.path == 'zz'
-                                                          ? profilemodel.userInfoModel
-                                                          ?.profilePic ==
-                                                          null
-                                                          ? Center(
-                                                          child:
-                                                          ThreeArchedCircle(
-                                                              size: 50.0))
-                                                          : Image.network(
-                                                        '${profilemodel.userInfoModel?.profilePic}',
-                                                        fit: BoxFit.cover,
-                                                      )
-                                                          : (kIsWeb)
-                                                          ? Image.memory(
-                                                        webImage,
-                                                        fit: BoxFit.cover,
-                                                      )
-                                                          : Image.file(_profileImage!,
-                                                          fit: BoxFit.cover))),
+                                                      child: profilemodel.userInfoModel?.profilePic != null ?
+                                                      Image.network('${profilemodel.userInfoModel?.profilePic}', fit: BoxFit.cover)
+                                                          : Center(child: ThreeArchedCircle(size: 50.0))
+                                                  )
+                                              ),
                                               Positioned(
                                                 right: 5,
                                                 top: 40,
                                                 child: GestureDetector(
-                                                  onTap: _pickProfileImage,
+                                                  onTap: () => profilemodel.uploadProfileImage(context),
                                                   child: const Icon(
                                                     Icons.camera_alt_sharp,
                                                     color: Colors.red,
@@ -612,30 +603,15 @@ class _EditProfileState extends State<EditProfile> {
                                                   width: 120,
                                                   height: 120,
                                                   child: ClipOval(
-                                                      child: _profileImage?.path == 'zz'
-                                                          ? profilemodel.userInfoModel
-                                                                      ?.profilePic ==
-                                                                  null
-                                                              ? Center(
-                                                                  child:
-                                                                      ThreeArchedCircle(
-                                                                          size: 50.0))
-                                                              : Image.network(
-                                                                  '${profilemodel.userInfoModel?.profilePic}',
-                                                                  fit: BoxFit.cover,
-                                                                )
-                                                          : (kIsWeb)
-                                                              ? Image.memory(
-                                                                  webImage,
-                                                                  fit: BoxFit.cover,
-                                                                )
-                                                              : Image.file(_profileImage!,
-                                                                  fit: BoxFit.cover))),
+                                                      child: profilemodel.userInfoModel?.profilePic != null ?
+                                                      Image.network('${profilemodel.userInfoModel?.profilePic}', fit: BoxFit.cover)
+                                                          : Center(child: ThreeArchedCircle(size: 50.0))
+                                                  )),
                                               Positioned(
                                                 right: 5,
                                                 top: 80,
                                                 child: GestureDetector(
-                                                  onTap: _pickProfileImage,
+                                                  onTap: () => profilemodel.uploadProfileImage(context),
                                                   child: const Icon(
                                                     Icons.camera_alt_sharp,
                                                     color: Colors.red,

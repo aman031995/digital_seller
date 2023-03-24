@@ -79,8 +79,6 @@ dependencies:
   dropdown_button2:
   multilevel_drawer: ^2.0.0
 
-
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
