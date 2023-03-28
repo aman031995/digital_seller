@@ -64,8 +64,7 @@ class _SignUpState extends State<SignUp> {
         contentPadding: EdgeInsets.zero,
         shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         content: Container(
-            // width: 450,
-            height: SizeConfig.screenHeight/1.7,
+            height: SizeConfig.screenHeight/1.68,
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(20)
@@ -157,72 +156,74 @@ class _SignUpState extends State<SignUp> {
                   fit: BoxFit.fill,
                 ),
               ),
-              Container(
-                margin: EdgeInsets.only(left: 50,right: 50),
-                height: SizeConfig.screenHeight / 1.35,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(topRight: Radius.circular(20),bottomRight: Radius.circular(20))),
-                width: SizeConfig.screenWidth * 0.25,
-                child: Column(
-                  children: [
-                    SizedBox(height: SizeConfig.screenHeight * .05),
-                    AppBoldFont(
-                        context,msg: 'Get Started', color: BLACK_COLOR, fontSize: 30),
-                    SizedBox(height: SizeConfig.screenHeight * .02),
-                    AppRegularFont(
-                        context,msg: "Lets register yourself to make profile.",
+              SingleChildScrollView(
+                child: Container(
+                  margin: EdgeInsets.only(left: 50,right: 50),
+                  height: SizeConfig.screenHeight / 1.35,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(topRight: Radius.circular(20),bottomRight: Radius.circular(20))),
+                  width: SizeConfig.screenWidth * 0.25,
+                  child: Column(
+                    children: [
+                      SizedBox(height: SizeConfig.screenHeight * .05),
+                      AppBoldFont(
+                          context,msg: 'Get Started', color: BLACK_COLOR, fontSize: 30),
+                      SizedBox(height: SizeConfig.screenHeight * .02),
+                      AppRegularFont(
+                          context,msg: "Lets register yourself to make profile.",
 
-                        fontSize: 18),
-                    registerForm(),
-                    SizedBox(height: SizeConfig.screenHeight * .02),
-                    StreamBuilder(
-                        stream: validation.registerUser,
-                        builder: (context, snapshot) {
-                          return appButton(
-                              context,
-                              'Create Account',
-                              SizeConfig.screenWidth / 4,
-                              60.0,
-                              LIGHT_THEME_COLOR,
-                              Theme.of(context).canvasColor,
-                              18,
-                              10,
-                              snapshot.data != true ? false : true,
-                              onTap: () {
-                            snapshot.data != true
-                                ? ToastMessage.message(StringConstant.fillOut)
-                                : registerButtonPressed(
-                                    authVM,
-                                    nameController.text,
-                                    emailController.text,
-                                    phoneController.text,
-                                    passwordController.text);
-                          });
-                        }),
-                    SizedBox(height: SizeConfig.screenHeight * .02),
-                    viewmodel.appConfigModel?.androidConfig?.socialLogin !=
-                        null
-                        ? socialLoginView(socialVM, viewmodel)
-                        : Container(),
-                    SizedBox(height: SizeConfig.screenHeight * .02),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        AppRegularFont(
-                            context,msg: 'Already have an account?', color: TEXT_COLOR),
-                        appTextButton(context, 'Login', Alignment.bottomRight,
-                            Theme.of(context).canvasColor,16, true, onPressed: () {
-                              Navigator.pop(context);
-                              showDialog(
-                                  context: context,
-                                  barrierColor: Colors.black87,
-                                  builder: (BuildContext context) {
-                                    return LoginUp();
-                                  });
-                        }),
-                      ],
-                    ),
-                  ],
+                          fontSize: 18),
+                      registerForm(),
+                      SizedBox(height: SizeConfig.screenHeight * .02),
+                      StreamBuilder(
+                          stream: validation.registerUser,
+                          builder: (context, snapshot) {
+                            return appButton(
+                                context,
+                                'Create Account',
+                                SizeConfig.screenWidth / 4,
+                                60.0,
+                                LIGHT_THEME_COLOR,
+                                Theme.of(context).canvasColor,
+                                18,
+                                10,
+                                snapshot.data != true ? false : true,
+                                onTap: () {
+                              snapshot.data != true
+                                  ? ToastMessage.message(StringConstant.fillOut)
+                                  : registerButtonPressed(
+                                      authVM,
+                                      nameController.text,
+                                      emailController.text,
+                                      phoneController.text,
+                                      passwordController.text);
+                            });
+                          }),
+                      SizedBox(height: SizeConfig.screenHeight * .02),
+                      viewmodel.appConfigModel?.androidConfig?.socialLogin !=
+                          null
+                          ? socialLoginView(socialVM, viewmodel)
+                          : Container(),
+                      SizedBox(height: SizeConfig.screenHeight * .02),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AppRegularFont(
+                              context,msg: 'Already have an account?', color: TEXT_COLOR),
+                          appTextButton(context, 'Login', Alignment.bottomRight,
+                              Theme.of(context).canvasColor,16, true, onPressed: () {
+                                Navigator.pop(context);
+                                showDialog(
+                                    context: context,
+                                    barrierColor: Colors.black87,
+                                    builder: (BuildContext context) {
+                                      return LoginUp();
+                                    });
+                          }),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               )
             ])));}));

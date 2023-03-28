@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/main.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
@@ -8,6 +9,7 @@ import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 
 import 'package:tycho_streams/view/WebScreen/OnHover.dart';
+import 'package:tycho_streams/view/WebScreen/SignUp.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 
 class CardMovieHome extends StatefulWidget {
@@ -54,7 +56,7 @@ class _CardMovieHomeState extends State<CardMovieHome> {
       height: SizeConfig.screenHeight * 0.27,
       padding: EdgeInsets.only(left:_heigth?1: 10,right:_heigth?1: 10,top:_heigth?1: 10,bottom:_heigth?1: 10),
       child: InkWell(
-        onTap: () {
+        onTap: () async{
           if (isSearch == true)  {
             isSearch = false;
             searchController?.clear();
@@ -66,14 +68,23 @@ class _CardMovieHomeState extends State<CardMovieHome> {
 
             });
           }
-          GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParams: {
-            'movieID':'${widget.moviesList?.youtubeVideoId}',
-            'VideoId':'${widget.moviesList?.videoId}',
-            'Title':'${widget.moviesList?.videoTitle}',
-            'Desc':'${widget.moviesList?.videoDescription}'
-
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    if (sharedPreferences.get('token') != null) {
+      GoRouter.of(context).pushNamed(RoutesName.DeatilPage, queryParams: {
+        'movieID': '${widget.moviesList?.youtubeVideoId}',
+        'VideoId': '${widget.moviesList?.videoId}',
+        'Title': '${widget.moviesList?.videoTitle}',
+        'Desc': '${widget.moviesList?.videoDescription}'
+      });
+    }
+    else{
+      showDialog(
+          context: context,
+          barrierColor: Colors.black87,
+          builder: (BuildContext context) {
+            return const SignUp();
           });
-
+    }
         },
         //9c5757df-6dea-44ad-9578-2df898ef7733
         child: Card(

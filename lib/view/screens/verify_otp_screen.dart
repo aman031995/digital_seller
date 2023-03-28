@@ -84,10 +84,6 @@ class _VerifyOtpState extends State<VerifyOtp> {
         contentPadding: EdgeInsets.zero,
         shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     content: verificationSection(authVM));
-
-      // Scaffold(
-      //   ///appBar: getAppBarWithBackBtn(title: '', isBackBtn: true, context: context),
-      //   backgroundColor: LIGHT_THEME_BACKGROUND, body: verificationSection(authVM));
   }
 
   Widget verificationSection(AuthViewModel authVM) {
@@ -99,40 +95,49 @@ class _VerifyOtpState extends State<VerifyOtp> {
           color: Theme.of(context).cardColor.withOpacity(0.8),
           border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.6))
         ),
-        margin: EdgeInsets.only(left: 10, right: 10),
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            Container(
-                margin: EdgeInsets.only(left: 10),
-                alignment: Alignment.topCenter,
-                child: AppBoldFont(context,
-                    msg: StringConstant.verification,
-                    fontSize:  ResponsiveWidget.isMediumScreen(context)
-                        ? 18 :26,
-                    color: TEXT_COLOR)),
-            SizedBox(height: 5),
-            headerTextWidget(),
-            SizedBox(height: 30),
-            Container(
-              height:ResponsiveWidget.isMediumScreen(context)
-                  ?50: 60,
-              width: 400,
-              child: PinEntryTextFiledView(),
-            ),
-            SizedBox(height: 10),
-            resendPin(authVM),
-            isOTPInput == true ? Container() : errorText(),
-            SizedBox(height: 30),
-            appButton(context, StringConstant.verify, ResponsiveWidget.isMediumScreen(context)
-                ?  SizeConfig.screenWidth*0.67  :SizeConfig.screenWidth * 0.90,ResponsiveWidget.isMediumScreen(context)
-                ? 50: 60.0, LIGHT_THEME_COLOR,Theme.of(context).canvasColor,
-                 16, 5.0, isOTPInput, onTap: () {
-                  checkVerificationValidate(authVM);
-                }),
-            SizedBox(height: 10),
+        // margin: EdgeInsets.only(left: 10, right: 10),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              AppBoldFont(context,
+                  msg: StringConstant.verification,
+                  fontSize:  ResponsiveWidget.isMediumScreen(context)
+                      ? 18 :22,
+                  color: TEXT_COLOR),
+              SizedBox(height: 5),
+              Padding(
+                padding: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context)
+                    ?10:0,right: ResponsiveWidget.isMediumScreen(context)
+                    ?10:0),
+                child: AppMediumFont(
+                    context,textAlign: TextAlign.left,
+                    msg: StringConstant.codeVerify,
+                    color: TEXT_COLOR,
+                    fontSize: ResponsiveWidget.isMediumScreen(context)? 14:16,
+                    maxLines: 2),
+              ),
+              SizedBox(height: 30),
+              Container(
+                height:ResponsiveWidget.isMediumScreen(context)
+                    ?50: 60,
+                width: 400,
+                child: PinEntryTextFiledView(),
+              ),
+              SizedBox(height: 10),
+              resendPin(authVM),
+              isOTPInput == true ? Container() : errorText(),
+              SizedBox(height: 30),
+              appButton(context, StringConstant.verify, ResponsiveWidget.isMediumScreen(context)
+                  ?  SizeConfig.screenWidth*0.67  :SizeConfig.screenWidth/8,ResponsiveWidget.isMediumScreen(context)
+                  ? 50: 60.0, LIGHT_THEME_COLOR,Theme.of(context).canvasColor,
+                   16, 5.0, isOTPInput, onTap: () {
+                    checkVerificationValidate(authVM);
+                  }),
+              SizedBox(height: 10),
 
-          ],
+            ],
+          ),
         ));
   }
 
@@ -162,14 +167,13 @@ class _VerifyOtpState extends State<VerifyOtp> {
 
   Widget headerTextWidget() {
     return Container(
-        margin: EdgeInsets.only(left: 10),
         alignment: Alignment.topCenter,
         child: AppMediumFont(
             context,textAlign: TextAlign.left,
             msg: StringConstant.codeVerify,
             color: TEXT_COLOR,
-            fontSize: 14,
-            maxLines: 2));
+            fontSize: ResponsiveWidget.isMediumScreen(context)? 14:16,
+            maxLines: 1));
   }
 
   TextSpan headerText(String text, double fontSize) {

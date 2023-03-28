@@ -37,7 +37,7 @@ class StringConstant {
   static String resend = "Resend";
   static String resendOtp = "Resend OTP";
   static String verify = "Verify";
-  static String codeVerify = 'Please check your phone we have sent\n you a 4-digit code to verify.';
+  static String codeVerify = 'Please check your phone we have sent you a 4-digit code to verify.';
   static String numberVerify = 'Please check your phone we have sent you a 4-digit code to verify.';
   static String emailVerify = 'Please check your email we have sent you a 4-digit code to verify.';
   static String newPassword = "New Password";

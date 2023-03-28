@@ -114,7 +114,7 @@ Widget searchView(BuildContext context, HomeViewModel viewmodel, bool isSearch,
               Container(
                   height: 350,
                   width: 450,
-                  margin: EdgeInsets.only(left: SizeConfig.screenWidth/1.5),
+                  margin: EdgeInsets.only(left: SizeConfig.screenWidth/1.55),
                   decoration: BoxDecoration(
                     color: viewmodel.searchDataModel != null && isSearch == true
                         ? Theme.of(context).scaffoldBackgroundColor
@@ -273,9 +273,7 @@ Widget profile(BuildContext context,setState){
 Widget Header(BuildContext context,setState){
   return  Container(
         height: 55,
-        color: Theme
-            .of(context)
-            .cardColor,
+        color: Theme.of(context).cardColor,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -287,32 +285,6 @@ Widget Header(BuildContext context,setState){
                 child: SizedBox(
                     width:
                     SizeConfig.screenWidth * .12)),
-            AppButton(context, 'Home', onPressed: () {
-              names == "null"
-                  ? showDialog(
-                  context: context,
-                  barrierColor: Colors.black87,
-                  builder: (BuildContext context) {
-                    return const SignUp();
-                  })
-                  : GoRouter.of(context)
-                  .pushNamed(RoutesName.home);
-            }),
-            SizedBox(
-                width: SizeConfig.screenWidth * .02),
-            AppButton(context, 'Contact US',
-                onPressed: () {
-                  names == "null"
-                      ? showDialog(
-                      context: context,
-                      barrierColor: Colors.black87,
-                      builder: (BuildContext context) {
-                        return const SignUp();
-                      })
-                      : GoRouter.of(context).pushNamed(
-                    RoutesName.Contact,
-                  );
-                }),
             Expanded(
                 child: SizedBox(
                     width:

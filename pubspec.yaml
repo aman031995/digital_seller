@@ -51,6 +51,7 @@ dependencies:
   process_run: ^0.12.5+2
   script_runner: ^0.3.1
   pinput: ^2.2.23
+  chewie:
   fluttertoast: ^8.0.9
   google_sign_in: ^5.3.3
   flutter_facebook_auth: 5.0.7
@@ -77,6 +78,9 @@ dependencies:
   hive_flutter: ^1.1.0
   go_router:
   dropdown_button2:
+#  social_embed_webview:
+#  flutter_html_video:
+#  flutter_widget_from_html:
   multilevel_drawer: ^2.0.0
 
 dev_dependencies:

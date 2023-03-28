@@ -19,7 +19,7 @@ class VideoListPage extends StatefulWidget {
 
 class _VideoListPageState extends State<VideoListPage> {
   ScrollController scrollController = ScrollController();
-  final HomeViewModel homeView = HomeViewModel();
+   HomeViewModel homeView = HomeViewModel();
 
   @override
   void initState() {

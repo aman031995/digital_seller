@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tycho_streams/utilities/route_service/routes.dart';
 import 'package:tycho_streams/view/WebScreen/EditProfile.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/repository/subscription_provider.dart';
@@ -55,15 +56,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   HomeViewModel homeViewModel = HomeViewModel();
-  GoRouter? _router;
-
+  late GoRouter _router;
   @override
   void initState() {
     User();
-    super.initState();
     homeViewModel.getAppConfig(context);
+    super.initState();
 
     _router = GoRouter(
+
       routes: [
         GoRoute(
           name: RoutesName.home,
@@ -125,27 +126,27 @@ class _MyAppState extends State<MyApp> {
             });
             return MaterialPage(
                 child: DetailPage(
-              movieID: state.queryParams['movieID'],
-              VideoId: state.queryParams['VideoId'],
-              Title: state.queryParams['Title'],
-              Desc: state.queryParams['Desc'],
-            ));
+                  movieID: state.queryParams['movieID'],
+                  VideoId: state.queryParams['VideoId'],
+                  Title: state.queryParams['Title'],
+                  Desc: state.queryParams['Desc'],
+                ));
           },
 
         ),
         GoRoute(
-            name: RoutesName.seaAll,
-            path: '/Seall',
-            pageBuilder: (context, state) {
-              state.queryParams.forEach((key, value) {
-                print("$key : $value");
-              });
-              return MaterialPage(
-                  child: SeeAllListPages(
-                VideoId: state.queryParams['VideoId'],
-                title: state.queryParams['title'],
-              ));
-            },
+          name: RoutesName.seaAll,
+          path: '/Seall',
+          pageBuilder: (context, state) {
+            state.queryParams.forEach((key, value) {
+              print("$key : $value");
+            });
+            return MaterialPage(
+                child: SeeAllListPages(
+                  VideoId: state.queryParams['VideoId'],
+                  title: state.queryParams['title'],
+                ));
+          },
 
         ),
       ],
@@ -180,30 +181,13 @@ class _MyAppState extends State<MyApp> {
           return '/';
         }
       }),
-      initialLocation: _getCurrentLocation(),
-      refreshListenable: _getRefreshListenable(),
+
     );
   }
-
-  String _getCurrentLocation() {
-    final uri = Uri.base;
-    return uri.path + uri.query;
-  }
-
-  ChangeNotifier _getRefreshListenable() {
-    return ChangeNotifier()
-      ..addListener(() {
-        if (_getCurrentLocation() != _router?.location) {
-          _router?.goNamed(_getCurrentLocation());
-        }
-      });
-  }
-
   User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     names = sharedPreferences.get('name').toString();
   }
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -239,12 +223,17 @@ class _MyAppState extends State<MyApp> {
                   builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
                   scrollBehavior: MyCustomScrollBehavior(),
-                  routeInformationParser: _router?.routeInformationParser,
-                  routerDelegate: _router?.routerDelegate,
-                  routeInformationProvider: _router?.routeInformationProvider);
+                  routeInformationParser: _router.routeInformationParser,
+                  routerDelegate: _router.routerDelegate,
+                  routeInformationProvider: _router.routeInformationProvider,
+
+              );
+
             })));
   }
 }
+
+
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
   @override

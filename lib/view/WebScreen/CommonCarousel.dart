@@ -54,7 +54,8 @@ class _CommonCarouselState extends State<CommonCarousel> {
     return Stack(
       children: [
         Container(
-          height:  620,width: 2500,
+          height:  620,
+          width: SizeConfig.screenWidth,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5)
           ),

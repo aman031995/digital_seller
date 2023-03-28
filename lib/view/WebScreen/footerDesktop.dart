@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:tycho_streams/main.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
+import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../utilities/AppTextButton.dart';
@@ -31,7 +34,10 @@ class _footerDesktopState extends State<footerDesktop> {
             children: [
               Container(width: MediaQuery.of(context).size.width * .04),
               AppButton(context, 'About Us', onPressed: () {
-                GoRouter.of(context).pushNamed(RoutesName.AboutUsPage);
+
+                setState(() {
+                  GoRouter.of(context).pushNamed(RoutesName.AboutUsPage);
+                });
               }),
               Container(width: MediaQuery.of(context).size.width * .02),
               AppButton(context, 'Terms Of Use', onPressed: () {

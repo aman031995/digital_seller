@@ -127,26 +127,26 @@ class _AppMenuState extends State<AppMenu> {
         //   }
         // });
       } else if (appMenu.url?.contains('terms-and-conditions') == true) {
-        GoRouter.of(context).pushNamed(RoutesName.Terms);
+        Router.neglect(context, () =>  GoRouter.of(context).pushNamed(RoutesName.Terms));
         // Navigator.push(
         //     context,
         //     MaterialPageRoute(
         //         builder: (BuildContext context) => AppWebView(url: appMenu.url, pageName: appMenu.title)));
       } else if (appMenu.url?.contains('privacy-policy') == true) {
-        GoRouter.of(context).pushNamed(RoutesName.Privacy);
+        Router.neglect(context, () => GoRouter.of(context).pushNamed(RoutesName.Privacy));
         // Navigator.push(
         //     context,
         //     MaterialPageRoute(
         //         builder: (BuildContext context) => AppWebView(url: appMenu.url, pageName: appMenu.title)));
       } else if (appMenu.url?.contains('profile') == true) {
-        GoRouter.of(context).pushNamed(RoutesName.EditProfille);
+        Router.neglect(context, () => GoRouter.of(context).pushNamed(RoutesName.EditProfille));
         // getPath(appMenu.url ?? '', RoutesName.profilePage).then((routePath) {
         //   if (routePath != null) {
         //     Navigator.pushNamed(context, routePath, arguments: {'title': appMenu.title, 'isBack' : true});
         //   }
         // });
       } else if (appMenu.url?.contains('bottom_navigation') == true){
-        GoRouter.of(context).pushNamed(RoutesName.home);
+        Router.neglect(context, () =>  GoRouter.of(context).pushNamed(RoutesName.home));
         // getPath(appMenu.url ?? '', RoutesName.bottomNavigation).then((routePath) {
         //   if (routePath != null) {
         //     // Navigator.pushNamed(context, routePath);
@@ -155,14 +155,14 @@ class _AppMenuState extends State<AppMenu> {
         //   }
         // });
       } else if (appMenu.url?.contains('update_user') == true){
-        GoRouter.of(context).pushNamed(RoutesName.EditProfille);
+        Router.neglect(context, () => GoRouter.of(context).pushNamed(RoutesName.EditProfille));
        // getPath(appMenu.url ?? '', RoutesName.editProfile).then((routePath) {
        //    if (routePath != null) {
        //      Navigator.pushNamed(context, routePath, arguments: {'title' : appMenu.title});
        //    }
        //  });
       } else if (appMenu.url?.contains('faqs') == true){
-        GoRouter.of(context).pushNamed(RoutesName.FAQ);
+        Router.neglect(context, () =>  GoRouter.of(context).pushNamed(RoutesName.FAQ));
         // Navigator.push(
         //     context,
         //     MaterialPageRoute(

@@ -194,97 +194,99 @@ class _LoginUpState extends State<LoginUp> {
                           fit: BoxFit.fill,
                         ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 50, right: 50),
-                        height: SizeConfig.screenHeight / 1.35,
-                        decoration: const BoxDecoration(
+                      SingleChildScrollView(
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 50, right: 50),
+                          height: SizeConfig.screenHeight / 1.35,
+                          decoration: const BoxDecoration(
 
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(20),
-                                bottomRight: Radius.circular(20))),
-                        width: SizeConfig.screenWidth * 0.25,
-                        child: Column(
-                          children: [
-                            SizedBox(height: SizeConfig.screenHeight * .05),
-                            AppBoldFont(context, msg: 'Login',
-                                color: BLACK_COLOR,
-                                fontSize: 30),
-                            SizedBox(height: SizeConfig.screenHeight * .02),
-                            AppRegularFont(
-                                context,
-                                msg: "Enter your credentials to continue with us.",
-                                fontSize: 18),
-                            registerForm(),
-                            Container(
-                              margin: const EdgeInsets.only(left: 0, right: 10),
-                              child: appTextButton(
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(20),
+                                  bottomRight: Radius.circular(20))),
+                          width: SizeConfig.screenWidth * 0.25,
+                          child: Column(
+                            children: [
+                              SizedBox(height: SizeConfig.screenHeight * .05),
+                              AppBoldFont(context, msg: 'Login',
+                                  color: BLACK_COLOR,
+                                  fontSize: 30),
+                              SizedBox(height: SizeConfig.screenHeight * .02),
+                              AppRegularFont(
                                   context,
-                                  StringConstant.forgotPass,
-                                  Alignment.centerRight,
-                                  Theme
-                                      .of(context)
-                                      .canvasColor, 16,
-                                  true, onPressed: () {
-                                Navigator.pop(context);
-                                showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return const ForgotPassword();
-                                    });
-                              }),
-                            ),
-                            SizedBox(height: SizeConfig.screenHeight * .03),
-                            StreamBuilder(
-                                stream: validation.checkUserLogin,
-                                builder: (context, snapshot) {
-                                  return appButton(
-                                      context,
-                                      'Login',
-                                      SizeConfig.screenWidth / 4,
-                                      60.0,
-                                      LIGHT_THEME_COLOR,
-                                      Theme
-                                          .of(context)
-                                          .canvasColor,
-                                      18,
-                                      10,
-                                      snapshot.data != true ? false : true,
-                                      onTap: () {
-                                        snapshot.data != true
-                                            ? ToastMessage.message(
-                                            StringConstant.fillOut)
-                                            : loginButtonPressed(
-                                            authVM, phoneController.text,
-                                            passwordController.text);
-                                      });
-                                }),
-                            SizedBox(height: SizeConfig.screenHeight * .03),
-                            viewmodel.appConfigModel?.androidConfig?.socialLogin != null ? socialLoginView(socialVM, viewmodel) : Container(),
-
-                            SizedBox(height: SizeConfig.screenHeight * .03),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                AppRegularFont(
-                                    context, msg: 'Already have an account?',
-                                    color: TEXT_COLOR),
-                                appTextButton(
-                                    context, 'Create', Alignment.bottomRight,
+                                  msg: "Enter your credentials to continue with us.",
+                                  fontSize: 18),
+                              registerForm(),
+                              Container(
+                                margin: const EdgeInsets.only(left: 0, right: 10),
+                                child: appTextButton(
+                                    context,
+                                    StringConstant.forgotPass,
+                                    Alignment.centerRight,
                                     Theme
                                         .of(context)
-                                        .canvasColor, 16, true, onPressed: () {
+                                        .canvasColor, 16,
+                                    true, onPressed: () {
                                   Navigator.pop(context);
                                   showDialog(
                                       context: context,
-                                      barrierDismissible: false,
-                                      barrierColor: Colors.black87,
                                       builder: (BuildContext context) {
-                                        return const SignUp();
+                                        return const ForgotPassword();
                                       });
                                 }),
-                              ],
-                            ),
-                          ],
+                              ),
+                              SizedBox(height: SizeConfig.screenHeight * .03),
+                              StreamBuilder(
+                                  stream: validation.checkUserLogin,
+                                  builder: (context, snapshot) {
+                                    return appButton(
+                                        context,
+                                        'Login',
+                                        SizeConfig.screenWidth / 4,
+                                        60.0,
+                                        LIGHT_THEME_COLOR,
+                                        Theme
+                                            .of(context)
+                                            .canvasColor,
+                                        18,
+                                        10,
+                                        snapshot.data != true ? false : true,
+                                        onTap: () {
+                                          snapshot.data != true
+                                              ? ToastMessage.message(
+                                              StringConstant.fillOut)
+                                              : loginButtonPressed(
+                                              authVM, phoneController.text,
+                                              passwordController.text);
+                                        });
+                                  }),
+                              SizedBox(height: SizeConfig.screenHeight * .03),
+                              viewmodel.appConfigModel?.androidConfig?.socialLogin != null ? socialLoginView(socialVM, viewmodel) : Container(),
+
+                              SizedBox(height: SizeConfig.screenHeight * .03),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  AppRegularFont(
+                                      context, msg: 'Already have an account?',
+                                      color: TEXT_COLOR),
+                                  appTextButton(
+                                      context, 'Create', Alignment.bottomRight,
+                                      Theme
+                                          .of(context)
+                                          .canvasColor, 16, true, onPressed: () {
+                                    Navigator.pop(context);
+                                    showDialog(
+                                        context: context,
+                                        barrierDismissible: false,
+                                        barrierColor: Colors.black87,
+                                        builder: (BuildContext context) {
+                                          return const SignUp();
+                                        });
+                                  }),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ])));

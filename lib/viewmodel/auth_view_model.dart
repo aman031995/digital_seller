@@ -35,14 +35,12 @@ class AuthViewModel with ChangeNotifier {
     AppIndicator.loadingIndicator(context);
     _authRepo.login(phone, password, context, (result, isSuccess) {
       if (isSuccess) {
-        _userInfoModel =
-            ((result as SuccessState).value as ASResponseModal).dataModal;
+        _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         AppDataManager.getInstance.updateUserDetails(userInfoModel!);
         print('Login api Successfully');
         AppIndicator.disposeIndicator();
         isLogin=true;
         Navigator.pop(context);
-        notifyListeners();
         User();
         GoRouter.of(context).pushNamed(RoutesName.home);
        notifyListeners();
@@ -63,6 +61,8 @@ class AuthViewModel with ChangeNotifier {
     AppIndicator.loadingIndicator(context);
     _authRepo.register(phone, email, context, (result, isSuccess) {
       if (isSuccess) {
+        ToastMessage.message(
+            ((result as SuccessState).value as ASResponseModal).message);
         AppIndicator.disposeIndicator();
         Navigator.pop(context);
         User();
@@ -174,6 +174,8 @@ class AuthViewModel with ChangeNotifier {
     _authRepo.forgotPassword(phone, context, (result, isSuccess) {
       if (isSuccess) {
         print('forgot password api Successfully');
+        ToastMessage.message(
+            ((result as SuccessState).value as ASResponseModal).message);
         AppIndicator.disposeIndicator();
         Navigator.pop(context);
         showDialog(

@@ -53,101 +53,95 @@ class _ResetPasswordState extends State<ResetPassword> {
               ? 300 : 350,
           width: ResponsiveWidget.isMediumScreen(context)
               ? 600 :500,
-          child: Column(
-            children: [
-              SizedBox(height:ResponsiveWidget.isMediumScreen(context)
-                  ? 15 : 35),
-              Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  alignment: Alignment.topCenter,
-                  child: AppBoldFont(
-                      context,msg: 'Reset', color: BLACK_COLOR, fontSize:ResponsiveWidget.isMediumScreen(context)
-                      ?18: 30)),
-              Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12),
-                  alignment: Alignment.topCenter,
-                  child: AppRegularFont(
-                      context,msg: 'Enter your new password to login again.',
-                      color: BLACK_COLOR,
-                      fontSize:ResponsiveWidget.isMediumScreen(context)
-                          ?16: 18)),
-              SizedBox(height:ResponsiveWidget.isMediumScreen(context)
-                  ? 20 : 55),
-              Container(
-                width: 400,
-                child: StreamBuilder(
-                    stream: validation.password,
-                    builder: (context, snapshot) {
-                      return AppTextField(
-                          maxLine: 1,
-                          controller: newPasswordController,
-                          labelText: 'New Password',
-                          prefixText: '',
-                          isShowPassword: true,
-                          isTick: true,
-                          isColor: isPassword,
-                          keyBoardType: TextInputType.visiblePassword,
-                          errorText:
-                              snapshot.hasError ? snapshot.error.toString() : null,
-                          onChanged: (m) {
-                            validation.sinkPassword.add(m);
-                            isPassword = true;
-                            setState(() {});
-                          },
-                          onSubmitted: (m) {});
-                    }),
-              ),
-              SizedBox(height: 15),
-              Container(
-                width: 400,
-                child: StreamBuilder(
-                    stream: validation.confirmPassword,
-                    builder: (context, snapshot) {
-                      return AppTextField(
-                          maxLine: 1,
-                          controller: confirmPasswordController,
-                          labelText: 'Confirm Password',
-                          prefixText: '',
-                          isShowPassword: true,
-                          isTick: true,
-                          isColor: isPassword2,
-                          keyBoardType: TextInputType.visiblePassword,
-                          errorText:
-                              snapshot.hasError ? snapshot.error.toString() : null,
-                          onChanged: (m) {
-                            validation.sinkConfirmPassword.add(m);
-                            isPassword2 = true;
-                            setState(() {});
-                          },
-                          onSubmitted: (m) {});
-                    }),
-              ),
-              SizedBox(height: 20),
-              Container(
-                width: 250,
-                child: StreamBuilder(
-                    stream: validation.checkResetPasswordValidate,
-                    builder: (context, snapshot) {
-                      return appButton(
-                          context,
-                          'Reset',
-                          ResponsiveWidget.isMediumScreen(context)
-                              ?  220  :   SizeConfig.screenWidth * 0.9,
-                          ResponsiveWidget.isMediumScreen(context)
-                              ? 50 :60.0,
-                          LIGHT_THEME_COLOR,
-                          Theme.of(context).canvasColor,
-                          18,
-                          10,
-                          snapshot.data != true ? false : true, onTap: () {
-                        snapshot.data != true
-                            ? ToastMessage.message(StringConstant.fillOut)
-                            : resetBtnPressed(authVM, newPasswordController.text,
-                                confirmPasswordController.text);
-                      });
-                    }),
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(height:ResponsiveWidget.isMediumScreen(context)
+                    ? 15 : 20),
+                AppBoldFont(
+                    textAlign: TextAlign.center,
+                    context,msg: 'Reset', color: BLACK_COLOR, fontSize:ResponsiveWidget.isMediumScreen(context)
+                    ?18: 22),
+                AppRegularFont(
+                    context,msg: 'Enter your new password to login again.',
+                    color: BLACK_COLOR,
+                    fontSize:ResponsiveWidget.isMediumScreen(context) ?14: 16),
+                SizedBox(height:ResponsiveWidget.isMediumScreen(context) ? 20 : 30),
+                Container(
+                  width: 400,
+                  child: StreamBuilder(
+                      stream: validation.password,
+                      builder: (context, snapshot) {
+                        return AppTextField(
+                            maxLine: 1,
+                            controller: newPasswordController,
+                            labelText: 'New Password',
+                            prefixText: '',
+                            isShowPassword: true,
+                            isTick: true,
+                            isColor: isPassword,
+                            keyBoardType: TextInputType.visiblePassword,
+                            errorText:
+                                snapshot.hasError ? snapshot.error.toString() : null,
+                            onChanged: (m) {
+                              validation.sinkPassword.add(m);
+                              isPassword = true;
+                              setState(() {});
+                            },
+                            onSubmitted: (m) {});
+                      }),
+                ),
+                SizedBox(height: 15),
+                Container(
+                  width: 400,
+                  child: StreamBuilder(
+                      stream: validation.confirmPassword,
+                      builder: (context, snapshot) {
+                        return AppTextField(
+                            maxLine: 1,
+                            controller: confirmPasswordController,
+                            labelText: 'Confirm Password',
+                            prefixText: '',
+                            isShowPassword: true,
+                            isTick: true,
+                            isColor: isPassword2,
+                            keyBoardType: TextInputType.visiblePassword,
+                            errorText:
+                                snapshot.hasError ? snapshot.error.toString() : null,
+                            onChanged: (m) {
+                              validation.sinkConfirmPassword.add(m);
+                              isPassword2 = true;
+                              setState(() {});
+                            },
+                            onSubmitted: (m) {});
+                      }),
+                ),
+                SizedBox(height: 20),
+                Container(
+                  child: StreamBuilder(
+                      stream: validation.checkResetPasswordValidate,
+                      builder: (context, snapshot) {
+                        return appButton(
+                            context,
+                            'Reset',
+                            ResponsiveWidget.isMediumScreen(context)
+                                ?  220  :   SizeConfig.screenWidth /8,
+                            ResponsiveWidget.isMediumScreen(context)
+                                ? 50 :60.0,
+                            LIGHT_THEME_COLOR,
+                            Theme.of(context).canvasColor,
+                            18,
+                            10,
+                            snapshot.data != true ? false : true, onTap: () {
+                          snapshot.data != true
+                              ? ToastMessage.message(StringConstant.fillOut)
+                              : resetBtnPressed(authVM, newPasswordController.text,
+                                  confirmPasswordController.text);
+                        });
+                      }),
+                ),
+              ],
+            ),
           ),
         ),
 

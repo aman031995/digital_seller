@@ -25,13 +25,13 @@ class HomePageRepository {
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
-      "Authorization": "Bearer " +"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI4OGI0YTJmZC1kMjk5LTQyNjItODU4Yi0zOGQ1N2I1YTE2MmQiLCJpYXQiOjE2Nzk1NzgwMDQsImV4cCI6MTY4MDg3NDAwNH0.ubqJo3I8UMhiByZvGw88NKwMyi30zfC1lb9PCNFs4WU"
+      //"Authorization": "Bearer " +"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI4OGI0YTJmZC1kMjk5LTQyNjItODU4Yi0zOGQ1N2I1YTE2MmQiLCJpYXQiOjE2Nzk1NzgwMDQsImV4cCI6MTY4MDg3NDAwNH0.ubqJo3I8UMhiByZvGw88NKwMyi30zfC1lb9PCNFs4WU"
     };
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {"{APP_ID}": "ID-e2946157-ebc3-4ba"};
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
         urlParams, NetworkConstants.kGetBannerList, RequestType.get,
-        headers: header);
+       );
     appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
       if (isSuccess) {
         var response = ASResponseModal.fromResult(result);
@@ -84,20 +84,17 @@ class HomePageRepository {
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
-      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+      // "Authorization": "Bearer " + sharedPreferences.get("token").toString() ?? ''
     };
     AppNetwork appNetwork = AppNetwork();
-    Map<String, String> urlParams = {
-      "{APP_ID}": "ID-e2946157-ebc3-4ba",
-    };
+    Map<String, String> urlParams = {"{APP_ID}": "ID-e2946157-ebc3-4ba"};
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
         urlParams, NetworkConstants.kGetTrayData, RequestType.get,
-        headers: header);
+       );
     appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
       if (isSuccess) {
         var response = ASResponseModal.fromResult(result);
-        Map<String, dynamic> map =
-        (result as SuccessState).value as Map<String, dynamic>;
+        Map<String, dynamic> map = (result as SuccessState).value as Map<String, dynamic>;
         if (map['data'] is List<dynamic>) {
           var dataList = map['data'] as List<dynamic>;
           var items = <TrayDataModel>[];

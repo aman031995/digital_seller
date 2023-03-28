@@ -161,8 +161,7 @@ class _EditProfileState extends State<EditProfile> {
                     backgroundColor:  Theme.of(context).scaffoldBackgroundColor,
                     appBar:  ResponsiveWidget.isMediumScreen(context)
                         ? homePageTopBar()
-                        :
-                    PreferredSize(preferredSize: Size.fromHeight( 60),
+                        : PreferredSize(preferredSize: Size.fromHeight( 60),
                         child: Container(
                           height: 55,
                           color: Theme.of(context).cardColor,
@@ -340,8 +339,7 @@ class _EditProfileState extends State<EditProfile> {
                                 AppBoldFont(context,msg: "Edit Profile",fontSize: 16),
                                 SizedBox(height: 20),
                                 Container(
-                                    height: 500,
-                                    width: 280,
+                                    height: 450,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(10),
                                         color: Theme.of(context).cardColor,
@@ -350,7 +348,6 @@ class _EditProfileState extends State<EditProfile> {
                                             color: Theme.of(context)
                                                 .primaryColor
                                                 .withOpacity(0.6))),
-                                    margin: EdgeInsets.only(left: 10, right: 30),
                                     child: Column(
                                       children: [
                                         SizedBox(
@@ -365,12 +362,12 @@ class _EditProfileState extends State<EditProfile> {
                                                   child: ClipOval(
                                                       child: profilemodel.userInfoModel?.profilePic != null ?
                                                       Image.network('${profilemodel.userInfoModel?.profilePic}', fit: BoxFit.cover)
-                                                          : Center(child: ThreeArchedCircle(size: 50.0))
+                                                          : Center(child: ThreeArchedCircle(size: 20.0))
                                                   )
                                               ),
                                               Positioned(
-                                                right: 5,
-                                                top: 40,
+                                                right: 3,
+                                                top: 55,
                                                 child: GestureDetector(
                                                   onTap: () => profilemodel.uploadProfileImage(context),
                                                   child: const Icon(
@@ -526,7 +523,7 @@ class _EditProfileState extends State<EditProfile> {
                                         ),
                                         SizedBox(height: 5),
                                         Container(
-                                          margin: EdgeInsets.only(left: 10, right: 10),
+                                          margin: const EdgeInsets.all(10),
                                           child: StreamBuilder(
                                               stream:
                                               validation.validateUserEditProfile,
@@ -534,7 +531,7 @@ class _EditProfileState extends State<EditProfile> {
                                                 return appButton(
                                                     context,
                                                     StringConstant.Save,
-                                                    SizeConfig.screenWidth * 0.85,
+                                                    SizeConfig.screenWidth/1.5,
                                                     50,
                                                     LIGHT_THEME_COLOR,
                                                     WHITE_COLOR,
@@ -562,10 +559,6 @@ class _EditProfileState extends State<EditProfile> {
                                               }),
                                         ),
                                         SizedBox(height: 5),
-                                        confirmButton(context, 50, 260, "Delete Account",
-                                                () {
-                                              profileViewModel.deleteProfile(context);
-                                            }),
 
                                       ],
                                     )),
@@ -576,11 +569,14 @@ class _EditProfileState extends State<EditProfile> {
                            )  :
                           SingleChildScrollView(
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                AppBoldFont(context,msg: "Edit Profile",fontSize: 18),
+                                SizedBox(height: 20),
+                                AppBoldFont(context,msg: "Edit Profile",fontSize: 22),
                                 SizedBox(height: 50),
                                 Container(
-                                    height: 670,
+                                    height: 580,
                                     width: 500,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(20),
@@ -801,13 +797,9 @@ class _EditProfileState extends State<EditProfile> {
                                           }),
                                         ),
                                         SizedBox(height: 20),
-                                        confirmButton(context, 60, 480, "Delete Account",
-                                            () {
-                                          profileViewModel.deleteProfile(context);
-                                        }),
                                       ],
                                     )),
-                                SizedBox(height: 50),
+                                SizedBox(height: 80),
                                 footerDesktop()
                               ],
                             ),
