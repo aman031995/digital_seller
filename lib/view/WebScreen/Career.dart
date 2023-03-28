@@ -366,7 +366,7 @@ class _ContactState extends State<Contact> {
                           ),
                         ),
                         SizedBox(height: 180),
-                        ResponsiveWidget.isMediumScreen(context)?   footerMobile(context):   footerDesktop(),
+                        // ResponsiveWidget.isMediumScreen(context)?   footerMobile(context):   footerDesktop(),
 
                       ],
                     ),

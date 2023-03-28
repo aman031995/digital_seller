@@ -348,7 +348,7 @@ class _FAQState extends State<FAQ> {
                                             "I would like to give feedback.",
                                           ],context),
                                           SizedBox(height:ResponsiveWidget.isMediumScreen(context)?40: 70),
-                                          ResponsiveWidget.isMediumScreen(context)?   footerMobile(context): footerDesktop()
+                                       //   ResponsiveWidget.isMediumScreen(context)?   footerMobile(context): footerDesktop()
                                         ],
                                       ),
 

@@ -800,7 +800,7 @@ class _EditProfileState extends State<EditProfile> {
                                       ],
                                     )),
                                 SizedBox(height: 80),
-                                footerDesktop()
+                               // footerDesktop()
                               ],
                             ),
                           ),

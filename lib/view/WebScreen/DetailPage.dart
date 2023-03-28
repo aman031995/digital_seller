@@ -75,7 +75,7 @@ class _MovieDetailPageState extends State<DetailPage> {
                         MovieDetailTitleSection(
                             isWall: true, movieDetailModel: widget.VideoId,Title: widget.Title,Desc: widget.Desc,),
                       SizedBox(height: 80),
-                      ResponsiveWidget.isMediumScreen(context)? footerMobile(context):footerDesktop(),
+                    //  ResponsiveWidget.isMediumScreen(context)? footerMobile(context):footerDesktop(),
 
                     ],
                   ),

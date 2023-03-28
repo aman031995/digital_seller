@@ -272,7 +272,7 @@ class _PrivacyState extends State<Privacy> {
                                           ),
                                         ),
                                         SizedBox(height: ResponsiveWidget.isMediumScreen(context)?300:600),
-                                        ResponsiveWidget.isMediumScreen(context)? footerMobile(context):footerDesktop(),
+                                       // ResponsiveWidget.isMediumScreen(context)? footerMobile(context):footerDesktop(),
 
                                       ]),
                                 ),

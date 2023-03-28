@@ -84,9 +84,9 @@ class _VideoListPageState extends State<VideoListPage> {
                                      size: 50.0)),
                           ),
                     const SizedBox(height: 70),
-                    ResponsiveWidget.isMediumScreen(context)
-                        ? footerMobile(context)
-                        : const footerDesktop()
+                    // ResponsiveWidget.isMediumScreen(context)
+                    //     ? footerMobile(context)
+                    //     : const footerDesktop()
                   ],
                 )
               : Center(

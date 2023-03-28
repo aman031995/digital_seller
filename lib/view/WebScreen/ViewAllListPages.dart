@@ -383,7 +383,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                                );
                                              }),
                                      SizedBox(height: 80),
-                                           footerDesktop()
+                                   //        footerDesktop()
                                    ],
                                  ),
                                )

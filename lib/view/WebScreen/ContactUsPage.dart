@@ -261,7 +261,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
                       ],
                     ),
                   ),
-                  ResponsiveWidget.isMediumScreen(context)?   footerMobile(context): footerDesktop()
+                //  ResponsiveWidget.isMediumScreen(context)?   footerMobile(context): footerDesktop()
                 ],
               ),
             ),

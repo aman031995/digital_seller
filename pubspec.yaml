@@ -82,6 +82,7 @@ dependencies:
 #  flutter_html_video:
 #  flutter_widget_from_html:
   multilevel_drawer: ^2.0.0
+  sidebarx:
 
 dev_dependencies:
   flutter_test:
