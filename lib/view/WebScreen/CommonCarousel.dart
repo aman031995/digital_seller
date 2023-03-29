@@ -36,14 +36,14 @@ class _CommonCarouselState extends State<CommonCarousel> {
         child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
           return
             homeViewModel.bannerDataModal != null
-              ? ResponsiveWidget.isMediumScreen(context)?carouselImageMobile() :
-          carouselImageWeb()
-              : Container(
-            height: SizeConfig.screenHeight * 0.35,
-            child: Center(
-                child: ThreeArchedCircle( size: 50.0)
-            ),
-          );
+                ? ResponsiveWidget.isMediumScreen(context)?carouselImageMobile() :
+            carouselImageWeb()
+                : Container(
+              height: SizeConfig.screenHeight * 0.35,
+              child: Center(
+                  child: ThreeArchedCircle( size: 50.0)
+              ),
+            );
         }));
     ;
   }
@@ -54,7 +54,8 @@ class _CommonCarouselState extends State<CommonCarousel> {
     return Stack(
       children: [
         Container(
-          height:  620,
+          margin: EdgeInsets.only(left: 15,right: 15),
+          height: SizeConfig.screenHeight/2.2,
           width: SizeConfig.screenWidth,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5)
@@ -80,25 +81,25 @@ class _CommonCarouselState extends State<CommonCarousel> {
           ),
         ),
         Positioned(
-          left: 30,top: 295,
+          left: 30,top:  SizeConfig.screenHeight/4.2,
           child: InkWell(
               child: Image.asset(
-                'images/prev.png',
-                height: 40,
-                width: 30,
-                color:Colors.white54
+                  'images/prev.png',
+                  height: 40,
+                  width: 30,
+                  color:Colors.white54
               ),
               onTap: previous
           ),
         ),
         Positioned(
-          top: 295,right: 30,
+          top:  SizeConfig.screenHeight/4.2,right: 30,
           child: InkWell(
               child: Image.asset(
-                'images/next.png',
-                height: 40,
-                width: 30,
-                color: Colors.white54
+                  'images/next.png',
+                  height: 40,
+                  width: 30,
+                  color: Colors.white54
               ),
               onTap:next
           ),
@@ -118,15 +119,15 @@ class _CommonCarouselState extends State<CommonCarousel> {
           throw 'Could not launch $url';
         }},
       child:
-        Container(
-          height: 600,width: SizeConfig.screenWidth,
-          margin: EdgeInsets.only(left: 0,right: 0,top: 0),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
-          child: Image.network(element.bannerFile?? " ",
+      Container(
+        height: 600,width: SizeConfig.screenWidth,
+        margin: EdgeInsets.only(left: 0,right: 0,top: 0),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
+        child: Image.network(element.bannerFile?? " ",
             fit: BoxFit.fill
-            //height: SizeConfig.screenHeight
-          ),
+          //height: SizeConfig.screenHeight
         ),
+      ),
     )
     )
         .toList();
@@ -160,18 +161,18 @@ class _CommonCarouselState extends State<CommonCarousel> {
         onTap: () async {
           print(current);
           url = '${homeViewModel.bannerDataModal?.bannerList?[current].bannerUrl }';
-            if (await canLaunch(url)) {
-          await launch(url);
+          if (await canLaunch(url)) {
+            await launch(url);
           } else {
-          throw 'Could not launch $url';
-        }},
+            throw 'Could not launch $url';
+          }},
         child: Container(
           margin: EdgeInsets.only(left: 10,right: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
             image: DecorationImage(
-              image: NetworkImage(element.bannerFile ?? ""),
-              fit: BoxFit.fill
+                image: NetworkImage(element.bannerFile ?? ""),
+                fit: BoxFit.fill
             ),
           ),
           // child: Image.network(element.bannerFile ?? "",

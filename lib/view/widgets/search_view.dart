@@ -272,161 +272,174 @@ Widget profile(BuildContext context,setState){
 
 Widget Header(BuildContext context,setState){
   return  Container(
-        height: 55,
-        color: Theme.of(context).cardColor,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(width: 40),
-            Image.asset(AssetsConstants.icLogo,
-                height: 40),
-            Expanded(
-                child: SizedBox(
-                    width:
-                    SizeConfig.screenWidth * .12)),
-            Expanded(
-                child: SizedBox(
-                    width:
-                    SizeConfig.screenWidth * .12)),
-            names == "null"
-                ? Image.asset(AssetsConstants.icSearch,
-                height: 30)
-                : Container(
-              height: 45,
-              width: SizeConfig.screenWidth / 4.2,
-              alignment: Alignment.center,
-              child: AppTextField(
-                  controller: searchController,
-                  maxLine: searchController!
-                      .text.length >
-                      2
-                      ? 2
-                      : 1,
-                  textCapitalization:
-                  TextCapitalization.words,
-                  secureText: false,
-                  floatingLabelBehavior:
-                  FloatingLabelBehavior.never,
-                  maxLength: 30,
-                  labelText:
-                  'Search videos, shorts, products',
-                  keyBoardType:
-                  TextInputType.text,
-                  onChanged: (m) {
-                    isSearch = true;
-                    if (isLogins == true) {
-                      isLogins = false;
-                      setState(() {});
-                    }
-                  },
-                  isTick: null),
+    height: 55,
+    color: Theme.of(context).cardColor,
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: SizedBox(
+              width: SizeConfig.screenWidth * .18),
+        ),
+        Container(
+          decoration: BoxDecoration(
+            border: Border.all(width: 2, color: Theme.of(context).canvasColor),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
+            children: [
+              Container(
+                height: 40,
+                width: SizeConfig.screenWidth / 4.9,
+                alignment: Alignment.center,
+                child: AppTextField(
+                          isSearch: false,
+                    controller: searchController,
+                    maxLine: searchController!.text.length > 2 ? 2 : 1,
+                    textCapitalization:
+                    TextCapitalization.words,
+                    secureText: false,
+                    floatingLabelBehavior:
+                    FloatingLabelBehavior.never,
+                    maxLength: 30,
+                    labelText:
+                    'Search videos, shorts, products',
+                    keyBoardType:
+                    TextInputType.text,
+                    onChanged: (m) {
+                      isSearch = true;
+                      if (isLogins == true) {
+                        isLogins = false;
+                        setState(() {});
+                      }
+                    },
+                    isTick: null),
+              ),
+              Container(width: 2,height: 40,color: Theme.of(context).canvasColor),
+              SizedBox(width: 6),
+              Image.asset(AssetsConstants.icSearch, height: 20, width: 20),
+              SizedBox(width: 6)
+            ],
+          ),
+        ),
+        SizedBox(
+            width: SizeConfig.screenWidth * .18),
+        SizedBox(
+            width: SizeConfig.screenWidth * .02),
+        names == "null"
+            ? OutlinedButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  barrierColor: Colors.black87,
+                  builder:
+                      (BuildContext context) {
+                    return const SignUp();
+                  });
+            },
+            style: ButtonStyle(
+
+                overlayColor: MaterialStateColor
+                    .resolveWith((states) =>
+                Theme
+                    .of(context)
+                    .primaryColor),
+                fixedSize:
+                MaterialStateProperty.all(
+                    Size.fromHeight(35)),
+                side: MaterialStateProperty.all(BorderSide(
+                    color: Theme.of(context).canvasColor,
+
+                    width: 1.5,
+                    style: BorderStyle.solid),
+                )
             ),
-            SizedBox(
-                width: SizeConfig.screenWidth * .02),
-            names == "null"
-                ? OutlinedButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      barrierColor: Colors.black87,
-                      builder:
-                          (BuildContext context) {
-                        return const SignUp();
-                      });
-                },
-                style: ButtonStyle(
-                  overlayColor: MaterialStateColor
-                      .resolveWith((states) =>
-                  Theme
-                      .of(context)
-                      .primaryColor),
-                  fixedSize:
-                  MaterialStateProperty.all(
-                      Size.fromHeight(30)),
-                  shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(
-                              5.0))),
-                ),
-                child: appTextButton(
+            child: Row(
+              children: [
+                Image.asset(
+                    AssetsConstants.icProfile,
+                    width: 20,
+                    height: 20, color: Theme.of(context).canvasColor),
+                appTextButton(
                     context,
                     'SignUp',
                     Alignment.center,
                     Theme
                         .of(context)
                         .canvasColor,
-                    18,
-                    true))
-                : appTextButton(
-                context,
-                names!,
-                Alignment.center,
-                Theme
-                    .of(context)
-                    .canvasColor,
-                18,
-                true,
-                onPressed: () {}),
-            names == "null"
-                ? SizedBox(
-                width: SizeConfig.screenWidth * .01)
-                : const SizedBox(),
-            names == "null"
-                ? OutlinedButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder:
-                          (BuildContext context) {
-                        return const LoginUp();
-                      });
-                },
-                style: ButtonStyle(
-                  overlayColor: MaterialStateColor
-                      .resolveWith((states) =>
-                  Theme
-                      .of(context)
-                      .primaryColor),
-                  fixedSize:
-                  MaterialStateProperty.all(
-                      Size.fromHeight(30)),
-                  shape: MaterialStateProperty.all(
-                      RoundedRectangleBorder(
-                          borderRadius:
-                          BorderRadius.circular(
-                              5.0))),
-                ),
-                child: appTextButton(
-                    context,
-                    'Login',
-                    Alignment.center,
-                    Theme
-                        .of(context)
-                        .canvasColor,
-                    18,
-                    true))
-                : GestureDetector(
-              onTap: () {
-                setState(() {
-                  isLogins = true;
-                  if (isSearch == true) {
-                    isSearch = false;
-                    searchController?.clear();
-                    setState(() {});
-                  }
-                });
-              },
-              child:  Image.asset(
-                AssetsConstants.icProfile,
-                height: 30,
-                color: Theme.of(context).canvasColor,
-              ),
-            ),
-            SizedBox(
-                width: SizeConfig.screenWidth * .02),
-          ],
-        ),
-      );
+                    16,
+                    true),
+              ],
+            ))
+            : appTextButton(
+            context,
+            names!,
+            Alignment.center,
+            Theme
+                .of(context)
+                .canvasColor,
+            18,
+            true,
+            onPressed: () {}),
+        names == "null"
+            ? SizedBox(
+            width: SizeConfig.screenWidth * .01)
+            : const SizedBox(),
+        // names == "null"
+        //     ? OutlinedButton(
+        //     onPressed: () {
+        //       showDialog(
+        //           context: context,
+        //           builder:
+        //               (BuildContext context) {
+        //             return const LoginUp();
+        //           });
+        //     },
+        //     style: ButtonStyle(
+        //       overlayColor: MaterialStateColor
+        //           .resolveWith((states) =>
+        //       Theme
+        //           .of(context)
+        //           .primaryColor),
+        //       fixedSize:
+        //       MaterialStateProperty.all(
+        //           Size.fromHeight(30)),
+        //       shape: MaterialStateProperty.all(
+        //           RoundedRectangleBorder(
+        //               borderRadius:
+        //               BorderRadius.circular(
+        //                   5.0))),
+        //     ),
+        //     child: appTextButton(
+        //         context,
+        //         'Login',
+        //         Alignment.center,
+        //         Theme
+        //             .of(context)
+        //             .canvasColor,
+        //         18,
+        //         true))
+        //     : GestureDetector(
+        //   onTap: () {
+        //     setState(() {
+        //       isLogins = true;
+        //       if (isSearch == true) {
+        //         isSearch = false;
+        //         searchController?.clear();
+        //         setState(() {});
+        //       }
+        //     });
+        //   },
+        //   child:  Image.asset(
+        //     AssetsConstants.icProfile,
+        //     height: 30,
+        //     color: Theme.of(context).canvasColor,
+        //   ),
+        // ),
+        SizedBox(
+            width: SizeConfig.screenWidth * .02),
+      ],
+    ),
+  );
 }

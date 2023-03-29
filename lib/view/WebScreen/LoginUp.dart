@@ -79,7 +79,6 @@ class _LoginUpState extends State<LoginUp> {
                         children: [
                           SizedBox(height: SizeConfig.screenHeight * .02),
                           AppBoldFont(context, msg: 'Login',
-                              color: BLACK_COLOR,
                               fontSize: 18),
                           SizedBox(height: SizeConfig.screenHeight * .02),
                           registerMobileForm(),
@@ -90,9 +89,7 @@ class _LoginUpState extends State<LoginUp> {
                                 context,
                                 StringConstant.forgotPass,
                                 Alignment.centerRight,
-                                Theme
-                                    .of(context)
-                                    .canvasColor, 16,
+                                Theme.of(context).canvasColor, 16,
                                 true, onPressed: () {
                               Navigator.pop(context);
                               showDialog(
@@ -142,9 +139,7 @@ class _LoginUpState extends State<LoginUp> {
                                   fontSize: 16),
                               appTextButton(context, 'Create',
                                   Alignment.bottomRight,
-                                  Theme
-                                      .of(context)
-                                      .canvasColor, 14, true, onPressed: () {
+                                  Theme.of(context).canvasColor, 14, true, onPressed: () {
                                     Navigator.pop(context);
                                     showDialog(
                                         context: context,
@@ -172,14 +167,8 @@ class _LoginUpState extends State<LoginUp> {
                 content: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(width: 2, color: Theme
-                            .of(context)
-                            .primaryColor
-                            .withOpacity(0.6)),
-                        color: Theme
-                            .of(context)
-                            .cardColor
-                            .withOpacity(0.8)),
+                        border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.4)),
+                        color: Theme.of(context).cardColor.withOpacity(0.8)),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center, children: [
                       Container(
@@ -196,10 +185,9 @@ class _LoginUpState extends State<LoginUp> {
                       ),
                       SingleChildScrollView(
                         child: Container(
-                          margin: const EdgeInsets.only(left: 50, right: 50),
+                          margin:  EdgeInsets.only(left: 50, right: 50),
                           height: SizeConfig.screenHeight / 1.35,
                           decoration: const BoxDecoration(
-
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(20),
                                   bottomRight: Radius.circular(20))),
@@ -208,23 +196,19 @@ class _LoginUpState extends State<LoginUp> {
                             children: [
                               SizedBox(height: SizeConfig.screenHeight * .05),
                               AppBoldFont(context, msg: 'Login',
-                                  color: BLACK_COLOR,
-                                  fontSize: 30),
+                                  fontSize: 22),
                               SizedBox(height: SizeConfig.screenHeight * .02),
                               AppRegularFont(
-                                  context,
-                                  msg: "Enter your credentials to continue with us.",
+                                  context, msg: "Enter your credentials to continue with us.",
                                   fontSize: 18),
                               registerForm(),
                               Container(
-                                margin: const EdgeInsets.only(left: 0, right: 10),
+                                margin: const EdgeInsets.only(left: 0, right: 8),
                                 child: appTextButton(
                                     context,
                                     StringConstant.forgotPass,
                                     Alignment.centerRight,
-                                    Theme
-                                        .of(context)
-                                        .canvasColor, 16,
+                                    Theme.of(context).canvasColor, 16,
                                     true, onPressed: () {
                                   Navigator.pop(context);
                                   showDialog(
@@ -241,12 +225,10 @@ class _LoginUpState extends State<LoginUp> {
                                     return appButton(
                                         context,
                                         'Login',
-                                        SizeConfig.screenWidth / 4,
-                                        60.0,
+                                        SizeConfig.screenWidth / 4.2,
+                                        55.0,
                                         LIGHT_THEME_COLOR,
-                                        Theme
-                                            .of(context)
-                                            .canvasColor,
+                                        Theme.of(context).canvasColor,
                                         18,
                                         10,
                                         snapshot.data != true ? false : true,
@@ -261,19 +243,14 @@ class _LoginUpState extends State<LoginUp> {
                                   }),
                               SizedBox(height: SizeConfig.screenHeight * .03),
                               viewmodel.appConfigModel?.androidConfig?.socialLogin != null ? socialLoginView(socialVM, viewmodel) : Container(),
-
                               SizedBox(height: SizeConfig.screenHeight * .03),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  AppRegularFont(
-                                      context, msg: 'Already have an account?',
-                                      color: TEXT_COLOR),
+                                  AppRegularFont(context, msg: StringConstant.dontHaveAccount),
                                   appTextButton(
                                       context, 'Create', Alignment.bottomRight,
-                                      Theme
-                                          .of(context)
-                                          .canvasColor, 16, true, onPressed: () {
+                                      Theme.of(context).primaryColor, 16, true, onPressed: () {
                                     Navigator.pop(context);
                                     showDialog(
                                         context: context,
@@ -345,7 +322,7 @@ class _LoginUpState extends State<LoginUp> {
                   },
                   onSubmitted: (m) {});
             }),
-        const SizedBox(height: 15),
+       SizedBox(height: 15),
       ],
     );
   }
@@ -418,7 +395,7 @@ class _LoginUpState extends State<LoginUp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                width: SizeConfig.screenWidth * 0.13,
+                width: SizeConfig.screenWidth * 0.08,
                 child: const Divider(
                   color: BLACK_COLOR,
                 ),
@@ -431,7 +408,7 @@ class _LoginUpState extends State<LoginUp> {
                     fontSize: 14),
               ),
               SizedBox(
-                width: SizeConfig.screenWidth * 0.13,
+                width: SizeConfig.screenWidth * 0.08,
                 child: const Divider(
                   color: BLACK_COLOR,
                 ),
@@ -453,29 +430,26 @@ class _LoginUpState extends State<LoginUp> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
-                width: SizeConfig.screenWidth * 0.09,
-                child: const Divider(
-                  color: BLACK_COLOR,
+                width: SizeConfig.screenWidth * 0.05,
+                child: Divider(
+                  color: Theme.of(context).canvasColor
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 child: AppMediumFont(
                     context,msg: StringConstant.orContinueWith,
-                    color: TEXT_COLOR,
                     fontSize: 14),
               ),
-              Expanded(
-                child: SizedBox(
-                  width: SizeConfig.screenWidth * 0.09,
-                  child: const Divider(
-                    color: BLACK_COLOR,
-                  ),
+              SizedBox(
+                width: SizeConfig.screenWidth * 0.05,
+                child:  Divider(
+                    color: Theme.of(context).canvasColor
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 30),
           SocialLoginView(socialLoginViewModel: socialVM, homeViewModel: homeViewModel)
 
         ],

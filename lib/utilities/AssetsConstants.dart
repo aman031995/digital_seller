@@ -2,7 +2,7 @@ class AssetsConstants {
   static String ic_splashScreen = "images/ic_splashScreen.png";
   static String icLogo = "images/app_logo.png";
   static String icFashion = "images/ic_fashion.png";
-  static String icSearch="images/ic_search.png";
+  static String icSearch="images/union.png";
   static String icLogin="images/login.png";
   static String icSignup="images/signup.png";
   static String icplay="images/play.png";
@@ -13,7 +13,7 @@ class AssetsConstants {
   static String icError = "images/ic_error.png";
   static String icBack = "images/ic_Back.png";
   static String icGoogle = "images/ic_google.png";
-  static String icFacebook = "images/ic_facebook.png";
+  static String icFacebook = "images/ic_fb.png";
   static String icApple = "images/ic_apple.png";
 
 

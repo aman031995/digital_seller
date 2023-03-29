@@ -15,6 +15,7 @@ class AppTextField extends StatefulWidget {
   bool? isShowPassword = false;
   bool? isVerifyNumber = false;
   String? labelText;
+  bool? isSearch=true;
   bool? secureText;
   bool? isShowCountryCode;
   String? prefixText;
@@ -45,6 +46,7 @@ class AppTextField extends StatefulWidget {
         this.prefixText,
         this.onSubmitted,
         this.isError,
+        this.isSearch,
         this.keyBoardType,
         this.maxLength,
         this.isShowPassword,
@@ -94,7 +96,26 @@ class _CustomTextFieldState extends State<AppTextField> {
                   color: widget.isEnable == false ?Theme.of(context).primaryColor.withOpacity(0.6) : Theme.of(context).canvasColor,
                   fontSize: ResponsiveWidget.isMediumScreen(context)?16:18),
               onSubmitted: widget.onSubmitted,
-              decoration: new InputDecoration(
+              decoration:widget.isSearch==false?
+
+              InputDecoration(
+                  errorText: widget.errorText,
+                  floatingLabelBehavior: widget.floatingLabelBehavior,
+                  errorStyle: CustomTextStyle.textFormFieldInterMedium
+                      .copyWith(color: RED_COLOR, fontSize: 12),
+                  errorMaxLines: 3,
+                  isDense: true,
+                  labelText: widget.labelText,
+                  contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+                  labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
+                      color: widget.isColor == true ? Theme.of(context).canvasColor.withOpacity(0.4) : Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 17),
+                  prefixText: widget.prefixText,
+                  suffixStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(color: TEXT_COLOR, fontSize: 17),
+                  prefixStyle: TextStyle(color: TEXT_COLOR, fontSize: 20),
+                border: InputBorder.none
+              ):
+
+              InputDecoration(
                 errorText: widget.errorText,
                 floatingLabelBehavior: widget.floatingLabelBehavior,
                 errorStyle: CustomTextStyle.textFormFieldInterMedium
@@ -108,7 +129,9 @@ class _CustomTextFieldState extends State<AppTextField> {
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   borderSide: BorderSide(color: RED_COLOR, width: 2),
                 ),
-                enabledBorder: OutlineInputBorder(
+                enabledBorder:
+
+                OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                   borderSide: BorderSide(color: Theme.of(context).canvasColor.withOpacity(0.4), width: 2),
                 ),
@@ -141,16 +164,11 @@ class _CustomTextFieldState extends State<AppTextField> {
                     onPressed: widget.verifySubmit, child: Text('Verify'))
                     : null,
                 labelText: widget.labelText,
-                contentPadding:
-                EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+                contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
                 labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
-                    color: widget.isColor == true
-                        ? Theme.of(context).canvasColor.withOpacity(0.4)
-                        : Theme.of(context).canvasColor.withOpacity(0.4),
-                    fontSize: 17),
+                    color: widget.isColor == true ? Theme.of(context).canvasColor.withOpacity(0.4) : Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 17),
                 prefixText: widget.prefixText,
-                suffixStyle: CustomTextStyle.textFormFieldInterMedium
-                    .copyWith(color: TEXT_COLOR, fontSize: 17),
+                suffixStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(color: TEXT_COLOR, fontSize: 17),
                 prefixStyle: TextStyle(color: TEXT_COLOR, fontSize: 20),
               ),
               keyboardType: widget.keyBoardType,
