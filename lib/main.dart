@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
-import 'package:tycho_streams/utilities/AppToast.dart';
 import 'package:tycho_streams/utilities/route_service/routes.dart';
 import 'package:tycho_streams/view/WebScreen/EditProfile.dart';
 import 'package:tycho_streams/view/WebScreen/HomeViewPage.dart';
@@ -16,6 +15,7 @@ import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/repository/subscription_provider.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/CustomPlayer/YoutubePlayer/CommonWidget.dart';
+
 import 'package:tycho_streams/view/WebScreen/ContactUsPage.dart';
 import 'package:tycho_streams/view/WebScreen/DetailPage.dart';
 import 'package:tycho_streams/view/WebScreen/FAQ.dart';
@@ -27,6 +27,8 @@ import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 import 'package:tycho_streams/viewmodel/profile_view_model.dart';
 import 'package:tycho_streams/viewmodel/sociallogin_view_model.dart';
 import 'package:url_strategy/url_strategy.dart';
+
+import 'view/WebScreen/contact_us.dart';
 String? image;
 String? names;
 bool isLogin = false;
@@ -77,16 +79,15 @@ class _MyAppState extends State<MyApp> {
           },
         ),
         GoRoute(
+          path: '/about_us_page',
           name: RoutesName.ContactUs,
-          path: '/ContactUs',
           pageBuilder: (context, state) {
             return MaterialPage(child: ContactUs());
           },
-
         ),
         GoRoute(
           name: RoutesName.FAQ,
-          path: '/FAQ',
+          path: '/faq',
           pageBuilder: (context, state) {
             return MaterialPage(child: FAQ());
           },
@@ -100,14 +101,14 @@ class _MyAppState extends State<MyApp> {
         // ),
         GoRoute(
           name: RoutesName.Privacy,
-          path: '/privacy-policy',
+          path: '/privacy_terms',
           pageBuilder: (context, state) {
             return MaterialPage(child: Privacy());
           },
         ),
         GoRoute(
           name: RoutesName.Terms,
-          path: '/terms-and-conditions',
+          path: '/terms_and_conditions',
           pageBuilder: (context, state) {
             return MaterialPage(child: Terms(
             ));
@@ -115,14 +116,14 @@ class _MyAppState extends State<MyApp> {
         ),
         GoRoute(
           name: RoutesName.EditProfille,
-          path: '/EditProfile',
+          path: '/profile',
           pageBuilder: (context, state) {
             return MaterialPage(child: EditProfile());
           },
         ),
         GoRoute(
           name: RoutesName.DeatilPage,
-          path: '/MovieDetailPage',
+          path: '/movie_detail_page',
           pageBuilder: (context, state) {
             state.queryParams.forEach((key, value) {
               print("$key : $value");
@@ -153,7 +154,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GoRoute(
           name: RoutesName.seaAll,
-          path: '/seaAll',
+          path: '/seeall',
           pageBuilder: (context, state) {
             state.queryParams.forEach((key, value) {
               print("$key : $value");

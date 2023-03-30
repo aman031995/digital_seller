@@ -174,6 +174,8 @@ class ProfileRepository {
       });
     });
   }
+
+
   Future<Result?> contactUsApi(BuildContext context, String name, String email,
       String query, NetworkResponseHandler responseHandler) async {
     AppNetwork appNetwork = AppNetwork();

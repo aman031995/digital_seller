@@ -43,4 +43,5 @@ class NetworkConstants{
   static String getCartCount = 'cart-item-count?userId={USER_ID}&appId={APP_ID}';
   static String getCheckOutData = 'check-out?userId={USER_ID}&appId={APP_ID}';
   static String addNewAddress = 'add-address';
+  static String kContactUs = "add-contactUs";
 }
