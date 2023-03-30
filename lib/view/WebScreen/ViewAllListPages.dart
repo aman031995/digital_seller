@@ -261,7 +261,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                     )),
                 body: Scaffold(
                     key: _scaffoldKey,
-                drawer: AppMenu(homeViewModel: homeViewModel),
+                // drawer: AppMenu(homeViewModel: homeViewModel),
                 body: ResponsiveWidget.isMediumScreen(context)?  Stack(
                   children: [
                     homeViewModel.homePageDataModel != null

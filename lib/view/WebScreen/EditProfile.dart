@@ -325,7 +325,7 @@ class _EditProfileState extends State<EditProfile> {
                     body:
                     Scaffold(
                       key: _scaffoldKey,
-                      drawer: AppMenu(homeViewModel: homemodel),
+                      // drawer: AppMenu(homeViewModel: homemodel),
                       body: Stack(
                         children: [
                           ResponsiveWidget.isMediumScreen(context)
@@ -849,18 +849,15 @@ class _EditProfileState extends State<EditProfile> {
                       _scaffoldKey.currentState?.openEndDrawer();
 
                     },
-                    child: Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                            color: Color(0xff001726),
-                            borderRadius: BorderRadius.circular(2)
-                        ),
-                        child: Image.asset(
-                          'images/ic_menu.png',
+                    child: IconButton(
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
+                        icon: Image.asset(
+                          AssetsConstants.icBack,
                           height: 25,
                           width: 25,
-                        ))),
+                        )),),
                 Container(
                     height: 45,
                     width: SizeConfig.screenWidth * 0.58,

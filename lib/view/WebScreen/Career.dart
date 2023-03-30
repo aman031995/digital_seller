@@ -233,7 +233,7 @@ class _ContactState extends State<Contact> {
                     ],
                   ),
                 )),
-            drawer: AppMenu(homeViewModel: viewmodel),
+            // drawer: AppMenu(homeViewModel: viewmodel),
             body:  GestureDetector(
               onTap: () {
                 if (isSearch == true) {
@@ -464,17 +464,15 @@ class _ContactState extends State<Contact> {
                       _scaffoldKey.currentState?.openEndDrawer();
 
                     },
-                    child: Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Color(0xff001726),
-                        ),
-                        child: Image.asset(
-                          'images/ic_menu.png',
+                    child: IconButton(
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
+                        icon: Image.asset(
+                          AssetsConstants.icBack,
                           height: 25,
                           width: 25,
-                        ))),
+                        )),),
                 Container(
                     height: 45,
                     width: SizeConfig.screenWidth * 0.58,

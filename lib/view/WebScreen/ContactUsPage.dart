@@ -69,7 +69,7 @@ class _AboutUsPageState extends State<AboutUsPage> {
       },
       child: Scaffold(
         key: _scaffoldKey,
-      drawer: AppMenu(homeViewModel: viewmodel),
+      // drawer: AppMenu(homeViewModel: viewmodel),
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar:   ResponsiveWidget.isMediumScreen(context)
             ? homePageTopBar()
@@ -305,17 +305,17 @@ class _AboutUsPageState extends State<AboutUsPage> {
                       _scaffoldKey.currentState?.openEndDrawer();
 
                     },
-                    child: Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Color(0xff001726),
-                        ),
-                        child: Image.asset(
-                          'images/ic_menu.png',
-                          height: 25,
-                          width: 25,
-                        ))),
+                    child: IconButton(
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                       icon: Image.asset(
+                        AssetsConstants.icBack,
+                        height: 25,
+                        width: 25,
+                      )),
+                    ),
+
                 Container(
                     height: 45,
                     width: SizeConfig.screenWidth * 0.58,

@@ -98,14 +98,14 @@ class _MyAppState extends State<MyApp> {
         ),
         GoRoute(
           name: RoutesName.Privacy,
-          path: '/Privacy',
+          path: '/privacy-policy',
           pageBuilder: (context, state) {
             return MaterialPage(child: Privacy());
           },
         ),
         GoRoute(
           name: RoutesName.Terms,
-          path: '/Terms',
+          path: '/terms-and-conditions',
           pageBuilder: (context, state) {
             return MaterialPage(child: Terms(
             ));
