@@ -25,6 +25,8 @@ import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 import 'package:tycho_streams/viewmodel/profile_view_model.dart';
 import 'package:tycho_streams/viewmodel/sociallogin_view_model.dart';
 import 'package:url_strategy/url_strategy.dart';
+
+import 'view/WebScreen/contact_us.dart';
 String? image;
 String? names;
 bool isLogin = false;
@@ -76,36 +78,36 @@ class _MyAppState extends State<MyApp> {
         ),
         GoRoute(
           name: RoutesName.AboutUsPage,
-          path: '/AboutUsPage',
+          path: '/about_us_page',
           pageBuilder: (context, state) {
-            return MaterialPage(child: AboutUsPage());
+            return MaterialPage(child: ContactUs());
           },
 
         ),
         GoRoute(
           name: RoutesName.FAQ,
-          path: '/FAQ',
+          path: '/faq',
           pageBuilder: (context, state) {
             return MaterialPage(child: FAQ());
           },
         ),
         GoRoute(
           name: RoutesName.Contact,
-          path: '/Contact',
+          path: '/contact_us',
           pageBuilder: (context, state) {
-            return MaterialPage(child: Contact());
+            return MaterialPage(child: ContactUs());
           },
         ),
         GoRoute(
           name: RoutesName.Privacy,
-          path: '/privacy-policy',
+          path: '/privacy_terms',
           pageBuilder: (context, state) {
             return MaterialPage(child: Privacy());
           },
         ),
         GoRoute(
           name: RoutesName.Terms,
-          path: '/terms-and-conditions',
+          path: '/terms_and_conditions',
           pageBuilder: (context, state) {
             return MaterialPage(child: Terms(
             ));
@@ -113,14 +115,14 @@ class _MyAppState extends State<MyApp> {
         ),
         GoRoute(
           name: RoutesName.EditProfille,
-          path: '/EditProfile',
+          path: '/profile',
           pageBuilder: (context, state) {
             return MaterialPage(child: EditProfile());
           },
         ),
         GoRoute(
           name: RoutesName.DeatilPage,
-          path: '/MovieDetailPage',
+          path: '/movie_detail_page',
           pageBuilder: (context, state) {
             state.queryParams.forEach((key, value) {
               print("$key : $value");
@@ -137,7 +139,7 @@ class _MyAppState extends State<MyApp> {
         ),
         GoRoute(
           name: RoutesName.seaAll,
-          path: '/Seall',
+          path: '/seeall',
           pageBuilder: (context, state) {
             state.queryParams.forEach((key, value) {
               print("$key : $value");

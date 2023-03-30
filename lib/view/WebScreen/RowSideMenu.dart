@@ -235,8 +235,8 @@ class _SidebarXExampleAppState extends State<SidebarXExampleApp> {
         //      Navigator.pushNamed(context, routePath, arguments: {'title' : appMenu.title});
         //    }
         //  });
-      } else if (appMenu.url?.contains('faqs') == true){
-        Router.neglect(context, () =>  GoRouter.of(context).pushNamed(RoutesName.FAQ));
+      } else if (appMenu.url?.contains('contact_us') == true){
+        Router.neglect(context, () =>  GoRouter.of(context).pushNamed(RoutesName.Contact));
         // Navigator.push(
         //     context,
         //     MaterialPageRoute(
