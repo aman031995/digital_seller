@@ -5,8 +5,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tycho_streams/model/data/HomePageDataModel.dart';
-import 'package:tycho_streams/utilities/route_service/routes.dart';
 import 'package:tycho_streams/view/WebScreen/EditProfile.dart';
 import 'package:tycho_streams/view/WebScreen/HomeViewPage.dart';
 import 'package:tycho_streams/view/WebScreen/MovieListCommonWidget.dart';

@@ -53,7 +53,7 @@ class _CardMovieHomeState extends State<CardMovieHome> {
       bool _heigth = isHovered;
       return
       Container(
-      width:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth/1.6 : SizeConfig.screenHeight * 0.27,
+      width:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth/1.6 : SizeConfig.screenWidth/5,
       padding: EdgeInsets.only(left:_heigth?0: 10,right:_heigth?0: 10,top:_heigth?0: 10,bottom:_heigth?0: 10),
       child: InkWell(
         onTap: () async{
