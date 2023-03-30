@@ -96,7 +96,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     appBar: homePageTopBar(),
                     body: Scaffold(
-                        key: _scaffoldKey,
+                        // key: _scaffoldKey,
                         // drawer: AppMenu(homeViewModel: homeViewModel),
                         body: Stack(
                           children: [
@@ -116,7 +116,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                                     SliverGridDelegateWithFixedCrossAxisCount(
                                                         crossAxisCount: 2,
                                                         crossAxisSpacing: 0.0,
-                                                        mainAxisSpacing: 0.0,
+                                                        mainAxisSpacing: 12.0,
                                                         childAspectRatio: 1.8),
                                                 itemCount: homeViewModel
                                                     .homePageDataModel!
@@ -277,21 +277,19 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
               : Container();
         }));
   }
-
   homePageTopBar() {
     return AppBar(
       elevation: 0,
       automaticallyImplyLeading: false,
       backgroundColor: Theme.of(context).cardColor,
       title: Row(children: <Widget>[
-        Image.asset(AssetsConstants.icLogo,
-            width: ResponsiveWidget.isMediumScreen(context) ? 35 : 45,
-            height: ResponsiveWidget.isMediumScreen(context) ? 35 : 45),
-        SizedBox(width: SizeConfig.screenWidth * 0.04),
-        AppBoldFont(context,
-            msg: widget.title ?? "",
-            fontSize: ResponsiveWidget.isMediumScreen(context) ? 18 : 20,
-            fontWeight: FontWeight.w700),
+        GestureDetector(
+            onTap: (){
+              GoRouter.of(context).pushNamed(RoutesName.home);
+            },
+            child: Image.asset(AssetsConstants.icLogo,width: ResponsiveWidget.isMediumScreen(context) ? 35:45, height:ResponsiveWidget.isMediumScreen(context) ? 35: 45)),
+        SizedBox(width: SizeConfig.screenWidth*0.04),
+        AppBoldFont(context,msg: widget.title ?? "",fontSize:ResponsiveWidget.isMediumScreen(context) ? 16: 20, fontWeight: FontWeight.w700),
       ]),
       actions: [
         GestureDetector(
@@ -307,17 +305,18 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
           },
           child: Row(
             children: [
-              appTextButton(context, names!, Alignment.center,
-                  Theme.of(context).canvasColor, 18, true),
+              appTextButton(context, names!, Alignment.center, Theme.of(context).canvasColor,ResponsiveWidget.isMediumScreen(context)
+                  ?16: 18, true),
               Image.asset(
                 AssetsConstants.icProfile,
-                height: 30,
+                height:ResponsiveWidget.isMediumScreen(context)
+                    ?20: 30,
                 color: Theme.of(context).canvasColor,
               ),
             ],
           ),
         ),
-        SizedBox(width: SizeConfig.screenWidth * 0.04),
+        SizedBox(width: SizeConfig.screenWidth*0.04),
       ],
     );
   }

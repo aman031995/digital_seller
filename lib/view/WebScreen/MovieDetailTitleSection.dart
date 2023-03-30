@@ -93,7 +93,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
       children: [
         titleBar('More Like This', homeViewModel),
         Container(
-          height: ResponsiveWidget.isMediumScreen(context) ? 200 : 270,
+          height: ResponsiveWidget.isMediumScreen(context) ? 180 : 270,
           width: SizeConfig.screenWidth,
           child: homeViewModel.homePageDataModel?.videoList != null
               ? ListView.builder(
@@ -123,11 +123,8 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
                               bool _heigth = isHovered;
                               return Container(
                                 width: ResponsiveWidget.isMediumScreen(context)
-                                    ? 250
+                                    ? 220
                                     : SizeConfig.screenWidth * 0.20,
-                                height: ResponsiveWidget.isMediumScreen(context)
-                                    ? 200
-                                    : SizeConfig.screenHeight * 5.07,
                                 padding: EdgeInsets.only(
                                     right: _heigth ? 1 : 10,
                                     top: _heigth ? 1 : 10,

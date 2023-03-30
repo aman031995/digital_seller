@@ -36,7 +36,6 @@ class HomePageWeb extends StatefulWidget {
 class _HomePageWebState extends State<HomePageWeb> {
   // final _controller = SidebarXController(selectedIndex: 0);
   HomeViewModel homeViewModel = HomeViewModel();
-  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   final _key = GlobalKey<ScaffoldState>();
 
   ScrollController _scrollController = ScrollController();
@@ -70,8 +69,8 @@ class _HomePageWebState extends State<HomePageWeb> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final isSmallScreen = MediaQuery.of(context).size.width < 1200;
-    final authVM = Provider.of<AuthViewModel>(context);
+    // final isSmallScreen = MediaQuery.of(context).size.width < 1200;
+    // final authVM = Provider.of<AuthViewModel>(context);
     return ChangeNotifierProvider(
         create: (BuildContext context) => homeViewModel,
         child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
@@ -84,7 +83,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                   context: context,
                   barrierColor: Colors.black87,
                   builder: (BuildContext context) {
-                    return const SignUp();
+                    return const LoginUp();
                   })
                   : null;
               if (isSearch == true) {
@@ -105,6 +104,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                   preferredSize: Size.fromHeight(60),
                   child: Header(context,setState)),
               drawer: Drawer(
+                width: SizeConfig.screenWidth/2,
                   backgroundColor: Theme.of(context).cardColor,
                   child: viewmodel.appMenuModel != null
                       ? Column(
@@ -217,11 +217,6 @@ class _HomePageWebState extends State<HomePageWeb> {
                       : Center(
                       child: CircularProgressIndicator(color: Theme.of(context).primaryColor))),
               body: Scaffold(
-
-                  key: _scaffoldKey,
-                  // drawer: ResponsiveWidget.isMediumScreen(context)
-                  //     ?AppMenu(homeViewModel: viewmodel)
-                  //     :AppMenu(homeViewModel: viewmodel),
                   body: Stack(
                     children: [
                       SingleChildScrollView(
@@ -263,58 +258,35 @@ class _HomePageWebState extends State<HomePageWeb> {
       if (appMenu.title?.contains('Share') == true) {
         Share.share(appMenu.url ?? '');
       } else if (appMenu.url?.contains('push_notification') == true) {
-        // getPath(appMenu.url ?? '', RoutesName.pushNotification).then((routePath) {
-        //   if (routePath != null) {
-        //     Navigator.pushNamed(context, routePath, arguments: {'title': appMenu.title});
-        //   }
-        // });
+
       } else if (appMenu.url?.contains('terms-and-conditions') == true) {
-        Router.neglect(context, () =>  GoRouter.of(context).pushNamed(RoutesName.Terms));
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (BuildContext context) => AppWebView(url: appMenu.url, pageName: appMenu.title)));
+         GoRouter.of(context).pushNamed(RoutesName.Terms);
+
       } else if (appMenu.url?.contains('privacy-policy') == true) {
-        Router.neglect(context, () => GoRouter.of(context).pushNamed(RoutesName.Privacy));
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (BuildContext context) => AppWebView(url: appMenu.url, pageName: appMenu.title)));
+        GoRouter.of(context).pushNamed(RoutesName.Privacy);
       } else if (appMenu.url?.contains('profile') == true) {
-        Router.neglect(context, () => GoRouter.of(context).pushNamed(RoutesName.EditProfille));
+        GoRouter.of(context).pushNamed(RoutesName.EditProfille);
         // getPath(appMenu.url ?? '', RoutesName.profilePage).then((routePath) {
         //   if (routePath != null) {
+        // Router.neglect(context, () => GoRouter.of(context).pushNamed(RoutesName.EditProfille));
         //     Navigator.pushNamed(context, routePath, arguments: {'title': appMenu.title, 'isBack' : true});
         //   }
         // });
       } else if (appMenu.url?.contains('bottom_navigation') == true){
-        Router.neglect(context, () =>  GoRouter.of(context).pushNamed(RoutesName.home));
-        // getPath(appMenu.url ?? '', RoutesName.bottomNavigation).then((routePath) {
-        //   if (routePath != null) {
-        //     // Navigator.pushNamed(context, routePath);
-        //     Navigator.of(context)
-        //         .pushNamedAndRemoveUntil(routePath, (Route<dynamic> route) => false);
-        //   }
-        // });
+     GoRouter.of(context).pushNamed(RoutesName.home);
+
       } else if (appMenu.url?.contains('update_user') == true){
-        Router.neglect(context, () => GoRouter.of(context).pushNamed(RoutesName.EditProfille));
-        // getPath(appMenu.url ?? '', RoutesName.editProfile).then((routePath) {
-        //    if (routePath != null) {
-        //      Navigator.pushNamed(context, routePath, arguments: {'title' : appMenu.title});
-        //    }
-        //  });
+      GoRouter.of(context).pushNamed(RoutesName.EditProfille);
+
       } else if (appMenu.url?.contains('faqs') == true){
-        Router.neglect(context, () =>  GoRouter.of(context).pushNamed(RoutesName.FAQ));
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (BuildContext context) => AppWebView(url: appMenu.url, pageName: appMenu.title)));
+         GoRouter.of(context).pushNamed(RoutesName.FAQ);
+
       } else if (appMenu.url?.contains('notify_setting') == true){
-        // getPath(appMenu.url ?? '', RoutesName.notifysetting).then((routePath) {
-        //   if (routePath != null) {
-        //     Navigator.pushNamed(context, routePath, arguments: {'title' : appMenu.title});
-        //   }
-        // });
+
+      }
+      else if(appMenu.url?.contains('contact_us')==true){
+        GoRouter.of(context).pushNamed(RoutesName.ContactUs);
+
       }
     }
   }
@@ -341,9 +313,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                         });
                       }
     names == "null"
-    ? showDialog(context: context, barrierColor: Colors.black87, builder: (BuildContext context) {return const SignUp();}):
+               ? showDialog(context: context, barrierColor: Colors.black87, builder: (BuildContext context) {return const LoginUp();}):
 
-    _key.currentState?.isDrawerOpen == false?
+                 _key.currentState?.isDrawerOpen == false?
                         _key.currentState?.openDrawer()
                      :
                         _key.currentState?.openEndDrawer() ;
@@ -360,7 +332,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                     )),
                 Container(
                     height: 45,
-                    width: SizeConfig.screenWidth * 0.58,
+                    width: SizeConfig.screenWidth * 0.50,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       border: Border.all(color: TRANSPARENT_COLOR, width: 1.0),
@@ -379,34 +351,73 @@ class _HomePageWebState extends State<HomePageWeb> {
                         },
                         isTick: null)),
                 names == "null"
-                    ? ElevatedButton(onPressed: (){
-                  showDialog(
-                                context: context,
-                                barrierColor: Colors.black87,
-                                builder:
-                                    (BuildContext context) {
-                                  return const SignUp();
-                                });
+                    ?
+                OutlinedButton(
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          barrierColor: Colors.black87,
+                          builder:
+                              (BuildContext context) {
+                            return const LoginUp();
+                          });
+                    },
+                    style: ButtonStyle(
 
-                }, child:Text(
-                  "Sign Up",style: TextStyle(
-                  color: Theme.of(context).canvasColor,fontSize: 16,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily
-                ),
-                ),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).cardColor),
-          overlayColor: MaterialStateColor
-              .resolveWith((states) =>
-          Theme.of(context).primaryColor),
-          fixedSize:
-          MaterialStateProperty.all(Size(90, 35)),
-          shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                  borderRadius:
-                  BorderRadius.circular(
-                      5.0
-                  )))
-                ))
+                        overlayColor: MaterialStateColor
+                            .resolveWith((states) =>
+                        Theme
+                            .of(context)
+                            .primaryColor),
+                        fixedSize:
+                        MaterialStateProperty.all(
+                            Size.fromHeight(35)),
+                        side: MaterialStateProperty.all(BorderSide(
+                            color: Theme.of(context).canvasColor,
+
+                            width: 1,
+                            style: BorderStyle.solid),
+                        )
+                    ),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                            AssetsConstants.icProfile,
+                            width: 20,
+                            height: 20, color: Theme.of(context).canvasColor),
+                        appTextButton(
+                            context,
+                            'SignIn',
+                            Alignment.center,
+                            Theme
+                                .of(context)
+                                .canvasColor,
+                            16,
+                            true),
+                      ],
+                    ))
+                    :
+                appTextButton(
+                    context,
+                    names!,
+                    Alignment.center,
+                    Theme
+                        .of(context)
+                        .canvasColor,
+                    16,
+                    true,
+                    onPressed: () {
+                      setState(() {
+                        isLogins = true;
+                        if (isSearch == true) {
+                          isSearch = false;
+                          searchController?.clear();
+                          setState(() {});
+                        }
+                      });
+                    }),
+                names == "null"
+                    ? Container()
                     : GestureDetector(
                   onTap: () {
                     setState(() {
@@ -418,22 +429,26 @@ class _HomePageWebState extends State<HomePageWeb> {
                       }
                     });
                   },
-                  child: Row(
-                    children: [
-                      SizedBox(width: SizeConfig.screenWidth*0.1),
-                    Image.asset(
-                       AssetsConstants.icProfile,
-                        height: 30,
-                      color: Theme.of(context).canvasColor,
-                      ),
-                    //   CachedNetworkImage(
-                    //     placeholder: (context, url) => const CircularProgressIndicator(),
-                    //     imageUrl: image!,
-                    //     height: 30,
-                    //   )
-                    ],
+                  child:  Image.asset(
+                    AssetsConstants.icProfile,
+                    height: 20,
+                    color: Theme.of(context).canvasColor,
                   ),
                 ),
+                SizedBox(
+                    width: SizeConfig.screenWidth * .02),
+                GestureDetector(
+                  onTap: () {
+                  },
+                  child:  Image.asset(
+                    "images/ic_dots.png",
+                    height: 20,
+                    color: Theme.of(context).canvasColor,
+                  ),
+                ),
+
+                SizedBox(
+                    width: SizeConfig.screenWidth * .02),
               ]))
         ]));
   }

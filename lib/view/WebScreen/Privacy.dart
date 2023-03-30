@@ -40,7 +40,7 @@ class _PrivacyState extends State<Privacy> {
   @override
   void initState() {
     profileViewModel.getTermsPrivacy(context);
-    homeViewModel.getAppConfigData(context);
+    // homeViewModel.getAppConfigData(context);
     searchController?.addListener(() {
       homeViewModel.getSearchData(
           context, '${searchController?.text}', pageNum);
@@ -77,170 +77,8 @@ class _PrivacyState extends State<Privacy> {
 
 
                         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                        appBar:  ResponsiveWidget.isMediumScreen(context)
-                            ? homePageTopBar()
-                            :
-                        PreferredSize(preferredSize: Size.fromHeight( 60),
-                            child: Container(
-                              height: 55,
-                              color: Theme.of(context).cardColor,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(width: 40),
-                                  Image.asset(AssetsConstants.icLogo, height: 40),
-                                  Expanded(child: SizedBox(width: SizeConfig.screenWidth * .12)),
-                                  AppButton(context, 'Home', onPressed: () {
-                                    GoRouter.of(context)
-                                        .pushNamed(RoutesName.home);
-                                  }),
-                                  SizedBox(width: SizeConfig.screenWidth * .02),
-                                  AppButton(context, 'Contact US',
-                                      onPressed: () {
-                                        GoRouter.of(context).pushNamed(
-                                          RoutesName.Contact,
-                                        );
-                                      }),
-                                  Expanded(
-                                      child: SizedBox(
-                                          width: SizeConfig.screenWidth * .12)),
-                                  Container(
-                                      height: 45,
-                                      width: SizeConfig.screenWidth / 4.2,
-                                      alignment: Alignment.center,
-                                      child: AppTextField(
-                                          controller: searchController,
-                                          maxLine: searchController!.text.length > 2 ? 2 : 1,
-                                          textCapitalization:
-                                          TextCapitalization.words,
-                                          secureText: false,
-                                          floatingLabelBehavior:
-                                          FloatingLabelBehavior.never,
-                                          maxLength: 30,
-                                          labelText:
-                                          'Search videos, shorts, products',
-                                          keyBoardType: TextInputType.text,
-                                          onChanged: (m) {
-                                            isSearch = true;
-                                            if( isLogins == true){
-                                              isLogins=false;
-                                              setState(() {
+                        appBar:  homePageTopBar(),
 
-                                              });
-                                            }
-                                          },
-                                          isTick: null)),
-                                  SizedBox(width: SizeConfig.screenWidth * .02),
-                                  names == "null"
-                                      ? OutlinedButton(
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            barrierColor: Colors.black87,
-                                            builder:
-                                                (BuildContext context) {
-                                              return const SignUp();
-                                            });
-                                      },
-                                      style: ButtonStyle(
-                                        overlayColor:
-                                        MaterialStateColor.resolveWith(
-                                                (states) =>
-                                            Theme.of(context)
-                                                .primaryColor),
-                                        fixedSize:
-                                        MaterialStateProperty.all(
-                                            Size.fromHeight(30)),
-                                        shape: MaterialStateProperty.all(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(
-                                                    5.0))),
-                                      ),
-                                      child: appTextButton(
-                                          context,
-                                          'SignUp',
-                                          Alignment.center,
-                                          Theme.of(context).canvasColor,
-                                          18,
-                                          true))
-                                      : appTextButton(
-                                      context,
-                                      names!,
-                                      Alignment.center,
-                                      Theme.of(context).canvasColor,
-                                      18,
-                                      true,
-                                      onPressed: () {
-                                        if (isSearch == true) {
-                                          isSearch = false;
-                                          searchController?.clear();
-                                          setState(() {});
-                                        }
-
-                                      }),
-                                  names == "null"
-                                      ? SizedBox(
-                                      width: SizeConfig.screenWidth * .01)
-                                      : const SizedBox(),
-                                  names == "null"
-                                      ? OutlinedButton(
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            barrierColor: Colors.black87,
-                                            builder:
-                                                (BuildContext context) {
-                                              return const LoginUp();
-                                            });
-                                      },
-                                      style: ButtonStyle(
-                                        overlayColor:
-                                        MaterialStateColor.resolveWith(
-                                                (states) =>
-                                            Theme.of(context)
-                                                .primaryColor),
-                                        fixedSize:
-                                        MaterialStateProperty.all(
-                                            Size.fromHeight(30)),
-                                        shape: MaterialStateProperty.all(
-                                            RoundedRectangleBorder(
-                                                borderRadius:
-                                                BorderRadius.circular(
-                                                    5.0))),
-                                      ),
-                                      child: appTextButton(
-                                          context,
-                                          'Login',
-                                          Alignment.center,
-                                          Theme.of(context).canvasColor,
-                                          18,
-                                          true))
-                                      : GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        isLogins = true;
-
-                                        if (isSearch == true) {
-                                          isSearch = false;
-                                          searchController?.clear();
-                                          setState(() {});
-                                        }
-
-
-                                      });
-                                    },
-                                    child: Image.asset(
-                                      AssetsConstants.icProfile,
-                                      height: 30,
-                                      color: Theme.of(context).canvasColor,
-                                    ),
-                                  ),
-                                  SizedBox(width: SizeConfig.screenWidth * .02),
-                                ],
-                              ),
-                            )),
                         body:
 
 
@@ -302,117 +140,45 @@ class _PrivacyState extends State<Privacy> {
 
   homePageTopBar() {
     return AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        backgroundColor: Theme
-            .of(context)
-            .backgroundColor,
-        title: Stack(children: <Widget>[
-          Container(
-              child: Row(children: [
-                GestureDetector(
-                    onTap: () {
-                      if (isSearch == true) {
-                        isSearch = false;
-                        searchController?.clear();
-                        setState(() {});
-                      }
-                      if( isLogins == true){
-                        isLogins=false;
-                        setState(() {
-
-                        });
-                      }
-                      names == "null"
-                          ? showDialog(context: context, barrierColor: Colors.black87, builder: (BuildContext context) {return const SignUp();}):
-
-                      _scaffoldKey.currentState?.isDrawerOpen == false?
-                      _scaffoldKey.currentState?.openDrawer()
-                          :
-                      _scaffoldKey.currentState?.openEndDrawer();
-
-                    },
-                    child: IconButton(
-                        onPressed: (){
-                          Navigator.pop(context);
-                        },
-                        icon: Image.asset(
-                          AssetsConstants.icBack,
-                          height: 25,
-                          width: 25,
-                        )),),
-                Container(
-                    height: 45,
-                    width: SizeConfig.screenWidth * 0.58,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: TRANSPARENT_COLOR, width: 1.0),
-                    ),
-                    child: AppTextField(
-                        controller: searchController,
-                        maxLine: searchController!.text.length > 2 ? 2 : 1,
-                        textCapitalization: TextCapitalization.words,
-                        secureText: false,
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        maxLength: 30,
-                        labelText: 'Search videos, shorts, products',
-                        keyBoardType: TextInputType.text,
-                        onChanged: (m) {
-                          isSearch = true;
-                        },
-                        isTick: null)),
-                names == "null"
-                    ? ElevatedButton(onPressed: (){
-                  showDialog(
-                      context: context,
-                      barrierColor: Colors.black87,
-                      builder:
-                          (BuildContext context) {
-                        return const SignUp();
-                      });
-
-                }, child:Text(
-                  "Sign Up",style: TextStyle(
-                    color: Theme.of(context).canvasColor,fontSize: 16,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily
-                ),
-                ),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).cardColor),
-                        overlayColor: MaterialStateColor
-                            .resolveWith((states) =>
-                        Theme.of(context).primaryColor),
-                        fixedSize:
-                        MaterialStateProperty.all(Size(90, 35)),
-                        shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(
-                                    5.0
-                                )))
-                    ))
-                    : GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isLogins = true;
-                      if (isSearch == true) {
-                        isSearch = false;
-                        searchController?.clear();
-                        setState(() {});
-                      }
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      SizedBox(width: SizeConfig.screenWidth*0.1),
-                      Image.asset(
-                        AssetsConstants.icProfile,
-                        height: 30,
-                        color: Theme.of(context).canvasColor,
-                      ),
-                    ],
-                  ),
-                ),
-              ]))
-        ]));
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      backgroundColor: Theme.of(context).cardColor,
+      title: Row(children: <Widget>[
+        GestureDetector(
+            onTap: (){
+              GoRouter.of(context).pushNamed(RoutesName.home);
+            },
+            child: Image.asset(AssetsConstants.icLogo,width: ResponsiveWidget.isMediumScreen(context) ? 35:45, height:ResponsiveWidget.isMediumScreen(context) ? 35: 45)),
+        SizedBox(width: SizeConfig.screenWidth*0.04),
+        AppBoldFont(context,msg:"privacy-policy",fontSize:ResponsiveWidget.isMediumScreen(context) ? 16: 20, fontWeight: FontWeight.w700),
+      ]),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              isLogins = true;
+              if (isSearch == true) {
+                isSearch = false;
+                searchController?.clear();
+                setState(() {});
+              }
+            });
+          },
+          child: Row(
+            children: [
+              appTextButton(context, names!, Alignment.center, Theme.of(context).canvasColor,ResponsiveWidget.isMediumScreen(context)
+                  ?16: 18, true),
+              Image.asset(
+                AssetsConstants.icProfile,
+                height:ResponsiveWidget.isMediumScreen(context)
+                    ?20: 30,
+                color: Theme.of(context).canvasColor,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(width: SizeConfig.screenWidth*0.04),
+      ],
+    );
   }
 }

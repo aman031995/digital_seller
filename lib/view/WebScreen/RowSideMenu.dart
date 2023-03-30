@@ -8,7 +8,6 @@ import 'package:tycho_streams/Utilities/AssetsConstants.dart';
 import 'package:tycho_streams/model/data/app_menu_model.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
-import 'package:tycho_streams/view/WebScreen/Career.dart';
 import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 
@@ -213,14 +212,14 @@ class _SidebarXExampleAppState extends State<SidebarXExampleApp> {
         //     MaterialPageRoute(
         //         builder: (BuildContext context) => AppWebView(url: appMenu.url, pageName: appMenu.title)));
       } else if (appMenu.url?.contains('profile') == true) {
-        Router.neglect(context, () => GoRouter.of(context).pushNamed(RoutesName.EditProfille));
+       GoRouter.of(context).pushNamed(RoutesName.EditProfille);
         // getPath(appMenu.url ?? '', RoutesName.profilePage).then((routePath) {
         //   if (routePath != null) {
         //     Navigator.pushNamed(context, routePath, arguments: {'title': appMenu.title, 'isBack' : true});
         //   }
         // });
       } else if (appMenu.url?.contains('home') == true){
-        Router.neglect(context, () =>  GoRouter.of(context).pushNamed(RoutesName.home));
+       GoRouter.of(context).pushNamed(RoutesName.home);
         // getPath(appMenu.url ?? '', RoutesName.bottomNavigation).then((routePath) {
         //   if (routePath != null) {
         //     // Navigator.pushNamed(context, routePath);
@@ -229,14 +228,14 @@ class _SidebarXExampleAppState extends State<SidebarXExampleApp> {
         //   }
         // });
       } else if (appMenu.url?.contains('update_user') == true){
-        Router.neglect(context, () => GoRouter.of(context).pushNamed(RoutesName.EditProfille));
+        GoRouter.of(context).pushNamed(RoutesName.EditProfille);
         // getPath(appMenu.url ?? '', RoutesName.editProfile).then((routePath) {
         //    if (routePath != null) {
         //      Navigator.pushNamed(context, routePath, arguments: {'title' : appMenu.title});
         //    }
         //  });
       } else if (appMenu.url?.contains('faqs') == true){
-        Router.neglect(context, () =>  GoRouter.of(context).pushNamed(RoutesName.FAQ));
+                 GoRouter.of(context).pushNamed(RoutesName.FAQ);
         // Navigator.push(
         //     context,
         //     MaterialPageRoute(
@@ -247,6 +246,10 @@ class _SidebarXExampleAppState extends State<SidebarXExampleApp> {
         //     Navigator.pushNamed(context, routePath, arguments: {'title' : appMenu.title});
         //   }
         // });
+      }
+       else if(appMenu.url?.contains('contact_us')==true){
+        GoRouter.of(context).pushNamed(RoutesName.ContactUs);
+
       }
     }
   }

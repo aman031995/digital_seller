@@ -41,7 +41,7 @@ class _VideoListPageState extends State<VideoListPage> {
                     homeViewModel.homePageDataModel?.videoList != null
                         ? Container(
                             height: (ResponsiveWidget.isMediumScreen(context)
-                                ? 250.0 * trayHeight(homeViewModel)
+                                ? 240.0 * trayHeight(homeViewModel)
                                 : 350.0 * trayHeight(homeViewModel)),
                             width: SizeConfig.screenWidth,
                             margin: EdgeInsets.only(left: 25, right: 25),

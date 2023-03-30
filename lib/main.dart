@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
+import 'package:tycho_streams/utilities/AppToast.dart';
 import 'package:tycho_streams/utilities/route_service/routes.dart';
 import 'package:tycho_streams/view/WebScreen/EditProfile.dart';
 import 'package:tycho_streams/view/WebScreen/HomeViewPage.dart';
@@ -15,8 +16,6 @@ import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/repository/subscription_provider.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/CustomPlayer/YoutubePlayer/CommonWidget.dart';
-
-import 'package:tycho_streams/view/WebScreen/Career.dart';
 import 'package:tycho_streams/view/WebScreen/ContactUsPage.dart';
 import 'package:tycho_streams/view/WebScreen/DetailPage.dart';
 import 'package:tycho_streams/view/WebScreen/FAQ.dart';
@@ -78,10 +77,10 @@ class _MyAppState extends State<MyApp> {
           },
         ),
         GoRoute(
-          name: RoutesName.AboutUsPage,
-          path: '/AboutUsPage',
+          name: RoutesName.ContactUs,
+          path: '/ContactUs',
           pageBuilder: (context, state) {
-            return MaterialPage(child: AboutUsPage());
+            return MaterialPage(child: ContactUs());
           },
 
         ),
@@ -92,13 +91,13 @@ class _MyAppState extends State<MyApp> {
             return MaterialPage(child: FAQ());
           },
         ),
-        GoRoute(
-          name: RoutesName.Contact,
-          path: '/Contact',
-          pageBuilder: (context, state) {
-            return MaterialPage(child: Contact());
-          },
-        ),
+        // GoRoute(
+        //   name: RoutesName.Contact,
+        //   path: '/Contact',
+        //   pageBuilder: (context, state) {
+        //     return MaterialPage(child: Contact());
+        //   },
+        // ),
         GoRoute(
           name: RoutesName.Privacy,
           path: '/privacy-policy',

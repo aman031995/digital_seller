@@ -29,6 +29,7 @@ class StringConstant {
   static String Save = "Save";
   static String fullName = "Full Name";
   static String editProfile = 'Edit Profile';
+  static String message = "Enter a message";
 
   //  ************ Forgot Password *************
   static String enterOtpText =

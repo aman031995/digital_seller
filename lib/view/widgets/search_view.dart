@@ -337,7 +337,7 @@ Widget Header(BuildContext context,setState){
                   barrierColor: Colors.black87,
                   builder:
                       (BuildContext context) {
-                    return const SignUp();
+                    return const LoginUp();
                   });
             },
             style: ButtonStyle(
@@ -365,7 +365,7 @@ Widget Header(BuildContext context,setState){
                     height: 20, color: Theme.of(context).canvasColor),
                 appTextButton(
                     context,
-                    'SignUp',
+                    'SignIn',
                     Alignment.center,
                     Theme
                         .of(context)

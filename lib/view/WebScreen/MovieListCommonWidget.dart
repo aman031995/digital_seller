@@ -47,63 +47,62 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return widget.platformMovieData != null
-        ? Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                widget.platformMovieData!.content!.isNotEmpty
-                    ? movieCardTopBAR(context, widget.trayTitle!,
-                        widget.isSubtitle!, widget.isButtom!)
-                    : Container(),
-                Container(
-                  height: (widget.platformMovieData!.content!.isNotEmpty)
-                      ? ResponsiveWidget.isMediumScreen(context)?200 :SizeConfig.screenHeight * 0.3
-                      : 0.0,
-                  child: widget.platformMovieData?.content != null
-                      ? ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                          itemCount:
-                              widget.platformMovieData!.content!.length > 9
-                                  ? 10
-                                  : widget.platformMovieData?.content?.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (BuildContext context, int index) {
-                            return CardMovieHome(
-                              onTap: (fadeInImage) {
+        ? Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            widget.platformMovieData!.content!.isNotEmpty
+                ? movieCardTopBAR(context, widget.trayTitle!,
+                    widget.isSubtitle!, widget.isButtom!)
+                : Container(),
+            Container(
+              height: (widget.platformMovieData!.content!.isNotEmpty)
+                  ? ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenHeight/3.3 :SizeConfig.screenHeight * 0.3
+                  : 0.0,
 
-                              },
-                              trayId: widget.trayId,
-                              movieID: widget
-                                  .platformMovieData?.content?[index].videoId,
-                              title: widget.platformMovieData?.content?[index]
-                                  .videoTitle,
-                              image: widget
-                                  .platformMovieData?.content?[index].thumbnail,
-                              index: index,
-                              moviesList:
-                                  widget.platformMovieData?.content?[index],
-                            );
+              child: widget.platformMovieData?.content != null
+                  ? ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      itemCount:
+                          widget.platformMovieData!.content!.length > 9
+                              ? 10
+                              : widget.platformMovieData?.content?.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (BuildContext context, int index) {
+                        return CardMovieHome(
+                          onTap: (fadeInImage) {
+
                           },
-                        )
-                      :  Container(
-                    height: SizeConfig.screenHeight * 0.35,
-                    child: Center(
-                        child: ThreeArchedCircle( size: 50.0)
-                    ),
-                  ),
+                          trayId: widget.trayId,
+                          movieID: widget
+                              .platformMovieData?.content?[index].videoId,
+                          title: widget.platformMovieData?.content?[index]
+                              .videoTitle,
+                          image: widget
+                              .platformMovieData?.content?[index].thumbnail,
+                          index: index,
+                          moviesList:
+                              widget.platformMovieData?.content?[index],
+                        );
+                      },
+                    )
+                  :  Container(
+                height: SizeConfig.screenHeight * 0.35,
+                child: Center(
+                    child: ThreeArchedCircle( size: 50.0)
                 ),
-              ],
+              ),
             ),
-          )
+          ],
+        )
         : Container();
   }
 
   movieCardTopBAR(
       BuildContext context, String title, bool isSubTitle, bool isButton) {
     return Container(
-      height: isSubTitle ? 70 : 40,
-    margin: EdgeInsets.only(right: 25,left: 10,top: 10,bottom: 10),
+      height: isSubTitle ? 20 : 40,
+    margin: EdgeInsets.only(right: 25,left: 10,top: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
-import 'package:tycho_streams/view/WebScreen/Career.dart';
 import 'package:tycho_streams/view/WebScreen/ContactUsPage.dart';
 import 'package:tycho_streams/view/WebScreen/DetailPage.dart';
 import 'package:tycho_streams/view/WebScreen/EditProfile.dart';

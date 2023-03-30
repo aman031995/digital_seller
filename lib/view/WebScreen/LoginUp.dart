@@ -36,7 +36,7 @@ class _LoginUpState extends State<LoginUp> {
   @override
   void initState() {
     super.initState();
-    homeViewModel.getAppConfigData(context);
+    // homeViewModel.getAppConfigData(context);
   }
   @override
   void dispose() {

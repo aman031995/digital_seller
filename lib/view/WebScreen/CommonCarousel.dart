@@ -55,7 +55,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
       children: [
         Container(
           margin: EdgeInsets.only(left: 15,right: 15),
-          height: SizeConfig.screenHeight/2.2,
+          height: SizeConfig.screenHeight/3,
           width: SizeConfig.screenWidth,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5)
@@ -81,7 +81,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
           ),
         ),
         Positioned(
-          left: 30,top:  SizeConfig.screenHeight/4.2,
+          left: 30,top:  SizeConfig.screenHeight/6,
           child: InkWell(
               child: Image.asset(
                   'images/prev.png',
@@ -93,7 +93,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
           ),
         ),
         Positioned(
-          top:  SizeConfig.screenHeight/4.2,right: 30,
+          top:  SizeConfig.screenHeight/6,right: 30,
           child: InkWell(
               child: Image.asset(
                   'images/next.png',
@@ -120,7 +120,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
         }},
       child:
       Container(
-        height: 600,width: SizeConfig.screenWidth,
+        height: SizeConfig.screenHeight/3,width: SizeConfig.screenWidth,
         margin: EdgeInsets.only(left: 0,right: 0,top: 0),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
         child: Image.network(element.bannerFile?? " ",
@@ -136,22 +136,26 @@ class _CommonCarouselState extends State<CommonCarousel> {
   //--MobileCarousel--//
   Widget carouselImageMobile() {
     var imageSliders = generateImageTileMobile(context);
-    return CarouselSlider(
-      items: imageSliders,
-      options: CarouselOptions(
-          scrollDirection: Axis.horizontal,
-          scrollPhysics: PageScrollPhysics(),
-          viewportFraction: 1,
-          aspectRatio: 1.8,
-          enlargeCenterPage: false,
-          autoPlay: true,
-          autoPlayInterval: Duration(seconds: 5),
-          onPageChanged: (index, reason) {
-            setState(() {
-              current = index;
-            });
-          }),
-      carouselController: carouselController,
+    return Container(
+      height: SizeConfig.screenHeight/3,
+      width: SizeConfig.screenWidth,
+      child: CarouselSlider(
+        items: imageSliders,
+        options: CarouselOptions(
+            scrollDirection: Axis.horizontal,
+            scrollPhysics: PageScrollPhysics(),
+            viewportFraction: 1,
+            aspectRatio: 1.8,
+            enlargeCenterPage: false,
+            autoPlay: true,
+            autoPlayInterval: Duration(seconds: 5),
+            onPageChanged: (index, reason) {
+              setState(() {
+                current = index;
+              });
+            }),
+        carouselController: carouselController,
+      ),
     );
   }
   List<Widget> generateImageTileMobile(BuildContext context) {
@@ -167,9 +171,9 @@ class _CommonCarouselState extends State<CommonCarousel> {
             throw 'Could not launch $url';
           }},
         child: Container(
-          margin: EdgeInsets.only(left: 10,right: 10),
+          height: SizeConfig.screenHeight/3,width: SizeConfig.screenWidth,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(1.0),
             image: DecorationImage(
                 image: NetworkImage(element.bannerFile ?? ""),
                 fit: BoxFit.fill

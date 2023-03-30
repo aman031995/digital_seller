@@ -37,7 +37,7 @@ class _SignUpState extends State<SignUp> {
   @override
   void initState() {
     super.initState();
-    homeViewModel.getAppConfigData(context);
+    // homeViewModel.getAppConfigData(context);
   }
   @override
   void dispose() {

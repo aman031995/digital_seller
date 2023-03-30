@@ -32,7 +32,7 @@ class _MovieDetailPageState extends State<DetailPage> {
   void initState() {
     setState((){
     });
-    homeViewModel.getAppConfigData(context);
+    // homeViewModel.getAppConfigData(context);
     searchController?.addListener(() {
       homeViewModel.getSearchData(
           context, '${searchController?.text}', pageNum);
@@ -48,45 +48,39 @@ class _MovieDetailPageState extends State<DetailPage> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final authVM = Provider.of<AuthViewModel>(context);
-    return ChangeNotifierProvider(
-        create: (BuildContext context) => homeViewModel,
-        child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-      return
-        Scaffold(
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          body:  SingleChildScrollView(
-            child: Stack(
-              children: [
-                Container(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 20),
-                      Container(
-                         width: ResponsiveWidget.isMediumScreen(context)?  SizeConfig.screenWidth: SizeConfig.screenWidth/1.3,
-                         height: ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth /2:SizeConfig.screenWidth /2.959,
-                         child:
+    return
+    Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      body:  SingleChildScrollView(
+        child: Stack(
+          children: [
+            Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 20),
+                  Container(
+                     width: ResponsiveWidget.isMediumScreen(context)?  SizeConfig.screenWidth: SizeConfig.screenWidth/1.3,
+                     height: ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth /2:SizeConfig.screenWidth /2.959,
+                     child:
 
-                         YoutubeAppDemo(videoID: widget.movieID)
-                        // VideoApp()
-                     ),
-                        MovieDetailTitleSection(
-                            isWall: true, movieDetailModel: widget.VideoId,Title: widget.Title,Desc: widget.Desc,),
-                      SizedBox(height: 80),
-                    //  ResponsiveWidget.isMediumScreen(context)? footerMobile(context):footerDesktop(),
+                     YoutubeAppDemo(videoID: widget.movieID)
+                    // VideoApp()
+                 ),
+                    MovieDetailTitleSection(
+                        isWall: true, movieDetailModel: widget.VideoId,Title: widget.Title,Desc: widget.Desc,),
+                  SizedBox(height: 80),
+                //  ResponsiveWidget.isMediumScreen(context)? footerMobile(context):footerDesktop(),
 
-                    ],
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          )
-        );
-        }
-        )
+          ],
+        ),
+      )
     );
+
   }
 
 

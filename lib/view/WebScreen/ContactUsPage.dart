@@ -1,393 +1,362 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:tycho_streams/Utilities/AssetsConstants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tycho_streams/bloc_validation/Bloc_Validation.dart';
 import 'package:tycho_streams/main.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
 import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/AppTextField.dart';
+import 'package:tycho_streams/utilities/AppToast.dart';
+import 'package:tycho_streams/utilities/AssetsConstants.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
+import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
-import 'package:tycho_streams/view/WebScreen/EditProfile.dart';
-import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';
-import 'package:tycho_streams/view/WebScreen/LoginUp.dart';
-import 'package:tycho_streams/view/WebScreen/SignUp.dart';
-import 'package:tycho_streams/view/WebScreen/footerDesktop.dart';
-import 'package:tycho_streams/view/widgets/app_menu.dart';
-import 'package:tycho_streams/view/widgets/search_view.dart';
-import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
-import 'package:tycho_streams/viewmodel/auth_view_model.dart';
+import 'package:tycho_streams/view/widgets/AppNavigationBar.dart';
+import 'package:tycho_streams/viewmodel/profile_view_model.dart';
 
-class AboutUsPage extends StatefulWidget {
-  const AboutUsPage({Key? key}) : super(key: key);
+class ContactUs extends StatefulWidget {
+  const ContactUs({Key? key}) : super(key: key);
 
   @override
-  State<AboutUsPage> createState() => _AboutUsPageState();
+  State<ContactUs> createState() => _ContactUsState();
 }
 
-class _AboutUsPageState extends State<AboutUsPage> {
-  HomeViewModel homeViewModel = HomeViewModel();
-  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
-  ScrollController _scrollController = ScrollController();
-  bool isSearch = false;
-  int pageNum = 1;
+class _ContactUsState extends State<ContactUs> {
+  TextEditingController? nameController, messageController, emailController;
+  final validation = ValidationBloc();
+  ProfileViewModel profileViewModel = ProfileViewModel();
+  String? name, email, pageTitle;
+
   @override
   void initState() {
-    searchController?.addListener(() {
-      homeViewModel.getSearchData(
-          context, '${searchController?.text}', pageNum);
-    });
     super.initState();
+    messageController = TextEditingController();
+    nameController = TextEditingController();
+    emailController = TextEditingController();
+    getUserInfo();
   }
-  // void dispose() {
-  //   _scrollController.dispose();
-  //   super.dispose();
-  // }
+
+  @override
+  void dispose() {
+    validation.closeStream();
+    messageController?.dispose();
+    nameController?.dispose();
+    emailController?.dispose();
+    super.dispose();
+  }
+
+  getUserInfo() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    name = sharedPreferences.getString('name');
+    email = sharedPreferences.getString('email');
+    setState(() {});
+    nameController?.text = name ?? '';
+    emailController?.text = email ?? '';
+    validateEditDetails();
+    setState(() {});
+  }
+
+  validateEditDetails() {
+    validation.sinkFirstName.add(name ?? '');
+    validation.sinkEmail.add(email ?? '');
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final authVM = Provider.of<AuthViewModel>(context);
-    return ChangeNotifierProvider(
-        create: (BuildContext context) => homeViewModel,
-    child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-    return
-    GestureDetector(
-      onTap: (){
-        if (isSearch == true)  {
-          isSearch = false;
-          searchController?.clear();
-          setState(() {});
-        }
-        if( isLogins == true){
-          isLogins=false;
-          setState(() {
-
-          });
-        }
-      },
-      child: Scaffold(
-        key: _scaffoldKey,
-      // drawer: AppMenu(homeViewModel: viewmodel),
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        appBar:   ResponsiveWidget.isMediumScreen(context)
-            ? homePageTopBar()
-            : PreferredSize(preferredSize: Size.fromHeight( 60),
-            child: Container(
-              height: 55,
-              color: Theme.of(context).cardColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(width: 40),
-                  Image.asset(AssetsConstants.icLogo, height: 40),
-                  Expanded(child: SizedBox(width: SizeConfig.screenWidth * .12)),
-                  AppButton(context, 'Home', onPressed: () {
-                    GoRouter.of(context)
-                        .pushNamed(RoutesName.home);
+    if (ModalRoute.of(context)?.settings.arguments != null) {
+      final Map<String, dynamic> data =
+      ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+      pageTitle = data['title'];
+    }
+    return Scaffold(
+        appBar:  homePageTopBar(),
+        body:ResponsiveWidget.isMediumScreen(context)
+            ? Container(
+          margin: EdgeInsets.only(top: 50),
+          child: Column(
+            children: [
+              SizedBox(height: 12),
+              Container(
+                margin: const EdgeInsets.all(20),
+                width: SizeConfig.screenWidth,
+                alignment: Alignment.center,
+                child: StreamBuilder(
+                    stream: validation.firstName,
+                    builder: (context, snapshot) {
+                      return AppTextField(
+                        maxLine: 1,
+                        controller: nameController,
+                        labelText: StringConstant.fullName,
+                        textCapitalization: TextCapitalization.words,
+                        isShowCountryCode: true,
+                        isShowPassword: false,
+                        secureText: false,
+                        maxLength: 30,
+                        isEnable: name != null ? false : true,
+                        keyBoardType: TextInputType.name,
+                        errorText:
+                        snapshot.hasError ? snapshot.error.toString() : null,
+                        onChanged: (m) {
+                          validation.sinkFirstName.add(m);
+                          setState(() {});
+                        },
+                        onSubmitted: (m) {},
+                        isTick: null,
+                      );
+                    }),
+              ),
+              Container(
+                margin: const EdgeInsets.all(20),
+                width: SizeConfig.screenWidth,
+                alignment: Alignment.center,
+                child: StreamBuilder(
+                    stream: validation.email,
+                    builder: (context, snapshot) {
+                      return AppTextField(
+                        maxLine: 1,
+                        controller: emailController,
+                        labelText: StringConstant.email,
+                        textCapitalization: TextCapitalization.words,
+                        isShowCountryCode: true,
+                        isShowPassword: false,
+                        secureText: false,
+                        maxLength: 30,
+                        isEnable: email != null ? false : true,
+                        keyBoardType: TextInputType.emailAddress,
+                        errorText:
+                        snapshot.hasError ? snapshot.error.toString() : null,
+                        onChanged: (m) {
+                          validation.sinkEmail.add(m);
+                          setState(() {});
+                        },
+                        onSubmitted: (m) {},
+                        isTick: null,
+                      );
+                    }),
+              ),
+              Container(
+                margin: const EdgeInsets.all(20),
+                width: SizeConfig.screenWidth,
+                alignment: Alignment.center,
+                child: StreamBuilder(
+                    stream: validation.address,
+                    builder: (context, snapshot) {
+                      return AppTextField(
+                        maxLine: 5,
+                        controller: messageController,
+                        labelText: StringConstant.message,
+                        textCapitalization: TextCapitalization.words,
+                        isShowCountryCode: true,
+                        isShowPassword: false,
+                        secureText: false,
+                        maxLength: 300,
+                        keyBoardType: TextInputType.multiline,
+                        errorText:
+                        snapshot.hasError ? snapshot.error.toString() : null,
+                        onChanged: (m) {
+                          validation.sinkAddress.add(m);
+                          setState(() {});
+                        },
+                        onSubmitted: (m) {},
+                        isTick: null,
+                      );
+                    }),
+              ),
+              SizedBox(height: 12),
+              StreamBuilder(
+                  stream: validation.validateContactUs,
+                  builder: (context, snapshot) {
+                    return appButton(
+                        context,
+                        StringConstant.send,
+                        SizeConfig.screenWidth * 0.8,
+                        60,
+                        LIGHT_THEME_COLOR,
+                        WHITE_COLOR,
+                        20,
+                        10,
+                        snapshot.data != true ? false : true, onTap: () {
+                      // snapshot.data != true ? null : " ";
+                      snapshot.data != true
+                          ? ToastMessage.message(StringConstant.fillOut)
+                          : saveButtonPressed(
+                          nameController?.text ?? '',
+                          emailController?.text ?? '',
+                          messageController?.text ?? '');
+                    });
                   }),
-                  SizedBox(width: SizeConfig.screenWidth * .02),
-                  AppButton(context, 'Contact US',
-                      onPressed: () {
-                        GoRouter.of(context).pushNamed(
-                          RoutesName.Contact,
+            ],
+          ),
+        ) :
+        Center(
+          child: Container(
+            width: SizeConfig.screenWidth * 0.4,
+            margin: EdgeInsets.only(top: 50, left: 20, right: 20),
+            child: Column(
+              children: [
+                SizedBox(height: 12),
+                Container(
+                  margin: const EdgeInsets.all(20),
+                  width: SizeConfig.screenWidth,
+                  alignment: Alignment.center,
+                  child: StreamBuilder(
+                      stream: validation.firstName,
+                      builder: (context, snapshot) {
+                        return AppTextField(
+                          maxLine: 1,
+                          controller: nameController,
+                          labelText: StringConstant.fullName,
+                          textCapitalization: TextCapitalization.words,
+                          isShowCountryCode: true,
+                          isShowPassword: false,
+                          secureText: false,
+                          maxLength: 30,
+                          isEnable: name != null ? false : true,
+                          keyBoardType: TextInputType.name,
+                          errorText:
+                          snapshot.hasError ? snapshot.error.toString() : null,
+                          onChanged: (m) {
+                            validation.sinkFirstName.add(m);
+                            setState(() {});
+                          },
+                          onSubmitted: (m) {},
+                          isTick: null,
                         );
                       }),
-                  Expanded(
-                      child: SizedBox(
-                          width: SizeConfig.screenWidth * .12)),
-                  Container(
-                      height: 45,
-                      width: SizeConfig.screenWidth / 4.2,
-                      alignment: Alignment.center,
-                      child: AppTextField(
-                          controller: searchController,
-                          maxLine: searchController!.text.length > 2 ? 2 : 1,
-                          textCapitalization:
-                          TextCapitalization.words,
+                ),
+                Container(
+                  margin: const EdgeInsets.all(20),
+                  width: SizeConfig.screenWidth,
+                  alignment: Alignment.center,
+                  child: StreamBuilder(
+                      stream: validation.email,
+                      builder: (context, snapshot) {
+                        return AppTextField(
+                          maxLine: 1,
+                          controller: emailController,
+                          labelText: StringConstant.email,
+                          textCapitalization: TextCapitalization.words,
+                          isShowCountryCode: true,
+                          isShowPassword: false,
                           secureText: false,
-                          floatingLabelBehavior:
-                          FloatingLabelBehavior.never,
                           maxLength: 30,
-                          labelText:
-                          'Search videos, shorts, products',
-                          keyBoardType: TextInputType.text,
+                          isEnable: email != null ? false : true,
+                          keyBoardType: TextInputType.emailAddress,
+                          errorText:
+                          snapshot.hasError ? snapshot.error.toString() : null,
                           onChanged: (m) {
-                            isSearch = true;
-                            if( isLogins == true){
-                              isLogins=false;
-                              setState(() {
-
-                              });
-                            }
+                            validation.sinkEmail.add(m);
+                            setState(() {});
                           },
-                          isTick: null)),
-                  SizedBox(width: SizeConfig.screenWidth * .02),
-                  names == "null"
-                      ? OutlinedButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            barrierColor: Colors.black87,
-                            builder:
-                                (BuildContext context) {
-                              return const SignUp();
-                            });
-                      },
-                      style: ButtonStyle(
-                        overlayColor:
-                        MaterialStateColor.resolveWith(
-                                (states) =>
-                            Theme.of(context)
-                                .primaryColor),
-                        fixedSize:
-                        MaterialStateProperty.all(
-                            Size.fromHeight(30)),
-                        shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(
-                                    5.0))),
-                      ),
-                      child: appTextButton(
-                          context,
-                          'SignUp',
-                          Alignment.center,
-                          Theme.of(context).canvasColor,
-                          18,
-                          true))
-                      : appTextButton(
-                      context,
-                      names!,
-                      Alignment.center,
-                      Theme.of(context).canvasColor,
-                      18,
-                      true,
-                      onPressed: () {
-                        if (isSearch == true)  {
-                          isSearch = false;
-                       searchController?.clear();
-                          setState(() {});
-                        }
-
+                          onSubmitted: (m) {},
+                          isTick: null,
+                        );
                       }),
-                  names == "null"
-                      ? SizedBox(
-                      width: SizeConfig.screenWidth * .01)
-                      : const SizedBox(),
-                  names == "null"
-                      ? OutlinedButton(
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            barrierColor: Colors.black87,
-                            builder:
-                                (BuildContext context) {
-                              return const LoginUp();
-                            });
-                      },
-                      style: ButtonStyle(
-                        overlayColor:
-                        MaterialStateColor.resolveWith(
-                                (states) =>
-                            Theme.of(context)
-                                .primaryColor),
-                        fixedSize:
-                        MaterialStateProperty.all(
-                            Size.fromHeight(30)),
-                        shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(
-                                    5.0))),
-                      ),
-                      child: appTextButton(
+                ),
+                Container(
+                  margin: const EdgeInsets.all(20),
+                  width: SizeConfig.screenWidth,
+                  alignment: Alignment.center,
+                  child: StreamBuilder(
+                      stream: validation.address,
+                      builder: (context, snapshot) {
+                        return AppTextField(
+                          maxLine: 5,
+                          controller: messageController,
+                          labelText: StringConstant.message,
+                          textCapitalization: TextCapitalization.words,
+                          isShowCountryCode: true,
+                          isShowPassword: false,
+                          secureText: false,
+                          maxLength: 300,
+                          keyBoardType: TextInputType.multiline,
+                          errorText:
+                          snapshot.hasError ? snapshot.error.toString() : null,
+                          onChanged: (m) {
+                            validation.sinkAddress.add(m);
+                            setState(() {});
+                          },
+                          onSubmitted: (m) {},
+                          isTick: null,
+                        );
+                      }),
+                ),
+                SizedBox(height: 12),
+                StreamBuilder(
+                    stream: validation.validateContactUs,
+                    builder: (context, snapshot) {
+                      return appButton(
                           context,
-                          'Login',
-                          Alignment.center,
-                          Theme.of(context).canvasColor,
-                          18,
-                          true))
-                      : GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isLogins = true;
-                        if (isSearch == true)  {
-                          isSearch = false;
-                          searchController?.clear();
-                          setState(() {});
-                        }
+                          StringConstant.send,
+                          SizeConfig.screenWidth * 0.35,
+                          60,
+                          LIGHT_THEME_COLOR,
+                          WHITE_COLOR,
+                          20,
+                          10,
+                          snapshot.data != true ? false : true, onTap: () {
+                        // snapshot.data != true ? null : " ";
+                        snapshot.data != true
+                            ? ToastMessage.message(StringConstant.fillOut)
+                            : saveButtonPressed(
+                            nameController?.text ?? '',
+                            emailController?.text ?? '',
+                            messageController?.text ?? '');
                       });
-                    },
-                    child:  Image.asset(
-                      AssetsConstants.icProfile,
-                      height: 30,
-                      color: Theme.of(context).canvasColor,
-                    ),
-                  ),
-                  SizedBox(width: SizeConfig.screenWidth * .02),
-                ],
-              ),
-            )),
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    padding:  EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context)
-                        ?25: 350,right:  ResponsiveWidget.isMediumScreen(context)
-                        ?25:350),
-                    child: Column(
-                      children: [
-                        SizedBox(height:ResponsiveWidget.isMediumScreen(context)
-                            ?35: 50),
-                        Text('About Us', style: TextStyle(fontWeight: FontWeight.w600, fontSize: ResponsiveWidget.isMediumScreen(context)?16:22, color:  Theme.of(context).canvasColor),),
-                        SizedBox(height: 20),
-                        Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularized in the 1960s with the release of Letterset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', style: TextStyle(fontWeight: FontWeight.w400, fontSize: ResponsiveWidget.isMediumScreen(context)?14:18, color:  Theme.of(context).canvasColor)),
-                        SizedBox(height: 20),
-                        Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularized in the 1960s with the release of Letterset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', style: TextStyle(fontWeight: FontWeight.w400, fontSize: ResponsiveWidget.isMediumScreen(context)?14:18, color:  Theme.of(context).canvasColor)),
-                        SizedBox(height: 20),
-                        Text('Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularized in the 1960s with the release of Letterset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', style: TextStyle(fontWeight: FontWeight.w400, fontSize: ResponsiveWidget.isMediumScreen(context)?14:18, color:  Theme.of(context).canvasColor)),
-                        SizedBox(height: 20),
-                        contactUswidget('images/ContactUs1.png', 'A-102, Sec-62, Noida UP 201301'),
-                        SizedBox(height: 10),
-                        contactUswidget('images/ContactUs.png', 'www.alifbaata.com'),
-                        SizedBox(height: ResponsiveWidget.isMediumScreen(context)
-                            ?100: 350),
-
-                      ],
-                    ),
-                  ),
-                //  ResponsiveWidget.isMediumScreen(context)?   footerMobile(context): footerDesktop()
-                ],
-              ),
+                    }),
+              ],
             ),
-            isLogins == true
-                ?profile(context,setState)
-                : Container(),
-            if (viewmodel.searchDataModel != null)
-              searchView(context, viewmodel, isSearch, _scrollController, homeViewModel, searchController!, setState)
-          ],
-        ),
-      ),
-    );
-  }));}
-  Widget contactUswidget(var img, String txt){
-    return Row(
-      children: [
-        Image.asset(img, width: 20,height: 34,color:Theme.of(context).canvasColor),
-        SizedBox(width: 10),
-        Text(txt, style: TextStyle(fontWeight: FontWeight.w400, fontSize:ResponsiveWidget.isMediumScreen(context)? 16:22, color: Theme.of(context).canvasColor)),
-      ],
+          ),
+        )
     );
   }
   homePageTopBar() {
     return AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        backgroundColor: Theme
-            .of(context)
-            .backgroundColor,
-        title: Stack(children: <Widget>[
-          Container(
-              child: Row(children: [
-                GestureDetector(
-                    onTap: () {
-                      names == "null"
-                          ? showDialog(context: context, barrierColor: Colors.black87, builder: (BuildContext context) {return const SignUp();}):
-
-                      _scaffoldKey.currentState?.isDrawerOpen == false?
-                      _scaffoldKey.currentState?.openDrawer()
-                          :
-                      _scaffoldKey.currentState?.openEndDrawer();
-
-                    },
-                    child: IconButton(
-                      onPressed: (){
-                        Navigator.pop(context);
-                      },
-                       icon: Image.asset(
-                        AssetsConstants.icBack,
-                        height: 25,
-                        width: 25,
-                      )),
-                    ),
-
-                Container(
-                    height: 45,
-                    width: SizeConfig.screenWidth * 0.58,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: TRANSPARENT_COLOR, width: 1.0),
-                    ),
-                    child: AppTextField(
-                        controller: searchController,
-                        maxLine: searchController!.text.length > 2 ? 2 : 1,
-                        textCapitalization: TextCapitalization.words,
-                        secureText: false,
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        maxLength: 30,
-                        labelText: 'Search videos, shorts, products',
-                        keyBoardType: TextInputType.text,
-                        onChanged: (m) {
-                          isSearch = true;
-                        },
-                        isTick: null)),
-                names == "null"
-                    ? ElevatedButton(onPressed: (){
-                  showDialog(
-                      context: context,
-                      barrierColor: Colors.black87,
-                      builder:
-                          (BuildContext context) {
-                        return const SignUp();
-                      });
-
-                }, child:Text(
-                  "Sign Up",style: TextStyle(
-                    color: Theme.of(context).canvasColor,fontSize: 16,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily
-                ),
-                ),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).cardColor),
-                        overlayColor: MaterialStateColor
-                            .resolveWith((states) =>
-                        Theme.of(context).primaryColor),
-                        fixedSize:
-                        MaterialStateProperty.all(Size(90, 35)),
-                        shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(
-                                    5.0
-                                )))
-                    ))
-                    : GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isLogins = true;
-                      if (isSearch == true) {
-                        isSearch = false;
-                        searchController?.clear();
-                        setState(() {});
-                      }
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      SizedBox(width: SizeConfig.screenWidth*0.1),
-                      Image.asset(
-                        AssetsConstants.icProfile,
-                        height: 30,
-                        color: Theme.of(context).canvasColor,
-                      ),
-                    ],
-                  ),
-                ),
-              ]))
-        ]));
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      backgroundColor: Theme.of(context).cardColor,
+      title: Row(children: <Widget>[
+        GestureDetector(
+            onTap: (){
+              GoRouter.of(context).pushNamed(RoutesName.home);
+            },
+            child: Image.asset(AssetsConstants.icLogo,width: ResponsiveWidget.isMediumScreen(context) ? 35:45, height:ResponsiveWidget.isMediumScreen(context) ? 35: 45)),
+        SizedBox(width: SizeConfig.screenWidth*0.04),
+        AppBoldFont(context,msg:"Contact Us",fontSize:ResponsiveWidget.isMediumScreen(context) ? 16: 20, fontWeight: FontWeight.w700),
+      ]),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              isLogins = true;
+              if (isSearch == true) {
+                isSearch = false;
+                searchController?.clear();
+                setState(() {});
+              }
+            });
+          },
+          child: Row(
+            children: [
+              appTextButton(context, names!, Alignment.center, Theme.of(context).canvasColor,ResponsiveWidget.isMediumScreen(context)
+                  ?16: 18, true),
+              Image.asset(
+                AssetsConstants.icProfile,
+                height:ResponsiveWidget.isMediumScreen(context)
+                    ?20: 30,
+                color: Theme.of(context).canvasColor,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(width: SizeConfig.screenWidth*0.04),
+      ],
+    );
+  }
+  saveButtonPressed(String name, String email, String message) {
+    profileViewModel.contactUs(context, name, email, message);
   }
 }

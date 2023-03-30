@@ -7,6 +7,7 @@ import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
+import 'package:tycho_streams/view/WebScreen/LoginUp.dart';
 
 import 'package:tycho_streams/view/WebScreen/OnHover.dart';
 import 'package:tycho_streams/view/WebScreen/SignUp.dart';
@@ -52,9 +53,8 @@ class _CardMovieHomeState extends State<CardMovieHome> {
       bool _heigth = isHovered;
       return
       Container(
-      width:ResponsiveWidget.isMediumScreen(context)?250 : SizeConfig.screenHeight * 0.27,
-      height: SizeConfig.screenHeight * 0.27,
-      padding: EdgeInsets.only(left:_heigth?1: 10,right:_heigth?1: 10,top:_heigth?1: 10,bottom:_heigth?1: 10),
+      width:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth/1.6 : SizeConfig.screenHeight * 0.27,
+      padding: EdgeInsets.only(left:_heigth?0: 10,right:_heigth?0: 10,top:_heigth?0: 10,bottom:_heigth?0: 10),
       child: InkWell(
         onTap: () async{
           if (isSearch == true)  {
@@ -82,7 +82,7 @@ class _CardMovieHomeState extends State<CardMovieHome> {
           context: context,
           barrierColor: Colors.black87,
           builder: (BuildContext context) {
-            return const SignUp();
+            return const LoginUp();
           });
     }
         },

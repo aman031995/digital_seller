@@ -590,7 +590,7 @@ class _EditProfileState extends State<EditProfile> {
                                                return appButton(
                                                    context,
                                                    StringConstant.Save,
-                                                   SizeConfig.screenWidth * 0.85,
+                                                   SizeConfig.screenWidth /4.5,
                                                    60,
                                                    LIGHT_THEME_COLOR,
                                                    WHITE_COLOR,
@@ -641,11 +641,13 @@ class _EditProfileState extends State<EditProfile> {
       automaticallyImplyLeading: false,
       backgroundColor: Theme.of(context).cardColor,
       title: Row(children: <Widget>[
-        Image.asset(AssetsConstants.icLogo,width: ResponsiveWidget.isMediumScreen(context)
-            ? 35:45, height:ResponsiveWidget.isMediumScreen(context)
-            ? 35: 45),
+        GestureDetector(
+            onTap: (){
+              GoRouter.of(context).pushNamed(RoutesName.home);
+            },
+            child: Image.asset(AssetsConstants.icLogo,width: ResponsiveWidget.isMediumScreen(context) ? 35:45, height:ResponsiveWidget.isMediumScreen(context) ? 35: 45)),
         SizedBox(width: SizeConfig.screenWidth*0.04),
-        AppBoldFont(context,msg: "EditProfile",fontSize:ResponsiveWidget.isMediumScreen(context) ? 18: 20, fontWeight: FontWeight.w700),
+        AppBoldFont(context,msg:"EditProfile",fontSize:ResponsiveWidget.isMediumScreen(context) ? 16: 20, fontWeight: FontWeight.w700),
       ]),
       actions: [
         GestureDetector(
@@ -661,10 +663,12 @@ class _EditProfileState extends State<EditProfile> {
           },
           child: Row(
             children: [
-              appTextButton(context, names!, Alignment.center, Theme.of(context).canvasColor, ResponsiveWidget.isMediumScreen(context) ?16:18, true),
+              appTextButton(context, names!, Alignment.center, Theme.of(context).canvasColor,ResponsiveWidget.isMediumScreen(context)
+                  ?16: 18, true),
               Image.asset(
                 AssetsConstants.icProfile,
-                height: 30,
+                height:ResponsiveWidget.isMediumScreen(context)
+                    ?20: 30,
                 color: Theme.of(context).canvasColor,
               ),
             ],

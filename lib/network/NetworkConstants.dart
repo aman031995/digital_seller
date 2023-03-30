@@ -21,7 +21,7 @@ class NetworkConstants{
   static String getUserDetails = "get-userprofile-by-id?userId={USER_ID}";
   static String kUpdateProfile = "update-user-profile";
   static String kDeleteProfile = "user-delete/?userId={USER_ID}";
-
+  static String kContactUs = "add-contactUs";
   static String kGetBannerList = "getBannerList?appId={APP_ID}";
   static String kGetHomePageData = "homepageVideo?userId={USER_ID}&appId={APP_ID}&videoFor={VIDEO_FOR}&pageNum={PAGE_NUM}";
   static String kGetTrayData = "getTrayOrder?appId={APP_ID}";

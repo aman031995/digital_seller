@@ -174,4 +174,27 @@ class ProfileRepository {
       });
     });
   }
+  Future<Result?> contactUsApi(BuildContext context, String name, String email,
+      String query, NetworkResponseHandler responseHandler) async {
+    AppNetwork appNetwork = AppNetwork();
+    var inputParams = {
+      "appId": "b07e2bbc-3ad9-441f-86fe-59caff940d1d",
+      "name": name,
+      "email": email,
+      "query": query
+    };
+    ASRequestModal requestModal = ASRequestModal.withInputParams(
+        inputParams, NetworkConstants.kContactUs, RequestType.post,
+        context: context, modalClass: "ABC");
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        response.dataModal =
+        ((result as SuccessState).value as Map<String, dynamic>)['data'];
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
 }
