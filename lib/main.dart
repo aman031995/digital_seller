@@ -5,8 +5,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tycho_streams/model/data/HomePageDataModel.dart';
-import 'package:tycho_streams/utilities/route_service/routes.dart';
 import 'package:tycho_streams/view/WebScreen/EditProfile.dart';
 import 'package:tycho_streams/view/WebScreen/HomeViewPage.dart';
 import 'package:tycho_streams/view/WebScreen/MovieListCommonWidget.dart';
@@ -15,8 +13,6 @@ import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/repository/subscription_provider.dart';
 import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/CustomPlayer/YoutubePlayer/CommonWidget.dart';
-
-import 'package:tycho_streams/view/WebScreen/ContactUsPage.dart';
 import 'package:tycho_streams/view/WebScreen/DetailPage.dart';
 import 'package:tycho_streams/view/WebScreen/FAQ.dart';
 import 'package:tycho_streams/view/WebScreen/HomePageWeb.dart';

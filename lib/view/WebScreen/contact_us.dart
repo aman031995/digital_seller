@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tycho_streams/bloc_validation/Bloc_Validation.dart';
 import 'package:tycho_streams/main.dart';
@@ -11,6 +12,7 @@ import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/StringConstants.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
+import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/view/widgets/AppNavigationBar.dart';
 import 'package:tycho_streams/viewmodel/profile_view_model.dart';
 
@@ -70,45 +72,7 @@ class _ContactUsState extends State<ContactUs> {
       pageTitle = data['title'];
     }
     return Scaffold(
-      appBar:  AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        backgroundColor: Theme.of(context).cardColor,
-        title: Row(children: <Widget>[
-          Image.asset(AssetsConstants.icLogo,width: ResponsiveWidget.isMediumScreen(context)
-              ? 35:45, height:ResponsiveWidget.isMediumScreen(context)
-              ? 35: 45),
-          SizedBox(width: SizeConfig.screenWidth*0.04),
-          AppBoldFont(context,msg:"Contact Us",fontSize:ResponsiveWidget.isMediumScreen(context) ? 16: 20, fontWeight: FontWeight.w700),
-        ]),
-        actions: [
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                isLogins = true;
-                if (isSearch == true) {
-                  isSearch = false;
-                  searchController?.clear();
-                  setState(() {});
-                }
-              });
-            },
-            child: Row(
-              children: [
-                appTextButton(context, names!, Alignment.center, Theme.of(context).canvasColor,ResponsiveWidget.isMediumScreen(context)
-                    ?16: 18, true),
-                Image.asset(
-                  AssetsConstants.icProfile,
-                  height:ResponsiveWidget.isMediumScreen(context)
-                      ?20: 30,
-                  color: Theme.of(context).canvasColor,
-                ),
-              ],
-            ),
-          ),
-          SizedBox(width: SizeConfig.screenWidth*0.04),
-        ],
-      ),
+      appBar: homePageTopBar(),
       body:ResponsiveWidget.isMediumScreen(context)
           ? Container(
         margin: EdgeInsets.only(top: 50),
@@ -350,6 +314,49 @@ class _ContactUsState extends State<ContactUs> {
     );
   }
 
+  homePageTopBar() {
+    return AppBar(
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      backgroundColor: Theme.of(context).cardColor,
+      title: Row(children: <Widget>[
+        GestureDetector(
+            onTap: (){
+              GoRouter.of(context).pushNamed(RoutesName.home);
+            },
+            child: Image.asset(AssetsConstants.icLogo,width: ResponsiveWidget.isMediumScreen(context) ? 35:45, height:ResponsiveWidget.isMediumScreen(context) ? 35: 45)),
+        SizedBox(width: SizeConfig.screenWidth*0.04),
+        AppBoldFont(context,msg:"Contact Us",fontSize:ResponsiveWidget.isMediumScreen(context) ? 16: 20, fontWeight: FontWeight.w700),
+      ]),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              isLogins = true;
+              if (isSearch == true) {
+                isSearch = false;
+                searchController?.clear();
+                setState(() {});
+              }
+            });
+          },
+          child: Row(
+            children: [
+              appTextButton(context, names!, Alignment.center, Theme.of(context).canvasColor,ResponsiveWidget.isMediumScreen(context)
+                  ?16: 18, true),
+              Image.asset(
+                AssetsConstants.icProfile,
+                height:ResponsiveWidget.isMediumScreen(context)
+                    ?20: 30,
+                color: Theme.of(context).canvasColor,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(width: SizeConfig.screenWidth*0.04),
+      ],
+    );
+  }
   saveButtonPressed(String name, String email, String message) {
     profileViewModel.contactUs(context, name, email, message);
   }

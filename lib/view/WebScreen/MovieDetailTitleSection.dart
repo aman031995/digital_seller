@@ -124,7 +124,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
                               return Container(
                                 width: ResponsiveWidget.isMediumScreen(context)
                                     ? 220
-                                    : SizeConfig.screenWidth * 0.20,
+                                    : SizeConfig.screenWidth * 0.30,
                                 padding: EdgeInsets.only(
                                     right: _heigth ? 1 : 10,
                                     top: _heigth ? 1 : 10,
