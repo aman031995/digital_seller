@@ -60,11 +60,10 @@ class _ResetPasswordState extends State<ResetPassword> {
                     ? 15 : 20),
                 AppBoldFont(
                     textAlign: TextAlign.center,
-                    context,msg: 'Reset', color: BLACK_COLOR, fontSize:ResponsiveWidget.isMediumScreen(context)
+                    context,msg: 'Reset', fontSize:ResponsiveWidget.isMediumScreen(context)
                     ?18: 22),
                 AppRegularFont(
                     context,msg: 'Enter your new password to login again.',
-                    color: BLACK_COLOR,
                     fontSize:ResponsiveWidget.isMediumScreen(context) ?14: 16),
                 SizedBox(height:ResponsiveWidget.isMediumScreen(context) ? 20 : 30),
                 Container(

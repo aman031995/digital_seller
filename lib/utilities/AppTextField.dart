@@ -110,8 +110,8 @@ class _CustomTextFieldState extends State<AppTextField> {
                   labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
                       color: widget.isColor == true ? Theme.of(context).canvasColor.withOpacity(0.4) : Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 17),
                   prefixText: widget.prefixText,
-                  suffixStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(color: TEXT_COLOR, fontSize: 17),
-                  prefixStyle: TextStyle(color: TEXT_COLOR, fontSize: 20),
+                  suffixStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(color:Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 17),
+                  prefixStyle: TextStyle(color: Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 20),
                 border: InputBorder.none
               ):
 
@@ -141,7 +141,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                 ),
                 disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(color: TEXTFIELD_BORDER_COLOR, width: 2),
+                  borderSide: BorderSide(color: Theme.of(context).canvasColor.withOpacity(0.4), width: 2),
                 ),
                 isDense: true,
                 //  <- you can it to 0.0 for no space
@@ -168,8 +168,8 @@ class _CustomTextFieldState extends State<AppTextField> {
                 labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
                     color: widget.isColor == true ? Theme.of(context).canvasColor.withOpacity(0.4) : Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 17),
                 prefixText: widget.prefixText,
-                suffixStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(color: TEXT_COLOR, fontSize: 17),
-                prefixStyle: TextStyle(color: TEXT_COLOR, fontSize: 20),
+                suffixStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(color: Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 17),
+                prefixStyle: TextStyle(color: Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 20),
               ),
               keyboardType: widget.keyBoardType,
               obscureText: widget.isShowPassword == true

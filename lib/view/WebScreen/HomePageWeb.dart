@@ -34,6 +34,7 @@ class HomePageWeb extends StatefulWidget {
 }
 
 class _HomePageWebState extends State<HomePageWeb> {
+  // final _controller = SidebarXController(selectedIndex: 0);
   HomeViewModel homeViewModel = HomeViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   final _key = GlobalKey<ScaffoldState>();
@@ -216,6 +217,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                       : Center(
                       child: CircularProgressIndicator(color: Theme.of(context).primaryColor))),
               body: Scaffold(
+
+                  key: _scaffoldKey,
                   // drawer: ResponsiveWidget.isMediumScreen(context)
                   //     ?AppMenu(homeViewModel: viewmodel)
                   //     :AppMenu(homeViewModel: viewmodel),
@@ -320,8 +323,7 @@ class _HomePageWebState extends State<HomePageWeb> {
         elevation: 0,
         automaticallyImplyLeading: false,
         backgroundColor: Theme
-            .of(context)
-            .backgroundColor,
+            .of(context).cardColor,
         title: Stack(children: <Widget>[
           Container(
               child: Row(children: [

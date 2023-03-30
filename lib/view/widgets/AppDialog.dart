@@ -19,7 +19,6 @@ class AppDialog {
           ? StringConstant.cameraPer
           : StringConstant.galleryPer,
           maxLines: 2,
-          color: TEXT_COLOR,
           fontSize: 16),
       content: AppRegularFont(
           context,maxLines: 2,
@@ -109,7 +108,6 @@ class AppDialog {
           title: AppBoldFont(
               context,msg: StringConstant.deleteAccountTitle,
               fontSize: 22,
-              color: Theme.of(context).primaryColor,
               textAlign: TextAlign.center),
           titlePadding: EdgeInsets.only(left: 20, right: 20, top: 10),
           content: AppRegularFont(
@@ -174,7 +172,7 @@ class AppDialog {
                       child: AppBoldFont(context,
                           msg: msg,
                           fontSize: 26,
-                          color: TEXT_COLOR)),
+                         )),
                   SizedBox(height: 20),
                   Container(
                     height: 60,
@@ -266,7 +264,7 @@ Widget textButton(BuildContext context, String title, {VoidCallback? onApply}) {
         borderRadius: BorderRadius.circular(8.0),
       ),
       // decoration: buttonDecoration,
-      child: AppBoldFont(  context,msg: title, fontSize: 14, color: TEXT_COLOR),
+      child: AppBoldFont(  context,msg: title, fontSize: 14,),
     ),
   );
 }

@@ -12,7 +12,6 @@ Text AppBoldFont(
         Color? color,
     }) {
     return Text(msg!,
-
         maxLines: maxLines,
         textAlign: textAlign,
         style: CustomTextStyle.textFormFieldInterBold

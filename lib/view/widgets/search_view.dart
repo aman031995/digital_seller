@@ -108,13 +108,15 @@ Widget searchView(BuildContext context, HomeViewModel viewmodel, bool isSearch,
                 )))
             : SizedBox()
       ])) :Padding(
-      padding: EdgeInsets.only(left: 0, right: 0),
-          child: Stack(children: [
+      padding: EdgeInsets.only(left:SizeConfig.screenWidth*0.30, right: 0),
+          child: Stack(
+              children: [
+
             if (isSearch)
               Container(
                   height: 350,
                   width: 450,
-                  margin: EdgeInsets.only(left: SizeConfig.screenWidth/1.55),
+                  // margin: EdgeInsets.only(left: SizeConfig.screenWidth/1.55),
                   decoration: BoxDecoration(
                     color: viewmodel.searchDataModel != null && isSearch == true
                         ? Theme.of(context).scaffoldBackgroundColor
@@ -185,7 +187,7 @@ Widget searchView(BuildContext context, HomeViewModel viewmodel, bool isSearch,
                       : Center(
                           child: AppMediumFont(context,
                               msg: viewmodel.message,
-                              color: Theme.of(context).canvasColor))),
+                              ))),
             homeViewModel.isLoading == true
                 ? Positioned(
                     bottom: 9,
@@ -372,7 +374,8 @@ Widget Header(BuildContext context,setState){
                     true),
               ],
             ))
-            : appTextButton(
+            :
+        appTextButton(
             context,
             names!,
             Alignment.center,
@@ -381,62 +384,45 @@ Widget Header(BuildContext context,setState){
                 .canvasColor,
             18,
             true,
-            onPressed: () {}),
+            onPressed: () {
+              isLogins = true;
+                    if (isSearch == true) {
+                      isSearch = false;
+                      searchController?.clear();
+                      setState(() {});
+                    }
+            }),
         names == "null"
-            ? SizedBox(
-            width: SizeConfig.screenWidth * .01)
-            : const SizedBox(),
-        // names == "null"
-        //     ? OutlinedButton(
-        //     onPressed: () {
-        //       showDialog(
-        //           context: context,
-        //           builder:
-        //               (BuildContext context) {
-        //             return const LoginUp();
-        //           });
-        //     },
-        //     style: ButtonStyle(
-        //       overlayColor: MaterialStateColor
-        //           .resolveWith((states) =>
-        //       Theme
-        //           .of(context)
-        //           .primaryColor),
-        //       fixedSize:
-        //       MaterialStateProperty.all(
-        //           Size.fromHeight(30)),
-        //       shape: MaterialStateProperty.all(
-        //           RoundedRectangleBorder(
-        //               borderRadius:
-        //               BorderRadius.circular(
-        //                   5.0))),
-        //     ),
-        //     child: appTextButton(
-        //         context,
-        //         'Login',
-        //         Alignment.center,
-        //         Theme
-        //             .of(context)
-        //             .canvasColor,
-        //         18,
-        //         true))
-        //     : GestureDetector(
-        //   onTap: () {
-        //     setState(() {
-        //       isLogins = true;
-        //       if (isSearch == true) {
-        //         isSearch = false;
-        //         searchController?.clear();
-        //         setState(() {});
-        //       }
-        //     });
-        //   },
-        //   child:  Image.asset(
-        //     AssetsConstants.icProfile,
-        //     height: 30,
-        //     color: Theme.of(context).canvasColor,
-        //   ),
-        // ),
+            ? Container()
+            : GestureDetector(
+          onTap: () {
+            setState(() {
+              isLogins = true;
+              if (isSearch == true) {
+                isSearch = false;
+                searchController?.clear();
+                setState(() {});
+              }
+            });
+          },
+          child:  Image.asset(
+            AssetsConstants.icProfile,
+            height: 30,
+            color: Theme.of(context).canvasColor,
+          ),
+        ),
+        SizedBox(
+            width: SizeConfig.screenWidth * .02),
+        GestureDetector(
+          onTap: () {
+            },
+          child:  Image.asset(
+          "images/ic_dots.png",
+            height: 30,
+            color: Theme.of(context).canvasColor,
+          ),
+        ),
+
         SizedBox(
             width: SizeConfig.screenWidth * .02),
       ],

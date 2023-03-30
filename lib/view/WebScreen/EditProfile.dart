@@ -39,6 +39,7 @@ import 'package:tycho_streams/viewmodel/profile_view_model.dart';
 
 import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
 
+import '../../model/data/AppConfigModel.dart';
 import '../widgets/app_menu.dart';
 
 class EditProfile extends StatefulWidget {
@@ -159,651 +160,468 @@ class _EditProfileState extends State<EditProfile> {
                   },
                   child: Scaffold(
                     backgroundColor:  Theme.of(context).scaffoldBackgroundColor,
-                    appBar:  ResponsiveWidget.isMediumScreen(context)
-                        ? homePageTopBar()
-                        : PreferredSize(preferredSize: Size.fromHeight( 60),
-                        child: Container(
-                          height: 55,
-                          color: Theme.of(context).cardColor,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              SizedBox(width: 40),
-                              Image.asset(AssetsConstants.icLogo, height: 40),
-                              Expanded(child: SizedBox(width: SizeConfig.screenWidth * .12)),
-                              AppButton(context, 'Home', onPressed: () {
-                                GoRouter.of(context)
-                                    .pushNamed(RoutesName.home);
-                              }),
-                              SizedBox(width: SizeConfig.screenWidth * .02),
-                              AppButton(context, 'Contact US',
-                                  onPressed: () {
-                                    GoRouter.of(context).pushNamed(
-                                      RoutesName.Contact,
-                                    );
-                                  }),
-                              Expanded(
-                                  child: SizedBox(
-                                      width: SizeConfig.screenWidth * .12)),
-                              Container(
-                                  height: 45,
-                                  width: SizeConfig.screenWidth / 4.2,
-                                  alignment: Alignment.center,
-                                  child: AppTextField(
-                                      controller: searchController,
-                                      maxLine: searchController!.text.length > 2 ? 2 : 1,
-                                      textCapitalization:
-                                      TextCapitalization.words,
-                                      secureText: false,
-                                      floatingLabelBehavior:
-                                      FloatingLabelBehavior.never,
-                                      maxLength: 30,
-                                      labelText:
-                                      'Search videos, shorts, products',
-                                      keyBoardType: TextInputType.text,
-                                      onChanged: (m) {
-                                        isSearch = true;
-                                        if( isLogins == true){
-                                          isLogins=false;
-                                          setState(() {
-
-                                          });
-                                        }
-                                      },
-                                      isTick: null)),
-                              SizedBox(width: SizeConfig.screenWidth * .02),
-                              names == "null"
-                                  ? OutlinedButton(
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        barrierColor: Colors.black87,
-                                        builder:
-                                            (BuildContext context) {
-                                          return const SignUp();
-                                        });
-                                  },
-                                  style: ButtonStyle(
-                                    overlayColor:
-                                    MaterialStateColor.resolveWith(
-                                            (states) =>
-                                        Theme.of(context)
-                                            .primaryColor),
-                                    fixedSize:
-                                    MaterialStateProperty.all(
-                                        Size.fromHeight(30)),
-                                    shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(
-                                                5.0))),
-                                  ),
-                                  child: appTextButton(
-                                      context,
-                                      'SignUp',
-                                      Alignment.center,
-                                      Theme.of(context).canvasColor,
-                                      18,
-                                      true))
-                                  : appTextButton(
-                                  context,
-                                  names!,
-                                  Alignment.center,
-                                  Theme.of(context).canvasColor,
-                                  18,
-                                  true,
-                                  onPressed: () {
-                                    if (isSearch == true) {
-                                      isSearch = false;
-                                      searchController?.clear();
-                                      setState(() {});
-                                    }
-
-                                  }),
-                              names == "null"
-                                  ? SizedBox(
-                                  width: SizeConfig.screenWidth * .01)
-                                  : const SizedBox(),
-                              names == "null"
-                                  ? OutlinedButton(
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        barrierColor: Colors.black87,
-                                        builder:
-                                            (BuildContext context) {
-                                          return const LoginUp();
-                                        });
-                                  },
-                                  style: ButtonStyle(
-                                    overlayColor:
-                                    MaterialStateColor.resolveWith(
-                                            (states) =>
-                                        Theme.of(context)
-                                            .primaryColor),
-                                    fixedSize:
-                                    MaterialStateProperty.all(
-                                        Size.fromHeight(30)),
-                                    shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                            BorderRadius.circular(
-                                                5.0))),
-                                  ),
-                                  child: appTextButton(
-                                      context,
-                                      'Login',
-                                      Alignment.center,
-                                      Theme.of(context).canvasColor,
-                                      18,
-                                      true))
-                                  : GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    isLogins = true;
-
-                                    if (isSearch == true) {
-                                      isSearch = false;
-                                      searchController?.clear();
-                                      setState(() {});
-                                    }
-
-
-                                  });
-                                },
-                                child:  Image.asset(
-                                  AssetsConstants.icProfile,
-                                  height: 30,
-                                  color: Theme.of(context).canvasColor,
-                                ),
-                              ),
-                              SizedBox(width: SizeConfig.screenWidth * .02),
-                            ],
-                          ),
-                        )),
+                    appBar:   homePageTopBar(),
                     body:
                     Scaffold(
                       key: _scaffoldKey,
                       // drawer: AppMenu(homeViewModel: homemodel),
                       body: Stack(
                         children: [
-                          ResponsiveWidget.isMediumScreen(context)
-                              ?
-                           SingleChildScrollView(
-                             child: Column(
-                               crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(height: 10),
-                                AppBoldFont(context,msg: "Edit Profile",fontSize: 16),
-                                SizedBox(height: 20),
-                                Container(
-                                    height: 450,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Theme.of(context).cardColor,
-                                        border: Border.all(
-                                            width: 2,
-                                            color: Theme.of(context)
-                                                .primaryColor
-                                                .withOpacity(0.6))),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 5,
-                                        ),
-                                        Container(
-                                          child: Stack(
-                                            children: [
-                                              SizedBox(
-                                                  width: 80,
-                                                  height: 80,
-                                                  child: ClipOval(
-                                                      child: profilemodel.userInfoModel?.profilePic != null ?
-                                                      Image.network('${profilemodel.userInfoModel?.profilePic}', fit: BoxFit.cover)
-                                                          : Center(child: ThreeArchedCircle(size: 20.0))
-                                                  )
-                                              ),
-                                              Positioned(
-                                                right: 3,
-                                                top: 55,
-                                                child: GestureDetector(
-                                                  onTap: () => profilemodel.uploadProfileImage(context),
-                                                  child: const Icon(
-                                                    Icons.camera_alt_sharp,
-                                                    color: Colors.red,
-                                                    size: 25,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(height: 5),
-                                        Container(
-                                          margin: const EdgeInsets.all(10),
-                                          width: SizeConfig.screenWidth/1.3,
-                                          alignment: Alignment.center,
-                                          child: StreamBuilder(
-                                              stream: validation.firstName,
-                                              builder: (context, snapshot) {
-                                                return AppTextField(
-                                                  maxLine: 1,
-                                                  controller: nameController,
-                                                  labelText: StringConstant.fullName,
-                                                  textCapitalization:
-                                                  TextCapitalization.words,
-                                                  isShowCountryCode: true,
-                                                  isShowPassword: false,
-                                                  secureText: false,
-                                                  maxLength: 30,
-                                                  keyBoardType: TextInputType.name,
-                                                  errorText: snapshot.hasError
-                                                      ? snapshot.error.toString()
-                                                      : null,
-                                                  onChanged: (m) {
-                                                    validation.sinkFirstName.add(m);
-                                                    setState(() {});
-                                                  },
-                                                  onSubmitted: (m) {},
-                                                  isTick: null,
-                                                );
-                                              }),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.all(10),
-                                          width: SizeConfig.screenWidth/1.3,
-                                          alignment: Alignment.center,
-                                          child: StreamBuilder(
-                                              stream: validation.email,
-                                              builder: (context, snapshot) {
-                                                return AppTextField(
-                                                  maxLine: 1,
-                                                  controller: emailController,
-                                                  labelText: StringConstant.email,
-                                                  textCapitalization:
-                                                  TextCapitalization.words,
-                                                  isShowCountryCode: true,
-                                                  isShowPassword: false,
-                                                  secureText: false,
-                                                  isVerifyNumber:
-                                                  enableEmailVerifyButton,
-                                                  isEnable: enableEmailField,
-                                                  maxLength: 30,
-                                                  keyBoardType:
-                                                  TextInputType.emailAddress,
-                                                  errorText: snapshot.hasError
-                                                      ? snapshot.error.toString()
-                                                      : null,
-                                                  onChanged: (m) {
-                                                    validation.sinkEmail.add(m);
-                                                    setState(() {});
-                                                  },
-                                                  onSubmitted: (m) {},
-                                                  verifySubmit: () {
-                                                    emailController?.text == '' ||
-                                                        snapshot.hasError == true
-                                                        ? ToastMessage.message(
-                                                        'Enter a valid email address')
-                                                        : verifyInput(authVM,
-                                                        StringConstant.emailVerify);
-                                                    ;
-                                                  },
-                                                  isTick: null,
-                                                );
-                                              }),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.all(10),
-                                          width: SizeConfig.screenWidth/1.3,
-                                          alignment: Alignment.center,
-                                          child: StreamBuilder(
-                                              stream: validation.phoneNo,
-                                              builder: (context, snapshot) {
-                                                return AppTextField(
-                                                  maxLine: 1,
-                                                  controller: phoneController,
-                                                  labelText:
-                                                  StringConstant.mobileNumber,
-                                                  isShowCountryCode: true,
-                                                  isShowPassword: false,
-                                                  secureText: false,
-                                                  isVerifyNumber: enableVerifyButton,
-                                                  isEnable: enableMobileField,
-                                                  maxLength: 10,
-                                                  keyBoardType: TextInputType.phone,
-                                                  errorText: snapshot.hasError
-                                                      ? snapshot.error.toString()
-                                                      : null,
-                                                  onChanged: (m) {
-                                                    validation.sinkPhoneNo.add(m);
-                                                    setState(() {});
-                                                  },
-                                                  onSubmitted: (m) {},
-                                                  verifySubmit: () {
-                                                    phoneController!.text.length < 10
-                                                        ? ToastMessage.message(
-                                                        'Enter a valid number')
-                                                        : verifyInput(
-                                                        authVM,
-                                                        StringConstant
-                                                            .numberVerify);
-                                                  },
-                                                  isTick: null,
-                                                );
-                                              }),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.all(10),
-                                          width: SizeConfig.screenWidth/1.3,
-                                          alignment: Alignment.center,
-                                          child: StreamBuilder(
-                                              stream: validation.address,
-                                              builder: (context, snapshot) {
-                                                return AppTextField(
-                                                  maxLine: 1,
-                                                  controller: addressController,
-                                                  labelText: 'Address',
-                                                  isShowCountryCode: true,
-                                                  textCapitalization:
-                                                  TextCapitalization.words,
-                                                  isShowPassword: false,
-                                                  secureText: false,
-                                                  maxLength: 150,
-                                                  isEnable: true,
-                                                  keyBoardType:
-                                                  TextInputType.emailAddress,
-                                                  errorText: null,
-                                                  onChanged: (m) {},
-                                                  onSubmitted: (m) {},
-                                                  isTick: true,
-                                                );
-                                              }),
-                                        ),
-                                        SizedBox(height: 5),
-                                        Container(
-                                          margin: const EdgeInsets.all(10),
-                                          child: StreamBuilder(
-                                              stream:
-                                              validation.validateUserEditProfile,
-                                              builder: (context, snapshot) {
-                                                return appButton(
-                                                    context,
-                                                    StringConstant.Save,
-                                                    SizeConfig.screenWidth/1.5,
-                                                    50,
-                                                    LIGHT_THEME_COLOR,
-                                                    WHITE_COLOR,
-                                                    18,
-                                                    10,
-                                                    snapshot.data != true
-                                                        ? false
-                                                        : true, onTap: () {
-                                                  // snapshot.data != true ? null : " ";
-                                                  snapshot.data != true
-                                                      ? ToastMessage.message(
-                                                      StringConstant.fillOut)
-                                                      : enableVerifyButton == true ||
-                                                      enableEmailVerifyButton ==
-                                                          true
-                                                      ? ToastMessage.message(
-                                                      'Please Verify your details')
-                                                      : saveButtonPressed(
-                                                      profileViewModel,
-                                                      nameController?.text,
-                                                      phoneController?.text,
-                                                      emailController?.text,
-                                                      addressController?.text);
-                                                });
-                                              }),
-                                        ),
-                                        SizedBox(height: 5),
 
-                                      ],
-                                    )),
-                                SizedBox(height: 50),
-                                 footerMobile(context)
-                              ],
-                          ),
-                           )  :
                           SingleChildScrollView(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(height: 20),
-                                AppBoldFont(context,msg: "Edit Profile",fontSize: 22),
-                                SizedBox(height: 50),
-                                Container(
-                                    height: 580,
-                                    width: 500,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: Theme.of(context).cardColor,
-                                        border: Border.all(
-                                            width: 2,
-                                            color: Theme.of(context)
-                                                .primaryColor
-                                                .withOpacity(0.6))),
-                                    margin: EdgeInsets.only(left: 10, right: 30),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 25,
-                                        ),
-                                        Container(
-                                          child: Stack(
-                                            children: [
-                                              SizedBox(
-                                                  width: 120,
-                                                  height: 120,
-                                                  child: ClipOval(
-                                                      child: profilemodel.userInfoModel?.profilePic != null ?
-                                                      Image.network('${profilemodel.userInfoModel?.profilePic}', fit: BoxFit.cover)
-                                                          : Center(child: ThreeArchedCircle(size: 50.0))
-                                                  )),
-                                              Positioned(
-                                                right: 5,
-                                                top: 80,
-                                                child: GestureDetector(
-                                                  onTap: () => profilemodel.uploadProfileImage(context),
-                                                  child: const Icon(
-                                                    Icons.camera_alt_sharp,
-                                                    color: Colors.red,
-                                                    size: 25,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(height: 40),
-                                        Container(
-                                        margin: const EdgeInsets.all(10),
-                                        width: SizeConfig.screenWidth,
-                                        alignment: Alignment.center,
-                                        child: StreamBuilder(
-                                          stream: validation.firstName,
-                                          builder: (context, snapshot) {
-                                            return AppTextField(
-                                              maxLine: 1,
-                                              controller: nameController,
-                                              labelText: StringConstant.fullName,
-                                              textCapitalization:
-                                                  TextCapitalization.words,
-                                              isShowCountryCode: true,
-                                              isShowPassword: false,
-                                              secureText: false,
-                                              maxLength: 30,
-                                              keyBoardType: TextInputType.name,
-                                              errorText: snapshot.hasError
-                                                  ? snapshot.error.toString()
-                                                  : null,
-                                              onChanged: (m) {
-                                                validation.sinkFirstName.add(m);
-                                                setState(() {});
-                                              },
-                                              onSubmitted: (m) {},
-                                              isTick: null,
-                                            );
-                                          }),
-                                        ),
-                                        Container(
-                                        margin: const EdgeInsets.all(10),
-                                        width: SizeConfig.screenWidth,
-                                        alignment: Alignment.center,
-                                        child: StreamBuilder(
-                                          stream: validation.email,
-                                          builder: (context, snapshot) {
-                                            return AppTextField(
-                                              maxLine: 1,
-                                              controller: emailController,
-                                              labelText: StringConstant.email,
-                                              textCapitalization:
-                                                  TextCapitalization.words,
-                                              isShowCountryCode: true,
-                                              isShowPassword: false,
-                                              secureText: false,
-                                              isVerifyNumber:
-                                                  enableEmailVerifyButton,
-                                              isEnable: enableEmailField,
-                                              maxLength: 30,
-                                              keyBoardType:
-                                                  TextInputType.emailAddress,
-                                              errorText: snapshot.hasError
-                                                  ? snapshot.error.toString()
-                                                  : null,
-                                              onChanged: (m) {
-                                                validation.sinkEmail.add(m);
-                                                setState(() {});
-                                              },
-                                              onSubmitted: (m) {},
-                                              verifySubmit: () {
-                                                emailController?.text == '' ||
-                                                        snapshot.hasError == true
-                                                    ? ToastMessage.message(
-                                                        'Enter a valid email address')
-                                                    : verifyInput(authVM,
-                                                        StringConstant.emailVerify);
-                                                ;
-                                              },
-                                              isTick: null,
-                                            );
-                                          }),
-                                        ),
-                                        Container(
-                                        margin: const EdgeInsets.all(10),
-                                        width: SizeConfig.screenWidth,
-                                        alignment: Alignment.center,
-                                        child: StreamBuilder(
-                                          stream: validation.phoneNo,
-                                          builder: (context, snapshot) {
-                                            return AppTextField(
-                                              maxLine: 1,
-                                              controller: phoneController,
-                                              labelText:
-                                                  StringConstant.mobileNumber,
-                                              isShowCountryCode: true,
-                                              isShowPassword: false,
-                                              secureText: false,
-                                              isVerifyNumber: enableVerifyButton,
-                                              isEnable: enableMobileField,
-                                              maxLength: 10,
-                                              keyBoardType: TextInputType.phone,
-                                              errorText: snapshot.hasError
-                                                  ? snapshot.error.toString()
-                                                  : null,
-                                              onChanged: (m) {
-                                                validation.sinkPhoneNo.add(m);
-                                                setState(() {});
-                                              },
-                                              onSubmitted: (m) {},
-                                              verifySubmit: () {
-                                                phoneController!.text.length < 10
-                                                    ? ToastMessage.message(
-                                                        'Enter a valid number')
-                                                    : verifyInput(
-                                                        authVM,
-                                                        StringConstant
-                                                            .numberVerify);
-                                              },
-                                              isTick: null,
-                                            );
-                                          }),
-                                        ),
-                                        Container(
-                                        margin: const EdgeInsets.all(10),
-                                        width: SizeConfig.screenWidth,
-                                        alignment: Alignment.center,
-                                        child: StreamBuilder(
-                                          stream: validation.address,
-                                          builder: (context, snapshot) {
-                                            return AppTextField(
-                                              maxLine: 1,
-                                              controller: addressController,
-                                              labelText: 'Address',
-                                              isShowCountryCode: true,
-                                              textCapitalization:
-                                                  TextCapitalization.words,
-                                              isShowPassword: false,
-                                              secureText: false,
-                                              maxLength: 150,
-                                              isEnable: true,
-                                              keyBoardType:
-                                                  TextInputType.emailAddress,
-                                              errorText: null,
-                                              onChanged: (m) {},
-                                              onSubmitted: (m) {},
-                                              isTick: true,
-                                            );
-                                          }),
-                                        ),
-                                        SizedBox(height: 20),
-                                        Container(
-                                        margin: EdgeInsets.only(left: 10, right: 10),
-                                        child: StreamBuilder(
-                                          stream:
-                                              validation.validateUserEditProfile,
-                                          builder: (context, snapshot) {
-                                            return appButton(
-                                                context,
-                                                StringConstant.Save,
-                                                SizeConfig.screenWidth * 0.85,
-                                                60,
-                                                LIGHT_THEME_COLOR,
-                                                WHITE_COLOR,
-                                                20,
-                                                10,
-                                                snapshot.data != true
-                                                    ? false
-                                                    : true, onTap: () {
-                                              // snapshot.data != true ? null : " ";
-                                              snapshot.data != true
-                                                  ? ToastMessage.message(
-                                                      StringConstant.fillOut)
-                                                  : enableVerifyButton == true ||
-                                                          enableEmailVerifyButton ==
-                                                              true
-                                                      ? ToastMessage.message(
-                                                          'Please Verify your details')
-                                                      : saveButtonPressed(
-                                                          profileViewModel,
-                                                          nameController?.text,
-                                                          phoneController?.text,
-                                                          emailController?.text,
-                                                          addressController?.text);
-                                            });
-                                          }),
-                                        ),
-                                        SizedBox(height: 20),
-                                      ],
-                                    )),
-                                SizedBox(height: 80),
-                               // footerDesktop()
-                              ],
-                            ),
-                          ),
+                             child: Center(
+                               child: ResponsiveWidget.isMediumScreen(context)
+                                   ?Container(
+                                   height: 450,
+                                   margin: EdgeInsets.only(top: 30),
+                                   decoration: BoxDecoration(
+                                       borderRadius: BorderRadius.circular(10),
+                                       color: Theme.of(context).cardColor,
+                                       border: Border.all(
+                                           width: 2,
+                                           color: Theme.of(context)
+                                               .primaryColor
+                                               .withOpacity(0.6))),
+                                   child: Column(
+                                     children: [
+                                       SizedBox(
+                                         height: 5,
+                                       ),
+                                       Container(
+                                         child: Stack(
+                                           children: [
+                                             SizedBox(
+                                                 width: 80,
+                                                 height: 80,
+                                                 child: ClipOval(
+                                                     child: profilemodel.userInfoModel?.profilePic != null ?
+                                                     Image.network('${profilemodel.userInfoModel?.profilePic}', fit: BoxFit.cover)
+                                                         : Center(child: ThreeArchedCircle(size: 20.0))
+                                                 )
+                                             ),
+                                             Positioned(
+                                               right: 3,
+                                               top: 55,
+                                               child: GestureDetector(
+                                                 onTap: () => profilemodel.uploadProfileImage(context),
+                                                 child: const Icon(
+                                                   Icons.camera_alt_sharp,
+                                                   color: Colors.red,
+                                                   size: 25,
+                                                 ),
+                                               ),
+                                             ),
+                                           ],
+                                         ),
+                                       ),
+                                       SizedBox(height: 5),
+                                       Container(
+                                         margin: const EdgeInsets.all(10),
+                                         width: SizeConfig.screenWidth/1.3,
+                                         alignment: Alignment.center,
+                                         child: StreamBuilder(
+                                             stream: validation.firstName,
+                                             builder: (context, snapshot) {
+                                               return AppTextField(
+                                                 maxLine: 1,
+                                                 controller: nameController,
+                                                 labelText: StringConstant.fullName,
+                                                 textCapitalization:
+                                                 TextCapitalization.words,
+                                                 isShowCountryCode: true,
+                                                 isShowPassword: false,
+                                                 secureText: false,
+                                                 maxLength: 30,
+                                                 keyBoardType: TextInputType.name,
+                                                 errorText: snapshot.hasError
+                                                     ? snapshot.error.toString()
+                                                     : null,
+                                                 onChanged: (m) {
+                                                   validation.sinkFirstName.add(m);
+                                                   setState(() {});
+                                                 },
+                                                 onSubmitted: (m) {},
+                                                 isTick: null,
+                                               );
+                                             }),
+                                       ),
+                                       Container(
+                                         margin: const EdgeInsets.all(10),
+                                         width: SizeConfig.screenWidth/1.3,
+                                         alignment: Alignment.center,
+                                         child: StreamBuilder(
+                                             stream: validation.email,
+                                             builder: (context, snapshot) {
+                                               return AppTextField(
+                                                 maxLine: 1,
+                                                 controller: emailController,
+                                                 labelText: StringConstant.email,
+                                                 textCapitalization:
+                                                 TextCapitalization.words,
+                                                 isShowCountryCode: true,
+                                                 isShowPassword: false,
+                                                 secureText: false,
+                                                 isVerifyNumber:
+                                                 enableEmailVerifyButton,
+                                                 isEnable: enableEmailField,
+                                                 maxLength: 30,
+                                                 keyBoardType:
+                                                 TextInputType.emailAddress,
+                                                 errorText: snapshot.hasError
+                                                     ? snapshot.error.toString()
+                                                     : null,
+                                                 onChanged: (m) {
+                                                   validation.sinkEmail.add(m);
+                                                   setState(() {});
+                                                 },
+                                                 onSubmitted: (m) {},
+                                                 verifySubmit: () {
+                                                   emailController?.text == '' ||
+                                                       snapshot.hasError == true
+                                                       ? ToastMessage.message(
+                                                       'Enter a valid email address')
+                                                       : verifyInput(authVM,
+                                                       StringConstant.emailVerify);
+                                                   ;
+                                                 },
+                                                 isTick: null,
+                                               );
+                                             }),
+                                       ),
+                                       Container(
+                                         margin: const EdgeInsets.all(10),
+                                         width: SizeConfig.screenWidth/1.3,
+                                         alignment: Alignment.center,
+                                         child: StreamBuilder(
+                                             stream: validation.phoneNo,
+                                             builder: (context, snapshot) {
+                                               return AppTextField(
+                                                 maxLine: 1,
+                                                 controller: phoneController,
+                                                 labelText:
+                                                 StringConstant.mobileNumber,
+                                                 isShowCountryCode: true,
+                                                 isShowPassword: false,
+                                                 secureText: false,
+                                                 isVerifyNumber: enableVerifyButton,
+                                                 isEnable: enableMobileField,
+                                                 maxLength: 10,
+                                                 keyBoardType: TextInputType.phone,
+                                                 errorText: snapshot.hasError
+                                                     ? snapshot.error.toString()
+                                                     : null,
+                                                 onChanged: (m) {
+                                                   validation.sinkPhoneNo.add(m);
+                                                   setState(() {});
+                                                 },
+                                                 onSubmitted: (m) {},
+                                                 verifySubmit: () {
+                                                   phoneController!.text.length < 10
+                                                       ? ToastMessage.message(
+                                                       'Enter a valid number')
+                                                       : verifyInput(
+                                                       authVM,
+                                                       StringConstant
+                                                           .numberVerify);
+                                                 },
+                                                 isTick: null,
+                                               );
+                                             }),
+                                       ),
+                                       Container(
+                                         margin: const EdgeInsets.all(10),
+                                         width: SizeConfig.screenWidth/1.3,
+                                         alignment: Alignment.center,
+                                         child: StreamBuilder(
+                                             stream: validation.address,
+                                             builder: (context, snapshot) {
+                                               return AppTextField(
+                                                 maxLine: 1,
+                                                 controller: addressController,
+                                                 labelText: 'Address',
+                                                 isShowCountryCode: true,
+                                                 textCapitalization:
+                                                 TextCapitalization.words,
+                                                 isShowPassword: false,
+                                                 secureText: false,
+                                                 maxLength: 150,
+                                                 isEnable: true,
+                                                 keyBoardType:
+                                                 TextInputType.emailAddress,
+                                                 errorText: null,
+                                                 onChanged: (m) {},
+                                                 onSubmitted: (m) {},
+                                                 isTick: true,
+                                               );
+                                             }),
+                                       ),
+                                       SizedBox(height: 5),
+                                       Container(
+                                         margin: const EdgeInsets.all(10),
+                                         child: StreamBuilder(
+                                             stream:
+                                             validation.validateUserEditProfile,
+                                             builder: (context, snapshot) {
+                                               return appButton(
+                                                   context,
+                                                   StringConstant.Save,
+                                                   SizeConfig.screenWidth/1.5,
+                                                   50,
+                                                   LIGHT_THEME_COLOR,
+                                                   WHITE_COLOR,
+                                                   18,
+                                                   10,
+                                                   snapshot.data != true
+                                                       ? false
+                                                       : true, onTap: () {
+                                                 // snapshot.data != true ? null : " ";
+                                                 snapshot.data != true
+                                                     ? ToastMessage.message(
+                                                     StringConstant.fillOut)
+                                                     : enableVerifyButton == true ||
+                                                     enableEmailVerifyButton ==
+                                                         true
+                                                     ? ToastMessage.message(
+                                                     'Please Verify your details')
+                                                     : saveButtonPressed(
+                                                     profileViewModel,
+                                                     nameController?.text,
+                                                     phoneController?.text,
+                                                     emailController?.text,
+                                                     addressController?.text);
+                                               });
+                                             }),
+                                       ),
+                                       SizedBox(height: 5),
+
+                                     ],
+                                   )):
+                               Container(
+                                   height: 580,
+                                   width: 500,
+                                   margin: EdgeInsets.only(top: 50),
+                                   decoration: BoxDecoration(
+                                       borderRadius: BorderRadius.circular(20),
+                                       color: Theme.of(context).cardColor,
+                                       border: Border.all(
+                                           width: 2,
+                                           color: Theme.of(context)
+                                               .primaryColor
+                                               .withOpacity(0.6))),
+                                   child: Column(
+                                     children: [
+                                       SizedBox(
+                                         height: 25,
+                                       ),
+                                       Container(
+                                         child: Stack(
+                                           children: [
+                                             SizedBox(
+                                                 width: 120,
+                                                 height: 120,
+                                                 child: ClipOval(
+                                                     child: profilemodel.userInfoModel?.profilePic != null ?
+                                                     Image.network('${profilemodel.userInfoModel?.profilePic}', fit: BoxFit.cover)
+                                                         : Center(child: ThreeArchedCircle(size: 50.0))
+                                                 )),
+                                             Positioned(
+                                               right: 5,
+                                               top: 80,
+                                               child: GestureDetector(
+                                                 onTap: () => profilemodel.uploadProfileImage(context),
+                                                 child: const Icon(
+                                                   Icons.camera_alt_sharp,
+                                                   color: Colors.red,
+                                                   size: 25,
+                                                 ),
+                                               ),
+                                             ),
+                                           ],
+                                         ),
+                                       ),
+                                       SizedBox(height: 40),
+                                       Container(
+                                         margin: const EdgeInsets.all(10),
+                                         width: SizeConfig.screenWidth,
+                                         alignment: Alignment.center,
+                                         child: StreamBuilder(
+                                             stream: validation.firstName,
+                                             builder: (context, snapshot) {
+                                               return AppTextField(
+                                                 maxLine: 1,
+                                                 controller: nameController,
+                                                 labelText: StringConstant.fullName,
+                                                 textCapitalization:
+                                                 TextCapitalization.words,
+                                                 isShowCountryCode: true,
+                                                 isShowPassword: false,
+                                                 secureText: false,
+                                                 maxLength: 30,
+                                                 keyBoardType: TextInputType.name,
+                                                 errorText: snapshot.hasError
+                                                     ? snapshot.error.toString()
+                                                     : null,
+                                                 onChanged: (m) {
+                                                   validation.sinkFirstName.add(m);
+                                                   setState(() {});
+                                                 },
+                                                 onSubmitted: (m) {},
+                                                 isTick: null,
+                                               );
+                                             }),
+                                       ),
+                                       Container(
+                                         margin: const EdgeInsets.all(10),
+                                         width: SizeConfig.screenWidth,
+                                         alignment: Alignment.center,
+                                         child: StreamBuilder(
+                                             stream: validation.email,
+                                             builder: (context, snapshot) {
+                                               return AppTextField(
+                                                 maxLine: 1,
+                                                 controller: emailController,
+                                                 labelText: StringConstant.email,
+                                                 textCapitalization:
+                                                 TextCapitalization.words,
+                                                 isShowCountryCode: true,
+                                                 isShowPassword: false,
+                                                 secureText: false,
+                                                 isVerifyNumber:
+                                                 enableEmailVerifyButton,
+                                                 isEnable: enableEmailField,
+                                                 maxLength: 30,
+                                                 keyBoardType:
+                                                 TextInputType.emailAddress,
+                                                 errorText: snapshot.hasError
+                                                     ? snapshot.error.toString()
+                                                     : null,
+                                                 onChanged: (m) {
+                                                   validation.sinkEmail.add(m);
+                                                   setState(() {});
+                                                 },
+                                                 onSubmitted: (m) {},
+                                                 verifySubmit: () {
+                                                   emailController?.text == '' ||
+                                                       snapshot.hasError == true
+                                                       ? ToastMessage.message(
+                                                       'Enter a valid email address')
+                                                       : verifyInput(authVM,
+                                                       StringConstant.emailVerify);
+                                                   ;
+                                                 },
+                                                 isTick: null,
+                                               );
+                                             }),
+                                       ),
+                                       Container(
+                                         margin: const EdgeInsets.all(10),
+                                         width: SizeConfig.screenWidth,
+                                         alignment: Alignment.center,
+                                         child: StreamBuilder(
+                                             stream: validation.phoneNo,
+                                             builder: (context, snapshot) {
+                                               return AppTextField(
+                                                 maxLine: 1,
+                                                 controller: phoneController,
+                                                 labelText:
+                                                 StringConstant.mobileNumber,
+                                                 isShowCountryCode: true,
+                                                 isShowPassword: false,
+                                                 secureText: false,
+                                                 isVerifyNumber: enableVerifyButton,
+                                                 isEnable: enableMobileField,
+                                                 maxLength: 10,
+                                                 keyBoardType: TextInputType.phone,
+                                                 errorText: snapshot.hasError
+                                                     ? snapshot.error.toString()
+                                                     : null,
+                                                 onChanged: (m) {
+                                                   validation.sinkPhoneNo.add(m);
+                                                   setState(() {});
+                                                 },
+                                                 onSubmitted: (m) {},
+                                                 verifySubmit: () {
+                                                   phoneController!.text.length < 10
+                                                       ? ToastMessage.message(
+                                                       'Enter a valid number')
+                                                       : verifyInput(
+                                                       authVM,
+                                                       StringConstant
+                                                           .numberVerify);
+                                                 },
+                                                 isTick: null,
+                                               );
+                                             }),
+                                       ),
+                                       Container(
+                                         margin: const EdgeInsets.all(10),
+                                         width: SizeConfig.screenWidth,
+                                         alignment: Alignment.center,
+                                         child: StreamBuilder(
+                                             stream: validation.address,
+                                             builder: (context, snapshot) {
+                                               return AppTextField(
+                                                 maxLine: 1,
+                                                 controller: addressController,
+                                                 labelText: 'Address',
+                                                 isShowCountryCode: true,
+                                                 textCapitalization:
+                                                 TextCapitalization.words,
+                                                 isShowPassword: false,
+                                                 secureText: false,
+                                                 maxLength: 150,
+                                                 isEnable: true,
+                                                 keyBoardType:
+                                                 TextInputType.emailAddress,
+                                                 errorText: null,
+                                                 onChanged: (m) {},
+                                                 onSubmitted: (m) {},
+                                                 isTick: true,
+                                               );
+                                             }),
+                                       ),
+                                       SizedBox(height: 20),
+                                       Container(
+                                         margin: EdgeInsets.only(left: 10, right: 10),
+                                         child: StreamBuilder(
+                                             stream:
+                                             validation.validateUserEditProfile,
+                                             builder: (context, snapshot) {
+                                               return appButton(
+                                                   context,
+                                                   StringConstant.Save,
+                                                   SizeConfig.screenWidth * 0.85,
+                                                   60,
+                                                   LIGHT_THEME_COLOR,
+                                                   WHITE_COLOR,
+                                                   20,
+                                                   10,
+                                                   snapshot.data != true
+                                                       ? false
+                                                       : true, onTap: () {
+                                                 // snapshot.data != true ? null : " ";
+                                                 snapshot.data != true
+                                                     ? ToastMessage.message(
+                                                     StringConstant.fillOut)
+                                                     : enableVerifyButton == true ||
+                                                     enableEmailVerifyButton ==
+                                                         true
+                                                     ? ToastMessage.message(
+                                                     'Please Verify your details')
+                                                     : saveButtonPressed(
+                                                     profileViewModel,
+                                                     nameController?.text,
+                                                     phoneController?.text,
+                                                     emailController?.text,
+                                                     addressController?.text);
+                                               });
+                                             }),
+                                       ),
+                                       SizedBox(height: 20),
+                                     ],
+                                   )),
+                             ),
+                           ),
                           isLogins == true
                               ? profile(context, setState)
                               : Container(),
@@ -819,118 +637,42 @@ class _EditProfileState extends State<EditProfile> {
   }
   homePageTopBar() {
     return AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        backgroundColor: Theme
-            .of(context)
-            .backgroundColor,
-        title: Stack(children: <Widget>[
-          Container(
-              child: Row(children: [
-                GestureDetector(
-                    onTap: () {
-                      if (isSearch == true) {
-                        isSearch = false;
-                        searchController?.clear();
-                        setState(() {});
-                      }
-                      if( isLogins == true){
-                        isLogins=false;
-                        setState(() {
-
-                        });
-                      }
-                      names == "null"
-                          ? showDialog(context: context, barrierColor: Colors.black87, builder: (BuildContext context) {return const SignUp();}):
-
-                      _scaffoldKey.currentState?.isDrawerOpen == false?
-                      _scaffoldKey.currentState?.openDrawer()
-                          :
-                      _scaffoldKey.currentState?.openEndDrawer();
-
-                    },
-                    child: IconButton(
-                        onPressed: (){
-                          Navigator.pop(context);
-                        },
-                        icon: Image.asset(
-                          AssetsConstants.icBack,
-                          height: 25,
-                          width: 25,
-                        )),),
-                Container(
-                    height: 45,
-                    width: SizeConfig.screenWidth * 0.58,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: TRANSPARENT_COLOR, width: 1.0),
-                    ),
-                    child: AppTextField(
-                        controller: searchController,
-                        maxLine: searchController!.text.length > 2 ? 2 : 1,
-                        textCapitalization: TextCapitalization.words,
-                        secureText: false,
-                        floatingLabelBehavior: FloatingLabelBehavior.never,
-                        maxLength: 30,
-                        labelText: 'Search videos, shorts, products',
-                        keyBoardType: TextInputType.text,
-                        onChanged: (m) {
-                          isSearch = true;
-                        },
-                        isTick: null)),
-                names == "null"
-                    ? ElevatedButton(onPressed: (){
-                  showDialog(
-                      context: context,
-                      barrierColor: Colors.black87,
-                      builder:
-                          (BuildContext context) {
-                        return const SignUp();
-                      });
-
-                }, child:Text(
-                  "Sign Up",style: TextStyle(
-                    color: Theme.of(context).canvasColor,fontSize: 16,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily
-                ),
-                ),
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateColor.resolveWith((states) => Theme.of(context).cardColor),
-                        overlayColor: MaterialStateColor
-                            .resolveWith((states) =>
-                        Theme.of(context).primaryColor),
-                        fixedSize:
-                        MaterialStateProperty.all(Size(90, 35)),
-                        shape: MaterialStateProperty.all(
-                            RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius.circular(
-                                    5.0
-                                )))
-                    ))
-                    : GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isLogins = true;
-                      if (isSearch == true) {
-                        isSearch = false;
-                        searchController?.clear();
-                        setState(() {});
-                      }
-                    });
-                  },
-                  child: Row(
-                    children: [
-                      SizedBox(width: SizeConfig.screenWidth*0.1),
-                      Image.asset(
-                        AssetsConstants.icProfile,
-                        height: 30,
-                        color: Theme.of(context).canvasColor,
-                      ),
-                    ],
-                  ),
-                ),
-              ]))
-        ]));
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      backgroundColor: Theme.of(context).cardColor,
+      title: Row(children: <Widget>[
+        Image.asset(AssetsConstants.icLogo,width: ResponsiveWidget.isMediumScreen(context)
+            ? 35:45, height:ResponsiveWidget.isMediumScreen(context)
+            ? 35: 45),
+        SizedBox(width: SizeConfig.screenWidth*0.04),
+        AppBoldFont(context,msg: "EditProfile",fontSize:ResponsiveWidget.isMediumScreen(context) ? 18: 20, fontWeight: FontWeight.w700),
+      ]),
+      actions: [
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              isLogins = true;
+              if (isSearch == true) {
+                isSearch = false;
+                searchController?.clear();
+                setState(() {});
+              }
+            });
+          },
+          child: Row(
+            children: [
+              appTextButton(context, names!, Alignment.center, Theme.of(context).canvasColor, ResponsiveWidget.isMediumScreen(context) ?16:18, true),
+              Image.asset(
+                AssetsConstants.icProfile,
+                height: 30,
+                color: Theme.of(context).canvasColor,
+              ),
+            ],
+          ),
+        ),
+        SizedBox(width: SizeConfig.screenWidth*0.04),
+      ],
+    );
   }
   saveButtonPressed(ProfileViewModel? viewmodel, String? name, String? phone,
       String? email, String? address) {

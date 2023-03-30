@@ -5,8 +5,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/route_service/routes.dart';
 import 'package:tycho_streams/view/WebScreen/EditProfile.dart';
+import 'package:tycho_streams/view/WebScreen/HomeViewPage.dart';
+import 'package:tycho_streams/view/WebScreen/MovieListCommonWidget.dart';
 import 'package:tycho_streams/view/WebScreen/RowSideMenu.dart';
 import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/repository/subscription_provider.dart';
@@ -135,6 +138,20 @@ class _MyAppState extends State<MyApp> {
                   Desc: state.queryParams['Desc'],
                 ));
           },
+        ),
+        GoRoute(
+          name: RoutesName.HomeViewPage,
+          path: '/HomeViewPage',
+          pageBuilder: (context, state) {
+            state.queryParams.forEach((key, value) {
+              print("$key : $value");
+            });
+            return MaterialPage(
+                child: HomeViewPage(
+                  title: state.queryParams['title'],
+                  trayId: int.parse(state.queryParams['trayId']!),
+                ));
+          },
 
         ),
         GoRoute(
@@ -146,8 +163,9 @@ class _MyAppState extends State<MyApp> {
             });
             return MaterialPage(
                 child: SeeAllListPages(
-                  VideoId: state.queryParams['VideoId'],
                   title: state.queryParams['title'],
+                 VideoId: state.queryParams['VideoId'],
+
                 ));
           },
 

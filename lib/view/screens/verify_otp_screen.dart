@@ -104,7 +104,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                   msg: StringConstant.verification,
                   fontSize:  ResponsiveWidget.isMediumScreen(context)
                       ? 18 :22,
-                  color: TEXT_COLOR),
+                 ),
               SizedBox(height: 5),
               Padding(
                 padding: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context)
@@ -113,7 +113,6 @@ class _VerifyOtpState extends State<VerifyOtp> {
                 child: AppMediumFont(
                     context,textAlign: TextAlign.left,
                     msg: StringConstant.codeVerify,
-                    color: TEXT_COLOR,
                     fontSize: ResponsiveWidget.isMediumScreen(context)? 14:16,
                     maxLines: 2),
               ),
@@ -155,7 +154,6 @@ class _VerifyOtpState extends State<VerifyOtp> {
           Container(
             child: AppMediumFont(
                 context,msg: errorPin,
-                color: RED_COLOR,
                 fontSize: 16,
                 maxLines: 3),
           )
@@ -171,7 +169,6 @@ class _VerifyOtpState extends State<VerifyOtp> {
         child: AppMediumFont(
             context,textAlign: TextAlign.left,
             msg: StringConstant.codeVerify,
-            color: TEXT_COLOR,
             fontSize: ResponsiveWidget.isMediumScreen(context)? 14:16,
             maxLines: 1));
   }
@@ -220,7 +217,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AppMediumFont(
-                    context,msg: StringConstant.resendOtp, color: BLACK_COLOR, fontSize: 16),
+                    context,msg: StringConstant.resendOtp, fontSize: 16),
                 TextButton(
                   child: Text(
                        StringConstant.resend + ' >',
