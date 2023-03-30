@@ -241,7 +241,7 @@ class _FAQState extends State<FAQ> {
               )),
           body: Scaffold(
     key: _scaffoldKey,
-            drawer: AppMenu(homeViewModel: viewmodel),
+            // drawer: AppMenu(homeViewModel: viewmodel),
 
             body: GestureDetector(
               onTap: () {
@@ -390,17 +390,15 @@ class _FAQState extends State<FAQ> {
                       _scaffoldKey.currentState?.openEndDrawer();
 
                     },
-                    child: Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                          color: Color(0xff001726),
-                        ),
-                        child: Image.asset(
-                          'images/ic_menu.png',
+                    child: IconButton(
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
+                        icon: Image.asset(
+                          AssetsConstants.icBack,
                           height: 25,
                           width: 25,
-                        ))),
+                        )),),
                 Container(
                     height: 45,
                     width: SizeConfig.screenWidth * 0.58,

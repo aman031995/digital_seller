@@ -249,7 +249,7 @@ class _TermsState extends State<Terms> {
 
               Scaffold(
                 key: _scaffoldKey,
-                drawer: AppMenu(homeViewModel: viewmodel),
+                // drawer: AppMenu(homeViewModel: viewmodel),
                 body: SingleChildScrollView(
                   child: Stack(
                     children: [

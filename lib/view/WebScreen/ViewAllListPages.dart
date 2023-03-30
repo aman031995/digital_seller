@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -29,6 +30,7 @@ import 'package:tycho_streams/viewmodel/HomeViewModel.dart';
 import 'package:tycho_streams/viewmodel/auth_view_model.dart';
 
 import '../../main.dart';
+
 
 class SeeAllListPages extends StatefulWidget {
   String? title;
@@ -64,7 +66,6 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
     });
     super.initState();
   }
-
   void dispose() {
     _scrollController.dispose();
     searchController?.dispose();
@@ -74,6 +75,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    final authVM = Provider.of<AuthViewModel>(context);
     return ChangeNotifierProvider<HomeViewModel>(
         create: (BuildContext context) => homeView,
         child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
@@ -95,7 +97,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                     appBar: homePageTopBar(),
                     body: Scaffold(
                         key: _scaffoldKey,
-                        drawer: AppMenu(homeViewModel: homeViewModel),
+                        // drawer: AppMenu(homeViewModel: homeViewModel),
                         body: Stack(
                           children: [
                             homeViewModel.homePageDataModel != null

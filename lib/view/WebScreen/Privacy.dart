@@ -246,7 +246,7 @@ class _PrivacyState extends State<Privacy> {
 
                         Scaffold(
                           key: _scaffoldKey,
-                          drawer: AppMenu(homeViewModel: viewmodel),
+                          // drawer: AppMenu(homeViewModel: viewmodel),
                           body: SingleChildScrollView(
                             child: Stack(
                               children: [
@@ -332,18 +332,15 @@ class _PrivacyState extends State<Privacy> {
                       _scaffoldKey.currentState?.openEndDrawer();
 
                     },
-                    child: Container(
-                        height: 35,
-                        width: 35,
-                        decoration: BoxDecoration(
-                            color: Color(0xff001726),
-                            borderRadius: BorderRadius.circular(2)
-                        ),
-                        child: Image.asset(
-                          'images/ic_menu.png',
+                    child: IconButton(
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
+                        icon: Image.asset(
+                          AssetsConstants.icBack,
                           height: 25,
                           width: 25,
-                        ))),
+                        )),),
                 Container(
                     height: 45,
                     width: SizeConfig.screenWidth * 0.58,

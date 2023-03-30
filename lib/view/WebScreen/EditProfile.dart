@@ -39,6 +39,7 @@ import 'package:tycho_streams/viewmodel/profile_view_model.dart';
 
 import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
 
+import '../../model/data/AppConfigModel.dart';
 import '../widgets/app_menu.dart';
 
 class EditProfile extends StatefulWidget {
@@ -163,7 +164,7 @@ class _EditProfileState extends State<EditProfile> {
                     body:
                     Scaffold(
                       key: _scaffoldKey,
-                      drawer: AppMenu(homeViewModel: homemodel),
+                      // drawer: AppMenu(homeViewModel: homemodel),
                       body: Stack(
                         children: [
 
