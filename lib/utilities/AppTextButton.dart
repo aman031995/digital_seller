@@ -43,7 +43,7 @@ Widget appButton(
             AppBoldFont(
                 context,
                 msg: title,
-                color: isSelected == true ? WHITE_COLOR : textColor,
+                color: isSelected == true ? Theme.of(context).canvasColor : Theme.of(context).canvasColor.withOpacity(0.6),
                 fontSize: fontSize,
                 textAlign: TextAlign.center),
             SizedBox(width: 5,),
@@ -68,7 +68,7 @@ Widget backButton({required VoidCallback onTap,required BuildContext context}) {
         ),
         //icon data for elevated button
         label: AppMediumFont(
-            context,msg: 'Back', fontSize: 17, color: Theme.of(context).canvasColor),
+            context,msg: 'Back', fontSize: 17,),
         //label text
         style: ElevatedButton.styleFrom(
           primary: Theme.of(context).primaryColor,
@@ -93,13 +93,12 @@ Widget appTextButton(
       child: TextButton(
           child: type == true
               ? AppBoldFont(
-              context,msg: title,
-              color: textColor,
+
+              context,msg: title,color: textColor,
               fontSize: fontSize,
               textAlign: TextAlign.center)
               : AppBoldFont(
-              context,  msg: title,
-              color: textColor,
+              context,  msg: title,color: textColor,
               fontSize: fontSize,
               textAlign: TextAlign.center),
           onPressed: onPressed));
@@ -141,7 +140,7 @@ Widget textButton(BuildContext context, String title,
         borderRadius: BorderRadius.circular(8.0),
       ),
       // decoration: buttonDecoration,
-      child: AppBoldFont(context,msg: title, fontSize:ResponsiveWidget.isMediumScreen(context)? 14:18, color: TEXT_COLOR),
+      child: AppBoldFont(context,msg: title, fontSize:ResponsiveWidget.isMediumScreen(context)? 14:18),
     ),
   );
 }

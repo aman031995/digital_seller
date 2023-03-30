@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:tycho_streams/main.dart';
 import 'package:tycho_streams/model/data/HomePageDataModel.dart';
 import 'package:tycho_streams/utilities/AppColor.dart';
@@ -6,6 +7,7 @@ import 'package:tycho_streams/utilities/AppTextButton.dart';
 import 'package:tycho_streams/utilities/Responsive.dart';
 import 'package:tycho_streams/utilities/SizeConfig.dart';
 import 'package:tycho_streams/utilities/TextHelper.dart';
+import 'package:tycho_streams/utilities/route_service/routes_name.dart';
 import 'package:tycho_streams/utilities/three_arched_circle.dart';
 import 'package:tycho_streams/view/WebScreen/MovieCardCommonWidget.dart';
 
@@ -109,20 +111,15 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppBoldFont(context,msg: title, fontSize: ResponsiveWidget.isMediumScreen(context)? 16:22, color: TEXT_COLOR),
+              AppBoldFont(context,msg: title, fontSize: ResponsiveWidget.isMediumScreen(context)? 16:22),
               widget.platformMovieData!.content!.length > 8
                   ? textButton(context, "See All", onApply: () async {
-
-                // Navigator.push(
-                //           context,
-                //           MaterialPageRoute(
-                //             builder: (_) => SeeAllListPages(
-                //               trayId: widget.trayId,
-                //               moviesList: widget.platformMovieData?.content,
-                //               title: widget.trayTitle ?? "",
-                //               isCategory: false,
-                //             ),
-                //           ));
+                GoRouter.of(context)
+                    .pushNamed(RoutesName.HomeViewPage, queryParams: {
+                  'title': '${widget.trayTitle}',
+                  'trayId':'${widget.trayId}',
+                },
+                );
                     })
                   : SizedBox()
             ],

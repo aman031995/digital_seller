@@ -90,11 +90,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                   preferredSize: Size.fromHeight(60),
                   child: Header(context,setState)),
               body: Scaffold(
-
                   key: _scaffoldKey,
-                  // drawer: ResponsiveWidget.isMediumScreen(context)
-                  //     ?AppMenu(homeViewModel: viewmodel)
-                  //     :AppMenu(homeViewModel: viewmodel),
                   body: Stack(
                     children: [
                       SingleChildScrollView(
@@ -137,8 +133,7 @@ class _HomePageWebState extends State<HomePageWeb> {
         elevation: 0,
         automaticallyImplyLeading: false,
         backgroundColor: Theme
-            .of(context)
-            .backgroundColor,
+            .of(context).cardColor,
         title: Stack(children: <Widget>[
           Container(
               child: Row(children: [

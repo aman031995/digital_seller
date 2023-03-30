@@ -65,7 +65,6 @@ class _LoginUserUpdateState extends State<SocialLoginUpdate> {
                 margin: const EdgeInsets.only(top: 20),
                 child: AppMediumFont(
                     context,msg: 'Update',
-                    color: TEXT_COLOR,
                     fontSize: 20.0,
                     textAlign: TextAlign.center),
               ),

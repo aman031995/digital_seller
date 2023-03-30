@@ -49,30 +49,23 @@ class _LoginUpState extends State<LoginUp> {
     SizeConfig().init(context);
     final authVM = Provider.of<AuthViewModel>(context);
     final socialVM = Provider.of<SocialLoginViewModel>(context);
-    if (ResponsiveWidget.isMediumScreen(context)) {
       return ChangeNotifierProvider<HomeViewModel>(
           create: (BuildContext context) => homeViewModel,
           child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-            return AlertDialog(
+            return
+              ResponsiveWidget.isMediumScreen(context)?
+              AlertDialog(
                 elevation: 8,
                 contentPadding: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
-                backgroundColor: Theme
-                    .of(context)
-                    .cardColor,
+                backgroundColor: Theme.of(context).cardColor,
                 content: Container(
                     height: 380,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 2, color: Theme
-                          .of(context)
-                          .primaryColor
-                          .withOpacity(0.6)),
-                      color: Theme
-                          .of(context)
-                          .cardColor
-                          .withOpacity(0.8),
+                      border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.4)),
+                      color: Theme.of(context).cardColor.withOpacity(0.8),
                     ),
                     child: SingleChildScrollView(
                       child: Column(
@@ -80,11 +73,15 @@ class _LoginUpState extends State<LoginUp> {
                           SizedBox(height: SizeConfig.screenHeight * .02),
                           AppBoldFont(context, msg: 'Login',
                               fontSize: 18),
+                          SizedBox(height: SizeConfig.screenHeight * .01),
+                          AppRegularFont(
+                              context, msg:StringConstant.enterCredentials,
+                              fontSize: 16),
                           SizedBox(height: SizeConfig.screenHeight * .02),
                           registerMobileForm(),
                           SizedBox(height: SizeConfig.screenHeight * .01),
                           Container(
-                            margin: const EdgeInsets.only(left: 0, right: 15),
+                            margin: const EdgeInsets.only(left: 0, right: 10),
                             child: appTextButton(
                                 context,
                                 StringConstant.forgotPass,
@@ -109,7 +106,7 @@ class _LoginUpState extends State<LoginUp> {
                                     context,
                                     'Login',
                                     SizeConfig.screenWidth / 1.5,
-                                    60.0,
+                                    50.0,
                                     LIGHT_THEME_COLOR,
                                     Theme
                                         .of(context)
@@ -126,7 +123,7 @@ class _LoginUpState extends State<LoginUp> {
                                           passwordController.text);
                                     });
                               }),
-                          SizedBox(height: SizeConfig.screenHeight * .01),
+                          SizedBox(height: SizeConfig.screenHeight * .02),
                           socialLoginViewMobile(socialVM),
                           SizedBox(height: SizeConfig.screenHeight * .01),
                           Row(
@@ -134,12 +131,11 @@ class _LoginUpState extends State<LoginUp> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               AppRegularFont(
-                                  context, msg: 'Already have an account?',
-                                  color: TEXT_COLOR,
+                                  context, msg: StringConstant.dontHaveAccount,
                                   fontSize: 16),
                               appTextButton(context, 'Create',
                                   Alignment.bottomRight,
-                                  Theme.of(context).canvasColor, 14, true, onPressed: () {
+                                  Theme.of(context).primaryColor, 14, true, onPressed: () {
                                     Navigator.pop(context);
                                     showDialog(
                                         context: context,
@@ -152,181 +148,118 @@ class _LoginUpState extends State<LoginUp> {
                           ),
                         ],
                       ),
-                    )));
-          }));
-    }
-    else {
-      return ChangeNotifierProvider<HomeViewModel>(
-          create: (BuildContext context) => homeViewModel,
-          child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-           return AlertDialog(
-                elevation: 8,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                backgroundColor: Colors.transparent,
-                content: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.4)),
-                        color: Theme.of(context).cardColor.withOpacity(0.8)),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center, children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                bottomLeft: Radius.circular(20))),
-                        height: SizeConfig.screenHeight / 1.35,
-                        width: SizeConfig.screenWidth * 0.29,
-                        child: Image.asset(
-                          'images/LoginPageLogo.png',
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      SingleChildScrollView(
-                        child: Container(
-                          margin:  EdgeInsets.only(left: 50, right: 50),
-                          height: SizeConfig.screenHeight / 1.35,
+                    ))):
+              AlertDialog(
+                  elevation: 8,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  backgroundColor: Colors.transparent,
+                  content: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.4)),
+                          color: Theme.of(context).cardColor.withOpacity(0.8)),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center, children: [
+                        Container(
                           decoration: const BoxDecoration(
                               borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(20),
-                                  bottomRight: Radius.circular(20))),
-                          width: SizeConfig.screenWidth * 0.25,
-                          child: Column(
-                            children: [
-                              SizedBox(height: SizeConfig.screenHeight * .05),
-                              AppBoldFont(context, msg: 'Login',
-                                  fontSize: 22),
-                              SizedBox(height: SizeConfig.screenHeight * .02),
-                              AppRegularFont(
-                                  context, msg: "Enter your credentials to continue with us.",
-                                  fontSize: 18),
-                              registerForm(),
-                              Container(
-                                margin: const EdgeInsets.only(left: 0, right: 8),
-                                child: appTextButton(
-                                    context,
-                                    StringConstant.forgotPass,
-                                    Alignment.centerRight,
-                                    Theme.of(context).canvasColor, 16,
-                                    true, onPressed: () {
-                                  Navigator.pop(context);
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return const ForgotPassword();
-                                      });
-                                }),
-                              ),
-                              SizedBox(height: SizeConfig.screenHeight * .03),
-                              StreamBuilder(
-                                  stream: validation.checkUserLogin,
-                                  builder: (context, snapshot) {
-                                    return appButton(
-                                        context,
-                                        'Login',
-                                        SizeConfig.screenWidth / 4.2,
-                                        55.0,
-                                        LIGHT_THEME_COLOR,
-                                        Theme.of(context).canvasColor,
-                                        18,
-                                        10,
-                                        snapshot.data != true ? false : true,
-                                        onTap: () {
-                                          snapshot.data != true
-                                              ? ToastMessage.message(
-                                              StringConstant.fillOut)
-                                              : loginButtonPressed(
-                                              authVM, phoneController.text,
-                                              passwordController.text);
-                                        });
-                                  }),
-                              SizedBox(height: SizeConfig.screenHeight * .03),
-                              viewmodel.appConfigModel?.androidConfig?.socialLogin != null ? socialLoginView(socialVM, viewmodel) : Container(),
-                              SizedBox(height: SizeConfig.screenHeight * .03),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  AppRegularFont(context, msg: StringConstant.dontHaveAccount),
-                                  appTextButton(
-                                      context, 'Create', Alignment.bottomRight,
-                                      Theme.of(context).primaryColor, 16, true, onPressed: () {
+                                  topLeft: Radius.circular(20),
+                                  bottomLeft: Radius.circular(20))),
+                          height: SizeConfig.screenHeight / 1.35,
+                          width: SizeConfig.screenWidth * 0.29,
+                          child: Image.asset(
+                            'images/LoginPageLogo.png',
+                            fit: BoxFit.fill,
+                          ),
+                        ),
+                        SingleChildScrollView(
+                          child: Container(
+                            margin:  EdgeInsets.only(left: 50, right: 50),
+                            height: SizeConfig.screenHeight / 1.35,
+                            decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(20),
+                                    bottomRight: Radius.circular(20))),
+                            width: SizeConfig.screenWidth * 0.25,
+                            child: Column(
+                              children: [
+                                SizedBox(height: SizeConfig.screenHeight * .05),
+                                AppBoldFont(context, msg: 'Login',
+                                    fontSize: 22),
+                                SizedBox(height: SizeConfig.screenHeight * .02),
+                                AppRegularFont(
+                                    context, msg:StringConstant.enterCredentials,
+                                    fontSize: 18),
+                                registerForm(),
+                                Container(
+                                  margin: const EdgeInsets.only(left: 0, right: 8),
+                                  child: appTextButton(
+                                      context,
+                                      StringConstant.forgotPass,
+                                      Alignment.centerRight,
+                                      Theme.of(context).canvasColor, 16,
+                                      true, onPressed: () {
                                     Navigator.pop(context);
                                     showDialog(
                                         context: context,
-                                        barrierDismissible: false,
-                                        barrierColor: Colors.black87,
                                         builder: (BuildContext context) {
-                                          return const SignUp();
+                                          return const ForgotPassword();
                                         });
                                   }),
-                                ],
-                              ),
-                            ],
+                                ),
+                                SizedBox(height: SizeConfig.screenHeight * .03),
+                                StreamBuilder(
+                                    stream: validation.checkUserLogin,
+                                    builder: (context, snapshot) {
+                                      return appButton(
+                                          context,
+                                          'Login',
+                                          SizeConfig.screenWidth / 4.2,
+                                          55.0,
+                                          LIGHT_THEME_COLOR,
+                                          Theme.of(context).canvasColor,
+                                          18,
+                                          10,
+                                          snapshot.data != true ? false : true,
+                                          onTap: () {
+                                            snapshot.data != true
+                                                ? ToastMessage.message(
+                                                StringConstant.fillOut)
+                                                : loginButtonPressed(
+                                                authVM, phoneController.text,
+                                                passwordController.text);
+                                          });
+                                    }),
+                                SizedBox(height: SizeConfig.screenHeight * .03),
+                                viewmodel.appConfigModel?.androidConfig?.socialLogin != null ? socialLoginView(socialVM, viewmodel) : Container(),
+                                SizedBox(height: SizeConfig.screenHeight * .03),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    AppRegularFont(context, msg: StringConstant.dontHaveAccount),
+                                    appTextButton(
+                                        context, 'Create', Alignment.bottomRight,
+                                        Theme.of(context).primaryColor, 16, true, onPressed: () {
+                                      Navigator.pop(context);
+                                      showDialog(
+                                          context: context,
+                                          barrierColor: Colors.black87,
+                                          builder: (BuildContext context) {
+                                            return const SignUp();
+                                          });
+                                    }),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      )
-                    ])));
+                        )
+                      ])));
           }));
-    }
-  }
-  registerForm() {
-    return Column(
-      children: [
-        SizedBox(height: SizeConfig.screenHeight * .03),
-        StreamBuilder(
-            stream: validation.phoneNo,
-            builder: (context, snapshot) {
-              return AppTextField(
-                  maxLine: null,
-                  prefixText: '',
-                  width: SizeConfig.screenWidth / 4,
-                  controller: phoneController,
-                  labelText: 'Phone Number',
-                  isShowCountryCode: true,
-                  isShowPassword: false,
-                  secureText: false,
-                  isColor: false,
-                  isTick: false,
-                  maxLength: 10,
-                  errorText:
-                      snapshot.hasError ? snapshot.error.toString() : null,
-                  onChanged: (m) {
-                    validation.sinkPhoneNo.add(m);
-                    isPhone = true;
-                    setState(() {});
-                  },
-                  keyBoardType: TextInputType.phone,
-                  onSubmitted: (m) {});
-            }),
-        SizedBox(height: SizeConfig.screenHeight * .03),
-        StreamBuilder(
-            stream: validation.password,
-            builder: (context, snapshot) {
-              return AppTextField(
-                  maxLine: 1,
-                  controller: passwordController,
-                  labelText: 'Password',
-                  prefixText: '',
-                  width: SizeConfig.screenWidth / 4,
-                  isShowPassword: true,
-                  isTick: true,
-                  isColor: isPassword,
-                  keyBoardType: TextInputType.visiblePassword,
-                  errorText:
-                      snapshot.hasError ? snapshot.error.toString() : null,
-                  onChanged: (m) {
-                    validation.sinkPassword.add(m);
-                    isPassword = true;
-                    setState(() {});
-                  },
-                  onSubmitted: (m) {});
-            }),
-       SizedBox(height: 15),
-      ],
-    );
   }
 
+//---Mobileweb--//
   registerMobileForm() {
     return Column(
       children: [
@@ -382,10 +315,6 @@ class _LoginUpState extends State<LoginUp> {
       ],
     );
   }
-  loginButtonPressed(AuthViewModel authVM, String phone, String password) {
-    authVM.login(phone, password, context);
-  }
-
   Widget socialLoginViewMobile(SocialLoginViewModel socialVM) {
     return SizedBox(
       width: SizeConfig.screenWidth / 1.5,
@@ -396,21 +325,20 @@ class _LoginUpState extends State<LoginUp> {
             children: [
               SizedBox(
                 width: SizeConfig.screenWidth * 0.08,
-                child: const Divider(
-                  color: BLACK_COLOR,
+                child:  Divider(
+                    color: Theme.of(context).canvasColor
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
                 child: AppMediumFont(
                     context,msg: StringConstant.orContinueWith,
-                    color: TEXT_COLOR,
                     fontSize: 14),
               ),
               SizedBox(
                 width: SizeConfig.screenWidth * 0.08,
-                child: const Divider(
-                  color: BLACK_COLOR,
+                child: Divider(
+                  color: Theme.of(context).canvasColor
                 ),
               ),
             ],
@@ -419,6 +347,64 @@ class _LoginUpState extends State<LoginUp> {
           SocialLoginView(socialLoginViewModel: socialVM)
         ],
       ),
+    );
+  }
+
+//--Website--///
+  registerForm() {
+    return Column(
+      children: [
+        SizedBox(height: SizeConfig.screenHeight * .03),
+        StreamBuilder(
+            stream: validation.phoneNo,
+            builder: (context, snapshot) {
+              return AppTextField(
+                  maxLine: null,
+                  prefixText: '',
+                  width: SizeConfig.screenWidth / 4,
+                  controller: phoneController,
+                  labelText: 'Phone Number',
+                  isShowCountryCode: true,
+                  isShowPassword: false,
+                  secureText: false,
+                  isColor: false,
+                  isTick: false,
+                  maxLength: 10,
+                  errorText:
+                  snapshot.hasError ? snapshot.error.toString() : null,
+                  onChanged: (m) {
+                    validation.sinkPhoneNo.add(m);
+                    isPhone = true;
+                    setState(() {});
+                  },
+                  keyBoardType: TextInputType.phone,
+                  onSubmitted: (m) {});
+            }),
+        SizedBox(height: SizeConfig.screenHeight * .03),
+        StreamBuilder(
+            stream: validation.password,
+            builder: (context, snapshot) {
+              return AppTextField(
+                  maxLine: 1,
+                  controller: passwordController,
+                  labelText: 'Password',
+                  prefixText: '',
+                  width: SizeConfig.screenWidth / 4,
+                  isShowPassword: true,
+                  isTick: true,
+                  isColor: isPassword,
+                  keyBoardType: TextInputType.visiblePassword,
+                  errorText:
+                  snapshot.hasError ? snapshot.error.toString() : null,
+                  onChanged: (m) {
+                    validation.sinkPassword.add(m);
+                    isPassword = true;
+                    setState(() {});
+                  },
+                  onSubmitted: (m) {});
+            }),
+        SizedBox(height: 15),
+      ],
     );
   }
   Widget socialLoginView(SocialLoginViewModel socialVM,HomeViewModel viewmodel) {
@@ -455,5 +441,8 @@ class _LoginUpState extends State<LoginUp> {
         ],
       ),
     );
+  }
+  loginButtonPressed(AuthViewModel authVM, String phone, String password) {
+    authVM.login(phone, password, context);
   }
 }

@@ -66,7 +66,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   context,msg: StringConstant.forgotPassword,
                   fontSize: ResponsiveWidget.isMediumScreen(context)
                       ? 18 :22,
-                  color: TEXT_COLOR),
+                  ),
               SizedBox(height: 20),
               Padding(
                 padding:EdgeInsets.only(left: 25,right: 15),
@@ -74,7 +74,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     context,msg: StringConstant.enterOtpText,
                     fontSize: ResponsiveWidget.isMediumScreen(context)
                         ? 14 :16,
-                    color: GREY_COLOR,
                     textAlign: TextAlign.left),
               ),
               const SizedBox(height: 35),
