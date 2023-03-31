@@ -160,7 +160,7 @@ class _LoginUpState extends State<LoginUp> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.4)),
-                          color: Theme.of(context).cardColor.withOpacity(0.8)),
+                          color: Theme.of(context).cardColor),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center, children: [
                         Container(
@@ -202,7 +202,7 @@ class _LoginUpState extends State<LoginUp> {
                                       Alignment.centerRight,
                                       Theme.of(context).canvasColor, 16,
                                       true, onPressed: () {
-                                    // Navigator.pop(context);
+                                    Navigator.pop(context);
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
