@@ -38,7 +38,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     final authVM = Provider.of<AuthViewModel>(context);
     return AlertDialog(
         elevation: 8,
-        backgroundColor: Colors.transparent,
+        titlePadding: EdgeInsets.zero,
+        backgroundColor: Theme.of(context).cardColor,
         contentPadding: EdgeInsets.zero,
         shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         content:  forgotPasswordSection(authVM));
@@ -46,12 +47,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
   Widget forgotPasswordSection(AuthViewModel authVM) {
     return Container(
-        height:ResponsiveWidget.isMediumScreen(context)
-            ? 300 : 350,
-        width: ResponsiveWidget.isMediumScreen(context)
-            ? 600 :500,
         decoration: BoxDecoration(
-            color: Theme.of(context).cardColor.withOpacity(0.8),
+            // color: Theme.of(context).cardColor,
           border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.6)),
           borderRadius: BorderRadius.circular(20)
         ),

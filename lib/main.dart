@@ -229,6 +229,10 @@ class _MyAppState extends State<MyApp> {
                   .appConfigModel?.androidConfig?.appTheme?.textColor?.hex;
               return MaterialApp.router(
                   theme: ThemeData(
+                      scrollbarTheme: ScrollbarThemeData(
+                        thumbColor: MaterialStateProperty.all(Theme.of(context).canvasColor),
+                        trackColor: MaterialStateProperty.all(Colors.grey),
+                      ),
                       scaffoldBackgroundColor: (bgColor)?.toColor(),
                       primaryColor: (themeColor)?.toColor(),
                       backgroundColor: (bgColor)?.toColor(),

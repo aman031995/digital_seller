@@ -25,18 +25,18 @@ Widget searchView(BuildContext context, HomeViewModel viewmodel, bool isSearch,
       child: Stack(children: [
         if (isSearch)
           Container(
-              height: 250,
-              width: 450,
+            height: 250,
               decoration: BoxDecoration(
                 color: viewmodel.searchDataModel != null && isSearch == true
                     ? Theme.of(context).scaffoldBackgroundColor
                     : TRANSPARENT_COLOR,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                    width: 2, color: Theme.of(context).primaryColor),
+                    width: 1, color: Theme.of(context).primaryColor),
               ),
               child: viewmodel.searchDataModel!.searchList!.isNotEmpty
                   ? ListView.builder(
+                itemExtent: 100,
                   controller: _scrollController,
                   physics: BouncingScrollPhysics(),
                   itemBuilder: (_, index) {
@@ -68,32 +68,20 @@ Widget searchView(BuildContext context, HomeViewModel viewmodel, bool isSearch,
                                 '${viewmodel.searchDataModel?.searchList?[index].videoDescription}'
                               });
                           setState(() {
-
                             searchController.clear();
                           });
                         },
                         child: Card(
-                          child: ListTile(
-                              contentPadding: EdgeInsets.all(0),
-                              title: AppMediumFont(context,
-                                  msg: viewmodel.searchDataModel
-                                      ?.searchList?[index].videoTitle),
-                              leading:
-                              ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  minWidth: 100,
-                                  minHeight: 200,
-                                  maxWidth: 324,
-                                  maxHeight: 464,
-                                ),
-                                child:
-
-                                Image.network(viewmodel.searchDataModel?.searchList?[index].thumbnail ?? '',height: 200,width:120,fit: BoxFit.fill,),)
+                          child: Row(
+                            children: [
+                              Image.network(viewmodel.searchDataModel?.searchList?[index].thumbnail ?? '',fit: BoxFit.fill,),
+                        SizedBox(width: 6),
+                          Expanded(child: AppMediumFont(context, msg: viewmodel.searchDataModel?.searchList?[index].videoTitle)),
+                            ],
                           ),
                         ));
                   },
-                  itemCount:
-                  viewmodel.searchDataModel?.searchList?.length)
+                  itemCount: viewmodel.searchDataModel?.searchList?.length)
                   : Center(
                   child: AppMediumFont(context,
                       msg: viewmodel.message,
@@ -108,15 +96,14 @@ Widget searchView(BuildContext context, HomeViewModel viewmodel, bool isSearch,
                 )))
             : SizedBox()
       ])) :Padding(
-      padding: EdgeInsets.only(left:SizeConfig.screenWidth*0.30, right: 0),
+      padding: EdgeInsets.only(left:SizeConfig.screenWidth*0.33, right: 0),
           child: Stack(
               children: [
 
             if (isSearch)
               Container(
                   height: 350,
-                  width: 450,
-                  // margin: EdgeInsets.only(left: SizeConfig.screenWidth/1.55),
+                  width: 430,
                   decoration: BoxDecoration(
                     color: viewmodel.searchDataModel != null && isSearch == true
                         ? Theme.of(context).scaffoldBackgroundColor
@@ -127,6 +114,7 @@ Widget searchView(BuildContext context, HomeViewModel viewmodel, bool isSearch,
                   ),
                   child: viewmodel.searchDataModel!.searchList!.isNotEmpty
                       ? ListView.builder(
+                    itemExtent: 120,
                           controller: _scrollController,
                           physics: BouncingScrollPhysics(),
                           itemBuilder: (_, index) {
@@ -163,23 +151,13 @@ Widget searchView(BuildContext context, HomeViewModel viewmodel, bool isSearch,
                                   });
                                 },
                                 child: Card(
-                                  child: ListTile(
-                                    contentPadding: EdgeInsets.all(0),
-                                    title: AppMediumFont(context,
-                                        msg: viewmodel.searchDataModel
-                                            ?.searchList?[index].videoTitle),
-                                    leading:
-                                    ConstrainedBox(
-                                    constraints: BoxConstraints(
-                                    minWidth: 100,
-                            minHeight: 200,
-                            maxWidth: 324,
-                            maxHeight: 464,
-                            ),
-                            child:
-
-                            Image.network(viewmodel.searchDataModel?.searchList?[index].thumbnail ?? '',height: 200,width:120,fit: BoxFit.fill,),)
-                                  ),
+                                      child: Row(
+                                        children: [
+                                          Image.network(viewmodel.searchDataModel?.searchList?[index].thumbnail ?? '',fit: BoxFit.fill,),
+                                          SizedBox(width: 10),
+                                          Expanded(child: AppMediumFont(context, msg: viewmodel.searchDataModel?.searchList?[index].videoTitle)),
+                                        ],
+                                      ),
                                 ));
                           },
                           itemCount:
@@ -213,15 +191,14 @@ Widget profile(BuildContext context,setState){
   return Positioned(
       right: 20,
       child: Container(
-        padding: EdgeInsets.only(left: 20),
-        height: 90,
         width: 150,
+        color: Theme.of(context).cardColor,
         child: Column(
           children: [
             SizedBox(height: 5),
             appTextButton(
                 context,
-                "My Account",
+                "  My Account",
                 Alignment.centerLeft,
                 Theme.of(context).canvasColor,
                 18,
@@ -249,14 +226,13 @@ Widget profile(BuildContext context,setState){
             SizedBox(height: 5),
             appTextButton(
                 context,
-                "LogOut",
+                "  LogOut",
                 Alignment.centerLeft,
                 Theme.of(context).canvasColor,
                 18,
                 false, onPressed: () {
               setState(() {
-                authVM
-                    .logoutButtonPressed(context);
+                authVM.logoutButtonPressed(context);
                 isLogins = false;
                 if (isSearch == true) {
                   isSearch = false;
@@ -265,9 +241,9 @@ Widget profile(BuildContext context,setState){
                 }
               });
             }),
+            SizedBox(height: 5),
           ],
         ),
-        color: Theme.of(context).cardColor,
         // height: 20,width: 20,
       ));
 }
@@ -285,45 +261,30 @@ Widget Header(BuildContext context,setState){
               width: SizeConfig.screenWidth * .18),
         ),
         Container(
-          decoration: BoxDecoration(
-            border: Border.all(width: 2, color: Theme.of(context).canvasColor),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            children: [
-              Container(
-                height: 40,
-                width: SizeConfig.screenWidth / 4.9,
-                alignment: Alignment.center,
-                child: AppTextField(
-                          isSearch: false,
-                    controller: searchController,
-                    maxLine: searchController!.text.length > 2 ? 2 : 1,
-                    textCapitalization:
-                    TextCapitalization.words,
-                    secureText: false,
-                    floatingLabelBehavior:
-                    FloatingLabelBehavior.never,
-                    maxLength: 30,
-                    labelText:
-                    'Search videos, shorts, products',
-                    keyBoardType:
-                    TextInputType.text,
-                    onChanged: (m) {
-                      isSearch = true;
-                      if (isLogins == true) {
-                        isLogins = false;
-                        setState(() {});
-                      }
-                    },
-                    isTick: null),
-              ),
-              Container(width: 2,height: 40,color: Theme.of(context).canvasColor),
-              SizedBox(width: 6),
-              Image.asset(AssetsConstants.icSearch, height: 20, width: 20),
-              SizedBox(width: 6)
-            ],
-          ),
+          height: 40,
+          width: SizeConfig.screenWidth / 4.9,
+          alignment: Alignment.topCenter,
+          child: AppTextField(
+              controller: searchController,
+             //  maxLine: searchController!.text.length > 2 ? 2 : 1,
+              textCapitalization:
+              TextCapitalization.words,
+              secureText: false,
+              floatingLabelBehavior:
+              FloatingLabelBehavior.never,
+              maxLength: 30,
+              labelText:
+              'Search videos, shorts, products',
+              keyBoardType:
+              TextInputType.text,
+              onChanged: (m) {
+                isSearch = true;
+                if (isLogins == true) {
+                  isLogins = false;
+                  setState(() {});
+                }
+              },
+              isTick: null),
         ),
         SizedBox(
             width: SizeConfig.screenWidth * .18),
@@ -385,12 +346,14 @@ Widget Header(BuildContext context,setState){
             18,
             true,
             onPressed: () {
-              isLogins = true;
-                    if (isSearch == true) {
-                      isSearch = false;
-                      searchController?.clear();
-                      setState(() {});
-                    }
+              setState(() {
+                isLogins = true;
+                if (isSearch == true) {
+                  isSearch = false;
+                  searchController?.clear();
+                  setState(() {});
+                }
+              });
             }),
         names == "null"
             ? Container()
@@ -407,17 +370,6 @@ Widget Header(BuildContext context,setState){
           },
           child:  Image.asset(
             AssetsConstants.icProfile,
-            height: 30,
-            color: Theme.of(context).canvasColor,
-          ),
-        ),
-        SizedBox(
-            width: SizeConfig.screenWidth * .02),
-        GestureDetector(
-          onTap: () {
-            },
-          child:  Image.asset(
-          "images/ic_dots.png",
             height: 30,
             color: Theme.of(context).canvasColor,
           ),

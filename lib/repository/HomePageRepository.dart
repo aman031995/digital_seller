@@ -47,8 +47,7 @@ class HomePageRepository {
       }
     });
   }
-
-  Future<Result?> getHomePageData(int videoFor, int pageNum,
+  Future<Result?> getHomePageData(int videoFor,String type, int pageNum,
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
@@ -59,6 +58,7 @@ class HomePageRepository {
       "{USER_ID}": sharedPreferences.get("userId").toString(),
       "{APP_ID}": "b07e2bbc-3ad9-441f-86fe-59caff940d1d",
       "{VIDEO_FOR}": '$videoFor',
+      "{TYPE}": type,
       "{PAGE_NUM}": '$pageNum',
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
@@ -79,6 +79,37 @@ class HomePageRepository {
       }
     });
   }
+  // Future<Result?> getHomePageData(int videoFor, int pageNum,
+  //     BuildContext context, NetworkResponseHandler responseHandler) async {
+  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   var header = {
+  //     "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+  //   };
+  //   AppNetwork appNetwork = AppNetwork();
+  //   Map<String, String> urlParams = {
+  //     "{USER_ID}": sharedPreferences.get("userId").toString(),
+  //     "{APP_ID}": "b07e2bbc-3ad9-441f-86fe-59caff940d1d",
+  //     "{VIDEO_FOR}": '$videoFor',
+  //     "{PAGE_NUM}": '$pageNum',
+  //   };
+  //   ASRequestModal requestModal = ASRequestModal.withUrlParams(
+  //       urlParams, NetworkConstants.kGetHomePageData, RequestType.get,
+  //       headers: header);
+  //   appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+  //     if (isSuccess) {
+  //       var response = ASResponseModal.fromResult(result);
+  //       Map<String, dynamic> map =
+  //       (result as SuccessState).value as Map<String, dynamic>;
+  //       if (map["data"] is Map<String, dynamic>) {
+  //         response.dataModal = HomePageDataModel.fromJson(map["data"]);
+  //         // CacheDataManager.cacheData(key: StringConstant.kHomePageData, jsonData: map);
+  //       }
+  //       responseHandler(Result.success(response), isSuccess);
+  //     } else {
+  //       responseHandler(result, isSuccess);
+  //     }
+  //   });
+  // }
 
   Future<Result?> getTrayDataList(
       BuildContext context, NetworkResponseHandler responseHandler) async {

@@ -331,15 +331,13 @@ class _HomePageWebState extends State<HomePageWeb> {
                       width: 25,
                     )),
                 Container(
-                    height: 45,
+                    height: 40,
                     width: SizeConfig.screenWidth * 0.50,
                     alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(color: TRANSPARENT_COLOR, width: 1.0),
-                    ),
                     child: AppTextField(
+                      isColor: true,
                         controller: searchController,
-                        maxLine: searchController!.text.length > 2 ? 2 : 1,
+                        //maxLine: searchController!.text.length > 2 ? 2 : 1,
                         textCapitalization: TextCapitalization.words,
                         secureText: false,
                         floatingLabelBehavior: FloatingLabelBehavior.never,
@@ -350,6 +348,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                           isSearch = true;
                         },
                         isTick: null)),
+                SizedBox(
+                    width: SizeConfig.screenWidth * .02),
                 names == "null"
                     ?
                 OutlinedButton(
@@ -435,18 +435,6 @@ class _HomePageWebState extends State<HomePageWeb> {
                     color: Theme.of(context).canvasColor,
                   ),
                 ),
-                SizedBox(
-                    width: SizeConfig.screenWidth * .02),
-                GestureDetector(
-                  onTap: () {
-                  },
-                  child:  Image.asset(
-                    "images/ic_dots.png",
-                    height: 20,
-                    color: Theme.of(context).canvasColor,
-                  ),
-                ),
-
                 SizedBox(
                     width: SizeConfig.screenWidth * .02),
               ]))

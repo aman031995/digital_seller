@@ -15,7 +15,6 @@ class AppTextField extends StatefulWidget {
   bool? isShowPassword = false;
   bool? isVerifyNumber = false;
   String? labelText;
-  bool? isSearch=true;
   bool? secureText;
   bool? isShowCountryCode;
   String? prefixText;
@@ -46,7 +45,6 @@ class AppTextField extends StatefulWidget {
         this.prefixText,
         this.onSubmitted,
         this.isError,
-        this.isSearch,
         this.keyBoardType,
         this.maxLength,
         this.isShowPassword,
@@ -96,44 +94,25 @@ class _CustomTextFieldState extends State<AppTextField> {
                   color: widget.isEnable == false ?Theme.of(context).primaryColor.withOpacity(0.6) : Theme.of(context).canvasColor,
                   fontSize: ResponsiveWidget.isMediumScreen(context)?16:18),
               onSubmitted: widget.onSubmitted,
-              decoration:widget.isSearch==false?
-
-              InputDecoration(
-                  errorText: widget.errorText,
-                  floatingLabelBehavior: widget.floatingLabelBehavior,
-                  errorStyle: CustomTextStyle.textFormFieldInterMedium
-                      .copyWith(color: RED_COLOR, fontSize: 12),
-                  errorMaxLines: 3,
-                  isDense: true,
-                  labelText: widget.labelText,
-                  contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
-                  labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
-                      color: widget.isColor == true ? Theme.of(context).canvasColor.withOpacity(0.4) : Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 17),
-                  prefixText: widget.prefixText,
-                  suffixStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(color:Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 17),
-                  prefixStyle: TextStyle(color: Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 20),
-                border: InputBorder.none
-              ):
-
-              InputDecoration(
+              decoration: InputDecoration(
                 errorText: widget.errorText,
                 floatingLabelBehavior: widget.floatingLabelBehavior,
                 errorStyle: CustomTextStyle.textFormFieldInterMedium
-                    .copyWith(color: RED_COLOR, fontSize: 12),
+                    .copyWith(color: Theme.of(context).primaryColor, fontSize: 12),
                 errorMaxLines: 3,
                 focusedErrorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(color: RED_COLOR, width: 2),
+                  borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 2),
                 ),
                 errorBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(color: RED_COLOR, width: 2),
+                  borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 2),
                 ),
                 enabledBorder:
 
                 OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(color: Theme.of(context).canvasColor.withOpacity(0.4), width: 2),
+                  borderSide: BorderSide(color: Theme.of(context).canvasColor.withOpacity(0.8), width: 2),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -141,7 +120,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                 ),
                 disabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  borderSide: BorderSide(color: Theme.of(context).canvasColor.withOpacity(0.4), width: 2),
+                  borderSide: BorderSide(color: Theme.of(context).canvasColor.withOpacity(0.8), width: 2),
                 ),
                 isDense: true,
                 //  <- you can it to 0.0 for no space
@@ -166,7 +145,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                 labelText: widget.labelText,
                 contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
                 labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
-                    color: widget.isColor == true ? Theme.of(context).canvasColor.withOpacity(0.4) : Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 17),
+                    color: widget.isColor == true ? Theme.of(context).canvasColor.withOpacity(0.4) : Theme.of(context).canvasColor.withOpacity(0.8), fontSize: 17),
                 prefixText: widget.prefixText,
                 suffixStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(color: Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 17),
                 prefixStyle: TextStyle(color: Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 20),

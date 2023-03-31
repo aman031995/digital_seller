@@ -23,7 +23,7 @@ class NetworkConstants{
   static String kDeleteProfile = "user-delete/?userId={USER_ID}";
   static String kContactUs = "add-contactUs";
   static String kGetBannerList = "getBannerList?appId={APP_ID}";
-  static String kGetHomePageData = "homepageVideo?userId={USER_ID}&appId={APP_ID}&videoFor={VIDEO_FOR}&pageNum={PAGE_NUM}";
+  static String kGetHomePageData = "homepageVideo?userId={USER_ID}&appId={APP_ID}&videoFor={VIDEO_FOR}&type={TYPE}&pageNum={PAGE_NUM}";
   static String kGetTrayData = "getTrayOrder?appId={APP_ID}";
   static String kGetCategoryData = "getAllCategory?appId={APP_ID}&pageNum={PAGE_NUM}";
   static String kGetCategoryDetails = "getCategoryDetails?appId={APP_ID}&categoryId={CATEGORY_ID}&pageNum={PAGE_NUM}";

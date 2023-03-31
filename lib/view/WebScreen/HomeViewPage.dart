@@ -66,14 +66,14 @@ class _HomeViewPageState extends State<HomeViewPage> {
       ) {
     if (nextPage <= lastPage) {
       categoryView.runIndicator(context);
-      categoryView.seealll(context, widget.trayId ?? 1, nextPage);
+      categoryView.seealll(context, widget.trayId ?? 1, 'video',nextPage);
     } else {
       categoryView.stopIndicator(context);
     }
   }
 
   void initState() {
-    categoryView.seealll(context, widget.trayId ?? 1, pageNum);
+    categoryView.seealll(context, widget.trayId ?? 1,'video', pageNum);
     // homeView.getAppConfigData(context);
     searchController?.addListener(() {
       homeView.getSearchData(
@@ -137,16 +137,16 @@ class _HomeViewPageState extends State<HomeViewPage> {
               SingleChildScrollView(
                     child:   ResponsiveWidget.isMediumScreen(context)
                         ?  Container(
-                      margin: EdgeInsets.only(bottom: 10,right: 10,left: 10),
+                      margin: EdgeInsets.only(bottom: 10,right: 10,left: 10,top: 10),
                       child: GridView.builder(
                           physics: AlwaysScrollableScrollPhysics(),
                           shrinkWrap: true,
                           controller: _scrollController,
                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              crossAxisSpacing: 12.0,
-                              mainAxisSpacing: 12.0,
-                              childAspectRatio: 1.8),
+                              crossAxisSpacing: 10.0,
+                              mainAxisSpacing: 10.0,
+                              childAspectRatio: 1.5),
                           itemCount: categoryView.getPreviousPageList?.length,
                           itemBuilder: (context, index) {
                             return InkWell(
@@ -165,25 +165,22 @@ class _HomeViewPageState extends State<HomeViewPage> {
                               child: OnHover(
                                   builder: (isHovered) {
                                     bool _heigth = isHovered;
-                                    return Container(
-
-                                      height: SizeConfig.screenHeight * 3.5,
-                                      child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(15),
-                                          child: Image.network(
-                                              categoryView.getPreviousPageList?[index].thumbnail ?? "",
-                                              fit: BoxFit.fill,
-                                              width: 50,
-                                              height: 50)),
-                                    );
+                                    return ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: Image.network(
+                                            categoryView.getPreviousPageList?[index].thumbnail ?? "",
+                                            fit: BoxFit.fill,
+                                           ));
                                   },
                                   hovered: Matrix4.identity()..translate(0, 0, 0)),
                             );
                           }),
                     )
                         :Container(
-                margin: EdgeInsets.only(bottom: 10,right: 10,left: 10),
+
+                margin: EdgeInsets.only(bottom: 10,right: 20,left: 20,top: 10),
                 child: GridView.builder(
+
                       physics: AlwaysScrollableScrollPhysics(),
                       shrinkWrap: true,
                       controller: _scrollController,
@@ -191,7 +188,7 @@ class _HomeViewPageState extends State<HomeViewPage> {
                           crossAxisCount: 4,
                           crossAxisSpacing: 0.0,
                           mainAxisSpacing: 0.0,
-                          childAspectRatio: 1.5),
+                          childAspectRatio: 1.8),
                       itemCount: categoryView.getPreviousPageList?.length,
                       itemBuilder: (context, index) {
                         return InkWell(
@@ -216,7 +213,6 @@ class _HomeViewPageState extends State<HomeViewPage> {
                                       right: _heigth ? 20 : 10,
                                       top: _heigth ? 20 : 10,
                                       bottom: _heigth ? 20 : 10),
-                                  height: SizeConfig.screenHeight * 3.5,
                                   child: ClipRRect(
                                       borderRadius: BorderRadius.circular(15),
                                       child: Image.network(

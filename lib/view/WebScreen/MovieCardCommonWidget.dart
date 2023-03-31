@@ -39,7 +39,6 @@ class CardMovieHome extends StatefulWidget {
 class _CardMovieHomeState extends State<CardMovieHome> {
   @override
   void initState() {
-    setState((){});
     // TODO: implement initState
     super.initState();
   }
@@ -53,8 +52,9 @@ class _CardMovieHomeState extends State<CardMovieHome> {
       bool _heigth = isHovered;
       return
       Container(
-      width:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth/1.6 : SizeConfig.screenWidth/5,
-      padding: EdgeInsets.only(left:_heigth?0: 10,right:_heigth?0: 10,top:_heigth?0: 10,bottom:_heigth?0: 10),
+        height: ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenHeight * 0.2:SizeConfig.screenHeight/5,
+        width:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth*0.6: SizeConfig.screenWidth/5.2,
+      padding: EdgeInsets.only(left:_heigth?0: 5,right:_heigth?0: 5,top:_heigth?0: 5,bottom:_heigth?0:5),
       child: InkWell(
         onTap: () async{
           if (isSearch == true)  {

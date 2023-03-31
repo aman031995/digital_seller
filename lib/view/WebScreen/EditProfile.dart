@@ -224,6 +224,7 @@ class _EditProfileState extends State<EditProfile> {
                                              builder: (context, snapshot) {
                                                return AppTextField(
                                                  maxLine: 1,
+
                                                  controller: nameController,
                                                  labelText: StringConstant.fullName,
                                                  textCapitalization:

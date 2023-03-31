@@ -36,7 +36,7 @@ class _LoginUpState extends State<LoginUp> {
   @override
   void initState() {
     super.initState();
-    // homeViewModel.getAppConfigData(context);
+     homeViewModel.getAppConfigData(context);
   }
   @override
   void dispose() {
@@ -56,30 +56,27 @@ class _LoginUpState extends State<LoginUp> {
               ResponsiveWidget.isMediumScreen(context)?
               AlertDialog(
                 elevation: 8,
+                  titlePadding: EdgeInsets.zero,
                 contentPadding: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
-                backgroundColor: Theme.of(context).cardColor,
+                backgroundColor: Theme.of(context).cardColor.withOpacity(0.9),
                 content: Container(
-                    height: 380,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.4)),
+                      border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.6)),
                       color: Theme.of(context).cardColor.withOpacity(0.8),
                     ),
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
                           SizedBox(height: SizeConfig.screenHeight * .02),
-                          AppBoldFont(context, msg: 'Login',
-                              fontSize: 18),
-                          SizedBox(height: SizeConfig.screenHeight * .01),
-                          AppRegularFont(
-                              context, msg:StringConstant.enterCredentials,
-                              fontSize: 16),
+                          AppBoldFont(context, msg: 'Login',fontSize: 18),
+                          SizedBox(height: SizeConfig.screenHeight * .02),
+                          AppRegularFont(context, msg:StringConstant.enterCredentials, fontSize: 16),
                           SizedBox(height: SizeConfig.screenHeight * .02),
                           registerMobileForm(),
-                          SizedBox(height: SizeConfig.screenHeight * .01),
+                          SizedBox(height: SizeConfig.screenHeight * .02),
                           Container(
                             margin: const EdgeInsets.only(left: 0, right: 10),
                             child: appTextButton(
@@ -124,8 +121,12 @@ class _LoginUpState extends State<LoginUp> {
                                     });
                               }),
                           SizedBox(height: SizeConfig.screenHeight * .02),
-                          socialLoginViewMobile(socialVM),
-                          SizedBox(height: SizeConfig.screenHeight * .01),
+                          viewmodel.appConfigModel?.androidConfig
+                              ?.socialLogin !=
+                              null
+                              ? socialLoginView(socialVM, viewmodel)
+                              : Container(),
+                          SizedBox(height: SizeConfig.screenHeight * .02),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -146,6 +147,7 @@ class _LoginUpState extends State<LoginUp> {
                                   }),
                             ],
                           ),
+                          SizedBox(height: SizeConfig.screenHeight * .02),
                         ],
                       ),
                     ))):
@@ -200,7 +202,7 @@ class _LoginUpState extends State<LoginUp> {
                                       Alignment.centerRight,
                                       Theme.of(context).canvasColor, 16,
                                       true, onPressed: () {
-                                    Navigator.pop(context);
+                                    // Navigator.pop(context);
                                     showDialog(
                                         context: context,
                                         builder: (BuildContext context) {
@@ -288,7 +290,7 @@ class _LoginUpState extends State<LoginUp> {
                   keyBoardType: TextInputType.phone,
                   onSubmitted: (m) {});
             }),
-        SizedBox(height: SizeConfig.screenHeight * .01),
+        SizedBox(height: SizeConfig.screenHeight * .02),
         StreamBuilder(
             stream: validation.password,
             builder: (context, snapshot) {
@@ -315,40 +317,7 @@ class _LoginUpState extends State<LoginUp> {
       ],
     );
   }
-  Widget socialLoginViewMobile(SocialLoginViewModel socialVM) {
-    return SizedBox(
-      width: SizeConfig.screenWidth / 1.5,
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: SizeConfig.screenWidth * 0.08,
-                child:  Divider(
-                    color: Theme.of(context).canvasColor
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: AppMediumFont(
-                    context,msg: StringConstant.orContinueWith,
-                    fontSize: 14),
-              ),
-              SizedBox(
-                width: SizeConfig.screenWidth * 0.08,
-                child: Divider(
-                  color: Theme.of(context).canvasColor
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          SocialLoginView(socialLoginViewModel: socialVM)
-        ],
-      ),
-    );
-  }
+
 
 //--Website--///
   registerForm() {
@@ -407,9 +376,10 @@ class _LoginUpState extends State<LoginUp> {
       ],
     );
   }
-  Widget socialLoginView(SocialLoginViewModel socialVM,HomeViewModel viewmodel) {
-    return SizedBox(
-      width: SizeConfig.screenWidth / 4,
+  Widget socialLoginView(
+      SocialLoginViewModel socialVM, HomeViewModel viewmodel) {
+    return Container(
+      width: SizeConfig.screenWidth,
       child: Column(
         children: [
           Row(
@@ -417,27 +387,22 @@ class _LoginUpState extends State<LoginUp> {
             children: [
               SizedBox(
                 width: SizeConfig.screenWidth * 0.05,
-                child: Divider(
-                  color: Theme.of(context).canvasColor
-                ),
+                child: Divider(color: Theme.of(context).canvasColor),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
-                child: AppMediumFont(
-                    context,msg: StringConstant.orContinueWith,
-                    fontSize: 14),
+                child: AppMediumFont(context,
+                    msg: StringConstant.orContinueWith, fontSize: 14),
               ),
               SizedBox(
                 width: SizeConfig.screenWidth * 0.05,
-                child:  Divider(
-                    color: Theme.of(context).canvasColor
-                ),
+                child: Divider(color: Theme.of(context).canvasColor),
               ),
             ],
           ),
-          const SizedBox(height: 30),
-          SocialLoginView(socialLoginViewModel: socialVM, homeViewModel: homeViewModel)
-
+          SizedBox(height: SizeConfig.screenHeight * .03),
+          SocialLoginView(
+              socialLoginViewModel: socialVM, homeViewModel: viewmodel)
         ],
       ),
     );

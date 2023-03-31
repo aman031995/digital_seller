@@ -34,64 +34,51 @@ class _VideoListPageState extends State<VideoListPage> {
         create: (BuildContext context) => homeView,
         child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
           return homeViewModel.homePageDataModel != null
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    homeViewModel.homePageDataModel?.videoList != null
-                        ? Container(
-                            height: (ResponsiveWidget.isMediumScreen(context)
-                                ? 240.0 * trayHeight(homeViewModel)
-                                : 350.0 * trayHeight(homeViewModel)),
-                            width: SizeConfig.screenWidth,
-                            margin: EdgeInsets.only(left: 25, right: 25),
-                            child: ListView.builder(
-                                itemCount:
-                                    homeViewModel.trayDataModel?.length ??
-                                        homeViewModel.homePageDataModel
-                                            ?.videoList?.length,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return getTrayType(homeViewModel)
-                                      ? Container(
-                                          child: MovieListCommonWidget(
-                                          trayId: homeViewModel
-                                              .trayDataModel?[index].trayId,
-                                          trayIdentifier: homeViewModel
-                                              .trayDataModel?[index]
-                                              .trayIdentifier,
-                                          trayTitle: homeViewModel
-                                              .trayDataModel?[index].trayTitle,
-                                          isButtom: true,
-                                          isSubtitle: homeViewModel
-                                                  .trayDataModel![index]
-                                                  .trayTitle!
-                                                  .contains("Fan Favourite")
-                                              ? true
-                                              : false,
-                                          platformMovieData: homeViewModel
-                                              .trayDataModel?[index]
-                                              .platformData(),
-                                        ))
-                                      : ThreeArchedCircle(
-                                           size: 45.0);
-                                }),
-                          )
-                        : SizedBox(
-                            height: SizeConfig.screenHeight * 0.35,
-                            child: const Center(
-                                child: ThreeArchedCircle(
-                                     size: 50.0)),
-                          ),
-                    const SizedBox(height: 70),
-                    // ResponsiveWidget.isMediumScreen(context)
-                    //     ? footerMobile(context)
-                    //     : const footerDesktop()
-                  ],
-                )
-              : Center(
-                  child: Container(),
-                );
+              ? Container(
+                      height: (ResponsiveWidget.isMediumScreen(context)
+                          ? 285.0 * trayHeight(homeViewModel)
+                          : 350.0 * trayHeight(homeViewModel)),
+                      width: SizeConfig.screenWidth,
+                      margin: EdgeInsets.only(left:ResponsiveWidget.isMediumScreen(context)
+                          ?15: 25, right:ResponsiveWidget.isMediumScreen(context)
+                          ?0: 25),
+                      child: ListView.builder(
+                        padding: EdgeInsets.zero,
+                          itemCount: homeViewModel.trayDataModel?.length ?? homeViewModel.homePageDataModel?.videoList?.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return getTrayType(homeViewModel)
+                                ? Container(
+                                    child: MovieListCommonWidget(
+                                    trayId: homeViewModel
+                                        .trayDataModel?[index].trayId,
+                                    trayIdentifier: homeViewModel
+                                        .trayDataModel?[index]
+                                        .trayIdentifier,
+                                    trayTitle: homeViewModel
+                                        .trayDataModel?[index].trayTitle,
+                                    isButtom: true,
+                                    isSubtitle: homeViewModel
+                                            .trayDataModel![index]
+                                            .trayTitle!
+                                            .contains("Fan Favourite")
+                                        ? true
+                                        : false,
+                                    platformMovieData: homeViewModel
+                                        .trayDataModel?[index]
+                                        .platformData(),
+                                  ))
+                                : ThreeArchedCircle(
+                                     size: 45.0);
+                          }),
+                    )
+                  : SizedBox(
+                      height: SizeConfig.screenHeight * 0.35,
+                      child: const Center(
+                          child: ThreeArchedCircle(
+                               size: 50.0)),
+                    );
+
         }));
   }
 

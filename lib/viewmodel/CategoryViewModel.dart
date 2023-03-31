@@ -73,22 +73,22 @@ class CategoryViewModel with ChangeNotifier{
     });
   }
 
-  Future<void> getAllPaginatedData(
-      BuildContext context, int trayId,int pageNum) async {
-    _homePageRepo.getHomePageData(trayId, pageNum, context,
-            (result, isSuccess) {
-          if (isSuccess) {
-            _newHomePageDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-            lastPage = _newHomePageDataModel?.pagination?.lastPage ?? 1;
-            homeNextPage = _newHomePageDataModel?.pagination?.next ?? 1;
-            getPreviousPageList?.addAll(_newHomePageDataModel!.videoList!);
-            isLoading = false;
-            notifyListeners();
-          }
-        });
-  }
-        seealll(BuildContext context,int trayId,int pagenum){
-    _homePageRepo.getHomePageData(trayId, pagenum, context,
+  // Future<void> getAllPaginatedData(
+  //     BuildContext context, int trayId,String type,int pageNum) async {
+  //   _homePageRepo.getHomePageData(trayId,type ,pageNum, context,
+  //           (result, isSuccess) {
+  //         if (isSuccess) {
+  //           _newHomePageDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+  //           lastPage = _newHomePageDataModel?.pagination?.lastPage ?? 1;
+  //           homeNextPage = _newHomePageDataModel?.pagination?.next ?? 1;
+  //           getPreviousPageList?.addAll(_newHomePageDataModel!.videoList!);
+  //           isLoading = false;
+  //           notifyListeners();
+  //         }
+  //       });
+  // }
+        seealll(BuildContext context,int trayId,String type,int pagenum){
+    _homePageRepo.getHomePageData(trayId,type, pagenum, context,
             (result, isSuccess) {
           if (isSuccess) {
             ASResponseModal responseModal = (result as SuccessState).value as ASResponseModal;

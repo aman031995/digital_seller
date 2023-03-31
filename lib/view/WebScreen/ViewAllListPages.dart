@@ -105,19 +105,19 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                     child: ResponsiveWidget.isMediumScreen(
                                             context)
                                         ? Container(
-                                            padding: EdgeInsets.only(
-                                                left: 10, right: 10),
+                                            padding: EdgeInsets.only(left: 20, right: 20,top: 10,bottom: 10),
                                             child: GridView.builder(
-                                                physics:
-                                                    AlwaysScrollableScrollPhysics(),
+                                              padding: EdgeInsets.zero,
+                                                physics: AlwaysScrollableScrollPhysics(),
                                                 shrinkWrap: true,
                                                 controller: _scrollController,
                                                 gridDelegate:
                                                     SliverGridDelegateWithFixedCrossAxisCount(
                                                         crossAxisCount: 2,
-                                                        crossAxisSpacing: 0.0,
-                                                        mainAxisSpacing: 12.0,
-                                                        childAspectRatio: 1.8),
+                                                        crossAxisSpacing: 10.0,
+                                                        mainAxisSpacing: 10.0,
+                                                         childAspectRatio: 1.5
+                                                    ),
                                                 itemCount: homeViewModel
                                                     .homePageDataModel!
                                                     .videoList!
@@ -140,27 +140,19 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                                                 '${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
                                                           });
                                                     },
-                                                    child: Container(
-                                                      margin: EdgeInsets.only(
-                                                          left: 5, right: 5),
-                                                      height: SizeConfig
-                                                              .screenHeight *
-                                                          3.5,
-                                                      child: ClipRRect(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
-                                                          child: Image.network(
-                                                              homeViewModel
-                                                                      .homePageDataModel
-                                                                      ?.videoList?[
-                                                                          index]
-                                                                      .thumbnail ??
-                                                                  '',
-                                                              fit: BoxFit.fill,
-                                                              width: 50,
-                                                              height: 50)),
-                                                    ),
+                                                    child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15),
+                                                        child: Image.network(
+                                                            homeViewModel
+                                                                    .homePageDataModel
+                                                                    ?.videoList?[
+                                                                        index]
+                                                                    .thumbnail ??
+                                                                '',
+                                                            fit: BoxFit.fill,
+                                                            )),
                                                   );
                                                 }),
                                           )

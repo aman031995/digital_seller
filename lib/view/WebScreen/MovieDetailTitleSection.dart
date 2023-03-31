@@ -93,13 +93,12 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
       children: [
         titleBar('More Like This', homeViewModel),
         Container(
-          height: ResponsiveWidget.isMediumScreen(context) ? 180 : 270,
+          height: ResponsiveWidget.isMediumScreen(context) ? 170 : 270,
           width: SizeConfig.screenWidth,
           child: homeViewModel.homePageDataModel?.videoList != null
               ? ListView.builder(
                   physics: BouncingScrollPhysics(),
-                  itemCount:
-                      homeViewModel.homePageDataModel!.videoList!.length > 9
+                  itemCount: homeViewModel.homePageDataModel!.videoList!.length > 9
                           ? 10
                           : homeViewModel.homePageDataModel!.videoList!.length,
                   scrollDirection: Axis.horizontal,
@@ -124,11 +123,11 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
                               return Container(
                                 width: ResponsiveWidget.isMediumScreen(context)
                                     ? 220
-                                    : SizeConfig.screenWidth * 0.30,
+                                    : SizeConfig.screenWidth * 0.22,
                                 padding: EdgeInsets.only(
-                                    right: _heigth ? 1 : 10,
-                                    top: _heigth ? 1 : 10,
-                                    bottom: _heigth ? 1 : 10),
+                                    right: _heigth ? 0 : 10,
+                                    top: _heigth ? 0 : 10,
+                                    bottom: _heigth ? 0 : 10),
                                 child: Card(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15.0),

@@ -83,9 +83,9 @@ class HomeViewModel with ChangeNotifier {
   }
 
   Future<void> getHomePageData(
-      BuildContext context, TrayDataModel? element,int pageNum) async {
+      BuildContext context, TrayDataModel? element,int pageNum,String type) async {
     // AppIndicator.loadingIndicator();
-    _homePageRepo.getHomePageData(element?.trayId ?? 1, pageNum, context,
+    _homePageRepo.getHomePageData(element?.trayId ?? 1,type, pageNum, context,
             (result, isSuccess) {
           if (isSuccess) {
             // _homePageDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
@@ -106,7 +106,7 @@ class HomeViewModel with ChangeNotifier {
       if (isSuccess) {
         _trayDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         _trayDataModel?.forEach((element) {
-          getHomePageData(context, element,1);
+          getHomePageData(context, element,1,'video');
         });
         notifyListeners();
       }
