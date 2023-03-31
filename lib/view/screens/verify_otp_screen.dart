@@ -87,7 +87,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
   }
 
   Widget verificationSection(AuthViewModel authVM) {
-    return Container(
+    return ResponsiveWidget.isMediumScreen(context) ? Container(
       height: 350,
         width: 500,
         decoration: BoxDecoration(
@@ -137,7 +137,73 @@ class _VerifyOtpState extends State<VerifyOtp> {
 
             ],
           ),
-        ));
+        )) :
+    Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.4)),
+            color: Theme.of(context).cardColor),
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.center, children: [
+          Container(
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    bottomLeft: Radius.circular(20))),
+            height: SizeConfig.screenHeight / 1.35,
+            width: SizeConfig.screenWidth * 0.29,
+            child: Image.asset(
+              'images/LoginPageLogo.png',
+              fit: BoxFit.fill,
+            ),
+          ),
+          SingleChildScrollView(
+            child: Container(
+              width: SizeConfig.screenWidth * 0.29,
+              margin: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  SizedBox(height: 20),
+                  AppBoldFont(context,
+                    msg: StringConstant.verification,
+                    fontSize:  ResponsiveWidget.isMediumScreen(context)
+                        ? 18 :22,
+                  ),
+                  SizedBox(height: 15),
+                  Padding(
+                    padding: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context)
+                        ?10:0,right: ResponsiveWidget.isMediumScreen(context)
+                        ?10:0),
+                    child: AppMediumFont(
+                        context,textAlign: TextAlign.left,
+                        msg: StringConstant.codeVerify,
+                        fontSize: ResponsiveWidget.isMediumScreen(context)? 14:16,
+                        maxLines: 2),
+                  ),
+                  SizedBox(height: 30),
+                  Container(
+                    height:ResponsiveWidget.isMediumScreen(context)
+                        ?50: 60,
+                    width: 400,
+                    child: PinEntryTextFiledView(),
+                  ),
+                  SizedBox(height: 10),
+                  resendPin(authVM),
+                  isOTPInput == true ? Container() : errorText(),
+                  SizedBox(height: 30),
+                  appButton(context, StringConstant.verify, ResponsiveWidget.isMediumScreen(context)
+                      ?  SizeConfig.screenWidth*0.67  :SizeConfig.screenWidth/8,ResponsiveWidget.isMediumScreen(context)
+                      ? 50: 60.0, LIGHT_THEME_COLOR,Theme.of(context).canvasColor,
+                      16, 5.0, isOTPInput, onTap: () {
+                        checkVerificationValidate(authVM);
+                      }),
+                  SizedBox(height: 10),
+
+                ],
+              ),
+            ),
+          )
+        ]));
   }
 
   Widget errorText() {
