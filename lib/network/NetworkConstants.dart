@@ -6,6 +6,28 @@ typedef void ApiCallback(dynamic response);
 
 class NetworkConstants{
   static String kAppBaseUrl = 'https://eacademyeducation.com:8011/api/';
+
+  static String kGetAppConfig = 'getAppConfigurations?appId={APP_ID}';
+  static String kContactUs = "add-contactUs";
+  static String kOpenWebViewUrl = "web-view?appId={APP_ID}&query={QUERY}";
+  static String kSendLogSupport = "email-support";
+  static String kGetSearchData = "search?query={SEARCH_QUERY}&pageNum={PAGE_NUM}&appId={APP_ID}";
+  static String kGetAppMenu = "getAppMenu?appId={APP_ID}&deviceType={DEVICE_TYPE}";
+
+  // homepage api section
+  static String kGetBannerList = "get-all-carousel?appId={APP_ID}";
+  static String kGetHomePageData = "homepageVideo?userId={USER_ID}&appId={APP_ID}&videoFor={VIDEO_FOR}&type={TYPE}&pageNum={PAGE_NUM}";
+  static String kGetTrayData = "getTrayOrder?appId={APP_ID}";
+  static String kGetCategoryData = "getAllCategory?appId={APP_ID}&pageNum={PAGE_NUM}";
+  static String kGetCategoryDetails = "getCategoryDetails?appId={APP_ID}&categoryId={CATEGORY_ID}&pageNum={PAGE_NUM}";
+  static String kGetMoreLikeThis = 'getMoreLikesVideoList?videoId={VIDEO_ID}&appId={APP_ID}';
+  static String kGetVideoById = 'homepageVideoDetails?userId={USER_ID}&appId={APP_ID}&videoId={VIDEO_ID}';
+
+  // notification api section
+  static String kGetNotification = 'get-all-notification?appId={APP_ID}&userId={USER_ID}&pageNum={PAGE_NUM}';
+  static String kGetNotificationCount = 'notification-count?appId={APP_ID}&userId={USER_ID}';
+
+  // user api section
   static String kLogin = "user-login";
   static String kCheckUserAlreadyRegister = "user-register";
   static String kUserRegister = "register-user";
@@ -22,34 +44,32 @@ class NetworkConstants{
   static String kUpdateProfile = "update-user-profile";
   static String kDeleteProfile = "user-delete/?userId={USER_ID}&appId={APP_ID}";
 
-  static String kGetBannerList = "getBannerList?appId={APP_ID}";
-  static String kGetHomePageData = "homepageVideo?userId={USER_ID}&appId={APP_ID}&videoFor={VIDEO_FOR}&type={TYPE}&pageNum={PAGE_NUM}";
-  static String kGetTrayData = "getTrayOrder?appId={APP_ID}";
-  static String kGetCategoryData = "getAllCategory?appId={APP_ID}&pageNum={PAGE_NUM}";
-  static String kGetCategoryDetails = "getCategoryDetails?appId={APP_ID}&categoryId={CATEGORY_ID}&pageNum={PAGE_NUM}";
-  static String kgetMoreLikeThis = 'getMoreLikesVideoList?videoId={VIDEO_ID}&appId={APP_ID}';
-
-  static String kGetAppConfig = 'getAppConfigurations?appId={APP_ID}';
-  static String kGetNotification = 'get-all-notification?appId={APP_ID}&userId={USER_ID}&pageNum={PAGE_NUM}';
-  static String kGetNotificationCount = 'notification-count?appId={APP_ID}&userId={USER_ID}';
-
-  static String kCartDetail = "add-and-update-cart";
-  static String kGetCartList = "getall-cart?userId={USER_ID}&appId={APP_ID}";
-  static String kGetProductList = "product-list?userId={USER_ID}&appId={APP_ID}";
-  static String kGetProductById = "get-by-product-id?productId={PRODUCT_ID}&userId={USER_ID}&appId={APP_ID}";
-
-  static String kGetSearchData = "search?query={SEARCH_QUERY}&pageNum={PAGE_NUM}&appId={APP_ID}";
-  static String kGetAppMenu = "getAppMenu?appId={APP_ID}&deviceType={DEVICE_TYPE}";
+  // product-cart-address-favourite api section
+  static String kGetOrderList = "order-list?userId={USER_ID}&appId={APP_ID}&pageNum={PAGE_NUM}";
+  static String kgetAllAddress = "get-all-address?userId={USER_ID}&appId={APP_ID}";
+  static String kGetOrderListDetail = "order-detail?userId={USER_ID}&appId={APP_ID}&order_id={ORDER_ID}";
+  static String kAddToFavourite = "add-favorite";
+  static String KGetFavourite="get-all-favorite?appId={APP_ID}&userId={USER_ID}";
+  static String placeOrder = "place-order";
   static String removeFromCart = "remove-cartItems";
   static String getCartCount = 'cart-item-count?userId={USER_ID}&appId={APP_ID}';
   // static String getCheckOutData = 'check-out?userId={USER_ID}&appId={APP_ID}';
   static String addNewAddress = 'add-address';
   static String updateAddress = 'update-address';
+  static String deleteAddress='delete-address';
+  static String kAddToCart = "add-and-update-cart";
+  static String kGetCartList = "getall-cart?userId={USER_ID}&appId={APP_ID}";
+  // static String kGetPromocode = "get-all-promocode?userId={USER_ID}&appId={APP_ID}";
+  static String kGetPromocode = "get-all-promocode?userId={USER_ID}&appId={APP_ID}";
+  // static String kGetProductList = "product-list?userId={USER_ID}&appId={APP_ID}";
+  static String kGetProductList = "product-listing?userId={USER_ID}&appId={APP_ID}&pageNum={PAGE_NUM}";
+  // static String kGetProductById = "get-by-product-id?productId={PRODUCT_ID}&userId={USER_ID}&appId={APP_ID}";
+  static String kGetProductById = "product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&colorId={COLOR_ID}&sizeId={SIZE_ID}&variantId={VARIANT_ID}";
 
-  static String kGetOrderList = "order-list?userId={USER_ID}&appId={APP_ID}";
-  static String kGetOrderListDetail = "order-detail?userId={USER_ID}&appId={APP_ID}&order_id={ORDER_ID}";
-  static String kContactUs = "add-contactUs";
-  static String kOpenWebViewUrl = "web-view?appId={APP_ID}&query={QUERY}";
+  // payment-order section
+  static String kCreateOrder = "create-order";
+  static String kPaymentResponse = "payment-callback";
 
-  static String kAppID = 'b07e2bbc-3ad9-441f-86fe-59caff940d1d';
+  // app id
+  static String kAppID = '60b222c4-882a-4220-b023-786dd9818a1b';
 }

@@ -1,9 +1,9 @@
 
+import 'package:TychoStream/model/data/homepage_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/main.dart';
-import 'package:TychoStream/model/data/HomePageDataModel.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
@@ -77,12 +77,17 @@ class _CardMovieHomeState extends State<CardMovieHome> {
         'Desc': '${widget.moviesList?.videoDescription}'
       });
     }
+    //itemCount:state.queryParams['itemCount'],
+    //               productId: state.queryParams['productId'],
+    //               variantId: state.queryParams['variantId'],
+    //               productColor: state.queryParams['productColor'],
+    //               productColorId: state.queryParams['productColorId'],
     else{
       showDialog(
           context: context,
           barrierColor: Colors.black87,
           builder: (BuildContext context) {
-            return const LoginUp();
+            return  LoginUp();
           });
     }
         },

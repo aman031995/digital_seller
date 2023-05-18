@@ -9,6 +9,7 @@ AppBar getAppBarWithBackBtn(
       String? itemCount,
       bool? isShopping,
       bool? isFavourite,
+      VoidCallback? onFavPressed,
       VoidCallback? onCartPressed,
       required VoidCallback onBackPressed,
       required BuildContext context}) {
@@ -39,7 +40,9 @@ AppBar getAppBarWithBackBtn(
       Row(
         children: [
           isFavourite == true
-              ? Icon(Icons.favorite_border, color: Theme.of(context).canvasColor, size: 25)
+              ? GestureDetector(
+              onTap: onFavPressed,
+              child: Icon(Icons.favorite_border, color: Theme.of(context).canvasColor, size: 25))
               : SizedBox(),
           SizedBox(width: 8),
           isShopping == true

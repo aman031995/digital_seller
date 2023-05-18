@@ -1,9 +1,9 @@
 
+import 'package:TychoStream/model/data/category_data_model.dart';
+import 'package:TychoStream/model/data/homepage_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_cache/json_cache.dart';
-import 'package:TychoStream/model/data/CategoryDataModel.dart';
-import 'package:TychoStream/model/data/HomePageDataModel.dart';
 import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/CacheDataManager.dart';
 import 'package:TychoStream/network/result.dart';

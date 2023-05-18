@@ -1,4 +1,8 @@
 import 'dart:ui';
+import 'package:TychoStream/view/Products/ProductList.dart';
+import 'package:TychoStream/view/Products/cart_detail_page.dart';
+import 'package:TychoStream/view/Products/favourite_list_page.dart';
+import 'package:TychoStream/view/Products/product_details.dart';
 import 'package:TychoStream/view/screens/notification_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -105,8 +109,22 @@ class _MyAppState extends State<MyApp> {
           name: RoutesName.home,
           path: '/',
           pageBuilder: (context, state) {
-            return MaterialPage(child: SidebarXExampleApp());
+            return MaterialPage(child: HomePageWeb());
           },
+        ),
+        GoRoute(
+            name: RoutesName.productList,
+            path: '/ProductList',
+        pageBuilder: (context,state){
+          return MaterialPage(child: ProductListGallery());
+        }
+        ),
+        GoRoute(
+            name: RoutesName.fav,
+            path: '/Fav',
+        pageBuilder: (context, state){
+          return MaterialPage(child: FavouriteListPage());
+        }
         ),
         GoRoute(
           name: RoutesName.Notification,
@@ -152,13 +170,36 @@ class _MyAppState extends State<MyApp> {
           },
         ),
         GoRoute(
-          name: RoutesName.EditProfille,
-          path: '/profile',
+          name: RoutesName.productDetails,
+          path: '/productDetails',
           pageBuilder: (context, state) {
-            return MaterialPage(child: EditProfile());
+            state.queryParams.forEach((key, value) {
+              print("$key : $value");
+            });
+            return MaterialPage(child: ProductDetailPage(
+              itemCount:state.queryParams['itemCount'],
+              productId: state.queryParams['productId'],
+              variantId: state.queryParams['variantId'],
+              productColor: state.queryParams['productColor'],
+              productColorId: state.queryParams['productColorId'],
+
+
+            ));
           },
         ),
-        GoRoute(
+    GoRoute(
+    name: RoutesName.CartDetails,
+    path: '/CartDetails',
+    pageBuilder: (context, state) {
+    state.queryParams.forEach((key, value) {
+    print("$key : $value");
+    });
+    return MaterialPage(child: CartDetail(
+    itemCount:state.queryParams['itemCount'],
+    ));
+    }),
+
+    GoRoute(
           name: RoutesName.DeatilPage,
           path: '/movie_detail_page',
           pageBuilder: (context, state) {

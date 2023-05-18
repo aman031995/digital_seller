@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:TychoStream/model/data/cart_detail_model.dart';
+import 'package:TychoStream/model/data/homepage_data_model.dart';
+import 'package:TychoStream/model/data/tray_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -7,9 +10,6 @@ import 'package:json_cache/json_cache.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/model/data/AppConfigModel.dart';
 import 'package:TychoStream/model/data/BannerDataModel.dart';
-import 'package:TychoStream/model/data/CartDetailModel.dart';
-import 'package:TychoStream/model/data/HomePageDataModel.dart';
-import 'package:TychoStream/model/data/TrayDataModel.dart';
 import 'package:TychoStream/model/data/app_menu_model.dart';
 import 'package:TychoStream/model/data/notification_model.dart';
 import 'package:TychoStream/model/data/search_data_model.dart';
@@ -63,6 +63,7 @@ class HomeViewModel with ChangeNotifier {
   String? get isNetworkAvailable => _isNetworkAvailable;
   int lastPage = 1, nextPage = 1;
   bool isLoading = false;
+  bool loginWithPhone = false;
   String notificationItem = '0';
   String? menuVersion, message;
   // getBanner(BuildContext context) async{
@@ -79,7 +80,10 @@ class HomeViewModel with ChangeNotifier {
   //     getBannerLists(context);
   //   }
   // }
-
+  getLoginType(BuildContext context, bool type) {
+    loginWithPhone = type;
+    notifyListeners();
+  }
   Future<void> getBannerLists(BuildContext context) async {
     _homePageRepo.getBannerData(context, (result, isSuccess) {
       if (isSuccess) {
@@ -154,6 +158,7 @@ class HomeViewModel with ChangeNotifier {
     if(await jsonCache.contains(StringConstant.kAppConfig)){
       CacheDataManager.getCachedData(key: StringConstant.kAppConfig).then((jsonData) {
         _appConfigModel = AppConfigModel.fromJson(jsonData!['data']);
+        loginWithPhone = _appConfigModel?.androidConfig?.loginWithPhone ?? false;
         print('From Cached AppConfig Data');
         notifyListeners();
       });
@@ -161,20 +166,9 @@ class HomeViewModel with ChangeNotifier {
   }
 
   Future getAppConfig(BuildContext context) async{
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    CacheDataManager.clearCachedData(key: StringConstant.kBannerList);
-    CacheDataManager.clearCachedData(key: StringConstant.kCategoryList);
-    CacheDataManager.clearCachedData(key: StringConstant.kPrivacyTerms);
-    CacheDataManager.clearCachedData(key: StringConstant.kHomePageData);
-    CacheDataManager.clearCachedData(key: StringConstant.kUserDetails);
-    CacheDataManager.clearCachedData(key: StringConstant.kAppConfig);
     _homePageRepo.getAppConfiguration(context, (result, isSuccess) {
       if(isSuccess) {
         _appConfigModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-        if(sharedPreferences.get('oldMenuVersion') == null) {
-          sharedPreferences.setString('oldMenuVersion', '${_appConfigModel?.androidConfig?.appVersion?.version}');
-        }
-        sharedPreferences.setString('newMenuVersion', '${_appConfigModel?.androidConfig?.appVersion?.version}');
         navigation(context, _appConfigModel);
         notifyListeners();
       }

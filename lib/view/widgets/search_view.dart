@@ -267,6 +267,36 @@ Widget Header(BuildContext context,setState,HomeViewModel viewmodel){
           child: SizedBox(
               width: SizeConfig.screenWidth * .18),
         ),
+        OutlinedButton(
+            onPressed: () {
+              GoRouter.of(context).pushNamed(RoutesName.productList);
+            },
+            style: ButtonStyle(
+
+                overlayColor: MaterialStateColor
+                    .resolveWith((states) =>
+                Theme
+                    .of(context)
+                    .primaryColor),
+                fixedSize:
+                MaterialStateProperty.all(
+                    Size.fromHeight(35)),
+                side: MaterialStateProperty.all(BorderSide(
+                    color: Theme.of(context).canvasColor,
+
+                    width: 1.5,
+                    style: BorderStyle.solid),
+                )
+            ),
+            child: appTextButton(
+                context,
+                'ProductList',
+                Alignment.center,
+                Theme
+                    .of(context)
+                    .canvasColor,
+                16,
+                true)),
         Container(
           height: 40,
           width: SizeConfig.screenWidth / 4.9,
@@ -298,45 +328,7 @@ Widget Header(BuildContext context,setState,HomeViewModel viewmodel){
               },
               isTick: null),
         ),
-        SizedBox(
-            width: SizeConfig.screenWidth * .19),
-        GestureDetector(
-          onDoubleTap: (){
-            setState((){
-              isNotification=false;
-            });
-          },
-            onTap: () {
-              isSearch = false;
-              names == "null"
-                  ? showDialog(
-                  context: context,
-                  barrierColor: Colors.black87,
-                  builder: (BuildContext context) {
-                    return const LoginUp();
-                  })
-                  :setState((){ isNotification=true;});
-              if (isSearch == true) {
-                isSearch = false;
-                setState(() {});
-              }
-              if (isLogins == true) {
-                isLogins = false;
-                setState(() {});
-              }
-            },
-            child: Container(
-                height: 45,
-                width: 45,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                child: Image.asset(
-                   AssetsConstants.icNotification,
-                  height: 50,
-                  width: 50,
-                ))),
+
         SizedBox(
             width: SizeConfig.screenWidth * .01),
         names == "null"
@@ -347,7 +339,7 @@ Widget Header(BuildContext context,setState,HomeViewModel viewmodel){
                   barrierColor: Colors.black87,
                   builder:
                       (BuildContext context) {
-                    return const LoginUp();
+                    return  LoginUp();
                   });
             },
             style: ButtonStyle(
@@ -397,44 +389,17 @@ Widget Header(BuildContext context,setState,HomeViewModel viewmodel){
             onPressed: () {
               setState(() {
                 isLogins = true;
-                if (isSearch == true) {
-                  isSearch = false;
-                  searchController?.clear();
-                  setState(() {});
-                }
-              });
-              if(isNotification==true){
-                isNotification=false;
-                setState(() {
 
-                });
-              }
+              });
+
             }),
         names == "null"
             ? Container()
-            : GestureDetector(
-          onTap: () {
-            setState(() {
-              isLogins = true;
-              if (isSearch == true) {
-                isSearch = false;
-                searchController?.clear();
-                setState(() {});
-              }
-            });
-            if(isNotification==true){
-              isNotification=false;
-              setState(() {
-
-              });
-            }
-          },
-          child:  Image.asset(
-            AssetsConstants.icProfile,
-            height: 30,
-            color: Theme.of(context).canvasColor,
-          ),
-        ),
+            : Image.asset(
+              AssetsConstants.icProfile,
+              height: 30,
+              color: Theme.of(context).canvasColor,
+            ),
 
         SizedBox(
             width: SizeConfig.screenWidth * .02),

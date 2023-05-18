@@ -3,6 +3,7 @@ class AppConfigModel {
   String? clientId;
   String? appId;
   String? appName;
+  String? appType;
   String? fileBaseUrl;
   AndroidConfig? androidConfig;
   String? iosConfig;
@@ -12,6 +13,7 @@ class AppConfigModel {
         this.clientId,
         this.appId,
         this.appName,
+        this.appType,
         this.fileBaseUrl,
         this.androidConfig,
         this.iosConfig});
@@ -21,6 +23,7 @@ class AppConfigModel {
     clientId = json['clientId'];
     appId = json['appId'];
     appName = json['appName'];
+    appType = json['appType'];
     fileBaseUrl = json['fileBaseUrl'];
     androidConfig = json['androidConfig'] != null
         ? new AndroidConfig.fromJson(json['androidConfig'])
@@ -34,6 +37,7 @@ class AppConfigModel {
     data['clientId'] = this.clientId;
     data['appId'] = this.appId;
     data['appName'] = this.appName;
+    data['appType'] = this.appType;
     data['fileBaseUrl'] = this.fileBaseUrl;
     if (this.androidConfig != null) {
       data['androidConfig'] = this.androidConfig!.toJson();
@@ -45,52 +49,38 @@ class AppConfigModel {
 
 class AndroidConfig {
   String? images;
-  String? keystoreFile;
   String? googleServiceFile;
-  String? baseUrl;
-  String? termsUrl;
-  String? privacyUrl;
-  String? faqUrl;
   bool? pushNotification;
-  String? loginWith;
   DeviceOrientation? deviceOrientation;
   AppTheme? appTheme;
   FontStyle? fontStyle;
   SocialMedia? socialMedia;
-  AppVersion? appVersion;
   Localization? localization;
+  bool? loginWithPhone;
+  int? maxOtp;
   SocialLogin? socialLogin;
-  AppMenu? appMenu;
+  AppVersion? appVersion;
+  List<BottomNavigation>? bottomNavigation;
 
   AndroidConfig(
       {this.images,
-        this.keystoreFile,
         this.googleServiceFile,
-        this.baseUrl,
-        this.termsUrl,
-        this.privacyUrl,
-        this.faqUrl,
         this.pushNotification,
         this.deviceOrientation,
         this.appTheme,
         this.fontStyle,
         this.socialMedia,
-        this.appVersion,
         this.localization,
+        this.loginWithPhone,
+        this.maxOtp,
         this.socialLogin,
-        this.appMenu,
-      this.loginWith});
+        this.appVersion,
+        this.bottomNavigation});
 
   AndroidConfig.fromJson(Map<String, dynamic> json) {
     images = json['images'];
-    keystoreFile = json['keystoreFile'];
     googleServiceFile = json['googleServiceFile'];
-    baseUrl = json['baseUrl'];
-    termsUrl = json['termsUrl'];
-    privacyUrl = json['privacyUrl'];
-    faqUrl = json['faqUrl'];
     pushNotification = json['pushNotification'];
-    loginWith = json['loginWith'];
     deviceOrientation = json['deviceOrientation'] != null
         ? new DeviceOrientation.fromJson(json['deviceOrientation'])
         : null;
@@ -103,30 +93,30 @@ class AndroidConfig {
     socialMedia = json['socialMedia'] != null
         ? new SocialMedia.fromJson(json['socialMedia'])
         : null;
-    appVersion = json['appVersion'] != null
-        ? new AppVersion.fromJson(json['appVersion'])
-        : null;
     localization = json['localization'] != null
         ? new Localization.fromJson(json['localization'])
         : null;
+    loginWithPhone = json['loginWithPhone'];
+    maxOtp = json['maxOtp'];
     socialLogin = json['socialLogin'] != null
         ? new SocialLogin.fromJson(json['socialLogin'])
         : null;
-    appMenu =
-    json['appMenu'] != null ? new AppMenu.fromJson(json['appMenu']) : null;
+    appVersion = json['appVersion'] != null
+        ? new AppVersion.fromJson(json['appVersion'])
+        : null;
+    if (json['bottomNavigation'] != null) {
+      bottomNavigation = <BottomNavigation>[];
+      json['bottomNavigation'].forEach((v) {
+        bottomNavigation!.add(new BottomNavigation.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['images'] = this.images;
-    data['keystoreFile'] = this.keystoreFile;
     data['googleServiceFile'] = this.googleServiceFile;
-    data['baseUrl'] = this.baseUrl;
-    data['termsUrl'] = this.termsUrl;
-    data['privacyUrl'] = this.privacyUrl;
-    data['faqUrl'] = this.faqUrl;
     data['pushNotification'] = this.pushNotification;
-    data['loginWith'] = this.loginWith;
     if (this.deviceOrientation != null) {
       data['deviceOrientation'] = this.deviceOrientation!.toJson();
     }
@@ -139,17 +129,20 @@ class AndroidConfig {
     if (this.socialMedia != null) {
       data['socialMedia'] = this.socialMedia!.toJson();
     }
-    if (this.appVersion != null) {
-      data['appVersion'] = this.appVersion!.toJson();
-    }
     if (this.localization != null) {
       data['localization'] = this.localization!.toJson();
     }
+    data['loginWithPhone'] = this.loginWithPhone;
+    data['maxOtp'] = this.maxOtp;
     if (this.socialLogin != null) {
       data['socialLogin'] = this.socialLogin!.toJson();
     }
-    if (this.appMenu != null) {
-      data['appMenu'] = this.appMenu!.toJson();
+    if (this.appVersion != null) {
+      data['appVersion'] = this.appVersion!.toJson();
+    }
+    if (this.bottomNavigation != null) {
+      data['bottomNavigation'] =
+          this.bottomNavigation!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -177,7 +170,11 @@ class AppTheme {
   ThemeColor? secondaryColor;
   ThemeColor? textColor;
 
-  AppTheme({this.themeColor, this.primaryColor, this.secondaryColor, this.textColor});
+  AppTheme(
+      {this.themeColor,
+        this.primaryColor,
+        this.secondaryColor,
+        this.textColor});
 
   AppTheme.fromJson(Map<String, dynamic> json) {
     themeColor = json['themeColor'] != null
@@ -242,22 +239,31 @@ class FontStyle {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['fontFamily'] = this.fontFamily;
     return data;
   }
 }
 
 class SocialMedia {
-  Instagram? instagram;
-  Instagram? twitter;
+  SocialMediaUrl? instagram;
+  SocialMediaUrl? facebook;
+  SocialMediaUrl? youtube;
+  SocialMediaUrl? twitter;
 
-  SocialMedia({this.instagram, this.twitter});
+  SocialMedia({this.instagram, this.facebook, this.youtube, this.twitter});
 
   SocialMedia.fromJson(Map<String, dynamic> json) {
     instagram = json['instagram'] != null
-        ? new Instagram.fromJson(json['instagram'])
+        ? new SocialMediaUrl.fromJson(json['instagram'])
+        : null;
+    facebook = json['facebook'] != null
+        ? new SocialMediaUrl.fromJson(json['facebook'])
+        : null;
+    youtube = json['youtube'] != null
+        ? new SocialMediaUrl.fromJson(json['youtube'])
         : null;
     twitter = json['twitter'] != null
-        ? new Instagram.fromJson(json['twitter'])
+        ? new SocialMediaUrl.fromJson(json['twitter'])
         : null;
   }
 
@@ -266,6 +272,12 @@ class SocialMedia {
     if (this.instagram != null) {
       data['instagram'] = this.instagram!.toJson();
     }
+    if (this.facebook != null) {
+      data['facebook'] = this.facebook!.toJson();
+    }
+    if (this.youtube != null) {
+      data['youtube'] = this.youtube!.toJson();
+    }
     if (this.twitter != null) {
       data['twitter'] = this.twitter!.toJson();
     }
@@ -273,26 +285,81 @@ class SocialMedia {
   }
 }
 
-class Instagram {
+class SocialMediaUrl {
   String? url;
-  String? appId;
-  String? pixelId;
-  String? clientToken;
 
-  Instagram({this.url, this.appId, this.pixelId, this.clientToken});
+  SocialMediaUrl({this.url});
 
-  Instagram.fromJson(Map<String, dynamic> json) {
+  SocialMediaUrl.fromJson(Map<String, dynamic> json) {
     url = json['url'];
-    appId = json['appId'];
-    pixelId = json['pixelId'];
-    clientToken = json['clientToken'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['url'] = this.url;
+    return data;
+  }
+}
+
+class Localization {
+  String? text;
+
+  Localization({this.text});
+
+  Localization.fromJson(Map<String, dynamic> json) {
+    text = json['text'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['text'] = this.text;
+    return data;
+  }
+}
+
+class SocialLogin {
+  SocialLoginData? facebook;
+  SocialLoginData? google;
+
+  SocialLogin({this.facebook, this.google});
+
+  SocialLogin.fromJson(Map<String, dynamic> json) {
+    facebook = json['facebook'] != null
+        ? new SocialLoginData.fromJson(json['facebook'])
+        : null;
+    google =
+    json['google'] != null ? new SocialLoginData.fromJson(json['google']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.facebook != null) {
+      data['facebook'] = this.facebook!.toJson();
+    }
+    if (this.google != null) {
+      data['google'] = this.google!.toJson();
+    }
+    return data;
+  }
+}
+
+class SocialLoginData {
+  String? apiKey;
+  String? appId;
+  String? clientToken;
+
+  SocialLoginData({this.apiKey, this.appId, this.clientToken});
+
+  SocialLoginData.fromJson(Map<String, dynamic> json) {
+    apiKey = json['apiKey'];
+    appId = json['appId'];
+    clientToken = json['clientToken'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['apiKey'] = this.apiKey;
     data['appId'] = this.appId;
-    data['pixelId'] = this.pixelId;
     data['clientToken'] = this.clientToken;
     return data;
   }
@@ -317,115 +384,24 @@ class AppVersion {
   }
 }
 
-class Localization {
-  String? text;
-
-  Localization({this.text});
-
-  Localization.fromJson(Map<String, dynamic> json) {
-    text = json['text'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['text'] = this.text;
-    return data;
-  }
-}
-
-class SocialLogin {
-  Facebook? facebook;
-  Facebook? google;
-
-  SocialLogin({this.facebook, this.google});
-
-  SocialLogin.fromJson(Map<String, dynamic> json) {
-    facebook = json['facebook'] != null
-        ? new Facebook.fromJson(json['facebook'])
-        : null;
-    google =
-    json['google'] != null ? new Facebook.fromJson(json['google']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.facebook != null) {
-      data['facebook'] = this.facebook!.toJson();
-    }
-    if (this.google != null) {
-      data['google'] = this.google!.toJson();
-    }
-    return data;
-  }
-}
-
-class Facebook {
-  String? apiKey;
-  String? appId;
-  String? clientToken;
-
-  Facebook({this.apiKey, this.appId, this.clientToken});
-
-  Facebook.fromJson(Map<String, dynamic> json) {
-    apiKey = json['apiKey'];
-    appId = json['appId'];
-    clientToken = json['clientToken'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['apiKey'] = this.apiKey;
-    data['appId'] = this.appId;
-    data['clientToken'] = this.clientToken;
-    return data;
-  }
-}
-
-class AppMenu {
-  ContactUs? contactUs;
-  ContactUs? shareApp;
-
-  AppMenu({this.contactUs, this.shareApp});
-
-  AppMenu.fromJson(Map<String, dynamic> json) {
-    contactUs = json['contact_us'] != null
-        ? new ContactUs.fromJson(json['contact_us'])
-        : null;
-    shareApp = json['share_app'] != null
-        ? new ContactUs.fromJson(json['share_app'])
-        : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.contactUs != null) {
-      data['contact_us'] = this.contactUs!.toJson();
-    }
-    if (this.shareApp != null) {
-      data['share_app'] = this.shareApp!.toJson();
-    }
-    return data;
-  }
-}
-
-class ContactUs {
-  String? alias;
+class BottomNavigation {
+  String? title;
   String? icon;
-  String? subtitle;
+  String? url;
 
-  ContactUs({this.alias, this.icon, this.subtitle});
+  BottomNavigation({this.title, this.icon, this.url});
 
-  ContactUs.fromJson(Map<String, dynamic> json) {
-    alias = json['alias'];
+  BottomNavigation.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
     icon = json['icon'];
-    subtitle = json['subtitle'];
+    url = json['url'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['alias'] = this.alias;
+    data['title'] = this.title;
     data['icon'] = this.icon;
-    data['subtitle'] = this.subtitle;
+    data['url'] = this.url;
     return data;
   }
 }

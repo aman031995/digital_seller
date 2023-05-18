@@ -1,5 +1,5 @@
-import 'package:TychoStream/model/data/HomePageDataModel.dart';
-import 'package:TychoStream/model/data/HomePageDataModel.dart';
+
+import 'package:TychoStream/model/data/homepage_data_model.dart';
 
 class TrayDataModel {
   int? trayId;

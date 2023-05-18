@@ -2,14 +2,14 @@
   By Aman Singh
  */
 
+import 'package:TychoStream/model/data/cart_detail_model.dart';
+import 'package:TychoStream/model/data/category_data_model.dart';
+import 'package:TychoStream/model/data/homepage_data_model.dart';
+import 'package:TychoStream/model/data/tray_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/model/data/AppConfigModel.dart';
 import 'package:TychoStream/model/data/BannerDataModel.dart';
-import 'package:TychoStream/model/data/CartDetailModel.dart';
-import 'package:TychoStream/model/data/CategoryDataModel.dart';
-import 'package:TychoStream/model/data/HomePageDataModel.dart';
-import 'package:TychoStream/model/data/TrayDataModel.dart';
 import 'package:TychoStream/model/data/app_menu_model.dart';
 import 'package:TychoStream/model/data/notification_model.dart';
 import 'package:TychoStream/model/data/search_data_model.dart';
@@ -190,26 +190,26 @@ class HomePageRepository {
       "{VIDEO_ID}": '$videoId',
       "{APP_ID}": NetworkConstants.kAppID,
     };
-    ASRequestModal requestModal = ASRequestModal.withUrlParams(
-        urlParams, NetworkConstants.kgetMoreLikeThis, RequestType.get,
-        headers: header);
-    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
-      if (isSuccess) {
-        var response = ASResponseModal.fromResult(result);
-        Map<String, dynamic> map =
-            (result as SuccessState).value as Map<String, dynamic>;
-        if (map["data"] is Map<String, dynamic>) {
-          response.dataModal = HomePageDataModel.fromJson(map["data"]);
-        }
-        responseHandler(Result.success(response), isSuccess);
-      } else {
-        responseHandler(result, isSuccess);
-      }
-    });
+    // ASRequestModal requestModal = ASRequestModal.withUrlParams(
+    // //     urlParams, NetworkConstants.kgetMoreLikeThis, RequestType.get,
+    // //     headers: header);
+    // appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+    //   if (isSuccess) {
+    //     var response = ASResponseModal.fromResult(result);
+    //     Map<String, dynamic> map =
+    //         (result as SuccessState).value as Map<String, dynamic>;
+    //     if (map["data"] is Map<String, dynamic>) {
+    //       response.dataModal = HomePageDataModel.fromJson(map["data"]);
+    //     }
+    //     responseHandler(Result.success(response), isSuccess);
+    //   } else {
+    //     responseHandler(result, isSuccess);
+    //   }
+    // });
   }
 
-  Future<Result?> getAppConfiguration(
-      BuildContext context, NetworkResponseHandler responseHandler) async {
+  Future<Result?> getAppConfiguration(BuildContext context,
+      NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
       "Authorization": "Bearer " + sharedPreferences.get("token").toString()
@@ -226,11 +226,10 @@ class HomePageRepository {
       if (isSuccess) {
         var response = ASResponseModal.fromResult(result);
         Map<String, dynamic> map =
-            (result as SuccessState).value as Map<String, dynamic>;
+        (result as SuccessState).value as Map<String, dynamic>;
         if (map["data"] is Map<String, dynamic>) {
           response.dataModal = AppConfigModel.fromJson(map["data"]);
-          CacheDataManager.cacheData(
-              key: StringConstant.kAppConfig, jsonData: map);
+          CacheDataManager.cacheData(key: StringConstant.kAppConfig, jsonData: map);
         }
         responseHandler(Result.success(response), isSuccess);
       } else {

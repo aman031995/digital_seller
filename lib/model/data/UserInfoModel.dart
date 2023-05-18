@@ -12,6 +12,8 @@ class UserInfoModel {
   bool? isSocial;
   bool? firstTimeSocial;
   bool? isRegistered;
+  bool? isPhoneVerified;
+  bool? isEmailVerified;
 
   UserInfoModel(
       {this.id,
@@ -26,7 +28,9 @@ class UserInfoModel {
         this.loginToken,
         this.isSocial,
         this.firstTimeSocial,
-        this.isRegistered});
+        this.isRegistered,
+        this.isPhoneVerified,
+        this.isEmailVerified});
 
   UserInfoModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -42,6 +46,8 @@ class UserInfoModel {
     isSocial = json['is_social'];
     firstTimeSocial = json['first_time_social'];
     isRegistered = json['isRegistered'];
+    isPhoneVerified = json['is_phoneVerified'];
+    isEmailVerified = json['is_emailVerified'];
   }
 
   Map<String, dynamic> toJson() {
@@ -59,6 +65,8 @@ class UserInfoModel {
     data['is_social'] = this.isSocial;
     data['first_time_social'] = this.firstTimeSocial;
     data['isRegistered'] = this.isRegistered;
+    data['is_phoneVerified'] = this.isPhoneVerified;
+    data['is_emailVerified'] = this.isEmailVerified;
     return data;
   }
 }

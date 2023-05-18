@@ -1,3 +1,4 @@
+
 import 'package:TychoStream/model/data/BannerDataModel.dart';
 
 class CategoryDataModel {

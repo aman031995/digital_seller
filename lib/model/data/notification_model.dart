@@ -80,6 +80,10 @@ class NotificationList {
   bool? read;
   String? createdAt;
   String? updatedAt;
+  String? clickAction;
+  String? productId;
+  String? videoId;
+  String? clickType;
 
   NotificationList(
       {this.id,
@@ -89,7 +93,11 @@ class NotificationList {
         this.log,
         this.read,
       this.createdAt,
-      this.updatedAt});
+      this.updatedAt,
+        this.clickAction,
+        this.productId,
+        this.videoId,
+        this.clickType});
 
   NotificationList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -100,6 +108,10 @@ class NotificationList {
     read = json['read'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    clickAction = json['clickAction'];
+    productId = json['productId'];
+    videoId = json['videoId'];
+    clickType = json['clickType'];
   }
 
   Map<String, dynamic> toJson() {
@@ -112,6 +124,10 @@ class NotificationList {
     data['read'] = this.read;
     data['createdAt'] = this.createdAt;
     data['updatedAt'] = this.updatedAt;
+    data['clickAction'] = this.clickAction;
+    data['productId'] = this.productId;
+    data['videoId'] = this.videoId;
+    data['clickType'] = this.clickType;
     return data;
   }
 }

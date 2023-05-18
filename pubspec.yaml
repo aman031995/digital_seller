@@ -77,6 +77,7 @@ dependencies:
   url_strategy: ^0.2.0
   hive_flutter: ^1.1.0
   go_router:
+  easy_stepper: ^0.5.0
   dropdown_button2:
 #  client_information: ^2.0.3+1
   device_info_plus: ^8.1.0

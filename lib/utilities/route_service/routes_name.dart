@@ -10,4 +10,8 @@ class RoutesName {
   static const String EditProfille='EditProfile';
   static const String HomeViewPage='HomeViewPage';
   static const String Notification='NotificationScreen';
+  static const String productList='ProductList';
+  static const String productDetails='product_details';
+  static const String CartDetails='Cart_detail_page';
+  static const String fav='favourite_list_page';
 }

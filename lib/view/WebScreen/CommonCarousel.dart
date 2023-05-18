@@ -104,12 +104,12 @@ class _CommonCarouselState extends State<CommonCarousel> {
     );
   }
   List<Widget> generateImageTilesWeb(BuildContext context) {
-    return homeViewModel.bannerDataModal!.bannerList!
+    return homeViewModel.bannerDataModal!.carouselList!
         .map((element) =>  InkWell(
       focusNode: carouselFocus,
       onTap: () async {
         print(current);
-        url = '${homeViewModel.bannerDataModal?.bannerList?[current].bannerUrl }';
+        url = '${homeViewModel.bannerDataModal?.carouselList?[current].bannerUrl }';
         if (await canLaunch(url)) {
           await launch(url);
         } else {
@@ -120,7 +120,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
         height: SizeConfig.screenHeight/3,width: SizeConfig.screenWidth,
         margin: EdgeInsets.only(left: 0,right: 0,top: 0),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
-        child: Image.network(element.bannerFile?? " ",
+        child: Image.network(element.bannerImage?? " ",
             fit: BoxFit.fill
           //height: SizeConfig.screenHeight
         ),
@@ -156,12 +156,12 @@ class _CommonCarouselState extends State<CommonCarousel> {
     );
   }
   List<Widget> generateImageTileMobile(BuildContext context) {
-    return homeViewModel.bannerDataModal!.bannerList!
+    return homeViewModel.bannerDataModal!.carouselList!
         .map((element) => InkWell(
         focusNode: carouselFocus,
         onTap: () async {
           print(current);
-          url = '${homeViewModel.bannerDataModal?.bannerList?[current].bannerUrl }';
+          url = '${homeViewModel.bannerDataModal?.carouselList?[current].bannerUrl }';
           if (await canLaunch(url)) {
             await launch(url);
           } else {
@@ -172,7 +172,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(1.0),
             image: DecorationImage(
-                image: NetworkImage(element.bannerFile ?? ""),
+                image: NetworkImage(element.bannerImage ?? ""),
                 fit: BoxFit.fill
             ),
           ),

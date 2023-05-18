@@ -47,10 +47,10 @@ class ValidationBloc {
   Stream<String> get state => _state.stream.transform(validateState);
   Sink<String> get sinkState => _state.sink;
 
-  Stream<String> get cityName => _cityName.stream.transform(validateEntry);
+  Stream<String> get cityName => _cityName.stream.transform(ValidateCity);
   Sink<String> get sinkCityName => _cityName.sink;
 
-  Stream<String> get country => _country.stream.transform(validateEntry);
+  Stream<String> get country => _country.stream.transform(validateCountry);
   Sink<String> get sinkCountry => _country.sink;
 
   Stream<String> get forgotPassword => _forgotPassword.stream.transform(validatePhoneNo);
@@ -69,10 +69,13 @@ class ValidationBloc {
   Sink<String> get sinkEmailAndPhone => _emailAndPhone.sink;
 
   Stream<bool> get checkEmailValidate => Rx.combineLatest({email}, (values) => true);
+  Stream<bool> get checkEmailAndPhoneValidate => Rx.combineLatest({emailAndMobile}, (values) => true);
   Stream<bool> get checkPhoneValidate => Rx.combineLatest({phoneNo}, (values) => true);
-  Stream<bool> get checkUserLogin => Rx.combineLatest2(phoneNo, password, (a, b) => true);
+  Stream<bool> get checkUserPhoneLogin => Rx.combineLatest2(phoneNo, password, (a, b) => true);
+  Stream<bool> get checkUserEmailLogin => Rx.combineLatest2(email, password, (a, b) => true);
   Stream<bool> get checkResetPasswordValidate => Rx.combineLatest2(password, confirmPassword, (a, b) => true);
   Stream<bool> get registerUser => Rx.combineLatest4(firstName, email, phoneNo, password, (a, b, c, d) => true);
+  Stream<bool> get registerWithoutNumberUser => Rx.combineLatest3(firstName, email, password, (a, b, c) => true);
   Stream<bool> get checkUserInfoValidate => Rx.combineLatest2(email, phoneNo, (a, b) => true);
   Stream<bool> get submitValid => Rx.combineLatest2(emailAndMobile, password, (e, p) => true);
   Stream<bool> get validateUserEditProfile => Rx.combineLatest2(firstName, phoneNo, (a, b) => true);
@@ -80,12 +83,12 @@ class ValidationBloc {
   Stream<bool> get validateAddAddress => Rx.combineLatest9(firstName,lastName, phoneNo,email,address,addressOne,pincode,state,cityName, (a, b,c,d,e,f,g,h,i) => true);
 
   final validateFullName =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if (value.length > 0) {
       Regex.isFullName(value)
           ? value.length >= 2
-              ? sink.add(value)
-              : sink.addError('Full Name should be atleast 2 character')
+          ? sink.add(value)
+          : sink.addError('Full Name should be atleast 2 character')
           : sink.addError('Full Name must be a-z and A-Z');
     }
   });
@@ -132,37 +135,47 @@ class ValidationBloc {
   final validateEntry =
   StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if(value.length > 0){
-      value.length > 2 ? sink.add(value) : sink.addError("Too Short");
+      value.length > 2 ? sink.add(value) : sink.addError("Please enter Detail Address");
     }
   });
-
+  final ValidateCity= StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+    if(value.length > 0){
+      value.length > 2 ? sink.add(value) : sink.addError("Please Enter City");
+    }
+  });
   final validateState =
   StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if(value.length > 0){
-      value.length > 1 ? sink.add(value) : sink.addError("Too Short");
+      value.length > 1 ? sink.add(value) : sink.addError("Please Enter State");
     }
   });
 
   final validatePincode =
   StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if(value.length > 0){
-      value.length > 5 ? sink.add(value) : sink.addError("Too Short");
+      value.length > 5 ? sink.add(value) : sink.addError("Please Enter PinCode");
+    }
+  });
+  final validateCountry =
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+    if(value.length > 0){
+      value.length > 1 ? sink.add(value) : sink.addError("Please Enter Country ");
     }
   });
 
   final validateDescription =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if (value.length > 0) {
       Regex.isDescription(value)
           ? value.length >= 10
-              ? sink.add(value)
-              : sink.addError('Description must be in 10 characters')
+          ? sink.add(value)
+          : sink.addError('Description must be in 10 characters')
           : sink.addError('Description must be in 10 characters');
     }
   });
 
   final validateTitle =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if (value.length > 0) {
       value.length >= 2
           ? sink.add(value)
@@ -171,18 +184,18 @@ class ValidationBloc {
   });
 
   final validateCompanyName =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if (value.length > 0) {
       Regex.isFullName(value)
           ? value.length >= 2
-              ? sink.add(value)
-              : sink.addError('Company Name should be atleast 2 character')
+          ? sink.add(value)
+          : sink.addError('Company Name should be atleast 2 character')
           : sink.addError('Company Name must be a-z and A-Z');
     }
   });
 
   final validateEmail =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if (value.length != 0) {
       Regex.isEmail(value)
           ? sink.add(value)
@@ -191,7 +204,7 @@ class ValidationBloc {
   });
 
   final validateEmailAndPhone =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if (value.length != 0) {
       if (!Regex.isEmail(value) && !Regex.isPhone(value)) {
         return sink.addError("Please enter a valid email or phone number.");
@@ -204,7 +217,7 @@ class ValidationBloc {
   });
 
   final validatePassword =
-      StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if (value.length >= 8 && value.length != 0) {
       Regex.isPassword(value)
           ? sink.add(value)
@@ -233,3 +246,4 @@ class ValidationBloc {
     _oldPassword.close();
   }
 }
+

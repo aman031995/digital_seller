@@ -1,8 +1,7 @@
 
+import 'package:TychoStream/model/data/order_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:TychoStream/model/data/OrderDataModel.dart';
-import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/ASRequestModal.dart';
 import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/AppNetwork.dart';

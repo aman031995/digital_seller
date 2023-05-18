@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
-import 'package:TychoStream/model/data/HomePageDataModel.dart';
 import 'package:TychoStream/network/AppDataManager.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/network/CacheDataManager.dart';
