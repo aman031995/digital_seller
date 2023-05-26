@@ -2,8 +2,8 @@ import 'result.dart';
 
 typedef void NetworkResponseHandler(Result result, bool isSuccess);
 typedef void InternetResponseHandler(bool isSuccess, dynamic result);
+typedef void NotificationHandler(dynamic response);
 typedef void ApiCallback(dynamic response);
-
 class NetworkConstants{
   static String kAppBaseUrl = 'https://eacademyeducation.com:8011/api/';
 
@@ -15,7 +15,7 @@ class NetworkConstants{
   static String kGetAppMenu = "getAppMenu?appId={APP_ID}&deviceType={DEVICE_TYPE}";
 
   // homepage api section
-  static String kGetBannerList = "get-all-carousel?appId={APP_ID}";
+  static String kGetBannerList = "get-all-banner?appId={APP_ID}";
   static String kGetHomePageData = "homepageVideo?userId={USER_ID}&appId={APP_ID}&videoFor={VIDEO_FOR}&type={TYPE}&pageNum={PAGE_NUM}";
   static String kGetTrayData = "getTrayOrder?appId={APP_ID}";
   static String kGetCategoryData = "getAllCategory?appId={APP_ID}&pageNum={PAGE_NUM}";
@@ -64,12 +64,12 @@ class NetworkConstants{
   // static String kGetProductList = "product-list?userId={USER_ID}&appId={APP_ID}";
   static String kGetProductList = "product-listing?userId={USER_ID}&appId={APP_ID}&pageNum={PAGE_NUM}";
   // static String kGetProductById = "get-by-product-id?productId={PRODUCT_ID}&userId={USER_ID}&appId={APP_ID}";
-  static String kGetProductById = "product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&colorId={COLOR_ID}&sizeId={SIZE_ID}&variantId={VARIANT_ID}";
+  static String kGetProductById = "product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&colorName={COLOR_ID}&sizeName={SIZE_NAME}&variantId={VARIANT_ID}";
 
   // payment-order section
   static String kCreateOrder = "create-order";
   static String kPaymentResponse = "payment-callback";
 
-  // app id
-  static String kAppID = '60b222c4-882a-4220-b023-786dd9818a1b';
+  // static String kAppID = '8b7e56d4-8d6c-4053-8991-64374d95c353';
+  static String kAppID = 'a2108f43-9011-4440-9984-6f3d19810c27';
 }

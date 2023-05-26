@@ -110,7 +110,7 @@ class CartDetailRepository {
       String productId,
       String variantId,
       String color,
-      String sizeId,
+      String sizeName,
       NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
@@ -122,7 +122,7 @@ class CartDetailRepository {
       "{PRODUCT_ID}": productId,
       "{VARIANT_ID}": variantId,
       "{COLOR_ID}": color,
-      "{SIZE_ID}": sizeId,
+      "{SIZE_NAME}": sizeName,
       "{APP_ID}": NetworkConstants.kAppID,
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
@@ -311,7 +311,7 @@ class CartDetailRepository {
       "appId": NetworkConstants.kAppID,
       "userId": sharedPreferences.get("userId").toString(),
       "productId": productId,
-      "colorId":variantId,
+      "colorName":variantId,
       "isLike":fav,
     };
     ASRequestModal requestModal = ASRequestModal.withInputParams(

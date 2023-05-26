@@ -52,5 +52,5 @@ Text AppRegularFont(
         maxLines: maxLines,
         textAlign: textAlign,
         style: CustomTextStyle.textFormFieldInterRegular
-            .copyWith(color:color?? Theme.of(context).canvasColor.withOpacity(0.8), fontSize: fontSize, fontWeight: fontWeight,fontFamily: Theme.of(context).textTheme.labelLarge?.fontFamily));
+            .copyWith(color:color?? Theme.of(context).canvasColor, fontSize: fontSize, fontWeight: fontWeight,fontFamily: Theme.of(context).textTheme.labelLarge?.fontFamily));
 }

@@ -196,9 +196,9 @@ class _FAQState extends State<FAQ> {
 
                         ),
                   ),
-                  isLogins == true
-                      ? profile(context, setState)
-                      : Container(),
+                  // isLogins == true
+                  //     ? profile(context, setState)
+                  //     : Container(),
                   if (homeViewModel.searchDataModel != null)
                     searchView(context, homeViewModel, isSearch, _scrollController, homeViewModel, searchController!, setState)
                 ],

@@ -1,737 +1,397 @@
-// import 'dart:io';
-//
-// import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
-// import 'package:flutter/material.dart';
-// import 'package:go_router/go_router.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:provider/provider.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
-// import 'package:TychoStream/main.dart';
-// import 'package:TychoStream/model/data/UserInfoModel.dart';
-// import 'package:TychoStream/network/ASResponseModal.dart';
-// import 'package:TychoStream/network/result.dart';
-// import 'package:TychoStream/repository/auth_repository.dart';
-// import 'package:TychoStream/repository/profile_repository.dart';
-// import 'package:TychoStream/utilities/AppColor.dart';
-// import 'package:TychoStream/utilities/AppIndicator.dart';
-// import 'package:TychoStream/utilities/AppTextButton.dart';
-// import 'package:TychoStream/utilities/AppTextField.dart';
-// import 'package:TychoStream/utilities/AppToast.dart';
-// import 'package:TychoStream/utilities/AssetsConstants.dart';
-// import 'package:TychoStream/utilities/Responsive.dart';
-// import 'package:TychoStream/utilities/SizeConfig.dart';
-// import 'package:TychoStream/utilities/StringConstants.dart';
-// import 'package:TychoStream/utilities/TextHelper.dart';
-// import 'package:TychoStream/utilities/route_service/routes_name.dart';
-// import 'package:TychoStream/utilities/three_arched_circle.dart';
-// import 'package:TychoStream/view/WebScreen/LoginUp.dart';
-// import 'package:TychoStream/view/WebScreen/SignUp.dart';
-// import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-// import 'package:TychoStream/view/screens/verify_otp_screen.dart';
-// import 'package:TychoStream/view/widgets/AppDialog.dart';
-// import 'package:TychoStream/view/widgets/FullImageView.dart';
-// import 'package:TychoStream/view/widgets/image_source.dart';
-// import 'package:TychoStream/view/widgets/search_view.dart';
-// import 'package:TychoStream/viewmodel/HomeViewModel.dart';
-// import 'package:TychoStream/viewmodel/auth_view_model.dart';
-// import 'package:TychoStream/viewmodel/profile_view_model.dart';
-//
-// import 'package:flutter/foundation.dart' show Uint8List, kIsWeb;
-//
-// import '../../model/data/AppConfigModel.dart';
-// import '../widgets/app_menu.dart';
-//
-// class EditProfile extends StatefulWidget {
-//   EditProfile({Key? key}) : super(key: key);
-//
-//   @override
-//   State<EditProfile> createState() => _EditProfileState();
-// }
-//
-// class _EditProfileState extends State<EditProfile> {
-//   UserInfoModel? _userInfoModel;
-//
-//   UserInfoModel? get userInfoModel => _userInfoModel;
-//   final ProfileViewModel profileViewModel = ProfileViewModel();
-//   bool enableMobileField = false;
-//   bool enableVerifyButton = false;
-//   bool enableEmailField = false;
-//   bool enableEmailVerifyButton = false;
-//   final _authRepo = AuthRepository();
-//   HomeViewModel homeViewModel = HomeViewModel();
-//   ScrollController scrollController = ScrollController();
-//   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
-//
-//   final validation = ValidationBloc();
-//   String? name;
-//   String? email;
-//   String? phone;
-//   String? address;
-//   String? profileImg;
-//   String? pageTitle;
-//   Uint8List webImage = Uint8List(10);
-//   TextEditingController? addressController,
-//       nameController,
-//       phoneController,
-//       emailController;
-//
-//   @override
-//   void initState() {
-//     profileViewModel.getUserDetails(context);
-//     addressController = TextEditingController();
-//     nameController = TextEditingController();
-//     phoneController = TextEditingController();
-//     emailController = TextEditingController();
-//     getUser();
-//     super.initState();
-//   }
-//
-//   getUser() async {
-//     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-//     name = sharedPreferences.getString('name');
-//     profileImg = sharedPreferences.getString('profileImg');
-//     email = sharedPreferences.getString('email');
-//     phone = sharedPreferences.getString('phone');
-//     address = sharedPreferences.getString('address');
-//     nameController?.text = name ?? '';
-//     phoneController?.text = phone ?? '';
-//     addressController?.text = address ?? '';
-//     emailController?.text = email ?? '';
-//     if (email != '') {
-//       enableEmailField = false;
-//       enableEmailVerifyButton = false;
-//     } else {
-//       enableEmailField = true;
-//       enableEmailVerifyButton = true;
-//     }
-//     if (phone != '') {
-//       enableMobileField = false;
-//       enableVerifyButton = false;
-//     } else {
-//       enableMobileField = true;
-//       enableVerifyButton = true;
-//     }
-//     validateEditDetails();
-//     setState(() {});
-//   }
-//
-//   validateEditDetails() {
-//     validation.sinkFirstName.add(name ?? '');
-//     validation.sinkPhoneNo.add(phone ?? '');
-//     validation.sinkAddress.add(address ?? '');
-//     validation.sinkEmail.add(email ?? '');
-//   }
-//
-//   @override
-//   void dispose() {
-//     validation.closeStream();
-//     addressController?.dispose();
-//     nameController?.dispose();
-//     phoneController?.dispose();
-//     emailController?.dispose();
-//     otpValue = '';
-//     super.dispose();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     SizeConfig().init(context);
-//     final authVM = Provider.of<AuthViewModel>(context);
-//     return ChangeNotifierProvider<HomeViewModel>(
-//         create: (BuildContext context) => homeViewModel,
-//         child: Consumer<HomeViewModel>(builder: (context, homemodel, _) {
-//           return ChangeNotifierProvider<ProfileViewModel>(
-//               create: (BuildContext context) => profileViewModel,
-//               child: Consumer<ProfileViewModel>(builder: (context, profilemodel, _) {
-//                 return GestureDetector(
-//                   onTap: () {
-//                     if (isSearch == true) {
-//                       isSearch = false;
-//                       searchController?.clear();
-//                       setState(() {});
-//                     }
-//                     if( isLogins == true){
-//                       isLogins=false;
-//                       setState(() {
-//
-//                       });
-//                     }
-//                   },
-//                   child: Scaffold(
-//                     backgroundColor:  Theme.of(context).scaffoldBackgroundColor,
-//                     appBar:   homePageTopBar(),
-//                     body:
-//                     Scaffold(
-//                       key: _scaffoldKey,
-//                       // drawer: AppMenu(homeViewModel: homemodel),
-//                       body: Stack(
-//                         children: [
-//
-//                           SingleChildScrollView(
-//                              child: Center(
-//                                child: ResponsiveWidget.isMediumScreen(context)
-//                                    ?Container(
-//                                    height: 450,
-//                                    margin: EdgeInsets.only(top: 30),
-//                                    decoration: BoxDecoration(
-//                                        borderRadius: BorderRadius.circular(10),
-//                                        color: Theme.of(context).cardColor,
-//                                        border: Border.all(
-//                                            width: 2,
-//                                            color: Theme.of(context)
-//                                                .primaryColor
-//                                                .withOpacity(0.6))),
-//                                    child: Column(
-//                                      children: [
-//                                        SizedBox(
-//                                          height: 5,
-//                                        ),
-//                                        Container(
-//                                          child: Stack(
-//                                            children: [
-//                                              SizedBox(
-//                                                  width: 80,
-//                                                  height: 80,
-//                                                  child: ClipOval(
-//                                                      child: profilemodel.userInfoModel?.profilePic != null ?
-//                                                      Image.network('${profilemodel.userInfoModel?.profilePic}', fit: BoxFit.cover)
-//                                                          : Center(child: ThreeArchedCircle(size: 20.0))
-//                                                  )
-//                                              ),
-//                                              Positioned(
-//                                                right: 3,
-//                                                top: 55,
-//                                                child: GestureDetector(
-//                                                  onTap: () => profilemodel.uploadProfileImage(context),
-//                                                  child: const Icon(
-//                                                    Icons.camera_alt_sharp,
-//                                                    color: Colors.red,
-//                                                    size: 25,
-//                                                  ),
-//                                                ),
-//                                              ),
-//                                            ],
-//                                          ),
-//                                        ),
-//                                        SizedBox(height: 5),
-//                                        Container(
-//                                          margin: const EdgeInsets.all(10),
-//                                          width: SizeConfig.screenWidth/1.3,
-//                                          alignment: Alignment.center,
-//                                          child: StreamBuilder(
-//                                              stream: validation.firstName,
-//                                              builder: (context, snapshot) {
-//                                                return AppTextField(
-//                                                  maxLine: 1,
-//
-//                                                  controller: nameController,
-//                                                  labelText: StringConstant.fullName,
-//                                                  textCapitalization:
-//                                                  TextCapitalization.words,
-//                                                  isShowCountryCode: true,
-//                                                  isShowPassword: false,
-//                                                  secureText: false,
-//                                                  maxLength: 30,
-//                                                  keyBoardType: TextInputType.name,
-//                                                  errorText: snapshot.hasError
-//                                                      ? snapshot.error.toString()
-//                                                      : null,
-//                                                  onChanged: (m) {
-//                                                    validation.sinkFirstName.add(m);
-//                                                    setState(() {});
-//                                                  },
-//                                                  onSubmitted: (m) {},
-//                                                  isTick: null,
-//                                                );
-//                                              }),
-//                                        ),
-//                                        Container(
-//                                          margin: const EdgeInsets.all(10),
-//                                          width: SizeConfig.screenWidth/1.3,
-//                                          alignment: Alignment.center,
-//                                          child: StreamBuilder(
-//                                              stream: validation.email,
-//                                              builder: (context, snapshot) {
-//                                                return AppTextField(
-//                                                  maxLine: 1,
-//                                                  controller: emailController,
-//                                                  labelText: StringConstant.email,
-//                                                  textCapitalization:
-//                                                  TextCapitalization.words,
-//                                                  isShowCountryCode: true,
-//                                                  isShowPassword: false,
-//                                                  secureText: false,
-//                                                  isVerifyNumber:
-//                                                  enableEmailVerifyButton,
-//                                                  isEnable: enableEmailField,
-//                                                  maxLength: 30,
-//                                                  keyBoardType:
-//                                                  TextInputType.emailAddress,
-//                                                  errorText: snapshot.hasError
-//                                                      ? snapshot.error.toString()
-//                                                      : null,
-//                                                  onChanged: (m) {
-//                                                    validation.sinkEmail.add(m);
-//                                                    setState(() {});
-//                                                  },
-//                                                  onSubmitted: (m) {},
-//                                                  verifySubmit: () {
-//                                                    emailController?.text == '' ||
-//                                                        snapshot.hasError == true
-//                                                        ? ToastMessage.message(
-//                                                        'Enter a valid email address')
-//                                                        : verifyInput(authVM,
-//                                                        StringConstant.emailVerify);
-//                                                    ;
-//                                                  },
-//                                                  isTick: null,
-//                                                );
-//                                              }),
-//                                        ),
-//                                        Container(
-//                                          margin: const EdgeInsets.all(10),
-//                                          width: SizeConfig.screenWidth/1.3,
-//                                          alignment: Alignment.center,
-//                                          child: StreamBuilder(
-//                                              stream: validation.phoneNo,
-//                                              builder: (context, snapshot) {
-//                                                return AppTextField(
-//                                                  maxLine: 1,
-//                                                  controller: phoneController,
-//                                                  labelText:
-//                                                  StringConstant.mobileNumber,
-//                                                  isShowCountryCode: true,
-//                                                  isShowPassword: false,
-//                                                  secureText: false,
-//                                                  isVerifyNumber: enableVerifyButton,
-//                                                  isEnable: enableMobileField,
-//                                                  maxLength: 10,
-//                                                  keyBoardType: TextInputType.phone,
-//                                                  errorText: snapshot.hasError
-//                                                      ? snapshot.error.toString()
-//                                                      : null,
-//                                                  onChanged: (m) {
-//                                                    validation.sinkPhoneNo.add(m);
-//                                                    setState(() {});
-//                                                  },
-//                                                  onSubmitted: (m) {},
-//                                                  verifySubmit: () {
-//                                                    phoneController!.text.length < 10
-//                                                        ? ToastMessage.message(
-//                                                        'Enter a valid number')
-//                                                        : verifyInput(
-//                                                        authVM,
-//                                                        StringConstant
-//                                                            .numberVerify);
-//                                                  },
-//                                                  isTick: null,
-//                                                );
-//                                              }),
-//                                        ),
-//                                        Container(
-//                                          margin: const EdgeInsets.all(10),
-//                                          width: SizeConfig.screenWidth/1.3,
-//                                          alignment: Alignment.center,
-//                                          child: StreamBuilder(
-//                                              stream: validation.address,
-//                                              builder: (context, snapshot) {
-//                                                return AppTextField(
-//                                                  maxLine: 1,
-//                                                  controller: addressController,
-//                                                  labelText: 'Address',
-//                                                  isShowCountryCode: true,
-//                                                  textCapitalization:
-//                                                  TextCapitalization.words,
-//                                                  isShowPassword: false,
-//                                                  secureText: false,
-//                                                  maxLength: 150,
-//                                                  isEnable: true,
-//                                                  keyBoardType:
-//                                                  TextInputType.emailAddress,
-//                                                  errorText: null,
-//                                                  onChanged: (m) {},
-//                                                  onSubmitted: (m) {},
-//                                                  isTick: true,
-//                                                );
-//                                              }),
-//                                        ),
-//                                        SizedBox(height: 5),
-//                                        Container(
-//                                          margin: const EdgeInsets.all(10),
-//                                          child: StreamBuilder(
-//                                              stream:
-//                                              validation.validateUserEditProfile,
-//                                              builder: (context, snapshot) {
-//                                                return appButton(
-//                                                    context,
-//                                                    StringConstant.Save,
-//                                                    SizeConfig.screenWidth/1.5,
-//                                                    50,
-//                                                    LIGHT_THEME_COLOR,
-//                                                    WHITE_COLOR,
-//                                                    18,
-//                                                    10,
-//                                                    snapshot.data != true
-//                                                        ? false
-//                                                        : true, onTap: () {
-//                                                  // snapshot.data != true ? null : " ";
-//                                                  snapshot.data != true
-//                                                      ? ToastMessage.message(
-//                                                      StringConstant.fillOut)
-//                                                      : enableVerifyButton == true ||
-//                                                      enableEmailVerifyButton ==
-//                                                          true
-//                                                      ? ToastMessage.message(
-//                                                      'Please Verify your details')
-//                                                      : saveButtonPressed(
-//                                                      profileViewModel,
-//                                                      nameController?.text,
-//                                                      phoneController?.text,
-//                                                      emailController?.text,
-//                                                      addressController?.text);
-//                                                });
-//                                              }),
-//                                        ),
-//                                        SizedBox(height: 5),
-//
-//                                      ],
-//                                    )):
-//                                Container(
-//                                    height: 580,
-//                                    width: 500,
-//                                    margin: EdgeInsets.only(top: 50),
-//                                    decoration: BoxDecoration(
-//                                        borderRadius: BorderRadius.circular(10),
-//                                        color: Theme.of(context).cardColor,
-//                                        border: Border.all(
-//                                            width: 2,
-//                                            color: Theme.of(context)
-//                                                .primaryColor
-//                                                .withOpacity(0.6))),
-//                                    child: Column(
-//                                      children: [
-//                                        SizedBox(
-//                                          height: 25,
-//                                        ),
-//                                        Container(
-//                                          child: Stack(
-//                                            children: [
-//                                              SizedBox(
-//                                                  width: 120,
-//                                                  height: 120,
-//                                                  child: ClipOval(
-//                                                      child: profilemodel.userInfoModel?.profilePic != null ?
-//                                                      Image.network('${profilemodel.userInfoModel?.profilePic}', fit: BoxFit.cover)
-//                                                          : Center(child: ThreeArchedCircle(size: 50.0))
-//                                                  )),
-//                                              Positioned(
-//                                                right: 5,
-//                                                top: 80,
-//                                                child: GestureDetector(
-//                                                  onTap: () => profilemodel.uploadProfileImage(context),
-//                                                  child: const Icon(
-//                                                    Icons.camera_alt_sharp,
-//                                                    color: Colors.red,
-//                                                    size: 25,
-//                                                  ),
-//                                                ),
-//                                              ),
-//                                            ],
-//                                          ),
-//                                        ),
-//                                        SizedBox(height: 40),
-//                                        Container(
-//                                          margin: const EdgeInsets.all(10),
-//                                          width: SizeConfig.screenWidth,
-//                                          alignment: Alignment.center,
-//                                          child: StreamBuilder(
-//                                              stream: validation.firstName,
-//                                              builder: (context, snapshot) {
-//                                                return AppTextField(
-//                                                  maxLine: 1,
-//                                                  controller: nameController,
-//                                                  labelText: StringConstant.fullName,
-//                                                  textCapitalization:
-//                                                  TextCapitalization.words,
-//                                                  isShowCountryCode: true,
-//                                                  isShowPassword: false,
-//                                                  secureText: false,
-//                                                  maxLength: 30,
-//                                                  keyBoardType: TextInputType.name,
-//                                                  errorText: snapshot.hasError
-//                                                      ? snapshot.error.toString()
-//                                                      : null,
-//                                                  onChanged: (m) {
-//                                                    validation.sinkFirstName.add(m);
-//                                                    setState(() {});
-//                                                  },
-//                                                  onSubmitted: (m) {},
-//                                                  isTick: null,
-//                                                );
-//                                              }),
-//                                        ),
-//                                        Container(
-//                                          margin: const EdgeInsets.all(10),
-//                                          width: SizeConfig.screenWidth,
-//                                          alignment: Alignment.center,
-//                                          child: StreamBuilder(
-//                                              stream: validation.email,
-//                                              builder: (context, snapshot) {
-//                                                return AppTextField(
-//                                                  maxLine: 1,
-//                                                  controller: emailController,
-//                                                  labelText: StringConstant.email,
-//                                                  textCapitalization:
-//                                                  TextCapitalization.words,
-//                                                  isShowCountryCode: true,
-//                                                  isShowPassword: false,
-//                                                  secureText: false,
-//                                                  isVerifyNumber:
-//                                                  enableEmailVerifyButton,
-//                                                  isEnable: enableEmailField,
-//                                                  maxLength: 30,
-//                                                  keyBoardType:
-//                                                  TextInputType.emailAddress,
-//                                                  errorText: snapshot.hasError
-//                                                      ? snapshot.error.toString()
-//                                                      : null,
-//                                                  onChanged: (m) {
-//                                                    validation.sinkEmail.add(m);
-//                                                    setState(() {});
-//                                                  },
-//                                                  onSubmitted: (m) {},
-//                                                  verifySubmit: () {
-//                                                    emailController?.text == '' ||
-//                                                        snapshot.hasError == true
-//                                                        ? ToastMessage.message(
-//                                                        'Enter a valid email address')
-//                                                        : verifyInput(authVM,
-//                                                        StringConstant.emailVerify);
-//                                                    ;
-//                                                  },
-//                                                  isTick: null,
-//                                                );
-//                                              }),
-//                                        ),
-//                                        Container(
-//                                          margin: const EdgeInsets.all(10),
-//                                          width: SizeConfig.screenWidth,
-//                                          alignment: Alignment.center,
-//                                          child: StreamBuilder(
-//                                              stream: validation.phoneNo,
-//                                              builder: (context, snapshot) {
-//                                                return AppTextField(
-//                                                  maxLine: 1,
-//                                                  controller: phoneController,
-//                                                  labelText:
-//                                                  StringConstant.mobileNumber,
-//                                                  isShowCountryCode: true,
-//                                                  isShowPassword: false,
-//                                                  secureText: false,
-//                                                  isVerifyNumber: enableVerifyButton,
-//                                                  isEnable: enableMobileField,
-//                                                  maxLength: 10,
-//                                                  keyBoardType: TextInputType.phone,
-//                                                  errorText: snapshot.hasError
-//                                                      ? snapshot.error.toString()
-//                                                      : null,
-//                                                  onChanged: (m) {
-//                                                    validation.sinkPhoneNo.add(m);
-//                                                    setState(() {});
-//                                                  },
-//                                                  onSubmitted: (m) {},
-//                                                  verifySubmit: () {
-//                                                    phoneController!.text.length < 10
-//                                                        ? ToastMessage.message(
-//                                                        'Enter a valid number')
-//                                                        : verifyInput(
-//                                                        authVM,
-//                                                        StringConstant
-//                                                            .numberVerify);
-//                                                  },
-//                                                  isTick: null,
-//                                                );
-//                                              }),
-//                                        ),
-//                                        Container(
-//                                          margin: const EdgeInsets.all(10),
-//                                          width: SizeConfig.screenWidth,
-//                                          alignment: Alignment.center,
-//                                          child: StreamBuilder(
-//                                              stream: validation.address,
-//                                              builder: (context, snapshot) {
-//                                                return AppTextField(
-//                                                  maxLine: 1,
-//                                                  controller: addressController,
-//                                                  labelText: 'Address',
-//                                                  isShowCountryCode: true,
-//                                                  textCapitalization:
-//                                                  TextCapitalization.words,
-//                                                  isShowPassword: false,
-//                                                  secureText: false,
-//                                                  maxLength: 150,
-//                                                  isEnable: true,
-//                                                  keyBoardType:
-//                                                  TextInputType.emailAddress,
-//                                                  errorText: null,
-//                                                  onChanged: (m) {},
-//                                                  onSubmitted: (m) {},
-//                                                  isTick: true,
-//                                                );
-//                                              }),
-//                                        ),
-//                                        SizedBox(height: 20),
-//                                        Container(
-//                                          margin: EdgeInsets.only(left: 10, right: 10),
-//                                          child: StreamBuilder(
-//                                              stream:
-//                                              validation.validateUserEditProfile,
-//                                              builder: (context, snapshot) {
-//                                                return appButton(
-//                                                    context,
-//                                                    StringConstant.Save,
-//                                                    SizeConfig.screenWidth /4.5,
-//                                                    60,
-//                                                    LIGHT_THEME_COLOR,
-//                                                    WHITE_COLOR,
-//                                                    20,
-//                                                    10,
-//                                                    snapshot.data != true
-//                                                        ? false
-//                                                        : true, onTap: () {
-//                                                  // snapshot.data != true ? null : " ";
-//                                                  snapshot.data != true
-//                                                      ? ToastMessage.message(
-//                                                      StringConstant.fillOut)
-//                                                      : enableVerifyButton == true ||
-//                                                      enableEmailVerifyButton ==
-//                                                          true
-//                                                      ? ToastMessage.message(
-//                                                      'Please Verify your details')
-//                                                      : saveButtonPressed(
-//                                                      profileViewModel,
-//                                                      nameController?.text,
-//                                                      phoneController?.text,
-//                                                      emailController?.text,
-//                                                      addressController?.text);
-//                                                });
-//                                              }),
-//                                        ),
-//                                        SizedBox(height: 20),
-//                                      ],
-//                                    )),
-//                              ),
-//                            ),
-//                           isLogins == true
-//                               ? profile(context, setState)
-//                               : Container(),
-//                           if (homeViewModel.searchDataModel != null)
-//                             searchView(context, homeViewModel, isSearch, scrollController, homeViewModel, searchController!, setState)
-//                         ],
-//                       ),
-//                     ),
-//                   ),
-//                 );
-//               }));
-//         }));
-//   }
-//   homePageTopBar() {
-//     return AppBar(
-//       elevation: 0,
-//       automaticallyImplyLeading: false,
-//       backgroundColor: Theme.of(context).cardColor,
-//       title: Row(children: <Widget>[
-//         GestureDetector(
-//             onTap: (){
-//               GoRouter.of(context).pushNamed(RoutesName.home);
-//             },
-//             child: Image.asset(AssetsConstants.icLogo,width: ResponsiveWidget.isMediumScreen(context) ? 35:45, height:ResponsiveWidget.isMediumScreen(context) ? 35: 45)),
-//         SizedBox(width: SizeConfig.screenWidth*0.04),
-//         AppBoldFont(context,msg:"EditProfile",fontSize:ResponsiveWidget.isMediumScreen(context) ? 16: 20, fontWeight: FontWeight.w700),
-//       ]),
-//       actions: [
-//         GestureDetector(
-//           onTap: () {
-//             setState(() {
-//               isLogins = true;
-//               if (isSearch == true) {
-//                 isSearch = false;
-//                 searchController?.clear();
-//                 setState(() {});
-//               }
-//             });
-//           },
-//           child: Row(
-//             children: [
-//               appTextButton(context, names!, Alignment.center, Theme.of(context).canvasColor,ResponsiveWidget.isMediumScreen(context)
-//                   ?16: 18, true),
-//               Image.asset(
-//                 AssetsConstants.icProfile,
-//                 height:ResponsiveWidget.isMediumScreen(context)
-//                     ?20: 30,
-//                 color: Theme.of(context).canvasColor,
-//               ),
-//             ],
-//           ),
-//         ),
-//         SizedBox(width: SizeConfig.screenWidth*0.04),
-//       ],
-//     );
-//   }
-//   saveButtonPressed(ProfileViewModel? viewmodel, String? name, String? phone,
-//       String? email, String? address) {
-//     viewmodel?.updateProfile(context, name, phone, address, email);
-//   }
-//
-// //--------Profile Screen Item Selection---------
-//
-//   verifyInput(AuthViewModel authVM, String msg) {
-//     AppIndicator.loadingIndicator(context);
-//     resendCode(authVM);
-//     AppDialog.verifyOtp(context, msg: msg, onTap: () {
-//       otpValue != ''
-//           ? verificationButtonPressed(authVM, otpValue ?? "")
-//           : ToastMessage.message('Enter OTP');
-//     }, resendOtp: () {
-//       resendCode(authVM);
-//     });
-//   }
-//
-//   verificationButtonPressed(AuthViewModel authVM, String otpValue) async {
-//     AppIndicator.loadingIndicator(context);
-//     _authRepo.verifyOTP(
-//         '${phoneController?.text != '' ? phoneController?.text : emailController?.text}',
-//         otpValue,
-//       "",context, (result, isSuccess) {
-//       if (isSuccess) {
-//         Navigator.of(context, rootNavigator: true).pop();
-//         AppIndicator.disposeIndicator();
-//         ToastMessage.message(
-//             ((result as SuccessState).value as ASResponseModal).message);
-//         print('otp verified Successfully');
-//         otpValue = '';
-//         if (phoneController?.text != '') {
-//           enableMobileField = false;
-//           enableVerifyButton = false;
-//         } else {
-//           enableEmailField = false;
-//           enableEmailVerifyButton = false;
-//         }
-//         setState(() {});
-//       }
-//     });
-//   }
-//
-//   resendCode(AuthViewModel authVM) {
-//     // authVM.resendOtp(
-//     //     nameController?.text ?? '',
-//     //     emailController?.text,
-//     //     '',
-//     //     phoneController?.text,
-//     //     false,
-//     //     context,
-//     //     editPage: true,
-//     //     (result, isSuccess) {});
-//   }
-// }
+import 'package:TychoStream/Utilities/AssetsConstants.dart';
+import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
+import 'package:TychoStream/network/ASResponseModal.dart';
+import 'package:TychoStream/network/result.dart';
+import 'package:TychoStream/repository/auth_repository.dart';
+import 'package:TychoStream/utilities/AppColor.dart';
+import 'package:TychoStream/utilities/AppIndicator.dart';
+import 'package:TychoStream/utilities/AppTextButton.dart';
+import 'package:TychoStream/utilities/AppTextField.dart';
+import 'package:TychoStream/utilities/AppToast.dart';
+import 'package:TychoStream/utilities/SizeConfig.dart';
+import 'package:TychoStream/utilities/StringConstants.dart';
+import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
+import 'package:TychoStream/view/screens/verify_otp_screen.dart';
+import 'package:TychoStream/view/widgets/AppDialog.dart';
+import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
+import 'package:TychoStream/view/widgets/no_internet.dart';
+import 'package:TychoStream/viewmodel/auth_view_model.dart';
+import 'package:TychoStream/viewmodel/profile_view_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+
+class EditProfile extends StatefulWidget {
+  ProfileViewModel? viewmodel;
+  String? isEmailVerified;
+  String? isPhoneVerified;
+
+  EditProfile({Key? key, this.viewmodel,this.isEmailVerified,this.isPhoneVerified}) : super(key: key);
+
+  @override
+  _EditProfileState createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfile> {
+  final ProfileViewModel profileViewModel = ProfileViewModel();
+  final _authRepo = AuthRepository();
+
+  final validation = ValidationBloc();
+  String? name, email, phone, address, profileImg, checkInternet;
+  TextEditingController? addressController,
+      nameController,
+      phoneController,
+      emailController;
+
+  @override
+  void initState() {
+    getUser();
+    profileViewModel.getUserDetails(context);
+    addressController = TextEditingController();
+    nameController = TextEditingController();
+    phoneController = TextEditingController();
+    emailController = TextEditingController();
+    fetchCurrentUserDetails();
+    super.initState();
+  }
+  getUser() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    name = sharedPreferences.getString('name');
+    profileImg = sharedPreferences.getString('profileImg');
+    email = sharedPreferences.getString('email');
+    phone = sharedPreferences.getString('phone');
+    address = sharedPreferences.getString('address');
+    nameController?.text = name ?? '';
+    phoneController?.text = phone ?? '';
+    addressController?.text = address ?? '';
+    emailController?.text = email ?? '';
+    profileViewModel.getVerificationButtonStatus(
+        context,
+        widget.isPhoneVerified,
+        widget.isEmailVerified);
+    validateEditDetails();
+    setState(() {});
+  }
+
+  validateEditDetails() {
+    validation.sinkFirstName.add(name ?? '');
+    validation.sinkPhoneNo.add(phone ?? '');
+    validation.sinkAddress.add(address ?? '');
+    validation.sinkEmail.add(email ?? '');
+  }
+  fetchCurrentUserDetails() {
+    profileViewModel.getVerificationButtonStatus(
+        context,
+        widget.isPhoneVerified,
+        widget.isEmailVerified);
+    validateEditDetails();
+    setState(() {});
+  }
+
+
+  @override
+  void dispose() {
+    validation.closeStream();
+    addressController?.dispose();
+    nameController?.dispose();
+    phoneController?.dispose();
+    emailController?.dispose();
+    otpValue = '';
+    super.dispose();
+  }
+
+  //-------Profile Screen---------
+  @override
+  Widget build(BuildContext context) {
+    SizeConfig().init(context);
+    final authVM = Provider.of<AuthViewModel>(context);
+    return ChangeNotifierProvider.value(
+        value: profileViewModel,
+        child: Consumer<ProfileViewModel>(builder: (context, viewmodel, _) {
+          return Scaffold(
+              appBar: getAppBarWithBackBtn(
+                  title: StringConstant.editProfile,
+                  isBackBtn: false,
+                  context: context,
+                  onBackPressed: () {
+                    Navigator.pop(context, true);
+                  }),
+              backgroundColor: Theme.of(context).backgroundColor,
+              body: checkInternet == "Offline"
+                  ? NOInternetScreen()
+                  : SafeArea(
+                  child: SingleChildScrollView(
+                      child: Center(
+                        child: Column(
+
+                            children: [
+                          SizedBox(height: 25),
+                          _profileImageView(viewmodel),
+                          SizedBox(height: 40),
+                          _editFormField(viewmodel, authVM),
+                              SizedBox(height: 200),
+                       footerDesktop()
+                        ]),
+                      ))));
+        }));
+  }
+
+  // form field
+  _editFormField(ProfileViewModel viewmodel, AuthViewModel authVM) {
+    return Container(
+        width: SizeConfig.screenWidth/3.8,
+        margin: const EdgeInsets.all(10),
+        child: Column(children: [
+          StreamBuilder(
+              stream: validation.firstName,
+              builder: (context, snapshot) {
+                return AppTextField(
+                  maxLine: 1,
+                  controller: nameController,
+                  labelText: StringConstant.fullName,
+                  textCapitalization: TextCapitalization.words,
+                  isShowCountryCode: true,
+                  isShowPassword: false,
+                  secureText: false,
+                  maxLength: 30,
+                  keyBoardType: TextInputType.name,
+                  errorText:
+                  snapshot.hasError ? snapshot.error.toString() : null,
+                  onChanged: (m) {
+                    validation.sinkFirstName.add(m);
+                    setState(() {});
+                  },
+                  isTick: null,
+                );
+              }),
+          SizedBox(height: 20),
+          StreamBuilder(
+              stream: validation.email,
+              builder: (context, snapshot) {
+                return AppTextField(
+                  maxLine: 1,
+                  controller: emailController,
+                  labelText: StringConstant.email,
+                  textCapitalization: TextCapitalization.words,
+                  isShowCountryCode: true,
+                  isEditPage: true,
+                  isShowPassword: false,
+                  secureText: false,
+                  isVerifyNumber:
+                  viewmodel.enableEmailField == true ? false : true,
+                  isEnable: viewmodel.enableEmailField == true ? false : true,
+                  maxLength: 30,
+                  keyBoardType: TextInputType.emailAddress,
+                  errorText:
+                  snapshot.hasError ? snapshot.error.toString() : null,
+                  onChanged: (m) {
+                    validation.sinkEmail.add(m);
+                    setState(() {});
+                  },
+                  verifySubmit: () {
+                    emailController?.text == '' || snapshot.hasError == true
+                        ? ToastMessage.message(StringConstant.enterValidEmail)
+                        : verifyInput(authVM, StringConstant.emailVerify,
+                        emailController?.text ?? '', 'email');
+                  },
+                  isTick: null,
+                );
+              }),
+          SizedBox(height: 20),
+          StreamBuilder(
+              stream: validation.phoneNo,
+              builder: (context, snapshot) {
+                return AppTextField(
+                  maxLine: 1,
+                  controller: phoneController,
+                  labelText: StringConstant.mobileNumber,
+                  isShowCountryCode: true,
+                  isShowPassword: false,
+                  secureText: false,
+                  isEditPage: true,
+                  isVerifyNumber:
+                  viewmodel.enableMobileField == true ? false : true,
+                  isEnable: viewmodel.enableMobileField == true ? false : true,
+                  maxLength: 10,
+                  keyBoardType: TextInputType.phone,
+                  errorText:
+                  snapshot.hasError ? snapshot.error.toString() : null,
+                  onChanged: (m) {
+                    validation.sinkPhoneNo.add(m);
+                    setState(() {});
+                  },
+                  verifySubmit: () {
+                    phoneController!.text.length < 10
+                        ? ToastMessage.message(StringConstant.enterValidNumber)
+                        : verifyInput(authVM, StringConstant.numberVerify,
+                        phoneController?.text ?? '', 'phone');
+                  },
+                  isTick: null,
+                );
+              }),
+          SizedBox(height: 20),
+          StreamBuilder(
+              stream: validation.address,
+              builder: (context, snapshot) {
+                return AppTextField(
+                  maxLine: 1,
+                  controller: addressController,
+                  labelText: StringConstant.addressSmall,
+                  isShowCountryCode: true,
+                  textCapitalization: TextCapitalization.words,
+                  isShowPassword: false,
+                  secureText: false,
+                  maxLength: 150,
+                  isEnable: true,
+                  keyBoardType: TextInputType.emailAddress,
+                  errorText: null,
+                  isTick: true,
+                );
+              }),
+          SizedBox(height: 20),
+          SizedBox(height: 20),
+          StreamBuilder(
+              stream: validation.validateUserEditProfile,
+              builder: (context, snapshot) {
+                return appButton(
+                    context,
+                    StringConstant.Save,
+                    SizeConfig.screenWidth/4.5,
+                    60,
+                    LIGHT_THEME_COLOR,
+                    WHITE_COLOR,
+                    20,
+                    10,
+                    snapshot.data != true ? false : true, onTap: () {
+                  snapshot.data != true
+                      ? ToastMessage.message(StringConstant.fillOut)
+                      : viewmodel.enableMobileField != true &&
+                      viewmodel.enableEmailField != true
+                      ? ToastMessage.message(StringConstant.verifyDetails)
+                      : saveButtonPressed(
+                      widget.viewmodel ?? profileViewModel,
+                      nameController?.text,
+                      phoneController?.text,
+                      emailController?.text,
+                      addressController?.text);
+                });
+              }),
+        ]));
+  }
+
+  // profile image section
+  _profileImageView(ProfileViewModel viewmodel) {
+    return Container(
+      child: Stack(
+        children: [
+          GestureDetector(
+            onTap: () {
+              // AppNavigator.push(
+              //     context,
+              //     FullImage(
+              //         imageUrl:
+              //         '${viewmodel.userInfoModel?.profilePic ?? widget.viewmodel?.userInfoModel?.profilePic ?? profileImg}'));
+            },
+            child: CircleAvatar(
+              backgroundColor: WHITE_COLOR,
+              radius: 57,
+              child: CachedNetworkImage(
+                imageUrl:
+                '${viewmodel.userInfoModel?.profilePic ?? widget.viewmodel?.userInfoModel?.profilePic ?? profileImg}',
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 110.0,
+                  height: 110.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover),
+                  ),
+                ),
+                placeholder: (context, url) => CircularProgressIndicator(),
+              ),
+            ),
+          ),
+          Positioned(
+            left: 75,
+            top: 60,
+            child: IconButton(
+              alignment: Alignment.bottomCenter,
+              onPressed: () => viewmodel.uploadProfileImage(context),
+
+    // CommonMethods.uploadImageVideo(context, viewmodel),
+              icon: Image.asset(
+                AssetsConstants.icAddImage,
+                height: 30,
+                width: 30,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // SaveButton Method
+  saveButtonPressed(ProfileViewModel? viewmodel, String? name, String? phone,
+      String? email, String? address) {
+    viewmodel?.updateProfile(context, name, phone, address, email);
+  }
+
+  // VerificationButton Method
+  verificationButtonPressed(
+      AuthViewModel authVM, String otpValue, String verifyType) async {
+    AppIndicator.loadingIndicator(context);
+    _authRepo.verifyOTP(
+        verifyType != 'email'
+            ? (phoneController?.text ?? '')
+            : (emailController?.text ?? ''),
+        otpValue,
+        "",
+        "",
+        context, (result, isSuccess) {
+      if (isSuccess) {
+        Navigator.of(context, rootNavigator: true).pop();
+        AppIndicator.disposeIndicator();
+        ToastMessage.message(
+            ((result as SuccessState).value as ASResponseModal).message);
+        otpValue = '';
+        if (verifyType == 'email') {
+          profileViewModel.getVerificationButtonStatus(
+              context, widget.isPhoneVerified, "true");
+        } else {
+          profileViewModel.getVerificationButtonStatus(
+              context, "true", widget.isEmailVerified);
+        }
+        // if (phoneController?.text != '') {
+        //   enableMobileField = false;
+        //   enableVerifyButton = false;
+        // } else {
+        //   enableEmailField = false;
+        //   enableEmailVerifyButton = false;
+        // }
+      }
+    });
+  }
+
+  //ResendCode Method
+  resendCode(AuthViewModel authVM, String detail) {
+    authVM.resendOtp(
+        detail, context, verifyDetailType: 'verify', (result, isSuccess) {});
+  }
+
+  //VerifyInput Method
+  verifyInput(
+      AuthViewModel authVM, String msg, String detail, String verifyType) {
+    AppIndicator.loadingIndicator(context);
+    resendCode(authVM, detail);
+    AppDialog.verifyOtp(context, msg: msg, onTap: () {
+      otpValue != ''
+          ? verificationButtonPressed(authVM, otpValue ?? "", verifyType)
+          : ToastMessage.message(StringConstant.enterOtp);
+    }, resendOtp: () {
+      resendCode(authVM, verifyType);
+    });
+  }
+}

@@ -1,3 +1,4 @@
+import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
@@ -141,6 +142,24 @@ Widget textButton(BuildContext context, String title,
       ),
       // decoration: buttonDecoration,
       child: AppBoldFont(context,msg: title, fontSize:ResponsiveWidget.isMediumScreen(context)? 14:18),
+    ),
+  );
+}
+//AddressButton Method
+Widget AddressButton(BuildContext context,GestureTapCallback? ontap){
+  return GestureDetector(
+    onTap: ontap,
+    child: Container(
+      width: SizeConfig.screenWidth*0.29,
+      margin: EdgeInsets.only(top:5,bottom: 5,left: 10,right: 10),
+      alignment: Alignment.centerLeft,
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
+      ),
+      padding: EdgeInsets.only(left: 10,top: 10,bottom: 10),
+
+      child: AppBoldFont(context,
+          msg: "+ addAddress"),
     ),
   );
 }

@@ -1,8 +1,11 @@
 import 'dart:ui';
 import 'package:TychoStream/view/Products/ProductList.dart';
+import 'package:TychoStream/view/Products/address_list_page.dart';
 import 'package:TychoStream/view/Products/cart_detail_page.dart';
 import 'package:TychoStream/view/Products/favourite_list_page.dart';
 import 'package:TychoStream/view/Products/product_details.dart';
+import 'package:TychoStream/view/Products/thankyou_page.dart';
+import 'package:TychoStream/view/Profile/my_order_page.dart';
 import 'package:TychoStream/view/screens/notification_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -127,6 +130,13 @@ class _MyAppState extends State<MyApp> {
         }
         ),
         GoRoute(
+            name: RoutesName.AddressListPage,
+            path: '/AddressPage',
+            pageBuilder: (context,state){
+              return MaterialPage(child: AddressListPage());
+            }
+        ),
+        GoRoute(
           name: RoutesName.Notification,
           path: '/Notification',
           pageBuilder: (context, state) {
@@ -147,13 +157,27 @@ class _MyAppState extends State<MyApp> {
             return MaterialPage(child: FAQ());
           },
         ),
-        // GoRoute(
-        //   name: RoutesName.Contact,
-        //   path: '/Contact',
-        //   pageBuilder: (context, state) {
-        //     return MaterialPage(child: Contact());
-        //   },
-        // ),
+        GoRoute(
+            name: RoutesName.MyOrderPage,
+            path: '/MyOrderPage',
+        pageBuilder: (context,state){
+          return MaterialPage(child: MyOrderPage());
+        }
+
+        ),
+        GoRoute(
+          name: RoutesName.EditProfille,
+          path: '/EditProfile',
+          pageBuilder: (context, state) {
+            state.queryParams.forEach((key, value) {
+              print("$key : $value");
+            });
+            return MaterialPage(child: EditProfile(
+              isEmailVerified: state.queryParams['isEmailVerified'] ,
+              isPhoneVerified: state.queryParams['isPhoneVerified'],
+            ));
+          },
+        ),
         GoRoute(
           name: RoutesName.Privacy,
           path: '/privacy_terms',
@@ -170,6 +194,14 @@ class _MyAppState extends State<MyApp> {
           },
         ),
         GoRoute(
+          name: RoutesName.ThankYouPage,
+          path: '/ThankYouPage',
+          pageBuilder: (context, state) {
+            return MaterialPage(child: ThankYouPage(
+            ));
+          },
+        ),
+        GoRoute(
           name: RoutesName.productDetails,
           path: '/productDetails',
           pageBuilder: (context, state) {
@@ -181,7 +213,6 @@ class _MyAppState extends State<MyApp> {
               productId: state.queryParams['productId'],
               variantId: state.queryParams['variantId'],
               productColor: state.queryParams['productColor'],
-              productColorId: state.queryParams['productColorId'],
 
 
             ));

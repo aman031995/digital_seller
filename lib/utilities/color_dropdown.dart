@@ -9,12 +9,13 @@ class ColorDropDown extends StatefulWidget {
   final ValueChanged<dynamic?>? onChanged;
   String? chosenValue;
 
+
   ColorDropDown(
       {Key? key,
-      this.hintText,
-      required this.colorList,
-      this.onChanged,
-      this.chosenValue})
+        this.hintText,
+        required this.colorList,
+        this.onChanged,
+        this.chosenValue})
       : super(key: key);
 
   @override
@@ -22,6 +23,7 @@ class ColorDropDown extends StatefulWidget {
 }
 
 class _ColorDropDownState extends State<ColorDropDown> {
+  String getColorCode ='';
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -36,8 +38,7 @@ class _ColorDropDownState extends State<ColorDropDown> {
           borderRadius: BorderRadius.circular(50.0),
         ),
         child: DropdownButton<dynamic>(
-          value: widget.chosenValue!.isNotEmpty?  widget.chosenValue:null,
-          // value: _value1.isNotEmpty ? _value1 : null,
+          value: widget.chosenValue,
           elevation: 18,
           underline: const SizedBox(),
           isExpanded: true,
@@ -48,14 +49,14 @@ class _ColorDropDownState extends State<ColorDropDown> {
           items: widget.colorList
               .map(
                 (dynamic e) => DropdownMenuItem<String>(
-                    value: e.colorId,
-                    child: Container(
-                        decoration: BoxDecoration(
-                            color: Color(int.parse("0xff${e.colorCode}")),
-                            border: Border.all(color: Colors.black, width: 1)),
-                        height: 20,
-                        width: 30)),
-              )
+                value: e.colorName,
+                child: Container(
+                    decoration: BoxDecoration(
+                        color: Color(int.parse("0xff${getColorfromHashcode(e.colorCode)}")),
+                        border: Border.all(color: Colors.black, width: 1)),
+                    height: 20,
+                    width: 30)),
+          )
               .toList(),
           hint: Container(
             margin: const EdgeInsets.only(bottom: 8),
@@ -65,5 +66,13 @@ class _ColorDropDownState extends State<ColorDropDown> {
         ),
       ),
     );
+  }
+  getColorfromHashcode(String colorCode){
+    if(colorCode.contains('#')){
+      getColorCode = colorCode.replaceAll('#', '');
+      return getColorCode;
+    }
+    else
+      return colorCode;
   }
 }

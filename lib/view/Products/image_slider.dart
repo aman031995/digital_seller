@@ -29,7 +29,7 @@ class _ImageSliderState extends State<ImageSlider> {
             aspectRatio: 16 / 9,
             viewportFraction: 1,
             initialPage: widget.activeIndex,
-            enableInfiniteScroll: true,
+            enableInfiniteScroll: widget.images?.length==1?false :true,
             reverse: false,
             autoPlay: false,
             autoPlayInterval: Duration(seconds: 3),
@@ -50,7 +50,7 @@ class _ImageSliderState extends State<ImageSlider> {
               width: 8.0,
               height: 8.0,
               margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-              decoration: BoxDecoration(
+              decoration:  widget.images?.length==1?BoxDecoration()  :BoxDecoration(
                 shape: BoxShape.circle,
                 color: _current == index
                     ? Theme.of(context).primaryColor

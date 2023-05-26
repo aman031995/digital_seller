@@ -1,3 +1,4 @@
+import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -187,7 +188,7 @@ onPagination(BuildContext context, int lastPage, int nextPage, bool isLoading, S
     homeViewModel.getSearchData(context, searchData, nextPage);
   }
 }
-Widget profile(BuildContext context,setState){
+Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
   final authVM = Provider.of<AuthViewModel>(context);
   return Positioned(
       right: 20,
@@ -205,25 +206,33 @@ Widget profile(BuildContext context,setState){
                 18,
                 false, onPressed: () {
               isProfile = true;
-              if(isNotification==true){
-                isNotification=false;
-                setState(() {
-
-                });
-              }
               if (isProfile == true) {
                 GoRouter.of(context).pushNamed(
-                  RoutesName.EditProfille,
+                  RoutesName.EditProfille,queryParams: {
+                    'isPhoneVerified':"${profileViewModel.userInfoModel?.isPhoneVerified}",
+                  'isEmailVerified':"${profileViewModel.userInfoModel?.isEmailVerified}"
+                }
                 );
               }
-              if (isSearch == true) {
-                isSearch = false;
-                searchController?.clear();
-                setState(() {});
+            }),
+            SizedBox(height: 5),
+            Container(
+              height: 1,
+              color: Colors.black,
+            ),
+            appTextButton(
+                context,
+                " My Order ",
+                Alignment.centerLeft,
+                Theme.of(context).canvasColor,
+                18,
+                false, onPressed: () {
+              isProfile = true;
+              if (isProfile == true) {
+                GoRouter.of(context).pushNamed(
+                    RoutesName.MyOrderPage
+                );
               }
-              setState(() {
-                isLogins = false;
-              });
             }),
             SizedBox(height: 5),
             Container(

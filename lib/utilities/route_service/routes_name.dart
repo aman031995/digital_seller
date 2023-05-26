@@ -14,4 +14,7 @@ class RoutesName {
   static const String productDetails='product_details';
   static const String CartDetails='Cart_detail_page';
   static const String fav='favourite_list_page';
+  static const String AddressListPage='address_list_page';
+  static const String ThankYouPage='thankyou_page';
+  static const String MyOrderPage='MyOrderPage';
 }

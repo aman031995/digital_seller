@@ -249,9 +249,9 @@ class _HomeViewPageState extends State<HomeViewPage> {
                     ),
                   ))
                   : SizedBox(),
-              isLogins == true
-                  ? profile(context, setState)
-                  : Container(),
+              // isLogins == true
+              //     ? profile(context, setState)
+              //     : Container(),
             ],
           ));
     }

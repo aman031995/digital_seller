@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:html';
-import 'package:firebase_core_web/firebase_core_web_interop.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -28,6 +27,8 @@ class ProfileViewModel with ChangeNotifier {
   UserInfoModel? _userInfoModel;
   UserInfoModel? get userInfoModel => _userInfoModel;
 
+  bool enableMobileField = false;
+  bool enableEmailField = false;
   List<TermsPrivacyModel>? _termsPrivacyModel;
   List<TermsPrivacyModel>? get termsPrivacyModel => _termsPrivacyModel;
 
@@ -66,7 +67,12 @@ class ProfileViewModel with ChangeNotifier {
       getProfileDetails(context);
     }
   }
-
+  //GetVerificationButtonStatus Method
+  getVerificationButtonStatus(BuildContext context, String? isPhoneVerified, String? isEmailVerified){
+    enableMobileField = isPhoneVerified?.toLowerCase() == 'true';
+    enableEmailField =isEmailVerified?.toLowerCase() == 'true';
+    notifyListeners();
+  }
   Future<void> getProfileDetails(BuildContext context) async {
     AppIndicator.loadingIndicator(context);
     _profileRepo.getTermsPrivacy(context, (result, isSuccess) {
@@ -102,7 +108,27 @@ class ProfileViewModel with ChangeNotifier {
         });
   }
 
+  Future<dynamic> uploadProfile(BuildContext context, FileReader reader, File file, ApiCallback responseData) async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var url = '${NetworkConstants.kAppBaseUrl + NetworkConstants.kUploadProfilePic}';
+    var request = http.MultipartRequest('POST', Uri.parse(url));
+    request.headers['Authorization'] = "Basic " + sharedPreferences.get("token").toString();
+    request.fields['userId'] = sharedPreferences.get("userId").toString();;
+    reader.onLoadEnd.listen((e) {
+      var bytes = reader.result as List<int>;
+      request.files.add(http.MultipartFile.fromBytes('file', bytes, filename: file.name));
+      request.send().then((response) async{
+        if (response.statusCode == 200) {
+          String responseBody = await response.stream.transform(utf8.decoder).join();
+          var map = jsonDecode(responseBody);
+          responseData(map['data']);
 
+        } else {
+          print('Image upload failed with status code ${response.statusCode}.');
+        }
+      });
+    });
+  }
   Future<void> deleteProfile(BuildContext context) async {
     AppIndicator.loadingIndicator(context);
     _profileRepo.deleteUserAccount(context, (result, isSuccess) async {

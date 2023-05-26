@@ -9,10 +9,17 @@ import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/NetworkConstants.dart';
 import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/CartDetalRepository.dart';
+import 'package:TychoStream/repository/razorpay_services.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
+import 'package:TychoStream/utilities/route_service/routes_name.dart';
+import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:razorpay_web/razorpay_web.dart';
+
+import '../view/Products/thankyou_page.dart';
 
 class CartViewModel extends ChangeNotifier {
   final _cartRepo = CartDetailRepository();
@@ -53,9 +60,7 @@ class CartViewModel extends ChangeNotifier {
   AddressListModel? selectedAddress;
   int selectedAddressIndex = 0;
   bool? isThankyouPage = false;
-  String selectedColorId = '';
   String selectedColorName = '';
-  String selectedSizeId = '';
   String selectedSizeName = '';
   bool favouriteCallback = false;
 
@@ -138,8 +143,8 @@ class CartViewModel extends ChangeNotifier {
 
   // GetProductDetails Method
   Future<void> getProductDetails(BuildContext context, String productId,
-      String variantId, String color, String sizeId) async {
-    _cartRepo.getProductDetails(context, productId, variantId, color, sizeId,
+      String variantId, String color, String sizeName) async {
+    _cartRepo.getProductDetails(context, productId, variantId, color, sizeName,
         (result, isSuccess) {
       if (isSuccess) {
         _productListDetails =
@@ -227,6 +232,8 @@ class CartViewModel extends ChangeNotifier {
       if (isSuccess) {
         AppIndicator.disposeIndicator();
         Navigator.pop(context);
+        reloadPage();
+        // GoRouter.of(context).pushNamed(RoutesName.AddressListPage);
         notifyListeners();
       }
     });
@@ -263,6 +270,7 @@ class CartViewModel extends ChangeNotifier {
       if (isSuccess) {
         AppIndicator.disposeIndicator();
         Navigator.pop(context);
+        reloadPage();
         notifyListeners();
       }
     });
@@ -312,24 +320,25 @@ class CartViewModel extends ChangeNotifier {
       if (isSuccess) {
         ToastMessage.message(
             ((result as SuccessState).value as ASResponseModal).message);
+        GoRouter.of(context).pushNamed(RoutesName.ThankYouPage);
         // AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.thankYouPage, screenName: RouteBuilder.thankYou);
         notifyListeners();
       }
     });
   }
 
-  // Future<void> createOrder(BuildContext context, Razorpay razorPay) async {
-  //   AppIndicator.loadingIndicator(context);
-  //   _cartRepo.createOrder(context, (result, isSuccess) {
-  //     if (isSuccess) {
-  //       AppIndicator.disposeIndicator();
-  //       _createOrderModel =
-  //           ((result as SuccessState).value as ASResponseModal).dataModal;
-  //       RazorpayServices.openPaymentGateway(_createOrderModel, razorPay);
-  //       notifyListeners();
-  //     }
-  //   });
-  // }
+  Future<void> createOrder(BuildContext context, Razorpay razorPay) async {
+    AppIndicator.loadingIndicator(context);
+    _cartRepo.createOrder(context, (result, isSuccess) {
+      if (isSuccess) {
+        AppIndicator.disposeIndicator();
+        _createOrderModel =
+            ((result as SuccessState).value as ASResponseModal).dataModal;
+        RazorpayServices.openPaymentGateway(_createOrderModel, razorPay);
+        notifyListeners();
+      }
+    });
+  }
 
   Future<void> getPromocodeList(BuildContext context) async {
     _cartRepo.getPromoCode(context, (result, isSuccess) {
@@ -341,55 +350,60 @@ class CartViewModel extends ChangeNotifier {
     });
   }
 
-  // void paymentCallbackHandling(CartViewModel? cartModel, Razorpay _razorPay,
-  //     addressId, BuildContext context) {
-  //   if (cartModel != null) {
-  //     // handling when payment success
-  //     _razorPay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
-  //         (PaymentSuccessResponse successResponse) {
-  //       print(successResponse);
-  //       paymentResponse(
-  //           context,
-  //           cartModel.createOrderModel?.receipt ?? '',
-  //           successResponse.orderId,
-  //           successResponse.paymentId,
-  //           'Success',
-  //           '',
-  //           addressId);
-  //       placeOrder(context, addressId, successResponse.paymentId,
-  //           successResponse.orderId, 'Online', 'Success');
-  //       AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.thankYouPage);
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(content: Text(StringConstant.paymentSuccessful)));
-  //     });
-  //
-  //     // handling when payment fails
-  //     _razorPay.on(Razorpay.EVENT_PAYMENT_ERROR,
-  //         (PaymentFailureResponse failureResponse) {
-  //       Map? error = failureResponse.error;
-  //       String failedResponse = jsonEncode(error);
-  //       print(failureResponse.message);
-  //       paymentResponse(
-  //           context,
-  //           cartModel.createOrderModel?.receipt ?? '',
-  //           failureResponse.error?['metadata']['order_id'],
-  //           failureResponse.error?['metadata']['payment_id'],
-  //           'Failed',
-  //           failedResponse,
-  //           addressId);
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(content: Text(failureResponse.message ?? '')));
-  //     });
-  //
-  //     // handling when external wallet is selected
-  //     _razorPay.on(Razorpay.EVENT_EXTERNAL_WALLET,
-  //         (ExternalWalletResponse walletResponse) {
-  //       print(walletResponse.walletName);
-  //       ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(content: Text(walletResponse.walletName ?? '')));
-  //     });
-  //   }
-  // }
+  void paymentCallbackHandling(CartViewModel? cartModel, Razorpay _razorPay,
+      addressId, BuildContext context) {
+    if (cartModel != null) {
+      // handling when payment success
+      _razorPay.on(Razorpay.EVENT_PAYMENT_SUCCESS,
+          (PaymentSuccessResponse successResponse) {
+        print(successResponse);
+        paymentResponse(
+            context,
+            cartModel.createOrderModel?.receipt ?? '',
+            successResponse.orderId,
+            successResponse.paymentId,
+            'Success',
+            '',
+            addressId);
+        GoRouter.of(context).pushNamed(RoutesName.ThankYouPage);
+        placeOrder(context, addressId, successResponse.paymentId,
+            successResponse.orderId, 'Online', 'Success');
+        // Navigator.pushNamed(context, RoutesName.ThankYouPage);
+        // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+        //     ThankYouPage()), (Route<dynamic> route) => false);
+      //  Navigator.pushAndRemoveUntil(context, ThankYouPage, (route) => false);
+       // AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.thankYouPage);
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(StringConstant.paymentSuccessful)));
+      });
+
+      // handling when payment fails
+      _razorPay.on(Razorpay.EVENT_PAYMENT_ERROR,
+          (PaymentFailureResponse failureResponse) {
+        // Map? error = failureResponse.message;
+        // String failedResponse = jsonEncode(error);
+        // print(failureResponse.message);
+        // paymentResponse(
+        //     context,
+        //     cartModel.createOrderModel?.receipt ?? '',
+        //     failureResponse.error?['metadata']['order_id'],
+        //     failureResponse.error?['metadata']['payment_id'],
+        //     'Failed',
+        //     failedResponse,
+        //     addressId);
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(failureResponse.message ?? '')));
+      });
+
+      // handling when external wallet is selected
+      _razorPay.on(Razorpay.EVENT_EXTERNAL_WALLET,
+          (ExternalWalletResponse walletResponse) {
+        print(walletResponse.walletName);
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(walletResponse.walletName ?? '')));
+      });
+    }
+  }
 
   Future<void> paymentResponse(BuildContext context, String receiptId, orderId,
       transactionId, paymentStatus, failedResponse, String addressId) async {
@@ -401,14 +415,12 @@ class CartViewModel extends ChangeNotifier {
     });
   }
 
-  updateColorId(BuildContext context, String id, String name) {
-    selectedColorId = id;
+  updatecolorName(BuildContext context,String name) {
     selectedColorName = name;
     notifyListeners();
   }
 
-  updateSizeId(BuildContext context, String id, String name) {
-    selectedSizeId = id;
+  updatesizeName(BuildContext context,String name) {
     selectedSizeName = name;
     notifyListeners();
   }
@@ -430,7 +442,7 @@ class CartViewModel extends ChangeNotifier {
             ((result as SuccessState).value as ASResponseModal).dataModal;
         break;
       case 'cartDetail':
-        removeProductFromCart(context, variantId, listIndex??0);
+        removeProductFromCart(context, variantId, listIndex ?? 0);
     }
   }
 }

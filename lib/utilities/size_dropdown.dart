@@ -49,7 +49,7 @@ class _SizeDropDownState extends State<SizeDropDown> {
             items: widget.sizeList
                 .map(
                   (dynamic e) => DropdownMenuItem<String>(
-                    value: e.sizeId,
+                    value: e.sizeName,
                     child:
                     Container(
                       height: 20,width: 30,

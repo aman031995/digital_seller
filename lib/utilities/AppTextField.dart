@@ -29,10 +29,14 @@ class AppTextField extends StatefulWidget {
   ValueChanged<String>? onChanged;
   void Function()? verifySubmit;
   bool? isTick;
+  bool? isEditPage;
   int? maxLine;
   String? errorText;
   TextCapitalization? textCapitalization;
   FloatingLabelBehavior? floatingLabelBehavior;
+  FocusNode? focusNode;
+  bool? isSearch;
+  bool? autoFocus = false;
 
   AppTextField(
       {Key? key,
@@ -45,6 +49,7 @@ class AppTextField extends StatefulWidget {
         this.prefixText,
         this.onSubmitted,
         this.isError,
+        this.isEditPage,
         this.keyBoardType,
         this.maxLength,
         this.isShowPassword,
@@ -57,7 +62,9 @@ class AppTextField extends StatefulWidget {
         required this.isTick,
         this.errorText,
         this.textCapitalization,
-        this.floatingLabelBehavior})
+        this.floatingLabelBehavior, this.focusNode,
+        this.isSearch,
+        this.autoFocus})
       : super(key: key);
 
   @override
@@ -65,6 +72,7 @@ class AppTextField extends StatefulWidget {
 }
 
 class _CustomTextFieldState extends State<AppTextField> {
+  final _focusNode = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -76,85 +84,134 @@ class _CustomTextFieldState extends State<AppTextField> {
           disabledColor: Theme.of(context).primaryColor,
           primaryColorDark: Theme.of(context).primaryColor,
         ),
-        child:  FocusScope(
-          node: FocusScopeNode(),
-          child: TextField(
-              maxLines: widget.maxLine,
-              onChanged: widget.onChanged,
-              enabled: widget.isEnable,
-              textCapitalization: widget.textCapitalization == null
-                  ? widget.textCapitalization = TextCapitalization.none
-                  : widget.textCapitalization!,
-              cursorColor: Theme.of(context).primaryColor,
-              inputFormatters: [
-                LengthLimitingTextInputFormatter(widget.maxLength),
-              ],
-              controller: widget.controller,
-              style: TextStyle(
-                  color: widget.isEnable == false ?Theme.of(context).primaryColor.withOpacity(0.6) : Theme.of(context).canvasColor,
-                  fontSize: ResponsiveWidget.isMediumScreen(context)?16:18),
-              onSubmitted: widget.onSubmitted,
-              decoration: InputDecoration(
-                errorText: widget.errorText,
-                floatingLabelBehavior: widget.floatingLabelBehavior,
-                errorStyle: CustomTextStyle.textFormFieldInterMedium
-                    .copyWith(color: Theme.of(context).primaryColor, fontSize: 12),
-                errorMaxLines: 3,
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 1),
-                ),
-                errorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 1),
-                ),
-                enabledBorder:
-
-                OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  borderSide: BorderSide(color: Theme.of(context).canvasColor.withOpacity(0.8), width: 1),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  borderSide: BorderSide(color: Theme.of(context).primaryColor, width: 1),
-                ),
-                disabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  borderSide: BorderSide(color: Theme.of(context).canvasColor.withOpacity(0.8), width: 1),
-                ),
-                isDense: true,
-                //  <- you can it to 0.0 for no space
-                suffixIcon: widget.isShowPassword == true
-                    ? IconButton(
-                  icon: Image.asset(
+        child: FocusScope(
+            node: FocusScopeNode(),
+            child: TextField(
+                autofocus: widget.autoFocus ?? false,
+                maxLines: widget.maxLine,
+                onChanged: widget.onChanged,
+                enabled: widget.isEnable,
+                focusNode: _focusNode,
+                textCapitalization: widget.textCapitalization == null
+                    ? widget.textCapitalization = TextCapitalization.none
+                    : widget.textCapitalization!,
+                cursorColor: Theme.of(context).primaryColor,
+                inputFormatters: [
+                  LengthLimitingTextInputFormatter(widget.maxLength),
+                ],
+                controller: widget.controller,
+                style: TextStyle(
+                    color: widget.isEnable == false
+                        ? Theme.of(context).primaryColor.withOpacity(0.6)
+                        : Theme.of(context).canvasColor,
+                    fontSize: 18),
+                onSubmitted: widget.onSubmitted,
+                decoration: new InputDecoration(
+                  errorText: widget.errorText,
+                  floatingLabelBehavior: widget.floatingLabelBehavior,
+                  errorStyle: CustomTextStyle.textFormFieldInterMedium
+                      .copyWith(color: RED_COLOR, fontSize: 12),
+                  errorMaxLines: 3,
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    borderSide: BorderSide(color: RED_COLOR, width: 2),
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    borderSide: BorderSide(color: RED_COLOR, width: 2),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).canvasColor.withOpacity(0.4),
+                        width: 2),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).primaryColor.withOpacity(0.4),
+                        width: 2),
+                  ),
+                  disabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    borderSide: BorderSide(
+                        color: Theme.of(context).canvasColor.withOpacity(0.2),
+                        width: 2),
+                  ),
+                  isDense: true,
+                  //  <- you can it to 0.0 for no space
+                  suffixIcon: widget.isShowPassword == true
+                      ? IconButton(
+                    icon: Image.asset(
                       _secureText == true
                           ? AssetsConstants.icEyeFill
                           : AssetsConstants.ic_passwordHide,
                       width: 25,
-                      height: 25, color: Theme.of(context).primaryColor,),
-                  onPressed: () {
-                    setState(() {
-                      _secureText = !_secureText;
-                    });
-                  },
-                )
-                    : widget.isVerifyNumber == true
-                    ? TextButton(
-                    onPressed: widget.verifySubmit, child: Text('Verify'))
-                    : null,
-                labelText: widget.labelText,
-                contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
-                labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
-                    color: widget.isColor == true ? Theme.of(context).canvasColor.withOpacity(0.4) : Theme.of(context).canvasColor.withOpacity(0.8), fontSize: 17),
-                prefixText: widget.prefixText,
-                suffixStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(color: Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 17),
-                prefixStyle: TextStyle(color: Theme.of(context).canvasColor.withOpacity(0.4), fontSize: 20),
-              ),
-              keyboardType: widget.keyBoardType,
-              obscureText: widget.isShowPassword == true
-                  ? _secureText
-                  : widget.secureText!),
-        ),
+                      height: 25,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _secureText = !_secureText;
+                      });
+                    },
+                  )
+                      : widget.isVerifyNumber == true
+                      ? TextButton(
+                      onPressed: widget.verifySubmit,
+                      child: Text('Verify'))
+                      : widget.isEditPage == true
+                      ? Container(
+                    margin: EdgeInsets.all(13.0),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.green,
+                    ),
+                    height: 10,
+                    width: 10,
+                    child: Icon(Icons.check, color: Colors.black),
+                  )
+                      : widget.isSearch == true
+                      ? IconButton(
+                      onPressed: widget.verifySubmit,
+                      icon: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            color: Theme.of(context).canvasColor.withOpacity(0.5),
+                            width: 1,
+                            margin: EdgeInsets.only(right: 6),
+                          ),
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.only(right: 8),
+                              child: Icon(Icons.search_outlined,
+                                  color: Theme.of(context).canvasColor,
+                                  size: 22),
+                            ),
+                          ),
+                        ],
+                      ))
+                      : null,
+                  labelText: widget.labelText,
+                  contentPadding:
+                  EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+                  labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
+                      color: widget.isColor == true
+                          ? Theme.of(context).canvasColor.withOpacity(0.4)
+                          : Theme.of(context).canvasColor.withOpacity(0.4),
+                      fontSize: 17),
+                  prefixText: widget.prefixText,
+                  suffixStyle: CustomTextStyle.textFormFieldInterMedium
+                      .copyWith(
+                      color: Theme.of(context).canvasColor, fontSize: 17),
+                  prefixStyle: TextStyle(
+                      color: Theme.of(context).canvasColor, fontSize: 20),
+                ),
+                keyboardType: widget.keyBoardType,
+                obscureText: widget.isShowPassword == true
+                    ? _secureText
+                    : widget.secureText!)),
       ),
     );
   }

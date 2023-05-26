@@ -244,9 +244,9 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                     child: Center(
                                       child: ThreeArchedCircle(size: 45.0),
                                     )),
-                            isLogins == true
-                                ? profile(context, setState)
-                                : Container(),
+                            // isLogins == true
+                            //     ? profile(context, setState)
+                            //     : Container(),
                             if (homeViewModel.searchDataModel != null)
                               searchView(
                                   context,

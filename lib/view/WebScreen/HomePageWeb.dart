@@ -1,3 +1,6 @@
+import 'package:TychoStream/network/AppNetwork.dart';
+import 'package:TychoStream/view/widgets/no_internet.dart';
+import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -40,10 +43,11 @@ class _HomePageWebState extends State<HomePageWeb> {
   final _key = GlobalKey<ScaffoldState>();
   int pageNum = 1;
   int pageNums = 1;
-
+  String? checkInternet;
   void initState() {
     homeViewModel.getAppConfigData(context);
     User();
+    profileViewModel.getUserDetails(context);
     super.initState();
 
   }
@@ -52,14 +56,25 @@ class _HomePageWebState extends State<HomePageWeb> {
     names = sharedPreferences.get('name').toString();
     image = sharedPreferences.get('profileImg').toString();
   }
-
+  final ProfileViewModel profileViewModel = ProfileViewModel();
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return ChangeNotifierProvider(
+    AppNetwork.checkInternet((isSuccess, result) {
+      setState(() {
+        checkInternet = result;
+      });
+    });
+    return ChangeNotifierProvider.value(
+        value: profileViewModel,
+        child: Consumer<ProfileViewModel>(builder: (context, profilemodel, _) {
+      return ChangeNotifierProvider(
         create: (BuildContext context) => homeViewModel,
         child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-          return viewmodel != null
+          return
+            checkInternet == "Offline"
+                ? NOInternetScreen()
+                :viewmodel != null
               ? Scaffold(
                 backgroundColor: Theme
                     .of(context)
@@ -84,7 +99,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                           ),
                         ),
                         isLogins == true
-                            ? profile(context, setState)
+                            ? profile(context, setState,profilemodel)
                             : Container(),
 
                       ],
@@ -96,7 +111,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                 child:
                 ThreeArchedCircle(size: 45.0),
               ));
-        }));
+        }
+        )
+      );}));
   }
 
 

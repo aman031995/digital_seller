@@ -149,7 +149,7 @@ class ProductList {
     }
     if (this.productReviews != null) {
       // data['productReviews'] =
-          // this.productReviews!.map((v) => v.toJson()).toList();
+      // this.productReviews!.map((v) => v.toJson()).toList();
     }
     if (this.productSkuDetails != null) {
       data['productSkuDetails'] = this.productSkuDetails!.toJson();
@@ -164,17 +164,15 @@ class ProductDetails {
   String? productSKU;
   String? productVariantTitle;
   List<String>? productImages;
-  int? productPrice;
-  int? productDiscountPrice;
-  int? productDiscountPercent;
+  String? productPrice;
+  String? productDiscountPrice;
+  String? productDiscountPercent;
   bool? isAvailable;
   bool? isFavorite;
   bool? isAddToCart;
   bool? inStock;
   int? quantityLeft;
-  String? productColorId;
   String? productColor;
-  String? productSizeId;
   String? productSize;
   String? productEngine;
   String? productFuel;
@@ -192,8 +190,6 @@ class ProductDetails {
         this.isAddToCart,
         this.inStock,
         this.quantityLeft,
-        this.productColorId,
-        this.productSizeId,
         this.productColor,
         this.productSize,
         this.productEngine,
@@ -212,8 +208,6 @@ class ProductDetails {
     isAddToCart = json['isAddToCart'];
     inStock = json['inStock'];
     quantityLeft = json['quantityLeft'];
-    productColorId=json['productColorId'];
-    productSizeId=json['productSizeId'];
     productColor = json['productColor'];
     productSize = json['productSize'];
     productEngine = json['productEngine'];
@@ -234,8 +228,6 @@ class ProductDetails {
     data['isAddToCart'] = this.isAddToCart;
     data['inStock'] = this.inStock;
     data['quantityLeft'] = this.quantityLeft;
-    data['productColorId']=this.productColorId;
-    data['productSizeId']=this.productSizeId;
     data['productColor'] = this.productColor;
     data['productSize'] = this.productSize;
     data['productEngine'] = this.productEngine;
@@ -303,21 +295,19 @@ class ProductSkuDetails {
 }
 
 class ColorDetails {
-  String? colorId;
+
   String? colorName;
   String? colorCode;
 
-  ColorDetails({this.colorId, this.colorName, this.colorCode});
+  ColorDetails({ this.colorName, this.colorCode});
 
   ColorDetails.fromJson(Map<String, dynamic> json) {
-    colorId = json['colorId'];
     colorName = json['colorName'];
     colorCode = json['colorCode'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['colorId'] = this.colorId;
     data['colorName'] = this.colorName;
     data['colorCode'] = this.colorCode;
     return data;
@@ -325,19 +315,17 @@ class ColorDetails {
 }
 
 class SizeDetails {
-  String? sizeId;
+
   String? sizeName;
 
-  SizeDetails({this.sizeId, this.sizeName});
+  SizeDetails({ this.sizeName});
 
   SizeDetails.fromJson(Map<String, dynamic> json) {
-    sizeId = json['sizeId'];
     sizeName = json['sizeName'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['sizeId'] = this.sizeId;
     data['sizeName'] = this.sizeName;
     return data;
   }
