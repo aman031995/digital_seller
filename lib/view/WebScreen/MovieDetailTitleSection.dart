@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -8,13 +9,13 @@ import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
-import 'package:TychoStream/view/WebScreen/DetailPage.dart';
-import 'package:TychoStream/view/WebScreen/OnHover.dart';
 
-import 'package:TychoStream/view/WebScreen/ViewAllListPages.dart';
+import 'package:TychoStream/view/WebScreen/OnHover.dart';
 import 'package:TychoStream/view/widgets/AppDialog.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
-import 'package:TychoStream/viewmodel/auth_view_model.dart';
+
+
+import '../../AppRouter.gr.dart';
 
 class MovieDetailTitleSection extends StatefulWidget {
   bool? isWall;
@@ -76,7 +77,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
               child:
                   Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
                 return homeViewModel.homePageDataModel != null
-                    ? moreVideoList(homeViewModel)
+                    ? moreVideoList(homeViewModel,context)
                     : Container(
                         height: SizeConfig.screenHeight * 0.35,
                         child: Center(child: ThreeArchedCircle(size: 50.0)),
@@ -87,10 +88,10 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
     );
   }
 
-  moreVideoList(HomeViewModel homeViewModel) {
+  moreVideoList(HomeViewModel homeViewModel,BuildContext context) {
     return Column(
       children: [
-        titleBar('More Like This', homeViewModel),
+        titleBar('More Like This', homeViewModel,context),
         Container(
           height: ResponsiveWidget.isMediumScreen(context) ? 170 : 270,
           width: SizeConfig.screenWidth,
@@ -104,17 +105,26 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
                   itemBuilder: (context, index) {
                     return InkWell(
                         onTap: () {
-                          GoRouter.of(context)
-                              .pushNamed(RoutesName.DeatilPage, queryParams: {
-                            'movieID':
-                                '${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}',
-                            'VideoId':
-                                '${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
-                            'Title':
-                                '${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}',
-                            'Desc':
-                                '${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
-                          });
+                          context.router.push(
+                              DetailPage(
+                                  VideoDetails:['${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}',
+                                    '${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
+                                    '${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}',
+                                    '${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}']
+                              )
+
+                          );
+                          // GoRouter.of(context)
+                          //     .pushNamed(RoutesName.DeatilPage, queryParameters: {
+                          //   'movieID':
+                          //       '${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}',
+                          //   'VideoId':
+                          //       '${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
+                          //   'Title':
+                          //       '${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}',
+                          //   'Desc':
+                          //       '${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
+                          // });
                         },
                         child: OnHover(
                             builder: (isHovered) {
@@ -162,7 +172,7 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
     );
   }
 
-  titleBar(String title, HomeViewModel homeViewModel) {
+  titleBar(String title, HomeViewModel homeViewModel,BuildContext context) {
     return Container(
       height: 50,
       margin: EdgeInsets.only(right: 10),
@@ -175,11 +185,11 @@ class _MovieDetailTitleSectionState extends State<MovieDetailTitleSection> {
               ),
           homeViewModel.homePageDataModel!.videoList!.length > 8
               ? textButton(context, "See All", onApply: () {
-                  GoRouter.of(context)
-                      .pushNamed(RoutesName.seaAll, queryParams: {
-                    'VideoId': '${widget.movieDetailModel}',
-                    'title': '${title}',
-                 });
+            context.router.push(SeeAllListPages(
+                SeeDetail:['${widget.movieDetailModel}','${title}']
+
+                ));
+
                 })
               : SizedBox()
         ],

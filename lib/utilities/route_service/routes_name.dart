@@ -17,4 +17,8 @@ class RoutesName {
   static const String AddressListPage='address_list_page';
   static const String ThankYouPage='thankyou_page';
   static const String MyOrderPage='MyOrderPage';
+  static const String SearchPage='SearchPage';
+  static const String profilePage = '/profile';
+  static const String productPage = '/product_page';
+  static const String homepageweb="/home_page";
 }

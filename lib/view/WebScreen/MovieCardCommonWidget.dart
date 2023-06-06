@@ -70,18 +70,18 @@ class _CardMovieHomeState extends State<CardMovieHome> {
           }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.get('token') != null) {
-      GoRouter.of(context).pushNamed(RoutesName.DeatilPage, queryParams: {
+      GoRouter.of(context).pushNamed(RoutesName.DeatilPage, queryParameters: {
         'movieID': '${widget.moviesList?.youtubeVideoId}',
         'VideoId': '${widget.moviesList?.videoId}',
         'Title': '${widget.moviesList?.videoTitle}',
         'Desc': '${widget.moviesList?.videoDescription}'
       });
     }
-    //itemCount:state.queryParams['itemCount'],
-    //               productId: state.queryParams['productId'],
-    //               variantId: state.queryParams['variantId'],
-    //               productColor: state.queryParams['productColor'],
-    //               productColorId: state.queryParams['productColorId'],
+    //itemCount:state.queryParameters['itemCount'],
+    //               productId: state.queryParameters['productId'],
+    //               variantId: state.queryParameters['variantId'],
+    //               productColor: state.queryParameters['productColor'],
+    //               productColorId: state.queryParameters['productColorId'],
     else{
       showDialog(
           context: context,

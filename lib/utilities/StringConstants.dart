@@ -7,6 +7,7 @@ class StringConstant {
   static String kHomePageData = "homepage_data";
   static String kAppConfig = "app_configuration";
   static String kAppMenu = "app_menu";
+  static String kProductList = "product_list";
 
 // **************Login Page ***************
   static String mobileNumber = "Mobile Number";
@@ -114,7 +115,7 @@ class StringConstant {
   static String paymentInfo = "Payment Info";
   static String deliveryAddress = "Delivery Address";
   static String selectPayment = 'Select Payment Method';
-  static String cardWalletsText = "Cards/Wallets/UPI/NetBanking";
+  static String cardWalletsText = "Cards / Wallets / UPI / NetBanking";
   static String cashOnDelivery = "Cash on delivery";
   static String itemCart = 'Item in cart';
   static String cartDetail = "Cart Detail";
@@ -186,8 +187,8 @@ class StringConstant {
   static String androidAppLink =
       "https://play.google.com/store/apps/details?id=com.tycho.scanamaze";
   static String orderDetailed='Order Id';
-  static String shippingDetails='Shipping Details';
-  static String priceDetails='Price details';
+  static String shippingDetails='    Shipping Details';
+  static String priceDetails='   Price details';
   static String noProductFound='No Products Found';
   static String noMoreMovies='No Movies';
   static String fetchPlane='Fetching Plan';

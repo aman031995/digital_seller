@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:TychoStream/AppRouter.dart';
 import 'package:TychoStream/view/Products/ProductList.dart';
 import 'package:TychoStream/view/Products/address_list_page.dart';
 import 'package:TychoStream/view/Products/cart_detail_page.dart';
@@ -7,6 +8,7 @@ import 'package:TychoStream/view/Products/product_details.dart';
 import 'package:TychoStream/view/Products/thankyou_page.dart';
 import 'package:TychoStream/view/Profile/my_order_page.dart';
 import 'package:TychoStream/view/screens/notification_screen.dart';
+import 'package:TychoStream/view/search/search_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
@@ -73,244 +75,20 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   HomeViewModel homeViewModel = HomeViewModel();
-  late GoRouter _router;
+  // late GoRouter _router;
+
+  final _appRouter = AppRouter();
   @override
   getTokent() async {
     String? deviceToken = await FirebaseMessaging.instance.getToken();
     print('DEVICE TOKEN ' + deviceToken!);
   }
-  void showFlutterNotification(RemoteMessage message) {
-    RemoteNotification? notification = message.notification;
-    AndroidNotification? android = message.notification?.android;
-    print('NOTIFICATION TITLE ' + notification!.title.toString());
-    showModalBottomSheet(
-      context: context,
-      builder: ((context) {
-        return Container(
-          child: Column(
-            children: [
-              Text(notification.title!),
-              Text(
-                notification.body!,
-              ),
-            ],
-          ),
-        );
-      }),
-    );
-  }
+
   void initState() {
     User();
     getTokent();
     homeViewModel.getAppConfig(context);
     super.initState();
-
-    _router = GoRouter(
-
-      routes: [
-        GoRoute(
-          name: RoutesName.home,
-          path: '/',
-          pageBuilder: (context, state) {
-            return MaterialPage(child: HomePageWeb());
-          },
-        ),
-        GoRoute(
-            name: RoutesName.productList,
-            path: '/ProductList',
-        pageBuilder: (context,state){
-          return MaterialPage(child: ProductListGallery());
-        }
-        ),
-        GoRoute(
-            name: RoutesName.fav,
-            path: '/Fav',
-        pageBuilder: (context, state){
-          return MaterialPage(child: FavouriteListPage());
-        }
-        ),
-        GoRoute(
-            name: RoutesName.AddressListPage,
-            path: '/AddressPage',
-            pageBuilder: (context,state){
-              return MaterialPage(child: AddressListPage());
-            }
-        ),
-        GoRoute(
-          name: RoutesName.Notification,
-          path: '/Notification',
-          pageBuilder: (context, state) {
-            return MaterialPage(child: NotificationScreen());
-          },
-        ),
-        GoRoute(
-          path: '/about_us_page',
-          name: RoutesName.ContactUs,
-          pageBuilder: (context, state) {
-            return MaterialPage(child: ContactUs());
-          },
-        ),
-        GoRoute(
-          name: RoutesName.FAQ,
-          path: '/faq',
-          pageBuilder: (context, state) {
-            return MaterialPage(child: FAQ());
-          },
-        ),
-        GoRoute(
-            name: RoutesName.MyOrderPage,
-            path: '/MyOrderPage',
-        pageBuilder: (context,state){
-          return MaterialPage(child: MyOrderPage());
-        }
-
-        ),
-        GoRoute(
-          name: RoutesName.EditProfille,
-          path: '/EditProfile',
-          pageBuilder: (context, state) {
-            state.queryParams.forEach((key, value) {
-              print("$key : $value");
-            });
-            return MaterialPage(child: EditProfile(
-              isEmailVerified: state.queryParams['isEmailVerified'] ,
-              isPhoneVerified: state.queryParams['isPhoneVerified'],
-            ));
-          },
-        ),
-        GoRoute(
-          name: RoutesName.Privacy,
-          path: '/privacy_terms',
-          pageBuilder: (context, state) {
-            return MaterialPage(child: Privacy());
-          },
-        ),
-        GoRoute(
-          name: RoutesName.Terms,
-          path: '/terms_and_conditions',
-          pageBuilder: (context, state) {
-            return MaterialPage(child: Terms(
-            ));
-          },
-        ),
-        GoRoute(
-          name: RoutesName.ThankYouPage,
-          path: '/ThankYouPage',
-          pageBuilder: (context, state) {
-            return MaterialPage(child: ThankYouPage(
-            ));
-          },
-        ),
-        GoRoute(
-          name: RoutesName.productDetails,
-          path: '/productDetails',
-          pageBuilder: (context, state) {
-            state.queryParams.forEach((key, value) {
-              print("$key : $value");
-            });
-            return MaterialPage(child: ProductDetailPage(
-              itemCount:state.queryParams['itemCount'],
-              productId: state.queryParams['productId'],
-              variantId: state.queryParams['variantId'],
-              productColor: state.queryParams['productColor'],
-
-
-            ));
-          },
-        ),
-    GoRoute(
-    name: RoutesName.CartDetails,
-    path: '/CartDetails',
-    pageBuilder: (context, state) {
-    state.queryParams.forEach((key, value) {
-    print("$key : $value");
-    });
-    return MaterialPage(child: CartDetail(
-    itemCount:state.queryParams['itemCount'],
-    ));
-    }),
-
-    GoRoute(
-          name: RoutesName.DeatilPage,
-          path: '/movie_detail_page',
-          pageBuilder: (context, state) {
-            state.queryParams.forEach((key, value) {
-              print("$key : $value");
-            });
-            return MaterialPage(
-                child: DetailPage(
-                  movieID: state.queryParams['movieID'],
-                  VideoId: state.queryParams['VideoId'],
-                  Title: state.queryParams['Title'],
-                  Desc: state.queryParams['Desc'],
-                ));
-          },
-        ),
-        GoRoute(
-          name: RoutesName.HomeViewPage,
-          path: '/HomeViewPage',
-          pageBuilder: (context, state) {
-            state.queryParams.forEach((key, value) {
-              print("$key : $value");
-            });
-            return MaterialPage(
-                child: HomeViewPage(
-                  title: state.queryParams['title'],
-                  trayId: int.parse(state.queryParams['trayId']!),
-                ));
-          },
-
-        ),
-        GoRoute(
-          name: RoutesName.seaAll,
-          path: '/seeall',
-          pageBuilder: (context, state) {
-            state.queryParams.forEach((key, value) {
-              print("$key : $value");
-            });
-            return MaterialPage(
-                child: SeeAllListPages(
-                  title: state.queryParams['title'],
-                 VideoId: state.queryParams['VideoId'],
-
-                ));
-          },
-
-        ),
-      ],
-      redirect: ((context, state) async {
-        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-        if (sharedPreferences.get('token') != null) {
-          if (isSearch == true)  {
-            isSearch = false;
-            searchController?.clear();
-            setState(() {
-            });
-          }
-          if(isProfile==true){
-            isProfile=false;
-            setState(() {
-            });
-          }
-          if(isDelete==true){
-            isDelete=false;
-            setState(() {
-
-            });
-          }
-          if( isLogins == true){
-            isLogins=false;
-            setState(() {
-            });
-          }
-          return state.location;
-        }
-        else {
-          return '/';
-        }
-      }),
-
-    );
   }
   User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -355,9 +133,11 @@ class _MyAppState extends State<MyApp> {
                   builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
                   scrollBehavior: MyCustomScrollBehavior(),
-                  routeInformationParser: _router.routeInformationParser,
-                  routerDelegate: _router.routerDelegate,
-                  routeInformationProvider: _router.routeInformationProvider,
+
+                routerConfig: _appRouter.config(),
+                  // routeInformationParser: _router.routeInformationParser,
+                  // routerDelegate: _router.routerDelegate,
+                  // routeInformationProvider: _router.routeInformationProvider,
 
               );
 

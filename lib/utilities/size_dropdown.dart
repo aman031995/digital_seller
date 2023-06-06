@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 
 class SizeDropDown extends StatefulWidget {
   String? hintText;
-  List<SizeDetails> sizeList = [];
-  final ValueChanged<dynamic?>? onChanged;
+  List<SkuSizeData> sizeList = [];
+  final ValueChanged<dynamic>? onChanged;
   String? chosenValue;
 
   SizeDropDown(
       {Key? key,
-      this.hintText,
-      required this.sizeList,
-      this.onChanged,
-      this.chosenValue})
+        this.hintText,
+        required this.sizeList,
+        this.onChanged,
+        this.chosenValue})
       : super(key: key);
 
   @override
@@ -36,7 +36,7 @@ class _SizeDropDownState extends State<SizeDropDown> {
         ),
         child: Padding(
           padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+          const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
           child: DropdownButton<dynamic>(
             value: widget.chosenValue,
             elevation: 18,
@@ -46,19 +46,16 @@ class _SizeDropDownState extends State<SizeDropDown> {
             borderRadius: BorderRadius.circular(10.0),
             dropdownColor: Colors.white,
             onChanged: widget.onChanged,
-            items: widget.sizeList
-                .map(
-                  (dynamic e) => DropdownMenuItem<String>(
-                    value: e.sizeName,
-                    child:
-                    Container(
-                      height: 20,width: 30,
-                      child: AppBoldFont(context,msg:e.sizeName,
-                              fontSize: 16, color: Colors.black),
-                    ),
-                  ),
-                )
-                .toList(),
+            items: widget.sizeList.map((e) => DropdownMenuItem<String>(
+              value: e.name,
+              child:
+              Container(
+                height: 20,width: 30,
+                child: AppBoldFont(context, msg:e.name,
+                    fontSize: 16, color: Colors.black),
+              ),
+            ),
+            ).toList(),
             hint: Container(
               margin: const EdgeInsets.only(bottom: 8),
               child: Text(widget.hintText ?? '',

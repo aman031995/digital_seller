@@ -1,4 +1,5 @@
-import 'package:TychoStream/Utilities/AssetsConstants.dart';
+import 'package:TychoStream/network/AppDataManager.dart';
+import 'package:TychoStream/network/CacheDataManager.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
@@ -12,7 +13,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../main.dart';
+import '../../Utilities/AssetsConstants.dart';
 import '../widgets/profile_bottom_view.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -24,7 +25,6 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final ProfileViewModel profileViewModel = ProfileViewModel();
-  // final AdsViewModel adsViewModel = AdsViewModel();
   final HomeViewModel homeViewModel = HomeViewModel();
   String? checkInternet;
   String logFilePath = '';
@@ -32,7 +32,6 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     profileViewModel.getUserDetails(context);
-    // print(RouteBuilder.profilePage);
     super.initState();
   }
 
@@ -45,6 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+
     return ChangeNotifierProvider.value(
         value: profileViewModel,
         child: Consumer<ProfileViewModel>(builder: (context, viewmodel, _) {
@@ -62,6 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 : viewmodel.userInfoModel != null
                     ? SingleChildScrollView(
                         child: Column(children: [
+                          _profileImageView(viewmodel),
                         _profileTopView(viewmodel),
                         Divider(height: 1, color: Theme.of(context).canvasColor.withOpacity(0.5)),
                         _profileBottomView(viewmodel),
@@ -72,30 +73,81 @@ class _ProfilePageState extends State<ProfilePage> {
         }));
   }
 
+  _profileImageView(ProfileViewModel viewmodel) {
+    return Container(
+      child: Stack(
+        children: [
+          GestureDetector(
+            onTap: () {
+              // AppNavigator.push(
+              //     context,
+              //     FullImage(
+              //         imageUrl:
+              //         '${viewmodel.userInfoModel?.profilePic ?? widget.viewmodel?.userInfoModel?.profilePic ?? profileImg}'));
+            },
+            child: CircleAvatar(
+              backgroundColor: WHITE_COLOR,
+              radius: 57,
+              child: CachedNetworkImage(
+                imageUrl:
+                '${viewmodel.userInfoModel?.profilePic ??
+                ""}',
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 110.0,
+                  height: 110.0,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: imageProvider, fit: BoxFit.cover),
+                  ),
+                ),
+                placeholder: (context, url) => CircularProgressIndicator(),
+              ),
+            ),
+          ),
+          Positioned(
+            left: 75,
+            top: 60,
+            child: IconButton(
+              alignment: Alignment.bottomCenter,
+              onPressed: () => viewmodel.uploadProfileImage(context),
+
+              // CommonMethods.uploadImageVideo(context, viewmodel),
+              icon: Image.asset(
+                AssetsConstants.icAddImage,
+                height: 30,
+                width: 30,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
   //--------Profile Screen Item Selection---------
   void onItemSelection(
       BuildContext context, int index, ProfileViewModel viewmodel) {
-    if (index == 0) {
-      // AppNavigator.push(context, EditProfile(viewmodel: viewmodel),
-      //     screenName: RouteBuilder.editProfile);
-    } else if (index == 1) {
-      // AppNavigator.push(context, MyOrderPage(),
-      //     screenName: RouteBuilder.myOrderPage);
-    } else if (index == 2) {
-      // AppDialog.deleteDialogue(context,
-      //     onTap: () => viewmodel.deleteProfile(context));
-    } else if (index == 3) {
-      // homeViewModel.openWebHtmlView(context, 'terms_condition',
-      //     title: 'Terms And Condition');
-      // CommonMethods.setScreenName(RouteBuilder.termsCondition);
-    } else if (index == 4) {
-      // homeViewModel.openWebHtmlView(context, 'privacy_policy',
-      //     title: 'Privacy Policy');
-      // CommonMethods.setScreenName(RouteBuilder.privacyPolicy);
-    } else if (index == 5) {
-      logoutButtonPressed(context);
-      setState(() {});
-    }
+    // if (index == 0) {
+    //   AppNavigator.push(context, EditProfile(viewmodel: viewmodel),
+    //       screenName: RouteBuilder.editProfile);
+    // } else if (index == 1) {
+    //   AppNavigator.push(context, MyOrderPage(),
+    //       screenName: RouteBuilder.myOrderPage);
+    // } else if (index == 2) {
+    //   AppDialog.deleteDialogue(context,
+    //       onTap: () => viewmodel.deleteProfile(context));
+    // } else if (index == 3) {
+    //   homeViewModel.openWebHtmlView(context, 'terms_condition',
+    //       title: 'Terms And Condition');
+    //   CommonMethods.setScreenName(RouteBuilder.termsCondition);
+    // } else if (index == 4) {
+    //   homeViewModel.openWebHtmlView(context, 'privacy_policy',
+    //       title: 'Privacy Policy');
+    //   CommonMethods.setScreenName(RouteBuilder.privacyPolicy);
+    // } else if (index == 5) {
+    //   logoutButtonPressed(context);
+    //   setState(() {});
+    // }
   }
 
   // top view
@@ -143,19 +195,20 @@ class _ProfilePageState extends State<ProfilePage> {
                       msg: (viewmodel.userInfoModel?.name ?? ''), fontSize: 19),
                 )
               ]),
-          Positioned(
-              left: (SizeConfig.screenWidth * 0.5),
-              bottom: 60,
-              child: IconButton(
-                onPressed: (){},
-                  alignment: Alignment.bottomCenter,
-                  // onPressed: () =>
-                  //     CommonMethods.uploadImageVideo(context, viewmodel),
-                  icon: Image.asset(
-                    AssetsConstants.icAddImage,
-                    height: 30,
-                    width: 30,
-                  )))
+          // Positioned(
+          //     left: (SizeConfig.screenWidth * 0.5),
+          //     bottom: 60,
+          //     child: IconButton(
+          //         alignment: Alignment.bottomCenter,
+          //         onPressed: () =>
+          //             //CommonMethods.uploadImageVideo(context, viewmodel),
+          //         icon: Image.asset(
+          //           AssetsConstants.icAddImage,
+          //           height: 30,
+          //           width: 30,
+          //         ))
+
+
         ]));
   }
 
@@ -168,7 +221,7 @@ class _ProfilePageState extends State<ProfilePage> {
             shrinkWrap: true,
             physics: BouncingScrollPhysics(),
             padding: EdgeInsets.zero,
-            itemCount: 10,
+            itemCount: names.length,
             itemExtent: 48,
             itemBuilder: (context, index) {
               return InkWell(
@@ -195,7 +248,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 child: Container(
                                   alignment: Alignment.centerLeft,
                                   child: AppMediumFont(context,
-                                      msg:" names[index],",
+                                      msg: names[index],
                                       fontSize: 16,
                                       textAlign: TextAlign.center),
                                 )),
@@ -211,16 +264,31 @@ class _ProfilePageState extends State<ProfilePage> {
             }));
   }
 
-
+  // // ad view
+  // _bannerAdView() {
+  //   return ChangeNotifierProvider.value(
+  //       value: adsViewModel,
+  //       child: Consumer<AdsViewModel>(builder: (context, viewmodel, _) {
+  //         return viewmodel.isBannerAdReady
+  //             ? Align(
+  //                 alignment: Alignment.bottomCenter,
+  //                 child: Container(
+  //                   width: viewmodel.bannerAd!.size.width.toDouble(),
+  //                   height: viewmodel.bannerAd!.size.height.toDouble(),
+  //                   child: AdWidget(ad: viewmodel.bannerAd!),
+  //                 ))
+  //             : SizedBox();
+  //       }));
+  // }
 
   // login button function
   logoutButtonPressed(BuildContext context) async {
-    // AppDataManager.deleteSavedDetails();
-    // CacheDataManager.clearCachedData(key: StringConstant.kPrivacyTerms);
-    // CacheDataManager.clearCachedData(key: StringConstant.kUserDetails);
-    // CacheDataManager.clearCachedData(key: StringConstant.kBannerList);
-    // CacheDataManager.clearCachedData(key: StringConstant.kCategoryList);
-    // CacheDataManager.clearCachedData(key: StringConstant.kAppMenu);
+    AppDataManager.deleteSavedDetails();
+    CacheDataManager.clearCachedData(key: StringConstant.kPrivacyTerms);
+    CacheDataManager.clearCachedData(key: StringConstant.kUserDetails);
+    CacheDataManager.clearCachedData(key: StringConstant.kBannerList);
+    CacheDataManager.clearCachedData(key: StringConstant.kCategoryList);
+    CacheDataManager.clearCachedData(key: StringConstant.kAppMenu);
     // await Future.delayed(const Duration(seconds: 1)).then((value) =>
     //     AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.login,
     //         screenName: RouteBuilder.loginPage));

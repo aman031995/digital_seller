@@ -4,6 +4,7 @@ import 'package:TychoStream/model/data/order_data_model.dart';
 import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/OrderDetailRepository.dart';
+import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:flutter/cupertino.dart';
 
 class OrderViewModel extends ChangeNotifier {
@@ -23,14 +24,14 @@ class OrderViewModel extends ChangeNotifier {
     });
   }
   //GetOrderDetail Method
-  Future<void> getOrderDetail(BuildContext context, value, int orderId) async {
-    // _orderRepo.getOrderListDetail(orderId, context, (result, isSuccess) {
-    //   if (isSuccess) {
-    //     _orderDataModel =
-    //         ((result as SuccessState).value as ASResponseModal).dataModal;
-    //     AppIndicator.disposeIndicator();
-    //     notifyListeners();
-    //   }
-    // });
+  Future<void> getOrderDetail(BuildContext context, String orderId) async {
+    _orderRepo.getOrderListDetail(orderId, context, (result, isSuccess) {
+      if (isSuccess) {
+        _orderDataModel =
+            ((result as SuccessState).value as ASResponseModal).dataModal;
+        AppIndicator.disposeIndicator();
+        notifyListeners();
+      }
+    });
   }
 }

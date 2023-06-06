@@ -8,18 +8,20 @@ import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/Products/cart_detail_page.dart';
 import 'package:TychoStream/view/Products/shipping_address_page.dart';
-import 'package:TychoStream/view/Products/thankyou_page.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -27,14 +29,13 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_web/razorpay_web.dart';
 
+import '../../AppRouter.gr.dart';
 import '../../utilities/StringConstants.dart';
-
+@RoutePage()
 class AddressListPage extends StatefulWidget {
   // CartListDataModel? checkOutData;
-  int? initialAddress;
-
   AddressListPage(
-      {Key? key, this.initialAddress})
+      {Key? key})
       : super(key: key);
 
   @override
@@ -105,7 +106,318 @@ class _AddressListPageState extends State<AddressListPage> {
                     ?  WillPopScope(
                                 onWillPop: _willPopCallback,
                                 child: SingleChildScrollView(
-                                  child: Column(
+                                  child:
+
+                                  ResponsiveWidget.isMediumScreen(context)
+                                      ?  Column(
+                                    children: [
+                                      cartPageViewIndicator(context,1,activeStep),
+                                      // Address Button
+                                      AddressButton(context, () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return  ShippingAddressPage(isAlreadyAdded: false);
+                                            });
+                                      }),
+                                      cartViewData
+                                          .addressListModel?.length==0?Container(): Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(5)
+                                        ),
+                                        width: SizeConfig.screenWidth,
+                                        height: SizeConfig.screenHeight - 500,
+                                        child: ListView.builder(
+                                            scrollDirection: Axis.vertical,
+                                            itemCount: cartViewData
+                                                .addressListModel?.length,
+                                            itemBuilder: (context, index) {
+                                              final addressItem = cartViewData.addressListModel?[index];
+                                              cartViewData.selectedAddress = cartViewData.addressListModel?[cartViewData.selectedAddressIndex];
+                                              return Stack(
+                                                children: [
+                                                  Container(
+                                                    padding: EdgeInsets.only(left: 8,top: 8,bottom: 10),
+                                                    margin:EdgeInsets.only(left: 5,right: 5,top: 8),
+                                                    color: Theme.of(context).cardColor,
+                                                    child: Row(
+                                                      children: [
+                                                        GestureDetector(
+                                                          onTap: (){
+                                                            cartViewData.selectedAddressIndex = index;
+                                                            cartViewData.selectedAddress = cartViewData.addressListModel?[cartViewData.selectedAddressIndex];
+                                                            addressId=cartViewData.selectedAddress?.addressId;
+                                                          },
+                                                          child: radioTileButton(cartViewData.selectedAddressIndex , index,),
+                                                        ),
+                                                        SizedBox(width: 10),
+                                                        InkWell(
+                                                          onTap: () {
+                                                            cartViewData.selectedAddressIndex = index;
+
+                                                            cartViewData.selectedAddress = cartViewData.addressListModel?[cartViewData.selectedAddressIndex];
+                                                            addressId=cartViewData.selectedAddress?.addressId;
+                                                          },
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                            mainAxisSize:
+                                                            MainAxisSize.max,
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                            children: <Widget>[
+                                                              AppMediumFont(context,
+                                                                  msg: (addressItem?.firstName?.toUpperCase() ?? '') +
+                                                                      " " +
+                                                                      (addressItem?.lastName?.toUpperCase() ?? ''),
+                                                                  color: Theme.of(context).canvasColor,
+                                                                  fontSize: 14.0),
+
+
+                                                              Container(
+                                                                margin: EdgeInsets.only(top: 1),
+                                                                width: SizeConfig.screenWidth*0.25,
+                                                                child: AppRegularFont(context,
+                                                                    msg: (addressItem?.firstAddress ?? '') +
+                                                                        ", " +
+                                                                        (addressItem?.secondAddress ??
+                                                                            '') +
+                                                                        ", " +
+                                                                        (addressItem?.cityName ?? '') +", " +
+                                                                        "\n" +
+                                                                        (addressItem?.state ?? '') +
+                                                                        " - " +
+                                                                        (addressItem?.pinCode.toString() ?? '') +
+                                                                        "\n" +"\n"+
+                                                                        (addressItem?.mobileNumber ?? ''),
+                                                                    color: Theme.of(context).canvasColor,
+                                                                    fontSize: 14.0),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Positioned(
+                                                      bottom: 0,
+                                                      right: 20,
+                                                      child: IconButton(
+                                                        icon: Icon(
+                                                          Icons.delete,
+                                                          size: 18,
+                                                          color:
+                                                          Theme.of(context)
+                                                              .primaryColor,
+                                                        ),
+                                                        onPressed: () {
+                                                          cartViewModel.deleteAddress(context,cartViewData.addressListModel?[index].addressId ?? "").whenComplete(() => {
+                                                            cartViewData.selectedAddressIndex=0
+                                                          });
+                                                        },
+                                                      )),
+                                                  Positioned(
+                                                      bottom: 0,
+                                                      right: 50,
+                                                      child: IconButton(
+                                                          icon: Icon(
+                                                            Icons.edit,
+                                                            size: 18,
+                                                            color:
+                                                            Theme.of(context).primaryColor,
+                                                          ),
+                                                          onPressed: () {
+                                                            showDialog(
+                                                                context: context,
+                                                                builder: (BuildContext context) {
+                                                                  return  ShippingAddressPage(isAlreadyAdded: true,
+                                                                    addressId: cartViewData.addressListModel?[index].addressId,
+                                                                    firstName: cartViewData.addressListModel?[index].firstName,
+                                                                    lastName: cartViewData.addressListModel?[index].lastName,
+                                                                    mobileNumber: cartViewData.addressListModel?[index].mobileNumber,
+                                                                    email: cartViewData.addressListModel?[index].email,
+                                                                    firstAddress: cartViewData.addressListModel?[index].firstAddress,
+                                                                    secondAddress: cartViewData.addressListModel?[index].secondAddress,
+                                                                    state: cartViewData.addressListModel?[index].state,
+                                                                    cityName: cartViewData.addressListModel?[index].cityName,
+                                                                    pinCode: cartViewData.addressListModel?[index].pinCode,
+                                                                  );
+                                                                });
+                                                          })
+                                                  ),
+                                                ],
+                                              );
+                                            }),
+                                      ),
+                                      SizedBox(height: 10),
+                                      Card(
+                                        child: Container(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              Padding(
+                                                  padding:
+                                                  EdgeInsets.only(left: 10, top: 10,bottom: 10),
+                                                  child: AppBoldFont(context,
+                                                      msg: "SelectPayment",
+                                                      fontSize: 16.0)),
+                                              Divider(
+                                                height: 1,
+                                                color:
+                                                Theme.of(context).canvasColor,
+                                              ),
+                                              Theme(
+                                                  data: ThemeData(
+                                                    unselectedWidgetColor:
+                                                    Theme.of(context).canvasColor,
+                                                  ),
+                                                  child: RadioListTile(
+                                                    value: 1,
+                                                    groupValue: selectedRadioTile,
+                                                    title: AppBoldFont(context,
+                                                        msg: StringConstant.cardWalletsText,
+                                                        fontSize: 14.0),
+                                                    onChanged: (val) {
+                                                      print("Radio Tile pressed $val");
+                                                      if (val == 1) {
+                                                        setSelectedRadioTile(1);
+                                                      }
+                                                      setState(() {
+                                                        google_pay = true;
+                                                      });
+                                                    },
+                                                    activeColor:
+                                                    Theme.of(context).primaryColor,
+                                                    selected: google_pay,
+                                                  )),
+                                              Theme(
+                                                  data: ThemeData(
+                                                    unselectedWidgetColor:
+                                                    Theme.of(context).canvasColor,
+                                                  ),
+                                                  child: RadioListTile(
+                                                    value: 2,
+                                                    groupValue: selectedRadioTile,
+                                                    title: AppBoldFont(context,
+                                                        msg: StringConstant.cashOnDelivery,
+                                                        fontSize: 16.0),
+                                                    onChanged: (val) {
+                                                      print("Radio Tile pressed $val");
+                                                      if (val == 2) {
+                                                        // showDialog(
+                                                        //   context: context,
+                                                        //   builder: (BuildContext context) {
+                                                        //     return AlertDialog(
+                                                        //       backgroundColor: Theme.of(context).cardColor,
+                                                        //       title: Text('Cod',style: TextStyle(color: Theme.of(context).canvasColor),),
+                                                        //       content: Text(
+                                                        //           'Cod is not available ',style: TextStyle(color: Theme.of(context).canvasColor)),
+                                                        //       actions: [
+                                                        //         ElevatedButton(
+                                                        //           child: Text('Close',style: TextStyle(color: Theme.of(context).canvasColor)),
+                                                        //           onPressed: () {
+                                                        //             val = 1;
+                                                        //             Navigator.of(context)
+                                                        //                 .pop();
+                                                        //           },
+                                                        //     style: ButtonStyle(
+                                                        //     backgroundColor:
+                                                        //     MaterialStateProperty.all(
+                                                        //     Theme.of(context).primaryColor))),
+                                                        //       ],
+                                                        //     );
+                                                        //   },
+                                                        // );
+                                                        setSelectedRadioTile(2);
+                                                      }
+                                                    },
+                                                    activeColor: Theme.of(context).primaryColor,
+                                                  )),
+                                              SizedBox(height: 5)
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(height: 10),
+                                      // Total Bill detail
+                                      billCardMobile(context,cartViewModel),
+                                      SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          Material(
+                                            color:
+                                            Theme.of(context).scaffoldBackgroundColor,
+                                            child: Checkbox(
+                                              checkColor: Theme.of(context).primaryColor,
+                                              activeColor: Theme.of(context)
+                                                  .canvasColor
+                                                  .withOpacity(0.8),
+                                              side: MaterialStateBorderSide.resolveWith(
+                                                    (states) => BorderSide(
+                                                    width: 1.0,
+                                                    color: Theme.of(context)
+                                                        .canvasColor
+                                                        .withOpacity(0.8)),
+                                              ),
+                                              value: agree,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  agree = value!;
+                                                });
+                                              },
+                                            ),
+                                          ),
+                                          AppMediumFont(context,
+                                              msg: "Accept ", fontSize: 16.0),
+                                          InkWell(
+                                              onTap: () {
+
+                                              },
+                                              child: AppMediumFont(context,
+                                                  msg: "Return Policy",
+                                                  color: Theme.of(context).primaryColor,
+                                                  fontSize: 16.0)),
+                                          AppRegularFont(context,
+                                              msg: " and ", fontSize: 16.0),
+                                          InkWell(
+                                              onTap: () {
+
+                                              },
+                                              child: AppMediumFont(context,
+                                                  msg: "Terms Of Use",
+                                                  color: Theme.of(context).primaryColor,
+                                                  fontSize: 16.0)),
+                                        ],
+                                      ),
+                                      SizedBox(height: 10),
+                                      ElevatedButton(onPressed: (){
+                                        if (google_pay != true) {
+                                          ToastMessage.message(StringConstant.selectPaymentOption);
+                                        } else if (agree == false) {
+                                          ToastMessage.message(StringConstant.acceptReturnPolicy);
+                                        }
+                                        else if (cartViewModel.addressListModel?.length ==0) {
+                                          ToastMessage.message("please add address");
+                                        }
+                                        else if ((cod == true || google_pay == true) && (agree == true)) {
+                                          var amount = double.parse(cartViewModel.cartListData?.checkoutDetails?.totalPayableAmount ?? '1');
+                                          if (amount != 0 && cartViewModel.addressListModel?.length!=0) {
+                                            createOrder(context);
+                                            //AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.thankYouPage);
+                                            // cartViewModel.createOrder(context, _razorPay);
+                                          }
+                                        }
+
+                                      }, child: Text("checkout",style: TextStyle(fontSize: 18),)),
+
+                                     SizedBox(height: 10),
+                                      footerMobile(context)
+                                    ],
+                                  ):Column(
                                     children: [
                                       cartPageViewIndicator(context,1,activeStep),
                                       // Address Button
@@ -124,6 +436,9 @@ class _AddressListPageState extends State<AddressListPage> {
                                               }),
                                               // Address Details
                                               Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.circular(5)
+                                                ),
                                                 width: SizeConfig.screenWidth*0.30,
                                                 height: SizeConfig.screenHeight - 300,
                                                 child: ListView.builder(
@@ -264,10 +579,10 @@ class _AddressListPageState extends State<AddressListPage> {
                                                   children: <Widget>[
                                                     Padding(
                                                         padding:
-                                                        EdgeInsets.only(left: 10, top: 10,bottom: 2),
+                                                        EdgeInsets.only(left: 10, top: 10,bottom: 10),
                                                         child: AppBoldFont(context,
                                                             msg: "SelectPayment",
-                                                            fontSize: 14.0)),
+                                                            fontSize: 16.0)),
                                                     Divider(
                                                       height: 1,
                                                       color:
@@ -307,7 +622,7 @@ class _AddressListPageState extends State<AddressListPage> {
                                                           groupValue: selectedRadioTile,
                                                           title: AppBoldFont(context,
                                                               msg: StringConstant.cashOnDelivery,
-                                                              fontSize: 14.0),
+                                                              fontSize: 16.0),
                                                           onChanged: (val) {
                                                             print("Radio Tile pressed $val");
                                                             if (val == 2) {
@@ -340,11 +655,12 @@ class _AddressListPageState extends State<AddressListPage> {
                                                           },
                                                           activeColor: Theme.of(context).primaryColor,
                                                         )),
+                                                    SizedBox(height: 5)
                                                   ],
                                                 ),
                                               ),
                                             ),
-
+                                            SizedBox(height: 5),
                                             // Total Bill detail
                                             billCard(context,cartViewModel),
 
@@ -374,7 +690,7 @@ class _AddressListPageState extends State<AddressListPage> {
                                                   ),
                                                 ),
                                                 AppMediumFont(context,
-                                                    msg: "Accept ", fontSize: 14.0),
+                                                    msg: "Accept ", fontSize: 16.0),
                                                 InkWell(
                                                     onTap: () {
 
@@ -384,7 +700,7 @@ class _AddressListPageState extends State<AddressListPage> {
                                                         color: Theme.of(context).primaryColor,
                                                         fontSize: 16.0)),
                                                 AppRegularFont(context,
-                                                    msg: " and ", fontSize: 14.0),
+                                                    msg: " and ", fontSize: 16.0),
                                                 InkWell(
                                                     onTap: () {
 
@@ -395,22 +711,26 @@ class _AddressListPageState extends State<AddressListPage> {
                                                         fontSize: 16.0)),
                                               ],
                                             ),
+                                            SizedBox(height: 5),
                                             ElevatedButton(onPressed: (){
                       if (google_pay != true) {
                         ToastMessage.message(StringConstant.selectPaymentOption);
                       } else if (agree == false) {
                         ToastMessage.message(StringConstant.acceptReturnPolicy);
-                      } else if ((cod == true || google_pay == true) &&
-                          (agree == true)) {
+                      }
+                      else if (cartViewModel.addressListModel?.length ==0) {
+                        ToastMessage.message("please add address");
+                      }
+                      else if ((cod == true || google_pay == true) && (agree == true)) {
                         var amount = double.parse(cartViewModel.cartListData?.checkoutDetails?.totalPayableAmount ?? '1');
-                        if (amount != 0) {
+                         if (amount != 0 && cartViewModel.addressListModel?.length!=0) {
                           createOrder(context);
                           //AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.thankYouPage);
                           // cartViewModel.createOrder(context, _razorPay);
                         }
                       }
 
-                                            }, child: Text("checkout"))
+                                            }, child: Text("checkout",style: TextStyle(fontSize: 18),))
 
                                             // Container(
                                             //     height: 60,
@@ -525,16 +845,20 @@ class _AddressListPageState extends State<AddressListPage> {
 
     cartViewModel.placeOrder(context,  addressId ?? '', response.paymentId,
         response.orderId, 'Online', 'Success');
-    // Navigator.pushNamed(context, RoutesName.ThankYouPage);
-    //  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-    //     ThankYouPage()), (Route<dynamic> route) => false);
-    //  Navigator.pushAndRemoveUntil(context, ThankYouPage, (route) => false);
-    // AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.thankYouPage);
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(StringConstant.paymentSuccessful)));
-    Router.neglect(
-        context,
-    () => context.push('/ThankYouPage'));
+    // Router.neglect(
+    //     context,
+    // () => context.push('/ThankYouPage'));
+    // context.router.removeUntil((route) => false)
+    // ExtendedNavigator.root.pushAndPopUntil(
+    //   Routes.nextScreen,
+    //       (route) => route.isFirst,
+    // );
+
+    context.pushRoute(ThankYouPage());
+
+    // );
    // Router.neglect(context, () => GoRouter.of(context).pushReplacementNamed(RoutesName.ThankYouPage));
     //GoRouter.of(context).pushReplacementNamed(RoutesName.ThankYouPage);
     // Fluttertoast.showToast(msg: "SUCCESS: ${response.paymentId!}", toastLength: Toast.LENGTH_SHORT);

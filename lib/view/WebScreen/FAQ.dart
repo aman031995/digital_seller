@@ -1,4 +1,5 @@
 
+import 'package:auto_route/annotations.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -22,14 +23,16 @@ import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 
 import 'dart:html' as html;
 
-import 'package:TychoStream/view/widgets/app_menu.dart';
+import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/widgets/search_view.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
+
+@RoutePage()
 class FAQ extends StatefulWidget {
 
 
-  FAQ({Key? key}) : super(key: key);
+  const FAQ({Key? key}) : super(key: key);
 
   @override
   State<FAQ> createState() => _FAQState();

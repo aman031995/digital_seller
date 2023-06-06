@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -20,13 +21,16 @@ import 'package:TychoStream/view/WebScreen/HomePageWeb.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/SignUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-import 'package:TychoStream/view/widgets/app_menu.dart';
+import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/widgets/search_view.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
+
+
+@RoutePage()
 class Terms extends StatefulWidget {
- Terms({Key? key}) : super(key: key);
+  const Terms({Key? key}) : super(key: key);
 
   @override
   State<Terms> createState() => _TermsState();

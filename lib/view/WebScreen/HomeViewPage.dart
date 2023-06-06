@@ -23,7 +23,7 @@ import 'package:TychoStream/view/WebScreen/OnHover.dart';
 import 'package:TychoStream/view/WebScreen/SignUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
-import 'package:TychoStream/view/widgets/app_menu.dart';
+import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/widgets/search_view.dart';
 import 'package:TychoStream/viewmodel/CategoryViewModel.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
@@ -151,7 +151,7 @@ class _HomeViewPageState extends State<HomeViewPage> {
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
-                                GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParams: {
+                                GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParameters: {
                                   'movieID':"${categoryView.getPreviousPageList?[index].youtubeVideoId}",
                                   'VideoId':"${categoryView.getPreviousPageList?[index].videoId}",
                                   'Title':"${categoryView.getPreviousPageList?[index].videoTitle}",
@@ -202,7 +202,7 @@ class _HomeViewPageState extends State<HomeViewPage> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParams: {
+                            GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParameters: {
                               'movieID':"${categoryView.getPreviousPageList?[index].youtubeVideoId}",
                               'VideoId':"${categoryView.getPreviousPageList?[index].videoId}",
                               'Title':"${categoryView.getPreviousPageList?[index].videoTitle}",

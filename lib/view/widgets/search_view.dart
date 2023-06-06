@@ -1,4 +1,8 @@
+import 'package:TychoStream/utilities/AppIndicator.dart';
+import 'package:TychoStream/utilities/AppToast.dart';
+import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +20,8 @@ import 'package:TychoStream/view/WebScreen/SignUp.dart';
 import 'package:TychoStream/view/screens/notification_screen.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
+
+import '../../AppRouter.gr.dart';
 
 Widget searchView(BuildContext context, HomeViewModel viewmodel, bool isSearch,
     ScrollController _scrollController, HomeViewModel homeViewModel, TextEditingController searchController, setState) {
@@ -59,7 +65,7 @@ Widget searchView(BuildContext context, HomeViewModel viewmodel, bool isSearch,
                           isSearch = false;
                           GoRouter.of(context).pushNamed(
                               RoutesName.DeatilPage,
-                              queryParams: {
+                              queryParameters: {
                                 'movieID':
                                 '${viewmodel.searchDataModel?.searchList?[index].youtubeVideoId}',
                                 'VideoId':
@@ -137,7 +143,7 @@ Widget searchView(BuildContext context, HomeViewModel viewmodel, bool isSearch,
                                   isSearch = false;
                                   GoRouter.of(context).pushNamed(
                                       RoutesName.DeatilPage,
-                                      queryParams: {
+                                      queryParameters: {
                                         'movieID':
                                         '${viewmodel.searchDataModel?.searchList?[index].youtubeVideoId}',
                                         'VideoId':
@@ -208,7 +214,7 @@ Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
               isProfile = true;
               if (isProfile == true) {
                 GoRouter.of(context).pushNamed(
-                  RoutesName.EditProfille,queryParams: {
+                  RoutesName.EditProfille,queryParameters: {
                     'isPhoneVerified':"${profileViewModel.userInfoModel?.isPhoneVerified}",
                   'isEmailVerified':"${profileViewModel.userInfoModel?.isEmailVerified}"
                 }
@@ -262,6 +268,7 @@ Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
         ),
         // height: 20,width: 20,
       ));
+
 }
 
 Widget Header(BuildContext context,setState,HomeViewModel viewmodel){
@@ -278,7 +285,18 @@ Widget Header(BuildContext context,setState,HomeViewModel viewmodel){
         ),
         OutlinedButton(
             onPressed: () {
-              GoRouter.of(context).pushNamed(RoutesName.productList);
+              if(isSearch==true){
+                isSearch=false;
+                searchController?.clear();
+              }
+              if( isLogins == true){
+                isLogins=false;
+                setState(() {
+
+                });
+              }
+              context.pushRoute(ProductListGallery());
+              // GoRouter.of(context).pushNamed(RoutesName.productList);
             },
             style: ButtonStyle(
 
@@ -318,22 +336,23 @@ Widget Header(BuildContext context,setState,HomeViewModel viewmodel){
               secureText: false,
               floatingLabelBehavior:
               FloatingLabelBehavior.never,
-              maxLength: 30,
-              labelText:
-              'Search videos, shorts, products',
-              keyBoardType:
-              TextInputType.text,
-              onChanged: (m) {
+              maxLine: searchController!.text.length > 2 ? 2 : 1,
+                maxLength: null,
+                labelText: StringConstant.searchItems,
+                keyBoardType: TextInputType.text,
+                isSearch: true,
+                autoFocus: true,
+              onSubmitted: (v){
+                AppIndicator.loadingIndicator(context);
+                  viewmodel.getSearchData(context, searchController?.text ?? '', 1);
+                  isSearch = true;
+                  setState;
+                  },
+              verifySubmit: (){
                 isSearch = true;
-                if (isLogins == true) {
-                  isLogins = false;
-                  setState(() {});
-                }
-                if(isNotification==true){
-                  isNotification=false;
-                  setState(() {
-                  });
-                }
+                setState;
+                AppIndicator.loadingIndicator(context);
+                viewmodel.getSearchData(context, searchController?.text ?? '', 1);
               },
               isTick: null),
         ),
@@ -415,4 +434,5 @@ Widget Header(BuildContext context,setState,HomeViewModel viewmodel){
       ],
     ),
   );
+
 }

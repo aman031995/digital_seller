@@ -1,4 +1,5 @@
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,8 +16,10 @@ import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/view/WebScreen/reset_screen.dart';
 import 'package:TychoStream/view/screens/verify_otp_screen.dart';
-import '../view/WebScreen/HomePageWeb.dart';
+
 import 'dart:html' as html;
+
+import '../AppRouter.gr.dart';
 
 void reloadPage() {
   html.window.location.reload();
@@ -46,7 +49,8 @@ class AuthViewModel with ChangeNotifier {
           if (isSuccess) {
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             if (_userInfoModel?.isEmailVerified == false && _userInfoModel?.isPhoneVerified == false) {
-              AppIndicator.disposeIndicator();Navigator.pop(context);
+              AppIndicator.disposeIndicator();
+              // Navigator.pop(context);
 
               isLogin=true;
               showDialog(
@@ -121,9 +125,11 @@ class AuthViewModel with ChangeNotifier {
               AppDataManager.getInstance.updateUserDetails(userInfoModel!);
               print('Login api Successfully');
               AppIndicator.disposeIndicator();
-              Navigator.pop(context);
+              // Navigator.pop(context);
               User();
-              GoRouter.of(context).pushNamed(RoutesName.home);
+              reloadPage();
+              context.router.push(HomePageWeb());
+             // GoRouter.of(context).pushNamed(RoutesName.home);
             }
 
             notifyListeners();
@@ -135,7 +141,7 @@ class AuthViewModel with ChangeNotifier {
     CacheDataManager.clearCachedData();
     isLogins = false;
     isLogin=false;
-    GoRouter.of(context).pushNamed(RoutesName.home);
+    // context.router.push(HomePageWeb());
      reloadPage();
   }
 // method for user register from api
@@ -246,8 +252,9 @@ class AuthViewModel with ChangeNotifier {
               print('Login api Successfully');
               AppDataManager.getInstance.updateUserDetails(_userInfoModel!);
               AppIndicator.disposeIndicator();
-              GoRouter.of(context).pushNamed(RoutesName.home);
-              Navigator.pop(context);
+              context.router.push(HomePageWeb());
+              // GoRouter.of(context).pushNamed(RoutesName.home);
+              // Navigator.pop(context);
               // AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.bottomNavigation, screenName: RouteBuilder.homePage);
             } else {
               registerUser(context, name, mobileNumber, password, email, deviceId, firebaseId);

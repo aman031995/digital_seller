@@ -2,27 +2,28 @@ import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/Products/image_slider.dart';
-import 'package:TychoStream/view/Products/product_details.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../AppRouter.gr.dart';
 import '../../utilities/AssetsConstants.dart';
 
+@RoutePage()
 class ProductListGallery extends StatefulWidget {
-  ProductListGallery({Key? key}) : super(key: key);
-
   @override
   State<ProductListGallery> createState() => _ProductListGalleryState();
 }
@@ -33,6 +34,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
 
   @override
   void initState() {
+    cartViewModel.getProductListData(context);
     cartViewModel.getCartCount(context);
     cartViewModel.getProductList(context);
     super.initState();
@@ -61,12 +63,16 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                 isFavourite: true,
                 title: StringConstant.forumTitle,
                 onCartPressed: () {
-                  GoRouter.of(context).pushNamed(RoutesName.CartDetails, queryParams: {
-                    'itemCount':'${viewmodel.cartItemCount}',
-                  });
+                  // GoRouter.of(context).pushNamed(RoutesName.CartDetails, queryParameters: {
+                  //   'itemCount':'${viewmodel.cartItemCount}',
+                  // });
+                  context.router.push(CartDetail(
+                      itemCount: '${viewmodel.cartItemCount}'
+                  ));
                 },
                 onFavPressed: (){
-                  GoRouter.of(context).pushNamed(RoutesName.fav);
+                  context.router.push(FavouriteListPage());
+                  // GoRouter.of(context).pushNamed(RoutesName.fav);
                 },
                 onBackPressed: () {
                   Navigator.pop(context, true);
@@ -74,28 +80,57 @@ class _ProductListGalleryState extends State<ProductListGallery> {
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: viewmodel.productListModel?.productList != null
                 ? viewmodel.productListModel!.productList!.length > 0
-                ? SingleChildScrollView(
+                ? ResponsiveWidget.isMediumScreen(context)
+                ?
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    height: productListMobile(),
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.only(left: 10,right: 10,top: 10),
+                      physics: NeverScrollableScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2, childAspectRatio: 0.62,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10),
+                      itemCount:
+                      viewmodel.productListModel?.productList?.length,
+                      itemBuilder: (context, index) {
+                        final productListData = cartViewModel
+                            .productListModel?.productList?[index];
+                        return productListItems(context,
+                            productListData, index, viewmodel);
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 50),
+                footerMobile(context)
+                ],
+              ),
+            ): SingleChildScrollView(
                   child: Column(
                     children: [
                       Center(
                       child: Container(
-                        height:SizeConfig.screenHeight/1.2 ,
+                        height: productList(),
                         width: SizeConfig.screenWidth/2,
                         child: GridView.builder(
               shrinkWrap: false,
-              physics: ScrollPhysics(),
+              physics: NeverScrollableScrollPhysics(),
               padding: EdgeInsets.only(top: 30),
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 310,mainAxisExtent: 320,mainAxisSpacing: 10.0,crossAxisSpacing: 10),
-              itemCount:
-              viewmodel.productListModel?.productList?.length,
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 280,mainAxisExtent: 320,mainAxisSpacing: 10.0,crossAxisSpacing: 10),
+              itemCount: viewmodel.productListModel?.productList?.length,
               itemBuilder: (context, index) {
                         final productListData = cartViewModel
                             .productListModel?.productList?[index];
-                        return productListItems(
+                        return productListItems(context,
                             productListData, index, viewmodel);
               },
             ),
                       )),
+                      SizedBox(height: 50),
                       footerDesktop()
                     ],
                   ),
@@ -109,14 +144,13 @@ class _ProductListGalleryState extends State<ProductListGallery> {
           );
         }));
   }
-  int trayHeight(CartViewModel ViewModel) {
-    int count = 0;
-    ViewModel.productListModel?.productList?.forEach((element) {
-      if (element != null) {
-          count += 1;
-        }
-    });
-    return count;
+double productList(){
+    int count=(cartViewModel.productListModel!.productList!.length/4).ceil();
+    return 350.0 * count;
+}
+  double productListMobile(){
+    int count=(cartViewModel.productListModel!.productList!.length/2).ceil();
+    return 320.0 * count;
   }
 //Positioned(
 //                         // right: 10,
@@ -149,18 +183,32 @@ class _ProductListGalleryState extends State<ProductListGallery> {
 //                                         ? Colors.red
 //                                         : GREY_COLOR,
 //                                     size: 25))))
-  Widget productListItems(
+  Widget productListItems(BuildContext context,
       ProductList? productListData, int index, CartViewModel viewmodel) {
     return  Stack(
       children: [
         GestureDetector(
             onTap: () {
-              GoRouter.of(context).pushNamed(RoutesName.productDetails, queryParams: {
-                'itemCount':'${viewmodel.cartItemCount}',
-                'productId':'${productListData?.productId}',
-                    'variantId':'${productListData?.productDetails?.variantId}',
-                'productColor':'${productListData?.productDetails?.productColor}'
-              });
+              // context.router.push(
+              //   Appmenu(
+              //       bookId:"1",
+              //       query: [
+              //         '${viewmodel.cartItemCount}','${productListData?.productDetails?.variantId}','${productListData?.productDetails?.productColor}'
+              //       ]
+              //   ),
+              // );
+              context.router.push(
+                ProductDetailPage(
+                   productId: '${productListData?.productId}',
+                  productdata: ['${viewmodel.cartItemCount}','${productListData?.productDetails?.variantId}','${productListData?.productDetails?.productColor}'],
+                ) ,
+              );
+              // GoRouter.of(context).pushNamed(RoutesName.productDetails, queryParameters: {
+              //   'itemCount':'${viewmodel.cartItemCount}',
+              //   'productId':'${productListData?.productId}',
+              //       'variantId':'${productListData?.productDetails?.variantId}',
+              //   'productColor':'${productListData?.productDetails?.productColor}'
+              // });
             },
             child: Container(
             decoration: BoxDecoration(
@@ -183,7 +231,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
               ),
             )),
         Positioned(
-                         right: 10,
+            right: 10,
                         top: 5,
                         child: GestureDetector(
                             onTap: () {

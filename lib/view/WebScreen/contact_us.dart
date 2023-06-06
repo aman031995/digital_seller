@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +16,7 @@ import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
-
+@RoutePage()
 class ContactUs extends StatefulWidget {
   const ContactUs({Key? key}) : super(key: key);
 

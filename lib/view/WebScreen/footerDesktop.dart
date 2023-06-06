@@ -1,7 +1,6 @@
+import 'package:TychoStream/AppRouter.gr.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
@@ -41,15 +40,16 @@ class _footerDesktopState extends State<footerDesktop> {
               }),
               Container(width: MediaQuery.of(context).size.width * .02),
               AppButton(context, 'Terms Of Use', onPressed: () {
-                GoRouter.of(context).pushNamed(RoutesName.Terms);
+                context.pushRoute(Terms());
+               // GoRouter.of(context).pushNamed(RoutesName.Terms);
               }),
               Container(width: MediaQuery.of(context).size.width * .02),
               AppButton(context, 'Privacy Policy', onPressed: () {
-                GoRouter.of(context).pushNamed(RoutesName.Privacy);
+               context.pushRoute(Privacy());
               }),
               Container(width: MediaQuery.of(context).size.width * .02),
               AppButton(context, 'FAQ', onPressed: () {
-                GoRouter.of(context).pushNamed(RoutesName.FAQ);
+                 context.pushRoute(FAQ());
               }),
               Container(width: MediaQuery.of(context).size.width * .02),
               Expanded(
@@ -179,15 +179,16 @@ Widget footerMobile(BuildContext context) {
             //  GoRouter.of(context).pushNamed(RoutesName.AboutUsPage);
             }),
             AppButton(context, 'Terms Of Use', onPressed: () {
-              GoRouter.of(context).pushNamed(RoutesName.Terms);
+              context.pushRoute(Terms());
+
             }),
             AppButton(context, 'PrivacyPolicy', onPressed: () {
-              GoRouter.of(context).pushNamed(RoutesName.Privacy);
+              context.pushRoute(Privacy());
             }),
             MediaQuery.of(context).size.width < 417
                 ? Container()
                 : AppButton(context, 'FAQ', onPressed: () {
-                    GoRouter.of(context).pushNamed(RoutesName.FAQ);
+              context.pushRoute(FAQ());
                   }),
           ],
         ),
@@ -197,7 +198,7 @@ Widget footerMobile(BuildContext context) {
             SizedBox(width: 10),
             MediaQuery.of(context).size.width < 417
                 ? AppButton(context, 'FAQ', onPressed: () {
-                    GoRouter.of(context).pushNamed(RoutesName.FAQ);
+
                   })
                 : Container(),
           ],

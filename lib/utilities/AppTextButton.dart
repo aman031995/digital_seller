@@ -150,16 +150,17 @@ Widget AddressButton(BuildContext context,GestureTapCallback? ontap){
   return GestureDetector(
     onTap: ontap,
     child: Container(
-      width: SizeConfig.screenWidth*0.29,
+      width:ResponsiveWidget.isMediumScreen(context)
+          ?SizeConfig.screenWidth/0.5: SizeConfig.screenWidth*0.29,
       margin: EdgeInsets.only(top:5,bottom: 5,left: 10,right: 10),
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
+        color: Theme.of(context).cardColor,  borderRadius: BorderRadius.circular(5)
       ),
       padding: EdgeInsets.only(left: 10,top: 10,bottom: 10),
 
       child: AppBoldFont(context,
-          msg: "+ addAddress"),
+          msg: "+ addAddress",fontSize: 18),
     ),
   );
 }

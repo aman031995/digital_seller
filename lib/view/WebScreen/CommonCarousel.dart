@@ -53,50 +53,52 @@ class _CommonCarouselState extends State<CommonCarousel> {
     var imageSliders = generateImageTilesWeb(context);
     return Stack(
       children: [
-        Container(
-          margin: EdgeInsets.only(left: 10,right: 10,top: 10),
-          height: SizeConfig.screenHeight/3,
-          width: SizeConfig.screenWidth,
-          child: CarouselSlider(
-            items: imageSliders,
-            disableGesture: true,
-            options: CarouselOptions(
-                autoPlayInterval: Duration(seconds: 2),
-                scrollDirection: Axis.horizontal,
-                scrollPhysics: PageScrollPhysics(),
-                viewportFraction:  1,
-                enlargeCenterPage: false,
-                autoPlayCurve: Curves.linear,
-                aspectRatio:16/9,
-                autoPlay: false,
-                onPageChanged: (index, reason) {
-                  setState(() {
-                    current = index;
-                  });
-                }),
-            carouselController: carouselController,
+        Center(
+          child: Container(
+            margin: EdgeInsets.only(top: 15),
+            height: SizeConfig.screenHeight/3,
+            width: SizeConfig.screenWidth/1.5,
+            child: CarouselSlider(
+              items: imageSliders,
+              disableGesture: true,
+              options: CarouselOptions(
+                  autoPlayInterval: Duration(seconds: 2),
+                  scrollDirection: Axis.horizontal,
+                  scrollPhysics: PageScrollPhysics(),
+                  viewportFraction:  1,
+                  enlargeCenterPage: false,
+                  autoPlayCurve: Curves.linear,
+                  aspectRatio:16/9,
+                  autoPlay: false,
+                  onPageChanged: (index, reason) {
+                    setState(() {
+                      current = index;
+                    });
+                  }),
+              carouselController: carouselController,
+            ),
           ),
         ),
         Positioned(
-          left: 30,top:  SizeConfig.screenHeight/6,
+          left: SizeConfig.screenWidth*0.17,top:  SizeConfig.screenHeight/6,
           child: InkWell(
               child: Image.asset(
                   'images/prev.png',
                   height: 40,
                   width: 30,
-                  color:Colors.white54
+                  color: Colors.black45
               ),
               onTap: previous
           ),
         ),
         Positioned(
-          top:  SizeConfig.screenHeight/6,right: 30,
+          top:  SizeConfig.screenHeight/6,right:SizeConfig.screenWidth*0.17,
           child: InkWell(
               child: Image.asset(
                   'images/next.png',
                   height: 40,
                   width: 30,
-                  color: Colors.white54
+                  color: Colors.black45
               ),
               onTap:next
           ),
@@ -120,7 +122,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
         height: SizeConfig.screenHeight/3,width: SizeConfig.screenWidth,
         margin: EdgeInsets.only(left: 0,right: 0,top: 0),
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
-        child: Image.network(element.bannerFile?? " ",
+        child: Image.network(element.bannerUrl?? " ",
             fit: BoxFit.fill
           //height: SizeConfig.screenHeight
         ),
@@ -172,7 +174,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(1.0),
             image: DecorationImage(
-                image: NetworkImage(element.bannerFile ?? ""),
+                image: NetworkImage(element.bannerUrl?? ""),
                 fit: BoxFit.fill
             ),
           ),

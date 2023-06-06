@@ -1,4 +1,6 @@
 
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -14,29 +16,23 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
-import 'package:TychoStream/view/WebScreen/DesktopAppBar.dart';
-import 'package:TychoStream/view/WebScreen/DetailPage.dart';
-import 'package:TychoStream/view/WebScreen/EditProfile.dart';
-import 'package:TychoStream/view/WebScreen/HomePageWeb.dart';
-import 'package:TychoStream/view/WebScreen/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/OnHover.dart';
-import 'package:TychoStream/view/WebScreen/SignUp.dart';
-import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-import 'package:TychoStream/view/widgets/app_menu.dart';
 import 'package:TychoStream/view/widgets/search_view.dart';
 import 'package:TychoStream/viewmodel/CategoryViewModel.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 
+import '../../AppRouter.gr.dart';
 import '../../main.dart';
 
 
+@RoutePage()
 class SeeAllListPages extends StatefulWidget {
   String? title;
 
   String? VideoId;
-
+  final List<String>? SeeDetail;
   SeeAllListPages({
+    @QueryParam() this.SeeDetail,
     Key? key,
     this.title,
     this.VideoId,
@@ -58,7 +54,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
 
   @override
   void initState() {
-    homeView.getMoreLikeThis(context, widget.VideoId ?? '');
+    homeView.getMoreLikeThis(context, widget.SeeDetail?[0] ?? '');
     homeView.getAppConfigData(context);
     searchController?.addListener(() {
       homeView.getSearchData(context, '${searchController?.text}', pageNum);
@@ -92,7 +88,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                     }
                   },
                   child: Scaffold(
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
                     appBar: homePageTopBar(),
                     body: Scaffold(
                         // key: _scaffoldKey,
@@ -104,7 +100,11 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                     child: ResponsiveWidget.isMediumScreen(
                                             context)
                                         ? Container(
-                                            padding: EdgeInsets.only(left: 20, right: 20,top: 10,bottom: 10),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          color: Theme.of(context).cardColor.withOpacity(0.2)
+                                      ),
+                                            margin: EdgeInsets.only(left: 35,right: 35,top: 20,bottom: 20),
                                             child: GridView.builder(
                                               padding: EdgeInsets.zero,
                                                 physics: AlwaysScrollableScrollPhysics(),
@@ -124,20 +124,29 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                                 itemBuilder: (context, index) {
                                                   return InkWell(
                                                     onTap: () {
-                                                      GoRouter.of(context)
-                                                          .pushNamed(
-                                                              RoutesName
-                                                                  .DeatilPage,
-                                                              queryParams: {
-                                                            'movieID':
-                                                                "${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}",
-                                                            'VideoId':
+                                                      context.router.push(
+                                                          DetailPage(
+                                                              VideoDetails:["${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}",
                                                                 '${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
-                                                            'Title':
                                                                 "${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}",
-                                                            'Desc':
-                                                                '${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
-                                                          });
+                                                                '${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}']
+                                                          )
+
+                                                      );
+                                                      // GoRouter.of(context)
+                                                      //     .pushNamed(
+                                                      //         RoutesName
+                                                      //             .DeatilPage,
+                                                      //         queryParameters: {
+                                                      //       'movieID':
+                                                      //           "${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}",
+                                                      //       'VideoId':
+                                                      //           '${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
+                                                      //       'Title':
+                                                      //           "${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}",
+                                                      //       'Desc':
+                                                      //           '${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
+                                                      //     });
                                                     },
                                                     child:Container(
                                                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
@@ -171,10 +180,14 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                                 }),
                                           )
                                         : Container(
-                                            margin: EdgeInsets.only(top: 10,
-                                                bottom: 10,
-                                                right: 10,
-                                                left: 10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Theme.of(context).cardColor.withOpacity(0.2)
+                                      ),
+                                            margin: EdgeInsets.only(top: 20,
+                                                bottom: 20,
+                                                right: SizeConfig.screenWidth*0.15,
+                                                left: SizeConfig.screenWidth*0.15),
                                             child: GridView.builder(
                                                 physics:
                                                     AlwaysScrollableScrollPhysics(),
@@ -185,7 +198,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                                         crossAxisCount: 4,
                                                         crossAxisSpacing: 10.0,
                                                         mainAxisSpacing: 10.0,
-                                                        childAspectRatio: 1.7),
+                                                        childAspectRatio: 1.5),
                                                 itemCount: homeViewModel
                                                     .homePageDataModel!
                                                     .videoList!
@@ -193,20 +206,29 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                                 itemBuilder: (context, index) {
                                                   return InkWell(
                                                     onTap: () {
-                                                      GoRouter.of(context)
-                                                          .pushNamed(
-                                                              RoutesName
-                                                                  .DeatilPage,
-                                                              queryParams: {
-                                                            'movieID':
-                                                                "${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}",
-                                                            'VideoId':
+                                                      context.router.push(
+                                                          DetailPage(
+                                                              VideoDetails:["${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}",
                                                                 '${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
-                                                            'Title':
                                                                 "${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}",
-                                                            'Desc':
-                                                                '${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
-                                                          });
+                                                                '${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}']
+                                                          )
+
+                                                      );
+                                                      // GoRouter.of(context)
+                                                      //     .pushNamed(
+                                                      //         RoutesName
+                                                      //             .DeatilPage,
+                                                      //         queryParameters: {
+                                                      //       'movieID':
+                                                      //           "${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}",
+                                                      //       'VideoId':
+                                                      //           '${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
+                                                      //       'Title':
+                                                      //           "${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}",
+                                                      //       'Desc':
+                                                      //           '${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
+                                                      //     });
                                                     },
                                                     child: Container(
                                                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),
@@ -275,7 +297,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
             },
             child: Image.asset(AssetsConstants.icLogo,width: ResponsiveWidget.isMediumScreen(context) ? 35:45, height:ResponsiveWidget.isMediumScreen(context) ? 35: 45)),
         SizedBox(width: SizeConfig.screenWidth*0.04),
-        AppBoldFont(context,msg: widget.title ?? "",fontSize:ResponsiveWidget.isMediumScreen(context) ? 16: 20, fontWeight: FontWeight.w700),
+        AppBoldFont(context,msg: widget.SeeDetail?[1] ?? "",fontSize:ResponsiveWidget.isMediumScreen(context) ? 16: 20, fontWeight: FontWeight.w700),
       ]),
       actions: [
         GestureDetector(

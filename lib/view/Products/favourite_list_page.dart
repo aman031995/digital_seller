@@ -1,6 +1,7 @@
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -13,11 +14,15 @@ import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../AppRouter.gr.dart';
 
+@RoutePage()
 class FavouriteListPage extends StatefulWidget {
   Function? callback;
 
@@ -46,118 +51,163 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
       });
     });
     // handle push notification/notification scenerio to show data
-    receivedArgumentsNotification();
-    return ChangeNotifierProvider<CartViewModel>(
-        create: (BuildContext context) => cartViewModel,
-        child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
-          return  checkInternet == "Offline"
-              ? NOInternetScreen()
-              :Scaffold(
-            appBar: getAppBarWithBackBtn(
-                context: context,
-                itemCount: viewmodel.cartItemCount,
-                isShopping: true,
-                isBackBtn: false,
-                isFavourite: false,
-                onFavPressed: () {},
-                title: "Fav",
-                onCartPressed: () {
-                  GoRouter.of(context).pushNamed(RoutesName.CartDetails, queryParams: {
-                    'itemCount':'${viewmodel.cartItemCount}',
-                  });
-                  // AppNavigator.push(
-                  //     context, CartDetail(itemCount: viewmodel.cartItemCount),
-                  //     screenName: RouteBuilder.cartDetail, function: (v) {
-                  //   viewmodel.updateCartCount(context, v);
-                  // });
+    // receivedArgumentsNotification();
+    return checkInternet == "Offline"
+        ? NOInternetScreen()
+        : Scaffold(
+      appBar: getAppBarWithBackBtn(
+          context: context,
+          itemCount: cartViewModel.cartItemCount,
+          isShopping: true,
+          isBackBtn: false,
+          isFavourite: false,
+          onFavPressed: () {},
+          title: "Fav",
+          onCartPressed: () {
+            // GoRouter.of(context).pushNamed(RoutesName.CartDetails, queryParameters: {
+            //   'itemCount':'${viewmodel.cartItemCount}',
+            // });
+            context.router.push(CartDetail(
+                itemCount: '${cartViewModel.cartItemCount}'
+            ));
+            // AppNavigator.push(
+            //     context, CartDetail(itemCount: viewmodel.cartItemCount),
+            //     screenName: RouteBuilder.cartDetail, function: (v) {
+            //   viewmodel.updateCartCount(context, v);
+            // });
+          },
+          onBackPressed: () {
+            // Navigator.pop(context, true);
+            // widget.callback!(viewmodel.favouriteCallback);
+          }),
+      backgroundColor: Theme
+          .of(context)
+          .scaffoldBackgroundColor,
+      body: cartViewModel.productListModel?.productList != null
+          ? cartViewModel.productListModel!.productList!.length > 0
+          ?ResponsiveWidget.isMediumScreen(context)
+          ?
+      SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: productListMobile(),
+              child: GridView.builder(
+                shrinkWrap: true,
+                padding: EdgeInsets.only(left: 10,right: 10,top: 10),
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, childAspectRatio: 0.62,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10),
+                itemCount:
+                cartViewModel.productListModel?.productList?.length,
+                itemBuilder: (context, index) {
+                  final productListData = cartViewModel
+                      .productListModel?.productList?[index];
+                  return productListItems(context,
+                      productListData, index, cartViewModel);
                 },
-                onBackPressed: () {
-                  Navigator.pop(context, true);
-                  widget.callback!(viewmodel.favouriteCallback);
-                }),
-            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-            body: viewmodel.productListModel?.productList != null
-                ? viewmodel.productListModel!.productList!.length > 0
-                    ? SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Center(
-                            child: Container(
-                              height:SizeConfig.screenHeight/1.2,
-                                width: SizeConfig.screenWidth/2,
-                              child: GridView.builder(
-                                  shrinkWrap: true,
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 300,mainAxisExtent: 300,mainAxisSpacing: 10.0,crossAxisSpacing: 10),
-                                  itemCount:
-                                      viewmodel.productListModel?.productList?.length,
-                                  itemBuilder: (context, index) {
-                                    final productListData = cartViewModel
-                                        .productListModel?.productList?[index];
-                                    return productListItems(
-                                        productListData, index, viewmodel);
-                                  },
-                                ),
-                            ),
-                          ),
-                          footerDesktop()
-                        ],
-                      ),
-                    )
-                    : Center(
+              ),
+            ),
+            SizedBox(height: 50),
+            footerMobile(context)
+          ],
+        ),
+      ): SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: 20),
+            Center(
+              child: Container(
+                height: productList(),
+                width: SizeConfig.screenWidth / 2,
+                child: GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 300,
+                      mainAxisExtent: 300,
+                      mainAxisSpacing: 10.0,
+                      crossAxisSpacing: 10),
+                  itemCount:
+                  cartViewModel.productListModel?.productList?.length,
+                  itemBuilder: (context, index) {
+                    final productListData = cartViewModel
+                        .productListModel?.productList?[index];
+                    return productListItems(context,
+                        productListData, index, cartViewModel);
+                  },
+                ),
+              ),
+            ),
+            SizedBox(height: 20),
+            footerDesktop()
+          ],
+        ),
+      )
+          : Center(
 
-                child: noDataFoundMessage(
-                    context, StringConstant.noItemInCart))
-                : Center(
-                    child: ThreeArchedCircle(size: 45.0),
-                  ),
-          );
-        }));
+          child: noDataFoundMessage(
+              context, StringConstant.noItemInCart))
+          : Center(
+        child: ThreeArchedCircle(size: 45.0),
+      ),
+    );
   }
-  int trayHeight(CartViewModel ViewModel) {
-    int count = 0;
-    ViewModel.productListModel?.productList?.forEach((element) {
-      if (element != null) {
-        count += 1;
-      }
-    });
-    return count;
+  double productList(){
+    int count=(cartViewModel.productListModel!.productList!.length/4).ceil();
+    return 350.0 * count;
+  }
+  double productListMobile(){
+    int count=(cartViewModel.productListModel!.productList!.length/2).ceil();
+    return 320.0 * count;
   }
   //ProductListItems
-  Widget productListItems(
-      ProductList? productListData, int index, CartViewModel viewmodel) {
-    return  Stack(
+  Widget productListItems(BuildContext context,ProductList? productListData, int index,
+      CartViewModel viewmodel) {
+    return Stack(
       children: [
         GestureDetector(
-                onTap: () {
-                  GoRouter.of(context).pushNamed(RoutesName.productDetails, queryParams: {
-                    'itemCount':'${viewmodel.cartItemCount}',
-                    'productId':'${productListData?.productId}',
-                    'variantId':'${productListData?.productDetails?.variantId}',
-                    'productColor':'${productListData?.productDetails?.productColor}'
-                  });
+            onTap: () {
+              context.router.push(
+                ProductDetailPage(
+                  productId: '${productListData?.productId}',
+                  productdata: ['${viewmodel.cartItemCount}','${productListData?.productDetails?.variantId}','${productListData?.productDetails?.productColor}'],
+                ) ,
+              );
+              // GoRouter.of(context).pushNamed(
+              //     RoutesName.productDetails, queryParameters: {
+              //   'itemCount': '${viewmodel.cartItemCount}',
+              //   'productId': '${productListData?.productId}',
+              //   'variantId': '${productListData?.productDetails?.variantId}',
+              //   'productColor': '${productListData?.productDetails
+              //       ?.productColor}'
+              // });
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(5), color: Theme
+                  .of(context)
+                  .cardColor
+                  .withOpacity(0.7),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Container(
 
-                },
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5), color: Theme.of(context).cardColor.withOpacity(0.7),
+                    width: SizeConfig.screenWidth,
+                    color: Colors.white,
+                    child: ImageSlider(
+                        images: productListData?.productDetails?.productImages,
+                        activeIndex: index),
+                    height: 200.0,
                   ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-
-                        width: SizeConfig.screenWidth,
-                        color: Colors.white,
-                        child: ImageSlider(
-                            images: productListData?.productDetails?.productImages,
-                            activeIndex: index),
-                        height: 200.0,
-                      ),
-                      productGalleryTitleSection(context, productListData,true)
-                    ],
-                  ),
-                )),
+                  productGalleryTitleSection(context, productListData, true)
+                ],
+              ),
+            )),
         Positioned(
             right: 10,
             top: 5,
@@ -177,7 +227,8 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                 child: Container(
                     decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Theme.of(context)
+                        color: Theme
+                            .of(context)
                             .canvasColor),
                     height: 35,
                     width: 35,
@@ -191,14 +242,12 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                         size: 25))))
       ],
     );
-
-  }
-
-  receivedArgumentsNotification() {
-    if (ModalRoute.of(context)?.settings.arguments != null) {
-      final Map<String, dynamic> data =
-          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-      cartViewModel.getFavList(context);
-    }
   }
 }
+  // receivedArgumentsNotification() {
+  //   if (ModalRoute.of(context)?.settings.arguments != null) {
+  //     final Map<String, dynamic> data =
+  //         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
+  //     cartViewModel.getFavList(context);
+  //   }
+  // }

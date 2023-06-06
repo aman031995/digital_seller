@@ -1,3 +1,4 @@
+
 class ProductListModel {
   Pagination? pagination;
   List<ProductList>? productList;
@@ -73,7 +74,7 @@ class ProductList {
   String? appId;
   String? categoryId;
   String? categoryName;
-  String? subCategoryId;
+  int? subCategoryId;
   String? subCategoryName;
   String? productId;
   String? productName;
@@ -82,10 +83,9 @@ class ProductList {
   int? productType;
   String? productTypeName;
   ProductDetails? productDetails;
-  List<Null>? productReviews;
-  ProductSkuDetails? productSkuDetails;
+  List? productReviews;
+  List<ProductSkuDetails>? productSkuDetails;
   int? cartQuantity;
-
 
   ProductList(
       {this.appId,
@@ -120,14 +120,17 @@ class ProductList {
         ? new ProductDetails.fromJson(json['productDetails'])
         : null;
     if (json['productReviews'] != null) {
-      productReviews = <Null>[];
-      // json['productReviews'].forEach((v) {
-      //   productReviews!.add(new Null.fromJson(v));
-      // });
+      productReviews = [];
+      json['productReviews'].forEach((v) {
+        // productReviews!.add(new Null.fromJson(v));
+      });
     }
-    productSkuDetails = json['productSkuDetails'] != null
-        ? new ProductSkuDetails.fromJson(json['productSkuDetails'])
-        : null;
+    if (json['productSkuDetails'] != null) {
+      productSkuDetails = <ProductSkuDetails>[];
+      json['productSkuDetails'].forEach((v) {
+        productSkuDetails!.add(new ProductSkuDetails.fromJson(v));
+      });
+    }
     cartQuantity = json['cartQuantity'];
   }
 
@@ -148,11 +151,12 @@ class ProductList {
       data['productDetails'] = this.productDetails!.toJson();
     }
     if (this.productReviews != null) {
-      // data['productReviews'] =
-      // this.productReviews!.map((v) => v.toJson()).toList();
+      data['productReviews'] =
+          this.productReviews!.map((v) => v.toJson()).toList();
     }
     if (this.productSkuDetails != null) {
-      data['productSkuDetails'] = this.productSkuDetails!.toJson();
+      data['productSkuDetails'] =
+          this.productSkuDetails!.map((v) => v.toJson()).toList();
     }
     data['cartQuantity'] = this.cartQuantity;
     return data;
@@ -161,7 +165,7 @@ class ProductList {
 
 class ProductDetails {
   String? variantId;
-  String? productSKU;
+  Null? productSKU;
   String? productVariantTitle;
   List<String>? productImages;
   String? productPrice;
@@ -237,96 +241,210 @@ class ProductDetails {
 }
 
 class ProductSkuDetails {
-  List<ColorDetails>? colorDetails;
-  List<SizeDetails>? sizeDetails;
-  List<Null>? engineDetails;
-  List<Null>? fuelDetails;
+  int? variationId;
+  List<int>? availableId;
+  String? variationName;
+  String? variationKey;
+  bool? isColorEnable;
+  List<SkuSizeData>? data;
+  List<SkuColorData>? colorData;
 
   ProductSkuDetails(
-      {this.colorDetails,
-        this.sizeDetails,
-        this.engineDetails,
-        this.fuelDetails});
+      {this.variationId,
+        this.availableId,
+        this.variationName,
+        this.variationKey,
+        this.isColorEnable,
+        this.data,
+        this.colorData});
 
   ProductSkuDetails.fromJson(Map<String, dynamic> json) {
-    if (json['colorDetails'] != null) {
-      colorDetails = <ColorDetails>[];
-      json['colorDetails'].forEach((v) {
-        colorDetails!.add(new ColorDetails.fromJson(v));
-      });
-    }
-    if (json['sizeDetails'] != null) {
-      sizeDetails = <SizeDetails>[];
-      json['sizeDetails'].forEach((v) {
-        sizeDetails!.add(new SizeDetails.fromJson(v));
-      });
-    }
-    if (json['engineDetails'] != null) {
-      engineDetails = <Null>[];
-      json['engineDetails'].forEach((v) {
-        // engineDetails!.add(new Null.fromJson(v));
-      });
-    }
-    if (json['fuelDetails'] != null) {
-      fuelDetails = <Null>[];
-      json['fuelDetails'].forEach((v) {
-        // fuelDetails!.add(new Null.fromJson(v));
-      });
+    variationId = json['variationId'];
+    availableId = json['availableId'].cast<int>();
+    variationName = json['variationName'];
+    variationKey = json['variationKey'];
+    isColorEnable = json['isColorEnable'];
+
+    if(isColorEnable == true){
+      if(json['data'] != null) {
+        colorData = <SkuColorData>[];
+        json['data'].forEach((v) {
+          colorData!.add(new SkuColorData.fromJson(v));
+        });
+      }
+    } else {
+      if (json['data'] != null) {
+        data = <SkuSizeData>[];
+        json['data'].forEach((v) {
+          data!.add(new SkuSizeData.fromJson(v));
+        });
+      }
     }
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.colorDetails != null) {
-      data['colorDetails'] = this.colorDetails!.map((v) => v.toJson()).toList();
-    }
-    if (this.sizeDetails != null) {
-      data['sizeDetails'] = this.sizeDetails!.map((v) => v.toJson()).toList();
-    }
-    if (this.engineDetails != null) {
-      // data['engineDetails'] =
-      //     this.engineDetails!.map((v) => v.toJson()).toList();
-    }
-    if (this.fuelDetails != null) {
-      // data['fuelDetails'] = this.fuelDetails!.map((v) => v.toJson()).toList();
+    data['variationId'] = this.variationId;
+    data['availableId'] = this.availableId;
+    data['variationName'] = this.variationName;
+    data['variationKey'] = this.variationKey;
+    data['isColorEnable'] = this.isColorEnable;
+    if (this.data != null) {
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
+      data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
-class ColorDetails {
+class SkuSizeData {
+  String? name;
+  String? val;
 
-  String? colorName;
-  String? colorCode;
+  SkuSizeData({this.name, this.val});
 
-  ColorDetails({ this.colorName, this.colorCode});
-
-  ColorDetails.fromJson(Map<String, dynamic> json) {
-    colorName = json['colorName'];
-    colorCode = json['colorCode'];
+  SkuSizeData.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    val = json['val'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['colorName'] = this.colorName;
-    data['colorCode'] = this.colorCode;
+    data['name'] = this.name;
+    data['val'] = this.val;
     return data;
   }
 }
 
-class SizeDetails {
+class SkuColorData {
+  String? name;
+  Val? val;
 
-  String? sizeName;
+  SkuColorData({this.name, this.val});
 
-  SizeDetails({ this.sizeName});
-
-  SizeDetails.fromJson(Map<String, dynamic> json) {
-    sizeName = json['sizeName'];
+  SkuColorData.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    val = json['val'] != null ? new Val.fromJson(json['val']) : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['sizeName'] = this.sizeName;
+    data['name'] = this.name;
+    if (this.val != null) {
+      data['val'] = this.val!.toJson();
+    }
+    return data;
+  }
+}
+
+class Val {
+  Hsl? hsl;
+  String? hex;
+  Rgb? rgb;
+  Hsv? hsv;
+  var oldHue;
+  var source;
+
+  Val({this.hsl, this.hex, this.rgb, this.hsv, this.oldHue, this.source});
+
+  Val.fromJson(Map<String, dynamic> json) {
+    hsl = json['hsl'] != null ? new Hsl.fromJson(json['hsl']) : null;
+    hex = json['hex'];
+    rgb = json['rgb'] != null ? new Rgb.fromJson(json['rgb']) : null;
+    hsv = json['hsv'] != null ? new Hsv.fromJson(json['hsv']) : null;
+    oldHue = json['oldHue'];
+    source = json['source'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.hsl != null) {
+      data['hsl'] = this.hsl!.toJson();
+    }
+    data['hex'] = this.hex;
+    if (this.rgb != null) {
+      data['rgb'] = this.rgb!.toJson();
+    }
+    if (this.hsv != null) {
+      data['hsv'] = this.hsv!.toJson();
+    }
+    data['oldHue'] = this.oldHue;
+    data['source'] = this.source;
+    return data;
+  }
+}
+
+class Hsl {
+  var h;
+  var s;
+  var l;
+  var a;
+
+  Hsl({this.h, this.s, this.l, this.a});
+
+  Hsl.fromJson(Map<String, dynamic> json) {
+    h = json['h'];
+    s = json['s'];
+    l = json['l'];
+    a = json['a'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['h'] = this.h;
+    data['s'] = this.s;
+    data['l'] = this.l;
+    data['a'] = this.a;
+    return data;
+  }
+}
+
+class Rgb {
+  var r;
+  var g;
+  var b;
+  var a;
+
+  Rgb({this.r, this.g, this.b, this.a});
+
+  Rgb.fromJson(Map<String, dynamic> json) {
+    r = json['r'];
+    g = json['g'];
+    b = json['b'];
+    a = json['a'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['r'] = this.r;
+    data['g'] = this.g;
+    data['b'] = this.b;
+    data['a'] = this.a;
+    return data;
+  }
+}
+
+class Hsv {
+  var h;
+  var s;
+  var v;
+  var a;
+
+  Hsv({this.h, this.s, this.v, this.a});
+
+  Hsv.fromJson(Map<String, dynamic> json) {
+    h = json['h'];
+    s = json['s'];
+    v = json['v'];
+    a = json['a'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['h'] = this.h;
+    data['s'] = this.s;
+    data['v'] = this.v;
+    data['a'] = this.a;
     return data;
   }
 }

@@ -6,6 +6,7 @@ import 'package:TychoStream/model/data/create_order_model.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/model/data/promocode_data_model.dart';
 import 'package:TychoStream/network/ASResponseModal.dart';
+import 'package:TychoStream/network/CacheDataManager.dart';
 import 'package:TychoStream/network/NetworkConstants.dart';
 import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/CartDetalRepository.dart';
@@ -17,6 +18,8 @@ import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:json_cache/json_cache.dart';
 import 'package:razorpay_web/razorpay_web.dart';
 
 import '../view/Products/thankyou_page.dart';
@@ -75,7 +78,20 @@ class CartViewModel extends ChangeNotifier {
       }
     });
   }
-
+  // get menu from cache api data
+  getProductListData(BuildContext context) async{
+    final box = await Hive.openBox<String>('appBox');
+    final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
+    if(await jsonCache.contains(StringConstant.kProductList)){
+      CacheDataManager.getCachedData(key: StringConstant.kProductList).then((jsonData) {
+        _productListModel = ProductListModel.fromJson(jsonData!['data']);
+        print('From Cached AppConfig Data');
+        notifyListeners();
+      });
+    } else {
+      getProductList(context);
+    }
+  }
   //getFavList Method
   Future<void> getFavList(BuildContext context) async {
     _cartRepo.getFavoriteList(context, (result, isSuccess) {
@@ -87,7 +103,16 @@ class CartViewModel extends ChangeNotifier {
       }
     });
   }
-
+  // GetProductList By Category Method
+  Future<void> getProductListCategory(BuildContext context, String prodId, String categoryId) async {
+    _cartRepo.getProductByCategory(context, prodId, categoryId, (result, isSuccess) {
+      if (isSuccess) {
+        AppIndicator.disposeIndicator();
+        _productListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        notifyListeners();
+      }
+    });
+  }
   // GetCartCount Method
   Future<void> getCartCount(BuildContext context) async {
     _cartRepo.getCartCount(context, (result, isSuccess) {
@@ -151,6 +176,7 @@ class CartViewModel extends ChangeNotifier {
             ((result as SuccessState).value as ASResponseModal).dataModal;
         isAddedToCart =
             _productListDetails?.productDetails?.isAddToCart ?? false;
+
         AppIndicator.disposeIndicator();
         notifyListeners();
       }

@@ -39,30 +39,31 @@ class OrderDetailRepository {
     });
   }
 
-//GetOrderListDetail Method
-// Future<Result?> getOrderListDetail( int orderId,
-//     BuildContext context, NetworkResponseHandler responseHandler) async {
-//   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-//   AppNetwork appNetwork = AppNetwork();
-//   Map<String, String> urlParams = {
-//     "{USER_ID}": sharedPreferences.get("userId").toString(),
-//     "{APP_ID}": NetworkConstants.kAppID,
-//     "{ORDER_ID}": '$orderId',
-//   };
-//   ASRequestModal requestModal = ASRequestModal.withUrlParams(
-//       urlParams, NetworkConstants.kGetOrderListDetail, RequestType.get);
-//   appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
-//     if (isSuccess) {
-//       var response = ASResponseModal.fromResult(result);
-//       Map<String, dynamic> map =
-//       (result as SuccessState).value as Map<String, dynamic>;
-//       if (map["data"] is Map<String, dynamic>) {
-//         response.dataModal = OrderDataModel.fromJson(map["data"]);
-//       }
-//       responseHandler(Result.success(response), isSuccess);
-//     } else {
-//       responseHandler(result, isSuccess);
-//     }
-//   });
-// }
+
+  // GetOrderListDetail Method
+  Future<Result?> getOrderListDetail( String orderId,
+      BuildContext context, NetworkResponseHandler responseHandler) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    AppNetwork appNetwork = AppNetwork();
+    Map<String, String> urlParams = {
+      "{USER_ID}": sharedPreferences.get("userId").toString(),
+      "{APP_ID}": NetworkConstants.kAppID,
+      "{ORDER_ID}": orderId,
+    };
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.kGetOrderListDetail, RequestType.get);
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map =
+        (result as SuccessState).value as Map<String, dynamic>;
+        if (map["data"] is Map<String, dynamic>) {
+          response.dataModal = OrderDataModel.fromJson(map["data"]);
+        }
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
 }

@@ -45,9 +45,10 @@ class NetworkConstants{
   static String kDeleteProfile = "user-delete/?userId={USER_ID}&appId={APP_ID}";
 
   // product-cart-address-favourite api section
+
   static String kGetOrderList = "order-list?userId={USER_ID}&appId={APP_ID}&pageNum={PAGE_NUM}";
   static String kgetAllAddress = "get-all-address?userId={USER_ID}&appId={APP_ID}";
-  static String kGetOrderListDetail = "order-detail?userId={USER_ID}&appId={APP_ID}&order_id={ORDER_ID}";
+  static String kGetOrderListDetail = "order-detail?userId={USER_ID}&appId={APP_ID}&orderId={ORDER_ID}";
   static String kAddToFavourite = "add-favorite";
   static String KGetFavourite="get-all-favorite?appId={APP_ID}&userId={USER_ID}";
   static String placeOrder = "place-order";
@@ -64,7 +65,9 @@ class NetworkConstants{
   // static String kGetProductList = "product-list?userId={USER_ID}&appId={APP_ID}";
   static String kGetProductList = "product-listing?userId={USER_ID}&appId={APP_ID}&pageNum={PAGE_NUM}";
   // static String kGetProductById = "get-by-product-id?productId={PRODUCT_ID}&userId={USER_ID}&appId={APP_ID}";
-  static String kGetProductById = "product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&colorName={COLOR_ID}&sizeName={SIZE_NAME}&variantId={VARIANT_ID}";
+ // static String kGetProductById = "product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&colorName={COLOR_ID}&sizeName={SIZE_NAME}&variantId={VARIANT_ID}";
+  static String kGetProductById = "product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&color={COLOR_ID}&size={SIZE_NAME}&variantId={VARIANT_ID}";
+  static String kGetProductByCategory = "get-banner-product?appId={APP_ID}&catId={CAT_ID}&productId={PROD_ID}";
 
   // payment-order section
   static String kCreateOrder = "create-order";

@@ -195,7 +195,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                       : null,
                   labelText: widget.labelText,
                   contentPadding:
-                  EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 10),
                   labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
                       color: widget.isColor == true
                           ? Theme.of(context).canvasColor.withOpacity(0.4)

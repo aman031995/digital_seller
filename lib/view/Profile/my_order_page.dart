@@ -1,8 +1,10 @@
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
+import 'package:TychoStream/view/Profile/order_details.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
+import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/order_view_model.dart';
@@ -23,7 +25,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
   final OrderViewModel orderView = OrderViewModel();
 
   String? checkInternet;
-
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   @override
   void initState() {
     orderView.getOrderList(context);
@@ -43,6 +45,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
         return
 
           Scaffold(
+            key: _scaffoldKey,
               backgroundColor: Theme
                   .of(context)
                   .backgroundColor,
@@ -56,6 +59,8 @@ class _MyOrderPageState extends State<MyOrderPage> {
                   onBackPressed: () {
                     Navigator.pop(context, true);
                   }),
+
+
               body: checkInternet == "Offline"
                   ? NOInternetScreen()
                   : orderview.orderData !=null?
@@ -73,8 +78,12 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                 return
                                   GestureDetector(
                                     onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return OrderDetails(orderItem: orderView.orderData?.orderList?[index]);
                                       // AppNavigator.push(context, OrderDetails(orderItem: orderView.orderData?.orderList?[index]));
-                                    },
+                                    });},
                                     child: orderView.orderData!.orderList![index]
                                         .itemDetails!.isEmpty ?
                                     Center(

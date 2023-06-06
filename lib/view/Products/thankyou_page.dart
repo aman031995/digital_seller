@@ -1,4 +1,6 @@
 
+import 'dart:async';
+
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
@@ -6,10 +8,16 @@ import 'package:TychoStream/view/Products/cart_detail_page.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../AppRouter.gr.dart';
+
+
+@RoutePage()
 class ThankYouPage extends StatefulWidget {
   const ThankYouPage({Key? key}) : super(key: key);
 
@@ -24,7 +32,11 @@ class _ThankYouPageState extends State<ThankYouPage> {
   @override
   void initState() {
     thankYouModel.thankYouPageImageTimer(context);
+    // context.router.stack.clear();
     super.initState();
+    Timer.periodic(Duration(seconds: 5), (_) {
+      context.router.popUntilRoot();
+    } );
   }
 
   @override
@@ -78,7 +90,10 @@ class _ThankYouPageState extends State<ThankYouPage> {
         SizedBox(height: 30),
         GestureDetector(
           onTap: () {
-            GoRouter.of(context).pushNamed(RoutesName.productList);
+
+            context.router.dispose();
+            context.pushRoute(ProductListGallery());
+            // GoRouter.of(context).pushNamed(RoutesName.productList);
             // AppNavigator.push(
             //     context,
             //     BottomNavigationWidget(

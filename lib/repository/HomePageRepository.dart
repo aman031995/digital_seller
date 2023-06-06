@@ -190,22 +190,22 @@ class HomePageRepository {
       "{VIDEO_ID}": '$videoId',
       "{APP_ID}": NetworkConstants.kAppID,
     };
-    // ASRequestModal requestModal = ASRequestModal.withUrlParams(
-    // //     urlParams, NetworkConstants.kgetMoreLikeThis, RequestType.get,
-    // //     headers: header);
-    // appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
-    //   if (isSuccess) {
-    //     var response = ASResponseModal.fromResult(result);
-    //     Map<String, dynamic> map =
-    //         (result as SuccessState).value as Map<String, dynamic>;
-    //     if (map["data"] is Map<String, dynamic>) {
-    //       response.dataModal = HomePageDataModel.fromJson(map["data"]);
-    //     }
-    //     responseHandler(Result.success(response), isSuccess);
-    //   } else {
-    //     responseHandler(result, isSuccess);
-    //   }
-    // });
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.kGetMoreLikeThis, RequestType.get,
+        headers: header);
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map =
+        (result as SuccessState).value as Map<String, dynamic>;
+        if (map["data"] is Map<String, dynamic>) {
+          response.dataModal = HomePageDataModel.fromJson(map["data"]);
+        }
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
   }
 
   Future<Result?> getAppConfiguration(BuildContext context,

@@ -127,11 +127,11 @@ class _EditProfileState extends State<EditProfile> {
                         child: Column(
 
                             children: [
-                          SizedBox(height: 25),
+                          SizedBox(height: 35),
                           _profileImageView(viewmodel),
                           SizedBox(height: 40),
                           _editFormField(viewmodel, authVM),
-                              SizedBox(height: 200),
+                              SizedBox(height: 220),
                        footerDesktop()
                         ]),
                       ))));

@@ -286,33 +286,33 @@ class SubscriptionProvider with ChangeNotifier {
   }
 
   // for confirming price changing
-  Future<void> confirmPriceChange(BuildContext context) async {
-    if (Platform.isAndroid) {
-      final InAppPurchaseAndroidPlatformAddition androidAddition = _inAppPurchase
-          .getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
-      var priceChangeConfirmationResult =
-      await androidAddition.launchPriceChangeConfirmationFlow(
-        sku: 'purchaseId',
-      );
-      if (priceChangeConfirmationResult.responseCode == BillingResponse.ok) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Price change accepted'),
-        ));
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(
-            priceChangeConfirmationResult.debugMessage ??
-                "Price change failed with code ${priceChangeConfirmationResult.responseCode}",
-          ),
-        ));
-      }
-    }
-    if (Platform.isIOS) {
-      // var iapIosPlatformAddition =
-      // inAppPurchase.getPlatformAddition();
-      // await iapIosPlatformAddition.showPriceConsentIfNeeded();
-    }
-  }
+  // Future<void> confirmPriceChange(BuildContext context) async {
+  //   if (Platform.isAndroid) {
+  //     final InAppPurchaseAndroidPlatformAddition androidAddition = _inAppPurchase
+  //         .getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
+  //     var priceChangeConfirmationResult =
+  //     await androidAddition.launchPriceChangeConfirmationFlow(
+  //       sku: 'purchaseId',
+  //     );
+  //     if (priceChangeConfirmationResult.responseCode == BillingResponse.ok) {
+  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //         content: Text('Price change accepted'),
+  //       ));
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //         content: Text(
+  //           priceChangeConfirmationResult.debugMessage ??
+  //               "Price change failed with code ${priceChangeConfirmationResult.responseCode}",
+  //         ),
+  //       ));
+  //     }
+  //   }
+  //   if (Platform.isIOS) {
+  //     // var iapIosPlatformAddition =
+  //     // inAppPurchase.getPlatformAddition();
+  //     // await iapIosPlatformAddition.showPriceConsentIfNeeded();
+  //   }
+  // }
 
   GooglePlayPurchaseDetails? getOldSubscription(
       ProductDetails productDetails, Map<String, PurchaseDetails> purchases) {
