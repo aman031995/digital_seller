@@ -46,11 +46,24 @@
        https://developers.google.com/web/fundamentals/primers/service-workers -->
 
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('flutter-first-frame', function () {
-        navigator.serviceWorker.register('flutter_service_worker.js');
-      });
-    }
+
+       let useHtml = true;
+
+    window.addEventListener('load', function(ev) {
+    _flutter.loader.loadEntrypoint({
+      serviceWorker: {
+        serviceWorkerVersion: serviceWorkerVersion,
+      },
+      onEntrypointLoaded: function(engineInitializer) {
+        let config = {
+          renderer: useHtml ? "html" : "canvaskit",
+        };
+        engineInitializer.initializeEngine(config).then(function(appRunner) {
+          appRunner.runApp();
+        });
+      }
+    });
+  });
   </script>
   <script src="main.dart.js" type="application/javascript"></script>
 </body>

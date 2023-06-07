@@ -230,7 +230,7 @@ Widget footerMobile(BuildContext context) {
                   children: [
                     GestureDetector(
                         child: Image.asset("images/ic_fb.png",
-                            height: 38, color: Colors.white),
+                            height: 38),
                         onTap: () async {
                           const url = 'https://www.facebook.com';
                           if (await canLaunch(url)) {
@@ -242,7 +242,7 @@ Widget footerMobile(BuildContext context) {
                     SizedBox(width: SizeConfig.screenWidth * 0.05),
                     GestureDetector(
                         child: Image.asset("images/ic_instgram.png",
-                            height: 38, color: Colors.white),
+                            height: 38),
                         onTap: () async {
                           const url = 'https://www.instagram.com';
                           if (await canLaunch(url)) {

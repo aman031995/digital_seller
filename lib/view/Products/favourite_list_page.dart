@@ -34,12 +34,13 @@ class FavouriteListPage extends StatefulWidget {
 
 class _FavouriteListPageState extends State<FavouriteListPage> {
   CartViewModel cartViewModel = CartViewModel();
+  ScrollController _scrollController = ScrollController();
   String? checkInternet;
-
+  int pageNum = 1;
   @override
   void initState() {
     cartViewModel.getCartCount(context);
-    cartViewModel.getFavList(context);
+    cartViewModel.getFavList(context, pageNum);
     super.initState();
   }
 
@@ -91,53 +92,93 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
         child: Column(
           children: [
             Container(
-              height: productListMobile(),
-              child: GridView.builder(
-                shrinkWrap: true,
-                padding: EdgeInsets.only(left: 10,right: 10,top: 10),
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, childAspectRatio: 0.62,
-                    mainAxisSpacing: 10,
-                    crossAxisSpacing: 10),
-                itemCount:
-                cartViewModel.productListModel?.productList?.length,
-                itemBuilder: (context, index) {
-                  final productListData = cartViewModel
-                      .productListModel?.productList?[index];
-                  return productListItems(context,
-                      productListData, index, cartViewModel);
-                },
+              height: SizeConfig.screenHeight/1.1,
+              child: Stack(
+                children: [
+                  GridView.builder(
+                    shrinkWrap: true,
+                    controller: _scrollController,
+                    padding: EdgeInsets.only(left: 10,right: 10,top: 10),
+                    physics: BouncingScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, childAspectRatio: 0.56,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10),
+                    itemCount:
+                    cartViewModel.productListModel?.productList?.length,
+                    itemBuilder: (context, index) {
+                      _scrollController.addListener(() {
+                        if (_scrollController.position.pixels ==
+                            _scrollController.position.maxScrollExtent) {
+                          cartViewModel.onPagination(context, cartViewModel.lastPage, cartViewModel.nextPage, cartViewModel.isLoading, 'productList');
+                        }
+                      });
+                      final productListData = cartViewModel
+                          .productListModel?.productList?[index];
+                      return productListItems(context,
+                          productListData, index, cartViewModel);
+                    },
+                  ),
+                  cartViewModel.isLoading == true
+                      ? Container(
+                      margin: EdgeInsets.only(top: SizeConfig.screenHeight/1.3),
+                      alignment: Alignment.bottomCenter,
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
+                      ))
+                      : SizedBox()
+                ],
               ),
             ),
             SizedBox(height: 50),
             footerMobile(context)
           ],
         ),
-      ): SingleChildScrollView(
+      ):
+      SingleChildScrollView(
         child: Column(
           children: [
             SizedBox(height: 20),
-            Center(
-              child: Container(
-                height: productList(),
-                width: SizeConfig.screenWidth / 2,
-                child: GridView.builder(
-                  shrinkWrap: true,
-                  gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 300,
-                      mainAxisExtent: 300,
-                      mainAxisSpacing: 10.0,
-                      crossAxisSpacing: 10),
-                  itemCount:
-                  cartViewModel.productListModel?.productList?.length,
-                  itemBuilder: (context, index) {
-                    final productListData = cartViewModel
-                        .productListModel?.productList?[index];
-                    return productListItems(context,
-                        productListData, index, cartViewModel);
-                  },
-                ),
+            Container(
+              height: SizeConfig.screenHeight/1.1,
+              width: SizeConfig.screenWidth / 2,
+              child: Stack(
+                children: [
+                  Center(
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      controller: _scrollController,
+                      physics: BouncingScrollPhysics(),
+                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                          maxCrossAxisExtent: 300,
+                          mainAxisExtent: 300,
+                          mainAxisSpacing: 10.0,
+                          crossAxisSpacing: 10),
+                      itemCount:
+                      cartViewModel.productListModel?.productList?.length,
+                      itemBuilder: (context, index) {
+                        _scrollController.addListener(() {
+                          if (_scrollController.position.pixels ==
+                              _scrollController.position.maxScrollExtent) {
+                            cartViewModel.onPagination(context, cartViewModel.lastPage, cartViewModel.nextPage, cartViewModel.isLoading, 'productList');
+                          }
+                        });
+                        final productListData = cartViewModel
+                            .productListModel?.productList?[index];
+                        return productListItems(context,
+                            productListData, index, cartViewModel);
+                      },
+                    ),
+                  ),
+                  cartViewModel.isLoading == true
+                      ? Container(
+                      margin: EdgeInsets.only(top: SizeConfig.screenHeight/1.3),
+                      alignment: Alignment.bottomCenter,
+                      child: CircularProgressIndicator(
+                        color: Theme.of(context).primaryColor,
+                      ))
+                      : SizedBox()
+                ],
               ),
             ),
             SizedBox(height: 20),

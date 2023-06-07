@@ -17,7 +17,7 @@ class AppRouter extends $AppRouter {
     AutoRoute(page: DetailPage.page,path: '/DetailPage'),
     AutoRoute(page: SeeAllListPages.page,path: '/SeeAllListPages'),
     AutoRoute(page: SearchPage.page,path: '/SearchPage'),
-    AutoRoute(page: BottomNavigationWidget.page,path: '/fdgdg'),
+    AutoRoute(page: EditProfile.page,path: '/EditProfile' ),
     AutoRoute(page: ProductListGallery.page,path: '/ProductListGallery',guards: [
       AutoRouteGuard.simple(
           (resolver, scope) async {

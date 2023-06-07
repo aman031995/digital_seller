@@ -77,6 +77,7 @@ class CartDetailRepository {
   Future<Result?> getProductByCategory(BuildContext context,
       String productId,
       String catId,
+      int pageNum,
       NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
@@ -86,7 +87,8 @@ class CartDetailRepository {
     Map<String, String> urlParams = {
       "{PROD_ID}": productId,
       "{APP_ID}": NetworkConstants.kAppID,
-      "{CAT_ID" : catId
+      "{CAT_ID}" : catId,
+      "{PAGE_NUM}" : '$pageNum',
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
         urlParams, NetworkConstants.kGetProductByCategory, RequestType.get,
@@ -97,7 +99,11 @@ class CartDetailRepository {
         Map<String, dynamic> map =
         (result as SuccessState).value as Map<String, dynamic>;
         if (map["data"] is Map<String, dynamic>) {
-          response.dataModal = ProductListModel.fromJson(map['data']);
+          if(productId != ""){
+            response.dataModal = ProductList.fromJson(map['data']);
+          } else {
+            response.dataModal = ProductListModel.fromJson(map['data']);
+          }
         }
         responseHandler(Result.success(response), isSuccess);
       } else {
@@ -105,6 +111,7 @@ class CartDetailRepository {
       }
     });
   }
+
 
   // GetCartList Method
   Future<Result?> getCartListData(
@@ -457,12 +464,13 @@ class CartDetailRepository {
   }
 
   Future<Result?> getFavoriteList(
-      BuildContext context, NetworkResponseHandler responseHandler) async {
+      BuildContext context, int pageNum, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
       "{USER_ID}": sharedPreferences.get("userId").toString(),
       "{APP_ID}": NetworkConstants.kAppID,
+      "{PAGE_NUM}": '$pageNum',
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
         urlParams, NetworkConstants.KGetFavourite, RequestType.get);

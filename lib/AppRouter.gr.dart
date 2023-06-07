@@ -11,8 +11,6 @@
 import 'package:auto_route/auto_route.dart' as _i16;
 import 'package:easy_stepper/easy_stepper.dart' as _i17;
 import 'package:flutter/material.dart' as _i18;
-import 'package:TychoStream/view/MobileScreen/bottom_navigation_widget.dart'
-    as _i15;
 import 'package:TychoStream/view/Products/address_list_page.dart' as _i1;
 import 'package:TychoStream/view/Products/cart_detail_page.dart' as _i2;
 import 'package:TychoStream/view/Products/favourite_list_page.dart' as _i3;
@@ -22,11 +20,13 @@ import 'package:TychoStream/view/Products/thankyou_page.dart' as _i6;
 import 'package:TychoStream/view/search/search_page.dart' as _i7;
 import 'package:TychoStream/view/WebScreen/contact_us.dart' as _i8;
 import 'package:TychoStream/view/WebScreen/DetailPage.dart' as _i9;
-import 'package:TychoStream/view/WebScreen/FAQ.dart' as _i10;
-import 'package:TychoStream/view/WebScreen/HomePageWeb.dart' as _i11;
-import 'package:TychoStream/view/WebScreen/Privacy.dart' as _i12;
-import 'package:TychoStream/view/WebScreen/Terms.dart' as _i13;
-import 'package:TychoStream/view/WebScreen/ViewAllListPages.dart' as _i14;
+import 'package:TychoStream/view/WebScreen/EditProfile.dart' as _i10;
+import 'package:TychoStream/view/WebScreen/FAQ.dart' as _i11;
+import 'package:TychoStream/view/WebScreen/HomePageWeb.dart' as _i12;
+import 'package:TychoStream/view/WebScreen/Privacy.dart' as _i13;
+import 'package:TychoStream/view/WebScreen/Terms.dart' as _i14;
+import 'package:TychoStream/view/WebScreen/ViewAllListPages.dart' as _i15;
+import 'package:TychoStream/viewmodel/profile_view_model.dart' as _i19;
 
 abstract class $AppRouter extends _i16.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -123,28 +123,41 @@ abstract class $AppRouter extends _i16.RootStackRouter {
         ),
       );
     },
+    EditProfile.name: (routeData) {
+      final args = routeData.argsAs<EditProfileArgs>(
+          orElse: () => const EditProfileArgs());
+      return _i16.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i10.EditProfile(
+          key: args.key,
+          viewmodel: args.viewmodel,
+          isEmailVerified: args.isEmailVerified,
+          isPhoneVerified: args.isPhoneVerified,
+        ),
+      );
+    },
     FAQ.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i10.FAQ(),
+        child: const _i11.FAQ(),
       );
     },
     HomePageWeb.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i11.HomePageWeb(),
+        child: const _i12.HomePageWeb(),
       );
     },
     Privacy.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i12.Privacy(),
+        child: const _i13.Privacy(),
       );
     },
     Terms.name: (routeData) {
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i13.Terms(),
+        child: const _i14.Terms(),
       );
     },
     SeeAllListPages.name: (routeData) {
@@ -154,20 +167,12 @@ abstract class $AppRouter extends _i16.RootStackRouter {
               SeeAllListPagesArgs(SeeDetail: queryParams.get('SeeDetail')));
       return _i16.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i14.SeeAllListPages(
+        child: _i15.SeeAllListPages(
           SeeDetail: args.SeeDetail,
           key: args.key,
           title: args.title,
           VideoId: args.VideoId,
         ),
-      );
-    },
-    BottomNavigationWidget.name: (routeData) {
-      final args = routeData.argsAs<BottomNavigationWidgetArgs>(
-          orElse: () => const BottomNavigationWidgetArgs());
-      return _i16.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: _i15.BottomNavigationWidget(key: args.key),
       );
     },
   };
@@ -440,7 +445,55 @@ class DetailPageArgs {
 }
 
 /// generated route for
-/// [_i10.FAQ]
+/// [_i10.EditProfile]
+class EditProfile extends _i16.PageRouteInfo<EditProfileArgs> {
+  EditProfile({
+    _i18.Key? key,
+    _i19.ProfileViewModel? viewmodel,
+    String? isEmailVerified,
+    String? isPhoneVerified,
+    List<_i16.PageRouteInfo>? children,
+  }) : super(
+          EditProfile.name,
+          args: EditProfileArgs(
+            key: key,
+            viewmodel: viewmodel,
+            isEmailVerified: isEmailVerified,
+            isPhoneVerified: isPhoneVerified,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'EditProfile';
+
+  static const _i16.PageInfo<EditProfileArgs> page =
+      _i16.PageInfo<EditProfileArgs>(name);
+}
+
+class EditProfileArgs {
+  const EditProfileArgs({
+    this.key,
+    this.viewmodel,
+    this.isEmailVerified,
+    this.isPhoneVerified,
+  });
+
+  final _i18.Key? key;
+
+  final _i19.ProfileViewModel? viewmodel;
+
+  final String? isEmailVerified;
+
+  final String? isPhoneVerified;
+
+  @override
+  String toString() {
+    return 'EditProfileArgs{key: $key, viewmodel: $viewmodel, isEmailVerified: $isEmailVerified, isPhoneVerified: $isPhoneVerified}';
+  }
+}
+
+/// generated route for
+/// [_i11.FAQ]
 class FAQ extends _i16.PageRouteInfo<void> {
   const FAQ({List<_i16.PageRouteInfo>? children})
       : super(
@@ -454,7 +507,7 @@ class FAQ extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i11.HomePageWeb]
+/// [_i12.HomePageWeb]
 class HomePageWeb extends _i16.PageRouteInfo<void> {
   const HomePageWeb({List<_i16.PageRouteInfo>? children})
       : super(
@@ -468,7 +521,7 @@ class HomePageWeb extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i12.Privacy]
+/// [_i13.Privacy]
 class Privacy extends _i16.PageRouteInfo<void> {
   const Privacy({List<_i16.PageRouteInfo>? children})
       : super(
@@ -482,7 +535,7 @@ class Privacy extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i13.Terms]
+/// [_i14.Terms]
 class Terms extends _i16.PageRouteInfo<void> {
   const Terms({List<_i16.PageRouteInfo>? children})
       : super(
@@ -496,7 +549,7 @@ class Terms extends _i16.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i14.SeeAllListPages]
+/// [_i15.SeeAllListPages]
 class SeeAllListPages extends _i16.PageRouteInfo<SeeAllListPagesArgs> {
   SeeAllListPages({
     List<String>? SeeDetail,
@@ -541,35 +594,5 @@ class SeeAllListPagesArgs {
   @override
   String toString() {
     return 'SeeAllListPagesArgs{SeeDetail: $SeeDetail, key: $key, title: $title, VideoId: $VideoId}';
-  }
-}
-
-/// generated route for
-/// [_i15.BottomNavigationWidget]
-class BottomNavigationWidget
-    extends _i16.PageRouteInfo<BottomNavigationWidgetArgs> {
-  BottomNavigationWidget({
-    _i18.Key? key,
-    List<_i16.PageRouteInfo>? children,
-  }) : super(
-          BottomNavigationWidget.name,
-          args: BottomNavigationWidgetArgs(key: key),
-          initialChildren: children,
-        );
-
-  static const String name = 'BottomNavigationWidget';
-
-  static const _i16.PageInfo<BottomNavigationWidgetArgs> page =
-      _i16.PageInfo<BottomNavigationWidgetArgs>(name);
-}
-
-class BottomNavigationWidgetArgs {
-  const BottomNavigationWidgetArgs({this.key});
-
-  final _i18.Key? key;
-
-  @override
-  String toString() {
-    return 'BottomNavigationWidgetArgs{key: $key}';
   }
 }

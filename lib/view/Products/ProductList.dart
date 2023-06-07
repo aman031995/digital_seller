@@ -30,13 +30,13 @@ class ProductListGallery extends StatefulWidget {
 
 class _ProductListGalleryState extends State<ProductListGallery> {
   CartViewModel cartViewModel = CartViewModel();
+  ScrollController _scrollController = ScrollController();
   String? checkInternet;
-
+  int pageNum = 1;
   @override
   void initState() {
-    cartViewModel.getProductListData(context);
+    cartViewModel.getProductListData(context,pageNum);
     cartViewModel.getCartCount(context);
-    cartViewModel.getProductList(context);
     super.initState();
   }
 
@@ -86,50 +86,90 @@ class _ProductListGalleryState extends State<ProductListGallery> {
               child: Column(
                 children: [
                   Container(
-                    height: productListMobile(),
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      padding: EdgeInsets.only(left: 10,right: 10,top: 10),
-                      physics: NeverScrollableScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2, childAspectRatio: 0.62,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10),
-                      itemCount:
-                      viewmodel.productListModel?.productList?.length,
-                      itemBuilder: (context, index) {
-                        final productListData = cartViewModel
-                            .productListModel?.productList?[index];
-                        return productListItems(context,
-                            productListData, index, viewmodel);
-                      },
+                    height:SizeConfig.screenHeight,
+                    child: Stack(
+                      children: [
+                        GridView.builder(
+                          shrinkWrap: true,
+                          controller: _scrollController,
+                          padding: EdgeInsets.only(left: 10,right: 10,top: 10),
+                          physics: BouncingScrollPhysics(),
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2, childAspectRatio: 0.56,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10),
+                          itemCount:
+                          viewmodel.productListModel?.productList?.length,
+                          itemBuilder: (context, index) {
+                            _scrollController.addListener(() {
+                              if (_scrollController.position.pixels ==
+                                  _scrollController.position.maxScrollExtent) {
+                                viewmodel.onPagination(context, viewmodel.lastPage, viewmodel.nextPage, viewmodel.isLoading, 'productList');
+                              }
+                            });
+                            final productListData = viewmodel
+                                .productListModel?.productList?[index];
+                            return productListItems(context,
+                                productListData, index, viewmodel);
+                          },
+                        ),
+                        viewmodel.isLoading == true
+                            ? Container(
+                            margin: EdgeInsets.only(top: SizeConfig.screenHeight/1.2),
+                            alignment: Alignment.bottomCenter,
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).primaryColor,
+                            ))
+                            : SizedBox()
+                      ],
                     ),
                   ),
                   SizedBox(height: 50),
                 footerMobile(context)
                 ],
               ),
-            ): SingleChildScrollView(
+            ):
+            SingleChildScrollView(
                   child: Column(
                     children: [
-                      Center(
-                      child: Container(
-                        height: productList(),
+                      Container(
+                        height:SizeConfig.screenHeight/1.1,
                         width: SizeConfig.screenWidth/2,
-                        child: GridView.builder(
-              shrinkWrap: false,
-              physics: NeverScrollableScrollPhysics(),
+                        child: Stack(
+                          children: [
+                            Center(
+                            child: GridView.builder(
+                                    shrinkWrap: true,
+                              controller: _scrollController,
+                              physics: BouncingScrollPhysics(),
+
               padding: EdgeInsets.only(top: 30),
               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 280,mainAxisExtent: 320,mainAxisSpacing: 10.0,crossAxisSpacing: 10),
               itemCount: viewmodel.productListModel?.productList?.length,
               itemBuilder: (context, index) {
-                        final productListData = cartViewModel
-                            .productListModel?.productList?[index];
-                        return productListItems(context,
-                            productListData, index, viewmodel);
+                _scrollController.addListener(() {
+                  if (_scrollController.position.pixels ==
+                            _scrollController.position.maxScrollExtent) {
+                    viewmodel.onPagination(context, viewmodel.lastPage, viewmodel.nextPage, viewmodel.isLoading, 'productList');
+                  }
+                });
+                            final productListData = cartViewModel
+                                .productListModel?.productList?[index];
+                            return productListItems(context,
+                                productListData, index, viewmodel);
               },
-            ),
-                      )),
+            )),
+                            viewmodel.isLoading == true
+                                ? Container(
+                                margin: EdgeInsets.only(top: SizeConfig.screenHeight/1.15),
+                                alignment: Alignment.bottomCenter,
+                                child: CircularProgressIndicator(
+                                  color: Theme.of(context).primaryColor,
+                                ))
+                                : SizedBox()
+                          ],
+                        ),
+                      ),
                       SizedBox(height: 50),
                       footerDesktop()
                     ],
@@ -270,7 +310,7 @@ double productList(){
     if (ModalRoute.of(context)?.settings.arguments != null) {
       final Map<String, dynamic> data =
       ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-      cartViewModel.getProductList(context);
+      cartViewModel.getProductList(context,pageNum);
     }
   }
 }

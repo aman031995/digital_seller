@@ -865,6 +865,7 @@ class _AddressListPageState extends State<AddressListPage> {
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
+    print(response.message);
     print('Error Response: $response');
     Fluttertoast.showToast(msg: "ERROR: ${response.code} - ${response.message!}", toastLength: Toast.LENGTH_SHORT);
   }

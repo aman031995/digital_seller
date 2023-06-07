@@ -213,12 +213,16 @@ Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
                 false, onPressed: () {
               isProfile = true;
               if (isProfile == true) {
-                GoRouter.of(context).pushNamed(
-                  RoutesName.EditProfille,queryParameters: {
-                    'isPhoneVerified':"${profileViewModel.userInfoModel?.isPhoneVerified}",
-                  'isEmailVerified':"${profileViewModel.userInfoModel?.isEmailVerified}"
-                }
-                );
+                context.pushRoute(EditProfile(
+                  isEmailVerified: '${profileViewModel.userInfoModel?.isPhoneVerified}',
+                  isPhoneVerified: '${profileViewModel.userInfoModel?.isEmailVerified}'
+                ));
+                // GoRouter.of(context).pushNamed(
+                //   RoutesName.EditProfille,queryParameters: {
+                //     'isPhoneVerified':"${profileViewModel.userInfoModel?.isPhoneVerified}",
+                //   'isEmailVerified':"${profileViewModel.userInfoModel?.isEmailVerified}"
+                // }
+                // );
               }
             }),
             SizedBox(height: 5),

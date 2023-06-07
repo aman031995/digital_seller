@@ -8,6 +8,7 @@ import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppTextField.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
@@ -17,12 +18,13 @@ import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
+import 'package:auto_route/annotations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
+@RoutePage()
 class EditProfile extends StatefulWidget {
   ProfileViewModel? viewmodel;
   String? isEmailVerified;
@@ -131,8 +133,10 @@ class _EditProfileState extends State<EditProfile> {
                           _profileImageView(viewmodel),
                           SizedBox(height: 40),
                           _editFormField(viewmodel, authVM),
-                              SizedBox(height: 220),
-                       footerDesktop()
+                              SizedBox(height:ResponsiveWidget.isMediumScreen(context)
+                                  ?100: 220),
+                              ResponsiveWidget.isMediumScreen(context)
+                                  ?  footerMobile(context) : footerDesktop()
                         ]),
                       ))));
         }));
@@ -141,7 +145,8 @@ class _EditProfileState extends State<EditProfile> {
   // form field
   _editFormField(ProfileViewModel viewmodel, AuthViewModel authVM) {
     return Container(
-        width: SizeConfig.screenWidth/3.8,
+        width: ResponsiveWidget.isMediumScreen(context)
+            ? SizeConfig.screenWidth/1.1  :SizeConfig.screenWidth/3.8,
         margin: const EdgeInsets.all(10),
         child: Column(children: [
           StreamBuilder(
@@ -258,7 +263,8 @@ class _EditProfileState extends State<EditProfile> {
                 return appButton(
                     context,
                     StringConstant.Save,
-                    SizeConfig.screenWidth/4.5,
+                    ResponsiveWidget.isMediumScreen(context)
+                        ? SizeConfig.screenWidth/1.5  :SizeConfig.screenWidth/4.5,
                     60,
                     LIGHT_THEME_COLOR,
                     WHITE_COLOR,
