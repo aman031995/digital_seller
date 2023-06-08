@@ -27,13 +27,13 @@ class ProductListGallery extends StatefulWidget {
   @override
   State<ProductListGallery> createState() => _ProductListGalleryState();
 }
-
 class _ProductListGalleryState extends State<ProductListGallery> {
   CartViewModel cartViewModel = CartViewModel();
   ScrollController _scrollController = ScrollController();
   String? checkInternet;
   int pageNum = 1;
-  @override
+
+
   void initState() {
     cartViewModel.getProductListData(context,pageNum);
     cartViewModel.getCartCount(context);
@@ -42,19 +42,21 @@ class _ProductListGalleryState extends State<ProductListGallery> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     AppNetwork.checkInternet((isSuccess, result) {
       setState(() {
         checkInternet = result;
       });
     });
+
     // handle push notification/notification scenerio to show data
     receivedArgumentsNotification();
-    return ChangeNotifierProvider<CartViewModel>(
+    return checkInternet == "Offline"
+        ? NOInternetScreen()
+        :ChangeNotifierProvider<CartViewModel>(
         create: (BuildContext context) => cartViewModel,
         child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
-          return checkInternet == "Offline"
-                ? NOInternetScreen()
-                : Scaffold(
+          return  Scaffold(
             appBar: getAppBarWithBackBtn(
                 context: context,
                 itemCount: viewmodel.cartItemCount,
@@ -63,19 +65,14 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                 isFavourite: true,
                 title: StringConstant.forumTitle,
                 onCartPressed: () {
-                  // GoRouter.of(context).pushNamed(RoutesName.CartDetails, queryParameters: {
-                  //   'itemCount':'${viewmodel.cartItemCount}',
-                  // });
                   context.router.push(CartDetail(
                       itemCount: '${viewmodel.cartItemCount}'
                   ));
                 },
                 onFavPressed: (){
                   context.router.push(FavouriteListPage());
-                  // GoRouter.of(context).pushNamed(RoutesName.fav);
                 },
                 onBackPressed: () {
-                  Navigator.pop(context, true);
                 }),
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
             body: viewmodel.productListModel?.productList != null
@@ -184,78 +181,24 @@ class _ProductListGalleryState extends State<ProductListGallery> {
           );
         }));
   }
-double productList(){
-    int count=(cartViewModel.productListModel!.productList!.length/4).ceil();
-    return 350.0 * count;
-}
-  double productListMobile(){
-    int count=(cartViewModel.productListModel!.productList!.length/2).ceil();
-    return 320.0 * count;
-  }
-//Positioned(
-//                         // right: 10,
-//                         top: 5,
-//                         child: GestureDetector(
-//                             onTap: () {
-//                               viewmodel.addToFavourite(
-//                                   context,
-//                                   "${productListData?.productId}",
-//                                   "${productListData?.productDetails?.productColorId}",
-//                                   productListData?.productDetails
-//                                       ?.isFavorite ==
-//                                       true
-//                                       ? false
-//                                       : true,
-//                                   'productList');
-//                             },
-//                             child: Container(
-//                                 decoration: BoxDecoration(
-//                                     shape: BoxShape.circle,
-//                                     color: Theme.of(context)
-//                                         .canvasColor),
-//                                 height: 35,
-//                                 width: 35,
-//                                 child: Icon(Icons.favorite,
-//                                     color: productListData
-//                                         ?.productDetails
-//                                         ?.isFavorite ==
-//                                         true
-//                                         ? Colors.red
-//                                         : GREY_COLOR,
-//                                     size: 25))))
+
   Widget productListItems(BuildContext context,
       ProductList? productListData, int index, CartViewModel viewmodel) {
     return  Stack(
       children: [
         GestureDetector(
             onTap: () {
-              // context.router.push(
-              //   Appmenu(
-              //       bookId:"1",
-              //       query: [
-              //         '${viewmodel.cartItemCount}','${productListData?.productDetails?.variantId}','${productListData?.productDetails?.productColor}'
-              //       ]
-              //   ),
-              // );
               context.router.push(
                 ProductDetailPage(
                    productId: '${productListData?.productId}',
                   productdata: ['${viewmodel.cartItemCount}','${productListData?.productDetails?.variantId}','${productListData?.productDetails?.productColor}'],
                 ) ,
               );
-              // GoRouter.of(context).pushNamed(RoutesName.productDetails, queryParameters: {
-              //   'itemCount':'${viewmodel.cartItemCount}',
-              //   'productId':'${productListData?.productId}',
-              //       'variantId':'${productListData?.productDetails?.variantId}',
-              //   'productColor':'${productListData?.productDetails?.productColor}'
-              // });
             },
             child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5), color: Theme.of(context).cardColor.withOpacity(0.7),
             ),
-
-            // margin: EdgeInsets.only(left: 20,right: 20,top: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[

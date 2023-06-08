@@ -6,6 +6,7 @@ import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/view/Products/cart_detail_page.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
+import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:auto_route/annotations.dart';
@@ -51,8 +52,8 @@ class _ThankYouPageState extends State<ThankYouPage> {
             // Navigator.pushNamedAndRemoveUntil(
             //     context, RoutesName.productPage, (route) => false);
           }),
-      body: ChangeNotifierProvider<CartViewModel>(
-          create: (BuildContext context) => thankYouModel,
+      body: ChangeNotifierProvider.value(
+          value: thankYouModel,
           child: Consumer<CartViewModel>(builder: (context, thankyoumodel, _) {
             return WillPopScope(
                 onWillPop: _willPopCallback,

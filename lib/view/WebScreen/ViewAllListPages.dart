@@ -71,11 +71,10 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final authVM = Provider.of<AuthViewModel>(context);
-    return ChangeNotifierProvider<HomeViewModel>(
-        create: (BuildContext context) => homeView,
+    return ChangeNotifierProvider.value(
+        value : homeView,
         child: Consumer<HomeViewModel>(builder: (context, homeViewModel, _) {
-          return homeViewModel != null
-              ? GestureDetector(
+          return  GestureDetector(
                   onTap: () {
                     if (isSearch == true) {
                       isSearch = false;
@@ -90,9 +89,6 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                   child: Scaffold(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
                     appBar: homePageTopBar(),
-                    body: Scaffold(
-                        // key: _scaffoldKey,
-                        // drawer: AppMenu(homeViewModel: homeViewModel),
                         body: Stack(
                           children: [
                             homeViewModel.homePageDataModel != null
@@ -279,10 +275,10 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
                                   searchController!,
                                   setState)
                           ],
-                        )),
+                        ),
                   ),
-                )
-              : Container();
+                );
+
         }));
   }
   homePageTopBar() {

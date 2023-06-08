@@ -46,6 +46,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     AppNetwork.checkInternet((isSuccess, result) {
       setState(() {
         checkInternet = result;
@@ -53,12 +54,17 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
     });
     // handle push notification/notification scenerio to show data
     // receivedArgumentsNotification();
-    return checkInternet == "Offline"
-        ? NOInternetScreen()
-        : Scaffold(
+    return
+      checkInternet == "Offline"
+          ? NOInternetScreen()
+          : ChangeNotifierProvider.value(
+          value: cartViewModel,
+          child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
+            return
+       Scaffold(
       appBar: getAppBarWithBackBtn(
           context: context,
-          itemCount: cartViewModel.cartItemCount,
+          itemCount: viewmodel.cartItemCount,
           isShopping: true,
           isBackBtn: false,
           isFavourite: false,
@@ -69,7 +75,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
             //   'itemCount':'${viewmodel.cartItemCount}',
             // });
             context.router.push(CartDetail(
-                itemCount: '${cartViewModel.cartItemCount}'
+                itemCount: '${viewmodel.cartItemCount}'
             ));
             // AppNavigator.push(
             //     context, CartDetail(itemCount: viewmodel.cartItemCount),
@@ -84,8 +90,8 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
       backgroundColor: Theme
           .of(context)
           .scaffoldBackgroundColor,
-      body: cartViewModel.productListModel?.productList != null
-          ? cartViewModel.productListModel!.productList!.length > 0
+      body: viewmodel.productListModel?.productList != null
+          ? viewmodel.productListModel!.productList!.length > 0
           ?ResponsiveWidget.isMediumScreen(context)
           ?
       SingleChildScrollView(
@@ -105,21 +111,21 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                         mainAxisSpacing: 10,
                         crossAxisSpacing: 10),
                     itemCount:
-                    cartViewModel.productListModel?.productList?.length,
+                    viewmodel.productListModel?.productList?.length,
                     itemBuilder: (context, index) {
                       _scrollController.addListener(() {
                         if (_scrollController.position.pixels ==
                             _scrollController.position.maxScrollExtent) {
-                          cartViewModel.onPagination(context, cartViewModel.lastPage, cartViewModel.nextPage, cartViewModel.isLoading, 'productList');
+                          viewmodel.onPagination(context, viewmodel.lastPage, viewmodel.nextPage, viewmodel.isLoading, 'productList');
                         }
                       });
-                      final productListData = cartViewModel
+                      final productListData = viewmodel
                           .productListModel?.productList?[index];
                       return productListItems(context,
-                          productListData, index, cartViewModel);
+                          productListData, index, viewmodel);
                     },
                   ),
-                  cartViewModel.isLoading == true
+                  viewmodel.isLoading == true
                       ? Container(
                       margin: EdgeInsets.only(top: SizeConfig.screenHeight/1.3),
                       alignment: Alignment.bottomCenter,
@@ -155,22 +161,22 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                           mainAxisSpacing: 10.0,
                           crossAxisSpacing: 10),
                       itemCount:
-                      cartViewModel.productListModel?.productList?.length,
+                      viewmodel.productListModel?.productList?.length,
                       itemBuilder: (context, index) {
                         _scrollController.addListener(() {
                           if (_scrollController.position.pixels ==
                               _scrollController.position.maxScrollExtent) {
-                            cartViewModel.onPagination(context, cartViewModel.lastPage, cartViewModel.nextPage, cartViewModel.isLoading, 'productList');
+                            viewmodel.onPagination(context, viewmodel.lastPage, viewmodel.nextPage, viewmodel.isLoading, 'productList');
                           }
                         });
-                        final productListData = cartViewModel
+                        final productListData = viewmodel
                             .productListModel?.productList?[index];
                         return productListItems(context,
-                            productListData, index, cartViewModel);
+                            productListData, index, viewmodel);
                       },
                     ),
                   ),
-                  cartViewModel.isLoading == true
+                  viewmodel.isLoading == true
                       ? Container(
                       margin: EdgeInsets.only(top: SizeConfig.screenHeight/1.3),
                       alignment: Alignment.bottomCenter,
@@ -193,16 +199,9 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
           : Center(
         child: ThreeArchedCircle(size: 45.0),
       ),
-    );
+    );}));
   }
-  double productList(){
-    int count=(cartViewModel.productListModel!.productList!.length/4).ceil();
-    return 350.0 * count;
-  }
-  double productListMobile(){
-    int count=(cartViewModel.productListModel!.productList!.length/2).ceil();
-    return 320.0 * count;
-  }
+
   //ProductListItems
   Widget productListItems(BuildContext context,ProductList? productListData, int index,
       CartViewModel viewmodel) {
@@ -216,14 +215,6 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                   productdata: ['${viewmodel.cartItemCount}','${productListData?.productDetails?.variantId}','${productListData?.productDetails?.productColor}'],
                 ) ,
               );
-              // GoRouter.of(context).pushNamed(
-              //     RoutesName.productDetails, queryParameters: {
-              //   'itemCount': '${viewmodel.cartItemCount}',
-              //   'productId': '${productListData?.productId}',
-              //   'variantId': '${productListData?.productDetails?.variantId}',
-              //   'productColor': '${productListData?.productDetails
-              //       ?.productColor}'
-              // });
             },
             child: Container(
               decoration: BoxDecoration(
@@ -285,10 +276,3 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
     );
   }
 }
-  // receivedArgumentsNotification() {
-  //   if (ModalRoute.of(context)?.settings.arguments != null) {
-  //     final Map<String, dynamic> data =
-  //         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-  //     cartViewModel.getFavList(context);
-  //   }
-  // }

@@ -70,12 +70,12 @@ class _CardMovieHomeState extends State<CardMovieHome> {
           }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.get('token') != null) {
-      GoRouter.of(context).pushNamed(RoutesName.DeatilPage, queryParameters: {
-        'movieID': '${widget.moviesList?.youtubeVideoId}',
-        'VideoId': '${widget.moviesList?.videoId}',
-        'Title': '${widget.moviesList?.videoTitle}',
-        'Desc': '${widget.moviesList?.videoDescription}'
-      });
+      // GoRouter.of(context).pushNamed(RoutesName.DeatilPage, queryParameters: {
+      //   'movieID': '${widget.moviesList?.youtubeVideoId}',
+      //   'VideoId': '${widget.moviesList?.videoId}',
+      //   'Title': '${widget.moviesList?.videoTitle}',
+      //   'Desc': '${widget.moviesList?.videoDescription}'
+      // });
     }
     //itemCount:state.queryParameters['itemCount'],
     //               productId: state.queryParameters['productId'],

@@ -1,6 +1,10 @@
+import 'package:TychoStream/AppRouter.gr.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
+import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/view/widgets/AppDialog.dart';
+import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
@@ -55,7 +59,7 @@ class _MenuListState extends State<MenuList> {
                         ) : SizedBox();
                       }))
                   ])),
-          Expanded(flex: 3, child: versionWidget( context))])
+         ])
             : Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor)));
   }
 
@@ -85,31 +89,26 @@ class _MenuListState extends State<MenuList> {
   // method of menu selection handling
   void onItemSelection(BuildContext context, Menu? appMenu, HomeViewModel homeViewModel) {
     if (appMenu != null) {
-      // CommonMethods.breakUrls(appMenu.url ?? '').then((url) {
-      //   if (url.path == RoutesName.notifysetting) {
-      //     AppNavigator.pushNamed(context, url.path, arguments: {'title': appMenu.title});
-      //   } else if(url.path.contains('faq') == true){
-      //     homeViewModel.openWebHtmlView(context, 'faq', title: 'FAQ');
-      //   } else if (appMenu.url?.contains('privacy_policy') == true) {
-      //     homeViewModel.openWebHtmlView(context, url.path, title: appMenu.title);
-      //   } else if (appMenu.url?.contains('terms_condition') == true){
-      //     homeViewModel.openWebHtmlView(context, url.path, title: appMenu.title);
-      //   } else if (url.path.contains('about_us') == true) {
-      //     homeViewModel.openWebHtmlView(context, 'about_us', title: appMenu.title);
-      //   } else if (url.path == RoutesName.editProfile){
-      //     AppNavigator.pushNamed(context, url.path, arguments: {'title': appMenu.title}, screenName: RouteBuilder.editProfile);
-      //   } else if (url.path == RoutesName.contactUs){
-      //     AppNavigator.pushNamed(context, url.path, arguments: {'title': appMenu.title}, screenName: RouteBuilder.contactUs);
-      //   } else if (url.path == RoutesName.pushNotification){
-      //     AppNavigator.pushNamed(context, url.path, arguments: {'title': appMenu.title}, screenName: RouteBuilder.notificationPage);
-      //   } else if (url.path == RoutesName.bottomNavigation){
-      //     Navigator.of(context).pop();
-      //   } else if (appMenu.title!.contains('Share') == true){
-      //     Share.share(appMenu.url ?? '');
-      //   } else {
-      //     AppNavigator.push(context, AppWebView(url: appMenu.url! ?? '', pageName: appMenu.title ?? '', isBack: true));
-      //   }
-      // });
+      CommonMethods.breakUrls(appMenu.url ?? '').then((url) {
+       if(url.path.contains('faq') == true){
+         // homeViewModel.openWebHtmlView(context, 'faq', title: 'FAQ');
+        } else if (appMenu.url?.contains('privacy_policy') == true) {
+          //homeViewModel.openWebHtmlView(context, url.path, title: appMenu.title);
+        } else if (appMenu.url?.contains('terms_condition') == true){
+         // homeViewModel.openWebHtmlView(context, url.path, title: appMenu.title);
+        } else if (url.path.contains('about_us') == true) {
+         // homeViewModel.openWebHtmlView(context, 'about_us', title: appMenu.title);
+        } else if (url.path == RoutesName.EditProfille){
+         context.router.push(EditProfile());
+         // AppNavigator.pushNamed(context, url.path, arguments: {'title': appMenu.title}, screenName: RouteBuilder.editProfile);
+        } else if (url.path == RoutesName.ContactUs){
+         // AppNavigator.pushNamed(context, url.path, arguments: {'title': appMenu.title}, screenName: RouteBuilder.contactUs);
+        }  else if (appMenu.title!.contains('Share') == true){
+          Share.share(appMenu.url ?? '');
+        } else {
+          //AppNavigator.push(context, AppWebView(url: appMenu.url! ?? '', pageName: appMenu.title ?? '', isBack: true));
+        }
+      });
     }
   }
 

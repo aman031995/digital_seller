@@ -126,7 +126,7 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
                     :
 
                 GoRouter.of(context)
-                    .pushNamed(RoutesName.HomeViewPage, queryParameters: {
+                    .pushNamed(RoutesName.HomeViewPage, queryParams: {
                   'title': '${widget.trayTitle}',
                   'trayId':'${widget.trayId}',
                 },

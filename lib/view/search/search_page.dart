@@ -35,6 +35,7 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: Size.fromHeight(55.0), // here the desired height

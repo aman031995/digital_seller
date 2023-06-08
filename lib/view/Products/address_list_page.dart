@@ -17,6 +17,7 @@ import 'package:TychoStream/view/Products/cart_detail_page.dart';
 import 'package:TychoStream/view/Products/shipping_address_page.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
+import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
@@ -88,8 +89,8 @@ class _AddressListPageState extends State<AddressListPage> {
     return  checkInternet == "Offline"
         ? NOInternetScreen()
         :
-    ChangeNotifierProvider<CartViewModel>(
-        create: (BuildContext context) => cartViewModel,
+    ChangeNotifierProvider.value(
+        value: cartViewModel,
         child: Consumer<CartViewModel>(builder: (context, cartViewData, _) {
           cartViewModel.addressListModel?.length==0?null  : addressId=cartViewModel.addressListModel?[0].addressId;
           return
@@ -308,30 +309,6 @@ class _AddressListPageState extends State<AddressListPage> {
                                                     onChanged: (val) {
                                                       print("Radio Tile pressed $val");
                                                       if (val == 2) {
-                                                        // showDialog(
-                                                        //   context: context,
-                                                        //   builder: (BuildContext context) {
-                                                        //     return AlertDialog(
-                                                        //       backgroundColor: Theme.of(context).cardColor,
-                                                        //       title: Text('Cod',style: TextStyle(color: Theme.of(context).canvasColor),),
-                                                        //       content: Text(
-                                                        //           'Cod is not available ',style: TextStyle(color: Theme.of(context).canvasColor)),
-                                                        //       actions: [
-                                                        //         ElevatedButton(
-                                                        //           child: Text('Close',style: TextStyle(color: Theme.of(context).canvasColor)),
-                                                        //           onPressed: () {
-                                                        //             val = 1;
-                                                        //             Navigator.of(context)
-                                                        //                 .pop();
-                                                        //           },
-                                                        //     style: ButtonStyle(
-                                                        //     backgroundColor:
-                                                        //     MaterialStateProperty.all(
-                                                        //     Theme.of(context).primaryColor))),
-                                                        //       ],
-                                                        //     );
-                                                        //   },
-                                                        // );
                                                         setSelectedRadioTile(2);
                                                       }
                                                     },
@@ -407,8 +384,6 @@ class _AddressListPageState extends State<AddressListPage> {
                                           var amount = double.parse(cartViewModel.cartListData?.checkoutDetails?.totalPayableAmount ?? '1');
                                           if (amount != 0 && cartViewModel.addressListModel?.length!=0) {
                                             createOrder(context);
-                                            //AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.thankYouPage);
-                                            // cartViewModel.createOrder(context, _razorPay);
                                           }
                                         }
 
@@ -626,30 +601,6 @@ class _AddressListPageState extends State<AddressListPage> {
                                                           onChanged: (val) {
                                                             print("Radio Tile pressed $val");
                                                             if (val == 2) {
-                                                              // showDialog(
-                                                              //   context: context,
-                                                              //   builder: (BuildContext context) {
-                                                              //     return AlertDialog(
-                                                              //       backgroundColor: Theme.of(context).cardColor,
-                                                              //       title: Text('Cod',style: TextStyle(color: Theme.of(context).canvasColor),),
-                                                              //       content: Text(
-                                                              //           'Cod is not available ',style: TextStyle(color: Theme.of(context).canvasColor)),
-                                                              //       actions: [
-                                                              //         ElevatedButton(
-                                                              //           child: Text('Close',style: TextStyle(color: Theme.of(context).canvasColor)),
-                                                              //           onPressed: () {
-                                                              //             val = 1;
-                                                              //             Navigator.of(context)
-                                                              //                 .pop();
-                                                              //           },
-                                                              //     style: ButtonStyle(
-                                                              //     backgroundColor:
-                                                              //     MaterialStateProperty.all(
-                                                              //     Theme.of(context).primaryColor))),
-                                                              //       ],
-                                                              //     );
-                                                              //   },
-                                                              // );
                                                               setSelectedRadioTile(2);
                                                             }
                                                           },

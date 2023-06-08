@@ -40,6 +40,7 @@ import 'package:url_strategy/url_strategy.dart';
 import 'view/WebScreen/contact_us.dart';
 String? image;
 String? names;
+String? token;
 bool isLogin = false;
 bool isLogins = false;
 bool isSearch = false;

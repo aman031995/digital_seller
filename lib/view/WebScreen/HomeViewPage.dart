@@ -151,7 +151,7 @@ class _HomeViewPageState extends State<HomeViewPage> {
                           itemBuilder: (context, index) {
                             return InkWell(
                               onTap: () {
-                                GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParameters: {
+                                GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParams: {
                                   'movieID':"${categoryView.getPreviousPageList?[index].youtubeVideoId}",
                                   'VideoId':"${categoryView.getPreviousPageList?[index].videoId}",
                                   'Title':"${categoryView.getPreviousPageList?[index].videoTitle}",
@@ -202,16 +202,16 @@ class _HomeViewPageState extends State<HomeViewPage> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
-                            GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParameters: {
-                              'movieID':"${categoryView.getPreviousPageList?[index].youtubeVideoId}",
-                              'VideoId':"${categoryView.getPreviousPageList?[index].videoId}",
-                              'Title':"${categoryView.getPreviousPageList?[index].videoTitle}",
-                              'Desc':"${categoryView.getPreviousPageList?[index].videoDescription}"
-                              // 'movieID':"${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}",
-                              // 'VideoId':'${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
-                              // 'Title':"${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}",
-                              // 'Desc':'${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
-                            });
+                            // GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParameters: {
+                            //   'movieID':"${categoryView.getPreviousPageList?[index].youtubeVideoId}",
+                            //   'VideoId':"${categoryView.getPreviousPageList?[index].videoId}",
+                            //   'Title':"${categoryView.getPreviousPageList?[index].videoTitle}",
+                            //   'Desc':"${categoryView.getPreviousPageList?[index].videoDescription}"
+                            //   // 'movieID':"${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}",
+                            //   // 'VideoId':'${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
+                            //   // 'Title':"${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}",
+                            //   // 'Desc':'${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
+                            // });
                           },
                           child: Container(
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),

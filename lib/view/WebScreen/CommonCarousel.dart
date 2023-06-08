@@ -1,3 +1,6 @@
+import 'package:TychoStream/AppRouter.gr.dart';
+import 'package:TychoStream/model/data/BannerDataModel.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -110,13 +113,16 @@ class _CommonCarouselState extends State<CommonCarousel> {
         .map((element) =>  InkWell(
       focusNode: carouselFocus,
       onTap: () async {
-        print(current);
-        url = '${homeViewModel.bannerDataModal?.bannerList?[current].bannerUrl }';
-        if (await canLaunch(url)) {
-          await launch(url);
-        } else {
-          throw 'Could not launch $url';
-        }},
+        // print(current);
+        // url = '${homeViewModel.bannerDataModal?.bannerList?[current].bannerUrl }';
+        // if (await canLaunch(url)) {
+        //   await launch(url);
+        // } else {
+        //   throw 'Could not launch $url';
+        // }
+        redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
+
+        },
       child:
       Container(
         height: SizeConfig.screenHeight/3,width: SizeConfig.screenWidth,
@@ -131,7 +137,35 @@ class _CommonCarouselState extends State<CommonCarousel> {
     )
         .toList();
   }
+  // image click redirection handling
+  void redirectPage(BannerList? element) {
+    if (element != null) {
 
+      if(element.bannerType == 'Product'){
+        if(element.productId != ""){
+          context.router.push(Banner_product(
+            productId: element.productId,
+            productdata: '${element.catId}'
+          ));
+         // AppNavigator.push(context, ProductDetailPage(bannerData: element));
+        } else {
+          context.router.push(ProductListGallery(
+          ));
+         // AppNavigator.push(context, ProductListGallery(bannerListData: element));
+        }
+      } else if (element.bannerType == 'Video') {
+        // AppNavigator.push(context, MovieDetailPage(
+        //     isHomeBanner: true,
+        //     movieID: element.videoUrl,
+        //     bannerList:
+        //     homeViewModel.bannerDataModal?.bannerList?[current]
+        // ));
+      } else {
+        launch(element.bannerUrl! , forceSafariVC: false);
+      }
+
+    }
+  }
   //--MobileCarousel--//
   Widget carouselImageMobile() {
     var imageSliders = generateImageTileMobile(context);
@@ -162,13 +196,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
         .map((element) => InkWell(
         focusNode: carouselFocus,
         onTap: () async {
-          print(current);
-          url = '${homeViewModel.bannerDataModal?.bannerList?[current].bannerUrl }';
-          if (await canLaunch(url)) {
-            await launch(url);
-          } else {
-            throw 'Could not launch $url';
-          }},
+          redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);},
         child: Container(
           height: SizeConfig.screenHeight/3,width: SizeConfig.screenWidth,
           decoration: BoxDecoration(

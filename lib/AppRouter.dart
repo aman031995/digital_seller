@@ -13,11 +13,44 @@ class AppRouter extends $AppRouter {
   @override
   // TODO: implement routes
   List<AutoRoute> routes = [
-    AutoRoute(page: HomePageWeb.page, path: '/'),
+    AutoRoute(page: HomePageWeb.page, path: '/',initial: true),
     AutoRoute(page: DetailPage.page,path: '/DetailPage'),
     AutoRoute(page: SeeAllListPages.page,path: '/SeeAllListPages'),
-    AutoRoute(page: SearchPage.page,path: '/SearchPage'),
-    AutoRoute(page: EditProfile.page,path: '/EditProfile' ),
+    AutoRoute(page: SearchPage.page,path: '/SearchPage',guards: [
+      AutoRouteGuard.simple(
+            (resolver, scope) async {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token') != null) {
+            resolver.next();
+          } else {
+            ToastMessage.message("Please Login User");
+          }
+        },
+      )]),
+    AutoRoute(page: Banner_product.page,path: '/banner_product/:bannerId',guards: [
+      AutoRouteGuard.simple(
+            (resolver, scope) async {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token') != null) {
+            resolver.next();
+          } else {
+            ToastMessage.message("Please Login User");
+          //  resolver.redirect(HomePageWeb());
+          }
+        },
+      )]),
+    AutoRoute(page: EditProfile.page,path: '/EditProfile',guards: [
+      AutoRouteGuard.simple(
+            (resolver, scope) async {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token') != null) {
+            resolver.next();
+          } else {
+            ToastMessage.message("Please Login User");
+
+          }
+        },
+      )] ),
     AutoRoute(page: ProductListGallery.page,path: '/ProductListGallery',guards: [
       AutoRouteGuard.simple(
           (resolver, scope) async {
@@ -26,6 +59,7 @@ class AppRouter extends $AppRouter {
           resolver.next();
         } else {
            ToastMessage.message("Please Login User");
+           //resolver.redirect(HomePageWeb());
         }
       },
     )]),
@@ -37,7 +71,6 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-            resolver.redirect(HomePageWeb());
           }
         },
       )]),
@@ -50,7 +83,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-            resolver.redirect(HomePageWeb());
+
           }
         },
       )]),
@@ -62,7 +95,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-            resolver.redirect(HomePageWeb());
+            //resolver.redirect(HomePageWeb());
           }
         },
       )]),
@@ -74,7 +107,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-            resolver.redirect(HomePageWeb());
+           // resolver.redirect(HomePageWeb());
           }
         },
       )]),
@@ -86,7 +119,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-            resolver.redirect(HomePageWeb());
+           // resolver.redirect(HomePageWeb());
           }
         },
       )]),
@@ -98,7 +131,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-            resolver.redirect(HomePageWeb());
+           // resolver.redirect(HomePageWeb());
           }
         },
       )]),
@@ -110,7 +143,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-            resolver.redirect(HomePageWeb());
+           // resolver.redirect(HomePageWeb());
           }
         },
       )]),
@@ -122,7 +155,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-            resolver.redirect(HomePageWeb());
+           // resolver.redirect(HomePageWeb());
           }
         },
       )]),

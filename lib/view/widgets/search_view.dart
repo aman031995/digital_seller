@@ -63,18 +63,6 @@ Widget searchView(BuildContext context, HomeViewModel viewmodel, bool isSearch,
                     return GestureDetector(
                         onTap: () async {
                           isSearch = false;
-                          GoRouter.of(context).pushNamed(
-                              RoutesName.DeatilPage,
-                              queryParameters: {
-                                'movieID':
-                                '${viewmodel.searchDataModel?.searchList?[index].youtubeVideoId}',
-                                'VideoId':
-                                '${viewmodel.searchDataModel?.searchList?[index].videoId}',
-                                'Title':
-                                '${viewmodel.searchDataModel?.searchList?[index].videoTitle}',
-                                'Desc':
-                                '${viewmodel.searchDataModel?.searchList?[index].videoDescription}'
-                              });
                           setState(() {
                             searchController.clear();
                           });
@@ -141,18 +129,6 @@ Widget searchView(BuildContext context, HomeViewModel viewmodel, bool isSearch,
                             return GestureDetector(
                                 onTap: () async {
                                   isSearch = false;
-                                  GoRouter.of(context).pushNamed(
-                                      RoutesName.DeatilPage,
-                                      queryParameters: {
-                                        'movieID':
-                                        '${viewmodel.searchDataModel?.searchList?[index].youtubeVideoId}',
-                                        'VideoId':
-                                        '${viewmodel.searchDataModel?.searchList?[index].videoId}',
-                                        'Title':
-                                        '${viewmodel.searchDataModel?.searchList?[index].videoTitle}',
-                                        'Desc':
-                                        '${viewmodel.searchDataModel?.searchList?[index].videoDescription}'
-                                      });
                                   setState(() {
 
                                     searchController.clear();
@@ -259,6 +235,9 @@ Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
                 false, onPressed: () {
               setState(() {
                 authVM.logoutButtonPressed(context);
+                context.router.stack.clear();
+                context.router.dispose();
+
                 isLogins = false;
                 if (isSearch == true) {
                   isSearch = false;
@@ -276,7 +255,9 @@ Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
 }
 
 Widget Header(BuildContext context,setState,HomeViewModel viewmodel){
-  return  Container(
+  return
+
+    viewmodel.appConfigModel!=null? Container(
     height: 50,
     color: Theme.of(context).cardColor,
     child: Row(
@@ -287,7 +268,23 @@ Widget Header(BuildContext context,setState,HomeViewModel viewmodel){
           child: SizedBox(
               width: SizeConfig.screenWidth * .18),
         ),
-        OutlinedButton(
+  Container(
+    height: 30,
+    child: GridView.builder(
+    itemCount:viewmodel.appConfigModel?.androidConfig?.bottomNavigation?.length,
+    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+    crossAxisCount: 5,
+    crossAxisSpacing: 4.0,
+    mainAxisSpacing: 4.0
+    ),
+    itemBuilder: (BuildContext context, int index){
+    return Container(
+      height: 20,width: 20,color: Colors.pink,
+    );
+    },
+    ),
+  ),
+  OutlinedButton(
             onPressed: () {
               if(isSearch==true){
                 isSearch=false;
@@ -437,6 +434,11 @@ Widget Header(BuildContext context,setState,HomeViewModel viewmodel){
             width: SizeConfig.screenWidth * .02),
       ],
     ),
-  );
+  )
+
+  :Center(
+        child: CircularProgressIndicator(
+          color: Theme.of(context).primaryColor,
+        ));
 
 }
