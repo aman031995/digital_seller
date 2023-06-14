@@ -20,16 +20,15 @@ class OrderDetails extends StatefulWidget {
 class _OrderDetailsState extends State<OrderDetails> {
   final OrderViewModel orderView = OrderViewModel();
   String? checkInternet;
-  @override
+
   void initState() {
     orderView.getOrderDetail(context,widget.orderItem?.orderId ??" ");
-
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-
     return ChangeNotifierProvider.value(
         value: orderView,
         child: Consumer<OrderViewModel>(builder: (context, orderView, _) {
@@ -75,6 +74,7 @@ class _OrderDetailsState extends State<OrderDetails> {
           );
         }));
   }
+
   //ItemsView Method
   itemView(int index) {
     return Container(
@@ -139,13 +139,13 @@ class _OrderDetailsState extends State<OrderDetails> {
                   SizedBox(
                     height: 5,
                   ),
-                  AppRegularFont(context,
-                      msg: "Size"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.productSize}', fontSize: 16.0),
-                  SizedBox(
-                    height: 5,
-                  ),
-                  AppRegularFont(context,
-                      msg: "color"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.productColor}', fontSize: 16.0),
+                  // AppRegularFont(context,
+                  //     msg: "Size"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.productSize}', fontSize: 16.0),
+                  // SizedBox(
+                  //   height: 5,
+                  // ),
+                  // AppRegularFont(context,
+                  //     msg: "color"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.productColor}', fontSize: 16.0),
                   SizedBox(
                     height: 5,
                   ),
@@ -262,5 +262,4 @@ class _OrderDetailsState extends State<OrderDetails> {
               SizedBox(height: 8)
             ]));
   }
-
 }

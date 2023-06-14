@@ -2,13 +2,11 @@ import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:flutter/material.dart';
 
-
 class ColorDropDown extends StatefulWidget {
   String? hintText;
-  List<SkuColorData>? colorData;
+  List<SkuData>? colorData;
   final ValueChanged<dynamic>? onChanged;
   String? chosenValue;
-
 
   ColorDropDown(
       {Key? key,
@@ -23,7 +21,9 @@ class ColorDropDown extends StatefulWidget {
 }
 
 class _ColorDropDownState extends State<ColorDropDown> {
+
   String getColorCode ='';
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -32,13 +32,13 @@ class _ColorDropDownState extends State<ColorDropDown> {
       body: Container(
         padding: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
         width: SizeConfig.screenWidth * 0.4,
-        margin: EdgeInsets.only( top: 10),
+        margin: EdgeInsets.only(left: 20, top: 10),
         decoration: BoxDecoration(
           color: const Color(0xfff2f0f0),
           borderRadius: BorderRadius.circular(50.0),
         ),
         child: DropdownButton<dynamic>(
-          value: widget.chosenValue,
+          value: widget.chosenValue!.isNotEmpty ? widget.chosenValue : null,
           elevation: 18,
           underline: const SizedBox(),
           isExpanded: true,
@@ -50,11 +50,11 @@ class _ColorDropDownState extends State<ColorDropDown> {
               value: e.name,
               child: Container(
                   decoration: BoxDecoration(
-                      color: Color(int.parse("0xff${getColorfromHashcode(e.val!.hex.toString())}")),
+                      color: Color(int.parse("0xff${getColorfromHashcode(e.val!.toString())}")),
                       border: Border.all(color: Colors.black, width: 1)),
                   height: 20,
-                  width: 30)),
-          ).toList(),
+                  width: 30
+              ))).toList(),
           hint: Container(
             margin: const EdgeInsets.only(bottom: 8),
             child: Text(widget.hintText ?? '',

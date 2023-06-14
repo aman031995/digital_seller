@@ -1,3 +1,4 @@
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -128,6 +129,7 @@ class AuthViewModel with ChangeNotifier {
               // Navigator.pop(context);
               User();
               reloadPage();
+              ResponsiveWidget.isMediumScreen(context) ? null :
               context.router.push(HomePageWeb());
              // GoRouter.of(context).pushNamed(RoutesName.home);
             }
@@ -252,6 +254,7 @@ class AuthViewModel with ChangeNotifier {
               print('Login api Successfully');
               AppDataManager.getInstance.updateUserDetails(_userInfoModel!);
               AppIndicator.disposeIndicator();
+              ResponsiveWidget.isMediumScreen(context) ? null :
               context.router.push(HomePageWeb());
               // GoRouter.of(context).pushNamed(RoutesName.home);
               // Navigator.pop(context);

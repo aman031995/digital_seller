@@ -6,7 +6,6 @@ import 'package:TychoStream/utilities/AppTextField.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
-import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
@@ -18,9 +17,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
 import '../../utilities/SizeConfig.dart';
 
 @RoutePage()
@@ -62,15 +59,11 @@ class _CartDetailState extends State<CartDetail> {
         : ChangeNotifierProvider.value(
         value: cartViewData,
         child: Consumer<CartViewModel>(builder: (context, cartViewData, _) {
-          return Scaffold(
-                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    appBar: getAppBarWithBackBtn(
-                     title: "Cart Details",
+          return Scaffold(backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    appBar: getAppBarWithBackBtn(title: "Cart Details",
             context: context,
             isBackBtn:false,
-            onBackPressed: () {
-              Navigator.pop(context, cartViewData.cartItemCount);
-            }),
+            onBackPressed: () {}),
         body: cartViewData.cartListData != null
             ? cartViewData.cartListData!.cartList!.length > 0
                 ? ResponsiveWidget.isMediumScreen(context)
@@ -237,15 +230,15 @@ class _CartDetailState extends State<CartDetail> {
                                 ],
                               ),
                               SizedBox(height: 5),
-                              AppMediumFont(context,
-                                  color: BLACK_COLOR,
-                                  msg: "Color : " +(itemInCart?.productDetails?.productColor ?? ""),
-                                  fontSize: 13.0),
+                              // AppMediumFont(context,
+                              //     color: BLACK_COLOR,
+                              //     msg: "Color : " +(itemInCart?.productSkuDetails.map((e) => e.) ?? ""),
+                              //     fontSize: 13.0),
                               SizedBox(height: 5),
-                              AppMediumFont(context,
-                                  color: BLACK_COLOR,
-                                  msg: "Size : " + (itemInCart?.productDetails?.productSize ?? ''),
-                                  fontSize: 13.0),
+                              // AppMediumFont(context,
+                              //     color: BLACK_COLOR,
+                              //     msg: "Size : " + (itemInCart?.productDetails?.productSize ?? ''),
+                              //     fontSize: 13.0),
                               SizedBox(height: 15),
                               Row(
                                 children: [
@@ -493,15 +486,15 @@ class _CartDetailState extends State<CartDetail> {
                                               ],
                                             ),
                                             SizedBox(height: 5),
-                                            AppMediumFont(context,
-                                                color: BLACK_COLOR,
-                                                msg: "Color : " +(itemInCart?.productDetails?.productColor ?? ""),
-                                                fontSize: 13.0),
+                                            // AppMediumFont(context,
+                                            //     color: BLACK_COLOR,
+                                            //     msg: "Color : " +(itemInCart?.productDetails?.productColor ?? ""),
+                                            //     fontSize: 13.0),
                                             SizedBox(height: 5),
-                                            AppMediumFont(context,
-                                                color: BLACK_COLOR,
-                                                msg: "Size : " + (itemInCart?.productDetails?.productSize ?? ''),
-                                                fontSize: 13.0),
+                                            // AppMediumFont(context,
+                                            //     color: BLACK_COLOR,
+                                            //     msg: "Size : " + (itemInCart?.productDetails?.productSize ?? ''),
+                                            //     fontSize: 13.0),
                                             SizedBox(height: 15),
                                             Row(
                                               children: [

@@ -69,7 +69,9 @@ class CartViewModel extends ChangeNotifier {
   String selectedSizeName = '';
   bool favouriteCallback = false;
   bool isLoading = false;  int lastPage = 1, nextPage = 1;
-
+  String selectedStyleName = '';
+  String selectedMaterialName = '';
+  String selectedUnitCountName = '';
   // get menu from cache api data
   getProductListData(BuildContext context, int pageNum) async{
     final box = await Hive.openBox<String>('appBox');
@@ -238,6 +240,20 @@ class CartViewModel extends ChangeNotifier {
   Future<void> getCheckOutInfo(
       BuildContext context, CartListDataModel? checkOutData) async {
     _cartListDataModel = checkOutData;
+    notifyListeners();
+  }
+  updateStyleName(BuildContext context, String name) {
+    selectedStyleName = name;
+    notifyListeners();
+  }
+
+  updateMaterialName(BuildContext context, String name) {
+    selectedMaterialName = name;
+    notifyListeners();
+  }
+
+  updateUnitCountName(BuildContext context, String name) {
+    selectedUnitCountName = name;
     notifyListeners();
   }
 

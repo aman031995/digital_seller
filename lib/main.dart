@@ -1,43 +1,19 @@
 import 'dart:ui';
 import 'package:TychoStream/AppRouter.dart';
-import 'package:TychoStream/view/Products/ProductList.dart';
-import 'package:TychoStream/view/Products/address_list_page.dart';
-import 'package:TychoStream/view/Products/cart_detail_page.dart';
-import 'package:TychoStream/view/Products/favourite_list_page.dart';
-import 'package:TychoStream/view/Products/product_details.dart';
-import 'package:TychoStream/view/Products/thankyou_page.dart';
-import 'package:TychoStream/view/Profile/my_order_page.dart';
-import 'package:TychoStream/view/screens/notification_screen.dart';
-import 'package:TychoStream/view/search/search_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:TychoStream/view/WebScreen/EditProfile.dart';
-import 'package:TychoStream/view/WebScreen/HomeViewPage.dart';
-import 'package:TychoStream/view/WebScreen/MovieListCommonWidget.dart';
-import 'package:TychoStream/view/WebScreen/RowSideMenu.dart';
-import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/repository/subscription_provider.dart';
-import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/view/CustomPlayer/YoutubePlayer/CommonWidget.dart';
-import 'package:TychoStream/view/WebScreen/DetailPage.dart';
-import 'package:TychoStream/view/WebScreen/FAQ.dart';
-import 'package:TychoStream/view/WebScreen/HomePageWeb.dart';
-import 'package:TychoStream/view/WebScreen/Privacy.dart';
-import 'package:TychoStream/view/WebScreen/Terms.dart';
-import 'package:TychoStream/view/WebScreen/ViewAllListPages.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:TychoStream/viewmodel/sociallogin_view_model.dart';
 import 'package:url_strategy/url_strategy.dart';
-
-import 'view/WebScreen/contact_us.dart';
 String? image;
 String? names;
 String? token;
@@ -87,7 +63,6 @@ class _MyAppState extends State<MyApp> {
 
   void initState() {
     User();
-    getTokent();
     homeViewModel.getAppConfig(context);
     super.initState();
   }
@@ -109,16 +84,11 @@ class _MyAppState extends State<MyApp> {
         child: ChangeNotifierProvider<HomeViewModel>(
             create: (BuildContext context) => homeViewModel,
             child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-              final themeColor = viewmodel
-                  .appConfigModel?.androidConfig?.appTheme?.primaryColor?.hex;
-              final bgColor = viewmodel
-                  .appConfigModel?.androidConfig?.appTheme?.themeColor?.hex;
-              final font = viewmodel
-                  .appConfigModel?.androidConfig?.fontStyle?.fontFamily;
-              final secondaryColor = viewmodel
-                  .appConfigModel?.androidConfig?.appTheme?.secondaryColor?.hex;
-              final txtColor = viewmodel
-                  .appConfigModel?.androidConfig?.appTheme?.textColor?.hex;
+              final themeColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.primaryColor?.hex;
+              final bgColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.themeColor?.hex;
+              final font = viewmodel.appConfigModel?.androidConfig?.fontStyle?.fontFamily;
+              final secondaryColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.secondaryColor?.hex;
+              final txtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.textColor?.hex;
               return MaterialApp.router(
                   theme: ThemeData(
                       scrollbarTheme: ScrollbarThemeData(
@@ -134,17 +104,15 @@ class _MyAppState extends State<MyApp> {
                   builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
                   scrollBehavior: MyCustomScrollBehavior(),
-
                 routerConfig: _appRouter.config(),
-                  // routeInformationParser: _router.routeInformationParser,
-                  // routerDelegate: _router.routerDelegate,
+                // routeInformationParser: _appRouter.routeInformationParser,
+                // routerDelegate: _appRouter.routerDelegate,
                   // routeInformationProvider: _router.routeInformationProvider,
 
               );
-
-            })));
-  }
-}
+            })
+        )
+    );}}
 
 
 

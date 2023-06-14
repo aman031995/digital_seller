@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class SizeDropDown extends StatefulWidget {
   String? hintText;
-  List<SkuSizeData> sizeList = [];
+  List<SkuData> sizeList;
   final ValueChanged<dynamic>? onChanged;
   String? chosenValue;
 
@@ -35,8 +35,7 @@ class _SizeDropDownState extends State<SizeDropDown> {
           borderRadius: BorderRadius.circular(50.0),
         ),
         child: Padding(
-          padding:
-          const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
           child: DropdownButton<dynamic>(
             value: widget.chosenValue,
             elevation: 18,
@@ -46,13 +45,21 @@ class _SizeDropDownState extends State<SizeDropDown> {
             borderRadius: BorderRadius.circular(10.0),
             dropdownColor: Colors.white,
             onChanged: widget.onChanged,
+            // items: widget.sizeList.map((e){
+            //
+            //   if(e.name == w){
+            //
+            //   }
+            //
+            //   return DropdownMenuItem<String>(
+            //       child: Container(height: 20,width: 30,
+            //         child: AppBoldFont(context, msg:e.name, fontSize: 16, color: Colors.black),
+            //   ));
+            // }).toList(growable: true),
             items: widget.sizeList.map((e) => DropdownMenuItem<String>(
               value: e.name,
-              child:
-              Container(
-                height: 20,width: 30,
-                child: AppBoldFont(context, msg:e.name,
-                    fontSize: 16, color: Colors.black),
+              child: Container(height: 20,width: 30,
+                child: AppBoldFont(context, msg:e.name, fontSize: 16, color: Colors.black),
               ),
             ),
             ).toList(),

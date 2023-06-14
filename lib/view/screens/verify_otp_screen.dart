@@ -1,11 +1,5 @@
 import 'dart:async';
-
-// import 'package:client_information/client_information.dart';
-import 'package:TychoStream/view/WebScreen/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/SignUp.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,7 +14,6 @@ import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/TextStyling.dart';
-import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/PinEntryTextFiled.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 
@@ -58,7 +51,6 @@ class _VerifyOtpState extends State<VerifyOtp> {
   int secondsRemaining = 30;
   String errorPin = "";
   UserInfoModel? userModel;
-  // ClientInformation? _clientInfo;
   bool isVerifyOtpMobile = false;
   bool isVerifyOtpEmail = false;
   String? fcmToken;String deviceName ='';
@@ -66,35 +58,9 @@ class _VerifyOtpState extends State<VerifyOtp> {
   HomeViewModel homeViewModel = HomeViewModel();
   AuthViewModel newAuthVm = AuthViewModel();
 
-  // Future<void> _getClientInformation() async {
-  //   ClientInformation? info;
-  //   try {
-  //     info = await ClientInformation.fetch();
-  //   } on PlatformException {
-  //     print('Failed to get client information');
-  //   }
-  //   if (!mounted) return;
-  //   setState(() {
-  //     _clientInfo = info;
-  //   });
-  // }
-  // String? deviceIdentifier;
-  // Future<String?> getDeviceIdentifier() async {
-  //     deviceIdentifier = "unknown";
-  //   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  //   if (kIsWeb) {
-  //     // The web doesnt have a device UID, so use a combination fingerprint as an example
-  //     WebBrowserInfo webInfo = await deviceInfo.webBrowserInfo;
-  //     deviceIdentifier = webInfo.vendor! + webInfo.userAgent! +
-  //         webInfo.hardwareConcurrency.toString();
-  //   }
-  //   return deviceIdentifier;
-  // }
   void initState() {
     mobileOTPVerificaton = widget.viewmodel!.appConfigModel!.androidConfig!.loginWithPhone!;
     homeViewModel.getLoginType(context, widget.viewmodel?.appConfigModel?.androidConfig?.loginWithPhone ?? false);
-
-    // _getClientInformation();
     super.initState();
     startTimer();
   }
@@ -123,7 +89,6 @@ class _VerifyOtpState extends State<VerifyOtp> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final authVM = Provider.of<AuthViewModel>(context);
-    //final mobileOTPVerificaton = widget.viewmodel?.appConfigModel?.androidConfig?.loginWith;
     if (otpValue != null) {
       otpValue!.length == 4 ? isOTPInput = true : isOTPInput = false;
     }
@@ -209,20 +174,6 @@ class _VerifyOtpState extends State<VerifyOtp> {
                     fit: BoxFit.fill,
                   ),
                 ),
-                // Container(
-                //     decoration: BoxDecoration(
-                //       borderRadius: BorderRadius.circular(20),
-                //       color: Theme.of(context).cardColor,
-                //     ),
-                //     margin: EdgeInsets.all(15),
-                //     child: IconButton(onPressed: (){
-                //       Navigator.pop(context);
-                //       showDialog(
-                //           context: context,
-                //           builder: (BuildContext context) {
-                //             return widget.loginPage == true?LoginUp():SignUp();
-                //           });
-                //     }, icon: Image.asset(AssetsConstants.icBack, color: Theme.of(context).canvasColor,),))
               ],
             ),
             SingleChildScrollView(
@@ -266,7 +217,6 @@ class _VerifyOtpState extends State<VerifyOtp> {
                           checkVerificationValidate(authVM,mobileOTPVerificaton);
                         }),
                     SizedBox(height: 10),
-
                   ],
                 ),
               ),
@@ -387,20 +337,6 @@ class _VerifyOtpState extends State<VerifyOtp> {
     });
   }
 
-  // checkVerificationValidate(AuthViewModel authVM,String mobileOTPVerificaton) async {
-  //   errorPin = Regex.validatePinNumber(otpValue!)!;
-  //   if (errorPin != "") {
-  //     isPinError = true;
-  //   } else {
-  //     isPinError = false;
-  //     FirebaseMessaging.instance.getToken().then((value) {
-  //       String? token = value;
-  //       verificationButtonPressed(
-  //           authVM, otpValue!,  token!,mobileOTPVerificaton );
-  //     });
-  //     setState(() {});
-  //   }
-  // }
   checkVerificationValidate(
       AuthViewModel authVM, bool mobileOTPVerificaton) async {
     errorPin = Regex.validatePinNumber(otpValue!)!;
@@ -408,23 +344,12 @@ class _VerifyOtpState extends State<VerifyOtp> {
       isPinError = true;
     } else {
       isPinError = false;
-
       verificationButtonPressed(authVM, otpValue!,
           '',  '', mobileOTPVerificaton);
-
     }
     setState(() {});
   }
-  // verificationButtonPressed(AuthViewModel authVM, String otpValue,String deviceToken, String mobileOTPVerificaton) async {
-  //   authVM.verifyOTP(context,
-  //       mobileOTPVerificaton == 'email'? (widget.email ?? ''):(widget.mobileNo ?? ''),
-  //       otpValue,
-  //       isForgotPW: widget.isForgotPassword,
-  //       name: widget.name,
-  //       email: widget.email,
-  //       mobileNumber: widget.mobileNo,
-  //       password: widget.password,deviceToken: deviceToken);
-  // }
+
   //VerificationButton Method
   verificationButtonPressed(AuthViewModel authVM, String otpValue,
       String deviceId, String firebaseId, bool mobileOTPVerification) async {

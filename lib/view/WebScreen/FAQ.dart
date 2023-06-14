@@ -6,24 +6,11 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
-import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
-import 'package:TychoStream/utilities/AppTextField.dart';
-
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
-import 'package:TychoStream/view/WebScreen/DesktopAppBar.dart';
-import 'package:TychoStream/view/WebScreen/EditProfile.dart';
-import 'package:TychoStream/view/WebScreen/HomePageWeb.dart';
-import 'package:TychoStream/view/WebScreen/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/SignUp.dart';
-import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-
-import 'dart:html' as html;
-
-import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/widgets/search_view.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
@@ -60,13 +47,10 @@ class _FAQState extends State<FAQ> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final authVM = Provider.of<AuthViewModel>(context);
-    return
-      ChangeNotifierProvider(
+    return ChangeNotifierProvider(
           create: (BuildContext context) => homeViewModel,
           child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-      return
-
-      GestureDetector(
+      return GestureDetector(
         onTap: (){
           if (isSearch == true) {
             isSearch = false;
@@ -83,11 +67,7 @@ class _FAQState extends State<FAQ> {
         child: Scaffold(
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           appBar: homePageTopBar(),
-          body: Scaffold(
-    key: _scaffoldKey,
-            // drawer: AppMenu(homeViewModel: viewmodel),
-
-            body: GestureDetector(
+          body: GestureDetector(
               onTap: () {
                 if (isSearch == true) {
                   isSearch = false;
@@ -208,12 +188,11 @@ class _FAQState extends State<FAQ> {
 
           ),
             ),
-    ),
         ),
-      );}));
+      );}
+          )
+    );
   }
-
-
   homePageTopBar() {
     return AppBar(
       elevation: 0,

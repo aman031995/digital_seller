@@ -8,7 +8,6 @@ import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
-import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:flutter/material.dart';
 

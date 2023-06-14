@@ -1,17 +1,12 @@
-
 import 'package:TychoStream/model/data/homepage_data_model.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
-import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
-
 import 'package:TychoStream/view/WebScreen/OnHover.dart';
-import 'package:TychoStream/view/WebScreen/SignUp.dart';
-import 'package:TychoStream/viewmodel/auth_view_model.dart';
+
 
 class CardMovieHome extends StatefulWidget {
   int? trayId;
@@ -37,9 +32,8 @@ class CardMovieHome extends StatefulWidget {
 }
 
 class _CardMovieHomeState extends State<CardMovieHome> {
-  @override
+
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -70,12 +64,7 @@ class _CardMovieHomeState extends State<CardMovieHome> {
           }
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     if (sharedPreferences.get('token') != null) {
-      // GoRouter.of(context).pushNamed(RoutesName.DeatilPage, queryParameters: {
-      //   'movieID': '${widget.moviesList?.youtubeVideoId}',
-      //   'VideoId': '${widget.moviesList?.videoId}',
-      //   'Title': '${widget.moviesList?.videoTitle}',
-      //   'Desc': '${widget.moviesList?.videoDescription}'
-      // });
+
     }
     //itemCount:state.queryParameters['itemCount'],
     //               productId: state.queryParameters['productId'],

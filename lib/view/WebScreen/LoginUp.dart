@@ -1,4 +1,3 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
@@ -16,7 +15,7 @@ import 'package:TychoStream/view/widgets/social_login_view.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/sociallogin_view_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
 
 class LoginUp extends StatefulWidget {
 
@@ -41,11 +40,8 @@ class _LoginUpState extends State<LoginUp> {
       isValidate = false;
   @override
   void initState() {
-    User();
     homeViewModel.getAppConfigData(context);
     super.initState();
-    // homeViewModel.checkUpdateAvailable(context);
-    //  configViewModel.getAppConfig(context, isNavigate: false);
   }
   @override
   void dispose() {
@@ -53,19 +49,16 @@ class _LoginUpState extends State<LoginUp> {
     emailController.dispose();
     passwordController.dispose();
   }
-  User() async{
-    // fcmToken = await FirebaseMessaging.instance.getToken();
-  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final authVM = Provider.of<AuthViewModel>(context);
     final socialVM = Provider.of<SocialLoginViewModel>(context);
-    return ChangeNotifierProvider<HomeViewModel>(
-        create: (BuildContext context) => homeViewModel,
+    return ChangeNotifierProvider.value(
+        value: homeViewModel,
         child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-          return
-      ResponsiveWidget.isMediumScreen(context)?
+          return ResponsiveWidget.isMediumScreen(context)?
     AlertDialog(
         elevation: 8,
         titlePadding: EdgeInsets.zero,
@@ -471,7 +464,8 @@ class _LoginUpState extends State<LoginUp> {
                   ),
                 ),
               )
-            ])));}));}
+            ])));
+        }));}
 
   // regex to check whether enter detail is phoneNumber or email
   bool isPhoneCheck(String phoneNo) {
@@ -510,41 +504,6 @@ class _LoginUpState extends State<LoginUp> {
       ),
     );
   }
-  // Widget socialLoginView(
-  //     SocialLoginViewModel socialVM) {
-  //   return Container(
-  //     width: SizeConfig.screenWidth,
-  //     child: Column(
-  //       children: [
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             SizedBox(
-  //               width: SizeConfig.screenWidth * 0.05,
-  //               child: Divider(color: Theme.of(context).canvasColor),
-  //             ),
-  //             Padding(
-  //               padding: const EdgeInsets.only(left: 10, right: 10),
-  //               child: AppMediumFont(context,
-  //                   msg: StringConstant.orContinueWith, fontSize: 14),
-  //             ),
-  //             SizedBox(
-  //               width: SizeConfig.screenWidth * 0.05,
-  //               child: Divider(color: Theme.of(context).canvasColor),
-  //             ),
-  //           ],
-  //         ),
-  //         SizedBox(height: SizeConfig.screenHeight * .03),
-  //         SocialLoginView(
-  //             socialLoginViewModel: socialVM)
-  //       ],
-  //     ),
-  //   );
-  // }
-  // loginButtonPressed(AuthViewModel authVM, String phone, String password,String deviceToken) {
-  //   authVM.login(phone, password, fcmToken!,context);
-  // }
-  // login button pressed handle
   loginButtonPressed(
       AuthViewModel authVM,
       String phone,

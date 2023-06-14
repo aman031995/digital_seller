@@ -4,8 +4,6 @@ import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
-import 'package:TychoStream/utilities/TextHelper.dart';
-import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/Products/ProductList.dart';
 import 'package:TychoStream/view/Products/image_slider.dart';
@@ -17,7 +15,6 @@ import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../AppRouter.gr.dart';
@@ -209,12 +206,12 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
       children: [
         GestureDetector(
             onTap: () {
-              context.router.push(
-                ProductDetailPage(
-                  productId: '${productListData?.productId}',
-                  productdata: ['${viewmodel.cartItemCount}','${productListData?.productDetails?.variantId}','${productListData?.productDetails?.productColor}'],
-                ) ,
-              );
+              // context.router.push(
+              //   ProductDetailPage(
+              //     productId: '${productListData?.productId}',
+              //     productdata: ['${viewmodel.cartItemCount}','${productListData?.productDetails?.variantId}','${productListData?.productDetails?.productColor}'],
+              //   ) ,
+              // );
             },
             child: Container(
               decoration: BoxDecoration(
@@ -245,16 +242,16 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
             top: 5,
             child: GestureDetector(
                 onTap: () {
-                  viewmodel.addToFavourite(
-                      context,
-                      "${productListData?.productId}",
-                      "${productListData?.productDetails?.productColor}",
-                      productListData?.productDetails
-                          ?.isFavorite ==
-                          true
-                          ? false
-                          : true,
-                      'favouriteList');
+                  // viewmodel.addToFavourite(
+                  //     context,
+                  //     "${productListData?.productId}",
+                  //     "${productListData?.productDetails?.productColor}",
+                  //     productListData?.productDetails
+                  //         ?.isFavorite ==
+                  //         true
+                  //         ? false
+                  //         : true,
+                  //     'favouriteList');
                 },
                 child: Container(
                     decoration: BoxDecoration(

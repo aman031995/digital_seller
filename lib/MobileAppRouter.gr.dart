@@ -30,8 +30,8 @@ import 'package:TychoStream/view/WebScreen/Terms.dart' as _i15;
 import 'package:TychoStream/view/WebScreen/ViewAllListPages.dart' as _i16;
 import 'package:TychoStream/viewmodel/profile_view_model.dart' as _i21;
 
-abstract class $AppRouter extends _i18.RootStackRouter {
-  $AppRouter({super.navigatorKey});
+abstract class $MobileAppRouter extends _i18.RootStackRouter {
+  $MobileAppRouter({super.navigatorKey});
 
   @override
   final Map<String, _i18.PageFactory> pagesMap = {

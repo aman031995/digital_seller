@@ -4,13 +4,11 @@ import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/Profile/order_details.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
-import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/order_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../utilities/StringConstants.dart';
 
 class MyOrderPage extends StatefulWidget {
@@ -42,13 +40,9 @@ class _MyOrderPageState extends State<MyOrderPage> {
     return ChangeNotifierProvider.value(
       value: orderView,
       child: Consumer<OrderViewModel>(builder: (context, orderview, _) {
-        return
-
-          Scaffold(
+        return Scaffold(
             key: _scaffoldKey,
-              backgroundColor: Theme
-                  .of(context)
-                  .backgroundColor,
+              backgroundColor: Theme.of(context).backgroundColor,
               appBar: getAppBarWithBackBtn(
                   title: StringConstant.myOrders,
                   isBackBtn: false,
@@ -56,11 +50,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                   isShopping: false,
                   itemCount: "0",
                   onCartPressed: () {},
-                  onBackPressed: () {
-                    Navigator.pop(context, true);
-                  }),
-
-
+                  onBackPressed: () {}),
               body: checkInternet == "Offline"
                   ? NOInternetScreen()
                   : orderview.orderData !=null?
@@ -180,10 +170,4 @@ class _MyOrderPageState extends State<MyOrderPage> {
               ): Center(child: ThreeArchedCircle(size: 45.0)));
       },
       ),
-
-
-    );
-  }
-
-
-}
+    );}}

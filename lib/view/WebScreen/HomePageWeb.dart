@@ -5,6 +5,7 @@ import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
+import 'package:TychoStream/view/widgets/video_listpage.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/annotations.dart';
@@ -29,7 +30,6 @@ import '../MobileScreen/menu/app_menu.dart';
 @RoutePage()
 class HomePageWeb extends StatefulWidget {
   const HomePageWeb({Key? key}) : super(key: key);
-
   @override
   State<HomePageWeb> createState() => _HomePageWebState();
 }
@@ -38,8 +38,9 @@ class _HomePageWebState extends State<HomePageWeb> {
   HomeViewModel homeViewModel = HomeViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   ScrollController scrollController = ScrollController();
-  final ProfileViewModel profileViewModel = ProfileViewModel();
+ ProfileViewModel profileViewModel = ProfileViewModel();
   String? checkInternet;
+
   void initState() {
     homeViewModel.getAppConfig(context);
     User();
@@ -47,6 +48,7 @@ class _HomePageWebState extends State<HomePageWeb> {
     super.initState();
 
   }
+
   User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     names = sharedPreferences.get('name').toString();
@@ -141,10 +143,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 }).toList() ,
                               ),
                             ):
-                            Center(
-                                child: CircularProgressIndicator(
-                                  color: Theme.of(context).primaryColor,
-                                )),
+                            Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor)),
                             Container(
                               height: 40,
                               width: SizeConfig.screenWidth / 4.9,
@@ -173,10 +172,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                     ToastMessage.message("please Login");
                                   }
                                   },
-
                                   isTick: null),
                             ),
-
                             SizedBox(
                                 width: SizeConfig.screenWidth * .01),
                             names == "null"
@@ -191,7 +188,6 @@ class _HomePageWebState extends State<HomePageWeb> {
                                       });
                                 },
                                 style: ButtonStyle(
-
                                     overlayColor: MaterialStateColor
                                         .resolveWith((states) =>
                                     Theme
@@ -248,7 +244,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 width: SizeConfig.screenWidth * .02),
                           ],
                         ),
-                      )),
+                      )
+                  ),
                   body: Scaffold(
                       key: _scaffoldKey,
                       backgroundColor: Theme.of(context).backgroundColor,
@@ -261,7 +258,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 CommonCarousel(),
-                                //VideoListPage()
+                                VideoListPage()
                               ],
                             ),
                           ),
@@ -278,7 +275,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                 ),
               );}
         )
-      );}));
+      );}
+        )
+    );
   }
 
   // method for handling bottom nav clicks

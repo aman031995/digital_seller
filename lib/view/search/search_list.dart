@@ -1,15 +1,11 @@
-import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/model/data/search_data_model.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
-import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-
 import '../../AppRouter.gr.dart';
 
 // widget of search list
@@ -19,12 +15,9 @@ Widget searchList(
     ScrollController _scrollController,
     HomeViewModel homeViewModel,
     TextEditingController searchController) {
-  return
-
-    viewmodel.searchDataModel!=null?
+  return viewmodel.searchDataModel!=null?
     Positioned(
-    right: ResponsiveWidget.isMediumScreen(context)
-        ? 0:SizeConfig.screenWidth*0.06,
+    right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.06,
     child: Container(
       width: SizeConfig.screenWidth*0.25,height: SizeConfig.screenHeight/2.1,color: Colors.pinkAccent,
       child: Stack(children: [

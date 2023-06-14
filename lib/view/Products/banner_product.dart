@@ -167,16 +167,18 @@ class _banner_productState extends State<banner_product> {
                           onTap: () {
                             if (token == 'null'){
                               _backBtnHandling(prodId);
-                            } else {cartView.addToFavourite(
-                                context,
-                                "${cartView.productListDetails?.productId}",
-                                "${cartView.productListDetails?.productDetails?.productColor}",
-                                cartView.productListDetails?.productDetails
-                                    ?.isFavorite ==
-                                    true
-                                    ? false
-                                    : true,
-                                'productDetail');}
+                            } else {
+                              // cartView.addToFavourite(
+                              //   context,
+                              //   "${cartView.productListDetails?.productId}",
+                              //   "${cartView.productListDetails?.productSkuDetails?.}",
+                              //   cartView.productListDetails?.productDetails
+                              //       ?.isFavorite ==
+                              //       true
+                              //       ? false
+                              //       : true,
+                              //   'productDetail');
+                            }
 
                           },
                           child: Container(
@@ -239,140 +241,140 @@ class _banner_productState extends State<banner_product> {
                           fontSize: 16)
                     ]),
                 SizedBox(height: 20),
-                Column(
-                  children: cartView.productListDetails?.productSkuDetails?.map((element){
-                    return element.colorData != null ? Container(
-                        padding: EdgeInsets.only(left: 5, top: 5, right: 10, bottom: 5),
-                        width: SizeConfig.screenWidth/1.5,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppBoldFont(context, msg: StringConstant.color + '${cartView.selectedColorName}', fontSize: 18),
-                              SizedBox(height: 5),
-                              element.colorData!.length > 4
-                                  ? Container(
-                                  color: TRANSPARENT_COLOR,
-                                  height: 50,  width: SizeConfig.screenWidth/2.5,
-                                  child: ColorDropDown(
-                                    // hintText: 'Select Color',
-                                    chosenValue: cartView.selectedColorName,
-                                    onChanged: (m) {
-                                      onColorSelected(m);
-                                      cartView.selectedColorName = m;
-                                      cartView.updatecolorName(context, cartView.selectedColorName);
-                                      element.colorData?.forEach((element) {
-                                        if(element.name == cartView.selectedColorName){
-                                          cartView.updatecolorName(context, cartView.selectedColorName);
-                                        }
-                                      });
-                                    },
-                                    colorData: element.colorData,
-                                  ))
-                                  : Container(
-                                  height: 50,
-                                  child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: element.colorData?.length,
-                                      itemBuilder: (context, index) {
-                                        return InkWell(
-                                            onTap: () {
-                                              // onColorSelected(cartView.productListDetails?.productSkuDetails?.colorDetails?[index].colorName);
-                                              onColorSelected(element.colorData?[index].name);
-                                              cartView.updatecolorName(context, element.colorData?[index].name ?? '');
-                                            },
-                                            child: Container(
-                                                height: 35,
-                                                width: 35,
-                                                margin: EdgeInsets.only(right: 10),
-                                                alignment: Alignment.center,
-                                                decoration: BoxDecoration(
-                                                    color: (element.colorData?[index].val?.hex)?.toColor(),
-                                                    shape: BoxShape.circle,
-                                                    border: Border.all(
-                                                        color: Colors.black,
-                                                        width: cartView.selectedColorName ==  element.colorData?[index].name ? 3 : 1))));
-                                      }))
-                            ])) : SizedBox();
-                  }).toList() ?? [],
-                ),
+                // Column(
+                //   children: cartView.productListDetails?.productSkuDetails?.map((element){
+                //     return element.colorData != null ? Container(
+                //         padding: EdgeInsets.only(left: 5, top: 5, right: 10, bottom: 5),
+                //         width: SizeConfig.screenWidth/1.5,
+                //         child: Column(
+                //             mainAxisAlignment: MainAxisAlignment.start,
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               AppBoldFont(context, msg: StringConstant.color + '${cartView.selectedColorName}', fontSize: 18),
+                //               SizedBox(height: 5),
+                //               element.colorData!.length > 4
+                //                   ? Container(
+                //                   color: TRANSPARENT_COLOR,
+                //                   height: 50,  width: SizeConfig.screenWidth/2.5,
+                //                   child: ColorDropDown(
+                //                     // hintText: 'Select Color',
+                //                     chosenValue: cartView.selectedColorName,
+                //                     onChanged: (m) {
+                //                       onColorSelected(m);
+                //                       cartView.selectedColorName = m;
+                //                       cartView.updatecolorName(context, cartView.selectedColorName);
+                //                       element.colorData?.forEach((element) {
+                //                         if(element.name == cartView.selectedColorName){
+                //                           cartView.updatecolorName(context, cartView.selectedColorName);
+                //                         }
+                //                       });
+                //                     },
+                //                     colorData: element.colorData,
+                //                   ))
+                //                   : Container(
+                //                   height: 50,
+                //                   child: ListView.builder(
+                //                       scrollDirection: Axis.horizontal,
+                //                       itemCount: element.colorData?.length,
+                //                       itemBuilder: (context, index) {
+                //                         return InkWell(
+                //                             onTap: () {
+                //                               // onColorSelected(cartView.productListDetails?.productSkuDetails?.colorDetails?[index].colorName);
+                //                               onColorSelected(element.colorData?[index].name);
+                //                               cartView.updatecolorName(context, element.colorData?[index].name ?? '');
+                //                             },
+                //                             child: Container(
+                //                                 height: 35,
+                //                                 width: 35,
+                //                                 margin: EdgeInsets.only(right: 10),
+                //                                 alignment: Alignment.center,
+                //                                 decoration: BoxDecoration(
+                //                                     color: (element.colorData?[index].val?.hex)?.toColor(),
+                //                                     shape: BoxShape.circle,
+                //                                     border: Border.all(
+                //                                         color: Colors.black,
+                //                                         width: cartView.selectedColorName ==  element.colorData?[index].name ? 3 : 1))));
+                //                       }))
+                //             ])) : SizedBox();
+                //   }).toList() ?? [],
+                // ),
                 SizedBox(height: 10),
-                Column(
-                  children: cartView.productListDetails?.productSkuDetails?.map((element){
-                    return element.data != null ? Container(
-                        padding: EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 10),
-                        width: SizeConfig.screenWidth/1.5,
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              AppBoldFont(context,
-                                  msg: StringConstant.size + cartView.selectedSizeName,
-                                  fontSize: 18),
-                              SizedBox(height: 8),
-                              if(element.data != null)
-                                element.data!.length > 4
-                                    ? Container(
-                                  width: SizeConfig.screenWidth/2.5,
-                                  color: TRANSPARENT_COLOR, height: 50,
-                                  child: SizeDropDown(
-                                    hintText: element.variationName,
-                                    chosenValue: chosenSize,
-                                    onChanged: (m) {
-                                      chosenSize = m;
-                                      onSizeSelected(chosenSize);
-                                      element.data?.forEach((e) {
-                                        if(chosenSize == e.val){
-                                          cartView.updatesizeName(context,  e.val ?? '');
-                                        }
-                                      });
-
-                                      // cartView.productListDetails?.productSkuDetails
-                                      //     ?.sizeDetails?.forEach((element) {
-                                      //   if (chosenSize == element.sizeName) {
-                                      //     cartView.updatesizeName(context,  element.sizeName ?? '');
-                                      //   }
-                                      // });
-                                    },
-                                    sizeList: element.data!,
-                                  ),
-                                ) :
-                                Container(
-                                    height: 50,
-                                    child: ListView.builder(
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: element.data?.length,
-                                        itemBuilder: (context, index) {
-                                          return InkWell(
-                                              onTap: () {
-                                                selectedSizeIndex = index;
-                                                // cartView.updatesizeName(context,"${cartView.productListDetails?.productSkuDetails?.sizeDetails?[index].sizeName}");
-                                                // onSizeSelected(cartView.productListDetails?.productSkuDetails?.sizeDetails?[index].sizeName);
-                                                onSizeSelected(element.data?[index].name);
-                                                cartView.updatesizeName(context, "${element.data?[index].name}");
-                                              },
-                                              child: Container(
-                                                  height: 40,
-                                                  width: 40,
-                                                  margin: EdgeInsets.only(right: 10),
-                                                  alignment: Alignment.center,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: selectedSizeIndex != index ? TRANSPARENT_COLOR : Theme.of(context).primaryColor,
-                                                      border: Border.all(
-                                                          color: Theme.of(context).canvasColor,
-                                                          width: 2)),
-                                                  child: AppBoldFont(
-                                                    context,
-                                                    msg:
-                                                    "${element.data?[index].name}",
-                                                    fontSize: 14.0,
-                                                    color: Theme.of(context).canvasColor,
-                                                  )));
-                                        }))
-                            ])) : SizedBox();
-                  }).toList() ?? [],
-                ),
+                // Column(
+                //   children: cartView.productListDetails?.productSkuDetails?.map((element){
+                //     return element.data != null ? Container(
+                //         padding: EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 10),
+                //         width: SizeConfig.screenWidth/1.5,
+                //         child: Column(
+                //             mainAxisAlignment: MainAxisAlignment.start,
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               AppBoldFont(context,
+                //                   msg: StringConstant.size + cartView.selectedSizeName,
+                //                   fontSize: 18),
+                //               SizedBox(height: 8),
+                //               if(element.data != null)
+                //                 element.data!.length > 4
+                //                     ? Container(
+                //                   width: SizeConfig.screenWidth/2.5,
+                //                   color: TRANSPARENT_COLOR, height: 50,
+                //                   child: SizeDropDown(
+                //                     hintText: element.variationName,
+                //                     chosenValue: chosenSize,
+                //                     onChanged: (m) {
+                //                       chosenSize = m;
+                //                       onSizeSelected(chosenSize);
+                //                       element.data?.forEach((e) {
+                //                         if(chosenSize == e.val){
+                //                           cartView.updatesizeName(context,  e.val ?? '');
+                //                         }
+                //                       });
+                //
+                //                       // cartView.productListDetails?.productSkuDetails
+                //                       //     ?.sizeDetails?.forEach((element) {
+                //                       //   if (chosenSize == element.sizeName) {
+                //                       //     cartView.updatesizeName(context,  element.sizeName ?? '');
+                //                       //   }
+                //                       // });
+                //                     },
+                //                     sizeList: element.data!,
+                //                   ),
+                //                 ) :
+                //                 Container(
+                //                     height: 50,
+                //                     child: ListView.builder(
+                //                         scrollDirection: Axis.horizontal,
+                //                         itemCount: element.data?.length,
+                //                         itemBuilder: (context, index) {
+                //                           return InkWell(
+                //                               onTap: () {
+                //                                 selectedSizeIndex = index;
+                //                                 // cartView.updatesizeName(context,"${cartView.productListDetails?.productSkuDetails?.sizeDetails?[index].sizeName}");
+                //                                 // onSizeSelected(cartView.productListDetails?.productSkuDetails?.sizeDetails?[index].sizeName);
+                //                                 onSizeSelected(element.data?[index].name);
+                //                                 cartView.updatesizeName(context, "${element.data?[index].name}");
+                //                               },
+                //                               child: Container(
+                //                                   height: 40,
+                //                                   width: 40,
+                //                                   margin: EdgeInsets.only(right: 10),
+                //                                   alignment: Alignment.center,
+                //                                   decoration: BoxDecoration(
+                //                                       shape: BoxShape.circle,
+                //                                       color: selectedSizeIndex != index ? TRANSPARENT_COLOR : Theme.of(context).primaryColor,
+                //                                       border: Border.all(
+                //                                           color: Theme.of(context).canvasColor,
+                //                                           width: 2)),
+                //                                   child: AppBoldFont(
+                //                                     context,
+                //                                     msg:
+                //                                     "${element.data?[index].name}",
+                //                                     fontSize: 14.0,
+                //                                     color: Theme.of(context).canvasColor,
+                //                                   )));
+                //                         }))
+                //             ])) : SizedBox();
+                //   }).toList() ?? [],
+                // ),
                 bottomNavigationButton()
               ],
             ),
@@ -448,16 +450,19 @@ class _banner_productState extends State<banner_product> {
                             onTap: () {
                               if (token == 'null'){
                                 _backBtnHandling(prodId);
-                              } else {cartView.addToFavourite(
-                                  context,
-                                  "${cartView.productListDetails?.productId}",
-                                  "${cartView.productListDetails?.productDetails?.productColor}",
-                                  cartView.productListDetails?.productDetails
-                                      ?.isFavorite ==
-                                      true
-                                      ? false
-                                      : true,
-                                  'productDetail');}
+                              } else {
+                                // cartView.addToFavourite(
+                                //   context,
+                                //   "${cartView.productListDetails?.productId}",
+                                //   "${cartView.productListDetails?.productDetails?.productColor}",
+                                //   cartView.productListDetails?.productDetails
+                                //       ?.isFavorite ==
+                                //       true
+                                //       ? false
+                                //       : true,
+                                //   'productDetail');
+
+                              }
 
                             },
                             child: Container(
@@ -526,140 +531,140 @@ class _banner_productState extends State<banner_product> {
                                   fontSize: 16)
                             ]),
                         SizedBox(height: 20),
-                        Column(
-                          children: cartView.productListDetails?.productSkuDetails?.map((element){
-                            return element.colorData != null ? Container(
-                                padding: EdgeInsets.only(left: 5, top: 5, right: 10, bottom: 5),
-                                width: SizeConfig.screenWidth/4,
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      AppBoldFont(context, msg: StringConstant.color + '${cartView.selectedColorName}', fontSize: 18),
-                                      SizedBox(height: 5),
-                                      element.colorData!.length > 4
-                                          ? Container(
-                                          color: TRANSPARENT_COLOR,
-                                          height: 50,  width: SizeConfig.screenWidth*0.09,
-                                          child: ColorDropDown(
-                                            // hintText: 'Select Color',
-                                            chosenValue: cartView.selectedColorName,
-                                            onChanged: (m) {
-                                              onColorSelected(m);
-                                              cartView.selectedColorName = m;
-                                              cartView.updatecolorName(context, cartView.selectedColorName);
-                                              element.colorData?.forEach((element) {
-                                                if(element.name == cartView.selectedColorName){
-                                                  cartView.updatecolorName(context, cartView.selectedColorName);
-                                                }
-                                              });
-                                            },
-                                            colorData: element.colorData,
-                                          ))
-                                          : Container(
-                                          height: 50,
-                                          child: ListView.builder(
-                                              scrollDirection: Axis.horizontal,
-                                              itemCount: element.colorData?.length,
-                                              itemBuilder: (context, index) {
-                                                return InkWell(
-                                                    onTap: () {
-                                                      // onColorSelected(cartView.productListDetails?.productSkuDetails?.colorDetails?[index].colorName);
-                                                      onColorSelected(element.colorData?[index].name);
-                                                      cartView.updatecolorName(context, element.colorData?[index].name ?? '');
-                                                    },
-                                                    child: Container(
-                                                        height: 35,
-                                                        width: 35,
-                                                        margin: EdgeInsets.only(right: 10),
-                                                        alignment: Alignment.center,
-                                                        decoration: BoxDecoration(
-                                                            color: (element.colorData?[index].val?.hex)?.toColor(),
-                                                            shape: BoxShape.circle,
-                                                            border: Border.all(
-                                                                color: Colors.black,
-                                                                width: cartView.selectedColorName ==  element.colorData?[index].name ? 3 : 1))));
-                                              }))
-                                    ])) : SizedBox();
-                          }).toList() ?? [],
-                        ),
+                        // Column(
+                        //   children: cartView.productListDetails?.productSkuDetails?.map((element){
+                        //     return element.colorData != null ? Container(
+                        //         padding: EdgeInsets.only(left: 5, top: 5, right: 10, bottom: 5),
+                        //         width: SizeConfig.screenWidth/4,
+                        //         child: Column(
+                        //             mainAxisAlignment: MainAxisAlignment.start,
+                        //             crossAxisAlignment: CrossAxisAlignment.start,
+                        //             children: [
+                        //               AppBoldFont(context, msg: StringConstant.color + '${cartView.selectedColorName}', fontSize: 18),
+                        //               SizedBox(height: 5),
+                        //               element.colorData!.length > 4
+                        //                   ? Container(
+                        //                   color: TRANSPARENT_COLOR,
+                        //                   height: 50,  width: SizeConfig.screenWidth*0.09,
+                        //                   child: ColorDropDown(
+                        //                     // hintText: 'Select Color',
+                        //                     chosenValue: cartView.selectedColorName,
+                        //                     onChanged: (m) {
+                        //                       onColorSelected(m);
+                        //                       cartView.selectedColorName = m;
+                        //                       cartView.updatecolorName(context, cartView.selectedColorName);
+                        //                       element.colorData?.forEach((element) {
+                        //                         if(element.name == cartView.selectedColorName){
+                        //                           cartView.updatecolorName(context, cartView.selectedColorName);
+                        //                         }
+                        //                       });
+                        //                     },
+                        //                     colorData: element.colorData,
+                        //                   ))
+                        //                   : Container(
+                        //                   height: 50,
+                        //                   child: ListView.builder(
+                        //                       scrollDirection: Axis.horizontal,
+                        //                       itemCount: element.colorData?.length,
+                        //                       itemBuilder: (context, index) {
+                        //                         return InkWell(
+                        //                             onTap: () {
+                        //                               // onColorSelected(cartView.productListDetails?.productSkuDetails?.colorDetails?[index].colorName);
+                        //                               onColorSelected(element.colorData?[index].name);
+                        //                               cartView.updatecolorName(context, element.colorData?[index].name ?? '');
+                        //                             },
+                        //                             child: Container(
+                        //                                 height: 35,
+                        //                                 width: 35,
+                        //                                 margin: EdgeInsets.only(right: 10),
+                        //                                 alignment: Alignment.center,
+                        //                                 decoration: BoxDecoration(
+                        //                                     color: (element.colorData?[index].val?.hex)?.toColor(),
+                        //                                     shape: BoxShape.circle,
+                        //                                     border: Border.all(
+                        //                                         color: Colors.black,
+                        //                                         width: cartView.selectedColorName ==  element.colorData?[index].name ? 3 : 1))));
+                        //                       }))
+                        //             ])) : SizedBox();
+                        //   }).toList() ?? [],
+                        // ),
                         SizedBox(height: 10),
-                        Column(
-                          children: cartView.productListDetails?.productSkuDetails?.map((element){
-                            return element.data != null ? Container(
-                                padding: EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 10),
-                                width: SizeConfig.screenWidth/4,
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      AppBoldFont(context,
-                                          msg: StringConstant.size + cartView.selectedSizeName,
-                                          fontSize: 18),
-                                      SizedBox(height: 8),
-                                      if(element.data != null)
-                                        element.data!.length > 4
-                                            ? Container(
-                                          width: SizeConfig.screenWidth*0.09,
-                                          color: TRANSPARENT_COLOR, height: 50,
-                                          child: SizeDropDown(
-                                            hintText: element.variationName,
-                                            chosenValue: chosenSize,
-                                            onChanged: (m) {
-                                              chosenSize = m;
-                                              onSizeSelected(chosenSize);
-                                              element.data?.forEach((e) {
-                                                if(chosenSize == e.val){
-                                                  cartView.updatesizeName(context,  e.val ?? '');
-                                                }
-                                              });
-
-                                              // cartView.productListDetails?.productSkuDetails
-                                              //     ?.sizeDetails?.forEach((element) {
-                                              //   if (chosenSize == element.sizeName) {
-                                              //     cartView.updatesizeName(context,  element.sizeName ?? '');
-                                              //   }
-                                              // });
-                                            },
-                                            sizeList: element.data!,
-                                          ),
-                                        ) :
-                                        Container(
-                                            height: 50,
-                                            child: ListView.builder(
-                                                scrollDirection: Axis.horizontal,
-                                                itemCount: element.data?.length,
-                                                itemBuilder: (context, index) {
-                                                  return InkWell(
-                                                      onTap: () {
-                                                        selectedSizeIndex = index;
-                                                        // cartView.updatesizeName(context,"${cartView.productListDetails?.productSkuDetails?.sizeDetails?[index].sizeName}");
-                                                        // onSizeSelected(cartView.productListDetails?.productSkuDetails?.sizeDetails?[index].sizeName);
-                                                        onSizeSelected(element.data?[index].name);
-                                                        cartView.updatesizeName(context, "${element.data?[index].name}");
-                                                      },
-                                                      child: Container(
-                                                          height: 40,
-                                                          width: 40,
-                                                          margin: EdgeInsets.only(right: 10),
-                                                          alignment: Alignment.center,
-                                                          decoration: BoxDecoration(
-                                                              shape: BoxShape.circle,
-                                                              color: selectedSizeIndex != index ? TRANSPARENT_COLOR : Theme.of(context).primaryColor,
-                                                              border: Border.all(
-                                                                  color: Theme.of(context).canvasColor,
-                                                                  width: 2)),
-                                                          child: AppBoldFont(
-                                                            context,
-                                                            msg:
-                                                            "${element.data?[index].name}",
-                                                            fontSize: 14.0,
-                                                            color: Theme.of(context).canvasColor,
-                                                          )));
-                                                }))
-                                    ])) : SizedBox();
-                          }).toList() ?? [],
-                        ),
+                        // Column(
+                        //   children: cartView.productListDetails?.productSkuDetails?.map((element){
+                        //     return element.data != null ? Container(
+                        //         padding: EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 10),
+                        //         width: SizeConfig.screenWidth/4,
+                        //         child: Column(
+                        //             mainAxisAlignment: MainAxisAlignment.start,
+                        //             crossAxisAlignment: CrossAxisAlignment.start,
+                        //             children: [
+                        //               AppBoldFont(context,
+                        //                   msg: StringConstant.size + cartView.selectedSizeName,
+                        //                   fontSize: 18),
+                        //               SizedBox(height: 8),
+                        //               if(element.data != null)
+                        //                 element.data!.length > 4
+                        //                     ? Container(
+                        //                   width: SizeConfig.screenWidth*0.09,
+                        //                   color: TRANSPARENT_COLOR, height: 50,
+                        //                   child: SizeDropDown(
+                        //                     hintText: element.variationName,
+                        //                     chosenValue: chosenSize,
+                        //                     onChanged: (m) {
+                        //                       chosenSize = m;
+                        //                       onSizeSelected(chosenSize);
+                        //                       element.data?.forEach((e) {
+                        //                         if(chosenSize == e.val){
+                        //                           cartView.updatesizeName(context,  e.val ?? '');
+                        //                         }
+                        //                       });
+                        //
+                        //                       // cartView.productListDetails?.productSkuDetails
+                        //                       //     ?.sizeDetails?.forEach((element) {
+                        //                       //   if (chosenSize == element.sizeName) {
+                        //                       //     cartView.updatesizeName(context,  element.sizeName ?? '');
+                        //                       //   }
+                        //                       // });
+                        //                     },
+                        //                     sizeList: element.data!,
+                        //                   ),
+                        //                 ) :
+                        //                 Container(
+                        //                     height: 50,
+                        //                     child: ListView.builder(
+                        //                         scrollDirection: Axis.horizontal,
+                        //                         itemCount: element.data?.length,
+                        //                         itemBuilder: (context, index) {
+                        //                           return InkWell(
+                        //                               onTap: () {
+                        //                                 selectedSizeIndex = index;
+                        //                                 // cartView.updatesizeName(context,"${cartView.productListDetails?.productSkuDetails?.sizeDetails?[index].sizeName}");
+                        //                                 // onSizeSelected(cartView.productListDetails?.productSkuDetails?.sizeDetails?[index].sizeName);
+                        //                                 onSizeSelected(element.data?[index].name);
+                        //                                 cartView.updatesizeName(context, "${element.data?[index].name}");
+                        //                               },
+                        //                               child: Container(
+                        //                                   height: 40,
+                        //                                   width: 40,
+                        //                                   margin: EdgeInsets.only(right: 10),
+                        //                                   alignment: Alignment.center,
+                        //                                   decoration: BoxDecoration(
+                        //                                       shape: BoxShape.circle,
+                        //                                       color: selectedSizeIndex != index ? TRANSPARENT_COLOR : Theme.of(context).primaryColor,
+                        //                                       border: Border.all(
+                        //                                           color: Theme.of(context).canvasColor,
+                        //                                           width: 2)),
+                        //                                   child: AppBoldFont(
+                        //                                     context,
+                        //                                     msg:
+                        //                                     "${element.data?[index].name}",
+                        //                                     fontSize: 14.0,
+                        //                                     color: Theme.of(context).canvasColor,
+                        //                                   )));
+                        //                         }))
+                        //             ])) : SizedBox();
+                        //   }).toList() ?? [],
+                        // ),
                         bottomNavigationButton()
                       ]))
             ],

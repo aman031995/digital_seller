@@ -2,33 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
-import 'package:TychoStream/network/AppDataManager.dart';
-import 'package:TychoStream/network/AppNetwork.dart';
-import 'package:TychoStream/network/CacheDataManager.dart';
-import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
-import 'package:TychoStream/utilities/AppTextField.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
-import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
-import 'package:TychoStream/view/WebScreen/DesktopAppBar.dart';
-import 'package:TychoStream/view/WebScreen/DetailPage.dart';
-import 'package:TychoStream/view/WebScreen/EditProfile.dart';
-import 'package:TychoStream/view/WebScreen/HomePageWeb.dart';
-import 'package:TychoStream/view/WebScreen/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/OnHover.dart';
-import 'package:TychoStream/view/WebScreen/SignUp.dart';
-import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
-import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
-import 'package:TychoStream/view/widgets/search_view.dart';
 import 'package:TychoStream/viewmodel/CategoryViewModel.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
-
 import '../../main.dart';
 
 class HomeViewPage extends StatefulWidget {
@@ -51,11 +33,8 @@ class _HomeViewPageState extends State<HomeViewPage> {
   HomeViewModel homeView = HomeViewModel();
   ScrollController _scrollController = ScrollController();
   TextEditingController? searchController = TextEditingController();
-  ScrollController scrollController = ScrollController();
-  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   bool isSearch = false;
   int pageNum = 1;
-
   @override
   onNotification(
       ScrollNotification notification,
@@ -189,8 +168,7 @@ class _HomeViewPageState extends State<HomeViewPage> {
                         :Container(
                       margin: EdgeInsets.only(bottom: 10,right: 20,left: 20,top: 10),
                                 child: GridView.builder(
-
-                      physics: AlwaysScrollableScrollPhysics(),
+                                    physics: AlwaysScrollableScrollPhysics(),
                       shrinkWrap: true,
                       controller: _scrollController,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -202,6 +180,12 @@ class _HomeViewPageState extends State<HomeViewPage> {
                       itemBuilder: (context, index) {
                         return InkWell(
                           onTap: () {
+                            GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParams: {
+                              'movieID':"${categoryView.getPreviousPageList?[index].youtubeVideoId}",
+                              'VideoId':"${categoryView.getPreviousPageList?[index].videoId}",
+                              'Title':"${categoryView.getPreviousPageList?[index].videoTitle}",
+                              'Desc':"${categoryView.getPreviousPageList?[index].videoDescription}"
+                            });
                             // GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParameters: {
                             //   'movieID':"${categoryView.getPreviousPageList?[index].youtubeVideoId}",
                             //   'VideoId':"${categoryView.getPreviousPageList?[index].videoId}",
@@ -249,9 +233,6 @@ class _HomeViewPageState extends State<HomeViewPage> {
                     ),
                   ))
                   : SizedBox(),
-              // isLogins == true
-              //     ? profile(context, setState)
-              //     : Container(),
             ],
           ));
     }

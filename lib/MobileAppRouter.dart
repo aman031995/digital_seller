@@ -1,21 +1,15 @@
-
-
-import 'package:TychoStream/services/global_variable.dart';
+import 'package:TychoStream/MobileAppRouter.gr.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import 'AppRouter.gr.dart';
-
-
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
-class AppRouter extends $AppRouter {
+class MobileAppRouter extends $MobileAppRouter{
 
-  @override
-  // TODO: implement routes
   List<AutoRoute> routes = [
-     AutoRoute(page: HomePageWeb.page, path: '/',initial: true),
+    AutoRoute(page: BottomNavigationWidget.page, path: '/',initial: true),
+    AutoRoute(page: HomePageWeb.page, path: '/homePage',),
+    AutoRoute(page: ProductListGallery.page,path: '/ProductListGallery'),
     AutoRoute(page: DetailPage.page,path: '/DetailPage'),
     AutoRoute(page: SeeAllListPages.page,path: '/SeeAllListPages'),
     AutoRoute(page: SearchPage.page,path: '/SearchPage',guards: [
@@ -37,7 +31,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-          //  resolver.redirect(HomePageWeb());
+            //  resolver.redirect(HomePageWeb());
           }
         },
       )]),
@@ -52,19 +46,19 @@ class AppRouter extends $AppRouter {
 
           }
         },
-      )]),
+      )] ),
     AutoRoute(page: ProductListGallery.page,path: '/ProductListGallery',guards: [
       AutoRouteGuard.simple(
-          (resolver, scope) async {
-        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-         if (sharedPreferences.get('token') != null) {
-          resolver.next();
-        } else {
-           ToastMessage.message("Please Login User");
-           //resolver.redirect(HomePageWeb());
-        }
-      },
-    )]),
+            (resolver, scope) async {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token') != null) {
+            resolver.next();
+          } else {
+            ToastMessage.message("Please Login User");
+            //resolver.redirect(HomePageWeb());
+          }
+        },
+      )]),
     AutoRoute(page: FavouriteListPage.page,path: '/FavouriteListPage',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
@@ -109,7 +103,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-           // resolver.redirect(HomePageWeb());
+            // resolver.redirect(HomePageWeb());
           }
         },
       )]),
@@ -121,7 +115,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-           // resolver.redirect(HomePageWeb());
+            // resolver.redirect(HomePageWeb());
           }
         },
       )]),
@@ -133,7 +127,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-           // resolver.redirect(HomePageWeb());
+            // resolver.redirect(HomePageWeb());
           }
         },
       )]),
@@ -145,7 +139,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-           // resolver.redirect(HomePageWeb());
+            // resolver.redirect(HomePageWeb());
           }
         },
       )]),
@@ -157,10 +151,13 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-           // resolver.redirect(HomePageWeb());
+            // resolver.redirect(HomePageWeb());
           }
         },
       )]),
-  ];
-}
 
+
+
+  ];
+
+}

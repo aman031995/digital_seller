@@ -454,8 +454,6 @@ class CartDetailRepository {
     appNetwork.getNetworkResponse(requestModal,context, (result, isSuccess) {
       if (isSuccess) {
         var response = ASResponseModal.fromResult(result);
-        Map<String, dynamic> map =
-        (result as SuccessState).value as Map<String, dynamic>;
         responseHandler(Result.success(response), isSuccess);
       } else {
         return responseHandler(result, isSuccess);

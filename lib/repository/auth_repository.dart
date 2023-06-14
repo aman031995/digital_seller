@@ -132,8 +132,7 @@ class AuthRepository {
     appNetwork.getNetworkResponse(requestModal,context, (result, isSuccess) {
       if (isSuccess) {
         var response = ASResponseModal.fromResult(result);
-        Map<String, dynamic> map =
-        (result as SuccessState).value as Map<String, dynamic>;
+        Map<String, dynamic> map = (result as SuccessState).value as Map<String, dynamic>;
         if (map['data'] is Map<String, dynamic>) {
           response.dataModal = UserInfoModel.fromJson(map['data']);
         }

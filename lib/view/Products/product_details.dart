@@ -1,9 +1,9 @@
 import 'package:TychoStream/main.dart';
+import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
-import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -14,7 +14,6 @@ import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -42,6 +41,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   CartViewModel cartView = CartViewModel();
   String? checkInternet;
   int? selectedSizeIndex;
+  int? selectedMaterialIndex;
+  int? selectedStyleIndex;
+  int? selectedUnitIndex;
   String? chosenSize;
   String prodId = '';
   String variantId = '';
@@ -49,7 +51,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   String sizeName = '';
   bool isfab = false;
   String? token;
-
+  List<Widget> cardWidgets = [];
+  var proDetails;
 
   void initState() {
     getProductDetails();
@@ -62,13 +65,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           context, widget.productId ?? "", widget.productdata?[0] ?? "", 1);
     } else {
       if (widget.productId != null)
-        cartView.updatecolorName(context, widget.productdata?[2] ?? '');
+         cartView.updatecolorName(context,'');
       cartView.updateCartCount(context, widget.productdata?[0] ?? '');
         cartView.getProductDetails(
             context,
             widget.productId ?? '',
             widget.productdata?[1] ?? '',
-            widget.productdata?[2] ?? '',
+            widget.productdata?[2] ?? "",
             '');
     }
   }
@@ -88,10 +91,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           : ChangeNotifierProvider.value(
         value: cartView,
         child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
-          return
-
-
-       Scaffold(
+          return Scaffold(
                 appBar: getAppBarWithBackBtn(
                   title: "Product Details",
                     context: context,
@@ -107,297 +107,17 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     onBackPressed: () {
                     }),
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-
-
-     body:
-     viewmodel.productListDetails != null
-         ? ResponsiveWidget.isMediumScreen(context) ? SingleChildScrollView(
-       child: Container(
-         margin: EdgeInsets.only(left: 10,top: SizeConfig.screenHeight*0.02,right: 10),
-         child: Column(
-           mainAxisAlignment: MainAxisAlignment.start,
-           crossAxisAlignment: CrossAxisAlignment.start,
-           children: [
-             Stack(children: [
-               CarouselSlider(
-                   options: CarouselOptions(
-                       height: SizeConfig.screenHeight /2.23,
-                       enableInfiniteScroll: viewmodel.productListDetails?.productDetails?.productImages?.length==1?false:true,
-                       reverse: false,
-                       viewportFraction: 1,
-                       onPageChanged: (index, reason) {
-                         setState(() {
-                           currentIndex = index;
-                         });
-                       }),
-                   items: viewmodel
-                       .productListDetails?.productDetails?.productImages
-                       ?.map((i) {
-                     return Builder(builder: (BuildContext context) {
-                       return Container(
-                         width: SizeConfig.screenWidth,
-                         child: CachedNetworkImage(
-                             imageUrl: '${i}',
-                             fit: BoxFit.fill,
-                             placeholder: (context, url) => Center(
-                                 child: CircularProgressIndicator(
-                                     color:
-                                     Theme.of(context).primaryColor))),
-                       );
-                     });
-                   }).toList()),
-               viewmodel.productListDetails?.productDetails?.productImages?.length == 1 ? Container() : Positioned(
-                   bottom: 10,
-                   left: 1,
-                   right: 1,
-
-                   child: Row(
-                       mainAxisAlignment: MainAxisAlignment.center,
-                       children: buildIndicator(
-                           viewmodel.productListDetails?.productDetails
-                               ?.productImages,
-                           currentIndex,
-                           context))),
-               Positioned(
-                   right: 10, top: 5,
-                   child: Container(
-                       decoration: BoxDecoration(
-                           shape: BoxShape.circle,
-                           color: Theme.of(context).canvasColor),
-                       height: 35,
-                       width: 35,
-                       child: IconButton(
-                           icon: Icon(Icons.share),
-                           onPressed: () {
-                           }))),
-               Positioned(
-                   right: 10,
-                   top: 45,
-                   child: GestureDetector(
-                       onTap: () {
-                         if (token == 'null'){
-                           _backBtnHandling(prodId);
-                         } else {viewmodel.addToFavourite(
-                             context,
-                             "${viewmodel.productListDetails?.productId}",
-                             "${viewmodel.productListDetails?.productDetails?.productColor}",
-                             viewmodel.productListDetails?.productDetails
-                                 ?.isFavorite ==
-                                 true
-                                 ? false
-                                 : true,
-                             'productDetail');}
-
-                       },
-                       child: Container(
-                           decoration: BoxDecoration(
-                               shape: BoxShape.circle,
-                               color: Theme.of(context).canvasColor),
-                           height: 35,
-                           width: 35,
-                           child: Icon(Icons.favorite,
-                               color: viewmodel.productListDetails
-                                   ?.productDetails?.isFavorite ==
-                                   true
-                                   ? Colors.red
-                                   : GREY_COLOR,
-                               size: 25))))
-             ]),
-             SizedBox(height: 10),
-             Container(
-                 width: SizeConfig.screenWidth/1.1,
-                 child: AppBoldFont(context, msg: viewmodel.productListDetails?.productDetails?.productVariantTitle ?? '', fontSize: 20)),
-             SizedBox(height: 10),
-             Container(
-                 width: SizeConfig.screenWidth/1.1,
-                 child: AppMediumFont(
-                   context,
-                   msg:
-                   "${viewmodel.productListDetails?.productLongDesc ?? ''}",
-                   fontSize: 18.0,
-                 )),
-             SizedBox(height: 10),
-             AppBoldFont(context,
-                 msg: "₹ "
-                     "${viewmodel.productListDetails?.productDetails?.productDiscountPrice ?? ''}",
-                 fontSize: 18),
-             SizedBox(height: 5),
-             Row(
-                 mainAxisAlignment: MainAxisAlignment.start,
-                 crossAxisAlignment: CrossAxisAlignment.center,
-                 children: [
-                   viewmodel.productListDetails?.productDetails
-                       ?.productPrice !=
-                       ''
-                       ? AppMediumFont(context,
-                       msg: "₹ "
-                           "${viewmodel.productListDetails?.productDetails?.productPrice ?? ''}",
-                       textDecoration:
-                       TextDecoration.lineThrough,
-                       fontSize: 16)
-                       : SizedBox(),
-                   SizedBox(width: 8.0),
-                   AppMediumFont(context,
-                       msg: viewmodel
-                           .productListDetails
-                           ?.productDetails
-                           ?.productDiscountPercent !=
-                           ''
-                           ? "${viewmodel.productListDetails?.productDetails?.productDiscountPercent}" +
-                           '% OFF'
-                           : '',
-                       fontSize: 16)
-                 ]),
-             SizedBox(height: 20),
-             Column(
-               children: viewmodel.productListDetails?.productSkuDetails?.map((element){
-                 return element.colorData != null ? Container(
-                     padding: EdgeInsets.only(left: 5, top: 5, right: 10, bottom: 5),
-                     width: SizeConfig.screenWidth/1.5,
-                     child: Column(
-                         mainAxisAlignment: MainAxisAlignment.start,
-                         crossAxisAlignment: CrossAxisAlignment.start,
-                         children: [
-                           AppBoldFont(context, msg: StringConstant.color + '${viewmodel.selectedColorName}', fontSize: 18),
-                           SizedBox(height: 5),
-                           element.colorData!.length > 4
-                               ? Container(
-                               color: TRANSPARENT_COLOR,
-                               height: 50,  width: SizeConfig.screenWidth/2.5,
-                               child: ColorDropDown(
-                                 // hintText: 'Select Color',
-                                 chosenValue: viewmodel.selectedColorName,
-                                 onChanged: (m) {
-                                   onColorSelected(m);
-                                   viewmodel.selectedColorName = m;
-                                   viewmodel.updatecolorName(context, viewmodel.selectedColorName);
-                                   element.colorData?.forEach((element) {
-                                     if(element.name == viewmodel.selectedColorName){
-                                       viewmodel.updatecolorName(context, viewmodel.selectedColorName);
-                                     }
-                                   });
-                                 },
-                                 colorData: element.colorData,
-                               ))
-                               : Container(
-                               height: 50,
-                               child: ListView.builder(
-                                   scrollDirection: Axis.horizontal,
-                                   itemCount: element.colorData?.length,
-                                   itemBuilder: (context, index) {
-                                     return InkWell(
-                                         onTap: () {
-                                           // onColorSelected(cartView.productListDetails?.productSkuDetails?.colorDetails?[index].colorName);
-                                           onColorSelected(element.colorData?[index].name);
-                                           viewmodel.updatecolorName(context, element.colorData?[index].name ?? '');
-                                         },
-                                         child: Container(
-                                             height: 35,
-                                             width: 35,
-                                             margin: EdgeInsets.only(right: 10),
-                                             alignment: Alignment.center,
-                                             decoration: BoxDecoration(
-                                                 color: (element.colorData?[index].val?.hex)?.toColor(),
-                                                 shape: BoxShape.circle,
-                                                 border: Border.all(
-                                                     color: Colors.black,
-                                                     width: viewmodel.selectedColorName ==  element.colorData?[index].name ? 3 : 1))));
-                                   }))
-                         ])) : SizedBox();
-               }).toList() ?? [],
-             ),
-             SizedBox(height: 10),
-             Column(
-               children: viewmodel.productListDetails?.productSkuDetails?.map((element){
-                 return element.data != null ? Container(
-                     padding: EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 10),
-                     width: SizeConfig.screenWidth/1.5,
-                     child: Column(
-                         mainAxisAlignment: MainAxisAlignment.start,
-                         crossAxisAlignment: CrossAxisAlignment.start,
-                         children: [
-                           AppBoldFont(context,
-                               msg: StringConstant.size + viewmodel.selectedSizeName,
-                               fontSize: 18),
-                           SizedBox(height: 8),
-                           if(element.data != null)
-                             element.data!.length > 4
-                                 ? Container(
-                               width: SizeConfig.screenWidth/2.5,
-                               color: TRANSPARENT_COLOR, height: 50,
-                               child: SizeDropDown(
-                                 hintText: element.variationName,
-                                 chosenValue: chosenSize,
-                                 onChanged: (m) {
-                                   chosenSize = m;
-                                   onSizeSelected(chosenSize);
-                                   element.data?.forEach((e) {
-                                     if(chosenSize == e.val){
-                                       viewmodel.updatesizeName(context,  e.val ?? '');
-                                     }
-                                   });
-
-                                   // cartView.productListDetails?.productSkuDetails
-                                   //     ?.sizeDetails?.forEach((element) {
-                                   //   if (chosenSize == element.sizeName) {
-                                   //     cartView.updatesizeName(context,  element.sizeName ?? '');
-                                   //   }
-                                   // });
-                                 },
-                                 sizeList: element.data!,
-                               ),
-                             ) :
-                             Container(
-                                 height: 50,
-                                 child: ListView.builder(
-                                     scrollDirection: Axis.horizontal,
-                                     itemCount: element.data?.length,
-                                     itemBuilder: (context, index) {
-                                       return InkWell(
-                                           onTap: () {
-                                             selectedSizeIndex = index;
-                                             // cartView.updatesizeName(context,"${cartView.productListDetails?.productSkuDetails?.sizeDetails?[index].sizeName}");
-                                             // onSizeSelected(cartView.productListDetails?.productSkuDetails?.sizeDetails?[index].sizeName);
-                                             onSizeSelected(element.data?[index].name);
-                                             viewmodel.updatesizeName(context, "${element.data?[index].name}");
-                                           },
-                                           child: Container(
-                                               height: 40,
-                                               width: 40,
-                                               margin: EdgeInsets.only(right: 10),
-                                               alignment: Alignment.center,
-                                               decoration: BoxDecoration(
-                                                   shape: BoxShape.circle,
-                                                   color: selectedSizeIndex != index ? TRANSPARENT_COLOR : Theme.of(context).primaryColor,
-                                                   border: Border.all(
-                                                       color: Theme.of(context).canvasColor,
-                                                       width: 2)),
-                                               child: AppBoldFont(
-                                                 context,
-                                                 msg:
-                                                 "${element.data?[index].name}",
-                                                 fontSize: 14.0,
-                                                 color: Theme.of(context).canvasColor,
-                                               )));
-                                     }))
-                         ])) : SizedBox();
-               }).toList() ?? [],
-             ),
-             bottomNavigationButton()
-           ],
-         ),
-       ),
-     ):
-     SingleChildScrollView(child: Row(
+           body: viewmodel.productListDetails != null ?
+           SingleChildScrollView(child: Row(
          mainAxisAlignment: MainAxisAlignment.center,
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
            Container(margin: EdgeInsets.only(top: SizeConfig.screenHeight*0.02),
-               width: SizeConfig.screenWidth/2.5,
+               width: SizeConfig.screenWidth/3.5,
                child: Stack(children: [
                  CarouselSlider(
                      options: CarouselOptions(
-                         height: SizeConfig.screenHeight / 1.25,
+                         height: SizeConfig.screenHeight / 1.35,
                          enableInfiniteScroll: viewmodel.productListDetails?.productDetails?.productImages?.length==1?false:true,
                          reverse: false,
                          viewportFraction: 1,
@@ -411,7 +131,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                          ?.map((i) {
                        return Builder(builder: (BuildContext context) {
                          return Container(
-                           width: SizeConfig.screenWidth,
+                           width: SizeConfig.screenWidth/1.2,
                            child: CachedNetworkImage(
                                imageUrl: '${i}',
                                fit: BoxFit.fill,
@@ -422,11 +142,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                          );
                        });
                      }).toList()),
-                 viewmodel.productListDetails?.productDetails?.productImages?.length == 1 ? Container() : Positioned(
+                 viewmodel.productListDetails?.productDetails?.productImages?.length == 1 ? Container() :
+                 Positioned(
                      bottom: 10,
                      left: 1,
                      right: 1,
-
                      child: Row(
                          mainAxisAlignment: MainAxisAlignment.center,
                          children: buildIndicator(
@@ -444,13 +164,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                          width: 35,
                          child: IconButton(
                            icon: Icon(Icons.share),
-                             // icon: Image.asset(
-                             //   AssetsConstants.ic_ShareIcon,
-                             //   height: 30,
-                             //   width: 30,
-                             // ),
-                             onPressed: () {
-                             }))),
+                             onPressed: () {}))),
                  Positioned(
                      right: 10,
                      top: 45,
@@ -458,18 +172,19 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                          onTap: () {
                            if (token == 'null'){
                              _backBtnHandling(prodId);
-                           } else {viewmodel.addToFavourite(
-                               context,
-                               "${viewmodel.productListDetails?.productId}",
-                               "${viewmodel.productListDetails?.productDetails?.productColor}",
-                               viewmodel.productListDetails?.productDetails
-                                   ?.isFavorite ==
-                                   true
-                                   ? false
-                                   : true,
-                               'productDetail');}
-
-                         },
+                           } else {
+                             // viewmodel.addToFavourite(
+                             //   context,
+                             //   "${viewmodel.productListDetails?.productId}",
+                             //   "${viewmodel.productListDetails?.productDetails?.productColor}",
+                             //   viewmodel.productListDetails?.productDetails
+                             //       ?.isFavorite ==
+                             //       true
+                             //       ? false
+                             //       : true,
+                             //   'productDetail');
+                           }
+                           },
                          child: Container(
                              decoration: BoxDecoration(
                                  shape: BoxShape.circle,
@@ -536,168 +251,413 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                fontSize: 16)
                          ]),
                      SizedBox(height: 20),
-                     Column(
-                       children: viewmodel.productListDetails?.productSkuDetails?.map((element){
-                         return element.colorData != null ? Container(
-                             padding: EdgeInsets.only(left: 5, top: 5, right: 10, bottom: 5),
-                             width: SizeConfig.screenWidth/4,
-                             child: Column(
-                                 mainAxisAlignment: MainAxisAlignment.start,
-                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                 children: [
-                                   AppBoldFont(context, msg: StringConstant.color + '${viewmodel.selectedColorName}', fontSize: 18),
-                                   SizedBox(height: 5),
-                                   element.colorData!.length > 4
-                                       ? Container(
-                                       color: TRANSPARENT_COLOR,
-                                       height: 50,  width: SizeConfig.screenWidth*0.09,
-                                       child: ColorDropDown(
-                                         // hintText: 'Select Color',
-                                         chosenValue: viewmodel.selectedColorName,
-                                         onChanged: (m) {
-                                           onColorSelected(m);
-                                           viewmodel.selectedColorName = m;
-                                           viewmodel.updatecolorName(context, viewmodel.selectedColorName);
-                                           element.colorData?.forEach((element) {
-                                             if(element.name == viewmodel.selectedColorName){
-                                               viewmodel.updatecolorName(context, viewmodel.selectedColorName);
-                                             }
-                                           });
-                                         },
-                                         colorData: element.colorData,
-                                       ))
-                                       : Container(
-                                       height: 50,
-                                       child: ListView.builder(
-                                           scrollDirection: Axis.horizontal,
-                                           itemCount: element.colorData?.length,
-                                           itemBuilder: (context, index) {
-                                             return InkWell(
-                                                 onTap: () {
-                                                   // onColorSelected(cartView.productListDetails?.productSkuDetails?.colorDetails?[index].colorName);
-                                                   onColorSelected(element.colorData?[index].name);
-                                                   viewmodel.updatecolorName(context, element.colorData?[index].name ?? '');
-                                                 },
-                                                 child: Container(
-                                                     height: 35,
-                                                     width: 35,
-                                                     margin: EdgeInsets.only(right: 10),
-                                                     alignment: Alignment.center,
-                                                     decoration: BoxDecoration(
-                                                         color: (element.colorData?[index].val?.hex)?.toColor(),
-                                                         shape: BoxShape.circle,
-                                                         border: Border.all(
-                                                             color: Colors.black,
-                                                             width: viewmodel.selectedColorName ==  element.colorData?[index].name ? 3 : 1))));
-                                           }))
-                                 ])) : SizedBox();
-                       }).toList() ?? [],
-                     ),
-                     SizedBox(height: 10),
-                     Column(
-                       children: viewmodel.productListDetails?.productSkuDetails?.map((element){
-                         return element.data != null ? Container(
-                             padding: EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 10),
-                             width: SizeConfig.screenWidth/4,
-                             child: Column(
-                                 mainAxisAlignment: MainAxisAlignment.start,
-                                 crossAxisAlignment: CrossAxisAlignment.start,
-                                 children: [
-                                   AppBoldFont(context,
-                                       msg: StringConstant.size + viewmodel.selectedSizeName,
-                                       fontSize: 18),
-                                   SizedBox(height: 8),
-                                   if(element.data != null)
-                                     element.data!.length > 4
-                                         ? Container(
-                                       width: SizeConfig.screenWidth*0.09,
-                                       color: TRANSPARENT_COLOR, height: 50,
-                                       child: SizeDropDown(
-                                         hintText: element.variationName,
-                                         chosenValue: chosenSize,
-                                         onChanged: (m) {
-                                           chosenSize = m;
-                                           onSizeSelected(chosenSize);
-                                           element.data?.forEach((e) {
-                                             if(chosenSize == e.val){
-                                               viewmodel.updatesizeName(context,  e.val ?? '');
-                                             }
-                                           });
+                      productColor(viewmodel.productListDetails),
+                     productSize(viewmodel.productListDetails),
+                     productMaterial(viewmodel.productListDetails),
+                     productUnit(viewmodel.productListDetails),
+                     productStyle(viewmodel.productListDetails),
 
-                                           // cartView.productListDetails?.productSkuDetails
-                                           //     ?.sizeDetails?.forEach((element) {
-                                           //   if (chosenSize == element.sizeName) {
-                                           //     cartView.updatesizeName(context,  element.sizeName ?? '');
-                                           //   }
-                                           // });
-                                         },
-                                         sizeList: element.data!,
-                                       ),
-                                     ) :
-                                     Container(
-                                         height: 50,
-                                         child: ListView.builder(
-                                             scrollDirection: Axis.horizontal,
-                                             itemCount: element.data?.length,
-                                             itemBuilder: (context, index) {
-                                               return InkWell(
-                                                   onTap: () {
-                                                     selectedSizeIndex = index;
-                                                     // cartView.updatesizeName(context,"${cartView.productListDetails?.productSkuDetails?.sizeDetails?[index].sizeName}");
-                                                     // onSizeSelected(cartView.productListDetails?.productSkuDetails?.sizeDetails?[index].sizeName);
-                                                     onSizeSelected(element.data?[index].name);
-                                                     viewmodel.updatesizeName(context, "${element.data?[index].name}");
-                                                   },
-                                                   child: Container(
-                                                       height: 40,
-                                                       width: 40,
-                                                       margin: EdgeInsets.only(right: 10),
-                                                       alignment: Alignment.center,
-                                                       decoration: BoxDecoration(
-                                                           shape: BoxShape.circle,
-                                                           color: selectedSizeIndex != index ? TRANSPARENT_COLOR : Theme.of(context).primaryColor,
-                                                           border: Border.all(
-                                                               color: Theme.of(context).canvasColor,
-                                                               width: 2)),
-                                                       child: AppBoldFont(
-                                                         context,
-                                                         msg:
-                                                         "${element.data?[index].name}",
-                                                         fontSize: 14.0,
-                                                         color: Theme.of(context).canvasColor,
-                                                       )));
-                                             }))
-                                 ])) : SizedBox();
-                       }).toList() ?? [],
-                     ),
                      bottomNavigationButton()
                    ]))
          ],
        ))
-         :
-     Center(child: ThreeArchedCircle(size: 45.0))
-      );}));}
+         : Center(child: ThreeArchedCircle(size: 45.0)));
+        })
+      );
+  }
+
+  //product Size
+  productSize(ProductList? productListDetails) {
+    return Column(
+      children: productListDetails?.productSkuDetails?.map((element){
+        return element.data != null && element.variationKey == 'size' ? Container(
+            padding: EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 10),
+            width: SizeConfig.screenWidth/7,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppBoldFont(context,
+                      msg: StringConstant.size + cartView.selectedSizeName,
+                      fontSize: 18),
+                  SizedBox(height: 8),
+                  // if(element.data != null)
+                  element.data!.length > 4
+                      ? Container(
+                    width: SizeConfig.screenWidth/9,
+                    color: TRANSPARENT_COLOR, height: 50,
+                    child: SizeDropDown(
+                      hintText: element.variationName,
+                      chosenValue: chosenSize,
+                      onChanged: (m) {
+                        chosenSize = m;
+                        onSizeSelected(chosenSize, productListDetails);
+                        element.data?.forEach((e) {
+                          if(chosenSize == e.name){
+                            cartView.updatesizeName(context,  e.name ?? '');
+                          }
+                        });
+                      },
+                      sizeList: element.data!,
+                    ),
+                  ) :
+                  Container(
+                      height: 50,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: element.data?.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                                onTap: () {
+                                  selectedSizeIndex = index;
+                                  onSizeSelected(element.data?[index].name, cartView.productListDetails!);
+                                  cartView.updatesizeName(context, "${element.data?[index].name}");
+                                },
+                                child: Container(
+                                  width: 55,
+                                    padding: EdgeInsets.all(5),
+                                    margin: EdgeInsets.only(right: 10),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.rectangle,
+                                        color: selectedSizeIndex != index ? TRANSPARENT_COLOR : Theme.of(context).primaryColor,
+                                        borderRadius: BorderRadius.horizontal(left: Radius.circular(10), right: Radius.circular(10)),
+                                        border: Border.all(
+                                            color: Theme.of(context).canvasColor,
+                                            width: 2)),
+                                    child: AppBoldFont(
+                                      context,
+                                      msg: "${element.data?[index].name}",
+                                      fontSize: 14.0,
+                                      color: Theme.of(context).canvasColor,
+                                    )));
+                          }))
+                ])) : SizedBox();
+      }).toList() ?? [],
+    );
+  }
+  //product material
+  productMaterial(ProductList? productListDetails) {
+    return Column(
+      children: productListDetails?.productSkuDetails?.map((element){
+        return element.data != null && element.variationKey == 'material_type' ? Container(
+            padding: EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 10),
+            width: SizeConfig.screenWidth/5,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppBoldFont(context,
+                      msg: element.variationName! + ' : ' +cartView.selectedMaterialName,
+                      fontSize: 18),
+                  SizedBox(height: 8),
+                  // if(element.data != null)
+                  element.data!.length > 4
+                      ? Container(
+                    width: SizeConfig.screenWidth/9,
+                    color: TRANSPARENT_COLOR, height: 50,
+                    child: SizeDropDown(
+                      hintText: 'Select Material',
+                      chosenValue: chosenSize,
+                      onChanged: (m) {
+                        chosenSize = m;
+                        onMaterialSelected(chosenSize, productListDetails);
+                        element.data?.forEach((e) {
+                          if(chosenSize == e.name){
+                            cartView.updateMaterialName(context, e.name ?? '');
+                          }
+                        });
+                      },
+                      sizeList: element.data!,
+                    ),
+                  ) :
+                  Container(
+                      height: 50,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: element.data?.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                                onTap: () {
+                                  selectedMaterialIndex = index;
+                                  onMaterialSelected(element.data?[index].name, cartView.productListDetails!);
+                                  cartView.updateMaterialName(context, "${element.data?[index].name}");
+                                },
+                                child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    margin: EdgeInsets.only(right: 10),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.horizontal(left: Radius.circular(10), right: Radius.circular(10)),
+                                        shape: BoxShape.rectangle,
+                                        color: selectedMaterialIndex != index ? TRANSPARENT_COLOR : Theme.of(context).primaryColor,
+                                        border: Border.all(
+                                            color: Theme.of(context).canvasColor,
+                                            width: 2)),
+                                    child: AppBoldFont(
+                                      context,
+                                      msg: "${element.data?[index].name}",
+                                      fontSize: 14.0,
+                                      color: Theme.of(context).canvasColor,
+                                    )));
+                          }))
+                ])) : SizedBox();
+      }).toList() ?? [],
+    );
+  }
+  // product style
+  productStyle(ProductList? productListDetails) {
+    return Column(
+      children: productListDetails?.productSkuDetails?.map((element){
+        return element.data != null && element.variationKey == 'style' ? Card(
+            child: Container(
+                padding: EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 10),
+                width: SizeConfig.screenWidth/7,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppBoldFont(context,
+                          msg: element.variationName! + 'cartView.selectedSizeName',
+                          fontSize: 18),
+                      SizedBox(height: 8),
+                      // if(element.data != null)
+                      element.data!.length > 4
+                          ? Container(color: TRANSPARENT_COLOR, height: 50,
+                        child: SizeDropDown(
+                          hintText: 'Select Style',
+                          chosenValue: chosenSize,
+                          onChanged: (m) {
+                            chosenSize = m;
+                            onStyleSelected(chosenSize, productListDetails);
+                            element.data?.forEach((e) {
+                              if(chosenSize == e.name){
+                                cartView.updateStyleName(context,  e.name ?? '');
+                              }
+                            });
+                          },
+                          sizeList: element.data!,
+                        ),
+                      ) :
+                      Container(
+                          height: 50,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: element.data?.length,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                    onTap: () {
+                                      selectedStyleIndex = index;
+                                      onStyleSelected(element.data?[index].name, cartView.productListDetails!);
+                                      cartView.updateStyleName(context, "${element.data?[index].name}");
+                                    },
+                                    child: Container(
+                                        padding: EdgeInsets.all(5),
+                                        margin: EdgeInsets.only(right: 10),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            color: selectedStyleIndex != index ? TRANSPARENT_COLOR : Theme.of(context).primaryColor,
+                                            borderRadius: BorderRadius.horizontal(left: Radius.circular(10), right: Radius.circular(10)),
+                                            border: Border.all(
+                                                color: Theme.of(context).canvasColor,
+                                                width: 2)),
+                                        child: AppBoldFont(
+                                          context,
+                                          msg: "${element.data?[index].name}",
+                                          fontSize: 14.0,
+                                          color: Theme.of(context).canvasColor,
+                                        )));
+                              }))
+                    ]))) : SizedBox();
+      }).toList() ?? [],
+    );
+  }
+  // product unit
+  productUnit(ProductList? productListDetails) {
+    return Column(
+      children: productListDetails?.productSkuDetails?.map((element){
+        return element.data != null && element.variationKey == 'unit_count'? Card(
+            child: Container(
+                padding: EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 10),
+                width: SizeConfig.screenWidth/7,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppBoldFont(context,
+                          msg: element.variationName! + 'cartView.selectedSizeName',
+                          fontSize: 18),
+                      SizedBox(height: 8),
+                      // if(element.data != null)
+                      element.data!.length > 4
+                          ? Container(
+                        width: SizeConfig.screenWidth/9,
+                        color: TRANSPARENT_COLOR, height: 50,
+                        child: SizeDropDown(
+                          hintText: 'Select Unit',
+                          chosenValue: chosenSize,
+                          onChanged: (m) {
+                            chosenSize = m;
+                            onUnitSelected(chosenSize, productListDetails);
+                            element.data?.forEach((e) {
+                              if(chosenSize == e.name){
+                                cartView.updateUnitCountName(context,  e.name ?? '');
+                              }
+                            });
+                          },
+                          sizeList: element.data!,
+                        ),
+                      ) :
+                      Container(
+                          height: 50,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: element.data?.length,
+                              itemBuilder: (context, index) {
+                                return InkWell(
+                                    onTap: () {
+                                      selectedUnitIndex = index;
+                                      onUnitSelected(element.data?[index].name, cartView.productListDetails!);
+                                      cartView.updateUnitCountName(context, "${element.data?[index].name}");
+                                    },
+                                    child: Container(
+                                        padding: EdgeInsets.all(5),
+                                        margin: EdgeInsets.only(right: 10),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.rectangle,
+                                            color: selectedUnitIndex != index ? TRANSPARENT_COLOR : Theme.of(context).primaryColor,
+                                            borderRadius: BorderRadius.horizontal(left: Radius.circular(10), right: Radius.circular(10)),
+                                            border: Border.all(
+                                                color: Theme.of(context).canvasColor,
+                                                width: 2)),
+                                        child: AppBoldFont(
+                                          context,
+                                          msg: "${element.data?[index].name}",
+                                          fontSize: 14.0,
+                                          color: Theme.of(context).canvasColor,
+                                        )));
+                              }))
+                    ]))) : SizedBox();
+      }).toList() ?? [],
+    );
+  }
+  // product color
+  productColor(ProductList? productListDetails) {
+    return Column(
+      children: productListDetails?.productSkuDetails?.map((element){
+        return element.data != null && element.variationKey == 'color' ?
+        Container(
+            padding: EdgeInsets.only(left: 10, top: 5, right: 10, bottom: 5),
+            width: SizeConfig.screenWidth/7,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AppBoldFont(context, msg: element.variationName! + ": "+ cartView.selectedColorName, fontSize: 18),
+                  SizedBox(height: 5),
+                  element.data!.length > 4
+                      ? Container(
+                      width: SizeConfig.screenWidth/9,
+                      color: TRANSPARENT_COLOR,
+                      height: 50,
+
+                      child: ColorDropDown(
+                         chosenValue: cartView.selectedColorName,
+                        hintText: 'Select Color',
+                        onChanged: (m) {
+
+                          onColorSelected(m, productListDetails);
+                          cartView.selectedColorName = m;
+                          cartView.updatecolorName(context, cartView.selectedColorName);
+                          element.data?.forEach((element) {
+                            if(element.name == cartView.selectedColorName){
+                              cartView.updatecolorName(context, cartView.selectedColorName);
+                            }
+                          });
+                        },
+                        colorData: element.data,
+                      ))
+                      : Container(
+                      height: 50,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: element.data?.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                                onTap: () {
+                                  onColorSelected(element.data?[index].name, cartView.productListDetails!);
+                                  cartView.updatecolorName(context, element.data?[index].name ?? '');
+                                },
+                                child: Container(
+                                    height: 35,
+                                    width: 45,
+                                    margin: EdgeInsets.only(right: 10),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: (element.data?[index].val)?.toColor(),
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: Colors.black,
+                                            width: cartView.selectedColorName ==  element.data?[index].name ? 3 : 1))));
+                          }))
+                ])) : SizedBox();
+      }).toList() ?? [],
+    );
+  }
 
 
-  onColorSelected(String? colorName) {
+  onColorSelected(String? colorName, ProductList productDetails) {
     if (cartView.selectedColorName != colorName) {
-      cartView.updatesizeName(context, "");
+      cartView.updatesizeName(context, "",);
       selectedSizeIndex = null;
+      selectedStyleIndex = null;
+      selectedMaterialIndex = null;
+      selectedUnitIndex = null;
       chosenSize = null;
       cartView.isAddedToCart = false;
       AppIndicator.loadingIndicator(context);
-      cartView.getProductDetails(
-          context, widget.productId ?? prodId, "", colorName ?? " ", '');
+      getProductUpdateDetails(colorName, "", productDetails);
     }
   }
 
-  onSizeSelected(String? sizeName) {
+  onSizeSelected(String? sizeName, ProductList product) {
     if (cartView.selectedSizeName != sizeName) {
       cartView.isAddedToCart = false;
       AppIndicator.loadingIndicator(context);
-      cartView.getProductDetails(context, widget.productId ?? prodId, '',
-          cartView.selectedColorName, sizeName ?? '');
+      getProductUpdateDetails(cartView.selectedColorName, sizeName, product);
     }
+  }
+
+  onStyleSelected(String? styleName, ProductList product) {
+    if (cartView.selectedStyleName != styleName) {
+      cartView.isAddedToCart = false;
+      AppIndicator.loadingIndicator(context);
+      getProductUpdateDetails(cartView.selectedColorName, styleName, product);
+    }
+  }
+
+  onMaterialSelected(String? materialName, ProductList product) {
+    if (cartView.selectedMaterialName != materialName) {
+      cartView.isAddedToCart = false;
+      AppIndicator.loadingIndicator(context);
+      getProductUpdateDetails(cartView.selectedColorName, materialName, product);
+    }
+  }
+
+  onUnitSelected(String? unitName, ProductList product) {
+    if (cartView.selectedUnitCountName != unitName) {
+      cartView.isAddedToCart = false;
+      AppIndicator.loadingIndicator(context);
+      getProductUpdateDetails(cartView.selectedColorName, unitName, product);
+    }
+  }
+
+  getProductUpdateDetails(String? colorName, sizeName, ProductList product){
+    cartView.getProductDetails(
+          context, widget.productId ?? prodId, product.productDetails?.variantId ?? '', colorName ?? '', sizeName ?? '');
+
   }
 
   // this method is called when navigate to this page using dynamic link
@@ -736,15 +696,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   //Bottom Navigation
   bottomNavigationButton() {
     return Container(
-
         height: 80,
         margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
         child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-
-          ElevatedButton(
+              ElevatedButton(
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
                       Theme.of(context).cardColor),
@@ -793,8 +751,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       : addToBagButtonPressed();
                 }
               }),
-          SizedBox(width: 5),
-          ElevatedButton(
+              SizedBox(width: 5),
+              ElevatedButton(
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
                   padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 40, vertical: 20)),
@@ -841,10 +799,5 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       Navigator.pop(context, cartView.cartItemCount);
 
     }
-  }
-
-  void _checkUser() async{
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    token = sharedPreferences.getString('token').toString();
   }
 }

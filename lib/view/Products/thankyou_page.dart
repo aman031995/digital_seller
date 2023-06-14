@@ -1,10 +1,6 @@
-
 import 'dart:async';
-
-import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
-import 'package:TychoStream/view/Products/cart_detail_page.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
@@ -14,7 +10,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-
 import '../../AppRouter.gr.dart';
 
 

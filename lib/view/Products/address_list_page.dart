@@ -1,4 +1,3 @@
-import 'package:TychoStream/model/data/cart_detail_model.dart';
 import 'package:TychoStream/model/data/create_order_model.dart';
 import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
@@ -11,9 +10,7 @@ import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
-import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
-import 'package:TychoStream/view/Products/cart_detail_page.dart';
 import 'package:TychoStream/view/Products/shipping_address_page.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
@@ -26,15 +23,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:razorpay_web/razorpay_web.dart';
-
 import '../../AppRouter.gr.dart';
 import '../../utilities/StringConstants.dart';
+
 @RoutePage()
 class AddressListPage extends StatefulWidget {
-  // CartListDataModel? checkOutData;
   AddressListPage(
       {Key? key})
       : super(key: key);
@@ -49,14 +44,12 @@ class _AddressListPageState extends State<AddressListPage> {
   int activeStep = 0;
   late Razorpay _razorpay;
   HomeViewModel homeViewModel = HomeViewModel();
-  // CartViewModel cartViewModel = CartViewModel();
   CartViewModel? cartModel;
   int selectedRadioTile = 0;
   bool google_pay = false;
   bool cod = false;
   bool agree = false;
   String? addressId;
-  // final _razorPay = Razorpay();
   final _cartRepo = CartDetailRepository();
 
   CreateOrderModel? _createOrderModel;
@@ -64,17 +57,12 @@ class _AddressListPageState extends State<AddressListPage> {
   CreateOrderModel? get createOrderModel => _createOrderModel;
   @override
   void initState() {
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //     cartViewModel.paymentCallbackHandling(cartModel, _razorPay,  addressId ?? '', context);
-    // });
     _razorpay = Razorpay();
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
     cartViewModel.getAddressList(context);
     cartViewModel.getCartListData(context);
-    // addressId=cartViewModel.addressListModel?[0].addressId;
-   // cartViewModel.getCheckOutInfo(context, widget.checkOutData);
     super.initState();
   }
 

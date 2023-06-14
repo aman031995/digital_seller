@@ -60,7 +60,6 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
                 height: (widget.platformMovieData!.content!.isNotEmpty)
                     ? ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenHeight*0.25 :SizeConfig.screenHeight * 0.25
                     : 0.0,
-
                 child: widget.platformMovieData?.content != null
                     ? ListView.builder(
                         physics: BouncingScrollPhysics(),
@@ -116,21 +115,20 @@ class _MovieListCommonWidgetState extends State<MovieListCommonWidget> {
               widget.platformMovieData!.content!.length > 8
                   ? textButton(context, "See All", onApply: () async {
 
-                names == "null"
-                    ? showDialog(
-                    context: context,
-                    barrierColor: Colors.black87,
-                    builder: (BuildContext context) {
-                      return  LoginUp();
-                    })
-                    :
-
-                GoRouter.of(context)
-                    .pushNamed(RoutesName.HomeViewPage, queryParams: {
-                  'title': '${widget.trayTitle}',
-                  'trayId':'${widget.trayId}',
-                },
-                );
+                // names == "null"
+                //     ? showDialog(
+                //     context: context,
+                //     barrierColor: Colors.black87,
+                //     builder: (BuildContext context) {
+                //       return  LoginUp();
+                //     })
+                //     :
+                // GoRouter.of(context)
+                //     .pushNamed(RoutesName.HomeViewPage, queryParams: {
+                //   'title': '${widget.trayTitle}',
+                //   'trayId':'${widget.trayId}',
+                // },
+                // );
                     })
                   : SizedBox()
             ],

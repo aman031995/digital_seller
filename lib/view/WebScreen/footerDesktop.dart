@@ -3,10 +3,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
-import 'package:TychoStream/utilities/route_service/routes_name.dart';
-import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../utilities/AppTextButton.dart';
 
 class footerDesktop extends StatefulWidget {

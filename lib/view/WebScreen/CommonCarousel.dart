@@ -4,13 +4,12 @@ import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:url_launcher/url_launcher.dart';
-String url='https://www.instagram.com';
+
 class CommonCarousel extends StatefulWidget with ChangeNotifier {
   CommonCarousel({Key? key}) : super(key: key);
 
