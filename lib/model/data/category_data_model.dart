@@ -43,7 +43,7 @@ class CategoryList {
         this.categoryName,
         this.categoryIcon,
         this.categoryColor,
-      this.categoryColorLight});
+        this.categoryColorLight});
 
   CategoryList.fromJson(Map<String, dynamic> json) {
     categoryId = json['categoryId'];

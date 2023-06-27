@@ -50,7 +50,7 @@ class NetworkConstants{
   static String kgetAllAddress = "get-all-address?userId={USER_ID}&appId={APP_ID}";
   static String kGetOrderListDetail = "order-detail?userId={USER_ID}&appId={APP_ID}&orderId={ORDER_ID}";
   static String kAddToFavourite = "add-favorite";
-  static String KGetFavourite="get-all-favorite?appId={APP_ID}&userId={USER_ID}";
+  static String KGetFavourite="get-all-favorite?appId={APP_ID}&userId={USER_ID}&pageNum={PAGE_NUM}";
   static String placeOrder = "place-order";
   static String removeFromCart = "remove-cartItems";
   static String getCartCount = 'cart-item-count?userId={USER_ID}&appId={APP_ID}';
@@ -66,13 +66,16 @@ class NetworkConstants{
   static String kGetProductList = "product-listing?userId={USER_ID}&appId={APP_ID}&pageNum={PAGE_NUM}";
   // static String kGetProductById = "get-by-product-id?productId={PRODUCT_ID}&userId={USER_ID}&appId={APP_ID}";
  // static String kGetProductById = "product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&colorName={COLOR_ID}&sizeName={SIZE_NAME}&variantId={VARIANT_ID}";
-  static String kGetProductById = "product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&color={COLOR_ID}&size={SIZE_NAME}&variantId={VARIANT_ID}";
-  static String kGetProductByCategory = "get-banner-product?appId={APP_ID}&catId={CAT_ID}&productId={PROD_ID}";
+  //static String kGetProductById = "product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&color={COLOR_ID}&size={SIZE_NAME}&variantId={VARIANT_ID}";
+  static String kGetProductById = 'product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&variant=[{"color" : "{COLOR_ID}"}, {"size" : "{SIZE_NAME}"},{"material_type" : "{MATERIAL_TYPE}"}, {"style" : "{STYLE}"}, {"unit_count" : "{UNIT_COUNT}"}]';
 
+  static String kGetProductByCategory = "get-banner-product?appId={APP_ID}&catId={CAT_ID}&productId={PROD_ID}";
+  static String KRecentView='view-product-list?userId={USER_ID}&appId={APP_ID}';
+  static String KRecommended='recommended-product?appId={APP_ID}';
   // payment-order section
   static String kCreateOrder = "create-order";
   static String kPaymentResponse = "payment-callback";
 
   // static String kAppID = '8b7e56d4-8d6c-4053-8991-64374d95c353';
-  static String kAppID = 'a2108f43-9011-4440-9984-6f3d19810c27';
+  static String kAppID = 'f11e5fd9-a395-49fb-bbd8-7e6554dc4549';
 }

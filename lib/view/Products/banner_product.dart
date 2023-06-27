@@ -675,14 +675,14 @@ class _banner_productState extends State<banner_product> {
   }
 
   onColorSelected(String? colorName) {
-    if (cartView.selectedColorName != colorName) {
+    if (cartView.selectedcolorName != colorName) {
       cartView.updatesizeName(context, "");
       selectedSizeIndex = null;
       chosenSize = null;
       cartView.isAddedToCart = false;
       AppIndicator.loadingIndicator(context);
-      cartView.getProductDetails(
-          context, widget.productId ?? prodId, "", colorName ?? " ", '');
+      // cartView.getProductDetails(
+      //     context, widget.productId ?? prodId, "", colorName ?? " ", '');
     }
   }
 
@@ -690,8 +690,8 @@ class _banner_productState extends State<banner_product> {
     if (cartView.selectedSizeName != sizeName) {
       cartView.isAddedToCart = false;
       AppIndicator.loadingIndicator(context);
-      cartView.getProductDetails(context, widget.productId ?? prodId, '',
-          cartView.selectedColorName, sizeName ?? '');
+      // cartView.getProductDetails(context, widget.productId ?? prodId, '',
+      //     cartView.selectedColorName, sizeName ?? '');
     }
   }
 
@@ -703,7 +703,7 @@ class _banner_productState extends State<banner_product> {
       prodId = data['prodId'];
       variantId = data['variantId'];
       colorName = data['colorName'];
-      cartView.getProductDetails(context, prodId, variantId,colorName,"");
+      // cartView.getProductDetails(context, prodId, variantId,colorName,"");
       cartView.updatecolorName(
           context,
           colorName);

@@ -41,6 +41,7 @@ class _CartDetailState extends State<CartDetail> {
 
   @override
   void initState() {
+    cartViewData.getCartCount(context);
     cartViewData.updateCartCount(context, widget.itemCount ?? '');
     cartViewData.getCartListData(context);
     super.initState();
@@ -279,7 +280,6 @@ class _CartDetailState extends State<CartDetail> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  promoCodeViewMobile(),
                   SizedBox(height: 5),
                   billCardMobile(context, cartViewData),
                   SizedBox(height: 10),
@@ -464,33 +464,53 @@ class _CartDetailState extends State<CartDetail> {
                                             SizedBox(height: 5),
                                             Row(
                                               children: [
-                                                AppMediumFont(context,
-                                                    msg: "₹" + " ${itemInCart?.productDetails?.productDiscountPrice}",
-                                                    color: BLACK_COLOR,
-                                                    fontSize: 16.0),
+
                                                 SizedBox(
                                                   width: SizeConfig.safeBlockVertical * 1,
                                                 ),
                                                 AppMediumFont(context,
                                                     color: BLACK_COLOR,
-                                                    msg: itemInCart?.productDetails?.productPrice.toString() ?? "",
+                                                    msg:  "₹" + "${itemInCart?.productDetails?.productPrice}",
                                                     textDecoration: TextDecoration.lineThrough,
                                                     fontSize: 12.0),
                                                 SizedBox(
                                                   width: SizeConfig.safeBlockVertical * 1,
                                                 ),
+                                                AppBoldFont(context,
+                                                    msg: "₹" + " ${itemInCart?.productDetails?.productDiscountPrice}",
+                                                    color: BLACK_COLOR,
+                                                    fontSize: 16.0),SizedBox(
+                                                  width: SizeConfig.safeBlockVertical * 1,
+                                                ),
                                                 AppMediumFont(context,
                                                     msg: "${itemInCart?.productDetails?.productDiscountPercent}" + r" % OFF",
                                                     color: Colors.green,
-                                                    fontSize: 12.0),
+                                                    fontSize: 12.0),SizedBox(
+                                                  width: SizeConfig.safeBlockVertical * 1,
+                                                ),
                                               ],
                                             ),
                                             SizedBox(height: 5),
+                                            itemInCart?.productSelectedSku?.color?.name != null?      AppMediumFont(context,
+                                                maxLines: 1, msg: "color"+'- ${itemInCart?.productSelectedSku?.color?.name}',  color: BLACK_COLOR,fontSize: 16.0):SizedBox(),
+                                            itemInCart?.productSelectedSku?.size?.name != null?      AppMediumFont(context,
+                                                maxLines: 1,  msg: "size"+'- ${itemInCart?.productSelectedSku?.size?.name}', color: BLACK_COLOR, fontSize: 16.0):SizedBox(),
+                                            itemInCart?.productSelectedSku?.style?.name != null?       AppMediumFont(context,
+                                                maxLines: 1,  msg: "style"+'- ${itemInCart?.productSelectedSku?.style?.name}', color: BLACK_COLOR, fontSize: 16.0):SizedBox(),
+                                            itemInCart?.productSelectedSku?.materialType?.name != null?
+                                            AppMediumFont(context,
+                                                maxLines: 2,  msg: "MaterialType"+'- ${
+                                                    itemInCart!.productSelectedSku!.materialType!.name!.length > 35 ?
+                                                    itemInCart.productSelectedSku?.materialType?.name!.replaceRange(35, itemInCart.productSelectedSku?.materialType?.name?.length, '...') : itemInCart.productSelectedSku?.materialType?.name ?? ""
+                                                }', color: BLACK_COLOR, fontSize: 16.0):SizedBox(),
+                                            itemInCart?.productSelectedSku?.unitCount?.name != null?
+                                            AppMediumFont(context, color: BLACK_COLOR,
+                                                maxLines: 1,   msg: "UnitCount"+'- ${itemInCart?.productSelectedSku?.unitCount?.name}', fontSize: 16.0):SizedBox(),
+
                                             // AppMediumFont(context,
                                             //     color: BLACK_COLOR,
                                             //     msg: "Color : " +(itemInCart?.productDetails?.productColor ?? ""),
                                             //     fontSize: 13.0),
-                                            SizedBox(height: 5),
                                             // AppMediumFont(context,
                                             //     color: BLACK_COLOR,
                                             //     msg: "Size : " + (itemInCart?.productDetails?.productSize ?? ''),
@@ -586,7 +606,6 @@ class _CartDetailState extends State<CartDetail> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                              promoCodeView(),
                               SizedBox(height: 5),
                               billCard(context, cartViewData),
                                 SizedBox(height: 10),

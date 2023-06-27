@@ -18,23 +18,25 @@ class NOInternetScreen extends StatelessWidget {
           onBackPressed: () {
             Navigator.pop(context, true);
           }) : null,
-      body: Container(
-        margin: EdgeInsets.only(top: 180, left: 35, right: 35),
-        child: Column(
-          children: [
-            Image.asset(
-              "images/ic_error.png",
-              height: 50,
-              width: 50,
-            ),
-            SizedBox(height: 25),
-            AppMediumFont(
-                context,
-                msg: StringConstant.noInternet,
-                fontSize: 16,
-                textAlign: TextAlign.center,
-                maxLines: 3)
-          ],
+      body: Center(
+        child: Container(
+          margin: EdgeInsets.only(top: 180, left: 35, right: 35),
+          child: Column(
+            children: [
+              Image.asset(
+                "images/ic_error.png",
+                height: 100,
+                width: 100,
+              ),
+              SizedBox(height: 25),
+              AppMediumFont(
+                  context,
+                  msg: StringConstant.noInternet,
+                  fontSize: 16,
+                  textAlign: TextAlign.center,
+                  maxLines: 3)
+            ],
+          ),
         ),
       ),
     );

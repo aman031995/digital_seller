@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:html';
+import 'package:TychoStream/AppRouter.gr.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
@@ -102,7 +104,7 @@ class ProfileViewModel with ChangeNotifier {
             AppDataManager.getInstance.updateUserDetails(userInfoModel!);
             ToastMessage.message(
                 ((result as SuccessState).value as ASResponseModal).message);
-            GoRouter.of(context).pushNamed(RoutesName.home);
+            context.router.push(HomePageWeb());
             notifyListeners();
           }
         });

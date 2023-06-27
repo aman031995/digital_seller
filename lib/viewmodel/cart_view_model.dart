@@ -26,35 +26,33 @@ class CartViewModel extends ChangeNotifier {
   final _cartRepo = CartDetailRepository();
 
   CartListDataModel? _cartListDataModel;
-
   CartListDataModel? get cartListData => _cartListDataModel;
 
   ItemCountModel? _itemCountModel;
-
   ItemCountModel? get itemCountModel => _itemCountModel;
+
+  ProductList? _productListDetails;
+  ProductList? get productListDetails => _productListDetails;
+
+  ProductListModel? _productListModel;
+  ProductListModel? get productListModel => _productListModel;
 
   ProductListModel? _newProductListModel;
   ProductListModel? get newProductListModel => _newProductListModel;
 
+  List<ProductList>? _recentView;
+  List<ProductList>? get recentView => _recentView;
 
-  ProductList? _productListDetails;
-
-  ProductList? get productListDetails => _productListDetails;
-
-  ProductListModel? _productListModel;
-
-  ProductListModel? get productListModel => _productListModel;
+  List<ProductList>? _recommendedView;
+  List<ProductList>? get recommendedView => _recommendedView;
 
   List<AddressListModel>? _addressListModel;
-
   List<AddressListModel>? get addressListModel => _addressListModel;
 
   PromoCodeDataModel? _promoCodeDataModel;
-
   PromoCodeDataModel? get promocodeData => _promoCodeDataModel;
 
   CreateOrderModel? _createOrderModel;
-
   CreateOrderModel? get createOrderModel => _createOrderModel;
 
   bool activeQuantity = false;
@@ -65,13 +63,18 @@ class CartViewModel extends ChangeNotifier {
   AddressListModel? selectedAddress;
   int selectedAddressIndex = 0;
   bool? isThankyouPage = false;
-  String selectedColorName = '';
+  String selectedcolorName = '';
   String selectedSizeName = '';
-  bool favouriteCallback = false;
-  bool isLoading = false;  int lastPage = 1, nextPage = 1;
   String selectedStyleName = '';
   String selectedMaterialName = '';
   String selectedUnitCountName = '';
+  String defaultName = '';
+  bool favouriteCallback = false;
+
+  int lastPage = 1, nextPage = 1;
+  bool isLoading = false;
+  bool isSelect = false;
+  bool iswishlist = false;
   // get menu from cache api data
   getProductListData(BuildContext context, int pageNum) async{
     final box = await Hive.openBox<String>('appBox');
@@ -93,6 +96,26 @@ class CartViewModel extends ChangeNotifier {
         dataPagination(result);
         isLoading = false;
         AppIndicator.disposeIndicator();
+        notifyListeners();
+      }
+    });
+  }
+  //getRecentView
+  Future<void> getRecentView(BuildContext context) async{
+    _cartRepo.getRecentView(context,(result ,isSuccess ){
+      if(isSuccess){
+        _recentView=((result as SuccessState).value as ASResponseModal).dataModal;
+        // AppIndicator.disposeIndicator();
+        notifyListeners();
+      }
+    });
+  }
+  //getRecentView
+  Future<void> getRecommendedView(BuildContext context) async{
+    _cartRepo.getRecommendedView(context,(result ,isSuccess ){
+      if(isSuccess){
+        _recommendedView=((result as SuccessState).value as ASResponseModal).dataModal;
+        // AppIndicator.disposeIndicator();
         notifyListeners();
       }
     });
@@ -191,10 +214,10 @@ class CartViewModel extends ChangeNotifier {
   }
 
   // GetProductDetails Method
-  Future<void> getProductDetails(BuildContext context, String productId,
-      String variantId, String color, String sizeName) async {
-    _cartRepo.getProductDetails(context, productId, variantId, color, sizeName,
-        (result, isSuccess) {
+  Future<void> getProductDetails(BuildContext context,String productId,
+      String size, String color, String style, String unit, String material) async {
+    _cartRepo.getProductDetails(context, productId, colorId: color,
+        sizeName: size, materialType: material, style: style, unitCount: unit,(result, isSuccess) {
       if (isSuccess) {
         _productListDetails =
             ((result as SuccessState).value as ASResponseModal).dataModal;
@@ -361,7 +384,7 @@ class CartViewModel extends ChangeNotifier {
         (result, isSuccess) {
           favouriteCallback = true;
       if (isSuccess) {
-        getPageName(context, pageName, result,variantId,listIndex);
+        // getPageName(context, pageName, result,variantId,listIndex);
         ToastMessage.message(
             ((result as SuccessState).value as ASResponseModal).message);
         notifyListeners();
@@ -384,7 +407,7 @@ class CartViewModel extends ChangeNotifier {
       if (isSuccess) {
         ToastMessage.message(
             ((result as SuccessState).value as ASResponseModal).message);
-        GoRouter.of(context).pushNamed(RoutesName.ThankYouPage);
+        //GoRouter.of(context).pushNamed(RoutesName.ThankYouPage);
         // AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.thankYouPage, screenName: RouteBuilder.thankYou);
         notifyListeners();
       }
@@ -429,7 +452,7 @@ class CartViewModel extends ChangeNotifier {
             'Success',
             '',
             addressId);
-        GoRouter.of(context).pushNamed(RoutesName.ThankYouPage);
+       // GoRouter.of(context).pushNamed(RoutesName.ThankYouPage);
         placeOrder(context, addressId, successResponse.paymentId,
             successResponse.orderId, 'Online', 'Success');
         // Navigator.pushNamed(context, RoutesName.ThankYouPage);
@@ -480,7 +503,7 @@ class CartViewModel extends ChangeNotifier {
   }
 
   updatecolorName(BuildContext context,String name) {
-    selectedColorName = name;
+    selectedcolorName = name;
     notifyListeners();
   }
 

@@ -24,6 +24,7 @@ import '../AppRouter.gr.dart';
 
 void reloadPage() {
   html.window.location.reload();
+
 }
 class AuthViewModel with ChangeNotifier {
   final _authRepo = AuthRepository();

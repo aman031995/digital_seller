@@ -15,7 +15,7 @@ class CartDetailRepository {
 
 //Get ProductList Method
   Future<Result?> getProductList(
-      BuildContext context,int pageNum, NetworkResponseHandler responseHandler) async {
+      BuildContext context, pageNum, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
       "Authorization": "Bearer " + sharedPreferences.get("token").toString()
@@ -36,9 +36,85 @@ class CartDetailRepository {
         (result as SuccessState).value as Map<String, dynamic>;
         if (map["data"] is Map<String, dynamic>) {
           response.dataModal = ProductListModel.fromJson(map["data"]);
+          //CacheDataManager.cacheData(key: StringConstant.kProductList, jsonData: map);
         }
         responseHandler(Result.success(response), isSuccess);
       } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
+
+  Future<Result?> getRecentView(
+      BuildContext context, NetworkResponseHandler responseHandler) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var header = {
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+    };
+    AppNetwork appNetwork = AppNetwork();
+    Map<String, String> urlParams = {
+      "{USER_ID}": sharedPreferences.get("userId").toString(),
+
+      "{APP_ID}": NetworkConstants.kAppID,
+    };
+
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.KRecentView, RequestType.get,headers:header );
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        if (isSuccess) {
+          var response = ASResponseModal.fromResult(result);
+          Map<String, dynamic> map =
+          (result as SuccessState).value as Map<String, dynamic>;
+          if (map['data'] is List<dynamic>) {
+            var dataList = map['data'] as List<dynamic>;
+            var items = <ProductList>[];
+            dataList.forEach((element) {
+              items.add(ProductList.fromJson(element));
+            });
+            response.dataModal = items;
+          }
+          responseHandler(Result.success(response), isSuccess);
+        }
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
+
+  Future<Result?> getRecommendedView(
+      BuildContext context, NetworkResponseHandler responseHandler) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var header = {
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+    };
+    AppNetwork appNetwork = AppNetwork();
+    Map<String, String> urlParams = {
+
+      "{APP_ID}": NetworkConstants.kAppID,
+    };
+
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.KRecommended, RequestType.get,headers:header );
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        if (isSuccess) {
+          var response = ASResponseModal.fromResult(result);
+          Map<String, dynamic> map =
+          (result as SuccessState).value as Map<String, dynamic>;
+          if (map['data'] is List<dynamic>) {
+            var dataList = map['data'] as List<dynamic>;
+            var items = <ProductList>[];
+            dataList.forEach((element) {
+              items.add(ProductList.fromJson(element));
+            });
+            response.dataModal = items;
+          }
+          responseHandler(Result.success(response), isSuccess);
+        }
+      }
+
+      else {
         responseHandler(result, isSuccess);
       }
     });
@@ -73,6 +149,75 @@ class CartDetailRepository {
       }
     });
   }
+
+  // GetCartList Method
+  Future<Result?> getCartListData(
+      BuildContext context, NetworkResponseHandler responseHandler) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var header = {
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+    };
+    AppNetwork appNetwork = AppNetwork();
+    Map<String, String> urlParams = {
+      "{USER_ID}": sharedPreferences.get("userId").toString(),
+      "{APP_ID}": NetworkConstants.kAppID,
+    };
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.kGetCartList, RequestType.get,
+        headers: header);
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map =
+        (result as SuccessState).value as Map<String, dynamic>;
+        if (map["data"] is Map<String, dynamic>) {
+          response.dataModal = CartListDataModel.fromJson(map["data"]);
+          // CacheDataManager.cacheData(key: StringConstant.kHomePageData, jsonData: map);
+        }
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
+
+// GetProductDetails Method
+  Future<Result?> getProductDetails(BuildContext context, String productId,
+      NetworkResponseHandler responseHandler,
+      {String? colorId, String? sizeName, String? style, String? unitCount, String? materialType}) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var header = {
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+    };
+    AppNetwork appNetwork = AppNetwork();
+    Map<String, String> urlParams = {
+      "{USER_ID}": sharedPreferences.get("userId").toString(),
+      "{PRODUCT_ID}": productId,
+      "{COLOR_ID}": colorId=='null'? "" : colorId ?? "",
+      "{STYLE}":style=='null'? "" : style ?? "",
+      "{SIZE_NAME}": sizeName=='null'? "" : sizeName ?? "",
+      "{MATERIAL_TYPE}" :materialType=='null'? "" : materialType ?? "",
+      "{UNIT_COUNT}" : unitCount=='null'? "" : unitCount ?? "",
+      "{APP_ID}": NetworkConstants.kAppID,
+    };
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.kGetProductById, RequestType.get,
+        headers: header);
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map =
+        (result as SuccessState).value as Map<String, dynamic>;
+        if (map["data"] is Map<String, dynamic>) {
+          response.dataModal = ProductList.fromJson(map['data']);
+        }
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
+
   // GetProductDetails Method
   Future<Result?> getProductByCategory(BuildContext context,
       String productId,
@@ -111,77 +256,6 @@ class CartDetailRepository {
       }
     });
   }
-
-
-  // GetCartList Method
-  Future<Result?> getCartListData(
-      BuildContext context, NetworkResponseHandler responseHandler) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var header = {
-      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
-    };
-    AppNetwork appNetwork = AppNetwork();
-    Map<String, String> urlParams = {
-      "{USER_ID}": sharedPreferences.get("userId").toString(),
-      "{APP_ID}": NetworkConstants.kAppID,
-    };
-    ASRequestModal requestModal = ASRequestModal.withUrlParams(
-        urlParams, NetworkConstants.kGetCartList, RequestType.get,
-        headers: header);
-    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
-      if (isSuccess) {
-        var response = ASResponseModal.fromResult(result);
-        Map<String, dynamic> map =
-        (result as SuccessState).value as Map<String, dynamic>;
-        if (map["data"] is Map<String, dynamic>) {
-          response.dataModal = CartListDataModel.fromJson(map["data"]);
-          // CacheDataManager.cacheData(key: StringConstant.kHomePageData, jsonData: map);
-        }
-        responseHandler(Result.success(response), isSuccess);
-      } else {
-        responseHandler(result, isSuccess);
-      }
-    });
-  }
-
-  // GetProductDetails Method
-  Future<Result?> getProductDetails(BuildContext context,
-      String productId,
-      String variantId,
-      String color,
-      String sizeName,
-      NetworkResponseHandler responseHandler) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var header = {
-      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
-    };
-    AppNetwork appNetwork = AppNetwork();
-    Map<String, String> urlParams = {
-      "{USER_ID}": sharedPreferences.get("userId").toString(),
-      "{PRODUCT_ID}": productId,
-      "{VARIANT_ID}": variantId,
-      "{COLOR_ID}": color,
-      "{SIZE_NAME}": sizeName,
-      "{APP_ID}": NetworkConstants.kAppID,
-    };
-    ASRequestModal requestModal = ASRequestModal.withUrlParams(
-        urlParams, NetworkConstants.kGetProductById, RequestType.get,
-        headers: header);
-    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
-      if (isSuccess) {
-        var response = ASResponseModal.fromResult(result);
-        Map<String, dynamic> map =
-        (result as SuccessState).value as Map<String, dynamic>;
-        if (map["data"] is Map<String, dynamic>) {
-          response.dataModal = ProductList.fromJson(map['data']);
-        }
-        responseHandler(Result.success(response), isSuccess);
-      } else {
-        responseHandler(result, isSuccess);
-      }
-    });
-  }
-
 
   //RemoveItems Method
   Future<Result?> removeItem(String variantId, BuildContext context,
@@ -319,7 +393,7 @@ class CartDetailRepository {
       "pincode": pin_code,
       "cityName": city_name,
       "state": state,
-      "country": " ",
+      "country": " India",
       "appId": NetworkConstants.kAppID,
     };
     ASRequestModal requestModal = ASRequestModal.withInputParams(
@@ -351,7 +425,7 @@ class CartDetailRepository {
       "appId": NetworkConstants.kAppID,
       "userId": sharedPreferences.get("userId").toString(),
       "productId": productId,
-      "colorName":variantId,
+      "variantId":variantId,
       "isLike":fav,
     };
     ASRequestModal requestModal = ASRequestModal.withInputParams(
@@ -360,11 +434,6 @@ class CartDetailRepository {
     appNetwork.getNetworkResponse(requestModal,context, (result, isSuccess) {
       if (isSuccess) {
         var response = ASResponseModal.fromResult(result);
-        Map<String, dynamic> map =
-        (result as SuccessState).value as Map<String, dynamic>;
-        if (map['data'] is Map<String, dynamic>) {
-          response.dataModal = ProductList.fromJson(map['data']);
-        }
         responseHandler(Result.success(response), isSuccess);
       } else {
         return responseHandler(result, isSuccess);
@@ -454,6 +523,8 @@ class CartDetailRepository {
     appNetwork.getNetworkResponse(requestModal,context, (result, isSuccess) {
       if (isSuccess) {
         var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map =
+        (result as SuccessState).value as Map<String, dynamic>;
         responseHandler(Result.success(response), isSuccess);
       } else {
         return responseHandler(result, isSuccess);

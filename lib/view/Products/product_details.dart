@@ -11,6 +11,7 @@ import 'package:TychoStream/utilities/build_indicator.dart';
 import 'package:TychoStream/utilities/color_dropdown.dart';
 import 'package:TychoStream/utilities/size_dropdown.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
+import 'package:TychoStream/view/Products/productSkuDetailView.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
@@ -55,6 +56,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   var proDetails;
 
   void initState() {
+    cartView.getCartCount(context);
     getProductDetails();
     super.initState();
   }
@@ -69,10 +71,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       cartView.updateCartCount(context, widget.productdata?[0] ?? '');
         cartView.getProductDetails(
             context,
-            widget.productId ?? '',
-            widget.productdata?[1] ?? '',
+            widget.productId ?? "",
+            widget.productdata?[1] ?? "",
             widget.productdata?[2] ?? "",
-            '');
+            widget.productdata?[3] ?? "",
+            widget.productdata?[4] ?? "",
+            widget.productdata?[5] ?? "",
+            );
     }
   }
 
@@ -200,30 +205,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                  size: 25))))
                ])),
            Container(
+               width: SizeConfig.screenWidth/3,
                margin: EdgeInsets.only(left: 20,top: SizeConfig.screenHeight*0.02),
                padding: EdgeInsets.only(left: 10.0, top: 5, bottom: 5),
                child: Column(
                    mainAxisAlignment: MainAxisAlignment.start,
                    crossAxisAlignment: CrossAxisAlignment.start,
                    children: [
-                     Container(
-                         width: SizeConfig.screenWidth/4,
-                         child: AppBoldFont(context, msg: viewmodel.productListDetails?.productDetails?.productVariantTitle ?? '', fontSize: 22)),
-                     SizedBox(height: 10),
-                     Container(
-                         width: SizeConfig.screenWidth/4,
-                         child: AppMediumFont(
-                           context,
-                           msg:
-                           "${viewmodel.productListDetails?.productLongDesc ?? ''}",
-                           fontSize: 18.0,
-                         )),
-                     SizedBox(height: 10),
-                     AppBoldFont(context,
-                         msg: "₹ "
-                             "${viewmodel.productListDetails?.productDetails?.productDiscountPrice ?? ''}",
-                         fontSize: 18),
-                     SizedBox(height: 5),
+                     AppBoldFont(context, msg: viewmodel.productListDetails?.productDetails?.productVariantTitle ?? '', fontSize: 22),
+                     // SizedBox(height: 10),
+                     AppMediumFont(
+                       context,
+                       msg:
+                       "${viewmodel.productListDetails?.productShortDesc ?? ''}",
+                       fontSize: 16.0,
+                     ),
                      Row(
                          mainAxisAlignment: MainAxisAlignment.start,
                          crossAxisAlignment: CrossAxisAlignment.center,
@@ -238,7 +234,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                TextDecoration.lineThrough,
                                fontSize: 16)
                                : SizedBox(),
-                           SizedBox(width: 8.0),
+                           SizedBox(width: 8.0), AppBoldFont(context,
+                               msg: "₹ "
+                                   "${viewmodel.productListDetails?.productDetails?.productDiscountPrice ?? ''}",
+                               fontSize: 18),SizedBox(width: 8.0),
                            AppMediumFont(context,
                                msg: viewmodel
                                    .productListDetails
@@ -247,15 +246,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                    ''
                                    ? "${viewmodel.productListDetails?.productDetails?.productDiscountPercent}" +
                                    '% OFF'
-                                   : '',
-                               fontSize: 16)
+                                   : '',color: Colors.green,
+                               fontSize: 14)
                          ]),
-                     SizedBox(height: 20),
-                      productColor(viewmodel.productListDetails),
-                     productSize(viewmodel.productListDetails),
-                     productMaterial(viewmodel.productListDetails),
-                     productUnit(viewmodel.productListDetails),
-                     productStyle(viewmodel.productListDetails),
+                     Container(
+                       child: ProductSkuView(
+                           selected: true,
+                           skuDetails: cartView.productListDetails?.productSkuDetails,
+                           cartView: cartView,
+                           productList: cartView.productListDetails?.productDetails?.defaultVariationSku),
+                     ),
+                     // productColor(viewmodel.productListDetails),
+                     // productSize(viewmodel.productListDetails),
+                     // productMaterial(viewmodel.productListDetails),
+                     // productUnit(viewmodel.productListDetails),
+                     // productStyle(viewmodel.productListDetails),
 
                      bottomNavigationButton()
                    ]))
@@ -555,7 +560,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppBoldFont(context, msg: element.variationName! + ": "+ cartView.selectedColorName, fontSize: 18),
+                  AppBoldFont(context, msg: element.variationName! + ": "+ cartView.selectedcolorName, fontSize: 18),
                   SizedBox(height: 5),
                   element.data!.length > 4
                       ? Container(
@@ -564,16 +569,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       height: 50,
 
                       child: ColorDropDown(
-                         chosenValue: cartView.selectedColorName,
+                         chosenValue: cartView.selectedcolorName,
                         hintText: 'Select Color',
                         onChanged: (m) {
 
                           onColorSelected(m, productListDetails);
-                          cartView.selectedColorName = m;
-                          cartView.updatecolorName(context, cartView.selectedColorName);
+                          cartView.selectedcolorName = m;
+                          cartView.updatecolorName(context, cartView.selectedcolorName);
                           element.data?.forEach((element) {
-                            if(element.name == cartView.selectedColorName){
-                              cartView.updatecolorName(context, cartView.selectedColorName);
+                            if(element.name == cartView.selectedcolorName){
+                              cartView.updatecolorName(context, cartView.selectedcolorName);
                             }
                           });
                         },
@@ -600,7 +605,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                         shape: BoxShape.circle,
                                         border: Border.all(
                                             color: Colors.black,
-                                            width: cartView.selectedColorName ==  element.data?[index].name ? 3 : 1))));
+                                            width: cartView.selectedcolorName ==  element.data?[index].name ? 3 : 1))));
                           }))
                 ])) : SizedBox();
       }).toList() ?? [],
@@ -609,7 +614,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
 
   onColorSelected(String? colorName, ProductList productDetails) {
-    if (cartView.selectedColorName != colorName) {
+    if (cartView.selectedcolorName != colorName) {
       cartView.updatesizeName(context, "",);
       selectedSizeIndex = null;
       selectedStyleIndex = null;
@@ -626,7 +631,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     if (cartView.selectedSizeName != sizeName) {
       cartView.isAddedToCart = false;
       AppIndicator.loadingIndicator(context);
-      getProductUpdateDetails(cartView.selectedColorName, sizeName, product);
+      getProductUpdateDetails(cartView.selectedcolorName, sizeName, product);
     }
   }
 
@@ -634,7 +639,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     if (cartView.selectedStyleName != styleName) {
       cartView.isAddedToCart = false;
       AppIndicator.loadingIndicator(context);
-      getProductUpdateDetails(cartView.selectedColorName, styleName, product);
+      getProductUpdateDetails(cartView.selectedcolorName, styleName, product);
     }
   }
 
@@ -642,7 +647,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     if (cartView.selectedMaterialName != materialName) {
       cartView.isAddedToCart = false;
       AppIndicator.loadingIndicator(context);
-      getProductUpdateDetails(cartView.selectedColorName, materialName, product);
+      getProductUpdateDetails(cartView.selectedcolorName, materialName, product);
     }
   }
 
@@ -650,13 +655,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     if (cartView.selectedUnitCountName != unitName) {
       cartView.isAddedToCart = false;
       AppIndicator.loadingIndicator(context);
-      getProductUpdateDetails(cartView.selectedColorName, unitName, product);
+      getProductUpdateDetails(cartView.selectedcolorName, unitName, product);
     }
   }
 
   getProductUpdateDetails(String? colorName, sizeName, ProductList product){
-    cartView.getProductDetails(
-          context, widget.productId ?? prodId, product.productDetails?.variantId ?? '', colorName ?? '', sizeName ?? '');
+    // cartView.getProductDetails(
+    //       context, widget.productId ?? prodId, product.productDetails?.variantId ?? '', colorName ?? '', sizeName ?? '');
 
   }
 
@@ -668,7 +673,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       prodId = data['prodId'];
       variantId = data['variantId'];
       colorName = data['colorName'];
-      cartView.getProductDetails(context, prodId, variantId,colorName,"");
+     // cartView.getProductDetails(context, prodId, variantId,colorName,"");
       cartView.updatecolorName(
           context,
           colorName);
@@ -677,20 +682,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   // give toast according to the empty field
   addToBagButtonPressed() {
-    cartView.productListDetails?.productSkuDetails?.forEach((e){
-      if(e.data != null){
-        if ((e.data!.length > 4 && chosenSize == null) || (e.data!.length <= 4 && selectedSizeIndex == null)) {
-          ToastMessage.message('Select Size');
-        } else {
+
           cartView.addToCart(
               cartView.productListDetails?.productId ?? '',
               "1",
               cartView.productListDetails?.productDetails?.variantId ?? '',
               false,
               context, (result, isSuccess) {});
-        }
-      }
-    });
+
   }
 
   //Bottom Navigation
@@ -713,11 +712,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         borderRadius: BorderRadius.circular(5.0),
                       ))),
               child: AppBoldFont(context,
-                  msg: (cartView.isAddedToCart == true ||
-                      cartView.productListDetails?.productDetails
-                          ?.isAddToCart ==
-                          true) &&
-                      (selectedSizeIndex != null || chosenSize != null)
+                  msg: (cartView.isAddedToCart == true || cartView.productListDetails?.productDetails
+                      ?.isAddToCart ==
+                      true)
                       ? "Go to Cart"
                       : "Add to Bag",
                   fontSize: 16),
@@ -725,28 +722,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 if (token == 'null'){
                   _backBtnHandling(prodId);
                 }
-                else if (cartView.productListDetails?.productDetails?.isAvailable == true) {
-                  (cartView.isAddedToCart == true || cartView.productListDetails?.productDetails?.isAddToCart == true) &&
-                      (selectedSizeIndex != null || chosenSize != null)
+                else if(cartView.productListDetails?.productDetails?.isAvailable == true) {
+                  (cartView.isAddedToCart == true || cartView.productListDetails?.productDetails?.isAddToCart == true)
                       ?
                   context.router.push(CartDetail(
                     itemCount: '${cartView.cartItemCount}'
                   ))
-                  // GoRouter.of(context).pushNamed(RoutesName.CartDetails, queryParameters: {
-                  //   'itemCount':'${cartView.cartItemCount}',
-                  // })
-                  // AppNavigator.push(
-                  //     context,
-                  //     CartDetail(itemCount: cartView.cartItemCount,),
-                  //     screenName: RouteBuilder.cartDetail,
-                  //     function: (value) {
-                  //       if (value != cartView.cartItemCount) {
-                  //         // update cart count after page callback
-                  //         cartView.updateCartCount(context, value);
-                  //         AppIndicator.loadingIndicator(context);
-                  //         cartView.getProductDetails(context, widget.items?.productId ?? '', '', cartView.selectedColorId, '');
-                  //       }
-                  //     })
 
                       : addToBagButtonPressed();
                 }
@@ -760,7 +741,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0),
                       ))),
               child: AppBoldFont(context,
-                  msg: "WishList", fontSize: 16),
+                  msg: " BUYNOW", fontSize: 16),
               onPressed: () {
                 if (token == 'null'){
                   _backBtnHandling(prodId);

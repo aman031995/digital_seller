@@ -33,7 +33,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
   CartViewModel cartViewModel = CartViewModel();
   ScrollController _scrollController = ScrollController();
   String? checkInternet;
-  int pageNum = 1;
+  int pageNum = 1;bool isfab = false;
   @override
   void initState() {
     cartViewModel.getCartCount(context);
@@ -81,7 +81,9 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
             // });
           },
           onBackPressed: () {
-            // Navigator.pop(context, true);
+            // Navigator.pop(context, viewmodel.cartItemCount);
+            // widget.callback!(viewmodel.productListDetails?.productDetails?.variantId,isfab);
+            // // Navigator.pop(context, true);
             // widget.callback!(viewmodel.favouriteCallback);
           }),
       backgroundColor: Theme
@@ -153,8 +155,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                       controller: _scrollController,
                       physics: BouncingScrollPhysics(),
                       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 300,
-                          mainAxisExtent: 300,
+                          maxCrossAxisExtent: 300,mainAxisExtent: 350,
                           mainAxisSpacing: 10.0,
                           crossAxisSpacing: 10),
                       itemCount:
@@ -163,7 +164,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                         _scrollController.addListener(() {
                           if (_scrollController.position.pixels ==
                               _scrollController.position.maxScrollExtent) {
-                            viewmodel.onPagination(context, viewmodel.lastPage, viewmodel.nextPage, viewmodel.isLoading, 'productList');
+                            viewmodel.onPagination(context, viewmodel.lastPage, viewmodel.nextPage, viewmodel.isLoading, 'favouriteList');
                           }
                         });
                         final productListData = viewmodel
@@ -206,6 +207,20 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
       children: [
         GestureDetector(
             onTap: () {
+              context.router.push(
+                ProductDetailPage(
+                  productId: '${productListData?.productId}',
+                  productdata: [
+                    '${viewmodel.cartItemCount}',
+                    '${productListData?.productDetails?.defaultVariationSku?.size?.name}',
+                    '${productListData?.productDetails?.defaultVariationSku?.color?.name}',
+                    '${productListData?.productDetails?.defaultVariationSku?.style?.name}',
+                    '${productListData?.productDetails?.defaultVariationSku?.unitCount?.name}',
+                    '${productListData?.productDetails?.defaultVariationSku?.materialType?.name}',
+                    //'${productListData?.productDetails?.defaultVariationSku?.materialType?.name}'
+                  ],
+                ) ,
+              );
               // context.router.push(
               //   ProductDetailPage(
               //     productId: '${productListData?.productId}',
@@ -224,14 +239,8 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-
-                    width: SizeConfig.screenWidth,
-                    color: Colors.white,
-                    child: ImageSlider(
-                        images: productListData?.productDetails?.productImages,
-                        activeIndex: index),
-                    height: 200.0,
+                  ImageSlider(
+                      images: productListData?.productDetails?.productImages,
                   ),
                   productGalleryTitleSection(context, productListData, true)
                 ],
@@ -242,6 +251,20 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
             top: 5,
             child: GestureDetector(
                 onTap: () {
+                  final isFav =
+                  productListData!
+                      .productDetails!
+                      .isFavorite =
+                  !productListData
+                      .productDetails!
+                      .isFavorite!;
+                  isfab = isFav;
+                  viewmodel.addToFavourite(
+                      context,
+                      "${productListData.productId}",
+                      "${productListData.productDetails?.variantId}",
+                      isFav,
+                      'productList');
                   // viewmodel.addToFavourite(
                   //     context,
                   //     "${productListData?.productId}",

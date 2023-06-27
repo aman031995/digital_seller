@@ -57,7 +57,7 @@ Widget cartPageViewIndicator(BuildContext context,int pageIndex,int activeStep){
       lineLength: SizeConfig.screenWidth * 0.10,
       lineSpace: 0,
       lineType: LineType.normal,
-      defaultLineColor: Colors.white,
+      defaultLineColor: Theme.of(context).canvasColor.withOpacity(0.6),
       finishedStepBackgroundColor: Theme.of(context).primaryColor ,
       activeStepBackgroundColor: Theme.of(context).primaryColor,
       finishedLineColor: Theme.of(context).primaryColor,
@@ -72,12 +72,13 @@ Widget cartPageViewIndicator(BuildContext context,int pageIndex,int activeStep){
         EasyStep(
           customStep: CircleAvatar(
             radius: 8,
-            backgroundColor: Colors.white,
+            backgroundColor: activeStep >= 0
+                ? Colors.white :Theme.of(context).canvasColor.withOpacity(0.6),
             child: CircleAvatar(
               radius: 7,
               backgroundColor: activeStep >= 0
                   ? Theme.of(context).primaryColor
-                  : Colors.white,
+                  :  Theme.of(context).canvasColor.withOpacity(0.6),
             ),
           ),
           title: 'My Cart',
@@ -85,10 +86,11 @@ Widget cartPageViewIndicator(BuildContext context,int pageIndex,int activeStep){
         EasyStep(
           customStep: CircleAvatar(
             radius: 8,
-            backgroundColor: Colors.white,
+            backgroundColor:  activeStep >= 1
+                ? Colors.white :Theme.of(context).canvasColor.withOpacity(0.6),
             child: CircleAvatar(
               radius: 7,
-              backgroundColor: activeStep >= 2
+              backgroundColor: activeStep >= 1
                   ? Theme.of(context)
                   .primaryColor
                   : Colors.white,
@@ -99,10 +101,11 @@ Widget cartPageViewIndicator(BuildContext context,int pageIndex,int activeStep){
         EasyStep(
           customStep: CircleAvatar(
             radius: 8,
-            backgroundColor: Colors.white,
+            backgroundColor:  activeStep >= 2
+                ? Colors.white :Theme.of(context).canvasColor.withOpacity(0.6),
             child: CircleAvatar(
               radius: 7,
-              backgroundColor: activeStep >= 3
+              backgroundColor: activeStep >= 2
                   ? Theme.of(context)
                   .primaryColor
                   : Colors.white,

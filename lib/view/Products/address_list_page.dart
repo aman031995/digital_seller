@@ -283,25 +283,25 @@ class _AddressListPageState extends State<AddressListPage> {
                                                     Theme.of(context).primaryColor,
                                                     selected: google_pay,
                                                   )),
-                                              Theme(
-                                                  data: ThemeData(
-                                                    unselectedWidgetColor:
-                                                    Theme.of(context).canvasColor,
-                                                  ),
-                                                  child: RadioListTile(
-                                                    value: 2,
-                                                    groupValue: selectedRadioTile,
-                                                    title: AppBoldFont(context,
-                                                        msg: StringConstant.cashOnDelivery,
-                                                        fontSize: 16.0),
-                                                    onChanged: (val) {
-                                                      print("Radio Tile pressed $val");
-                                                      if (val == 2) {
-                                                        setSelectedRadioTile(2);
-                                                      }
-                                                    },
-                                                    activeColor: Theme.of(context).primaryColor,
-                                                  )),
+                                              // Theme(
+                                              //     data: ThemeData(
+                                              //       unselectedWidgetColor:
+                                              //       Theme.of(context).canvasColor,
+                                              //     ),
+                                              //     child: RadioListTile(
+                                              //       value: 2,
+                                              //       groupValue: selectedRadioTile,
+                                              //       title: AppBoldFont(context,
+                                              //           msg: StringConstant.cashOnDelivery,
+                                              //           fontSize: 16.0),
+                                              //       onChanged: (val) {
+                                              //         print("Radio Tile pressed $val");
+                                              //         if (val == 2) {
+                                              //           setSelectedRadioTile(2);
+                                              //         }
+                                              //       },
+                                              //       activeColor: Theme.of(context).primaryColor,
+                                              //     )),
                                               SizedBox(height: 5)
                                             ],
                                           ),
@@ -743,9 +743,12 @@ class _AddressListPageState extends State<AddressListPage> {
     });
   }
   void openPaymentGateway(CreateOrderModel? createOrderModel) async{
+
+   double total=double.parse(createOrderModel?.total ??"");
+   print(total);
     var options = {
       'key': createOrderModel?.key,
-      'amount': 1,
+      'amount': total,
       //createOrderModel?.total,
       'receipt': createOrderModel?.receipt,
       'name': createOrderModel?.name ?? '',

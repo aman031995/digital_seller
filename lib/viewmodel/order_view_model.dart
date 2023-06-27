@@ -25,13 +25,13 @@ class OrderViewModel extends ChangeNotifier {
   }
   //GetOrderDetail Method
   Future<void> getOrderDetail(BuildContext context, String orderId) async {
-    _orderRepo.getOrderListDetail(orderId, context, (result, isSuccess) {
-      if (isSuccess) {
-        _orderDataModel =
-            ((result as SuccessState).value as ASResponseModal).dataModal;
-        AppIndicator.disposeIndicator();
-        notifyListeners();
-      }
-    });
-  }
+  //   _orderRepo.getOrderListDetail(orderId, context, (result, isSuccess) {
+  //     if (isSuccess) {
+  //       _orderDataModel =
+  //           ((result as SuccessState).value as ASResponseModal).dataModal;
+  //       AppIndicator.disposeIndicator();
+  //       notifyListeners();
+  //     }
+  //   });
+   }
 }

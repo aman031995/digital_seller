@@ -2,7 +2,7 @@ class CreateOrderModel {
   String? appId;
   String? receipt;
   String? userId;
-  int? total;
+  String? total;
   String? paymentStatus;
   String? paymentOrderId;
   String? paymentMethod;
@@ -20,23 +20,23 @@ class CreateOrderModel {
 
   CreateOrderModel(
       {this.appId,
-      this.receipt,
-      this.userId,
-      this.total,
-      this.paymentStatus,
-      this.paymentOrderId,
-      this.paymentMethod,
-      this.gateway,
-      this.key,
-      this.name,
-      this.image,
-      this.retryEnabled,
-      this.retryMaxCount,
-      this.sendSmsHash,
-      this.description,
-      this.timeout,
-      this.contact,
-      this.email});
+        this.receipt,
+        this.userId,
+        this.total,
+        this.paymentStatus,
+        this.paymentOrderId,
+        this.paymentMethod,
+        this.gateway,
+        this.key,
+        this.name,
+        this.image,
+        this.retryEnabled,
+        this.retryMaxCount,
+        this.sendSmsHash,
+        this.description,
+        this.timeout,
+        this.contact,
+        this.email});
 
   CreateOrderModel.fromJson(Map<String, dynamic> json) {
     appId = json['app_id'];

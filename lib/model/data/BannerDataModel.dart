@@ -76,10 +76,9 @@ class BannerList {
   String? bannerId;
   String? catId;
   String? productId;
-  String? bannerFile;
+  String? bannerUrl;
   String? bannerTitle;
   String? bannerDescription;
-  String? bannerUrl;
   String? videoUrl;
   String? bannerType;
   bool? isDeleted;
@@ -90,10 +89,9 @@ class BannerList {
         this.bannerId,
         this.catId,
         this.productId,
-        this.bannerFile,
+        this.bannerUrl,
         this.bannerTitle,
         this.bannerDescription,
-        this.bannerUrl,
         this.videoUrl,
         this.bannerType,
         this.isDeleted});
@@ -104,10 +102,9 @@ class BannerList {
     bannerId = json['bannerId'];
     catId = json['catId'];
     productId = json['productId'];
-    bannerFile = json['bannerFile'];
+    bannerUrl = json['bannerUrl'];
     bannerTitle = json['bannerTitle'];
     bannerDescription = json['bannerDescription'];
-    bannerUrl = json['bannerUrl'];
     videoUrl = json['videoUrl'];
     bannerType = json['bannerType'];
     isDeleted = json['isDeleted'];
@@ -120,10 +117,9 @@ class BannerList {
     data['bannerId'] = this.bannerId;
     data['catId'] = this.catId;
     data['productId'] = this.productId;
-    data['bannerFile'] = this.bannerFile;
+    data['bannerUrl'] = this.bannerUrl;
     data['bannerTitle'] = this.bannerTitle;
     data['bannerDescription'] = this.bannerDescription;
-    data['bannerUrl'] = this.bannerUrl;
     data['videoUrl'] = this.videoUrl;
     data['bannerType'] = this.bannerType;
     data['isDeleted'] = this.isDeleted;

@@ -30,6 +30,7 @@ class OrderDataModel {
     return data;
   }
 }
+
 class Pagination {
   int? current;
   int? numberPerPage;
@@ -75,12 +76,13 @@ class OrderList {
   String? appId;
   String? userId;
   String? orderId;
-  int? totalPrice;
-  int? discountedprice;
-  int? shippingCharge;
-  int? totalPaidAmount;
+  String? totalPrice;
+  String? discountedprice;
+  String? shippingCharge;
+  String? totalPaidAmount;
   ShippingAddress? shippingAddress;
   String? orderStatus;
+  String? orderDate;
   List<ItemDetails>? itemDetails;
 
   OrderList(
@@ -93,6 +95,7 @@ class OrderList {
         this.totalPaidAmount,
         this.shippingAddress,
         this.orderStatus,
+        this.orderDate,
         this.itemDetails});
 
   OrderList.fromJson(Map<String, dynamic> json) {
@@ -107,6 +110,7 @@ class OrderList {
         ? new ShippingAddress.fromJson(json['shippingAddress'])
         : null;
     orderStatus = json['orderStatus'];
+    orderDate = json['orderDate'];
     if (json['itemDetails'] != null) {
       itemDetails = <ItemDetails>[];
       json['itemDetails'].forEach((v) {
@@ -128,6 +132,7 @@ class OrderList {
       data['shippingAddress'] = this.shippingAddress!.toJson();
     }
     data['orderStatus'] = this.orderStatus;
+    data['orderDate'] = this.orderDate;
     if (this.itemDetails != null) {
       data['itemDetails'] = this.itemDetails!.map((v) => v.toJson()).toList();
     }
@@ -204,14 +209,14 @@ class ItemDetails {
   String? appId;
   String? categoryId;
   String? categoryName;
-  String? subCategoryId;
+  Null? subCategoryId;
   String? subCategoryName;
   String? productId;
   String? productName;
   String? productTypeName;
   ProductDetails? productDetails;
   List<Null>? productReviews;
-  ProductSkuDetails? productSkuDetails;
+  List<ProductSkuDetails>? productSkuDetails;
   int? cartQuantity;
 
   ItemDetails(
@@ -240,9 +245,18 @@ class ItemDetails {
     productDetails = json['productDetails'] != null
         ? new ProductDetails.fromJson(json['productDetails'])
         : null;
-    productSkuDetails = json['productSkuDetails'] != null
-        ? new ProductSkuDetails.fromJson(json['productSkuDetails'])
-        : null;
+    if (json['productReviews'] != null) {
+      // productReviews = <Null>[];
+      // json['productReviews'].forEach((v) {
+      //   productReviews!.add(new Null.fromJson(v));
+      // });
+    }
+    if (json['productSkuDetails'] != null) {
+      productSkuDetails = <ProductSkuDetails>[];
+      json['productSkuDetails'].forEach((v) {
+        productSkuDetails!.add(new ProductSkuDetails.fromJson(v));
+      });
+    }
     cartQuantity = json['cartQuantity'];
   }
 
@@ -259,13 +273,16 @@ class ItemDetails {
     if (this.productDetails != null) {
       data['productDetails'] = this.productDetails!.toJson();
     }
-
+    if (this.productReviews != null) {
+      // data['productReviews'] =
+      //     this.productReviews!.map((v) => v.toJson()).toList();
+    }
     if (this.productSkuDetails != null) {
-      data['productSkuDetails'] = this.productSkuDetails!.toJson();
+      data['productSkuDetails'] =
+          this.productSkuDetails!.map((v) => v.toJson()).toList();
     }
     data['cartQuantity'] = this.cartQuantity;
     return data;
   }
 }
-
 

@@ -14,6 +14,7 @@ import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:TychoStream/viewmodel/sociallogin_view_model.dart';
 import 'package:url_strategy/url_strategy.dart';
+import 'dart:html' as html;
 String? image;
 String? names;
 String? token;
@@ -29,6 +30,7 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
 Future<void> main() async {
   setPathUrlStrategy();
+
   await WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       options: FirebaseOptions(
@@ -40,9 +42,26 @@ Future<void> main() async {
           appId: "1:1039297047623:web:c2e9205493d33a2f6f1562",
           measurementId: "G-RFYDXHGWCK"
   ));
+  html.window.onPopState.listen((event) {
+    // Handle browser back navigation here
+    reloadPage();
+    // You can perform any necessary actions or navigate to a specific route
+    print('Browser back navigation detected!');
+  });
   runApp(MyApp());
 }
-
+// void configureApp() {
+//   final urlStrategy = PathUrlStrategy();
+//   urlStrategy.setPathUrlStrategy();
+//   setUrlStrategy(urlStrategy);
+//
+//   // Add event listener for browser back navigation
+//   html.window.onPopState.listen((event) {
+//     // Handle browser back navigation here
+//     // You can perform any necessary actions or navigate to a specific route
+//     print('Browser back navigation detected!');
+//   });
+// }
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 

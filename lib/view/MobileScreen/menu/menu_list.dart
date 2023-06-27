@@ -91,17 +91,23 @@ class _MenuListState extends State<MenuList> {
     if (appMenu != null) {
       CommonMethods.breakUrls(appMenu.url ?? '').then((url) {
        if(url.path.contains('faq') == true){
+         context.router.push(FAQ());
          // homeViewModel.openWebHtmlView(context, 'faq', title: 'FAQ');
         } else if (appMenu.url?.contains('privacy_policy') == true) {
+         context.router.push(Privacy());
           //homeViewModel.openWebHtmlView(context, url.path, title: appMenu.title);
         } else if (appMenu.url?.contains('terms_condition') == true){
+         context.router.push(Terms());
          // homeViewModel.openWebHtmlView(context, url.path, title: appMenu.title);
         } else if (url.path.contains('about_us') == true) {
+         context.router.push(FAQ());
          // homeViewModel.openWebHtmlView(context, 'about_us', title: appMenu.title);
         } else if (url.path == RoutesName.EditProfille){
          context.router.push(EditProfile());
+
          // AppNavigator.pushNamed(context, url.path, arguments: {'title': appMenu.title}, screenName: RouteBuilder.editProfile);
         } else if (url.path == RoutesName.ContactUs){
+         context.router.push(FAQ());
          // AppNavigator.pushNamed(context, url.path, arguments: {'title': appMenu.title}, screenName: RouteBuilder.contactUs);
         }  else if (appMenu.title!.contains('Share') == true){
           Share.share(appMenu.url ?? '');

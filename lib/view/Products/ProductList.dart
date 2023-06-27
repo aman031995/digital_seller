@@ -67,7 +67,8 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                   ));
                 },
                 onFavPressed: (){
-                  context.router.push(FavouriteListPage());
+                  context.router.push(FavouriteListPage(
+                  ));
                 },
                 onBackPressed: () {
                 }),
@@ -130,13 +131,12 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                         width: SizeConfig.screenWidth/2,
                         child: Stack(
                           children: [
-                            Center(
-                            child: GridView.builder(
+                            GridView.builder(
                                     shrinkWrap: true,
                               controller: _scrollController,
                               physics: BouncingScrollPhysics(),
                               padding: EdgeInsets.only(top: 30),
-                              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 280,mainAxisExtent: 320,mainAxisSpacing: 10.0,crossAxisSpacing: 10),
+                              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 300,mainAxisExtent: 350,mainAxisSpacing: 10.0,crossAxisSpacing: 10),
                               itemCount: viewmodel.productListModel?.productList?.length,
               itemBuilder: (context, index) {
                 _scrollController.addListener(() {
@@ -150,7 +150,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                             return productListItems(context,
                                 productListData, index, viewmodel);
               },
-            )),
+            ),
                             viewmodel.isLoading == true
                                 ? Container(
                                 margin: EdgeInsets.only(top: SizeConfig.screenHeight/1.15),
@@ -186,24 +186,28 @@ class _ProductListGalleryState extends State<ProductListGallery> {
               context.router.push(
                 ProductDetailPage(
                   productId: '${productListData?.productId}',
-                  productdata: ['${viewmodel.cartItemCount}','${productListData?.productDetails?.variantId}','${productListData?.productSelectedSku?.name}'],
+                  productdata: [
+                    '${viewmodel.cartItemCount}',
+                    '${productListData?.productDetails?.defaultVariationSku?.size?.name}',
+                    '${productListData?.productDetails?.defaultVariationSku?.color?.name}',
+                    '${productListData?.productDetails?.defaultVariationSku?.style?.name}',
+                    '${productListData?.productDetails?.defaultVariationSku?.unitCount?.name}',
+                    '${productListData?.productDetails?.defaultVariationSku?.materialType?.name}',
+                    //'${productListData?.productDetails?.defaultVariationSku?.materialType?.name}'
+                  ],
                 ) ,
               );
             },
             child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5), color: Theme.of(context).cardColor.withOpacity(0.7),
+              borderRadius: BorderRadius.circular(5), color: Theme.of(context).cardColor.withOpacity(0.4),
             ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    color: Colors.white,
-                    child: ImageSlider(
-                        images: productListData?.productDetails?.productImages,
-                        activeIndex: index),
-                    height: 200.0,
-                  ),
+                  ImageSlider(
+                      images: productListData?.productDetails?.productImages,
+                      ),
                   productGalleryTitleSection(context, productListData,false)
                 ],
               ),
@@ -213,6 +217,19 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                         top: 5,
                         child: GestureDetector(
                             onTap: () {
+                              final isFav =
+                              productListData!
+                                  .productDetails!
+                                  .isFavorite =
+                              !productListData
+                                  .productDetails!
+                                  .isFavorite!;
+                              viewmodel.addToFavourite(
+                                  context,
+                                  "${productListData.productId}",
+                                  "${productListData.productDetails?.variantId}",
+                                  isFav,
+                                  'productList');
                               // viewmodel.addToFavourite(
                               //     context,
                               //     "${productListData?.productId}",
@@ -252,14 +269,28 @@ class _ProductListGalleryState extends State<ProductListGallery> {
     }
   }
 }
+String? getFavTitle(ProductList? productListData) {
+  if (productListData!.productDetails!.productVariantTitle!.length > 40) {
+    return productListData.productDetails?.productVariantTitle?.replaceRange(
+        40, productListData.productDetails?.productVariantTitle?.length, '...');
+  } else {
+    return productListData.productDetails?.productVariantTitle ?? "";
+  }
+}
 
+String? getNameTitle(ProductList? productListData) {
+  if (productListData!.productName!.length > 40) {
+    return productListData.productName
+        ?.replaceRange(40, productListData.productName?.length, '...');
+  } else {
+    return productListData.productName;
+  }}
 Widget productGalleryTitleSection(
     BuildContext context, ProductList? productListData,bool favbourite) {
   return Container(
     width: 200,
     padding: const EdgeInsets.only(
       left: 8.0,
-      top: 10.0,
       right: 8.0,
     ),
     child: Column(
@@ -269,17 +300,13 @@ Widget productGalleryTitleSection(
       children: <Widget>[
         AppBoldFont(
           context,
-          maxLines: 1,
-          msg:favbourite==true?productListData?.productDetails?.productVariantTitle : productListData?.productName ?? '',
+          maxLines: 2,
+          msg:favbourite==true? getFavTitle(productListData) ?? ''
+          : getNameTitle(productListData) ?? '',
           fontSize: 18.0,
         ),
         SizedBox(height: 2),
-        AppBoldFont(
-          context,
-          msg: "₹ "
-              '${productListData?.productDetails?.productDiscountPrice}',
-          fontSize: 16.0,
-        ),SizedBox(height: 2),
+      SizedBox(height: 2),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -290,11 +317,18 @@ Widget productGalleryTitleSection(
                 textDecoration: TextDecoration.lineThrough
             ),
             SizedBox(width: 8.0),
+            AppBoldFont(
+              context,
+              msg: "₹"
+                  '${productListData?.productDetails?.productDiscountPrice}',
+              fontSize: 16.0,
+            ),
+            SizedBox(width: 8.0),
             AppMediumFont(
               context,
               msg:
               '${productListData?.productDetails?.productDiscountPercent}' +
-                  '% OFF',
+                  '% OFF',color: Colors.green,
               fontSize: 14.0,
             ),
           ],

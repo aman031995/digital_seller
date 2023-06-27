@@ -205,7 +205,7 @@ class _ProductListMobileState extends State<ProductListMobile> {
                     color: Colors.white,
                     child: ImageSlider(
                         images: productListData?.productDetails?.productImages,
-                        activeIndex: index),
+                      ),
                     height: 200.0,
                   ),
                   productGalleryTitleSection(context, productListData,false)
