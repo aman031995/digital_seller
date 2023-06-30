@@ -1,15 +1,19 @@
 import 'package:TychoStream/model/data/AppConfigModel.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
+import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
+import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/view/widgets/video_listpage.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
+import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -40,10 +44,12 @@ class _HomePageWebState extends State<HomePageWeb> {
   ScrollController scrollController = ScrollController();
  ProfileViewModel profileViewModel = ProfileViewModel();
   String? checkInternet;
-
+  CartViewModel cartViewModel = CartViewModel();
   void initState() {
     homeViewModel.getAppConfig(context);
     User();
+    cartViewModel.getRecentView(context);
+    cartViewModel.getRecommendedView(context);
     profileViewModel.getUserDetails(context);
     super.initState();
 
@@ -108,15 +114,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                     ToastMessage.message("Please Login");
                                   }
                                 },
-                                child: Container(
-                                    height: 35,
-                                    width: 35,
-                                    padding: EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                      color: Color(0xff001726),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: Icon(Icons.menu_outlined))),
+                                child: Icon(Icons.menu_outlined)),
                             Expanded(
                               child: SizedBox(
                                   width: SizeConfig.screenWidth * .18),
@@ -259,6 +257,149 @@ class _HomePageWebState extends State<HomePageWeb> {
                               children: [
                                 CommonCarousel(),
                                // VideoListPage()
+                                SizedBox(height: ResponsiveWidget.isMediumScreen(context)
+                                    ?16:40),
+                                Center(
+                                  child: Container(
+                                      width: ResponsiveWidget.isMediumScreen(context)
+                                          ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5,
+                                      child: AppBoldFont(context, msg: (cartViewModel.recentView?.length ??0)>0? "Recently Viewed":"",fontSize: 18)),
+                                ),
+                            Center(
+                              child: Container(
+                                  height: (cartViewModel.recentView?.length ??0)>0 ?ResponsiveWidget.isMediumScreen(context)
+                                      ?180: 260 :0,
+                                  width: ResponsiveWidget.isMediumScreen(context)
+                                      ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5 ,
+                                    child: ListView.builder(
+                                        padding: EdgeInsets.only(top: 4),
+                                        reverse: false,
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: cartViewModel.recentView?.length,
+                                        itemBuilder: (context, position) {
+                                          return GestureDetector(
+                                            onTap: ()async{
+
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token') != null) {
+            context.router.push(
+              ProductDetailPage(
+                productId: '${cartViewModel.recentView?[position].productId}',
+                productdata: [
+                  '${cartViewModel.cartItemCount}',
+                  '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.size?.name}',
+                  '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.color?.name}',
+                  '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.style?.name}',
+                  '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.unitCount?.name}',
+                  '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.materialType?.name}',
+                  //'${productListData?.productDetails?.defaultVariationSku?.materialType?.name}'
+                ],
+              ) ,
+            );
+          }
+          else {
+            ToastMessage.message("Please Login User");
+          }
+                                              // AppNavigator.push(
+                                              //     context,
+                                              //     ProductDetailPage(
+                                              //       items: cartview.recentView?[position],
+                                              //       index: position,
+                                              //       defalutlike: cartview.recentView?[position].productDetails?.isFavorite,
+                                              //       itemCount: cartview.cartItemCount,
+                                              //       callback: (prod,value) {
+                                              //       },
+                                              //     ),
+                                              //     screenName: RouteBuilder.productDetails, function: (v) {
+                                              //   cartview.updateCartCount(context, v);
+                                              // });
+                                            },
+                                            child: Container(
+                                              width: ResponsiveWidget.isMediumScreen(context)
+                                                  ?140:180, margin: EdgeInsets.only(right: 12,top: 12,bottom: 2),
+                                              child: Column(
+                                                children: [
+                                                  CachedNetworkImage(
+                                                      imageUrl: '${cartViewModel.recentView?[position].productDetails?.productImages?[0]}', fit: BoxFit.fill,
+                                                      imageBuilder: (context, imageProvider) => Container(
+                                                        margin: EdgeInsets.only(bottom: 2),height:ResponsiveWidget.isMediumScreen(context)
+                                                          ? 140:200,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(8),
+                                                          image: DecorationImage(
+                                                              image: imageProvider, fit: BoxFit.cover),
+                                                        ),
+                                                      ),
+                                                      placeholder: (context, url) => Center(child: CircularProgressIndicator(color: WHITE_COLOR))),
+                                                  AppBoldFont(context, msg:getRecentViewTitle(position,cartViewModel),fontSize: 14,maxLines: 1)
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        }))),
+                                SizedBox(height: 16),
+                                Center(
+                                  child: Container(
+                                      width: ResponsiveWidget.isMediumScreen(context)
+                                          ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5,
+                                      child: AppBoldFont(context, msg: "Recommended for You ",fontSize: 18),
+                                  )),
+                                Center(
+                                  child: Container(
+                                      height: ResponsiveWidget.isMediumScreen(context)
+                                      ?250: 350,
+                                      width: ResponsiveWidget.isMediumScreen(context)
+                                          ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5 ,
+                                      child: ListView.builder(
+                                          padding: EdgeInsets.only(top: 4),
+                                          reverse: false,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: cartViewModel.recommendedView?.length,
+                                          itemBuilder: (context, position) {
+                                            return GestureDetector(
+                                              onTap: () async{
+
+                                                SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                                                if (sharedPreferences.get('token') != null) {
+                                                  context.router.push(ProductListGallery());
+                                                }
+                                                else {
+                                                  ToastMessage.message("Please Login User");
+                                                }
+                                                // AppNavigator.push(
+                                                //     context,
+                                                //     ProductListGallery(
+                                                //       isRecommended: true,
+                                                //     ),
+                                                //     screenName: RouteBuilder.productsPage, function: (v) {
+                                                //   cartview.updateCartCount(context, v);
+                                                // });
+                                              },
+                                              child: Container(
+                                                margin: EdgeInsets.only(right: 12,top: 12,bottom: 2),width: ResponsiveWidget.isMediumScreen(context)
+                                                  ?165:240,
+                                                child: Column(
+                                                  children: [
+                                                    CachedNetworkImage(
+                                                        imageUrl: '${cartViewModel.recommendedView?[position].productDetails?.productImages?[0]}', fit: BoxFit.fill,
+                                                        imageBuilder: (context, imageProvider) => Container(
+                                                          height:  ResponsiveWidget.isMediumScreen(context)
+                                                              ?185:250,
+                                                          margin: EdgeInsets.only(bottom: 2),
+                                                          decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(12),
+                                                            image: DecorationImage(
+                                                                image: imageProvider, fit: BoxFit.fill),
+                                                          ),
+                                                        ),
+                                                        placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
+                                                    AppBoldFont(maxLines: 1,context, msg:getRecommendedViewTitle(position, cartViewModel),fontSize: 14)
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          })),
+                                ),
                               ],
                             ),
                           ),
@@ -279,7 +420,22 @@ class _HomePageWebState extends State<HomePageWeb> {
         )
     );
   }
-
+  String? getRecommendedViewTitle(int position,CartViewModel cartview) {
+    if ((cartview.recommendedView?[position].productDetails?.productVariantTitle?.length ?? 0 )> 18) {
+      return cartview.recommendedView?[position].productDetails?.productVariantTitle?.replaceRange(
+          18        , cartview.recommendedView?[position].productDetails?.productVariantTitle?.length,'...');
+    } else {
+      return cartview.recommendedView?[position].productDetails?.productVariantTitle ?? "";
+    }
+  }
+  String? getRecentViewTitle(int position,CartViewModel cartview) {
+    if ((cartview.recentView?[position].productDetails?.productVariantTitle?.length ?? 0) > 18) {
+      return cartview.recentView?[position].productDetails?.productVariantTitle?.replaceRange(
+          18, cartview.recentView?[position].productDetails?.productVariantTitle?.length, '...');
+    } else {
+      return cartview.recentView?[position].productDetails?.productVariantTitle ?? "";
+    }
+  }
   // method for handling bottom nav clicks
   getPages(BottomNavigation navItem) {
     Uri url = Uri.parse(navItem.url ?? '');

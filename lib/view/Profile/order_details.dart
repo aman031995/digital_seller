@@ -22,7 +22,6 @@ class _OrderDetailsState extends State<OrderDetails> {
   String? checkInternet;
 
   void initState() {
-    orderView.getOrderDetail(context,widget.orderItem?.orderId ??" ");
     super.initState();
   }
 
@@ -52,7 +51,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                           msg: StringConstant.orderDetailed+' - ${widget.orderItem?.orderId}'),
                       SingleChildScrollView(
                         child: Container(
-                          height: 190.0* widget.orderItem!.itemDetails!.length,
+                          height: 180.0* widget.orderItem!.itemDetails!.length,
                           child: ListView.builder(
                             itemCount: widget.orderItem?.itemDetails?.length,
                               physics:ScrollPhysics(),
@@ -85,7 +84,7 @@ class _OrderDetailsState extends State<OrderDetails> {
               .withOpacity(0.9),
           borderRadius: BorderRadius.all(Radius.circular(5.0))),
 
-      height: 170,
+      height: 180,
       alignment: Alignment.topLeft,
       margin: EdgeInsets.only(top: 10, bottom: 10),
        padding: EdgeInsets.only(left: 20,top: 10),
@@ -103,8 +102,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                 children: [
                   Container(
                     width: 300,
-                    child: AppBoldFont(context,
-                        msg: '${widget.orderItem?.itemDetails?[index].productDetails?.productVariantTitle}', fontSize: 20.0),
+                    child: AppBoldFont(context,maxLines: 1,
+                        msg: '${getTitle(index)}', fontSize: 20.0),
                   ),
                   SizedBox(
                     height: 5,
@@ -139,18 +138,19 @@ class _OrderDetailsState extends State<OrderDetails> {
                   SizedBox(
                     height: 5,
                   ),
-                  // AppRegularFont(context,
-                  //     msg: "Size"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.productSize}', fontSize: 16.0),
-                  // SizedBox(
-                  //   height: 5,
-                  // ),
-                  // AppRegularFont(context,
-                  //     msg: "color"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.productColor}', fontSize: 16.0),
-                  SizedBox(
-                    height: 5,
-                  ),
+
+                  widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.color?.name != null?      AppRegularFont(context,
+                      maxLines: 1, msg: "color"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.color?.name}', fontSize: 16.0):SizedBox(),
+                  widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.size?.name != null?      AppRegularFont(context,
+                      maxLines: 1,  msg: "size"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.size?.name}', fontSize: 16.0):SizedBox(),
+                  widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.style?.name != null?       AppRegularFont(context,
+                      maxLines: 1,  msg: "style"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.style?.name}', fontSize: 16.0):SizedBox(),
+                  widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.materialType?.name != null?
                   AppRegularFont(context,
-                      msg: "Qty"+'- ${widget.orderItem?.itemDetails?[index].cartQuantity}', fontSize: 16.0),
+                      maxLines: 2,  msg: "MaterialType"+'- ${getMaterialType(index)}', fontSize: 16.0):SizedBox(),
+                  widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.unitCount?.name != null?
+                  AppRegularFont(context,
+                      maxLines: 1,   msg: "UnitCount"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.unitCount?.name}', fontSize: 16.0):SizedBox(),
                   SizedBox(
                     height: 15,
                   ),
@@ -174,7 +174,22 @@ class _OrderDetailsState extends State<OrderDetails> {
       ),
     );
   }
-
+  String? getMaterialType(int index) {
+    if (widget.orderItem!.itemDetails![index].productDetails!.defaultVariationSku!.materialType!.name!.length > 35) {
+      return widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.materialType?.name!.replaceRange(
+          35, widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.materialType?.name!.length, '...');
+    } else {
+      return widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.materialType?.name ?? "";
+    }
+  }
+  String? getTitle(int index) {
+    if (widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle!.length > 25) {
+      return widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle!.replaceRange(
+          25, widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle!.length, '...');
+    } else {
+      return widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle! ?? "";
+    }
+  }
   //Shipping Details Method
   shippingDetails() {
     return Container(

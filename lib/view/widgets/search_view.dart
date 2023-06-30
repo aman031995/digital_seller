@@ -215,9 +215,10 @@ Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
                 false, onPressed: () {
               isProfile = true;
               if (isProfile == true) {
-                GoRouter.of(context).pushNamed(
-                    RoutesName.MyOrderPage
-                );
+                // GoRouter.of(context).pushNamed(
+                //     RoutesName.MyOrderPage
+                // );
+                context.pushRoute(MyOrderPage());
               }
             }),
             SizedBox(height: 5),

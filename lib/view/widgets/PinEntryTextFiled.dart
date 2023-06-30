@@ -26,7 +26,7 @@ class PinPutViewState extends State<PinPutView> {
     width: 65,
     height: 55,
     textStyle: const TextStyle(
-        fontSize: 20.0, color: Colors.white, fontFamily: 'GilroyBold'),
+        fontSize: 20.0, color: Colors.black, fontFamily: 'GilroyBold'),
     decoration: BoxDecoration(
       border: Border.all(color: LIGHT_THEME_COLOR, width: 2),
       borderRadius: BorderRadius.circular(5),

@@ -21,7 +21,7 @@ class _ImageSliderState extends State<ImageSlider> {
     return Column(
       children: [
         widget.images?.length==1? Container(
-            height: 250,width: SizeConfig.screenWidth,
+            height: 220,width: SizeConfig.screenWidth,
             child: CachedNetworkImage(
                 imageUrl: '${widget.images![0]}',fit: BoxFit.cover,
                 placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey)))

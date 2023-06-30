@@ -290,7 +290,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                             ?.isFavorite ==
                             true
                             ? Colors.red
-                            : GREY_COLOR,
+                            : Colors.white,
                         size: 25))))
       ],
     );

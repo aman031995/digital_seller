@@ -77,6 +77,18 @@ class AppRouter extends $AppRouter {
         },
       )]),
     AutoRoute(page: AddressListPage.page,path: '/AddressListPage'),
+    AutoRoute(page: MyOrderPage.page,path:'/MyOrderPage',guards: [
+      AutoRouteGuard.simple(
+            (resolver, scope) async {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token') != null) {
+            resolver.next();
+          } else {
+            ToastMessage.message("Please Login User");
+
+          }
+        },
+      )]),
     AutoRoute(page: ProductDetailPage.page,path: '/ProductDetailPage/:productId',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {

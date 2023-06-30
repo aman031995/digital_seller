@@ -89,7 +89,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                           padding: EdgeInsets.only(left: 10,right: 10,top: 10),
                           physics: BouncingScrollPhysics(),
                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, childAspectRatio: 0.56,
+                              crossAxisCount: 2, childAspectRatio: 0.51,
                           mainAxisSpacing: 10,
                           crossAxisSpacing: 10),
                           itemCount:
@@ -306,7 +306,6 @@ Widget productGalleryTitleSection(
           fontSize: 18.0,
         ),
         SizedBox(height: 2),
-      SizedBox(height: 2),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -329,7 +328,7 @@ Widget productGalleryTitleSection(
               msg:
               '${productListData?.productDetails?.productDiscountPercent}' +
                   '% OFF',color: Colors.green,
-              fontSize: 14.0,
+              fontSize: 12.0,
             ),
           ],
         ),SizedBox(height: 2),

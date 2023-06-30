@@ -4,6 +4,7 @@ import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -113,7 +114,172 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     }),
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
            body: viewmodel.productListDetails != null ?
-           SingleChildScrollView(child: Row(
+           SingleChildScrollView(child:
+           ResponsiveWidget.isMediumScreen(context)
+               ?
+           Column(
+             mainAxisAlignment: MainAxisAlignment.center,
+             crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+               Center(
+                 child: Container(margin: EdgeInsets.only(top: SizeConfig.screenHeight*0.02),
+                     width: SizeConfig.screenWidth/1.1,
+                     child: Stack(children: [
+                       CarouselSlider(
+                           options: CarouselOptions(
+                               height: SizeConfig.screenHeight / 1.4,
+                               enableInfiniteScroll: viewmodel.productListDetails?.productDetails?.productImages?.length==1?false:true,
+                               reverse: false,
+                               viewportFraction: 1,
+                               onPageChanged: (index, reason) {
+                                 setState(() {
+                                   currentIndex = index;
+                                 });
+                               }),
+                           items: viewmodel
+                               .productListDetails?.productDetails?.productImages
+                               ?.map((i) {
+                             return Builder(builder: (BuildContext context) {
+                               return Container(
+                                 width: SizeConfig.screenWidth,
+                                 child: CachedNetworkImage(
+                                     imageUrl: '${i}',
+                                     fit: BoxFit.fill,
+                                     placeholder: (context, url) => Center(
+                                         child: CircularProgressIndicator(
+                                             color:
+                                             Theme.of(context).primaryColor))),
+                               );
+                             });
+                           }).toList()),
+                       viewmodel.productListDetails?.productDetails?.productImages?.length == 1 ? Container() :
+                       Positioned(
+                           bottom: 10,
+                           left: 1,
+                           right: 1,
+                           child: Row(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                               children: buildIndicator(
+                                   viewmodel.productListDetails?.productDetails
+                                       ?.productImages,
+                                   currentIndex,
+                                   context))),
+                       Positioned(
+                           right: 10, top: 5,
+                           child: Container(
+                               decoration: BoxDecoration(
+                                   shape: BoxShape.circle,
+                                   color: Theme.of(context).canvasColor),
+                               height: 35,
+                               width: 35,
+                               child: IconButton(color: Colors.white,
+                                   icon: Icon(Icons.share,color: Colors.white,),
+                                   onPressed: () {}))),
+                       Positioned(
+                           right: 10,
+                           top: 45,
+                           child: GestureDetector(
+                               onTap: () {
+                                 if (token == 'null'){
+                                   _backBtnHandling(prodId);
+                                 } else {
+                                   final isFav =
+                                   viewmodel.productListDetails?.productDetails!.isFavorite = !viewmodel.productListDetails!.productDetails!.isFavorite!;
+                                   viewmodel.addToFavourite(
+                                       context,
+                                       "${viewmodel.productListDetails?.productId}",
+                                       "${viewmodel.productListDetails?.productDetails?.variantId}",
+                                       isFav!,
+                                       'productList');
+                                   // viewmodel.addToFavourite(
+                                   //   context,
+                                   //   "${viewmodel.productListDetails?.productId}",
+                                   //   "${viewmodel.productListDetails?.productDetails?.productColor}",
+                                   //   viewmodel.productListDetails?.productDetails
+                                   //       ?.isFavorite ==
+                                   //       true
+                                   //       ? false
+                                   //       : true,
+                                   //   'productDetail');
+                                 }
+                               },
+                               child: Container(
+                                   decoration: BoxDecoration(
+                                       shape: BoxShape.circle,
+                                       color: Theme.of(context).canvasColor),
+                                   height: 35,
+                                   width: 35,
+                                   child: Icon(Icons.favorite,
+                                       color: viewmodel.productListDetails
+                                           ?.productDetails?.isFavorite ==
+                                           true
+                                           ? Colors.red
+                                           : Colors.white,
+                                       size: 25))))
+                     ])),
+               ),
+               Container(
+                   width: SizeConfig.screenWidth/1.1,
+                   margin: EdgeInsets.only(left: 20,top: SizeConfig.screenHeight*0.02),
+                   padding: EdgeInsets.only(left: 10.0, top: 5, bottom: 5),
+                   child: Column(
+                       mainAxisAlignment: MainAxisAlignment.start,
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                       children: [
+                         AppBoldFont(context, msg: viewmodel.productListDetails?.productDetails?.productVariantTitle ?? '', fontSize: 18),
+                         // SizedBox(height: 10),
+                         AppMediumFont(
+                           context,
+                           msg:
+                           "${viewmodel.productListDetails?.productShortDesc ?? ''}",
+                           fontSize: 16.0,
+                         ),
+                         Row(
+                             mainAxisAlignment: MainAxisAlignment.start,
+                             crossAxisAlignment: CrossAxisAlignment.center,
+                             children: [
+                               viewmodel.productListDetails?.productDetails
+                                   ?.productPrice !=
+                                   ''
+                                   ? AppMediumFont(context,
+                                   msg: "₹ "
+                                       "${viewmodel.productListDetails?.productDetails?.productPrice ?? ''}",
+                                   textDecoration:
+                                   TextDecoration.lineThrough,
+                                   fontSize: 14)
+                                   : SizedBox(),
+                               SizedBox(width: 8.0), AppBoldFont(context,
+                                   msg: "₹ "
+                                       "${viewmodel.productListDetails?.productDetails?.productDiscountPrice ?? ''}",
+                                   fontSize: 18),SizedBox(width: 8.0),
+                               AppMediumFont(context,
+                                   msg: viewmodel
+                                       .productListDetails
+                                       ?.productDetails
+                                       ?.productDiscountPercent !=
+                                       ''
+                                       ? "${viewmodel.productListDetails?.productDetails?.productDiscountPercent}" +
+                                       '% OFF'
+                                       : '',color: Colors.green,
+                                   fontSize: 14)
+                             ]),
+                         Container(
+                           child: ProductSkuView(
+                               selected: true,
+                               skuDetails: cartView.productListDetails?.productSkuDetails,
+                               cartView: cartView,
+                               productList: cartView.productListDetails?.productDetails?.defaultVariationSku),
+                         ),
+                         // productColor(viewmodel.productListDetails),
+                         // productSize(viewmodel.productListDetails),
+                         // productMaterial(viewmodel.productListDetails),
+                         // productUnit(viewmodel.productListDetails),
+                         // productStyle(viewmodel.productListDetails),
+
+                         bottomNavigationButton()
+                       ]))
+             ],
+           ):Row(
          mainAxisAlignment: MainAxisAlignment.center,
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
@@ -167,8 +333,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                              color: Theme.of(context).canvasColor),
                          height: 35,
                          width: 35,
-                         child: IconButton(
-                           icon: Icon(Icons.share),
+                         child: IconButton(color: Colors.white,
+                           icon: Icon(Icons.share,color: Colors.white,),
                              onPressed: () {}))),
                  Positioned(
                      right: 10,
@@ -178,6 +344,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                            if (token == 'null'){
                              _backBtnHandling(prodId);
                            } else {
+                             final isFav =
+                                 viewmodel.productListDetails?.productDetails!.isFavorite = !viewmodel.productListDetails!.productDetails!.isFavorite!;
+                             viewmodel.addToFavourite(
+                                 context,
+                                 "${viewmodel.productListDetails?.productId}",
+                                 "${viewmodel.productListDetails?.productDetails?.variantId}",
+                                 isFav!,
+                                 'productList');
                              // viewmodel.addToFavourite(
                              //   context,
                              //   "${viewmodel.productListDetails?.productId}",
@@ -201,7 +375,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                      ?.productDetails?.isFavorite ==
                                      true
                                      ? Colors.red
-                                     : GREY_COLOR,
+                                     : Colors.white,
                                  size: 25))))
                ])),
            Container(
@@ -265,7 +439,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                      bottomNavigationButton()
                    ]))
          ],
-       ))
+       )
+
+          )
          : Center(child: ThreeArchedCircle(size: 45.0)));
         })
       );
@@ -706,7 +882,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   backgroundColor: MaterialStateProperty.all(
                       Theme.of(context).cardColor),
                   padding: MaterialStateProperty.all(
-                      EdgeInsets.symmetric(horizontal: 40, vertical: 20)),
+                      EdgeInsets.symmetric(horizontal:ResponsiveWidget.isMediumScreen(context)
+                          ?20: 40, vertical: 20)),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.0),
@@ -736,7 +913,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               ElevatedButton(
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
-                  padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: 40, vertical: 20)),
+                  padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal: ResponsiveWidget.isMediumScreen(context)
+                      ?20: 40, vertical: 20)),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0),
                       ))),

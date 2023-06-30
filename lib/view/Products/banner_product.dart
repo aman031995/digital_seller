@@ -151,8 +151,8 @@ class _banner_productState extends State<banner_product> {
                               color: Theme.of(context).canvasColor),
                           height: 35,
                           width: 35,
-                          child: IconButton(
-                              icon: Icon(Icons.share),
+                          child: IconButton(color: Colors.white,
+                              icon: Icon(Icons.share,color: Colors.white,),
                               // icon: Image.asset(
                               //   AssetsConstants.ic_ShareIcon,
                               //   height: 30,
@@ -192,7 +192,7 @@ class _banner_productState extends State<banner_product> {
                                       ?.productDetails?.isFavorite ==
                                       true
                                       ? Colors.red
-                                      : GREY_COLOR,
+                                      : Colors.white,
                                   size: 25))))
                 ]),
                 SizedBox(height: 10),
