@@ -185,7 +185,8 @@ Widget checkoutButton(BuildContext context,String msg,CartViewModel cartViewData
 
 //BillCard Method
 Widget billCard(BuildContext context,CartViewModel cartViewData){
-  return  Card(
+  return
+    Card(
     child: Container(
       width: SizeConfig.screenWidth*0.24,
       child: Column(

@@ -217,7 +217,35 @@ class CartDetailRepository {
       }
     });
   }
-
+  // addto buy Method
+  Future<Result?> buynow(String productId, String quantity,String variantId,
+      BuildContext context, NetworkResponseHandler responseHandler) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    AppNetwork appNetwork = AppNetwork();
+    var inputParams = {
+      "productId": productId,
+      "quantity": quantity,
+      "appId": NetworkConstants.kAppID,
+      "variantId": variantId,
+      "userId": sharedPreferences.get("userId").toString()
+    };
+    ASRequestModal requestModal = ASRequestModal.withInputParams(
+        inputParams, NetworkConstants.buynow, RequestType.post,
+        context: context, modalClass: "ABC");
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map =
+        (result as SuccessState).value as Map<String, dynamic>;
+        if (map['data'] is Map<String, dynamic>) {
+          response.dataModal = CartListDataModel.fromJson(map["data"]);
+        }
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        return responseHandler(result, isSuccess);
+      }
+    });
+  }
   // GetProductDetails Method
   Future<Result?> getProductByCategory(BuildContext context,
       String productId,
@@ -503,7 +531,7 @@ class CartDetailRepository {
     });
   }
 
-  Future<Result?> placeYourOrder(
+  Future<Result?> placeYourOrder(String productId,String variantId,String quantity,
       String addressId, transactionId, orderId, payMethod, payStatus, BuildContext context,
       NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -512,8 +540,11 @@ class CartDetailRepository {
       "addressId": addressId,
       "userId": sharedPreferences.get("userId").toString(),
       "appId": NetworkConstants.kAppID,
+      "productId": productId,
+      "variantId":variantId,
+      "quantity" :quantity,
       "transaction_id": transactionId,
-      "payment_order_id": orderId,
+      "payment_order_id": orderId==null?'':orderId,
       "payment_method": payMethod,
       "payment_status": payStatus
     };
@@ -558,7 +589,7 @@ class CartDetailRepository {
     });
   }
 
-  Future<Result?> createOrder(
+  Future<Result?> createOrder(String productId,String variantId,String quantity,
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     AppNetwork appNetwork = AppNetwork();
@@ -566,6 +597,9 @@ class CartDetailRepository {
     Map<String, String> inputParam = {
       "userId": sharedPreferences.get("userId").toString(),
       "appId": NetworkConstants.kAppID,
+      "productId":productId,
+      "variantId":variantId,
+      "quantity":quantity,
       "gateway": "razorpay",
       "payment_method": "online"
     };

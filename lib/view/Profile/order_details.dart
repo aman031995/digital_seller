@@ -138,7 +138,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                   SizedBox(
                     height: 5,
                   ),
-
+                  AppMediumFont(
+                      context,
+                      msg: "QTY : "+"${widget.orderItem?.itemDetails?[0].cartQuantity}" ,
+                      fontSize: 14.0),
                   widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.color?.name != null?      AppRegularFont(context,
                       maxLines: 1, msg: "color"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.color?.name}', fontSize: 16.0):SizedBox(),
                   widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.size?.name != null?      AppRegularFont(context,
@@ -151,6 +154,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                   widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.unitCount?.name != null?
                   AppRegularFont(context,
                       maxLines: 1,   msg: "UnitCount"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.unitCount?.name}', fontSize: 16.0):SizedBox(),
+
+
                   SizedBox(
                     height: 15,
                   ),

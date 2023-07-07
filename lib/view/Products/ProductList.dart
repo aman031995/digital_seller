@@ -1,5 +1,6 @@
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
+import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
@@ -32,6 +33,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
 
 
   void initState() {
+
     cartViewModel.getProductListData(context,pageNum);
     cartViewModel.getCartCount(context);
     super.initState();
@@ -48,6 +50,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
 
     // handle push notification/notification scenerio to show data
     receivedArgumentsNotification();
+
     return checkInternet == "Offline"
         ? NOInternetScreen()
         :ChangeNotifierProvider.value(
@@ -72,12 +75,15 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                 },
                 onBackPressed: () {
                 }),
+
+
             backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+
             body: viewmodel.productListModel?.productList != null
                 ? viewmodel.productListModel!.productList!.length > 0
                 ? ResponsiveWidget.isMediumScreen(context)
                 ? SingleChildScrollView(
-              child: Column(
+                          child: Column(
                 children: [
                   Container(
                     height:SizeConfig.screenHeight,
@@ -121,8 +127,8 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                   SizedBox(height: 50),
                 footerMobile(context)
                 ],
-              ),
-            ):
+              ))
+                :
             SingleChildScrollView(
                   child: Column(
                     children: [
@@ -138,15 +144,14 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                               padding: EdgeInsets.only(top: 30),
                               gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 300,mainAxisExtent: 350,mainAxisSpacing: 10.0,crossAxisSpacing: 10),
                               itemCount: viewmodel.productListModel?.productList?.length,
-              itemBuilder: (context, index) {
-                _scrollController.addListener(() {
+                                        itemBuilder: (context, index) {
+                                    _scrollController.addListener(() {
                   if (_scrollController.position.pixels ==
                             _scrollController.position.maxScrollExtent) {
                     viewmodel.onPagination(context, viewmodel.lastPage, viewmodel.nextPage, viewmodel.isLoading, 'productList');
                   }
                 });
-                            final productListData = cartViewModel
-                                .productListModel?.productList?[index];
+                            final productListData = cartViewModel.productListModel?.productList?[index];
                             return productListItems(context,
                                 productListData, index, viewmodel);
               },
@@ -193,7 +198,6 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                     '${productListData?.productDetails?.defaultVariationSku?.style?.name}',
                     '${productListData?.productDetails?.defaultVariationSku?.unitCount?.name}',
                     '${productListData?.productDetails?.defaultVariationSku?.materialType?.name}',
-                    //'${productListData?.productDetails?.defaultVariationSku?.materialType?.name}'
                   ],
                 ) ,
               );
@@ -269,6 +273,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
     }
   }
 }
+
 String? getFavTitle(ProductList? productListData) {
   if (productListData!.productDetails!.productVariantTitle!.length > 40) {
     return productListData.productDetails?.productVariantTitle?.replaceRange(
@@ -331,13 +336,7 @@ Widget productGalleryTitleSection(
               fontSize: 12.0,
             ),
           ],
-        ),SizedBox(height: 2),
-        // AppRegularFont(
-        //   context,
-        //   msg: "Color :"
-        //       ' ${productListData?.productDetails?.productColor}',
-        //   fontSize: 14.0,
-        // ),
+        ),
         SizedBox(height: 5)
       ],
     ),

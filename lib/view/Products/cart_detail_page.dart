@@ -1,8 +1,9 @@
 import 'package:TychoStream/AppRouter.gr.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
+import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
+import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
-import 'package:TychoStream/utilities/AppTextField.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -41,6 +42,7 @@ class _CartDetailState extends State<CartDetail> {
 
   @override
   void initState() {
+    SessionStorageHelper.removeValue('payment');
     cartViewData.getCartCount(context);
     cartViewData.updateCartCount(context, widget.itemCount ?? '');
     cartViewData.getCartListData(context);
@@ -297,7 +299,9 @@ class _CartDetailState extends State<CartDetail> {
                                   context, StringConstant.continueText, cartViewData,
                                       () {
                                     context.router.push(
-                                        AddressListPage()
+                                        AddressListPage(
+                                          buynow: false
+                                        )
                                     );
                                     // GoRouter.of(context).pushNamed(RoutesName.AddressListPage);
                                     // AppNavigator.push(
@@ -507,90 +511,28 @@ class _CartDetailState extends State<CartDetail> {
                                             AppMediumFont(context, color: BLACK_COLOR,
                                                 maxLines: 1,   msg: "UnitCount"+'- ${itemInCart?.productSelectedSku?.unitCount?.name}', fontSize: 16.0):SizedBox(),
 
-                                            // AppMediumFont(context,
-                                            //     color: BLACK_COLOR,
-                                            //     msg: "Color : " +(itemInCart?.productDetails?.productColor ?? ""),
-                                            //     fontSize: 13.0),
-                                            // AppMediumFont(context,
-                                            //     color: BLACK_COLOR,
-                                            //     msg: "Size : " + (itemInCart?.productDetails?.productSize ?? ''),
-                                            //     fontSize: 13.0),
                                             SizedBox(height: 15),
-                                            Row(
-                                              children: [
-                                                // GestureDetector(
-                                                //   onTap: () {
-                                                //     cartViewData.addToFavourite(
-                                                //         context,
-                                                //         "${cartViewData.cartListData?.cartList?[index].productId}",
-                                                //         "${cartViewData.cartListData?.cartList?[index].productDetails?.productColorId}",
-                                                //         cartViewData
-                                                //                     .cartListData
-                                                //                     ?.cartList?[index]
-                                                //                     .productDetails
-                                                //                     ?.isFavorite ==
-                                                //                 true
-                                                //             ? false
-                                                //             : true,
-                                                //         'cartDetail',listIndex: index);
-                                                //   },
-                                                //   child: Container(
-                                                //     padding:
-                                                //         EdgeInsets
-                                                //             .all(5),
-                                                //     decoration:
-                                                //         BoxDecoration(
-                                                //             borderRadius:
-                                                //                 BorderRadius.circular(
-                                                //                     8),
-                                                //             color:
-                                                //             // cartViewData.cartListData?.cartList?[index].productDetails?.isFavorite ==
-                                                //             //         true
-                                                //             //     ? RED_COLOR
-                                                //             //     :
-                                                //             WHITE_COLOR,
-                                                //             border:
-                                                //                 Border
-                                                //                     .all(
-                                                //               width:
-                                                //                   1,
-                                                //               color:
-                                                //                   BLACK_COLOR,
-                                                //             )),
-                                                //     child: AppRegularFont(
-                                                //         context,
-                                                //         color:
-                                                //             BLACK_COLOR,
-                                                //         msg: StringConstant
-                                                //             .wishlist,
-                                                //         fontSize:
-                                                //             14.0),
-                                                //   ),
-                                                // ),
-                                                // SizedBox(width: 10),
-                                                GestureDetector(
-                                                  onTap: () async {
-                                                    cartViewData.removeProductFromCart(
-                                                        context,
-                                                        itemInCart?.productDetails?.variantId ??"",
-                                                        index);
-                                                  },
-                                                  child: Container(
-                                                    padding: EdgeInsets.all(5),
-                                                    decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(8),
-                                                            border: Border.all(
-                                                              width: 1,
-                                                              color: BLACK_COLOR,
-                                                            )),
-                                                    child: AppRegularFont(
-                                                        context,
-                                                        color: RED_COLOR,
-                                                        msg: "remove",
-                                                        fontSize: 14.0),
-                                                  ),
-                                                )
-                                              ],
+                                            GestureDetector(
+                                              onTap: () async {
+                                                cartViewData.removeProductFromCart(
+                                                    context,
+                                                    itemInCart?.productDetails?.variantId ??"",
+                                                    index);
+                                              },
+                                              child: Container(
+                                                padding: EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.circular(8),
+                                                        border: Border.all(
+                                                          width: 1,
+                                                          color: BLACK_COLOR,
+                                                        )),
+                                                child: AppRegularFont(
+                                                    context,
+                                                    color: RED_COLOR,
+                                                    msg: "remove",
+                                                    fontSize: 14.0),
+                                              ),
                                             ),
                                             SizedBox(height: 5),
                                           ],
@@ -609,33 +551,22 @@ class _CartDetailState extends State<CartDetail> {
                               SizedBox(height: 5),
                               billCard(context, cartViewData),
                                 SizedBox(height: 10),
-          (cartViewData.cartListData?.cartList?.length ?? 0) > 0 &&
-                      cartViewData.cartListData != null
-                  ? ChangeNotifierProvider<CartViewModel>(
-                      create: (BuildContext context) => cartViewData,
-                      child: Consumer<CartViewModel>(
-                          builder: (context, cartViewData, _) {
-                        return Container(
-                          height: 60,
-                          width: SizeConfig.screenWidth*0.24,
-                          child: checkoutButton(
-                              context, StringConstant.continueText, cartViewData,
-                              () {
-                                context.router.push(
-                                  AddressListPage()
-                                );
-                                // GoRouter.of(context).pushNamed(RoutesName.AddressListPage);
-                            // AppNavigator.push(
-                            //     context,
-                            //     AddressListPage(
-                            //         checkOutData: cartViewData.cartListData),
-                            //     screenName: RouteBuilder.AddressListPage);
-                          }),
-                        );
-                      }))
-                  : SizedBox(
-                      height: 1,
-                    ),
+                                 Container(
+                      height: 60,
+                      width: SizeConfig.screenWidth*0.24,
+                      child: checkoutButton(
+                          context, StringConstant.continueText, cartViewData,
+                          () {
+                            context.router.push(
+                              AddressListPage(
+                                buynow: false
+                              )
+                            );
+
+
+                      }),
+                    )
+
                             ],)
 
                           ],
@@ -660,161 +591,5 @@ class _CartDetailState extends State<CartDetail> {
                 }));
   }
 
-  promoCodeViewMobile() {
-    return Container(
-      margin: EdgeInsets.only(left: 5, right: 5,bottom: 10),
-      padding: EdgeInsets.only(top: 15,bottom: 10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                width: SizeConfig.screenWidth/1.8 ,
-                height: 80,
-                alignment: Alignment.center,
-                child: StreamBuilder(builder: (context, snapshot) {
-                  return AppTextField(
-                    maxLine: 1,
-                    controller: applyPromoCode,
-                    labelText: "applyPromoCode",
-                    textCapitalization: TextCapitalization.words,
-                    isShowCountryCode: true,
-                    isShowPassword: false,
-                    secureText: false,
-                    maxLength: 30,
-                    keyBoardType: TextInputType.name,
-                    errorText:
-                    snapshot.hasError ? snapshot.error.toString() : null,
-                    onChanged: (m) {
-                      validation.sinkFirstName.add(m);
-                      setState(() {});
-                    },
-                    onSubmitted: (m) {},
-                    isTick: null,
-                  );
-                }),
-              ),
-              ElevatedButton(
-                child: AppBoldFont(context,
-                    msg: "Apply Button", fontSize: 16.0),
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).primaryColor),
-              ),
-              SizedBox(width: 10)
-            ],
-          ),
-          Divider(
-            color: Theme.of(context).canvasColor,
-            thickness: 1,
-          ),
-          SizedBox(height: 5),
-          TextButton(
-            onPressed: () {
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => ApplyPromocode()));
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AppBoldFont(context,
-                    msg:" ViewAllCoupon", fontSize: 18.0),
-                Icon(
-                  Icons.chevron_right,
-                  size: 20,
-                  color: Theme.of(context).canvasColor,
-                )
-              ],
-            ),
-          ),
-          SizedBox(height: 5)
-        ],
-      ),
-    );
-  }
-
-  promoCodeView() {
-    return Container(
-        width: SizeConfig.screenWidth*0.24,
-      margin: EdgeInsets.only(left: 5, right: 5,bottom: 10),
-      padding: EdgeInsets.only(top: 15,bottom: 10),
-      decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                width: SizeConfig.screenWidth * 0.15,
-                height: 80,
-                alignment: Alignment.center,
-                child: StreamBuilder(builder: (context, snapshot) {
-                  return AppTextField(
-                    maxLine: 1,
-                    controller: applyPromoCode,
-                    labelText: "applyPromoCode",
-                    textCapitalization: TextCapitalization.words,
-                    isShowCountryCode: true,
-                    isShowPassword: false,
-                    secureText: false,
-                    maxLength: 30,
-                    keyBoardType: TextInputType.name,
-                    errorText:
-                        snapshot.hasError ? snapshot.error.toString() : null,
-                    onChanged: (m) {
-                      validation.sinkFirstName.add(m);
-                      setState(() {});
-                    },
-                    onSubmitted: (m) {},
-                    isTick: null,
-                  );
-                }),
-              ),
-              ElevatedButton(
-                child: AppBoldFont(context,
-                    msg: "Apply Button", fontSize: 16.0),
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                    primary: Theme.of(context).primaryColor),
-              ),
-              SizedBox(width: 10)
-            ],
-          ),
-          Divider(
-            color: Theme.of(context).canvasColor,
-            thickness: 1,
-          ),
-          SizedBox(height: 5),
-          TextButton(
-            onPressed: () {
-              // Navigator.push(context,
-              //     MaterialPageRoute(builder: (context) => ApplyPromocode()));
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AppBoldFont(context,
-                    msg:" ViewAllCoupon", fontSize: 18.0),
-                Icon(
-                  Icons.chevron_right,
-                  size: 20,
-                  color: Theme.of(context).canvasColor,
-                )
-              ],
-            ),
-          ),
-          SizedBox(height: 5)
-        ],
-      ),
-    );
-  }
 
 }

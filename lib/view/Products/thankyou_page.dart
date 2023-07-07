@@ -30,9 +30,9 @@ class _ThankYouPageState extends State<ThankYouPage> {
     thankYouModel.thankYouPageImageTimer(context);
     // context.router.stack.clear();
     super.initState();
-    Timer.periodic(Duration(seconds: 5), (_) {
-      context.router.popUntilRoot();
-    } );
+    // Timer.periodic(Duration(seconds: 5), (_) {
+    //   context.router.popUntilRoot();
+    // } );
   }
 
   @override
@@ -84,34 +84,33 @@ class _ThankYouPageState extends State<ThankYouPage> {
           ],
         ),
         SizedBox(height: 30),
-        GestureDetector(
-          onTap: () {
-
-            context.router.dispose();
-            context.pushRoute(ProductListGallery());
-            // GoRouter.of(context).pushNamed(RoutesName.productList);
-            // AppNavigator.push(
-            //     context,
-            //     BottomNavigationWidget(
-            //      navpage: RoutesName.productPage,
-            //     ),
-            //     screenName: RouteBuilder.productDetails);
-          },
-          child: Center(
-            child: TextLiquidFill(
-              boxHeight: 40,boxWidth: SizeConfig.screenWidth/1.2,
-              text: 'Continue Shopping',
-              loadDuration: Duration(seconds: 2),
-              waveDuration: Duration(seconds: 6),
-              waveColor: Theme.of(context).canvasColor,
-              boxBackgroundColor: Theme.of(context).cardColor,
-              textStyle: TextStyle(
-                fontSize: 16.0,
-                color: Theme.of(context).canvasColor,
-                fontWeight: FontWeight.bold,
-              ),
+        Center(
+          child: TextButton(onPressed: () { context.pushRoute(ProductListGallery()); }, child: Container(
+            padding: const EdgeInsets.all(8.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4),
+              border: Border.all(color: Colors.grey,width: 3)
             ),
+            child: Text("Continue Shopping",style: TextStyle(color: Theme.of(context).primaryColor),),
           ),
+
+          )
+          // Container(
+          //
+          //
+          //     child: Text("Continue Shopping"))
+
+          // TextLiquidFill(
+          //   boxHeight: 200,boxWidth: SizeConfig.screenWidth,
+          //   text: 'Continue Shopping',
+          //   textAlign: TextAlign.center,
+          //   boxBackgroundColor: Theme.of(context).cardColor,
+          //   textStyle: TextStyle(
+          //     fontSize: 80.0,
+          //     color: Colors.yellow,
+          //     fontWeight: FontWeight.bold,
+          //   ),
+          // ),
         ),
       ],
     );

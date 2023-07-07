@@ -1,6 +1,10 @@
 
 
+import 'dart:js';
+
+import 'package:TychoStream/main.dart';
 import 'package:TychoStream/services/global_variable.dart';
+import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:auto_route/auto_route.dart';
@@ -24,6 +28,7 @@ class AppRouter extends $AppRouter {
           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
           if (sharedPreferences.get('token') != null) {
             resolver.next();
+
           } else {
             ToastMessage.message("Please Login User");
           }
@@ -76,7 +81,22 @@ class AppRouter extends $AppRouter {
           }
         },
       )]),
-    AutoRoute(page: AddressListPage.page,path: '/AddressListPage'),
+    AutoRoute(page: AddressListPage.page,path: '/AddressListPage/:buynow',guards: [
+      AutoRouteGuard.simple(
+            (resolver, scope) async {
+              token= SessionStorageHelper.getValue("payment");
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if(token==null){
+            resolver.next();
+          }
+          else if (token=='false') {
+            resolver.next();
+          } else {
+            resolver.redirect(HomePageWeb());
+            // ToastMessage.message("Please Login User");
+          }
+        },
+      )]),
     AutoRoute(page: MyOrderPage.page,path:'/MyOrderPage',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
@@ -173,6 +193,18 @@ class AppRouter extends $AppRouter {
           }
         },
       )]),
+    AutoRoute(page:BuynowCart.page,path: '/Buynow',guards: [
+      AutoRouteGuard.simple(
+            (resolver, scope) async {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token') != null) {
+            resolver.next();
+          } else {
+            ToastMessage.message("Please Login User");
+            // resolver.redirect(HomePageWeb());
+          }
+        },
+      )])
   ];
 }
 

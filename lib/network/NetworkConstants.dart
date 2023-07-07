@@ -68,7 +68,7 @@ class NetworkConstants{
  // static String kGetProductById = "product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&colorName={COLOR_ID}&sizeName={SIZE_NAME}&variantId={VARIANT_ID}";
   //static String kGetProductById = "product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&color={COLOR_ID}&size={SIZE_NAME}&variantId={VARIANT_ID}";
   static String kGetProductById = 'product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&variant=[{"color" : "{COLOR_ID}"}, {"size" : "{SIZE_NAME}"},{"material_type" : "{MATERIAL_TYPE}"}, {"style" : "{STYLE}"}, {"unit_count" : "{UNIT_COUNT}"}]';
-
+  static String buynow='buy-now';
   static String kGetProductByCategory = "get-banner-product?appId={APP_ID}&catId={CAT_ID}&productId={PROD_ID}";
   static String KRecentView='view-product-list?userId={USER_ID}&appId={APP_ID}';
   static String KRecommended='recommended-product?appId={APP_ID}';

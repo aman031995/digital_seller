@@ -166,6 +166,11 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                                       msg: orderView.orderData
                                                           ?.orderList?[index]
                                                           .orderStatus,
+                                                      fontSize: 16.0),
+                                                  SizedBox(height:5),
+                                                  AppMediumFont(context,
+                                                      msg: orderView.orderData
+                                                          ?.orderList?[index].orderDate,
                                                       fontSize: 16.0)
                                                 ],
                                               ),

@@ -17,7 +17,7 @@ import 'package:url_strategy/url_strategy.dart';
 import 'dart:html' as html;
 String? image;
 String? names;
-String? token;
+String? token='false';
 bool isLogin = false;
 bool isLogins = false;
 bool isSearch = false;
@@ -25,12 +25,10 @@ bool isProfile=false;
 bool isDelete=false;
 bool isNotification=false;
 TextEditingController? searchController = TextEditingController();
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
 Future<void> main() async {
   setPathUrlStrategy();
-
   await WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       options: FirebaseOptions(
@@ -43,52 +41,38 @@ Future<void> main() async {
           measurementId: "G-RFYDXHGWCK"
   ));
   html.window.onPopState.listen((event) {
-    // Handle browser back navigation here
-    reloadPage();
-    // You can perform any necessary actions or navigate to a specific route
-    print('Browser back navigation detected!');
+    html.window.location.reload();
   });
   runApp(MyApp());
 }
-// void configureApp() {
-//   final urlStrategy = PathUrlStrategy();
-//   urlStrategy.setPathUrlStrategy();
-//   setUrlStrategy(urlStrategy);
-//
-//   // Add event listener for browser back navigation
-//   html.window.onPopState.listen((event) {
-//     // Handle browser back navigation here
-//     // You can perform any necessary actions or navigate to a specific route
-//     print('Browser back navigation detected!');
-//   });
-// }
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
-
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
   HomeViewModel homeViewModel = HomeViewModel();
-  // late GoRouter _router;
-
   final _appRouter = AppRouter();
-  @override
-  getTokent() async {
-    String? deviceToken = await FirebaseMessaging.instance.getToken();
-    print('DEVICE TOKEN ' + deviceToken!);
-  }
+
+  // @override
+  // getTokent() async {
+  //   String? deviceToken = await FirebaseMessaging.instance.getToken();
+  //   print('DEVICE TOKEN ' + deviceToken!);
+  // }
 
   void initState() {
     User();
     homeViewModel.getAppConfig(context);
     super.initState();
   }
+
   User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     names = sharedPreferences.get('name').toString();
   }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -124,14 +108,11 @@ class _MyAppState extends State<MyApp> {
                   debugShowCheckedModeBanner: false,
                   scrollBehavior: MyCustomScrollBehavior(),
                 routerConfig: _appRouter.config(),
-                // routeInformationParser: _appRouter.routeInformationParser,
-                // routerDelegate: _appRouter.routerDelegate,
-                  // routeInformationProvider: _router.routeInformationProvider,
-
               );
             })
         )
-    );}}
+    );
+  }}
 
 
 

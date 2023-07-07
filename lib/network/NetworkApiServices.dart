@@ -10,7 +10,7 @@ import 'package:TychoStream/utilities/LogsMessage.dart';
 import 'ASRequestModal.dart';
 import 'NetworkConstants.dart';
 import 'result.dart';
-
+String? buynow;
 class NetworkApiServices  {
 
   static processGETRequest(requestModal, networkResponseHandler) async {

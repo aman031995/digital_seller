@@ -96,6 +96,7 @@ dependencies:
   freezed_annotation:
   get_it: ^7.2.0
   injectable: ^1.5.0
+  universal_html: ^2.2.3
 
 dev_dependencies:
   flutter_test:

@@ -42,9 +42,10 @@ class _HomePageWebState extends State<HomePageWeb> {
   HomeViewModel homeViewModel = HomeViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   ScrollController scrollController = ScrollController();
- ProfileViewModel profileViewModel = ProfileViewModel();
+  ProfileViewModel profileViewModel = ProfileViewModel();
   String? checkInternet;
   CartViewModel cartViewModel = CartViewModel();
+
   void initState() {
     homeViewModel.getAppConfig(context);
     User();
@@ -52,7 +53,6 @@ class _HomePageWebState extends State<HomePageWeb> {
     cartViewModel.getRecommendedView(context);
     profileViewModel.getUserDetails(context);
     super.initState();
-
   }
 
   User() async {
@@ -244,6 +244,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                         ),
                       )
                   ),
+
                   body: Scaffold(
                       key: _scaffoldKey,
                       backgroundColor: Theme.of(context).backgroundColor,
@@ -257,15 +258,14 @@ class _HomePageWebState extends State<HomePageWeb> {
                               children: [
                                 CommonCarousel(),
                                // VideoListPage()
-                                SizedBox(height: ResponsiveWidget.isMediumScreen(context)
-                                    ?16:40),
+                                SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?16:32),
                                 Center(
                                   child: Container(
                                       width: ResponsiveWidget.isMediumScreen(context)
                                           ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5,
                                       child: AppBoldFont(context, msg: (cartViewModel.recentView?.length ??0)>0? "Recently Viewed":"",fontSize: 18)),
                                 ),
-                            Center(
+                                Center(
                               child: Container(
                                   height: (cartViewModel.recentView?.length ??0)>0 ?ResponsiveWidget.isMediumScreen(context)
                                       ?180: 260 :0,
@@ -279,9 +279,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                         itemBuilder: (context, position) {
                                           return GestureDetector(
                                             onTap: ()async{
-
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-          if (sharedPreferences.get('token') != null) {
+                                              SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                                                  if (sharedPreferences.get('token') != null) {
             context.router.push(
               ProductDetailPage(
                 productId: '${cartViewModel.recentView?[position].productId}',
@@ -292,27 +291,13 @@ class _HomePageWebState extends State<HomePageWeb> {
                   '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.style?.name}',
                   '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.unitCount?.name}',
                   '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.materialType?.name}',
-                  //'${productListData?.productDetails?.defaultVariationSku?.materialType?.name}'
                 ],
               ) ,
             );
           }
-          else {
-            ToastMessage.message("Please Login User");
-          }
-                                              // AppNavigator.push(
-                                              //     context,
-                                              //     ProductDetailPage(
-                                              //       items: cartview.recentView?[position],
-                                              //       index: position,
-                                              //       defalutlike: cartview.recentView?[position].productDetails?.isFavorite,
-                                              //       itemCount: cartview.cartItemCount,
-                                              //       callback: (prod,value) {
-                                              //       },
-                                              //     ),
-                                              //     screenName: RouteBuilder.productDetails, function: (v) {
-                                              //   cartview.updateCartCount(context, v);
-                                              // });
+                                                         else {
+                                                     ToastMessage.message("Please Login User");
+                                               }
                                             },
                                             child: Container(
                                               width: ResponsiveWidget.isMediumScreen(context)
@@ -337,7 +322,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                             ),
                                           );
                                         }))),
-                                SizedBox(height: 16),
+                                SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?16:32),
                                 Center(
                                   child: Container(
                                       width: ResponsiveWidget.isMediumScreen(context)
