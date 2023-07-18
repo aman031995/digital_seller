@@ -11,6 +11,7 @@ const RED_GRADIENT = Color(0xffFF5A5F);
 const DRAMA_GRADIENT = Color(0xffB9B62C);
 const FAMILY_GRADIENT = Color(0xff45A2D9);
 const KIDS_GRADIENT = Color(0xff9A5BD9);
+const GREEN = Color(0xff26a541);
 const TALK_SHOW_GRADIENT = Color(0xff71D982);
 const ADVENTURE_GRADIENT = Color(0xff346C8C);
 const SPORTS_GRADIENT = Color(0xff308C7E);

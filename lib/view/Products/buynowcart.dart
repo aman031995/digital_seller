@@ -34,6 +34,7 @@ class _BuynowCartState extends State<BuynowCart> {
   final CartViewModel cartViewData = CartViewModel();
   @override
   void initState() {
+
     Map<String, dynamic> json = jsonDecode(SessionStorageHelper.getValue("token").toString());
    cartListData = CartListDataModel.fromJson(json);
     super.initState();
@@ -59,7 +60,7 @@ class _BuynowCartState extends State<BuynowCart> {
                   children: [
                     cartPageViewIndicator(context, 0, activeStep),
                     Container(
-                      width: SizeConfig.screenWidth/3,
+                      width: SizeConfig.screenWidth/3.2,
                       child: Card(
                         color: WHITE_COLOR,
                         child: Row(
@@ -75,7 +76,7 @@ class _BuynowCartState extends State<BuynowCart> {
                                   },
                                   child: Container(
                                     height: 120,
-                                    width: 120,
+                                    width: 150,
                                     color: WHITE_COLOR,
                                     margin: EdgeInsets.only(
                                         left: 5, top: 5, right: 8, bottom: 5),
@@ -87,97 +88,78 @@ class _BuynowCartState extends State<BuynowCart> {
                                     ),
                                   ),
                                 ),
-                                Row(children: [
-                                  GestureDetector(
-                                    child: Card(
-                                      elevation: 3,
-                                      child: Container(
-                                        height: 17,
-                                        width: 17,
-                                        padding: const EdgeInsets.all(1.0),
-                                        margin: const EdgeInsets.all(5.0),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: BLACK_COLOR,
-                                        ),
+                                Container(
+                                  height: 30,
+                                  margin: EdgeInsets.only(left: 5, top: 5, right: 8, bottom: 5),
+                                  width: 120,
+                                  decoration:BoxDecoration(
+                                      border: Border.all(color: Theme.of(context).canvasColor.withOpacity(0.2),width: 1)
+                                  ),
+                                  child: Row(children: [
+                                    Expanded(
+                                      flex: 25,
+                                      child: GestureDetector(
                                         child: Icon(
                                           Icons.remove,
-                                          size: 13.0,
-                                          color: WHITE_COLOR,
+                                          size: 18.0,
+                                          color: Colors.grey,
                                         ),
+                                        onTap: () async {
+                                          int value= int.parse(cartListData!.checkoutDetails!.elementAt(0).value ?? "");
+                                          print(value);
+                                          value=value-1;
+                                          if(value >= 1){
+                                          cartListData?.checkoutDetails?.elementAt(0).value =value.toString();
+                                            cartViewData.buyNow(
+                                               cartListData?.cartList?[0].productId ??"",
+                                                cartListData!.checkoutDetails!.elementAt(0).value.toString(),  cartListData?.cartList?[0].productDetails?.variantId,
+                                                false, context);
+                                          }
+                                        },
                                       ),
                                     ),
-                                    onTap: () async {
-                                      // if (cartViewData.deactiveQuantity == false) {
-                                      //   cartViewData.deactiveQuantity = true;
-                                      //   itemInCart?.cartQuantity = (itemInCart.cartQuantity ?? 1) - 1;
-                                      //   if (itemInCart!.cartQuantity! > 0) {
-                                      //     cartViewData.addToCart(itemInCart.productId ?? '',
-                                      //         itemInCart.cartQuantity.toString(),
-                                      //         itemInCart.productDetails?.variantId ?? '',
-                                      //         true, context,
-                                      //             (result, isSuccess) {});
-                                      //   } else {
-                                      //     if (itemInCart.cartQuantity == 0)
-                                      //       cartViewData.removeProductFromCart(
-                                      //           context,
-                                      //           itemInCart.productDetails?.variantId ?? "", index);
-                                      //   }
-                                      // }
-                                      if(cartListData?.checkoutDetails?.totalItems!=1){
-                                       cartListData?.checkoutDetails?.totalItems=(cartListData?.checkoutDetails?.totalItems ?? 1) -1;
-                                        cartViewData.buyNow(
-                                            cartListData?.cartList?[0].productId ??"",
-                                           cartListData!.checkoutDetails!.totalItems.toString(), cartListData?.cartList?[0].productDetails?.variantId,
-                                            false, context);
-                                      }
-
-                                    },
-                                  ),
-                                  Container(
-                                      height: 24,
-                                      alignment: Alignment.center,
-                                      color: Colors.grey.withOpacity(0.4),
-                                      padding: EdgeInsets.only(
-                                          left: 20.0, right: 20.0),
-                                      child: AppBoldFont(context,
-                                          color: BLACK_COLOR,
-                                          msg:cartListData?.checkoutDetails?.totalItems.toString()
-
-                                          //cartdata['checkoutDetails']['totalItems'].toString()
-                                         // widget.cartListData?.checkoutDetails?.totalItems.toString() ??
-                                              ,
-                                          fontSize: 16.0)),
-                                  GestureDetector(
-                                    child: Card(
-                                      elevation: 3,
+                                    Container(
+                                        height: 30,width: 1,
+                                        color: Theme.of(context).canvasColor.withOpacity(0.2)
+                                    ),
+                                    Expanded(
+                                      flex: 50,
                                       child: Container(
-                                        height: 17,
-                                        width: 17,
-                                        padding: const EdgeInsets.all(1.0),
-                                        margin: const EdgeInsets.all(4.0),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: BLACK_COLOR,
-                                        ),
-                                        child: Icon(
-                                          Icons.add,
-                                          size: 13.0,
-                                          color: WHITE_COLOR,
-                                        ),
-                                      ),
+                                          height: 24,
+                                          alignment: Alignment.center,
+                                          color:Colors.white,
+                                          padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                                          child: AppBoldFont(context,
+                                              color: BLACK_COLOR,
+                                              msg: cartListData?.checkoutDetails?.elementAt(0).value ?? "",
+                                              fontSize: 16.0)),
                                     ),
-                                    onTap: () {
-
-                                       cartListData?.checkoutDetails?.totalItems=(cartListData?.checkoutDetails?.totalItems ?? 1)+1;
-                                        cartViewData.buyNow(
-                                            cartListData?.cartList?[0].productId ??"",
-                                         cartListData!.checkoutDetails!.totalItems.toString(),cartListData?.cartList?[0].productDetails?.variantId,
-                                            false, context);
-
-                                    },
-                                  ),
-                                ]),
+                                    Container(
+                                        height: 30,width: 1,
+                                        color: Theme.of(context).canvasColor.withOpacity(0.2)
+                                    ),
+                                    Expanded(
+                                      flex: 25,
+                                      child: GestureDetector(
+                                          child: Icon(
+                                            Icons.add,
+                                            size: 18.0,
+                                            color: Colors.grey,
+                                          ),
+                                          onTap: () {
+                                            int value= int.parse(cartListData!.checkoutDetails!.elementAt(0).value ?? "");
+                                            print(value);
+                                            value=value+1;
+                                          cartListData?.checkoutDetails?.elementAt(0).value =value.toString();
+                                            cartViewData.buyNow(
+                                               cartListData?.cartList?[0].productId ??"",
+                                                cartListData!.checkoutDetails!.elementAt(0).value.toString(),  cartListData?.cartList?[0].productDetails?.variantId,
+                                                false, context);
+                                          }
+                                      ),
+                                    )
+                                  ]),
+                                ),
                                 SizedBox(height: 10)
                               ],
                             ),
@@ -187,7 +169,7 @@ class _BuynowCartState extends State<BuynowCart> {
                               children: [
                                 SizedBox(height: 15),
                                 Container(
-                                  width: SizeConfig.screenWidth /4,
+                                  width: SizeConfig.screenWidth /4.5,
                                   child: AppMediumFont(
                                       color: BLACK_COLOR,
                                       context,
@@ -201,82 +183,118 @@ class _BuynowCartState extends State<BuynowCart> {
                                   children: [
                                     AppMediumFont(context,
                                         msg: "₹" +
-
-                                             " ${cartListData?.cartList?[0].productDetails?.productDiscountPrice}",
-                                        color: BLACK_COLOR,
-                                        fontSize: 16.0),
-                                    SizedBox(
-                                      width:10,
-                                    ),
+                                            " ${cartListData?.cartList?[0].productDetails?.productDiscountPrice}",
+                                        color: BLACK_COLOR.withOpacity(0.9),
+                                        fontSize: 18.0),
+                                    SizedBox(width: 5),
                                     AppMediumFont(context,
-                                        color: BLACK_COLOR,
-                                        msg: "₹" +
-                                            "${cartListData?.cartList?[0].productDetails!.productPrice.toString()}",
-
+                                        color: BLACK_COLOR.withOpacity(0.8),
+                                        msg:"₹" +
+                                            "${
+                                               cartListData
+                                                    ?.cartList?[0]
+                                                    .productDetails
+                                                    ?.productPrice
+                                                    .toString()
+                                            }",
                                         textDecoration:
-                                            TextDecoration.lineThrough,
-                                        fontSize: 12.0),
-                                    SizedBox(
-                                      width: SizeConfig.safeBlockVertical * 1,
-                                    ),
+                                        TextDecoration.lineThrough,
+                                        fontSize: 18.0),
+                                    SizedBox(width: 5),
                                     AppMediumFont(context,
                                         msg:
-                                            "${cartListData?.cartList?[0].productDetails?.productDiscountPercent}"
-                                                +
-                                                r" % OFF",
-                                        color:Colors.green,
-                                        fontSize: 12.0),
+                                        "${cartListData?.cartList?[0].productDetails?.productDiscountPercent}" +
+                                            r"%OFF",
+                                        color: GREEN,
+                                        fontSize: 18.0),
                                   ],
                                 ),
-                                cartListData?.cartList?[0].productDetails?.defaultVariationSku?.color?.name !=
-                                        null
-                                    ? AppMediumFont(context,
-                                        maxLines: 1,
-                                        msg: "color" +
-                                            ' - '+ (cartListData?.cartList?[0].productDetails?.defaultVariationSku?.color?.name ?? ""),
-                                        color: BLACK_COLOR,
-                                        fontSize: 14.0)
+                               cartListData?.cartList?[0].productDetails
+                                    ?.defaultVariationSku?.color?.name !=
+                                    null
+                                    ? RichText(
+                                    text: TextSpan(
+                                        text: 'Color  :  ',
+                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                        children: <InlineSpan>[
+                                          TextSpan(
+                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                            text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.color?.name}',
+                                          )
+                                        ]
+                                    ))
                                     : SizedBox(),
-                                cartListData?.cartList?[0].productDetails?.defaultVariationSku?.size?.name !=
-                                        null
-                                    ? AppMediumFont(context,
-                                        maxLines: 1,
-                                        msg: "size" +
-                                            ' - '+ (cartListData?.cartList?[0].productDetails?.defaultVariationSku?.size?.name ?? ""),
-                                        color: BLACK_COLOR,
-                                        fontSize: 14.0)
+                               cartListData?.cartList?[0].productDetails
+                                    ?.defaultVariationSku?.size?.name !=
+                                    null
+                                    ?  RichText(
+                                    text: TextSpan(
+                                        text: 'Size  :  ',
+                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                        children: <InlineSpan>[
+                                          TextSpan(
+                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                            text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.size?.name}',
+                                          )
+                                        ]
+                                    ))
                                     : SizedBox(),
-                                cartListData?.cartList?[0].productDetails?.defaultVariationSku?.style?.name !=
-                                        null
-                                    ? AppMediumFont(context,
-                                        maxLines: 1,
-                                        msg: "style" +
-                                            ' - '+ (cartListData?.cartList?[0].productDetails?.defaultVariationSku?.style?.name ?? ""),
-                                        color: BLACK_COLOR,
-                                        fontSize: 14.0)
+                               cartListData?.cartList?[0].productDetails
+                                    ?.defaultVariationSku?.style?.name !=
+                                    null
+                                    ?
+                                RichText(
+                                    text: TextSpan(
+                                        text: 'Style  :  ',
+                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                        children: <InlineSpan>[
+                                          TextSpan(
+                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                            text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.style?.name}',
+                                          )
+                                        ]
+                                    ))
                                     : SizedBox(),
-                                cartListData?.cartList?[0].productDetails?.defaultVariationSku?.materialType?.name!=
-                                        null
-                                    ? AppMediumFont(context,
-                                        maxLines: 2,
-                                        msg: "MaterialType" +
-                                            '- ${cartListData!.cartList![0].productDetails!.defaultVariationSku!.materialType!.name!.length > 35 ? cartListData!.cartList![0].productDetails!.defaultVariationSku!.materialType?.name!.replaceRange(35, cartListData?.cartList?[0].productDetails!.defaultVariationSku!.materialType?.name?.length, '...') : cartListData?.cartList?[0].productDetails!.defaultVariationSku!.materialType?.name ?? ""}',
-                                        color: BLACK_COLOR,
-                                        fontSize: 14.0)
+                                cartListData
+                                    ?.cartList?[0]
+                                    .productDetails
+                                    ?.defaultVariationSku
+                                    ?.materialType
+                                    ?.name !=
+                                    null
+                                    ?  RichText(
+                                    text: TextSpan(
+                                        text: 'MaterialType  :  ',
+                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                        children: <InlineSpan>[
+                                          TextSpan(
+                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                            text: '${
+                                              cartListData!.cartList![0].productDetails!.defaultVariationSku!.materialType!.name!.length > 35 ?
+                                               cartListData!.cartList![0].productDetails!.defaultVariationSku!.materialType?.name!.replaceRange(35, cartListData?.cartList?[0].productDetails!.defaultVariationSku!.materialType?.name?.length, '...') : cartListData?.cartList?[0].productDetails!.defaultVariationSku!.materialType?.name ?? ""
+                                            }',                                        )
+                                        ]
+                                    ))
                                     : SizedBox(),
-                            cartListData
-                                            ?.cartList?[0]
-                                            .productDetails
-                                            ?.defaultVariationSku
-                                            ?.unitCount
-                                            ?.name !=
-                                        null
-                                    ? AppMediumFont(context,
-                                        color: BLACK_COLOR,
-                                        maxLines: 1,
-                                        msg: "UnitCount" +
-                                            '- ${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.unitCount?.name}',
-                                        fontSize: 14.0)
+                                cartListData
+                                    ?.cartList?[0]
+                                    .productDetails
+                                    ?.defaultVariationSku
+                                    ?.unitCount
+                                    ?.name !=
+                                    null
+                                    ?
+                                RichText(
+                                    text: TextSpan(
+                                        text: 'UnitCount  :  ',
+                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                        children: <InlineSpan>[
+                                          TextSpan(
+                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                            text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.unitCount?.name}',
+                                          )
+                                        ]
+                                    ))
                                     : SizedBox(),
                                 SizedBox(height: 15),
                               ],
@@ -285,109 +303,46 @@ class _BuynowCartState extends State<BuynowCart> {
                         ),
                       ),
                     ),
-                    Container(
-                      width: SizeConfig.screenWidth/3,
-                      child: Card(
-                        child: Column(
-                          children: [
-                            SizedBox(height: 16),
-                            priceDetailWidget(
-                                context,
-                                StringConstant.totalItems,
-                               cartListData?.checkoutDetails?.totalItems
-                                        .toString() ??
-                                    ''),
-                            SizedBox(height: 8),
-                            priceDetailWidget(
-                                context,
-                                StringConstant.basePrice,
-                                "₹ " +
-                                    (cartListData?.checkoutDetails
-                                            ?.cartTotalPrice
-                                            .toString() ??
-                                        '')),
-                            SizedBox(height: 8),
-                            priceDetailWidget(
-                                context,
-                                StringConstant.discountedPrice,
-                                "₹ " +
-                                    (cartListData?.checkoutDetails
-                                            ?.discountedPrice
-                                            .toString() ??
-                                        "")),
-                            SizedBox(height: 8),
-                            priceDetailWidget(
-                                context,
-                                StringConstant.shipping,
-                                "₹ " +
-                                    (cartListData?.checkoutDetails
-                                            ?.deliveryCharge
-                                            .toString() ??
-                                        "")),
-                            SizedBox(height: 8),
-                            Divider(
-                              height: 1,
-                              color: Theme.of(context).canvasColor,
-                            ),
-                            SizedBox(height: 8),
-                            priceDetailWidget(
-                                context,
-                                StringConstant.amountPayable,
-                                "₹" +
-                                    (cartListData?.checkoutDetails
-                                            ?.totalPayableAmount
-                                            .toString() ??
-                                        "")),
-                            SizedBox(height: 8)
-                          ],
-                        ),
+
+                    Card(
+                      child: Column(
+                          children:  cartListData!.checkoutDetails!
+                              .map((e){
+                            return Container(
+                              width: SizeConfig.screenWidth/3.22,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 8),
+                                  e.name=='Total items'?  priceDetailWidget(context, e.name ?? "", "1"):
+                                  priceDetailWidget(context, e.name ?? "", e.value ??""),
+                                  SizedBox(height: 8)
+                                ],
+                              ),
+                            );
+                          } ).toList()
                       ),
                     ),
+                    SizedBox(height: 8),
                     Container(
-                        height: 60,
+                        height: 50,
                         decoration:BoxDecoration(
-                          color: Theme.of(context).cardColor,
+                          color: Theme.of(context).primaryColor.withOpacity(0.8),
                           borderRadius: BorderRadius.circular(4)
                         ) ,
                         width: SizeConfig.screenWidth/5.2,
-                        child: Row(
-                          children: [
-                            Container(
-                              width: SizeConfig.screenWidth*0.08,
-                              padding: EdgeInsets.all(20),
+                        child: InkWell(
+                          onTap: () {
+                            context.router.push(
+                                AddressListPage(
+                                  buynow: true
+                                )
+                            );
+                          },
+                          child: Center(
                               child: AppMediumFont(context,
-                                  msg: StringConstant.total +
-                                      "₹"+
-                                      (cartListData?.checkoutDetails?.totalPayableAmount.toString() ?? ""),
-                                  //     ""),
-                                  fontSize: 14.0),
-                            ),
-                            Container(
-                              width: SizeConfig.screenWidth/9,
-                              decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
-                                borderRadius: BorderRadius.only(
-                                  topRight: Radius.circular(5.0),
-                                  bottomRight: Radius.circular(5.0),
-                                ),
-                              ),
-                              child: InkWell(
-                                onTap: () {
-                                  context.router.push(
-                                      AddressListPage(
-                                        buynow: true
-                                      )
-                                  );
-                                },
-                                child: Center(
-                                    child: AppMediumFont(context,
-                                        msg: "CONTINUE",
-                                        fontSize: 15.0,
-                                        color: Colors.white)),
-                              ),
-                              height: SizeConfig.safeBlockVertical * 6,
-                            ),
-                          ],
+                                  msg: "CONTINUE",
+                                  fontSize: 15.0,
+                                  color: Colors.white)),
                         )),
                   ],
                 ),

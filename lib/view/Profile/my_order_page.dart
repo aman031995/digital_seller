@@ -1,4 +1,5 @@
 import 'package:TychoStream/network/AppNetwork.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
@@ -70,8 +71,10 @@ class _MyOrderPageState extends State<MyOrderPage> {
                       children: [
                         Center(
                           child: Container(
-                              height: SizeConfig.screenHeight/1.2,
-                              width: SizeConfig.screenWidth/3.5,
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                                 height: SizeConfig.screenHeight,
+                              width: ResponsiveWidget.isMediumScreen(context)
+                       ? SizeConfig.screenWidth:SizeConfig.screenWidth/3.5,
                               child: ListView.builder(
                                   padding: EdgeInsets.only(bottom: 20),
                                   controller: scrollController,
@@ -94,7 +97,6 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                             context: context,
                                             builder: (BuildContext context) {
                                               return OrderDetails(orderItem: orderView.orderData?.orderList?[index]);
-                                          // AppNavigator.push(context, OrderDetails(orderItem: orderView.orderData?.orderList?[index]));
                                         });},
                                         child: orderView.orderData!.orderList![index]
                                             .itemDetails!.isEmpty ?
@@ -109,10 +111,11 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                                   .cardColor,
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(5.0))),
-                                          width: 200,
+                                          width:ResponsiveWidget.isMediumScreen(context)
+                                              ?  SizeConfig.screenWidth/1.2: 200,
                                           height: SizeConfig.screenHeight/6,
                                           alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(top: 10, bottom: 10,left: 10,right: 10),
+                                          margin: EdgeInsets.only(top: 12, bottom: 12,left: 12,right: 12),
                                           padding: EdgeInsets.only(left: 10, right: 20,top: 20,bottom: 10),
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment
@@ -131,48 +134,55 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                                           .itemDetails?[0]
                                                           .productDetails
                                                           ?.productImages?[0] ?? " ",
-                                                      height: 200, fit: BoxFit.fill,
-                                                      width: 150,
+                                                      height:ResponsiveWidget.isMediumScreen(context)
+                                                          ?100: 200, fit: BoxFit.fill,
+                                                      width: ResponsiveWidget.isMediumScreen(context)
+                                                          ?100:150,
                                                     ),
                                                   )),
                                               SizedBox(width: 8),
-                                              Column(
-                                                mainAxisAlignment: MainAxisAlignment
-                                                    .start,
-                                                crossAxisAlignment: CrossAxisAlignment
-                                                    .start,
-                                                children: [
-                                                  SizedBox(height:5),
-                                                  AppMediumFont(context,
-                                                      msg: StringConstant
-                                                          .orderDetailed +
-                                                          "-${orderView.orderData
+                                              Container(
+                                                width: ResponsiveWidget.isMediumScreen(context)
+                                                    ?SizeConfig.screenWidth/2:200,
+                                                child: Column(
+                                                  mainAxisAlignment: MainAxisAlignment
+                                                      .start,
+                                                  crossAxisAlignment: CrossAxisAlignment
+                                                      .start,
+                                                  children: [
+                                                    SizedBox(height:5),
+                                                    AppMediumFont(context,
+                                                        msg: StringConstant
+                                                            .orderDetailed +
+                                                            "-${orderView.orderData
+                                                                ?.orderList?[index]
+                                                                .orderId}",
+                                                        fontSize:ResponsiveWidget.isMediumScreen(context)
+                                                            ?14: 16.0),
+                                                    Container(
+                                                      width: SizeConfig.screenWidth*0.15,
+                                                      child: AppMediumFont(context,
+                                                          msg:
+                                                          orderView.orderData
                                                               ?.orderList?[index]
-                                                              .orderId}",
-                                                      fontSize: 16.0),
-                                                  Container(
-                                                    width: SizeConfig.screenWidth*0.15,
-                                                    child: AppMediumFont(context,
-                                                        msg:
-                                                        orderView.orderData
+                                                              .itemDetails?[0]
+                                                              .productDetails
+                                                              ?.productVariantTitle,
+                                                          fontSize: 18.0),
+                                                    ),
+                                                    SizedBox(height:5),
+                                                    AppMediumFont(context,
+                                                        msg: orderView.orderData
                                                             ?.orderList?[index]
-                                                            .itemDetails?[0]
-                                                            .productDetails
-                                                            ?.productVariantTitle,
-                                                        fontSize: 18.0),
-                                                  ),
-                                                  SizedBox(height:5),
-                                                  AppMediumFont(context,
-                                                      msg: orderView.orderData
-                                                          ?.orderList?[index]
-                                                          .orderStatus,
-                                                      fontSize: 16.0),
-                                                  SizedBox(height:5),
-                                                  AppMediumFont(context,
-                                                      msg: orderView.orderData
-                                                          ?.orderList?[index].orderDate,
-                                                      fontSize: 16.0)
-                                                ],
+                                                            .orderStatus,
+                                                        fontSize: 16.0),
+                                                    SizedBox(height:5),
+                                                    AppMediumFont(context,
+                                                        msg: orderView.orderData
+                                                            ?.orderList?[index].orderDate,
+                                                        fontSize: 16.0)
+                                                  ],
+                                                ),
                                               ),
                                               // InkWell(
                                               //     onTap: () {

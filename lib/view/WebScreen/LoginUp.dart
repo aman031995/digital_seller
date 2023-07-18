@@ -18,8 +18,8 @@ import 'package:TychoStream/viewmodel/sociallogin_view_model.dart';
 
 
 class LoginUp extends StatefulWidget {
-
-  LoginUp({Key? key}) : super(key: key);
+bool? product;
+  LoginUp({Key? key,this.product}) : super(key: key);
 
   @override
   State<LoginUp> createState() => _LoginUpState();
@@ -434,7 +434,7 @@ class _LoginUpState extends State<LoginUp> {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return  ForgotPassword(viewModel:viewmodel,);
+                                return  ForgotPassword(viewModel:viewmodel,product: widget.product);
                               });
                         }),
                       ),
@@ -513,7 +513,7 @@ class _LoginUpState extends State<LoginUp> {
       String loginType,
       HomeViewModel viewmodel,
       bool checkPhoneEmailValid) {
-    authVM.login(phone, password, deviceID, " ", loginType, viewmodel,
+    authVM.login(phone, password, deviceID, " ", loginType, widget.product,viewmodel,
         checkPhoneEmailValid, context);
   }
 }

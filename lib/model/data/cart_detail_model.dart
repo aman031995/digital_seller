@@ -1,9 +1,11 @@
 import 'package:TychoStream/model/data/product_list_model.dart';
 
+import 'package:TychoStream/model/data/product_list_model.dart';
+
 
 class CartListDataModel {
   List<ProductList>? cartList;
-  CheckoutDetails? checkoutDetails;
+  List<CheckoutDetails>? checkoutDetails;
 
   CartListDataModel({this.cartList, this.checkoutDetails});
 
@@ -14,9 +16,12 @@ class CartListDataModel {
         cartList!.add(new ProductList.fromJson(v));
       });
     }
-    checkoutDetails = json['checkoutDetails'] != null
-        ? new CheckoutDetails.fromJson(json['checkoutDetails'])
-        : null;
+    if (json['checkoutDetails'] != null) {
+      checkoutDetails = <CheckoutDetails>[];
+      json['checkoutDetails'].forEach((v) {
+        checkoutDetails!.add(new CheckoutDetails.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -25,44 +30,29 @@ class CartListDataModel {
       data['cartList'] = this.cartList!.map((v) => v.toJson()).toList();
     }
     if (this.checkoutDetails != null) {
-      data['checkoutDetails'] = this.checkoutDetails!.toJson();
+      data['checkoutDetails'] =
+          this.checkoutDetails!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
-
 class CheckoutDetails {
-  int? totalItems;
-  String? cartTotalPrice;
-  String? discountedPrice;
-  String? deliveryCharge;
-  String? totalPayableAmount;
+  String? name;
+  String? value;
 
-  CheckoutDetails(
-      {this.totalItems,
-        this.cartTotalPrice,
-        this.discountedPrice,
-        this.deliveryCharge,
-        this.totalPayableAmount});
+  CheckoutDetails({this.name, this.value});
 
   CheckoutDetails.fromJson(Map<String, dynamic> json) {
-    totalItems = json['totalItems'];
-    cartTotalPrice = json['cartTotalPrice'];
-    discountedPrice = json['discountedPrice'];
-    deliveryCharge = json['deliveryCharge'];
-    totalPayableAmount = json['totalPayableAmount'];
+    name = json['name'];
+    value = json['value'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['totalItems'] = this.totalItems;
-    data['cartTotalPrice'] = this.cartTotalPrice;
-    data['discountedPrice'] = this.discountedPrice;
-    data['deliveryCharge'] = this.deliveryCharge;
-    data['totalPayableAmount'] = this.totalPayableAmount;
+    data['name'] = this.name;
+    data['value'] = this.value;
     return data;
-  }
-}
+  }}
 
 class ItemCountModel {
   int? count;

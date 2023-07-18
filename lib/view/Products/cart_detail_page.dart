@@ -283,7 +283,25 @@ class _CartDetailState extends State<CartDetail> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: 5),
-                  billCardMobile(context, cartViewData),
+                  Card(
+                    child: Column(
+                        children: cartViewData
+                            .cartListData!
+                            .checkoutDetails!
+                            .map((e) {
+                          return Column(
+                            children: [
+                              SizedBox(height: 8),
+                              priceDetailWidget(
+                                  context,
+                                  e.name ?? "",
+                                  e.value ?? ""),
+                              SizedBox(height: 8)
+                            ],
+                          );
+                        }).toList()),
+                  ),
+                  //billCardMobile(context, cartViewData),
                   SizedBox(height: 10),
                   (cartViewData.cartListData?.cartList?.length ?? 0) > 0 &&
                       cartViewData.cartListData != null
@@ -546,26 +564,45 @@ class _CartDetailState extends State<CartDetail> {
                             SizedBox(width: 5),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                               SizedBox(height: 5),
-                              billCard(context, cartViewData),
+                                Card(
+                                  child: Column(
+                                      children: cartViewData
+                                          .cartListData!
+                                          .checkoutDetails!
+                                          .map((e) {
+                                        return Container(
+                                          width: SizeConfig.screenWidth*0.30,
+                                          child: Column(
+                                            children: [
+                                              SizedBox(height: 8),
+                                              priceDetailWidget(
+                                                  context,
+                                                  e.name ?? "",
+                                                  e.value ?? ""),
+                                              SizedBox(height: 8)
+                                            ],
+                                          ),
+                                        );
+                                      }).toList()),
+                                ),
+                              //billCard(context, cartViewData),
                                 SizedBox(height: 10),
-                                 Container(
-                      height: 60,
-                      width: SizeConfig.screenWidth*0.24,
-                      child: checkoutButton(
-                          context, StringConstant.continueText, cartViewData,
-                          () {
-                            context.router.push(
-                              AddressListPage(
-                                buynow: false
-                              )
-                            );
+                                 Center(
+                                   child: checkoutButton(
+                                       context, StringConstant.continueText, cartViewData,
+                                       () {
+                                         context.router.push(
+                                           AddressListPage(
+                                             buynow: false
+                                           )
+                                         );
 
 
-                      }),
-                    )
+                                   }),
+                                 )
 
                             ],)
 

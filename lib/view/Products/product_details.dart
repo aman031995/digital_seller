@@ -1,6 +1,7 @@
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
+import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
@@ -13,6 +14,7 @@ import 'package:TychoStream/utilities/color_dropdown.dart';
 import 'package:TychoStream/utilities/size_dropdown.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/Products/productSkuDetailView.dart';
+import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
@@ -57,6 +59,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   var proDetails;
 
   void initState() {
+    SessionStorageHelper.removeValue('payment');
     cartView.getCartCount(context);
     getProductDetails();
     super.initState();
@@ -105,10 +108,26 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     isShopping: true,
                     isFavourite: false,
                     itemCount: viewmodel.cartItemCount,
-                    onCartPressed: () {
-                      context.router.push(CartDetail(
-                          itemCount: '${viewmodel.cartItemCount}'
-                      ));
+                    onCartPressed: ()async{
+                      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                      token = sharedPreferences.getString('token').toString();
+                      if (token == 'null'){
+                        showDialog(
+                            context: context,
+                            barrierColor: Colors.black87,
+                            builder:
+                                (BuildContext context) {
+                              return  LoginUp(
+                                product: true,
+                              );
+                            });
+                        // _backBtnHandling(prodId);
+                      } else{
+                        context.router.push(CartDetail(
+                            itemCount: '${viewmodel.cartItemCount}'
+                        ));
+                      }
+
                     },
                     onBackPressed: () {
                     }),
@@ -179,9 +198,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                            right: 10,
                            top: 45,
                            child: GestureDetector(
-                               onTap: () {
+                               onTap: ()async{
+                                 SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                                 token = sharedPreferences.getString('token').toString();
                                  if (token == 'null'){
-                                   _backBtnHandling(prodId);
+                                   showDialog(
+                                       context: context,
+                                       barrierColor: Colors.black87,
+                                       builder:
+                                           (BuildContext context) {
+                                         return  LoginUp(
+                                           product: true,
+                                         );
+                                       });
+                                   // _backBtnHandling(prodId);
                                  } else {
                                    final isFav =
                                    viewmodel.productListDetails?.productDetails!.isFavorite = !viewmodel.productListDetails!.productDetails!.isFavorite!;
@@ -334,9 +364,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                      right: 10,
                      top: 45,
                      child: GestureDetector(
-                         onTap: () {
+                         onTap: ()async{
+                           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                           token = sharedPreferences.getString('token').toString();
                            if (token == 'null'){
-                             _backBtnHandling(prodId);
+                             showDialog(
+                                 context: context,
+                                 barrierColor: Colors.black87,
+                                 builder:
+                                     (BuildContext context) {
+                                   return  LoginUp(
+                                     product: true,
+                                   );
+                                 });
+                             // _backBtnHandling(prodId);
                            } else {
                              final isFav =
                                  viewmodel.productListDetails?.productDetails!.isFavorite = !viewmodel.productListDetails!.productDetails!.isFavorite!;
@@ -495,9 +536,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ? "Go to Cart"
                       : "Add to Bag",
                   fontSize: 16),
-              onPressed: () {
+              onPressed: ()async{
+                SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                token = sharedPreferences.getString('token').toString();
                 if (token == 'null'){
-                  _backBtnHandling(prodId);
+                  showDialog(
+                      context: context,
+                      barrierColor: Colors.black87,
+                      builder:
+                          (BuildContext context) {
+                        return  LoginUp(
+                          product: true,
+                        );
+                      });
+                  // _backBtnHandling(prodId);
                 }
                 else if(cartView.productListDetails?.productDetails?.isAvailable == true) {
                   (cartView.isAddedToCart == true || cartView.productListDetails?.productDetails?.isAddToCart == true)
@@ -520,9 +572,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ))),
               child: AppBoldFont(context,
                   msg: " BUYNOW", fontSize: 16),
-              onPressed: () {
+              onPressed: ()async{
+                SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                token = sharedPreferences.getString('token').toString();
                 if (token == 'null'){
-                  _backBtnHandling(prodId);
+                  showDialog(
+                      context: context,
+                      barrierColor: Colors.black87,
+                      builder:
+                          (BuildContext context) {
+                        return  LoginUp(
+                          product: true,
+                        );
+                      });
+                 // _backBtnHandling(prodId);
                 }
                 else if (cartView.productListDetails?.productDetails?.isAvailable == true) {
                   cartView.buyNow(

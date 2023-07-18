@@ -59,17 +59,18 @@ class AppRouter extends $AppRouter {
         },
       )]),
     AutoRoute(page: ProductListGallery.page,path: '/ProductListGallery',guards: [
-      AutoRouteGuard.simple(
-          (resolver, scope) async {
-        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-         if (sharedPreferences.get('token') != null) {
-          resolver.next();
-        } else {
-           ToastMessage.message("Please Login User");
-           //resolver.redirect(HomePageWeb());
-        }
-      },
-    )]),
+    //   AutoRouteGuard.simple(
+    //       (resolver, scope) async {
+    //     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    //      if (sharedPreferences.get('token') != null) {
+    //       resolver.next();
+    //     } else {
+    //        ToastMessage.message("Please Login User");
+    //        //resolver.redirect(HomePageWeb());
+    //     }
+    //   },
+    // )
+    ]),
     AutoRoute(page: FavouriteListPage.page,path: '/FavouriteListPage',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
@@ -109,18 +110,20 @@ class AppRouter extends $AppRouter {
           }
         },
       )]),
-    AutoRoute(page: ProductDetailPage.page,path: '/ProductDetailPage/:productId',guards: [
-      AutoRouteGuard.simple(
-            (resolver, scope) async {
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-          if (sharedPreferences.get('token') != null) {
-            resolver.next();
-          } else {
-            ToastMessage.message("Please Login User");
-
-          }
-        },
-      )]),
+    AutoRoute(page: ProductDetailPage.page,path: '/ProductDetailPage/:productId',
+      //   guards: [
+      // AutoRouteGuard.simple(
+      //       (resolver, scope) async {
+      //     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      //     if (sharedPreferences.get('token') != null) {
+      //       resolver.next();
+      //     } else {
+      //       ToastMessage.message("Please Login User");
+      //
+      //     }
+      //   },
+      // )]
+    ),
     AutoRoute(page: CartDetail.page,path: '/CartDetails/:itemCount',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
@@ -133,30 +136,34 @@ class AppRouter extends $AppRouter {
           }
         },
       )]),
-    AutoRoute(page: ContactUs.page,path: '/ContactUs',guards: [
-      AutoRouteGuard.simple(
-            (resolver, scope) async {
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-          if (sharedPreferences.get('token') != null) {
-            resolver.next();
-          } else {
-            ToastMessage.message("Please Login User");
-           // resolver.redirect(HomePageWeb());
-          }
-        },
-      )]),
-    AutoRoute(page: FAQ.page,path: '/FAQ',guards: [
-      AutoRouteGuard.simple(
-            (resolver, scope) async {
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-          if (sharedPreferences.get('token') != null) {
-            resolver.next();
-          } else {
-            ToastMessage.message("Please Login User");
-           // resolver.redirect(HomePageWeb());
-          }
-        },
-      )]),
+    AutoRoute(page: ContactUs.page,path: '/ContactUs',
+      //   guards: [
+      // AutoRouteGuard.simple(
+      //       (resolver, scope) async {
+      //     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      //     if (sharedPreferences.get('token') != null) {
+      //       resolver.next();
+      //     } else {
+      //       ToastMessage.message("Please Login User");
+      //      // resolver.redirect(HomePageWeb());
+      //     }
+      //   },
+      // )]
+    ),
+    AutoRoute(page: FAQ.page,path: '/FAQ',
+      //   guards: [
+      // AutoRouteGuard.simple(
+      //       (resolver, scope) async {
+      //     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      //     if (sharedPreferences.get('token') != null) {
+      //       resolver.next();
+      //     } else {
+      //       ToastMessage.message("Please Login User");
+      //      // resolver.redirect(HomePageWeb());
+      //     }
+      //   },
+      // )]
+    ),
     AutoRoute(page: Privacy.page,path: '/Privacy',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {

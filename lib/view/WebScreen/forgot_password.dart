@@ -16,7 +16,8 @@ import 'package:TychoStream/viewmodel/auth_view_model.dart';
 
 class ForgotPassword extends StatefulWidget {
   HomeViewModel? viewModel;
- ForgotPassword({Key? key,this.viewModel}) : super(key: key);
+  bool? product;
+ ForgotPassword({Key? key,this.viewModel,this.product}) : super(key: key);
 
   @override
   State<ForgotPassword> createState() => _ForgotPasswordState();
@@ -343,6 +344,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   }
 
   sendButtonPressed(AuthViewModel authVM, String phone,HomeViewModel viewModel) {
-    authVM.forgotPassword(phone, viewModel.appConfigModel?.androidConfig?.loginWithPhone ?? false,context,viewModel);
+    authVM.forgotPassword(phone, viewModel.appConfigModel?.androidConfig?.loginWithPhone ?? false,widget.product,context,viewModel);
   }
 }

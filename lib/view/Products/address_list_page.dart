@@ -104,7 +104,7 @@ else{
           onBackPressed: () {
             Navigator.pop(context);
           }),
-      body:  cartViewData.addressListModel != null
+      body:  (cartViewData.addressListModel != null && widget.buynow == false) || widget.buynow == true
                     ?  SingleChildScrollView(
                       child:
 
@@ -301,7 +301,7 @@ else{
                           ),
                           SizedBox(height: 10),
                           // Total Bill detail
-                          billCardMobile(context,cartViewModel),
+                         // billCardMobile(context,cartViewModel),
                           SizedBox(height: 10),
                           Row(
                             children: [
@@ -361,9 +361,13 @@ else{
                               ToastMessage.message("please add address");
                             }
                             else if ((cod == true || google_pay == true) && (agree == true)) {
-                              var amount = double.parse(cartViewModel.cartListData?.checkoutDetails?.totalPayableAmount ?? '1');
+                              var amount = 10;
+                              //double.parse(cartViewModel.cartListData?.checkoutDetails?.totalPayableAmount ?? '1');
                               if (amount != 0 && cartViewModel.addressListModel?.length!=0) {
-                                widget.buynow==true?createOrder(cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.totalItems.toString() ??"",context):  createOrder('','','',context);
+                               // widget.buynow==true?createOrder(cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.totalItems.toString() ??"",context):  createOrder('','','',context);
+                                widget.buynow==true?createOrder(cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
+                                    .value ??
+                                    "",context):  createOrder('','','',context);
 
                               }
                             }
@@ -529,65 +533,97 @@ else{
 
                                 SizedBox(height: 5),
                                 // Total Bill detail
-                              widget.buynow==true?
-                              Card(
-                                child: Container(
-                                  width: SizeConfig.screenWidth*0.24,
-                                  child: Column(
-                                    children: [
-                                      SizedBox(height: 16),
-                                      priceDetailWidget(
-                                          context,
-                                          StringConstant.totalItems,
-                                          cartListData?.checkoutDetails?.totalItems
-                                              .toString() ??
-                                              ''),
-                                      SizedBox(height: 8),
-                                      priceDetailWidget(
-                                          context,
-                                          StringConstant.basePrice,
-                                          "₹ " +
-                                              (cartListData?.checkoutDetails
-                                                  ?.cartTotalPrice
-                                                  .toString() ??
-                                                  '')),
-                                      SizedBox(height: 8),
-                                      priceDetailWidget(
-                                          context,
-                                          StringConstant.discountedPrice,
-                                          "₹ " +
-                                              (cartListData?.checkoutDetails
-                                                  ?.discountedPrice
-                                                  .toString() ??
-                                                  "")),
-                                      SizedBox(height: 8),
-                                      priceDetailWidget(
-                                          context,
-                                          StringConstant.shipping,
-                                          "₹ " +
-                                              (cartListData?.checkoutDetails
-                                                  ?.deliveryCharge
-                                                  .toString() ??
-                                                  "")),
-                                      SizedBox(height: 8),
-                                      Divider(
-                                        height: 1,
-                                        color: Theme.of(context).canvasColor,
-                                      ),
-                                      SizedBox(height: 8),
-                                      priceDetailWidget(
-                                          context,
-                                          StringConstant.amountPayable,
-                                          "₹" +
-                                              (cartListData?.checkoutDetails
-                                                  ?.totalPayableAmount
-                                                  .toString() ??
-                                                  "")),
-                                      SizedBox(height: 8)
-                                    ],
-                                  ),
-                                ),
-                              ):billCard(context,cartViewModel),
+                               widget.buynow==true? Card(
+                                 child: Column(
+                                     children:  cartListData!.checkoutDetails!
+                                         .map((e){
+                                       return Container(
+                                         width: SizeConfig.screenWidth/3.22,
+                                         child: Column(
+                                           children: [
+                                             SizedBox(height: 8),
+                                             e.name=='Total items'?  priceDetailWidget(context, e.name ?? "", "1"):
+                                             priceDetailWidget(context, e.name ?? "", e.value ??""),
+                                             SizedBox(height: 8)
+                                           ],
+                                         ),
+                                       );
+                                     } ).toList()
+                                 ),
+                               ):
+                                Card(
+                                 child: Column(
+                                     children: cartViewModel.cartListData!.checkoutDetails!
+                                         .map((e){
+                                       return Container(
+                                         width: SizeConfig.screenWidth/3.22,
+                                         child: Column(
+                                           children: [
+                                             SizedBox(height: 8),
+                                             e.name=='Total items'?  priceDetailWidget(context, e.name ?? "", "1"):
+                                             priceDetailWidget(context, e.name ?? "", e.value ??""),
+                                             SizedBox(height: 8)
+                                           ],
+                                         ),
+                                       );
+                                     } ).toList()
+                                 ),
+                               ),
+
+                               // Card(
+                              //   child: Container(
+                              //     width: SizeConfig.screenWidth*0.24,
+                              //     child: Column(
+                              //       children: [
+                              //         SizedBox(height: 16),
+                              //         priceDetailWidget(
+                              //             context,
+                              //             StringConstant.totalItems,
+                              //             cartListData?.checkoutDetails?.totalItems
+                              //                 .toString() ??
+                              //                 ''),
+                              //         SizedBox(height: 8),
+                              //         priceDetailWidget(
+                              //             context,
+                              //             StringConstant.basePrice,
+                              //             "₹ " +
+                              //                 (cartListData?.checkoutDetails
+                              //                     ?.cartTotalPrice
+                              //                     .toString() ??
+                              //                     '')),
+                              //         SizedBox(height: 8),
+                              //         priceDetailWidget(
+                              //             context,
+                              //             StringConstant.discountedPrice,
+                              //             "₹ " +
+                              //                 (cartListData?.checkoutDetails
+                              //                     ?.discountedPrice
+                              //                     .toString() ??
+                              //                     "")),
+                              //         SizedBox(height: 8),
+                              //         priceDetailWidget(
+                              //             context,
+                              //             StringConstant.shipping,
+                              //             "₹ " +""),
+                              //         SizedBox(height: 8),
+                              //         Divider(
+                              //           height: 1,
+                              //           color: Theme.of(context).canvasColor,
+                              //         ),
+                              //         SizedBox(height: 8),
+                              //         priceDetailWidget(
+                              //             context,
+                              //             StringConstant.amountPayable,
+                              //             "₹" +
+                              //                 (cartListData?.checkoutDetails
+                              //                     ?.totalPayableAmount
+                              //                     .toString() ??
+                              //                     "")),
+                              //         SizedBox(height: 8)
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ):billCard(context,cartViewModel),
 
                               Card(
                                 child: Container(
@@ -697,9 +733,12 @@ else{
                         ToastMessage.message("please add address");
                       }
                       else if ((cod == true || google_pay == true) && (agree == true)) {
-                        var amount = double.parse(cartViewModel.cartListData?.checkoutDetails?.totalPayableAmount ?? '1');
+                        var amount=10;
+                      //  var amount = double.parse(cartViewModel.cartListData?.checkoutDetails?.totalPayableAmount ?? '1');
                          if (amount != 0 && cartViewModel.addressListModel?.length!=0) {
-                           widget.buynow==true?createOrder(cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.totalItems.toString() ??"",context):  createOrder('','','',context);
+                           widget.buynow==true?createOrder(cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
+                               .value ??
+                               "",context):  createOrder('','','',context);
 
 
                         }
@@ -785,7 +824,7 @@ else{
         response.orderId, 'Online',
         widget.buynow==true?cartListData?.cartList![0].productId ?? "":'',
         widget.buynow==true?cartListData?.cartList![0].productDetails?.variantId ?? "" :'',
-        widget.buynow==true?cartListData?.checkoutDetails?.totalItems.toString()??"":"",
+        widget.buynow==true?cartListData?.checkoutDetails!.elementAt(0).value ?? "":'',
         'Success');
 
   }

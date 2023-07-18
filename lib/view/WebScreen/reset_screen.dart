@@ -16,7 +16,8 @@ import 'package:TychoStream/viewmodel/auth_view_model.dart';
 class ResetPassword extends StatefulWidget {
   String? phone;
   String? loginType;
-  ResetPassword({Key? key, this.phone,this.loginType}) : super(key: key);
+  bool? product;
+  ResetPassword({Key? key, this.phone,this.loginType,this.product}) : super(key: key);
 
   @override
   State<ResetPassword> createState() => _ResetPasswordState();

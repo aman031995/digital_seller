@@ -1,4 +1,5 @@
 import 'package:TychoStream/model/data/cart_detail_model.dart';
+import 'package:TychoStream/model/data/category_list_model.dart';
 import 'package:TychoStream/model/data/checkout_data_model.dart';
 import 'package:TychoStream/model/data/create_order_model.dart';
 import 'package:TychoStream/model/data/promocode_data_model.dart';
@@ -671,5 +672,46 @@ class CartDetailRepository {
       }
     });
   }
+
+
+  // product category list
+  Future<Result?> getProductCategoryList(BuildContext context, NetworkResponseHandler responseHandler) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var header = {"Authorization": "Bearer " + sharedPreferences.get("token").toString()};
+    AppNetwork appNetwork = AppNetwork();
+    Map<String, String> urlParams = {
+      "{APP_ID}": NetworkConstants.kAppID
+    };
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.kGetAllCategory, RequestType.get,
+        headers: header);
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map = (result as SuccessState).value as Map<String, dynamic>;
+        if (map['data'] is List<dynamic>) {
+          var dataList = map['data'] as List<dynamic>;
+          var items = <CategoryListModel>[];
+          dataList.forEach((element) {
+            items.add(CategoryListModel.fromJson(element));
+          });
+          response.dataModal = items;
+          responseHandler(Result.success(response), isSuccess);
+        }
+        // CacheDataManager.cacheData(
+        //     key: StringConstant.kcategory,
+        //     jsonData: map,
+        //     isCacheRemove: true);
+        // if (map["data"] is Map<String, dynamic>) {
+        //   response.dataModal = CategoryListModel.fromJson(map["data"]);
+        // }
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
+
+
 
 }

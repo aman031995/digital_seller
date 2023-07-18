@@ -28,6 +28,7 @@ import 'package:json_cache/json_cache.dart';
 import 'package:razorpay_web/razorpay_web.dart';
 
 import '../AppRouter.gr.dart';
+import '../model/data/category_list_model.dart';
 
 class CartViewModel extends ChangeNotifier {
   final _cartRepo = CartDetailRepository();
@@ -61,6 +62,8 @@ class CartViewModel extends ChangeNotifier {
 
   CreateOrderModel? _createOrderModel;
   CreateOrderModel? get createOrderModel => _createOrderModel;
+  List<CategoryListModel>? _categoryListModel;
+  List<CategoryListModel>? get categoryListModel => _categoryListModel;
 
   bool activeQuantity = false;
   bool deactiveQuantity = false;
@@ -195,6 +198,17 @@ class CartViewModel extends ChangeNotifier {
         _itemCountModel =
             ((result as SuccessState).value as ASResponseModal).dataModal;
         cartItemCount = _itemCountModel?.count.toString() ?? '';
+        notifyListeners();
+      }
+    });
+  }
+
+  // GetProductList By Category Method
+  Future<void> getProductCategoryList(BuildContext context, pageNum) async {
+    _cartRepo.getProductCategoryList(context, (result, isSuccess) {
+      if (isSuccess) {
+        _categoryListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        AppIndicator.disposeIndicator();
         notifyListeners();
       }
     });

@@ -42,6 +42,7 @@ class AuthViewModel with ChangeNotifier {
       String deviceId,
       String firebaseId,
       String loginType,
+      bool? product,
       HomeViewModel viewmodel,
       bool checkPhoneEmailValid,
       BuildContext context) async {
@@ -52,8 +53,7 @@ class AuthViewModel with ChangeNotifier {
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             if (_userInfoModel?.isEmailVerified == false && _userInfoModel?.isPhoneVerified == false) {
               AppIndicator.disposeIndicator();
-              // Navigator.pop(context);
-
+              Navigator.pop(context);
               isLogin=true;
               showDialog(
                   context: context,
@@ -62,7 +62,7 @@ class AuthViewModel with ChangeNotifier {
                       mobileNo: phone,
                       name: '',
                       email: phone,
-                      password: password,
+                      password: password,product:product,
                       isForgotPassword: false,
                       loginPage: true,
                       isNotVerified: true,
@@ -81,7 +81,7 @@ class AuthViewModel with ChangeNotifier {
                       email: phone,
                       password: password,
                       isForgotPassword: false,
-                      loginPage: false,
+                      loginPage: false,product:product,
                       isNotVerified: true,
                       viewmodel: viewmodel,
                     );});
@@ -99,7 +99,7 @@ class AuthViewModel with ChangeNotifier {
                       email: phone,
                       password: password,
                       isForgotPassword: false,
-                      loginPage: true,
+                      loginPage: true,product:product,
                       isNotVerified: true,
                       viewmodel: viewmodel,
                     );
@@ -112,7 +112,7 @@ class AuthViewModel with ChangeNotifier {
                   context: context,
                   builder: (BuildContext context) {
                     return VerifyOtp(
-                      mobileNo: phone,
+                      mobileNo: phone,product:product,
                       name: '',
                       email: phone,
                       password: password,
@@ -131,7 +131,7 @@ class AuthViewModel with ChangeNotifier {
               User();
               reloadPage();
               ResponsiveWidget.isMediumScreen(context) ? null :
-              context.router.push(HomePageWeb());
+              product==true? Navigator.pop(context):context.router.push(HomePageWeb());
              // GoRouter.of(context).pushNamed(RoutesName.home);
             }
 
@@ -210,7 +210,7 @@ class AuthViewModel with ChangeNotifier {
 
   // method for otp verify
   Future<void> verifyOTP(BuildContext context, String phone, String otp,
-      {bool? isForgotPW,
+      {bool? isForgotPW,bool?product,
         String? name,
         String? email,
         String? password,
@@ -246,7 +246,9 @@ class AuthViewModel with ChangeNotifier {
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return ResetPassword(phone: phone,loginType: loginType,);});
+                    return ResetPassword(
+                      product: product,
+                      phone: phone,loginType: loginType,);});
               // AppNavigator.pushReplacement(context, ResetPassword(phone: phone, loginType: loginType),screenName: RouteBuilder.resetPage);
             } else if (verifyNumber == true) {
               otpValue = '';
@@ -256,7 +258,7 @@ class AuthViewModel with ChangeNotifier {
               AppDataManager.getInstance.updateUserDetails(_userInfoModel!);
               AppIndicator.disposeIndicator();
               ResponsiveWidget.isMediumScreen(context) ? null :
-              context.router.push(HomePageWeb());
+              product==true?   Navigator.pop(context):context.router.push(HomePageWeb());
               // GoRouter.of(context).pushNamed(RoutesName.home);
               // Navigator.pop(context);
               // AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.bottomNavigation, screenName: RouteBuilder.homePage);
@@ -283,7 +285,7 @@ class AuthViewModel with ChangeNotifier {
                 ((result as SuccessState).value as ASResponseModal).message);
             print('Register api Successfully');
             AppIndicator.disposeIndicator();
-            GoRouter.of(context).pushNamed(RoutesName.home);
+           // GoRouter.of(context).pushNamed(RoutesName.home);
             Navigator.pop(context);
             // AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.bottomNavigation, screenName: RouteBuilder.homePage);
             notifyListeners();
@@ -341,7 +343,7 @@ class AuthViewModel with ChangeNotifier {
     });
   }
 
-  Future<void> forgotPassword(String phone,bool loginType, BuildContext context, HomeViewModel viewModel) async {
+  Future<void> forgotPassword(String phone,bool loginType,bool? product, BuildContext context, HomeViewModel viewModel) async {
     AppIndicator.loadingIndicator(context);
     _authRepo.forgotPassword(phone, loginType == true ? 'phone' : 'email',context, (result, isSuccess) {
       if (isSuccess) {
@@ -353,7 +355,9 @@ class AuthViewModel with ChangeNotifier {
         showDialog(
             context: context,
             builder: (BuildContext context) {
-              return VerifyOtp(mobileNo: phone, isForgotPassword: true,viewmodel: viewModel,loginPage: true,email: phone);});
+              return VerifyOtp(
+                  product: product,
+                  mobileNo: phone, isForgotPassword: true,viewmodel: viewModel,loginPage: true,email: phone);});
         notifyListeners();
       }
     });
@@ -371,7 +375,7 @@ class AuthViewModel with ChangeNotifier {
             Navigator.pop(context);
             //
             // Navigator.pushNamedAndRemoveUntil(context, RoutesName.home, (route) => false);
-            GoRouter.of(context).pushNamed(RoutesName.home);
+           // GoRouter.of(context).pushNamed(RoutesName.home);
             notifyListeners();
           }
         });

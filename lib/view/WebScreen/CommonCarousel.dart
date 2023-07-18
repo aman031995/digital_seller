@@ -1,6 +1,7 @@
 import 'package:TychoStream/AppRouter.gr.dart';
 import 'package:TychoStream/model/data/BannerDataModel.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -58,7 +59,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
         Center(
           child: Container(
             margin: EdgeInsets.only(top: 15),
-            height: SizeConfig.screenHeight/3,
+            height: SizeConfig.screenHeight/2,
             width: SizeConfig.screenWidth/1.5,
             child: CarouselSlider(
               items: imageSliders,
@@ -82,7 +83,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
           ),
         ),
         Positioned(
-          left: SizeConfig.screenWidth*0.17,top:  SizeConfig.screenHeight/6,
+          left: SizeConfig.screenWidth*0.17,top:  SizeConfig.screenHeight/4,
           child: InkWell(
               child: Image.asset(
                   'images/prev.png',
@@ -94,7 +95,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
           ),
         ),
         Positioned(
-          top:  SizeConfig.screenHeight/6,right:SizeConfig.screenWidth*0.17,
+          top:  SizeConfig.screenHeight/4,right:SizeConfig.screenWidth*0.17,
           child: InkWell(
               child: Image.asset(
                   'images/next.png',
@@ -124,13 +125,15 @@ class _CommonCarouselState extends State<CommonCarousel> {
         },
       child:
       Container(
-        height: SizeConfig.screenHeight/3,width: SizeConfig.screenWidth,
+    width: SizeConfig.screenWidth,
         margin: EdgeInsets.only(left: 0,right: 0,top: 0),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(25)),
-        child: Image.network(element.bannerUrl?? " ",
-            fit: BoxFit.fill
-          //height: SizeConfig.screenHeight
-        ),
+        child:  CachedNetworkImage(
+            imageUrl:element.bannerUrl ?? "",
+            fit: BoxFit.fill,
+            placeholder: (context, url) => Center(
+                child: CircularProgressIndicator(
+                    color:
+                    Theme.of(context).canvasColor.withOpacity(0.5)))),
       ),
     )
     )

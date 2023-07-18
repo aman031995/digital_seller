@@ -1,3 +1,4 @@
+import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/session_storage.dart';
@@ -8,6 +9,7 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/Products/image_slider.dart';
+import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
@@ -17,6 +19,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../AppRouter.gr.dart';
 
 
@@ -64,15 +67,48 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                 isBackBtn: false,
                 isFavourite: true,
                 title: StringConstant.forumTitle,
-                onCartPressed: () {
-                  context.router.push(CartDetail(
-                      itemCount: '${viewmodel.cartItemCount}'
-                  ));
+                onCartPressed: () async{
+                  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                  token = sharedPreferences.getString('token').toString();
+                  if (token == 'null'){
+                    showDialog(
+                        context: context,
+                        barrierColor: Colors.black87,
+                        builder:
+                            (BuildContext context) {
+                          return  LoginUp(
+                            product: true,
+                          );
+                        });
+                    // _backBtnHandling(prodId);
+                  }
+                  else{
+                    context.router.push(CartDetail(
+                        itemCount: '${viewmodel.cartItemCount}'
+                    ));
+                  }
+
+
                 },
-                onFavPressed: (){
+                onFavPressed: ()async{
+                  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                  token = sharedPreferences.getString('token').toString();
+                  if (token == 'null'){
+                    showDialog(
+                        context: context,
+                        barrierColor: Colors.black87,
+                        builder:
+                            (BuildContext context) {
+                          return  LoginUp(
+                            product: true,
+                          );
+                        });
+                    // _backBtnHandling(prodId);
+                  }
+                  else{
                   context.router.push(FavouriteListPage(
                   ));
-                },
+                }},
                 onBackPressed: () {
                 }),
 

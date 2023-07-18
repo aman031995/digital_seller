@@ -49,7 +49,7 @@ class _HomePageWebState extends State<HomePageWeb> {
   void initState() {
     homeViewModel.getAppConfig(context);
     User();
-    cartViewModel.getRecentView(context);
+    cartViewModel.getProductCategoryList(context,1);
     cartViewModel.getRecommendedView(context);
     profileViewModel.getUserDetails(context);
     super.initState();
@@ -59,6 +59,9 @@ class _HomePageWebState extends State<HomePageWeb> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     names = sharedPreferences.get('name').toString();
     image = sharedPreferences.get('profileImg').toString();
+    if (sharedPreferences.get('token') != null){
+      cartViewModel.getRecentView(context);
+    }
   }
 
   @override
@@ -83,9 +86,6 @@ class _HomePageWebState extends State<HomePageWeb> {
                 if(isSearch==true){
                   isSearch=false;
                   searchController?.clear();
-                }
-                if(isLogins == true){
-                  isLogins=false;
                 }
               },
                 child: Scaffold(
@@ -182,7 +182,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                                       barrierColor: Colors.black87,
                                       builder:
                                           (BuildContext context) {
-                                        return  LoginUp();
+                                        return  LoginUp(
+                                          product: false,
+                                        );
                                       });
                                 },
                                 style: ButtonStyle(
@@ -259,6 +261,66 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 CommonCarousel(),
                                // VideoListPage()
                                 SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?16:32),
+                                Center(child: Container(
+                                    width: ResponsiveWidget.isMediumScreen(context)
+                                        ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5,
+                                    child: AppBoldFont(context, msg: (cartViewModel.categoryListModel?.length ?? 0) > 0 ? "What are you looking for?":"", fontSize: 18))),
+                                Center(
+                                  child: Container(
+                                      height: ResponsiveWidget.isMediumScreen(context)
+                                          ?100: 220,
+                                      width: ResponsiveWidget.isMediumScreen(context)
+                                          ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5 ,
+                                      child: ListView.builder(
+                                          physics: BouncingScrollPhysics(),
+                                          reverse: false,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: cartViewModel.categoryListModel?.length,
+                                          itemBuilder: (context, position) {
+                                            return Card(
+                                              elevation: 0.1,
+                                              child: GestureDetector(
+                                                onTap: (){
+                                                  // if(cartview.categoryListModel![position].subcategories!.isNotEmpty){
+                                                  //   Navigator.push(context, CupertinoPageRoute(
+                                                  //       builder: (_) => ProductSubcategoryView(
+                                                  //         categoryList: cartview.categoryListModel![position].subcategories,
+                                                  //         title: cartview.categoryListModel![position].categoryTitle,
+                                                  //       )));
+                                                  // } else {
+                                                  //   AppNavigator.push(context, ProductListGallery(
+                                                  //     catId: cartview.categoryListModel![position].categoryId,
+                                                  //     categoryTitle: cartview.categoryListModel![position].categoryTitle,
+                                                  //   ));
+                                                  // }
+                                                },
+                                                child: Container(
+                                                    margin: EdgeInsets.only(right: 12,top: 12,bottom: 2),
+                                                 width: ResponsiveWidget.isMediumScreen(context)
+                                                    ?165:180,
+                                                  child: Column(
+                                                    children: [
+                                                      CachedNetworkImage(
+                                                          imageUrl: cartViewModel.categoryListModel?[position].imageUrl ?? "", fit: BoxFit.fill,
+                                                          imageBuilder: (context, imageProvider) => Container(
+                                                            height: 180,width: 150,
+                                                            decoration: BoxDecoration(
+                                                              shape: BoxShape.circle,
+                                                              //borderRadius: BorderRadius.circular(4),
+                                                              image: DecorationImage(
+                                                                  image: imageProvider, fit: BoxFit.fill),
+                                                            ),
+                                                          ),
+                                                          placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
+                                                      AppBoldFont(maxLines: 1,context, msg: cartViewModel.categoryListModel?[position].categoryTitle ?? "",fontSize: 14)
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          })),
+                                ),
+                                SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?16:32),
                                 Center(
                                   child: Container(
                                       width: ResponsiveWidget.isMediumScreen(context)
@@ -268,21 +330,17 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 Center(
                               child: Container(
                                   height: (cartViewModel.recentView?.length ??0)>0 ?ResponsiveWidget.isMediumScreen(context)
-                                      ?180: 260 :0,
+                                      ?180: 240 :0,
                                   width: ResponsiveWidget.isMediumScreen(context)
                                       ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5 ,
                                     child: ListView.builder(
-                                        padding: EdgeInsets.only(top: 4),
                                         reverse: false,
                                         scrollDirection: Axis.horizontal,
                                         itemCount: cartViewModel.recentView?.length,
                                         itemBuilder: (context, position) {
                                           return GestureDetector(
-                                            onTap: ()async{
-                                              SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                                  if (sharedPreferences.get('token') != null) {
-            context.router.push(
-              ProductDetailPage(
+                                            onTap: (){
+                                              context.router.push(ProductDetailPage(
                 productId: '${cartViewModel.recentView?[position].productId}',
                 productdata: [
                   '${cartViewModel.cartItemCount}',
@@ -292,13 +350,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                   '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.unitCount?.name}',
                   '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.materialType?.name}',
                 ],
-              ) ,
-            );
-          }
-                                                         else {
-                                                     ToastMessage.message("Please Login User");
-                                               }
-                                            },
+              ));
+                                              },
                                             child: Container(
                                               width: ResponsiveWidget.isMediumScreen(context)
                                                   ?140:180, margin: EdgeInsets.only(right: 12,top: 12,bottom: 2),
@@ -310,9 +363,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                         margin: EdgeInsets.only(bottom: 2),height:ResponsiveWidget.isMediumScreen(context)
                                                           ? 140:200,
                                                         decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.circular(8),
+                                                          borderRadius: BorderRadius.circular(4),
                                                           image: DecorationImage(
-                                                              image: imageProvider, fit: BoxFit.cover),
+                                                              image: imageProvider, fit: BoxFit.fill),
                                                         ),
                                                       ),
                                                       placeholder: (context, url) => Center(child: CircularProgressIndicator(color: WHITE_COLOR))),
@@ -332,47 +385,31 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 Center(
                                   child: Container(
                                       height: ResponsiveWidget.isMediumScreen(context)
-                                      ?250: 350,
+                                      ?250: 320,
                                       width: ResponsiveWidget.isMediumScreen(context)
                                           ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5 ,
                                       child: ListView.builder(
-                                          padding: EdgeInsets.only(top: 4),
                                           reverse: false,
                                           scrollDirection: Axis.horizontal,
                                           itemCount: cartViewModel.recommendedView?.length,
                                           itemBuilder: (context, position) {
                                             return GestureDetector(
-                                              onTap: () async{
-
-                                                SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                                if (sharedPreferences.get('token') != null) {
-                                                  context.router.push(ProductListGallery());
-                                                }
-                                                else {
-                                                  ToastMessage.message("Please Login User");
-                                                }
-                                                // AppNavigator.push(
-                                                //     context,
-                                                //     ProductListGallery(
-                                                //       isRecommended: true,
-                                                //     ),
-                                                //     screenName: RouteBuilder.productsPage, function: (v) {
-                                                //   cartview.updateCartCount(context, v);
-                                                // });
+                                              onTap: () {
+                                                context.router.push(ProductListGallery());
                                               },
                                               child: Container(
-                                                margin: EdgeInsets.only(right: 12,top: 12,bottom: 2),width: ResponsiveWidget.isMediumScreen(context)
-                                                  ?165:240,
+                                                margin: EdgeInsets.only(right: 12,top:12,bottom: 2),width: ResponsiveWidget.isMediumScreen(context)
+                                                  ?165:200,
                                                 child: Column(
                                                   children: [
                                                     CachedNetworkImage(
                                                         imageUrl: '${cartViewModel.recommendedView?[position].productDetails?.productImages?[0]}', fit: BoxFit.fill,
                                                         imageBuilder: (context, imageProvider) => Container(
                                                           height:  ResponsiveWidget.isMediumScreen(context)
-                                                              ?185:250,
+                                                              ?185:220,
                                                           margin: EdgeInsets.only(bottom: 2),
                                                           decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(12),
+                                                            borderRadius: BorderRadius.circular(4),
                                                             image: DecorationImage(
                                                                 image: imageProvider, fit: BoxFit.fill),
                                                           ),
@@ -385,6 +422,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                             );
                                           })),
                                 ),
+                                SizedBox(height: 16),
+
                               ],
                             ),
                           ),

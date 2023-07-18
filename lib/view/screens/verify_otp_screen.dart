@@ -27,6 +27,7 @@ class VerifyOtp extends StatefulWidget {
   bool? isForgotPassword;
   HomeViewModel? viewmodel;
   bool? loginPage;
+  bool? product;
   bool? isNotVerified;
   VerifyOtp(
       {Key? key,
@@ -37,7 +38,7 @@ class VerifyOtp extends StatefulWidget {
         this.loginPage,
         this.isNotVerified,
       this.password,
-        this.viewmodel})
+        this.viewmodel,this.product})
       : super(key: key);
 
   @override
@@ -360,6 +361,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
             : (widget.mobileNo ?? ''),
         otpValue,
         isForgotPW: widget.isForgotPassword,
+        product: widget.product,
         name: widget.name,
         email: widget.email,
         mobileNumber: mobileOTPVerification == false
