@@ -85,7 +85,7 @@ class _ThankYouPageState extends State<ThankYouPage> {
         ),
         SizedBox(height: 30),
         Center(
-          child: TextButton(onPressed: () { context.pushRoute(ProductListGallery()); }, child: Container(
+          child: TextButton(onPressed: () { context.pushRoute(HomePageWeb()); }, child: Container(
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),

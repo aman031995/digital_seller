@@ -264,16 +264,17 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 Center(child: Container(
                                     width: ResponsiveWidget.isMediumScreen(context)
                                         ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5,
-                                    child: AppBoldFont(context, msg: (cartViewModel.categoryListModel?.length ?? 0) > 0 ? "What are you looking for?":"", fontSize: 18))),
+                                    child: AppBoldFont(context, msg: (cartViewModel.categoryListModel?.length ?? 0) > 0 ? "What are you looking for?":"", fontSize:  ResponsiveWidget.isMediumScreen(context) ?16:18))),
                                 Center(
                                   child: Container(
                                       height: ResponsiveWidget.isMediumScreen(context)
-                                          ?100: 220,
+                                          ?140: 220,
                                       width: ResponsiveWidget.isMediumScreen(context)
                                           ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5 ,
                                       child: ListView.builder(
                                           physics: BouncingScrollPhysics(),
                                           reverse: false,
+                                          padding: EdgeInsets.zero,
                                           scrollDirection: Axis.horizontal,
                                           itemCount: cartViewModel.categoryListModel?.length,
                                           itemBuilder: (context, position) {
@@ -295,24 +296,27 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                   // }
                                                 },
                                                 child: Container(
-                                                    margin: EdgeInsets.only(right: 12,top: 12,bottom: 2),
                                                  width: ResponsiveWidget.isMediumScreen(context)
-                                                    ?165:180,
+                                                    ?110:180,
                                                   child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
                                                       CachedNetworkImage(
                                                           imageUrl: cartViewModel.categoryListModel?[position].imageUrl ?? "", fit: BoxFit.fill,
                                                           imageBuilder: (context, imageProvider) => Container(
-                                                            height: 180,width: 150,
+                                                            height: ResponsiveWidget.isMediumScreen(context)
+                                                                ?100: 180,width: ResponsiveWidget.isMediumScreen(context)
+                                                              ?100:160,
                                                             decoration: BoxDecoration(
                                                               shape: BoxShape.circle,
                                                               //borderRadius: BorderRadius.circular(4),
                                                               image: DecorationImage(
-                                                                  image: imageProvider, fit: BoxFit.fill),
+                                                                  image: imageProvider, fit: BoxFit.cover),
                                                             ),
                                                           ),
                                                           placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
-                                                      AppBoldFont(maxLines: 1,context, msg: cartViewModel.categoryListModel?[position].categoryTitle ?? "",fontSize: 14)
+                                                      AppBoldFont(maxLines: 1,context, msg: cartViewModel.categoryListModel?[position].categoryTitle ?? "",fontSize: ResponsiveWidget.isMediumScreen(context)
+                                                          ?14:16)
                                                     ],
                                                   ),
                                                 ),
@@ -325,67 +329,12 @@ class _HomePageWebState extends State<HomePageWeb> {
                                   child: Container(
                                       width: ResponsiveWidget.isMediumScreen(context)
                                           ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5,
-                                      child: AppBoldFont(context, msg: (cartViewModel.recentView?.length ??0)>0? "Recently Viewed":"",fontSize: 18)),
-                                ),
-                                Center(
-                              child: Container(
-                                  height: (cartViewModel.recentView?.length ??0)>0 ?ResponsiveWidget.isMediumScreen(context)
-                                      ?180: 240 :0,
-                                  width: ResponsiveWidget.isMediumScreen(context)
-                                      ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5 ,
-                                    child: ListView.builder(
-                                        reverse: false,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: cartViewModel.recentView?.length,
-                                        itemBuilder: (context, position) {
-                                          return GestureDetector(
-                                            onTap: (){
-                                              context.router.push(ProductDetailPage(
-                productId: '${cartViewModel.recentView?[position].productId}',
-                productdata: [
-                  '${cartViewModel.cartItemCount}',
-                  '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.size?.name}',
-                  '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.color?.name}',
-                  '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.style?.name}',
-                  '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.unitCount?.name}',
-                  '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.materialType?.name}',
-                ],
-              ));
-                                              },
-                                            child: Container(
-                                              width: ResponsiveWidget.isMediumScreen(context)
-                                                  ?140:180, margin: EdgeInsets.only(right: 12,top: 12,bottom: 2),
-                                              child: Column(
-                                                children: [
-                                                  CachedNetworkImage(
-                                                      imageUrl: '${cartViewModel.recentView?[position].productDetails?.productImages?[0]}', fit: BoxFit.fill,
-                                                      imageBuilder: (context, imageProvider) => Container(
-                                                        margin: EdgeInsets.only(bottom: 2),height:ResponsiveWidget.isMediumScreen(context)
-                                                          ? 140:200,
-                                                        decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.circular(4),
-                                                          image: DecorationImage(
-                                                              image: imageProvider, fit: BoxFit.fill),
-                                                        ),
-                                                      ),
-                                                      placeholder: (context, url) => Center(child: CircularProgressIndicator(color: WHITE_COLOR))),
-                                                  AppBoldFont(context, msg:getRecentViewTitle(position,cartViewModel),fontSize: 14,maxLines: 1)
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        }))),
-                                SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?16:32),
-                                Center(
-                                  child: Container(
-                                      width: ResponsiveWidget.isMediumScreen(context)
-                                          ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5,
-                                      child: AppBoldFont(context, msg: "Recommended for You ",fontSize: 18),
+                                      child: AppBoldFont(context, msg: "Recommended for You ",fontSize: ResponsiveWidget.isMediumScreen(context) ?16: 18),
                                   )),
                                 Center(
                                   child: Container(
                                       height: ResponsiveWidget.isMediumScreen(context)
-                                      ?250: 320,
+                                      ?185: 320,
                                       width: ResponsiveWidget.isMediumScreen(context)
                                           ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5 ,
                                       child: ListView.builder(
@@ -399,14 +348,14 @@ class _HomePageWebState extends State<HomePageWeb> {
                                               },
                                               child: Container(
                                                 margin: EdgeInsets.only(right: 12,top:12,bottom: 2),width: ResponsiveWidget.isMediumScreen(context)
-                                                  ?165:200,
+                                                  ?140:200,
                                                 child: Column(
                                                   children: [
                                                     CachedNetworkImage(
                                                         imageUrl: '${cartViewModel.recommendedView?[position].productDetails?.productImages?[0]}', fit: BoxFit.fill,
                                                         imageBuilder: (context, imageProvider) => Container(
                                                           height:  ResponsiveWidget.isMediumScreen(context)
-                                                              ?185:220,
+                                                              ?140:220,
                                                           margin: EdgeInsets.only(bottom: 2),
                                                           decoration: BoxDecoration(
                                                             borderRadius: BorderRadius.circular(4),
@@ -422,6 +371,62 @@ class _HomePageWebState extends State<HomePageWeb> {
                                             );
                                           })),
                                 ),
+                                SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?16:32),
+                                (cartViewModel.recentView?.length ??0)>0 ?   Center(
+                                  child: Container(
+                                      width: ResponsiveWidget.isMediumScreen(context)
+                                          ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5,
+                                      child: AppBoldFont(context, msg:"Recently Viewed",fontSize: ResponsiveWidget.isMediumScreen(context) ?16:18)),
+                                ):SizedBox(),
+                                (cartViewModel.recentView?.length ??0)>0 ?
+                                Center(
+                                    child: Container(
+                                        height:ResponsiveWidget.isMediumScreen(context)
+                                            ?100: 240,
+                                        width: ResponsiveWidget.isMediumScreen(context)
+                                            ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5 ,
+                                        child: ListView.builder(
+                                            reverse: false,
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount: cartViewModel.recentView?.length,
+                                            itemBuilder: (context, position) {
+                                              return GestureDetector(
+                                                onTap: (){
+                                                  context.router.push(ProductDetailPage(
+                                                    productId: '${cartViewModel.recentView?[position].productId}',
+                                                    productdata: [
+                                                      '${cartViewModel.cartItemCount}',
+                                                      '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.size?.name}',
+                                                      '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.color?.name}',
+                                                      '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.style?.name}',
+                                                      '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.unitCount?.name}',
+                                                      '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.materialType?.name}',
+                                                    ],
+                                                  ));
+                                                },
+                                                child: Container(
+                                                  width: ResponsiveWidget.isMediumScreen(context)
+                                                      ?140:180, margin: EdgeInsets.only(right: 12,top: 12,bottom: 2),
+                                                  child: Column(
+                                                    children: [
+                                                      CachedNetworkImage(
+                                                          imageUrl: '${cartViewModel.recentView?[position].productDetails?.productImages?[0]}', fit: BoxFit.fill,
+                                                          imageBuilder: (context, imageProvider) => Container(
+                                                            margin: EdgeInsets.only(bottom: 2),height:ResponsiveWidget.isMediumScreen(context)
+                                                              ? 140:200,
+                                                            decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.circular(4),
+                                                              image: DecorationImage(
+                                                                  image: imageProvider, fit: BoxFit.fill),
+                                                            ),
+                                                          ),
+                                                          placeholder: (context, url) => Center(child: CircularProgressIndicator(color: WHITE_COLOR))),
+                                                      AppBoldFont(context, msg:getRecentViewTitle(position,cartViewModel),fontSize: 14,maxLines: 1)
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }))):SizedBox(),
                                 SizedBox(height: 16),
 
                               ],
@@ -525,7 +530,6 @@ class _HomePageWebState extends State<HomePageWeb> {
           context.pushRoute(ProductListGallery());
         },
                 child: Container(height: 30,
-                  padding: EdgeInsets.all(3),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black,width: 1),
                     borderRadius: BorderRadius.circular(5)

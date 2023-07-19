@@ -1,6 +1,7 @@
 import 'package:TychoStream/model/data/cart_detail_model.dart';
 import 'package:TychoStream/model/data/category_list_model.dart';
 import 'package:TychoStream/model/data/checkout_data_model.dart';
+import 'package:TychoStream/model/data/city_state_model.dart';
 import 'package:TychoStream/model/data/create_order_model.dart';
 import 'package:TychoStream/model/data/promocode_data_model.dart';
 import 'package:flutter/material.dart';
@@ -247,6 +248,35 @@ class CartDetailRepository {
       }
     });
   }
+
+  // GetCartCount Method
+  Future<Result?> getCityState(
+      BuildContext context,String pincode, NetworkResponseHandler responseHandler) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var header = {
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+    };
+    AppNetwork appNetwork = AppNetwork();
+    Map<String, String> urlParams = {
+      "{PINCODE}": pincode,
+    };
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.kcityState, RequestType.get,headers: header);
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map =
+        (result as SuccessState).value as Map<String, dynamic>;
+        if (map["data"] is Map<String, dynamic>) {
+          response.dataModal = CityStateModel.fromJson(map["data"]);
+        }
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
+
   // GetProductDetails Method
   Future<Result?> getProductByCategory(BuildContext context,
       String productId,

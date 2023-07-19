@@ -121,19 +121,18 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                 ? SingleChildScrollView(
                           child: Column(
                 children: [
-                  Container(
-                    height:SizeConfig.screenHeight,
-                    child: Stack(
-                      children: [
-                        GridView.builder(
+                  Stack(
+                    children: [
+                      Container(
+                        height: SizeConfig.screenHeight,
+                        child: GridView.builder(
                           shrinkWrap: true,
                           controller: _scrollController,
-                          padding: EdgeInsets.only(left: 10,right: 10,top: 10),
+                          padding: EdgeInsets.all(8),
                           physics: BouncingScrollPhysics(),
                           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, childAspectRatio: 0.51,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10),
+                              crossAxisCount: 2, childAspectRatio: 0.64,
+                        ),
                           itemCount:
                           viewmodel.productListModel?.productList?.length,
                           itemBuilder: (context, index) {
@@ -149,16 +148,16 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                 productListData, index, viewmodel);
                           },
                         ),
-                        viewmodel.isLoading == true
-                            ? Container(
-                            margin: EdgeInsets.only(top: SizeConfig.screenHeight/1.2),
-                            alignment: Alignment.bottomCenter,
-                            child: CircularProgressIndicator(
-                              color: Theme.of(context).primaryColor,
-                            ))
-                            : SizedBox()
-                      ],
-                    ),
+                      ),
+                      viewmodel.isLoading == true
+                          ? Container(
+                          margin: EdgeInsets.only(top: SizeConfig.screenHeight/1.5),
+                          alignment: Alignment.bottomCenter,
+                          child: CircularProgressIndicator(
+                            color: Theme.of(context).primaryColor,
+                          ))
+                          : SizedBox()
+                    ],
                   ),
                   SizedBox(height: 50),
                 footerMobile(context)
@@ -239,16 +238,23 @@ class _ProductListGalleryState extends State<ProductListGallery> {
               );
             },
             child: Container(
+
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5), color: Theme.of(context).cardColor.withOpacity(0.4),
+              color: Theme.of(context).cardColor.withOpacity(0.8),
             ),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  ImageSlider(
-                      images: productListData?.productDetails?.productImages,
-                      ),
-                  productGalleryTitleSection(context, productListData,false)
+                  Expanded(
+                    flex: 90,
+                    child: ImageSlider(
+                        images: productListData?.productDetails?.productImages,
+                        ),
+                  ),
+                  Expanded(
+                      flex: 26,
+                      child: productGalleryTitleSection(context, productListData,false))
                 ],
               ),
             )),
@@ -329,7 +335,6 @@ String? getNameTitle(ProductList? productListData) {
 Widget productGalleryTitleSection(
     BuildContext context, ProductList? productListData,bool favbourite) {
   return Container(
-    width: 200,
     padding: const EdgeInsets.only(
       left: 8.0,
       right: 8.0,
@@ -344,7 +349,7 @@ Widget productGalleryTitleSection(
           maxLines: 2,
           msg:favbourite==true? getFavTitle(productListData) ?? ''
           : getNameTitle(productListData) ?? '',
-          fontSize: 18.0,
+          fontSize: 14.0,
         ),
         SizedBox(height: 2),
         Row(
@@ -352,28 +357,30 @@ Widget productGalleryTitleSection(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             AppMediumFont(context,
-                msg: "₹ " '${productListData?.productDetails?.productPrice}',
-                fontSize: 16.0,
+                msg: "₹" '${productListData?.productDetails?.productPrice}',
+                fontSize: ResponsiveWidget.isMediumScreen(context)
+                    ?14:16.0,color:Theme.of(context).canvasColor.withOpacity(0.6),
                 textDecoration: TextDecoration.lineThrough
             ),
-            SizedBox(width: 8.0),
-            AppBoldFont(
-              context,
+            SizedBox(width: 2.0),
+            AppMediumFont(
+              context,color:Theme.of(context).canvasColor.withOpacity(0.9),
               msg: "₹"
                   '${productListData?.productDetails?.productDiscountPrice}',
-              fontSize: 16.0,
+              fontSize:ResponsiveWidget.isMediumScreen(context)
+                  ?14:16.0,
             ),
-            SizedBox(width: 8.0),
+            SizedBox(width: 2.0),
             AppMediumFont(
-              context,
+              context,fontSize:ResponsiveWidget.isMediumScreen(context)
+                ?14:16.0,
               msg:
-              '${productListData?.productDetails?.productDiscountPercent}' +
-                  '% OFF',color: Colors.green,
-              fontSize: 12.0,
+              '${productListData?.productDetails?.productDiscountPercent}'+
+                  '%OFF',color: GREEN
             ),
           ],
         ),
-        SizedBox(height: 5)
+        SizedBox(height: 3)
       ],
     ),
   );

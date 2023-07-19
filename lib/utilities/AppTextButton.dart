@@ -153,14 +153,14 @@ Widget AddressButton(BuildContext context,GestureTapCallback? ontap){
       width:ResponsiveWidget.isMediumScreen(context)
           ?SizeConfig.screenWidth/0.5: SizeConfig.screenWidth*0.29,
       margin: EdgeInsets.only(top:5,bottom: 5,left: 10,right: 10),
-      alignment: Alignment.centerLeft,
+      alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Theme.of(context).cardColor,  borderRadius: BorderRadius.circular(5)
+        color: Theme.of(context).primaryColor.withOpacity(0.8),  borderRadius: BorderRadius.circular(5)
       ),
       padding: EdgeInsets.only(left: 10,top: 10,bottom: 10),
 
       child: AppBoldFont(context,
-          msg: "+ addAddress",fontSize: 18),
+          msg: "AddAddress",fontSize: 18),
     ),
   );
 }

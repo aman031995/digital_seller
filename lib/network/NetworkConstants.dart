@@ -76,6 +76,7 @@ class NetworkConstants{
   static String kGetAllCategory = "getAllCategory?appId={APP_ID}";
   static String kCreateOrder = "create-order";
   static String kPaymentResponse = "payment-callback";
+  static String kcityState='get-city-state?pincode={PINCODE}';
 
   // static String kAppID = '8b7e56d4-8d6c-4053-8991-64374d95c353';
   static String kAppID = 'f11e5fd9-a395-49fb-bbd8-7e6554dc4549';

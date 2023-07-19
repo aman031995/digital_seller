@@ -59,7 +59,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   var proDetails;
 
   void initState() {
-    SessionStorageHelper.removeValue('payment');
+    SessionStorageHelper.removeValue('token');
     cartView.getCartCount(context);
     getProductDetails();
     super.initState();
@@ -141,12 +141,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
              crossAxisAlignment: CrossAxisAlignment.start,
              children: [
                Center(
-                 child: Container(margin: EdgeInsets.only(top: SizeConfig.screenHeight*0.02),
+                 child: Container(
                      width: SizeConfig.screenWidth/1.1,
                      child: Stack(children: [
                        CarouselSlider(
                            options: CarouselOptions(
-                               height: SizeConfig.screenHeight / 1.4,
+                               height: SizeConfig.screenHeight /2.2,
                                enableInfiniteScroll: viewmodel.productListDetails?.productDetails?.productImages?.length==1?false:true,
                                reverse: false,
                                viewportFraction: 1,
@@ -249,20 +249,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                      ])),
                ),
                Container(
-                   width: SizeConfig.screenWidth/1.1,
-                   margin: EdgeInsets.only(left: 20,top: SizeConfig.screenHeight*0.02),
-                   padding: EdgeInsets.only(left: 10.0, top: 5, bottom: 5),
+                   width: SizeConfig.screenWidth,
+                   color: Theme.of(context).cardColor,
+                   padding: EdgeInsets.only(left: 20.0, right: 10, top: 4, bottom: 4),
                    child: Column(
                        mainAxisAlignment: MainAxisAlignment.start,
                        crossAxisAlignment: CrossAxisAlignment.start,
                        children: [
-                         AppBoldFont(context, msg: viewmodel.productListDetails?.productDetails?.productVariantTitle ?? '', fontSize: 18),
+                         AppBoldFont(context, msg: viewmodel.productListDetails?.productDetails?.productVariantTitle ?? '', fontSize:
+                              16,),
                          // SizedBox(height: 10),
                          AppMediumFont(
-                           context,
+                           context, color: Colors.black.withOpacity(0.7),
                            msg:
                            "${viewmodel.productListDetails?.productShortDesc ?? ''}",
-                           fontSize: 16.0,
+                           fontSize: 14,
                          ),
                          Row(
                              mainAxisAlignment: MainAxisAlignment.start,
@@ -271,8 +272,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                viewmodel.productListDetails?.productDetails
                                    ?.productPrice !=
                                    ''
-                                   ? AppMediumFont(context,
-                                   msg: "₹ "
+                                   ? AppMediumFont(context,color: Colors.black.withOpacity(0.7),
+                                   msg: "₹"
                                        "${viewmodel.productListDetails?.productDetails?.productPrice ?? ''}",
                                    textDecoration:
                                    TextDecoration.lineThrough,
@@ -281,7 +282,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                SizedBox(width: 8.0), AppBoldFont(context,
                                    msg: "₹ "
                                        "${viewmodel.productListDetails?.productDetails?.productDiscountPrice ?? ''}",
-                                   fontSize: 18),SizedBox(width: 8.0),
+                                   fontSize: 16),SizedBox(width: 8.0),
                                AppMediumFont(context,
                                    msg: viewmodel
                                        .productListDetails
@@ -290,9 +291,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                        ''
                                        ? "${viewmodel.productListDetails?.productDetails?.productDiscountPercent}" +
                                        '% OFF'
-                                       : '',color: Colors.green,
-                                   fontSize: 14)
+                                       : '',color: GREEN,
+                                   fontSize: 16)
                              ]),
+                         SizedBox(height: 8),
                          Container(
                            child: ProductSkuView(
                                selected: true,
@@ -512,8 +514,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   //Bottom Navigation
   bottomNavigationButton() {
     return Container(
-        height: 80,
-        margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+        margin: EdgeInsets.only(top: 5),
         child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

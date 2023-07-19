@@ -37,12 +37,12 @@ class AppTextField extends StatefulWidget {
   FocusNode? focusNode;
   bool? isSearch;
   bool? autoFocus = false;
-
+  bool? isRead;
   AppTextField(
       {Key? key,
         this.isShowCountryCode,
         required this.controller,
-        this.verifySubmit,
+        this.verifySubmit, this.isRead,
         this.labelText,
         this.isVerifyNumber,
         this.secureText,
@@ -87,6 +87,7 @@ class _CustomTextFieldState extends State<AppTextField> {
         child: FocusScope(
             node: FocusScopeNode(),
             child: TextField(
+                readOnly: widget.isRead ?? false,
                 autofocus: widget.autoFocus ?? false,
                 maxLines: widget.maxLine,
                 onChanged: widget.onChanged,

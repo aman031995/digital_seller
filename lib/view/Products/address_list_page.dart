@@ -93,7 +93,7 @@ else{
     ChangeNotifierProvider.value(
         value: cartViewModel,
         child: Consumer<CartViewModel>(builder: (context, cartViewData, _) {
-          cartViewModel.addressListModel?.length==0?null  : addressId=cartViewModel.addressListModel?[0].addressId;
+          cartViewModel.addressListModel?.length==0?0  : addressId=cartViewModel.addressListModel?[0].addressId;
           return
             Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -251,7 +251,6 @@ else{
                                   );
                                 }),
                           ),
-                          SizedBox(height: 10),
                           Card(
                             child: Container(
                               child: Column(
@@ -299,8 +298,43 @@ else{
                               ),
                             ),
                           ),
-                          SizedBox(height: 10),
                           // Total Bill detail
+                          widget.buynow==true? Card(
+                            child: Column(
+                                children:  cartListData!.checkoutDetails!
+                                    .map((e){
+                                  return Container(
+                                    width: SizeConfig.screenWidth,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 8),
+                                        e.name=='Total items'?  priceDetailWidget(context, e.name ?? "", "1"):
+                                        priceDetailWidget(context, e.name ?? "", e.value ??""),
+                                        SizedBox(height: 8)
+                                      ],
+                                    ),
+                                  );
+                                } ).toList()
+                            ),
+                          ):
+                          Card(
+                            child: Column(
+                                children: cartViewModel.cartListData!.checkoutDetails!
+                                    .map((e){
+                                  return Container(
+                                    width: SizeConfig.screenWidth,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(height: 8),
+                                        e.name=='Total items'?  priceDetailWidget(context, e.name ?? "", "1"):
+                                        priceDetailWidget(context, e.name ?? "", e.value ??""),
+                                        SizedBox(height: 8)
+                                      ],
+                                    ),
+                                  );
+                                } ).toList()
+                            ),
+                          ),
                          // billCardMobile(context,cartViewModel),
                           SizedBox(height: 10),
                           Row(

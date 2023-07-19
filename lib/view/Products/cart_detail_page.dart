@@ -42,7 +42,7 @@ class _CartDetailState extends State<CartDetail> {
 
   @override
   void initState() {
-    SessionStorageHelper.removeValue('payment');
+    SessionStorageHelper.removeValue('token');
     cartViewData.getCartCount(context);
     cartViewData.updateCartCount(context, widget.itemCount ?? '');
     cartViewData.getCartListData(context);
@@ -99,99 +99,254 @@ class _CartDetailState extends State<CartDetail> {
                             children: [
                               Container(
                                 height: 120,
-                                width: SizeConfig.screenWidth * 0.4,
+                                width: 150,
                                 color: WHITE_COLOR,
                                 margin: EdgeInsets.only( top: 5, right: 8, bottom: 5),
                                 child: Image.network(
                                   itemInCart?.productDetails?.productImages?[0] ?? "",
                                 ),
                               ),
-                              Row(
-                                  children: [
+
+                              Container(
+                                height: 30,
+                                width:120,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Theme.of(
+                                            context)
+                                            .canvasColor
+                                            .withOpacity(
+                                            0.2),
+                                        width: 1)),
+                                margin:
+                                EdgeInsets.only(
+                                    left: 5,
+                                    top: 5,
+                                    right: 8,
+                                    bottom: 5),
+                                child: Row(children: [
+                                  Expanded(
+                                    flex: 25,
+                                    child:
                                     GestureDetector(
-                                      child: itemInCart?.cartQuantity == 1
-                                          ? Card(
-                                        elevation: 3,
-                                        child: Container(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: Icon(Icons.delete, size: 20)),
-                                      )
-                                          : Card(
-                                        elevation:3,
-                                        child: Container(
-                                          height: 17,
-                                          width: 17,
-                                          padding: const EdgeInsets.all(1.0),
-                                          margin: const EdgeInsets.all(5.0),
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: BLACK_COLOR,
-                                          ),
-                                          child: Icon(Icons.remove, size: 13.0, color: WHITE_COLOR,
-                                          ),
-                                        ),
-                                      ),
-                                      onTap: () async {
-                                        if (cartViewData.deactiveQuantity == false) {
-                                          cartViewData.deactiveQuantity = true;
-                                          itemInCart?.cartQuantity = (itemInCart.cartQuantity ?? 1) - 1;
-                                          if (itemInCart!.cartQuantity! > 0) {
-                                            cartViewData.addToCart(itemInCart.productId ?? '',
-                                                itemInCart.cartQuantity.toString(),
-                                                itemInCart.productDetails?.variantId ?? '',
-                                                true, context,
-                                                    (result, isSuccess) {});
+                                      child: itemInCart
+                                          ?.cartQuantity ==
+                                          1
+                                          ? Container(
+                                          child: Icon(
+                                              Icons
+                                                  .delete,
+                                              size:
+                                              18))
+                                          : Icon(
+                                          Icons
+                                              .remove,
+                                          size:
+                                          18.0),
+                                      onTap:
+                                          () async {
+                                        if (cartViewData
+                                            .deactiveQuantity ==
+                                            false) {
+                                          cartViewData
+                                              .deactiveQuantity =
+                                          true;
+                                          itemInCart
+                                              ?.cartQuantity =
+                                              (itemInCart.cartQuantity ??
+                                                  1) -
+                                                  1;
+                                          if (itemInCart!
+                                              .cartQuantity! >
+                                              0) {
+                                            cartViewData.addToCart(
+                                                itemInCart.productId ??
+                                                    '',
+                                                itemInCart
+                                                    .cartQuantity
+                                                    .toString(),
+                                                itemInCart.productDetails?.variantId ??
+                                                    '',
+                                                true,
+                                                context,
+                                                    (result,
+                                                    isSuccess) {});
                                           } else {
-                                            if (itemInCart.cartQuantity == 0)
+                                            if (itemInCart
+                                                .cartQuantity ==
+                                                0)
                                               cartViewData.removeProductFromCart(
                                                   context,
-                                                  itemInCart.productDetails?.variantId ?? "", index);
+                                                  itemInCart.productDetails?.variantId ??
+                                                      "",
+                                                  index);
                                           }
                                         }
                                       },
                                     ),
-                                    Container(
-                                        height:24,
-                                        alignment: Alignment.center,
-                                        color: Colors.grey.withOpacity(0.4),
-                                        padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                                  ),
+                                  Container(
+                                      height: 30,
+                                      width: 1,
+                                      color: Theme.of(
+                                          context)
+                                          .canvasColor
+                                          .withOpacity(
+                                          0.2)),
+                                  Expanded(
+                                    flex: 50,
+                                    child: Container(
+                                        height: 24,
+                                        alignment:
+                                        Alignment
+                                            .center,
+                                        padding: EdgeInsets.only(
+                                            left:
+                                            20.0,
+                                            right:
+                                            20.0),
                                         child: AppBoldFont(
                                             context,
-                                            color: BLACK_COLOR,
-                                            msg: itemInCart?.cartQuantity.toString() ?? "",
-                                            fontSize: 16.0)),
+                                            color:
+                                            BLACK_COLOR,
+                                            msg: itemInCart
+                                                ?.cartQuantity
+                                                .toString() ??
+                                                "",
+                                            fontSize:
+                                            16.0)),
+                                  ),
+                                  Container(
+                                      height: 30,
+                                      width: 1,
+                                      color: Theme.of(
+                                          context)
+                                          .canvasColor
+                                          .withOpacity(
+                                          0.2)),
+                                  Expanded(
+                                    flex: 25,
+                                    child:
                                     GestureDetector(
-                                      child: Card(
-                                        elevation: 3,
-                                        child: Container(
-                                          height: 17,
-                                          width: 17,
-                                          padding: const EdgeInsets.all(1.0),
-                                          margin: const EdgeInsets.all(4.0),
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: BLACK_COLOR,),
-                                          child: Icon(
-                                            Icons.add,
-                                            size: 13.0,
-                                            color: WHITE_COLOR,
-                                          ),
-                                        ),
+                                      child: Icon(
+                                        Icons.add,
+                                        size: 18.0,
                                       ),
                                       onTap: () {
-                                        if (cartViewData.activeQuantity == false) {
-                                          cartViewData.activeQuantity = true;
-                                          itemInCart?.cartQuantity = (itemInCart.cartQuantity ?? 1) + 1;
+                                        if (cartViewData
+                                            .activeQuantity ==
+                                            false) {
+                                          cartViewData
+                                              .activeQuantity =
+                                          true;
+                                          itemInCart
+                                              ?.cartQuantity =
+                                              (itemInCart.cartQuantity ??
+                                                  1) +
+                                                  1;
                                           cartViewData.addToCart(
-                                              itemInCart?.productId ?? '',
-                                              itemInCart?.cartQuantity.toString() ?? '1',
-                                              itemInCart?.productDetails?.variantId ?? '',
-                                              true, context,
-                                                  (result, isSuccess) {});
+                                              itemInCart?.productId ??
+                                                  '',
+                                              itemInCart?.cartQuantity.toString() ??
+                                                  '1',
+                                              itemInCart?.productDetails?.variantId ??
+                                                  '',
+                                              true,
+                                              context,
+                                                  (result,
+                                                  isSuccess) {});
                                         }
                                       },
                                     ),
-                                  ]),
+                                  ),
+                                ]),
+                              ),
+                              // Row(
+                              //     children: [
+                              //       GestureDetector(
+                              //         child: itemInCart?.cartQuantity == 1
+                              //             ? Card(
+                              //           elevation: 3,
+                              //           child: Container(
+                              //               padding: const EdgeInsets.all(4.0),
+                              //               child: Icon(Icons.delete, size: 20)),
+                              //         )
+                              //             : Card(
+                              //           elevation:3,
+                              //           child: Container(
+                              //             height: 17,
+                              //             width: 17,
+                              //             padding: const EdgeInsets.all(1.0),
+                              //             margin: const EdgeInsets.all(5.0),
+                              //             decoration: BoxDecoration(
+                              //               shape: BoxShape.circle,
+                              //               color: BLACK_COLOR,
+                              //             ),
+                              //             child: Icon(Icons.remove, size: 13.0, color: WHITE_COLOR,
+                              //             ),
+                              //           ),
+                              //         ),
+                              //         onTap: () async {
+                              //           if (cartViewData.deactiveQuantity == false) {
+                              //             cartViewData.deactiveQuantity = true;
+                              //             itemInCart?.cartQuantity = (itemInCart.cartQuantity ?? 1) - 1;
+                              //             if (itemInCart!.cartQuantity! > 0) {
+                              //               cartViewData.addToCart(itemInCart.productId ?? '',
+                              //                   itemInCart.cartQuantity.toString(),
+                              //                   itemInCart.productDetails?.variantId ?? '',
+                              //                   true, context,
+                              //                       (result, isSuccess) {});
+                              //             } else {
+                              //               if (itemInCart.cartQuantity == 0)
+                              //                 cartViewData.removeProductFromCart(
+                              //                     context,
+                              //                     itemInCart.productDetails?.variantId ?? "", index);
+                              //             }
+                              //           }
+                              //         },
+                              //       ),
+                              //       Container(
+                              //           height:24,
+                              //           alignment: Alignment.center,
+                              //           color: Colors.grey.withOpacity(0.4),
+                              //           padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                              //           child: AppBoldFont(
+                              //               context,
+                              //               color: BLACK_COLOR,
+                              //               msg: itemInCart?.cartQuantity.toString() ?? "",
+                              //               fontSize: 16.0)),
+                              //       GestureDetector(
+                              //         child: Card(
+                              //           elevation: 3,
+                              //           child: Container(
+                              //             height: 17,
+                              //             width: 17,
+                              //             padding: const EdgeInsets.all(1.0),
+                              //             margin: const EdgeInsets.all(4.0),
+                              //             decoration: BoxDecoration(
+                              //               shape: BoxShape.circle,
+                              //               color: BLACK_COLOR,),
+                              //             child: Icon(
+                              //               Icons.add,
+                              //               size: 13.0,
+                              //               color: WHITE_COLOR,
+                              //             ),
+                              //           ),
+                              //         ),
+                              //         onTap: () {
+                              //           if (cartViewData.activeQuantity == false) {
+                              //             cartViewData.activeQuantity = true;
+                              //             itemInCart?.cartQuantity = (itemInCart.cartQuantity ?? 1) + 1;
+                              //             cartViewData.addToCart(
+                              //                 itemInCart?.productId ?? '',
+                              //                 itemInCart?.cartQuantity.toString() ?? '1',
+                              //                 itemInCart?.productDetails?.variantId ?? '',
+                              //                 true, context,
+                              //                     (result, isSuccess) {});
+                              //           }
+                              //         },
+                              //       ),
+                              //     ]),
                               SizedBox(height: 10)
                             ],
                           ),
@@ -310,7 +465,7 @@ class _CartDetailState extends State<CartDetail> {
                       child: Consumer<CartViewModel>(
                           builder: (context, cartViewData, _) {
                             return Container(
-                              height: 60,
+                              height: 50,
                               margin: EdgeInsets.only(left: 10,right: 10),
                               width: SizeConfig.screenWidth,
                               child: checkoutButton(
@@ -381,92 +536,160 @@ class _CartDetailState extends State<CartDetail> {
                                               fit: BoxFit.fill,
                                               ),
                                             ),
-                                            Row(
-                                                children: [
-                                              GestureDetector(
-                                                child: itemInCart?.cartQuantity == 1
-                                                    ? Card(
-                                                    elevation: 3,
-                                                      child: Container(
-                                                          padding: const EdgeInsets.all(4.0),
-                                                          child: Icon(Icons.delete, size: 20)),
-                                                    )
-                                                    : Card(
-                                                  elevation:3,
-                                                      child: Container(
-                                                          height: 17,
-                                                          width: 17,
-                                                          padding: const EdgeInsets.all(1.0),
-                                                        margin: const EdgeInsets.all(5.0),
-                                                          decoration: BoxDecoration(
-                                                            shape: BoxShape.circle,
-                                                            color: BLACK_COLOR,
-                                                          ),
-                                                          child: Icon(Icons.remove, size: 13.0, color: WHITE_COLOR,
-                                                          ),
-                                                        ),
-                                                    ),
-                                                onTap: () async {
-                                                  if (cartViewData.deactiveQuantity == false) {
-                                                    cartViewData.deactiveQuantity = true;
-                                                    itemInCart?.cartQuantity = (itemInCart.cartQuantity ?? 1) - 1;
-                                                    if (itemInCart!.cartQuantity! > 0) {
-                                                      cartViewData.addToCart(itemInCart.productId ?? '',
-                                                          itemInCart.cartQuantity.toString(),
-                                                          itemInCart.productDetails?.variantId ?? '',
-                                                          true, context,
-                                                          (result, isSuccess) {});
-                                                    } else {
-                                                      if (itemInCart.cartQuantity == 0)
-                                                        cartViewData.removeProductFromCart(
-                                                            context,
-                                                            itemInCart.productDetails?.variantId ?? "", index);
-                                                    }
-                                                  }
-                                                },
-                                              ),
-                                              Container(
-                                                height:24,
-                                                alignment: Alignment.center,
-                                                color: Colors.grey.withOpacity(0.4),
-                                                  padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                                                  child: AppBoldFont(
-                                                      context,
-                                                      color: BLACK_COLOR,
-                                                      msg: itemInCart?.cartQuantity.toString() ?? "",
-                                                      fontSize: 16.0)),
-                                              GestureDetector(
-                                                child: Card(
-                                                  elevation: 3,
-                                                  child: Container(
-                                                    height: 17,
-                                                    width: 17,
-                                                    padding: const EdgeInsets.all(1.0),
-                                                    margin: const EdgeInsets.all(4.0),
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      color: BLACK_COLOR,),
-                                                    child: Icon(
-                                                      Icons.add,
-                                                      size: 13.0,
-                                                      color: WHITE_COLOR,
-                                                    ),
+                                            Container(
+                                              height: 30,
+                                              width:120,
+                                              decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Theme.of(
+                                                          context)
+                                                          .canvasColor
+                                                          .withOpacity(
+                                                          0.2),
+                                                      width: 1)),
+                                              margin:
+                                              EdgeInsets.only(
+                                                  left: 5,
+                                                  top: 5,
+                                                  right: 8,
+                                                  bottom: 5),
+                                              child: Row(children: [
+                                                Expanded(
+                                                  flex: 25,
+                                                  child:
+                                                  GestureDetector(
+                                                    child: itemInCart
+                                                        ?.cartQuantity ==
+                                                        1
+                                                        ? Container(
+                                                        child: Icon(
+                                                            Icons
+                                                                .delete,
+                                                            size:
+                                                            18))
+                                                        : Icon(
+                                                        Icons
+                                                            .remove,
+                                                        size:
+                                                        18.0),
+                                                    onTap:
+                                                        () async {
+                                                      if (cartViewData
+                                                          .deactiveQuantity ==
+                                                          false) {
+                                                        cartViewData
+                                                            .deactiveQuantity =
+                                                        true;
+                                                        itemInCart
+                                                            ?.cartQuantity =
+                                                            (itemInCart.cartQuantity ??
+                                                                1) -
+                                                                1;
+                                                        if (itemInCart!
+                                                            .cartQuantity! >
+                                                            0) {
+                                                          cartViewData.addToCart(
+                                                              itemInCart.productId ??
+                                                                  '',
+                                                              itemInCart
+                                                                  .cartQuantity
+                                                                  .toString(),
+                                                              itemInCart.productDetails?.variantId ??
+                                                                  '',
+                                                              true,
+                                                              context,
+                                                                  (result,
+                                                                  isSuccess) {});
+                                                        } else {
+                                                          if (itemInCart
+                                                              .cartQuantity ==
+                                                              0)
+                                                            cartViewData.removeProductFromCart(
+                                                                context,
+                                                                itemInCart.productDetails?.variantId ??
+                                                                    "",
+                                                                index);
+                                                        }
+                                                      }
+                                                    },
                                                   ),
                                                 ),
-                                                onTap: () {
-                                                  if (cartViewData.activeQuantity == false) {
-                                                    cartViewData.activeQuantity = true;
-                                                    itemInCart?.cartQuantity = (itemInCart.cartQuantity ?? 1) + 1;
-                                                    cartViewData.addToCart(
-                                                        itemInCart?.productId ?? '',
-                                                        itemInCart?.cartQuantity.toString() ?? '1',
-                                                        itemInCart?.productDetails?.variantId ?? '',
-                                                        true, context,
-                                                        (result, isSuccess) {});
-                                                  }
-                                                },
-                                              ),
-                                            ]),
+                                                Container(
+                                                    height: 30,
+                                                    width: 1,
+                                                    color: Theme.of(
+                                                        context)
+                                                        .canvasColor
+                                                        .withOpacity(
+                                                        0.2)),
+                                                Expanded(
+                                                  flex: 50,
+                                                  child: Container(
+                                                      height: 24,
+                                                      alignment:
+                                                      Alignment
+                                                          .center,
+                                                      padding: EdgeInsets.only(
+                                                          left:
+                                                          20.0,
+                                                          right:
+                                                          20.0),
+                                                      child: AppBoldFont(
+                                                          context,
+                                                          color:
+                                                          BLACK_COLOR,
+                                                          msg: itemInCart
+                                                              ?.cartQuantity
+                                                              .toString() ??
+                                                              "",
+                                                          fontSize:
+                                                          16.0)),
+                                                ),
+                                                Container(
+                                                    height: 30,
+                                                    width: 1,
+                                                    color: Theme.of(
+                                                        context)
+                                                        .canvasColor
+                                                        .withOpacity(
+                                                        0.2)),
+                                                Expanded(
+                                                  flex: 25,
+                                                  child:
+                                                  GestureDetector(
+                                                    child: Icon(
+                                                      Icons.add,
+                                                      size: 18.0,
+                                                    ),
+                                                    onTap: () {
+                                                      if (cartViewData
+                                                          .activeQuantity ==
+                                                          false) {
+                                                        cartViewData
+                                                            .activeQuantity =
+                                                        true;
+                                                        itemInCart
+                                                            ?.cartQuantity =
+                                                            (itemInCart.cartQuantity ??
+                                                                1) +
+                                                                1;
+                                                        cartViewData.addToCart(
+                                                            itemInCart?.productId ??
+                                                                '',
+                                                            itemInCart?.cartQuantity.toString() ??
+                                                                '1',
+                                                            itemInCart?.productDetails?.variantId ??
+                                                                '',
+                                                            true,
+                                                            context,
+                                                                (result,
+                                                                isSuccess) {});
+                                                      }
+                                                    },
+                                                  ),
+                                                ),
+                                              ]),
+                                            ),
                                             SizedBox(height: 10)
                                           ],
                                         ),

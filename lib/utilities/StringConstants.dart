@@ -126,13 +126,13 @@ class StringConstant {
 
   static String wishlist = " Wishlist ";
   static String remove = "Remove";
-  static String totalItems = "Total Items : ";
-  static String basePrice = "Base Price : ";
-  static String shipping = "Shipping : ";
+  static String totalItems = "Total Items ";
+  static String basePrice = "Base Price ";
+  static String shipping = "Shipping  ";
   static String checkout = "CHECKOUT";
-  static String discount = "Discount : ";
-  static String shippingCharge = "Shipping Charge : ";
-  static String totalAmount = "Total Amount : ";
+  static String discount = "Discount ";
+  static String shippingCharge = "Shipping Charge  ";
+  static String totalAmount = "Total Amount ";
   static String continueText = "CONTINUE";
   static String goToCart = 'GO TO CART';
   static String addToBag = 'ADD TO BAG';

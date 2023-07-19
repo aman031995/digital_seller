@@ -4,6 +4,7 @@ import 'package:TychoStream/local_storage.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/cart_detail_model.dart';
 import 'package:TychoStream/model/data/checkout_data_model.dart';
+import 'package:TychoStream/model/data/city_state_model.dart';
 import 'package:TychoStream/model/data/create_order_model.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/model/data/promocode_data_model.dart';
@@ -59,7 +60,8 @@ class CartViewModel extends ChangeNotifier {
 
   PromoCodeDataModel? _promoCodeDataModel;
   PromoCodeDataModel? get promocodeData => _promoCodeDataModel;
-
+  CityStateModel? _cityStateModel;
+  CityStateModel? get citystateModel=> _cityStateModel;
   CreateOrderModel? _createOrderModel;
   CreateOrderModel? get createOrderModel => _createOrderModel;
   List<CategoryListModel>? _categoryListModel;
@@ -168,6 +170,19 @@ class CartViewModel extends ChangeNotifier {
       nextPage = _newProductListModel?.pagination?.next ?? 1;
       _productListModel?.productList?.addAll(_newProductListModel!.productList!);
     }
+  }
+  // GetProductList Method
+  Future<void> getCityState(BuildContext context, String pincode, NetworkResponseHandler responseHandler) async {
+    _cartRepo.getCityState(context, pincode, (result, isSuccess) {
+      if (isSuccess) {
+        _cityStateModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        AppIndicator.disposeIndicator();
+        responseHandler(result, isSuccess);
+        notifyListeners();
+      }
+
+    }
+    );
   }
   //buyNow Method
   Future<void> buyNow(

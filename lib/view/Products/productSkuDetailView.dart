@@ -1,6 +1,7 @@
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:flutter/material.dart';
@@ -22,14 +23,16 @@ class ProductSkuView extends StatelessWidget {
           return Column(
             children: skuDetails!.map((e) {
               return Container(
-                  padding: EdgeInsets.all(10),
+                  padding: ResponsiveWidget.isMediumScreen(context)
+                      ? EdgeInsets.only(bottom: 10) :EdgeInsets.all(10),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(child: _text(productList, e, context)),
                         SizedBox(height: 8),
                         Container(
-                            height: 50,
+                            height:ResponsiveWidget.isMediumScreen(context)
+                                ? 35:50,
                             child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: e.data?.length,
@@ -51,10 +54,10 @@ class ProductSkuView extends StatelessWidget {
                                     child: e.variationKey == 'color'
                                         ? Container(
                                             height: productList?.color?.name == itemName
-                                                ? 40
+                                                ? 35
                                                 : 35,
                                             width: productList?.color?.name == itemName
-                                                ? 40
+                                                ? 35
                                                 : 35,
                                             margin:
                                                 EdgeInsets.only(right: 15),
@@ -72,13 +75,12 @@ class ProductSkuView extends StatelessWidget {
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.horizontal(left: Radius.circular(10), right: Radius.circular(10)),
                                                 shape: BoxShape.rectangle,
-                                                color: _color(e, context, itemName, selectedProduct, index),
-                                                border: Border.all(color: Theme.of(context).canvasColor, width: 2)),
+                                                border: Border.all(color:_color(e, context, itemName, selectedProduct, index), width: 2)),
                                             child: AppBoldFont(
                                               context,
                                               msg: "${itemName}",
                                               fontSize: 14.0,
-                                              color: Theme.of(context).canvasColor,
+                                              color:_textcolor(e, context, itemName, selectedProduct, index),
                                             )),
                                   );
                                 }))
@@ -128,30 +130,102 @@ class ProductSkuView extends StatelessWidget {
 
   _text(DefaultVariationSku? defaultProduct, ProductSkuDetails e, BuildContext context) {
     if (e.variationKey == 'color') {
-      return AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.color?.name}', fontSize: 18);
+      return RichText(
+          text: TextSpan(
+              text: '${e.variationName!}  :  ',
+              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+              children: <InlineSpan>[
+                TextSpan(
+                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                  text: '${defaultProduct?.color?.name}',
+                )
+              ]
+          ));
+
+      AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.color?.name}', fontSize: 18);
     } else if (e.variationKey == 'unit_count') {
-      return AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.unitCount?.name}', fontSize: 18);
+      return RichText(
+          text: TextSpan(
+              text: '${e.variationName!}  :  ',
+              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+              children: <InlineSpan>[
+                TextSpan(
+                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                  text: '${defaultProduct?.unitCount?.name}',
+                )
+              ]
+          ));
+
+      // AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.unitCount?.name}', fontSize: 18);
     } else if (e.variationKey == 'size') {
-      return AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.size?.name}', fontSize: 18);
+      return RichText(
+          text: TextSpan(
+              text: '${e.variationName!}  :  ',
+              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+              children: <InlineSpan>[
+                TextSpan(
+                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                  text: '${defaultProduct?.size?.name}',
+                )
+              ]
+          ));
+
+      //AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.size?.name}', fontSize: 18);
     } else if (e.variationKey == 'material_type') {
-      return AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.materialType?.name}', fontSize: 18);
+      return
+        RichText(
+            text: TextSpan(
+                text: '${e.variationName!}  :  ',
+                style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                children: <InlineSpan>[
+                  TextSpan(
+                    style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                    text: '${defaultProduct?.materialType?.name}',
+                  )
+                ]
+            ));
+      //AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.materialType?.name}', fontSize: 18);
     } else if (e.variationKey == 'style') {
-      return AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.style?.name}', fontSize: 18);
+      return  RichText(
+          text: TextSpan(
+              text: '${e.variationName!}  :  ',
+              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+              children: <InlineSpan>[
+                TextSpan(
+                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                  text: '${defaultProduct?.style?.name}',
+                )
+              ]
+          ));
+      //AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.style?.name}', fontSize: 18);
     }
   }
 
+
   _color(ProductSkuDetails e, BuildContext context, String? itemName, List<SkuData>? selectedProduct, int index) {
     if (e.variationKey == 'unit_count') {
-      return productList?.unitCount?.name == itemName ? Theme.of(context).primaryColor : TRANSPARENT_COLOR;
+      return productList?.unitCount?.name == itemName ? Theme.of(context).primaryColor.withOpacity(0.8) : Theme.of(context).canvasColor.withOpacity(0.3);
     } else if (e.variationKey == 'size') {
-      return productList?.size?.name == itemName ? Theme.of(context).primaryColor : TRANSPARENT_COLOR;
+      return productList?.size?.name == itemName ? Theme.of(context).primaryColor.withOpacity(0.8) : Theme.of(context).canvasColor.withOpacity(0.3);
     } else if (e.variationKey == 'material_type') {
-      return productList?.materialType?.name == itemName ? Theme.of(context).primaryColor : TRANSPARENT_COLOR;
+      return productList?.materialType?.name == itemName ? Theme.of(context).primaryColor.withOpacity(0.8) : Theme.of(context).canvasColor.withOpacity(0.3);
     } else if (e.variationKey == 'style') {
-      return productList?.style?.name == itemName ? Theme.of(context).primaryColor : TRANSPARENT_COLOR;
+      return productList?.style?.name == itemName ? Theme.of(context).primaryColor.withOpacity(0.8) : Theme.of(context).canvasColor.withOpacity(0.3);
     } else {
       return TRANSPARENT_COLOR;
     }
   }
-
+  _textcolor(ProductSkuDetails e, BuildContext context, String? itemName, List<SkuData>? selectedProduct, int index) {
+    if (e.variationKey == 'unit_count') {
+      return productList?.unitCount?.name == itemName ?  Theme.of(context).canvasColor.withOpacity(0.8) : Theme.of(context).canvasColor.withOpacity(0.3);
+    } else if (e.variationKey == 'size') {
+      return productList?.size?.name == itemName ?  Theme.of(context).canvasColor.withOpacity(0.8) : Theme.of(context).canvasColor.withOpacity(0.3);
+    } else if (e.variationKey == 'material_type') {
+      return productList?.materialType?.name == itemName ?  Theme.of(context).canvasColor.withOpacity(0.8): Theme.of(context).canvasColor.withOpacity(0.3);
+    } else if (e.variationKey == 'style') {
+      return productList?.style?.name == itemName ? Theme.of(context).canvasColor.withOpacity(0.8) : Theme.of(context).canvasColor.withOpacity(0.3);
+    } else {
+      return TRANSPARENT_COLOR;
+    }
+  }
 }

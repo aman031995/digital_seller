@@ -68,7 +68,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
                   autoPlayInterval: Duration(seconds: 2),
                   scrollDirection: Axis.horizontal,
                   scrollPhysics: PageScrollPhysics(),
-                  viewportFraction:  1,
+                  viewportFraction:  0.6,
                   enlargeCenterPage: false,
                   autoPlayCurve: Curves.linear,
                   aspectRatio:16/9,
@@ -173,15 +173,16 @@ class _CommonCarouselState extends State<CommonCarousel> {
     var imageSliders = generateImageTileMobile(context);
     return Center(
       child: Container(
-        height: SizeConfig.screenHeight/3,
-        width: SizeConfig.screenWidth/1.1,
+        margin: EdgeInsets.only(left: 20.0,right: 20,top: 8),
+        width: SizeConfig.screenWidth,
         child: CarouselSlider(
           items: imageSliders,
           options: CarouselOptions(
+              height: SizeConfig.screenHeight*0.45,
               scrollDirection: Axis.horizontal,
               scrollPhysics: PageScrollPhysics(),
               viewportFraction: 1,
-              aspectRatio: 1.8,
+              enableInfiniteScroll: true,
               enlargeCenterPage: false,
               autoPlay: true,
               autoPlayInterval: Duration(seconds: 5),
@@ -201,17 +202,14 @@ class _CommonCarouselState extends State<CommonCarousel> {
         focusNode: carouselFocus,
         onTap: () async {
           redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);},
-        child: Container(
-          height: SizeConfig.screenHeight/3,width: SizeConfig.screenWidth,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(1.0),
-            image: DecorationImage(
-                image: NetworkImage(element.bannerUrl?? ""),
-                fit: BoxFit.fill
-            ),
-          ),
-          // child: Image.network(element.bannerFile ?? "",
-          //     fit: BoxFit.fill, height: SizeConfig.screenHeight)
+        child:  Container(
+          child: CachedNetworkImage(
+              imageUrl:element.bannerUrl ?? "",
+              fit: BoxFit.fill,
+              placeholder: (context, url) => Center(
+                  child: CircularProgressIndicator(
+                      color:
+                      Theme.of(context).canvasColor.withOpacity(0.5)))),
         )))
         .toList();
   }

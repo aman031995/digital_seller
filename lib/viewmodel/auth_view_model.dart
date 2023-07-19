@@ -227,6 +227,7 @@ class AuthViewModel with ChangeNotifier {
           if (isSuccess) {
             handler!(Result.success(result), isSuccess);
             AppIndicator.disposeIndicator();
+           // Navigator.pop(context);
             ToastMessage.message(
                 ((result as SuccessState).value as ASResponseModal).message);
             print('otp verified Successfully');
@@ -257,8 +258,7 @@ class AuthViewModel with ChangeNotifier {
               print('Login api Successfully');
               AppDataManager.getInstance.updateUserDetails(_userInfoModel!);
               AppIndicator.disposeIndicator();
-              ResponsiveWidget.isMediumScreen(context) ? null :
-              product==true?   Navigator.pop(context):context.router.push(HomePageWeb());
+              product==true?  Navigator.pop(context):context.router.push(HomePageWeb());
               // GoRouter.of(context).pushNamed(RoutesName.home);
               // Navigator.pop(context);
               // AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.bottomNavigation, screenName: RouteBuilder.homePage);

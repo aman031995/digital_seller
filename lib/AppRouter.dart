@@ -31,6 +31,7 @@ class AppRouter extends $AppRouter {
 
           } else {
             ToastMessage.message("Please Login User");
+            resolver.redirect(HomePageWeb());
           }
         },
       )]),
@@ -42,7 +43,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-          //  resolver.redirect(HomePageWeb());
+            resolver.redirect(HomePageWeb());
           }
         },
       )]),
@@ -54,7 +55,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-
+            resolver.redirect(HomePageWeb());
           }
         },
       )]),
@@ -79,13 +80,14 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
+            resolver.redirect(HomePageWeb());
           }
         },
       )]),
     AutoRoute(page: AddressListPage.page,path: '/AddressListPage/:buynow',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
-              token= SessionStorageHelper.getValue("payment");
+              token= SessionStorageHelper.getValue("token");
           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
           if(token==null){
             resolver.next();
@@ -94,7 +96,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             resolver.redirect(HomePageWeb());
-            // ToastMessage.message("Please Login User");
+             ToastMessage.message("Please Login User");
           }
         },
       )]),
@@ -106,6 +108,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
+            resolver.redirect(HomePageWeb());
 
           }
         },
@@ -132,7 +135,7 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-            //resolver.redirect(HomePageWeb());
+            resolver.redirect(HomePageWeb());
           }
         },
       )]),

@@ -1,4 +1,6 @@
 import 'package:TychoStream/model/data/order_data_model.dart';
+import 'package:TychoStream/utilities/AppColor.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -101,39 +103,40 @@ class _OrderDetailsState extends State<OrderDetails> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    width: 300,
-                    child: AppBoldFont(context,maxLines: 1,
-                        msg: '${getTitle(index)}', fontSize: 20.0),
+                    width:  ResponsiveWidget.isMediumScreen(context)
+                        ?100:300,
+                    child: AppBoldFont(context,maxLines: 2,
+                        msg: '${getTitle(index)}', fontSize: 16.0,),
                   ),
                   SizedBox(
                     height: 5,
                   ),
-                  Row(
-                    children: [
-                      AppMediumFont(
-                          context,
-                          msg: "₹" +
-                              "${widget.orderItem?.itemDetails?[index].productDetails?.productDiscountPrice}",
-                          fontSize: 16.0),
-                      SizedBox(width: 5),
-
-                      AppMediumFont(
-                          context,
-                          msg: "${widget.orderItem?.itemDetails?[index].productDetails?.productPrice}",
-                          textDecoration:
-                          TextDecoration
-                              .lineThrough,
-                          fontSize: 14.0),
-                      SizedBox(width: 5),
-                      AppMediumFont(
-                          context,
-                          msg: "${widget.orderItem?.itemDetails?[index].productDetails?.productDiscountPercent}" +
-                              r" % OFF",
-                          color: Colors
-                              .green,
-                          fontSize: 14.0),
-                      SizedBox(width: 5),
-                    ],
+                  Container(
+                      width:  ResponsiveWidget.isMediumScreen(context)
+                          ?130:300,
+                    child: Row(
+                      children: [
+                        AppMediumFont(
+                            context,
+                            msg: "₹" +
+                                "${widget.orderItem?.itemDetails?[index].productDetails?.productDiscountPrice}",
+                            fontSize: 14.0),
+                        AppMediumFont(
+                            context,
+                            msg: "${widget.orderItem?.itemDetails?[index].productDetails?.productPrice}",
+                            textDecoration:
+                            TextDecoration
+                                .lineThrough,
+                            fontSize: 12.0),
+                        SizedBox(width: 2),
+                        AppMediumFont(
+                            context,
+                            msg: "${widget.orderItem?.itemDetails?[index].productDetails?.productDiscountPercent}" +
+                                r"%OFF",
+                            color: GREEN,
+                            fontSize: 12.0),
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 5,
@@ -166,8 +169,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8.0),
                     child: Image.network('${widget.orderItem?.itemDetails?[index].productDetails?.productImages?[0]}',
-                      height: 150,
-                      width: 150,fit: BoxFit.fill,
+                      height: ResponsiveWidget.isMediumScreen(context)
+                          ?80: 150,
+                      width: ResponsiveWidget.isMediumScreen(context)
+                          ?80: 150,fit: BoxFit.fill,
                     ),
                   )),
               SizedBox(width: 10)
@@ -262,12 +267,12 @@ class _OrderDetailsState extends State<OrderDetails> {
                   .of(context)
                   .cardColor, thickness: 1),
               priceDetailWidget(
-                  context, StringConstant.basePrice, "₹ " + '${widget.orderItem?.totalPrice}'),
+                  context, StringConstant.basePrice , '${widget.orderItem?.totalPrice}'),
               SizedBox(height: 3),
               priceDetailWidget(
-                  context, StringConstant.discountedPrice, "₹ " +'${widget.orderItem?.discountedprice}'),
+                  context, StringConstant.discountedPrice,'${widget.orderItem?.discountedprice}'),
               SizedBox(height: 3),
-              priceDetailWidget(context, StringConstant.shipping, "₹ " + '${widget.orderItem?.shippingCharge}'),
+              priceDetailWidget(context, StringConstant.shipping , '${widget.orderItem?.shippingCharge}'),
               SizedBox(height: 5),
               Divider(
                 height: 1,
@@ -278,7 +283,7 @@ class _OrderDetailsState extends State<OrderDetails> {
               ),
               SizedBox(height: 5),
               priceDetailWidget(
-                  context, StringConstant.totalAmount, "₹ " + '${widget.orderItem?.totalPaidAmount}'),
+                  context, StringConstant.totalAmount , '${widget.orderItem?.totalPaidAmount}'),
               SizedBox(height: 8)
             ]));
   }

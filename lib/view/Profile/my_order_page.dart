@@ -113,7 +113,8 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                                   Radius.circular(5.0))),
                                           width:ResponsiveWidget.isMediumScreen(context)
                                               ?  SizeConfig.screenWidth/1.2: 200,
-                                          height: SizeConfig.screenHeight/6,
+                                          height: ResponsiveWidget.isMediumScreen(context)
+                                              ?140 :SizeConfig.screenHeight/6,
                                           alignment: Alignment.topLeft,
                                           margin: EdgeInsets.only(top: 12, bottom: 12,left: 12,right: 12),
                                           padding: EdgeInsets.only(left: 10, right: 20,top: 20,bottom: 10),
@@ -159,17 +160,15 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                                                 .orderId}",
                                                         fontSize:ResponsiveWidget.isMediumScreen(context)
                                                             ?14: 16.0),
-                                                    Container(
-                                                      width: SizeConfig.screenWidth*0.15,
-                                                      child: AppMediumFont(context,
-                                                          msg:
-                                                          orderView.orderData
-                                                              ?.orderList?[index]
-                                                              .itemDetails?[0]
-                                                              .productDetails
-                                                              ?.productVariantTitle,
-                                                          fontSize: 18.0),
-                                                    ),
+                                                    AppMediumFont(context,
+                                                        msg:
+                                                        orderView.orderData
+                                                            ?.orderList?[index]
+                                                            .itemDetails?[0]
+                                                            .productDetails
+                                                            ?.productVariantTitle,
+                                                        fontSize: ResponsiveWidget.isMediumScreen(context)
+                                                            ?14:16.0,maxLines: 2),
                                                     SizedBox(height:5),
                                                     AppMediumFont(context,
                                                         msg: orderView.orderData
@@ -184,17 +183,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                                   ],
                                                 ),
                                               ),
-                                              // InkWell(
-                                              //     onTap: () {
-                                              //       // AppNavigator.push(context, OrderDetails(orderItem: orderView.orderData?.orderList?[index]));
-                                              //     },
-                                              //     child: ClipRRect(
-                                              //       child: Icon(
-                                              //         Icons.forward, size: 20,
-                                              //         color: Theme
-                                              //             .of(context)
-                                              //             .canvasColor,),
-                                              //     )),
+
                                             ],
                                           ),
                                         ),

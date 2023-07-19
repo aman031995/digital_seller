@@ -103,12 +103,11 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                   GridView.builder(
                     shrinkWrap: true,
                     controller: _scrollController,
-                    padding: EdgeInsets.only(left: 10,right: 10,top: 10),
+                  padding: EdgeInsets.all(8),
                     physics: BouncingScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, childAspectRatio: 0.56,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10),
+                        crossAxisCount: 2, childAspectRatio: 0.65,
+                       ),
                     itemCount:
                     viewmodel.productListModel?.productList?.length,
                     itemBuilder: (context, index) {
@@ -221,28 +220,23 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                   ],
                 ) ,
               );
-              // context.router.push(
-              //   ProductDetailPage(
-              //     productId: '${productListData?.productId}',
-              //     productdata: ['${viewmodel.cartItemCount}','${productListData?.productDetails?.variantId}','${productListData?.productDetails?.productColor}'],
-              //   ) ,
-              // );
+
             },
             child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5), color: Theme
-                  .of(context)
-                  .cardColor
-                  .withOpacity(0.7),
-              ),
+              color: Theme.of(context).cardColor.withOpacity(0.8),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  ImageSlider(
-                      images: productListData?.productDetails?.productImages,
+                  Expanded(
+                    flex: 90,
+                    child: ImageSlider(
+                        images: productListData?.productDetails?.productImages,
+                    ),
                   ),
-                  productGalleryTitleSection(context, productListData, true)
+                  Expanded(
+                      flex: 26,
+                      child: productGalleryTitleSection(context, productListData, true))
                 ],
               ),
             )),

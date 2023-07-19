@@ -1,6 +1,9 @@
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
 import 'package:TychoStream/model/data/checkout_data_model.dart';
+import 'package:TychoStream/model/data/city_state_model.dart';
+import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
+import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppTextField.dart';
@@ -49,8 +52,8 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
   // TextEditingController countryController = TextEditingController(text: "India");
   final validation = ValidationBloc();
   String? checkInternet;
-  final CartViewModel cartViewData = CartViewModel();
-
+  CartViewModel cartViewData = CartViewModel();
+  CityStateModel _cityStateModel=CityStateModel();
   @override
   void initState() {
 
@@ -146,18 +149,107 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                       SizedBox(
                         height: 10.0,
                       ),
-                      addAddressTextField(pinCodeController, StringConstant.pincode, TextInputType.number, validation.sinkPincode, 6, validation.pincode),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      addAddressTextField(cityController, StringConstant.cityName, TextInputType.streetAddress, validation.sinkCityName, 50, validation.cityName),
-                      SizedBox(
-                        height: 10.0,
-                      ),
-                      addAddressTextField(stateController, StringConstant.state, TextInputType.streetAddress, validation.sinkState, 50, validation.state),
-                      SizedBox(
-                        height: 10.0,
-                      ),
+                      StreamBuilder(
+                          stream: validation.pincode,
+                          builder: (context, snapshot) {
+                            return AppTextField(
+                                maxLine: null,
+                                prefixText: '',
+                                controller: pinCodeController,
+                                labelText: StringConstant.pincode,
+                                isShowCountryCode: true,
+                                isShowPassword: false,
+                                secureText: false,
+                                isColor: false,
+                                isTick: false,
+                                maxLength: 6,
+                                errorText: snapshot.hasError
+                                    ? snapshot.error.toString()
+                                    : null,
+                                onChanged: (m) {
+                                  validation.sinkPincode.add(m);
+                                  if(m.length==6){
+
+                                    cartViewData.getCityState(context, m, (result, isSuccess) {
+
+                                      _cityStateModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+                                      setState(() {
+                                        cityController.text=_cityStateModel.city ?? "";
+                                        stateController.text=_cityStateModel.state ?? "";
+                                      });
+                                    });
+
+                                  }},
+                                keyBoardType: TextInputType.number,
+                                onSubmitted: (m) {
+                                  setState(() {});
+                                });
+                          }),
+
+                      // addAddressTextField(pinCodeController, StringConstant.pincode, TextInputType.number, validation.sinkPincode, 6, validation.pincode),
+                      SizedBox(height: 10.0),
+                      StreamBuilder(
+                          stream: validation.cityName,
+                          builder: (context, snapshot) {
+                            return AppTextField(
+                                maxLine: null,
+                                prefixText: '',isRead: true,
+                                controller: cityController,
+                                labelText: StringConstant.cityName,
+                                isShowCountryCode: true,
+                                isShowPassword: false,
+                                secureText: false,
+                                isColor: false,
+                                isTick: false,
+                                maxLength: 20,
+                                errorText: snapshot.hasError
+                                    ? snapshot.error.toString()
+                                    : null,
+                                onChanged: (m) {
+                                  validation.sinkCityName.add(m);
+                                },
+                                keyBoardType: TextInputType.streetAddress,
+                                onSubmitted: (m) {
+                                  validation.sinkCityName.add(m);
+                                });
+                          }),
+                      SizedBox(height: 10.0),
+                      StreamBuilder(
+                          stream: validation.state,
+                          builder: (context, snapshot) {
+                            return AppTextField(
+                                maxLine: null,isRead: true,
+                                prefixText: '',
+                                controller: stateController,
+                                labelText: StringConstant.state,
+                                isShowCountryCode: true,
+                                isShowPassword: false,
+                                secureText: false,
+                                isColor: false,
+                                isTick: false,
+                                maxLength: 20,
+                                errorText: snapshot.hasError
+                                    ? snapshot.error.toString()
+                                    : null,
+                                onChanged: (m) {
+                                  validation.sinkState.add(m);
+                                  // if(m.length==6){
+                                  //   cartViewData.getCityState(context, m).then((value) {
+                                  //     if(value != null){
+                                  //       cityController.text=value.city ?? "";
+                                  //       stateController.text=value.state ?? "";
+                                  //       setState(() {});
+                                  //     }
+                                  //   });
+                                  // }
+                                },
+                                keyBoardType: TextInputType.streetAddress,
+                                onSubmitted: (m) {
+                                  validation.sinkState.add(m);
+                                });
+                          }),
+                      // addAddressTextField(cityController, StringConstant.cityName, TextInputType.streetAddress, validation.sinkCityName, 20, validation.cityName),
+                      SizedBox(height: 10.0),
                      // addAddressTextField(countryController, StringConstant.countryName, TextInputType.streetAddress, validation.sinkCountry, 20, validation.country),
                       SizedBox(
                         height: 15.0,

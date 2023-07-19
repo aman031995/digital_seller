@@ -1,4 +1,5 @@
 import 'package:TychoStream/utilities/AppColor.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -21,7 +22,8 @@ class _ImageSliderState extends State<ImageSlider> {
     return Column(
       children: [
         widget.images?.length==1? Container(
-            height: 220,width: SizeConfig.screenWidth,
+            height:ResponsiveWidget.isMediumScreen(context)
+                ? 189: 220,width: SizeConfig.screenWidth,
             child: CachedNetworkImage(
                 imageUrl: '${widget.images![0]}',fit: BoxFit.cover,
                 placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey)))
@@ -32,7 +34,8 @@ class _ImageSliderState extends State<ImageSlider> {
             child: Image.network(img),
           )).toList(),
           options: CarouselOptions(
-            height: 250,
+            height:ResponsiveWidget.isMediumScreen(context)
+                ?189: 250,
             aspectRatio: 16/8,
             viewportFraction: 2,
             initialPage:  0,
