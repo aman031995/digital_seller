@@ -73,7 +73,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                   if (token == 'null'){
                     showDialog(
                         context: context,
-                        barrierColor: Colors.black87,
+                        barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
                         builder:
                             (BuildContext context) {
                           return  LoginUp(
@@ -96,7 +96,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                   if (token == 'null'){
                     showDialog(
                         context: context,
-                        barrierColor: Colors.black87,
+                        barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
                         builder:
                             (BuildContext context) {
                           return  LoginUp(
@@ -300,7 +300,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                         ?.isFavorite ==
                                         true
                                         ? Colors.red
-                                        : GREY_COLOR,
+                                        : Colors.white,
                                     size: 25))))
       ],
     );

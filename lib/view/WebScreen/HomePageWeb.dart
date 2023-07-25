@@ -179,7 +179,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 onPressed: () {
                                   showDialog(
                                       context: context,
-                                      barrierColor: Colors.black87,
+                                      barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
                                       builder:
                                           (BuildContext context) {
                                         return  LoginUp(
@@ -420,7 +420,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                   image: imageProvider, fit: BoxFit.fill),
                                                             ),
                                                           ),
-                                                          placeholder: (context, url) => Center(child: CircularProgressIndicator(color: WHITE_COLOR))),
+                                                          placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
                                                       AppBoldFont(context, msg:getRecentViewTitle(position,cartViewModel),fontSize: 14,maxLines: 1)
                                                     ],
                                                   ),
@@ -510,7 +510,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                   width: 35,
                   padding: EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                    color: Color(0xff001726),
+                    // color: Color(0xff001726),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Icon(Icons.menu_outlined))),
@@ -531,7 +531,7 @@ class _HomePageWebState extends State<HomePageWeb> {
         },
                 child: Container(height: 30,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black,width: 1),
+                    border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.6),width: 1),
                     borderRadius: BorderRadius.circular(5)
                   ),
                   child: appTextButton(
@@ -561,7 +561,7 @@ class _HomePageWebState extends State<HomePageWeb> {
               onPressed: () {
                 showDialog(
                     context: context,
-                    barrierColor: Colors.black87,
+                    barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
                     builder:
                         (BuildContext context) {
                       return LoginUp();

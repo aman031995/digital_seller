@@ -114,7 +114,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       if (token == 'null'){
                         showDialog(
                             context: context,
-                            barrierColor: Colors.black87,
+                            barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
                             builder:
                                 (BuildContext context) {
                               return  LoginUp(
@@ -204,7 +204,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                  if (token == 'null'){
                                    showDialog(
                                        context: context,
-                                       barrierColor: Colors.black87,
+                                       barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
                                        builder:
                                            (BuildContext context) {
                                          return  LoginUp(
@@ -260,7 +260,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               16,),
                          // SizedBox(height: 10),
                          AppMediumFont(
-                           context, color: Colors.black.withOpacity(0.7),
+                           context, color: Theme.of(context).canvasColor.withOpacity(0.8),
                            msg:
                            "${viewmodel.productListDetails?.productShortDesc ?? ''}",
                            fontSize: 14,
@@ -305,7 +305,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                          bottomNavigationButton()
                        ]))
              ],
-           ):Row(
+           ):
+           Row(
          mainAxisAlignment: MainAxisAlignment.center,
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
@@ -516,7 +517,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     return Container(
         margin: EdgeInsets.only(top: 5),
         child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ElevatedButton(
@@ -572,7 +573,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0),
                       ))),
               child: AppBoldFont(context,
-                  msg: " BUYNOW", fontSize: 16),
+                  msg: " BUYNOW", fontSize: 16,color: Colors.white),
               onPressed: ()async{
                 SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                 token = sharedPreferences.getString('token').toString();
