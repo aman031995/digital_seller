@@ -102,11 +102,12 @@ class _HomePageWebState extends State<HomePageWeb> {
                           children: [
                             Expanded(
                               child: SizedBox(
+
                                   width: SizeConfig.screenWidth * .08),
                             ),
                             viewmodel.appConfigModel!=null?
                             Container(
-                            width: SizeConfig.screenHeight*0.3,
+                            width: SizeConfig.screenHeight*0.3,height: 50,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: viewmodel.appConfigModel!.androidConfig!.bottomNavigation!.map((e) {
@@ -123,7 +124,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                              Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor)),
                             Expanded(
                               child: SizedBox(
+
                                   width: SizeConfig.screenWidth * .08),
+
                             ),
                             Container(
                               height: 40,
@@ -241,6 +244,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+
+
                                 CommonCarousel(),
                                 SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?16:32),
                                 Container(
@@ -320,7 +325,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 Container(
                                   margin: EdgeInsets.zero,
                                   color: Theme.of(context).cardColor.withOpacity(0.6),
-                                  height: ResponsiveWidget.isMediumScreen(context)
+                                   height: ResponsiveWidget.isMediumScreen(context)
                                     ?185: SizeConfig.screenHeight/1.6,
                                   padding: EdgeInsets.only(left: SizeConfig.screenHeight*0.10,right:  SizeConfig.screenHeight*0.10),
                                   child: Column(
@@ -332,7 +337,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                       SizedBox(height: SizeConfig.screenHeight*0.02),
                                       Container(
                                           height: ResponsiveWidget.isMediumScreen(context)
-                                              ?185: SizeConfig.screenHeight/1.9,
+                                              ?185: SizeConfig.screenHeight/1.92,
+
                                           width: ResponsiveWidget.isMediumScreen(context)
                                               ?SizeConfig.screenHeight/1.2: SizeConfig.screenWidth,
                                           child: ListView.builder(
@@ -351,6 +357,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                       ?140:SizeConfig.screenHeight/3,
                                                     margin: EdgeInsets.only(right: 16),
                                                     child: Column(
+
                                                       mainAxisSize: MainAxisSize.min,
                                                       children: [
                                                         CachedNetworkImage(
@@ -361,8 +368,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                               SizeConfig.screenHeight/2.2,
                                                               width: ResponsiveWidget.isMediumScreen(context)
                                                                 ?140:SizeConfig.screenHeight/3,
+
                                                               margin: EdgeInsets.only(bottom:
                                                               SizeConfig.screenHeight*0.01),
+
                                                               decoration: BoxDecoration(
                                                                 borderRadius: BorderRadius.circular(4),
                                                                 image: DecorationImage(
@@ -372,8 +381,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                             placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
                                                         AppBoldFont(maxLines: 1,context, msg:getRecommendedViewTitle(position, cartViewModel),fontSize: 20),
                                                         AppRegularFont(context, msg:"₹"+
+
                                                             "${cartViewModel.recommendedView?[position].productDetails?.productDiscountPrice}",fontSize: 18),
                                                         SizedBox(height:  SizeConfig.screenHeight*0.01)
+
                                                       ],
                                                     ),
                                                   ),
@@ -390,6 +401,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                   height:ResponsiveWidget.isMediumScreen(context)
                                       ?100:
                                   SizeConfig.screenHeight/2.05,
+
                                   padding: EdgeInsets.only(left: SizeConfig.screenHeight*0.10,right:  SizeConfig.screenHeight*0.10),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
@@ -400,12 +412,15 @@ class _HomePageWebState extends State<HomePageWeb> {
                                       SizedBox(height: SizeConfig.screenHeight*0.02),
                                       Container(
                                           height:ResponsiveWidget.isMediumScreen(context)
-                                              ?100: SizeConfig.screenHeight/2.6,
+                                              ?100: SizeConfig.screenHeight/2.65,
+
                                           width: ResponsiveWidget.isMediumScreen(context)
                                               ?SizeConfig.screenHeight/1.2: SizeConfig.screenWidth,
                                           child: ListView.builder(
                                               reverse: false,
+
                                               padding: EdgeInsets.zero,
+
                                               scrollDirection: Axis.horizontal,
                                               itemCount: cartViewModel.recentView?.length,
                                               itemBuilder: (context, position) {
@@ -427,13 +442,16 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                     color: Theme.of(context).cardColor,
                                                     width: ResponsiveWidget.isMediumScreen(context)
                                                         ?140:SizeConfig.screenHeight/4,
+
                                                     margin: EdgeInsets.only(right: 16),
                                                     child: Column(
                                                       mainAxisSize: MainAxisSize.min,
+
                                                       children: [
                                                         CachedNetworkImage(
                                                             imageUrl: '${cartViewModel.recentView?[position].productDetails?.productImages?[0]}', fit: BoxFit.fill,
                                                             imageBuilder: (context, imageProvider) => Container(
+
                                                               margin: EdgeInsets.only(bottom:  SizeConfig.screenHeight*0.01),
                                                               height:  ResponsiveWidget.isMediumScreen(context)
                                                                   ?140:SizeConfig.screenHeight/3,
@@ -446,8 +464,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                               ),
                                                             ),
                                                             placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
+
                                                         AppBoldFont(context, msg:getRecentViewTitle(position,cartViewModel),fontSize: 20,maxLines: 1),
                                                         SizedBox(height:  SizeConfig.screenHeight*0.01)
+
                                                       ],
                                                     ),
                                                   ),

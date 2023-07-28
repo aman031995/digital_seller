@@ -41,12 +41,13 @@ class _CommonCarouselState extends State<CommonCarousel> {
             homeViewModel.bannerDataModal != null
                 ? ResponsiveWidget.isMediumScreen(context)?carouselImageMobile() :
             carouselImageWeb()
+
                 : Container(
               height: SizeConfig.screenHeight/1.4,
                   child: Center(
                       child: ThreeArchedCircle( size: 50.0)
-                  ),
-                );
+                  ));
+
         }));
     ;
   }
