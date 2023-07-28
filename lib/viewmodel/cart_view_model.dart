@@ -223,7 +223,7 @@ class CartViewModel extends ChangeNotifier {
     _cartRepo.getProductCategoryList(context, (result, isSuccess) {
       if (isSuccess) {
         _categoryListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-        AppIndicator.disposeIndicator();
+       // AppIndicator.disposeIndicator();
         notifyListeners();
       }
     });

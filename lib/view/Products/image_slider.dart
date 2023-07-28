@@ -23,7 +23,7 @@ class _ImageSliderState extends State<ImageSlider> {
       children: [
         widget.images?.length==1? Container(
             height:ResponsiveWidget.isMediumScreen(context)
-                ? 189: 220,width: SizeConfig.screenWidth,
+                ? 189: 320,width: SizeConfig.screenWidth,
             child: CachedNetworkImage(
                 imageUrl: '${widget.images![0]}',fit: BoxFit.cover,
                 placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey)))
@@ -35,7 +35,7 @@ class _ImageSliderState extends State<ImageSlider> {
           )).toList(),
           options: CarouselOptions(
             height:ResponsiveWidget.isMediumScreen(context)
-                ?189: 250,
+                ?189: 320,
             aspectRatio: 16/8,
             viewportFraction: 2,
             initialPage:  0,

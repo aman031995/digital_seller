@@ -93,55 +93,38 @@ class _HomePageWebState extends State<HomePageWeb> {
                   appBar: ResponsiveWidget.isMediumScreen(context)
                       ? homePageTopBar()
                       : PreferredSize(
-                      preferredSize: Size.fromHeight(50),
+                      preferredSize: Size.fromHeight(SizeConfig.screenHeight*0.085),
                       child: Container(
                         color: Theme.of(context).cardColor,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            SizedBox(width: 25),
-                            GestureDetector(
-                                onTap: () async{
-                                  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                  if (sharedPreferences.get('token') != null) {
-                                    if (_scaffoldKey.currentState?.isDrawerOpen == false) {
-                                    _scaffoldKey.currentState?.openDrawer();
-                                  } else {
-                                    _scaffoldKey.currentState?.openEndDrawer();
-                                  }}
-                                  else{
-                                    ToastMessage.message("Please Login");
-                                  }
-                                },
-                                child: Icon(Icons.menu_outlined)),
                             Expanded(
                               child: SizedBox(
-                                  width: SizeConfig.screenWidth * .18),
+                                  width: SizeConfig.screenWidth * .10),
                             ),
                             viewmodel.appConfigModel!=null?
                             Container(
-                            width: 200,height: 50,
+                            width: 300,height: 50,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: viewmodel.appConfigModel!.androidConfig!.bottomNavigation!.map((e) {
                                   return GestureDetector(
                                     onTap: (){
                                       print(e.title);
                                       getPages(e);
                                     },
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Image.network(e.icon ?? '', width: 20, height: 20),
-                                        Text(e.title ?? "")
-                                      ],
-                                    ),
+                                    child: AppBoldFont(context, msg: e.title ?? "",fontSize: 20),
                                   );
                                 }).toList() ,
                               ),
                             ):
-                            Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor)),
+                             Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor)),
+                            Expanded(
+                              child: SizedBox(
+                                  width: SizeConfig.screenWidth * .18),
+                            ),
                             Container(
                               height: 40,
                               width: SizeConfig.screenWidth / 4.9,
@@ -241,192 +224,230 @@ class _HomePageWebState extends State<HomePageWeb> {
                               color: Theme.of(context).canvasColor,
                             ),
                             SizedBox(
-                                width: SizeConfig.screenWidth * .02),
+                                width: SizeConfig.screenWidth * .04),
                           ],
                         ),
                       )
                   ),
 
-                  body: Scaffold(
-                      key: _scaffoldKey,
-                      backgroundColor: Theme.of(context).backgroundColor,
-                      drawer: AppMenu(),
-                      body: Stack(
+                  body:
+                     // key: _scaffoldKey,
+                      //backgroundColor: Theme.of(context).backgroundColor,
+                     // drawer: AppMenu(),
+                  Stack(
                         children: [
                           SingleChildScrollView(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+
+
                                 CommonCarousel(),
+                                SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?16:32),
+                                Container(
+                                 margin: EdgeInsets.zero,
+                                    color: Theme.of(context).cardColor.withOpacity(0.6),
+                                 padding: EdgeInsets.only(left: SizeConfig.screenHeight*0.10,top: SizeConfig.screenHeight*0.04,bottom: SizeConfig.screenHeight*0.04,right: SizeConfig.screenHeight*0.10),
+                                 child: Column(
+                                   mainAxisAlignment: MainAxisAlignment.start,
+                                   crossAxisAlignment: CrossAxisAlignment.start,
+                                   children: [
+                                     Container(child: AppBoldFont(context, msg: "What are you looking for?", fontSize:24)),
+                                     SizedBox(height:16),
+                                     Container(
+                                         height: SizeConfig.screenHeight*0.28,
+                                         child: ListView.builder(
+                                             physics: BouncingScrollPhysics(),
+                                             reverse: false,
+                                             padding: EdgeInsets.zero,
+                                             scrollDirection: Axis.horizontal,
+                                             itemCount: cartViewModel.categoryListModel?.length,
+                                             itemBuilder: (context, position) {
+                                               return GestureDetector(
+                                                 onTap: (){
+                                                   // if(cartview.categoryListModel![position].subcategories!.isNotEmpty){
+                                                   //   Navigator.push(context, CupertinoPageRoute(
+                                                   //       builder: (_) => ProductSubcategoryView(
+                                                   //         categoryList: cartview.categoryListModel![position].subcategories,
+                                                   //         title: cartview.categoryListModel![position].categoryTitle,
+                                                   //       )));
+                                                   // } else {
+                                                   //   AppNavigator.push(context, ProductListGallery(
+                                                   //     catId: cartview.categoryListModel![position].categoryId,
+                                                   //     categoryTitle: cartview.categoryListModel![position].categoryTitle,
+                                                   //   ));
+                                                   // }
+                                                 },
+                                                 child: Container(
+                                                   decoration: BoxDecoration(
+                                                     //  borderRadius: BorderRadius.circular(100),
+                                                       shape: BoxShape.circle,
+                                                       border: Border.all(color:Theme.of(context).canvasColor.withOpacity(0.2),width: 2)
+                                                   ),
+                                                   width: ResponsiveWidget.isMediumScreen(context)
+                                                       ?110:SizeConfig.screenHeight*0.30,
+                                                   height:ResponsiveWidget.isMediumScreen(context)
+                                                       ?110:
+                                                   SizeConfig.screenHeight*0.30,
+                                                   child: Column(
+                                                     mainAxisAlignment: MainAxisAlignment.center,
+                                                     children: [
+                                                       CachedNetworkImage(
+                                                           imageUrl: cartViewModel.categoryListModel?[position].imageUrl ?? "", fit: BoxFit.fill,
+                                                           imageBuilder: (context, imageProvider) => Container(
+                                                             height: ResponsiveWidget.isMediumScreen(context)
+                                                                 ?100:
+                                                             SizeConfig.screenHeight*0.2,width: ResponsiveWidget.isMediumScreen(context)
+                                                               ?100:
+                                                           SizeConfig.screenHeight*0.2,
+                                                             decoration: BoxDecoration(
+                                                               image: DecorationImage(
+                                                                   image: imageProvider, fit: BoxFit.cover),
+                                                             ),
+                                                           ),
+                                                           placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
+                                                       AppBoldFont(maxLines: 1,context, msg: cartViewModel.categoryListModel?[position].categoryTitle ?? "",fontSize: ResponsiveWidget.isMediumScreen(context)
+                                                           ?14:16)
+                                                     ],
+                                                   ),
+                                                 ),
+                                               );
+                                             })),
+                                   ],
+                                 ),
+                               ),
                                // VideoListPage()
                                 SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?16:32),
-                                Center(child: Container(
-                                    width: ResponsiveWidget.isMediumScreen(context)
-                                        ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5,
-                                    child: AppBoldFont(context, msg: (cartViewModel.categoryListModel?.length ?? 0) > 0 ? "What are you looking for?":"", fontSize:  ResponsiveWidget.isMediumScreen(context) ?16:18))),
-                                Center(
-                                  child: Container(
-                                      height: ResponsiveWidget.isMediumScreen(context)
-                                          ?140: 220,
-                                      width: ResponsiveWidget.isMediumScreen(context)
-                                          ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5 ,
-                                      child: ListView.builder(
-                                          physics: BouncingScrollPhysics(),
-                                          reverse: false,
-                                          padding: EdgeInsets.zero,
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: cartViewModel.categoryListModel?.length,
-                                          itemBuilder: (context, position) {
-                                            return Card(
-                                              elevation: 0.1,
-                                              child: GestureDetector(
-                                                onTap: (){
-                                                  // if(cartview.categoryListModel![position].subcategories!.isNotEmpty){
-                                                  //   Navigator.push(context, CupertinoPageRoute(
-                                                  //       builder: (_) => ProductSubcategoryView(
-                                                  //         categoryList: cartview.categoryListModel![position].subcategories,
-                                                  //         title: cartview.categoryListModel![position].categoryTitle,
-                                                  //       )));
-                                                  // } else {
-                                                  //   AppNavigator.push(context, ProductListGallery(
-                                                  //     catId: cartview.categoryListModel![position].categoryId,
-                                                  //     categoryTitle: cartview.categoryListModel![position].categoryTitle,
-                                                  //   ));
-                                                  // }
-                                                },
-                                                child: Container(
-                                                 width: ResponsiveWidget.isMediumScreen(context)
-                                                    ?110:180,
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
-                                                    children: [
-                                                      CachedNetworkImage(
-                                                          imageUrl: cartViewModel.categoryListModel?[position].imageUrl ?? "", fit: BoxFit.fill,
-                                                          imageBuilder: (context, imageProvider) => Container(
-                                                            height: ResponsiveWidget.isMediumScreen(context)
-                                                                ?100: 180,width: ResponsiveWidget.isMediumScreen(context)
-                                                              ?100:160,
-                                                            decoration: BoxDecoration(
-                                                              shape: BoxShape.circle,
-                                                              //borderRadius: BorderRadius.circular(4),
-                                                              image: DecorationImage(
-                                                                  image: imageProvider, fit: BoxFit.cover),
+                                Container(
+                                  margin: EdgeInsets.zero,
+                                  color: Theme.of(context).cardColor.withOpacity(0.6),  height: ResponsiveWidget.isMediumScreen(context)
+                                    ?185: SizeConfig.screenHeight/1.6,
+                                  padding: EdgeInsets.only(left: SizeConfig.screenHeight*0.10,right:  SizeConfig.screenHeight*0.10),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(height: SizeConfig.screenHeight*0.02),
+                                      AppBoldFont(context, msg: "Recommended for You ",fontSize: ResponsiveWidget.isMediumScreen(context) ?16: 24),
+                                      SizedBox(height: SizeConfig.screenHeight*0.02),
+                                      Container(
+                                          height: ResponsiveWidget.isMediumScreen(context)
+                                              ?185: SizeConfig.screenHeight/1.95,
+                                          width: ResponsiveWidget.isMediumScreen(context)
+                                              ?SizeConfig.screenHeight/1.2: SizeConfig.screenWidth,
+                                          child: ListView.builder(
+                                              reverse: false,
+                                              padding: EdgeInsets.zero,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: cartViewModel.recommendedView?.length,
+                                              itemBuilder: (context, position) {
+                                                return GestureDetector(
+                                                  onTap: () {
+                                                    context.router.push(ProductListGallery());
+                                                  },
+                                                  child: Container(
+                                                    color: Theme.of(context).cardColor,
+                                                    width: ResponsiveWidget.isMediumScreen(context)
+                                                      ?140:SizeConfig.screenHeight/3,
+                                                    margin: EdgeInsets.only(right: 16),
+                                                    child: Column(
+                                                      children: [
+                                                        CachedNetworkImage(
+                                                            imageUrl: '${cartViewModel.recommendedView?[position].productDetails?.productImages?[0]}', fit: BoxFit.fill,
+                                                            imageBuilder: (context, imageProvider) => Container(
+                                                              height:  ResponsiveWidget.isMediumScreen(context)
+                                                                  ?140:
+                                                              SizeConfig.screenHeight/2.2,
+                                                              width: ResponsiveWidget.isMediumScreen(context)
+                                                                ?140:SizeConfig.screenHeight/3,
+                                                              margin: EdgeInsets.only(bottom: 8),
+                                                              decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.circular(4),
+                                                                image: DecorationImage(
+                                                                    image: imageProvider, fit: BoxFit.fill),
+                                                              ),
                                                             ),
-                                                          ),
-                                                          placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
-                                                      AppBoldFont(maxLines: 1,context, msg: cartViewModel.categoryListModel?[position].categoryTitle ?? "",fontSize: ResponsiveWidget.isMediumScreen(context)
-                                                          ?14:16)
-                                                    ],
+                                                            placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
+                                                        AppBoldFont(maxLines: 1,context, msg:getRecommendedViewTitle(position, cartViewModel),fontSize: 20),
+                                                        AppRegularFont(context, msg:"₹"+
+                                                            "${cartViewModel.recommendedView?[position].productDetails?.productDiscountPrice}",fontSize: 18)
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ),
-                                            );
-                                          })),
+                                                );
+                                              })),
+                                    ],
+                                  ),
                                 ),
                                 SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?16:32),
-                                Center(
-                                  child: Container(
-                                      width: ResponsiveWidget.isMediumScreen(context)
-                                          ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5,
-                                      child: AppBoldFont(context, msg: "Recommended for You ",fontSize: ResponsiveWidget.isMediumScreen(context) ?16: 18),
-                                  )),
-                                Center(
-                                  child: Container(
-                                      height: ResponsiveWidget.isMediumScreen(context)
-                                      ?185: 320,
-                                      width: ResponsiveWidget.isMediumScreen(context)
-                                          ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5 ,
-                                      child: ListView.builder(
-                                          reverse: false,
-                                          scrollDirection: Axis.horizontal,
-                                          itemCount: cartViewModel.recommendedView?.length,
-                                          itemBuilder: (context, position) {
-                                            return GestureDetector(
-                                              onTap: () {
-                                                context.router.push(ProductListGallery());
-                                              },
-                                              child: Container(
-                                                margin: EdgeInsets.only(right: 12,top:12,bottom: 2),width: ResponsiveWidget.isMediumScreen(context)
-                                                  ?140:200,
-                                                child: Column(
-                                                  children: [
-                                                    CachedNetworkImage(
-                                                        imageUrl: '${cartViewModel.recommendedView?[position].productDetails?.productImages?[0]}', fit: BoxFit.fill,
-                                                        imageBuilder: (context, imageProvider) => Container(
-                                                          height:  ResponsiveWidget.isMediumScreen(context)
-                                                              ?140:220,
-                                                          margin: EdgeInsets.only(bottom: 2),
-                                                          decoration: BoxDecoration(
-                                                            borderRadius: BorderRadius.circular(4),
-                                                            image: DecorationImage(
-                                                                image: imageProvider, fit: BoxFit.fill),
-                                                          ),
-                                                        ),
-                                                        placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
-                                                    AppBoldFont(maxLines: 1,context, msg:getRecommendedViewTitle(position, cartViewModel),fontSize: 14)
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          })),
-                                ),
-                                SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?16:32),
-                                (cartViewModel.recentView?.length ??0)>0 ?   Center(
-                                  child: Container(
-                                      width: ResponsiveWidget.isMediumScreen(context)
-                                          ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5,
-                                      child: AppBoldFont(context, msg:"Recently Viewed",fontSize: ResponsiveWidget.isMediumScreen(context) ?16:18)),
-                                ):SizedBox(),
                                 (cartViewModel.recentView?.length ??0)>0 ?
-                                Center(
-                                    child: Container(
-                                        height:ResponsiveWidget.isMediumScreen(context)
-                                            ?100: 240,
-                                        width: ResponsiveWidget.isMediumScreen(context)
-                                            ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/1.5 ,
-                                        child: ListView.builder(
-                                            reverse: false,
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount: cartViewModel.recentView?.length,
-                                            itemBuilder: (context, position) {
-                                              return GestureDetector(
-                                                onTap: (){
-                                                  context.router.push(ProductDetailPage(
-                                                    productId: '${cartViewModel.recentView?[position].productId}',
-                                                    productdata: [
-                                                      '${cartViewModel.cartItemCount}',
-                                                      '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.size?.name}',
-                                                      '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.color?.name}',
-                                                      '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.style?.name}',
-                                                      '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.unitCount?.name}',
-                                                      '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.materialType?.name}',
-                                                    ],
-                                                  ));
-                                                },
-                                                child: Container(
-                                                  width: ResponsiveWidget.isMediumScreen(context)
-                                                      ?140:180, margin: EdgeInsets.only(right: 12,top: 12,bottom: 2),
-                                                  child: Column(
-                                                    children: [
-                                                      CachedNetworkImage(
-                                                          imageUrl: '${cartViewModel.recentView?[position].productDetails?.productImages?[0]}', fit: BoxFit.fill,
-                                                          imageBuilder: (context, imageProvider) => Container(
-                                                            margin: EdgeInsets.only(bottom: 2),height:ResponsiveWidget.isMediumScreen(context)
-                                                              ? 140:200,
-                                                            decoration: BoxDecoration(
-                                                              borderRadius: BorderRadius.circular(4),
-                                                              image: DecorationImage(
-                                                                  image: imageProvider, fit: BoxFit.fill),
+                                Container(
+                                  margin: EdgeInsets.zero,
+                                  color: Theme.of(context).cardColor.withOpacity(0.6),
+                                  height:ResponsiveWidget.isMediumScreen(context)
+                                      ?100: SizeConfig.screenHeight/2.3,
+                                  padding: EdgeInsets.only(left: SizeConfig.screenHeight*0.10,right:  SizeConfig.screenHeight*0.10),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                       AppBoldFont(context, msg:"Recently Viewed",fontSize: ResponsiveWidget.isMediumScreen(context) ?16:24),
+                                      Container(
+                                          height:ResponsiveWidget.isMediumScreen(context)
+                                              ?100: SizeConfig.screenHeight/2.65,
+                                          width: ResponsiveWidget.isMediumScreen(context)
+                                              ?SizeConfig.screenHeight/1.2: SizeConfig.screenWidth,
+                                          child: ListView.builder(
+                                              reverse: false,
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: cartViewModel.recentView?.length,
+                                              itemBuilder: (context, position) {
+                                                return GestureDetector(
+                                                  onTap: (){
+                                                    context.router.push(ProductDetailPage(
+                                                      productId: '${cartViewModel.recentView?[position].productId}',
+                                                      productdata: [
+                                                        '${cartViewModel.cartItemCount}',
+                                                        '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.size?.name}',
+                                                        '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.color?.name}',
+                                                        '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.style?.name}',
+                                                        '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.unitCount?.name}',
+                                                        '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.materialType?.name}',
+                                                      ],
+                                                    ));
+                                                  },
+                                                  child: Container(
+                                                    color: Theme.of(context).cardColor,
+                                                    width: ResponsiveWidget.isMediumScreen(context)
+                                                        ?140:SizeConfig.screenHeight/4,
+                                                    child: Column(
+                                                      children: [
+                                                        CachedNetworkImage(
+                                                            imageUrl: '${cartViewModel.recentView?[position].productDetails?.productImages?[0]}', fit: BoxFit.fill,
+                                                            imageBuilder: (context, imageProvider) => Container(
+                                                              margin: EdgeInsets.only(bottom: 6),
+                                                              height:  ResponsiveWidget.isMediumScreen(context)
+                                                                  ?140:SizeConfig.screenHeight/2.9, width: ResponsiveWidget.isMediumScreen(context)
+                                                                ?140:SizeConfig.screenHeight/4,
+                                                              decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.circular(4),
+                                                                image: DecorationImage(
+                                                                    image: imageProvider, fit: BoxFit.fill),
+                                                              ),
                                                             ),
-                                                          ),
-                                                          placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
-                                                      AppBoldFont(context, msg:getRecentViewTitle(position,cartViewModel),fontSize: 14,maxLines: 1)
-                                                    ],
+                                                            placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
+                                                        AppBoldFont(context, msg:getRecentViewTitle(position,cartViewModel),fontSize: 20,maxLines: 1)
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              );
-                                            }))):SizedBox(),
+                                                );
+                                              }))
+                                    ],
+                                  ),
+                                ):
+                                SizedBox(),
+
                                 SizedBox(height: 16),
 
                               ],
@@ -442,7 +463,7 @@ class _HomePageWebState extends State<HomePageWeb> {
 
                         ],
                       )),
-                ),
+
               );}
         )
       );}
