@@ -168,8 +168,8 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                   child: Column(
                     children: [
                       Container(
-                        height:SizeConfig.screenHeight/1.1,
-                        width: SizeConfig.screenWidth/2,
+                        height:SizeConfig.screenHeight/1.2,
+                        width: SizeConfig.screenWidth/1.5,
                         child: Stack(
                           children: [
                             GridView.builder(
@@ -177,7 +177,9 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                               controller: _scrollController,
                               physics: BouncingScrollPhysics(),
                               padding: EdgeInsets.only(top: 30),
-                              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(maxCrossAxisExtent: 300,mainAxisExtent: 350,mainAxisSpacing: 10.0,crossAxisSpacing: 10),
+                              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 5, childAspectRatio: 0.6,mainAxisSpacing: 10,crossAxisSpacing: 10
+                              ),
                               itemCount: viewmodel.productListModel?.productList?.length,
                                         itemBuilder: (context, index) {
                                     _scrollController.addListener(() {
@@ -193,7 +195,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
             ),
                             viewmodel.isLoading == true
                                 ? Container(
-                                margin: EdgeInsets.only(top: SizeConfig.screenHeight/1.15),
+                                margin: EdgeInsets.only(top: 50),
                                 alignment: Alignment.bottomCenter,
                                 child: CircularProgressIndicator(
                                   color: Theme.of(context).primaryColor,
@@ -238,7 +240,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
               );
             },
             child: Container(
-
+height: 420,
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor.withOpacity(0.8),
             ),
@@ -246,15 +248,10 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Expanded(
-                    flex: 90,
-                    child: ImageSlider(
-                        images: productListData?.productDetails?.productImages,
-                        ),
-                  ),
-                  Expanded(
-                      flex: 26,
-                      child: productGalleryTitleSection(context, productListData,false))
+                  ImageSlider(
+                      images: productListData?.productDetails?.productImages,
+                      ),
+                  productGalleryTitleSection(context, productListData,false)
                 ],
               ),
             )),

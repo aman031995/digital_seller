@@ -76,7 +76,7 @@ class ProfileViewModel with ChangeNotifier {
     notifyListeners();
   }
   Future<void> getProfileDetails(BuildContext context) async {
-    AppIndicator.loadingIndicator(context);
+    //AppIndicator.loadingIndicator(context);
     _profileRepo.getTermsPrivacy(context, (result, isSuccess) {
       if (isSuccess) {
         _termsPrivacyModel = ((result as SuccessState).value as ASResponseModal).dataModal;

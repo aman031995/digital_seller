@@ -42,11 +42,11 @@ class _CommonCarouselState extends State<CommonCarousel> {
                 ? ResponsiveWidget.isMediumScreen(context)?carouselImageMobile() :
             carouselImageWeb()
                 : Container(
-              height: SizeConfig.screenHeight * 0.35,
-              child: Center(
-                  child: ThreeArchedCircle( size: 50.0)
-              ),
-            );
+              height: SizeConfig.screenHeight/1.4,
+                  child: Center(
+                      child: ThreeArchedCircle( size: 50.0)
+                  ),
+                );
         }));
     ;
   }
@@ -56,56 +56,54 @@ class _CommonCarouselState extends State<CommonCarousel> {
     var imageSliders = generateImageTilesWeb(context);
     return Stack(
       children: [
-        Center(
-          child: Container(
-            margin: EdgeInsets.only(top: 15),
-            height: SizeConfig.screenHeight/2,
-            width: SizeConfig.screenWidth/1.5,
-            child: CarouselSlider(
-              items: imageSliders,
-              disableGesture: true,
-              options: CarouselOptions(
-                  autoPlayInterval: Duration(seconds: 2),
-                  scrollDirection: Axis.horizontal,
-                  scrollPhysics: PageScrollPhysics(),
-                  viewportFraction:  0.6,
-                  enlargeCenterPage: false,
-                  autoPlayCurve: Curves.linear,
-                  aspectRatio:16/9,
-                  autoPlay: false,
-                  onPageChanged: (index, reason) {
-                    setState(() {
-                      current = index;
-                    });
-                  }),
-              carouselController: carouselController,
-            ),
+        Container(
+          height: SizeConfig.screenHeight/1.4,
+          width: SizeConfig.screenWidth,
+          child: CarouselSlider(
+            items: imageSliders,
+            disableGesture: true,
+            options: CarouselOptions(
+                autoPlayInterval: Duration(seconds: 2),
+                scrollDirection: Axis.horizontal,
+                scrollPhysics: PageScrollPhysics(),
+                viewportFraction:  1,
+                enlargeCenterPage: false,
+                autoPlayCurve: Curves.linear,
+                aspectRatio:16/9,
+                autoPlay: false,
+                onPageChanged: (index, reason) {
+                  setState(() {
+                    current = index;
+                  });
+                }),
+            carouselController: carouselController,
           ),
         ),
-        Positioned(
-          left: SizeConfig.screenWidth*0.17,top:  SizeConfig.screenHeight/4,
-          child: InkWell(
-              child: Image.asset(
-                  'images/prev.png',
-                  height: 40,
-                  width: 30,
-                  color: Colors.black45
-              ),
-              onTap: previous
-          ),
-        ),
-        Positioned(
-          top:  SizeConfig.screenHeight/4,right:SizeConfig.screenWidth*0.17,
-          child: InkWell(
-              child: Image.asset(
-                  'images/next.png',
-                  height: 40,
-                  width: 30,
-                  color: Colors.black45
-              ),
-              onTap:next
-          ),
-        )],
+        // Positioned(
+        //   left: SizeConfig.screenWidth*0.17,top:  SizeConfig.screenHeight/4,
+        //   child: InkWell(
+        //       child: Image.asset(
+        //           'images/prev.png',
+        //           height: 40,
+        //           width: 30,
+        //           color: Colors.black45
+        //       ),
+        //       onTap: previous
+        //   ),
+        // ),
+        // Positioned(
+        //   top:  SizeConfig.screenHeight/4,right:SizeConfig.screenWidth*0.17,
+        //   child: InkWell(
+        //       child: Image.asset(
+        //           'images/next.png',
+        //           height: 40,
+        //           width: 30,
+        //           color: Colors.black45
+        //       ),
+        //       onTap:next
+        //   ),
+        // )
+      ],
     );
   }
   List<Widget> generateImageTilesWeb(BuildContext context) {
@@ -124,17 +122,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
 
         },
       child:
-      Container(
-    width: SizeConfig.screenWidth,
-        margin: EdgeInsets.only(left: 0,right: 0,top: 0),
-        child:  CachedNetworkImage(
-            imageUrl:element.bannerUrl ?? "",
-            fit: BoxFit.fill,
-            placeholder: (context, url) => Center(
-                child: CircularProgressIndicator(
-                    color:
-                    Theme.of(context).canvasColor.withOpacity(0.5)))),
-      ),
+      Image.asset("images/Banner01.png",fit: BoxFit.fill,  width: SizeConfig.screenWidth),
     )
     )
         .toList();
