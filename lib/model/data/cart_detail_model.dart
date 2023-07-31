@@ -1,7 +1,7 @@
-import 'package:TychoStream/model/data/product_list_model.dart';
+
+
 
 import 'package:TychoStream/model/data/product_list_model.dart';
-
 
 class CartListDataModel {
   List<ProductList>? cartList;
@@ -53,6 +53,38 @@ class CheckoutDetails {
     data['value'] = this.value;
     return data;
   }}
+// class CheckoutDetails {
+//   int? totalItems;
+//   String? cartTotalPrice;
+//   String? discountedPrice;
+//   String? deliveryCharge;
+//   String? totalPayableAmount;
+//
+//   CheckoutDetails(
+//       {this.totalItems,
+//         this.cartTotalPrice,
+//         this.discountedPrice,
+//         this.deliveryCharge,
+//         this.totalPayableAmount});
+//
+//   CheckoutDetails.fromJson(Map<String, dynamic> json) {
+//     totalItems = json['totalItems'];
+//     cartTotalPrice = json['cartTotalPrice'];
+//     discountedPrice = json['discountedPrice'];
+//     deliveryCharge = json['deliveryCharge'];
+//     totalPayableAmount = json['totalPayableAmount'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['totalItems'] = this.totalItems;
+//     data['cartTotalPrice'] = this.cartTotalPrice;
+//     data['discountedPrice'] = this.discountedPrice;
+//     data['deliveryCharge'] = this.deliveryCharge;
+//     data['totalPayableAmount'] = this.totalPayableAmount;
+//     return data;
+//   }
+// }
 
 class ItemCountModel {
   int? count;

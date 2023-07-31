@@ -203,7 +203,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(20),
                               bottomLeft: Radius.circular(20))),
-                      height: SizeConfig.screenHeight / 1.35,
+                      height: SizeConfig.screenHeight / 1.45,
                       width: SizeConfig.screenWidth * 0.29,
                       child: Image.asset(
                         'images/LoginPageLogo.png',
@@ -227,117 +227,115 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   ],
                 ),
                 SingleChildScrollView(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(height: 20),
-                        AppBoldFont(
-                          textAlign: TextAlign.center,
-                          context,msg: StringConstant.forgotPassword,
-                          fontSize: ResponsiveWidget.isMediumScreen(context)
-                              ? 18 :22,
-                        ),
-                        SizedBox(height: 30),
-                        Padding(
-                          padding:EdgeInsets.only(left: 25,right: 15),
-                          child: AppMediumFont(
-                              context,msg: widget.viewModel?.appConfigModel?.androidConfig
-                              ?.loginWithPhone == false
-                              ? "Please check your email we will send you a verification code."
-                              : StringConstant.enterOtpText,
-                              fontSize: 16,
-                              textAlign: TextAlign.left),
-                        ),
-                        const SizedBox(height: 35),
-                        Container(
-                          width: ResponsiveWidget.isMediumScreen(context)
-                              ?500:400,
-                          child: widget.viewModel?.appConfigModel?.androidConfig
-                              ?.loginWithPhone == false
-                              ? StreamBuilder(
-                              stream: validation.email,
-                              builder: (context, snapshot) {
-                                return AppTextField(
-                                  maxLine: 1,
-                                  controller: emailController,
-                                  labelText: StringConstant.email,
-                                  textCapitalization: TextCapitalization.words,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(height: 20),
+                      AppBoldFont(
+                        textAlign: TextAlign.center,
+                        context,msg: StringConstant.forgotPassword,
+                        fontSize: ResponsiveWidget.isMediumScreen(context)
+                            ? 18 :22,
+                      ),
+                      SizedBox(height: 30),
+                      Padding(
+                        padding:EdgeInsets.only(left: 25,right: 15),
+                        child: AppMediumFont(
+                            context,msg: widget.viewModel?.appConfigModel?.androidConfig
+                            ?.loginWithPhone == false
+                            ? "Please check your email we will send you a verification code."
+                            : StringConstant.enterOtpText,
+                            fontSize: 16,
+                            textAlign: TextAlign.left),
+                      ),
+                      const SizedBox(height: 35),
+                      Container(
+                        width: ResponsiveWidget.isMediumScreen(context)
+                            ?500:400,
+                        child: widget.viewModel?.appConfigModel?.androidConfig
+                            ?.loginWithPhone == false
+                            ? StreamBuilder(
+                            stream: validation.email,
+                            builder: (context, snapshot) {
+                              return AppTextField(
+                                maxLine: 1,
+                                controller: emailController,
+                                labelText: StringConstant.email,
+                                textCapitalization: TextCapitalization.words,
+                                isShowCountryCode: true,
+                                isShowPassword: false,
+                                secureText: false,
+                                maxLength: 30,
+                                keyBoardType: TextInputType.emailAddress,
+                                errorText: snapshot.hasError
+                                    ? snapshot.error.toString()
+                                    : null,
+                                onChanged: (m) {
+                                  validation.sinkEmail.add(m);
+                                  setState(() {});
+                                },
+                                onSubmitted: (m) {},
+                                isTick: null,
+                              );
+                            })
+                            : StreamBuilder(
+                            stream: validation.emailAndMobile,
+                            builder: (context, snapshot) {
+                              return AppTextField(
+                                  maxLine: null,
+                                  prefixText: '',
+                                  controller: phoneController,
+                                  labelText: "Email/Phone",
                                   isShowCountryCode: true,
                                   isShowPassword: false,
                                   secureText: false,
-                                  maxLength: 30,
-                                  keyBoardType: TextInputType.emailAddress,
+                                  isColor: isPhone,
+                                  isTick: false,
+                                  maxLength: 40,
                                   errorText: snapshot.hasError
                                       ? snapshot.error.toString()
                                       : null,
                                   onChanged: (m) {
-                                    validation.sinkEmail.add(m);
+                                    validation.sinkEmailAndPhone.add(m);
+                                    isPhone = true;
                                     setState(() {});
                                   },
-                                  onSubmitted: (m) {},
-                                  isTick: null,
-                                );
-                              })
-                              : StreamBuilder(
-                              stream: validation.emailAndMobile,
-                              builder: (context, snapshot) {
-                                return AppTextField(
-                                    maxLine: null,
-                                    prefixText: '',
-                                    controller: phoneController,
-                                    labelText: "Email/Phone",
-                                    isShowCountryCode: true,
-                                    isShowPassword: false,
-                                    secureText: false,
-                                    isColor: isPhone,
-                                    isTick: false,
-                                    maxLength: 40,
-                                    errorText: snapshot.hasError
-                                        ? snapshot.error.toString()
-                                        : null,
-                                    onChanged: (m) {
-                                      validation.sinkEmailAndPhone.add(m);
-                                      isPhone = true;
-                                      setState(() {});
-                                    },
-                                    keyBoardType: TextInputType.emailAddress,
-                                    onSubmitted: (m) {});
-                              }),
-                        ),
-                        const SizedBox(height: 35),
-                        Container(
-                          alignment: Alignment.center,
-                          child: StreamBuilder(
-                              stream: widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false
-                                  ? validation.checkEmailValidate
-                                  : validation.checkEmailAndPhoneValidate,
-                              builder: (context, snapshot) {
-                                return appButton(
-                                    context,
-                                    StringConstant.send,
-                                    SizeConfig.screenWidth /5.5,
-                                    50,
-                                    LIGHT_THEME_COLOR,
-                                    BUTTON_TEXT_COLOR,
-                                    16,
-                                    10,
-                                    snapshot.data != true ? false : true, onTap: () {
-                                  snapshot.data != true
-                                      ? ToastMessage.message(StringConstant.fillOut)
-                                      : sendButtonPressed(
-                                      authVM,
-                                      widget.viewModel?.appConfigModel?.androidConfig
-                                          ?.loginWithPhone == false
-                                          ? emailController.text
-                                          : phoneController.text,
-                                      widget.viewModel!);
-                                });
-                              }),
-                        ),
-                      ],
-                    ),
+                                  keyBoardType: TextInputType.emailAddress,
+                                  onSubmitted: (m) {});
+                            }),
+                      ),
+                      const SizedBox(height: 35),
+                      Container(
+                        alignment: Alignment.center,
+                        child: StreamBuilder(
+                            stream: widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false
+                                ? validation.checkEmailValidate
+                                : validation.checkEmailAndPhoneValidate,
+                            builder: (context, snapshot) {
+                              return appButton(
+                                  context,
+                                  StringConstant.send,
+                                  SizeConfig.screenWidth /5.5,
+                                  50,
+                                  LIGHT_THEME_COLOR,
+                                  BUTTON_TEXT_COLOR,
+                                  16,
+                                  10,
+                                  snapshot.data != true ? false : true, onTap: () {
+                                snapshot.data != true
+                                    ? ToastMessage.message(StringConstant.fillOut)
+                                    : sendButtonPressed(
+                                    authVM,
+                                    widget.viewModel?.appConfigModel?.androidConfig
+                                        ?.loginWithPhone == false
+                                        ? emailController.text
+                                        : phoneController.text,
+                                    widget.viewModel!);
+                              });
+                            }),
+                      ),
+                    ],
                   ),
                 )
               ]));

@@ -87,7 +87,7 @@ class AppRouter extends $AppRouter {
     AutoRoute(page: AddressListPage.page,path: '/AddressListPage/:buynow',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
-              token= SessionStorageHelper.getValue("token");
+              token= SessionStorageHelper.getValue("payment");
           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
           if(token==null){
             resolver.next();
@@ -100,19 +100,19 @@ class AppRouter extends $AppRouter {
           }
         },
       )]),
-    AutoRoute(page: MyOrderPage.page,path:'/MyOrderPage',guards: [
-      AutoRouteGuard.simple(
-            (resolver, scope) async {
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-          if (sharedPreferences.get('token') != null) {
-            resolver.next();
-          } else {
-            ToastMessage.message("Please Login User");
-            resolver.redirect(HomePageWeb());
-
-          }
-        },
-      )]),
+    //AutoRoute(page: MyOrderPage.page,path:'/MyOrderPage',guards: [
+    //   AutoRouteGuard.simple(
+    //         (resolver, scope) async {
+    //       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    //       if (sharedPreferences.get('token') != null) {
+    //         resolver.next();
+    //       } else {
+    //         ToastMessage.message("Please Login User");
+    //         resolver.redirect(HomePageWeb());
+    //
+    //       }
+    //     },
+    //   )]),
     AutoRoute(page: ProductDetailPage.page,path: '/ProductDetailPage/:productId',
       //   guards: [
       // AutoRouteGuard.simple(
@@ -194,12 +194,16 @@ class AppRouter extends $AppRouter {
     AutoRoute(page: ThankYouPage.page,path: '/ThankYouPage',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
+          token= SessionStorageHelper.getValue("payment");
           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-          if (sharedPreferences.get('token') != null) {
+          if(token==null){
+            resolver.next();
+          }
+          else if (token=='false') {
             resolver.next();
           } else {
-            ToastMessage.message("Please Login User");
-           // resolver.redirect(HomePageWeb());
+            resolver.redirect(HomePageWeb());
+           // ToastMessage.message("Please Login User");
           }
         },
       )]),

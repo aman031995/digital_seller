@@ -55,7 +55,7 @@ class _SeeAllListPagesState extends State<SeeAllListPages> {
   @override
   void initState() {
     homeView.getMoreLikeThis(context, widget.SeeDetail?[0] ?? '');
-    homeView.getAppConfigData(context);
+    homeView.getAppConfig(context);
     searchController?.addListener(() {
       homeView.getSearchData(context, '${searchController?.text}', pageNum);
     });

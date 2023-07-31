@@ -9,17 +9,22 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
+import 'package:TychoStream/view/WebScreen/getAppBar.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
+import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../utilities/SizeConfig.dart';
+import '../WebScreen/LoginUp.dart';
 
 @RoutePage()
 class CartDetail extends StatefulWidget {
@@ -43,6 +48,7 @@ class _CartDetailState extends State<CartDetail> {
   @override
   void initState() {
     SessionStorageHelper.removeValue('token');
+
     cartViewData.getCartCount(context);
     cartViewData.updateCartCount(context, widget.itemCount ?? '');
     cartViewData.getCartListData(context);
@@ -63,10 +69,50 @@ class _CartDetailState extends State<CartDetail> {
         value: cartViewData,
         child: Consumer<CartViewModel>(builder: (context, cartViewData, _) {
           return Scaffold(backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    appBar: getAppBarWithBackBtn(title: "Cart Details",
-            context: context,
-            isBackBtn:false,
-            onBackPressed: () {}),
+              appBar:getAppBarWithBackBtn(
+              title: StringConstant.cartDetail,
+              context: context,
+              isBackBtn: false,
+              onBackPressed: () {
+                Navigator.pop(context);
+              }),
+              // appBar:getAppBar(context,homeViewModel,profileViewModel,cartViewData.cartItemCount, () async {
+              //   SharedPreferences sharedPreferences =
+              //   await SharedPreferences.getInstance();
+              //   token = sharedPreferences.getString('token').toString();
+              //   if (token == 'null') {
+              //     showDialog(
+              //         context: context,
+              //         barrierColor:
+              //         Theme.of(context).canvasColor.withOpacity(0.6),
+              //         builder: (BuildContext context) {
+              //           return LoginUp(
+              //             product: true,
+              //           );
+              //         });
+              //     // _backBtnHandling(prodId);
+              //   } else {
+              //     context.router.push(FavouriteListPage());
+              //   }
+              // },
+              //         ()async{
+              //       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+              //       token = sharedPreferences.getString('token').toString();
+              //       if (token == 'null'){
+              //         showDialog(
+              //             context: context,
+              //             barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
+              //             builder:
+              //                 (BuildContext context) {
+              //               return  LoginUp(
+              //                 product: true,
+              //               );
+              //             });
+              //       } else{
+              //         context.router.push(CartDetail(
+              //             itemCount: '${cartViewData.cartItemCount}'
+              //         ));
+              //       }}),
         body: cartViewData.cartListData != null
             ? cartViewData.cartListData!.cartList!.length > 0
                 ? ResponsiveWidget.isMediumScreen(context)
@@ -75,7 +121,7 @@ class _CartDetailState extends State<CartDetail> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              cartPageViewIndicator(context, 0, activeStep),
+              cartPageViewIndicator(context, 0),
               SizedBox(height: 10),
               Container(
                 margin: EdgeInsets.only(left: 10,right: 10),
@@ -499,7 +545,7 @@ class _CartDetailState extends State<CartDetail> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        cartPageViewIndicator(context, 0, activeStep),
+                        cartPageViewIndicator(context, 0, ),
                         SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

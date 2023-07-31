@@ -15,7 +15,6 @@ import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:TychoStream/viewmodel/sociallogin_view_model.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'dart:html' as html;
-String? image;
 String? names;
 String? token='false';
 bool isLogin = false;

@@ -620,7 +620,7 @@ class CartDetailRepository {
     });
   }
 
-  Future<Result?> createOrder(String productId,String variantId,String quantity,
+  Future<Result?> createOrder(String paymentMethod,String productId,String variantId,String quantity, String? geteway,
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     AppNetwork appNetwork = AppNetwork();
@@ -631,8 +631,8 @@ class CartDetailRepository {
       "productId":productId,
       "variantId":variantId,
       "quantity":quantity,
-      "gateway": "razorpay",
-      "payment_method": "online"
+      "gateway": geteway ?? "",
+      "payment_method": paymentMethod
     };
     ASRequestModal requestModal = ASRequestModal.withInputParams(inputParam, NetworkConstants.kCreateOrder, RequestType.post);
     appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {

@@ -32,7 +32,7 @@
 //   @override
 //   void initState() {
 //     super.initState();
-//   homeViewModel.getAppConfigData(context);
+//   homeViewModel.getAppConfig(context);
 //
 //   }
 //

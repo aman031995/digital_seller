@@ -1,3 +1,4 @@
+import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
@@ -7,15 +8,22 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/Products/ProductList.dart';
 import 'package:TychoStream/view/Products/image_slider.dart';
+import 'package:TychoStream/view/WebScreen/LoginUp.dart';
+import 'package:TychoStream/view/WebScreen/OnHover.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
+import 'package:TychoStream/view/WebScreen/getAppBar.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
+import 'package:TychoStream/viewmodel/HomeViewModel.dart';
+import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../AppRouter.gr.dart';
 
@@ -34,8 +42,12 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
   ScrollController _scrollController = ScrollController();
   String? checkInternet;
   int pageNum = 1;bool isfab = false;
+  HomeViewModel homeViewModel = HomeViewModel();
+  ProfileViewModel profileViewModel = ProfileViewModel();
   @override
   void initState() {
+    homeViewModel.getAppConfig(context);
+    profileViewModel.getUserDetails(context);
     cartViewModel.getCartCount(context);
     cartViewModel.getFavList(context, pageNum);
     super.initState();
@@ -59,33 +71,43 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
           child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
             return
        Scaffold(
-      appBar: getAppBarWithBackBtn(
-          context: context,
-          itemCount: viewmodel.cartItemCount,
-          isShopping: true,
-          isBackBtn: false,
-          isFavourite: false,
-          onFavPressed: () {},
-          title: "Fav",
-          onCartPressed: () {
-            // GoRouter.of(context).pushNamed(RoutesName.CartDetails, queryParameters: {
-            //   'itemCount':'${viewmodel.cartItemCount}',
-            // });
-            context.router.push(CartDetail(
-                itemCount: '${viewmodel.cartItemCount}'
-            ));
-            // AppNavigator.push(
-            //     context, CartDetail(itemCount: viewmodel.cartItemCount),
-            //     screenName: RouteBuilder.cartDetail, function: (v) {
-            //   viewmodel.updateCartCount(context, v);
-            // });
-          },
-          onBackPressed: () {
-            // Navigator.pop(context, viewmodel.cartItemCount);
-            // widget.callback!(viewmodel.productListDetails?.productDetails?.variantId,isfab);
-            // // Navigator.pop(context, true);
-            // widget.callback!(viewmodel.favouriteCallback);
-          }),
+         appBar:getAppBar(context,homeViewModel,profileViewModel,viewmodel.cartItemCount,()async {
+           SharedPreferences sharedPreferences =
+           await SharedPreferences.getInstance();
+           token = sharedPreferences.getString('token').toString();
+           if (token == 'null') {
+             showDialog(
+                 context: context,
+                 barrierColor:
+                 Theme.of(context).canvasColor.withOpacity(0.6),
+                 builder: (BuildContext context) {
+                   return LoginUp(
+                     product: true,
+                   );
+                 });
+             // _backBtnHandling(prodId);
+           } else {
+             reloadPage();
+            // context.router.push(FavouriteListPage());
+           }
+         },()async{
+               SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+               token = sharedPreferences.getString('token').toString();
+               if (token == 'null'){
+                 showDialog(
+                     context: context,
+                     barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
+                     builder:
+                         (BuildContext context) {
+                       return  LoginUp(
+                         product: true,
+                       );
+                     });
+               } else{
+                 context.router.push(CartDetail(
+                     itemCount: '${viewmodel.cartItemCount}'
+                 ));
+               }}),
       backgroundColor: Theme
           .of(context)
           .scaffoldBackgroundColor,
@@ -142,49 +164,66 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
       SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 20),
             Container(
-              height: SizeConfig.screenHeight/1.1,
-              width: SizeConfig.screenWidth / 2,
+              // height:SizeConfig.screenHeight/1.2,
+              width: SizeConfig.screenWidth,
+              margin: EdgeInsets.only(
+                  left: SizeConfig.screenWidth*0.13, right: SizeConfig.screenWidth*0.13),
               child: Stack(
                 children: [
-                  Center(
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      controller: _scrollController,
-                      physics: BouncingScrollPhysics(),
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 300,mainAxisExtent: 350,
-                          mainAxisSpacing: 10.0,
-                          crossAxisSpacing: 10),
-                      itemCount:
-                      viewmodel.productListModel?.productList?.length,
-                      itemBuilder: (context, index) {
-                        _scrollController.addListener(() {
-                          if (_scrollController.position.pixels ==
-                              _scrollController.position.maxScrollExtent) {
-                            viewmodel.onPagination(context, viewmodel.lastPage, viewmodel.nextPage, viewmodel.isLoading, 'favouriteList');
-                          }
-                        });
-                        final productListData = viewmodel
-                            .productListModel?.productList?[index];
-                        return productListItems(context,
-                            productListData, index, viewmodel);
-                      },
-                    ),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    controller: _scrollController,
+                    physics: BouncingScrollPhysics(),
+                    padding: EdgeInsets.only(top: 30),
+                    gridDelegate:
+                    SliverGridDelegateWithMaxCrossAxisExtent(
+                        mainAxisSpacing: 15,
+                        mainAxisExtent: 470, maxCrossAxisExtent: 350),
+                    itemCount: viewmodel
+                        .productListModel
+                        ?.productList
+                        ?.length,
+                    itemBuilder: (context, index) {
+                      _scrollController.addListener(() {
+                        if (_scrollController
+                            .position.pixels ==
+                            _scrollController.position
+                                .maxScrollExtent) {
+                          viewmodel.onPagination(
+                              context,
+                              viewmodel.lastPage,
+                              viewmodel.nextPage,
+                              viewmodel.isLoading,
+                              'productList');
+                        }
+                      });
+                      final productListData =
+                      cartViewModel.productListModel
+                          ?.productList?[index];
+                      return productListItems(
+                          context,
+                          productListData,
+                          index,
+                          viewmodel);
+                    },
                   ),
                   viewmodel.isLoading == true
                       ? Container(
-                      margin: EdgeInsets.only(top: SizeConfig.screenHeight/1.3),
-                      alignment: Alignment.bottomCenter,
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor,
+                      margin:
+                      EdgeInsets.only(top: 50),
+                      alignment:
+                      Alignment.bottomCenter,
+                      child:
+                      CircularProgressIndicator(
+                        color: Theme.of(context)
+                            .primaryColor,
                       ))
                       : SizedBox()
                 ],
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height:SizeConfig.screenHeight*0.3),
             footerDesktop()
           ],
         ),
@@ -202,9 +241,9 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
   //ProductListItems
   Widget productListItems(BuildContext context,ProductList? productListData, int index,
       CartViewModel viewmodel) {
-    return Stack(
-      children: [
-        GestureDetector(
+    return OnHover(
+      builder: (isHovered) {
+        return GestureDetector(
             onTap: () {
               context.router.push(
                 ProductDetailPage(
@@ -216,77 +255,106 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                     '${productListData?.productDetails?.defaultVariationSku?.style?.name}',
                     '${productListData?.productDetails?.defaultVariationSku?.unitCount?.name}',
                     '${productListData?.productDetails?.defaultVariationSku?.materialType?.name}',
-                    //'${productListData?.productDetails?.defaultVariationSku?.materialType?.name}'
                   ],
-                ) ,
+                ),
               );
-
             },
             child: Container(
-              color: Theme.of(context).cardColor.withOpacity(0.8),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Expanded(
-                    flex: 90,
-                    child: ImageSlider(
-                        images: productListData?.productDetails?.productImages,
-                    ),
+              decoration: isHovered == true
+                  ? BoxDecoration(
+
+                color: Theme.of(context).cardColor,
+                boxShadow: [
+                  BoxShadow(
+                    color:
+                    Theme.of(context).canvasColor.withOpacity(0.15),
+                    blurRadius: 10.0,
+                    spreadRadius: 7,
+                    offset: Offset(2, 2),
                   ),
-                  Expanded(
-                      flex: 26,
-                      child: productGalleryTitleSection(context, productListData, true))
+                  BoxShadow(
+                    color:
+                    Theme.of(context).canvasColor.withOpacity(0.12),
+                    blurRadius: 7.0,
+                    spreadRadius: 5,
+                    offset: Offset(2, 2),
+                  ),
+                  BoxShadow(
+                    color:
+                    Theme.of(context).canvasColor.withOpacity(0.10),
+                    blurRadius: 4.0,
+                    spreadRadius: 3,
+                    offset: Offset(2, 2),
+                  ),
+                  BoxShadow(
+                    color:
+                    Theme.of(context).canvasColor.withOpacity(0.09),
+                    blurRadius: 1.0,
+                    spreadRadius: 1.0,
+                    offset: Offset(2, 2),
+                  ),
+                ],
+              )
+                  : BoxDecoration(
+                color: Theme.of(context).cardColor,
+              ),
+              margin: EdgeInsets.only(right: 16),
+              child: Stack(
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      ImageSlider(
+                        images: productListData?.productDetails?.productImages,
+                      ),
+                      productGalleryTitleSection(
+                          context, productListData, true)
+                    ],
+                  ),
+                  Positioned(
+                      right: 10,
+                      top: 5,
+                      child: GestureDetector(
+                          onTap: () {
+                            final isFav = productListData!
+                                .productDetails!.isFavorite =
+                            !productListData.productDetails!.isFavorite!;
+                            viewmodel.addToFavourite(
+                                context,
+                                "${productListData.productId}",
+                                "${productListData.productDetails?.variantId}",
+                                isFav,
+                                'productList');
+                            // viewmodel.addToFavourite(
+                            //     context,
+                            //     "${productListData?.productId}",
+                            //     "${productListData?.productDetails?.productColor}",
+                            //     productListData?.productDetails
+                            //         ?.isFavorite ==
+                            //         true
+                            //         ? false
+                            //         : true,
+                            //     'productList');
+                          },
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Theme.of(context).canvasColor),
+                              height: 35,
+                              width: 35,
+                              child: Icon(Icons.favorite,
+                                  color: productListData
+                                      ?.productDetails?.isFavorite ==
+                                      true
+                                      ? Colors.red
+                                      : Colors.white,
+                                  size: 25))))
                 ],
               ),
-            )),
-        Positioned(
-            right: 10,
-            top: 5,
-            child: GestureDetector(
-                onTap: () {
-                  final isFav =
-                  productListData!
-                      .productDetails!
-                      .isFavorite =
-                  !productListData
-                      .productDetails!
-                      .isFavorite!;
-                  isfab = isFav;
-                  viewmodel.addToFavourite(
-                      context,
-                      "${productListData.productId}",
-                      "${productListData.productDetails?.variantId}",
-                      isFav,
-                      'productList');
-                  // viewmodel.addToFavourite(
-                  //     context,
-                  //     "${productListData?.productId}",
-                  //     "${productListData?.productDetails?.productColor}",
-                  //     productListData?.productDetails
-                  //         ?.isFavorite ==
-                  //         true
-                  //         ? false
-                  //         : true,
-                  //     'favouriteList');
-                },
-                child: Container(
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Theme
-                            .of(context)
-                            .canvasColor),
-                    height: 35,
-                    width: 35,
-                    child: Icon(Icons.favorite,
-                        color: productListData
-                            ?.productDetails
-                            ?.isFavorite ==
-                            true
-                            ? Colors.red
-                            : Colors.white,
-                        size: 25))))
-      ],
+            ));
+      },
+      hovered: Matrix4.identity()..translate(0, 0, 0),
     );
   }
 }

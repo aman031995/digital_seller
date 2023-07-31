@@ -35,7 +35,7 @@ class _FAQState extends State<FAQ> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   @override
   void initState() {
-    // homeViewModel.getAppConfigData(context);
+    // homeViewModel.getAppConfig(context);
     searchController?.addListener(() {
       homeViewModel.getSearchData(
           context, '${searchController?.text}', pageNum);

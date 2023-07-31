@@ -33,8 +33,7 @@ class AuthViewModel with ChangeNotifier {
   UserInfoModel? get userInfoModel => _userInfoModel;
   User() async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    names=sharedPreferences.get('name').toString() ?? " ";
-    image=sharedPreferences.get('profileImg').toString();
+    names=sharedPreferences.get('name').toString();
   }
   Future<void> login(
       String phone,
@@ -258,6 +257,7 @@ class AuthViewModel with ChangeNotifier {
               print('Login api Successfully');
               AppDataManager.getInstance.updateUserDetails(_userInfoModel!);
               AppIndicator.disposeIndicator();
+              reloadPage();
               product==true?  Navigator.pop(context):context.router.push(HomePageWeb());
               // GoRouter.of(context).pushNamed(RoutesName.home);
               // Navigator.pop(context);
@@ -285,6 +285,7 @@ class AuthViewModel with ChangeNotifier {
                 ((result as SuccessState).value as ASResponseModal).message);
             print('Register api Successfully');
             AppIndicator.disposeIndicator();
+            reloadPage();
            // GoRouter.of(context).pushNamed(RoutesName.home);
             Navigator.pop(context);
             // AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.bottomNavigation, screenName: RouteBuilder.homePage);

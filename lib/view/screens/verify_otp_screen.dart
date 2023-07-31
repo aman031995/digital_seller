@@ -168,7 +168,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
                           bottomLeft: Radius.circular(20))),
-                  height: SizeConfig.screenHeight / 1.35,
+                  height: SizeConfig.screenHeight / 1.45,
                   width: SizeConfig.screenWidth * 0.29,
                   child: Image.asset(
                     'images/LoginPageLogo.png',

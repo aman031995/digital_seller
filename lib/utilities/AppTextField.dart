@@ -114,30 +114,30 @@ class _CustomTextFieldState extends State<AppTextField> {
                       .copyWith(color: RED_COLOR, fontSize: 12),
                   errorMaxLines: 3,
                   focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                    borderSide: BorderSide(color: RED_COLOR, width: 2),
+                    borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                    borderSide: BorderSide(color: RED_COLOR, width: 0.2),
                   ),
                   errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                    borderSide: BorderSide(color: RED_COLOR, width: 2),
+                    borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                    borderSide: BorderSide(color: RED_COLOR, width: 0.2),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(2.0)),
                     borderSide: BorderSide(
                         color: Theme.of(context).canvasColor.withOpacity(0.4),
-                        width: 2),
+                        width: 0.2),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(2.0)),
                     borderSide: BorderSide(
                         color: Theme.of(context).primaryColor.withOpacity(0.4),
-                        width: 2),
+                        width: 0.2),
                   ),
                   disabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(2.0)),
                     borderSide: BorderSide(
                         color: Theme.of(context).canvasColor.withOpacity(0.2),
-                        width: 2),
+                        width:0.2),
                   ),
                   isDense: true,
                   //  <- you can it to 0.0 for no space
@@ -187,7 +187,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                             child: Container(
                               margin: EdgeInsets.only(right: 18),
                               child: Icon(Icons.search_outlined,
-                                  color: Theme.of(context).canvasColor,
+                                  color: Theme.of(context).canvasColor.withOpacity(0.5),
                                   size: 25),
                             ),
                           ),

@@ -52,7 +52,7 @@ class _HomeViewPageState extends State<HomeViewPage> {
 
   void initState() {
     categoryView.seealll(context, widget.trayId ?? 1,'video', pageNum);
-    // homeView.getAppConfigData(context);
+    // homeView.getAppConfig(context);
     searchController?.addListener(() {
       homeView.getSearchData(
           context, '${searchController?.text}', pageNum);

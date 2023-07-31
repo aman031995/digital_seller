@@ -47,7 +47,7 @@ class _TermsState extends State<Terms> {
   @override
   void initState() {
     profileViewModel.getTermsPrivacy(context);
-    // homeViewModel.getAppConfigData(context);
+    // homeViewModel.getAppConfig(context);
     searchController?.addListener(() {
       homeViewModel.getSearchData(
           context, '${searchController?.text}', pageNum);

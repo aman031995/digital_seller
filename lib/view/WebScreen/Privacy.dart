@@ -36,7 +36,7 @@ class _PrivacyState extends State<Privacy> {
   @override
   void initState() {
     profileViewModel.getTermsPrivacy(context);
-    // homeViewModel.getAppConfigData(context);
+    // homeViewModel.getAppConfig(context);
     searchController?.addListener(() {
       homeViewModel.getSearchData(
           context, '${searchController?.text}', pageNum);

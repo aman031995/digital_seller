@@ -51,7 +51,6 @@ class _HomePageMobileState extends State<HomePageMobile> {
   User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     names = sharedPreferences.get('name').toString();
-    image = sharedPreferences.get('profileImg').toString();
   }
 
   @override

@@ -40,7 +40,7 @@ class _LoginUpState extends State<LoginUp> {
       isValidate = false;
   @override
   void initState() {
-    homeViewModel.getAppConfigData(context);
+    homeViewModel.getAppConfig(context);
     super.initState();
   }
   @override
@@ -58,8 +58,7 @@ class _LoginUpState extends State<LoginUp> {
     return ChangeNotifierProvider.value(
         value: homeViewModel,
         child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-          return ResponsiveWidget.isMediumScreen(context)?
-    AlertDialog(
+          return ResponsiveWidget.isMediumScreen(context)? AlertDialog(
         elevation: 8,
         titlePadding: EdgeInsets.zero,
         contentPadding: EdgeInsets.zero,
@@ -79,7 +78,7 @@ class _LoginUpState extends State<LoginUp> {
                   AppBoldFont(context, msg: StringConstant.login,fontSize: 18),
                   SizedBox(height: SizeConfig.screenHeight * .02),
                   AppRegularFont(context, msg:StringConstant.enterCredentials, fontSize: 16),
-                  viewmodel.loginWithPhone == true
+                  viewmodel.appConfigModel?.androidConfig?.loginWithPhone== true
                       ? Container(
                     margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                     child: StreamBuilder(
@@ -109,7 +108,8 @@ class _LoginUpState extends State<LoginUp> {
                             isTick: null,
                           );
                         }),
-                  )   : Container(
+                  )   :
+                  Container(
                     margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                     child: StreamBuilder(
                         stream: validation.email,
@@ -169,7 +169,7 @@ class _LoginUpState extends State<LoginUp> {
                   Container(
                     margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                     child: StreamBuilder(
-                        stream: viewmodel.loginWithPhone == false
+                        stream:  viewmodel.appConfigModel?.androidConfig?.loginWithPhone == false
                             ? validation.checkUserEmailLogin
                             : isCheckCredentialPhoneOrEmail == true
                             ? validation.checkEmailAndPhoneValidate
@@ -197,7 +197,7 @@ class _LoginUpState extends State<LoginUp> {
                                     passwordController.text,
                                     fcmToken ?? '',
                                     '',
-                                    viewmodel.loginWithPhone == true &&
+                                    viewmodel.appConfigModel?.androidConfig?.loginWithPhone == true &&
                                         isCheckCredentialPhoneOrEmail == true
                                         ? 'phone'
                                         : 'email',
@@ -252,11 +252,11 @@ class _LoginUpState extends State<LoginUp> {
                 ],
               ),
             ))):
-    AlertDialog(
-        elevation: 8,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20)),
-        backgroundColor: Colors.transparent,
+          AlertDialog(
+        elevation: 0.1,
+        actionsPadding: EdgeInsets.zero,
+        contentPadding: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         content: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -264,27 +264,19 @@ class _LoginUpState extends State<LoginUp> {
                 color: Theme.of(context).cardColor),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center, children: [
+              Image.asset(
+                'images/LoginPageLogo.png',
+                fit: BoxFit.fill,width: SizeConfig.screenWidth * 0.29,height: SizeConfig.screenHeight / 1.45,
+              ),
               Container(
+                margin:  EdgeInsets.only(left: 50, right: 50),
+                height: SizeConfig.screenHeight / 1.45,
                 decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        bottomLeft: Radius.circular(20))),
-                height: SizeConfig.screenHeight / 1.35,
-                width: SizeConfig.screenWidth * 0.29,
-                child: Image.asset(
-                  'images/LoginPageLogo.png',
-                  fit: BoxFit.fill,
-                ),
-              ),
-              SingleChildScrollView(
-                child: Container(
-                  margin:  EdgeInsets.only(left: 50, right: 50),
-                  height: SizeConfig.screenHeight / 1.35,
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(20))),
-                  width: SizeConfig.screenWidth * 0.25,
+                        topRight: Radius.circular(20),
+                        bottomRight: Radius.circular(20))),
+                width: SizeConfig.screenWidth * 0.25,
+                child: SingleChildScrollView(
                   child: Column(
                     children: [
                       SizedBox(height: SizeConfig.screenHeight * .05),
@@ -294,7 +286,8 @@ class _LoginUpState extends State<LoginUp> {
                       AppRegularFont(
                           context, msg:StringConstant.enterCredentials,
                           fontSize: 18),
-                      viewmodel.loginWithPhone == true
+                      SizedBox(height: SizeConfig.screenHeight * .02),
+                      viewmodel.appConfigModel?.androidConfig?.loginWithPhone == true
                           ? Container(
                         margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                         child: StreamBuilder(
@@ -385,7 +378,7 @@ class _LoginUpState extends State<LoginUp> {
                       Container(
                         margin: const EdgeInsets.only(left: 10, right: 10, top: 10),
                         child: StreamBuilder(
-                            stream: viewmodel.loginWithPhone == false
+                            stream:  viewmodel.appConfigModel?.androidConfig?.loginWithPhone == false
                                 ? validation.checkUserEmailLogin
                                 : isCheckCredentialPhoneOrEmail == true
                                 ? validation.checkEmailAndPhoneValidate
@@ -413,7 +406,7 @@ class _LoginUpState extends State<LoginUp> {
                                         passwordController.text,
                                         fcmToken ?? '',
                                         '',
-                                        viewmodel.loginWithPhone == true &&
+                                        viewmodel.appConfigModel?.androidConfig?.loginWithPhone == true &&
                                             isCheckCredentialPhoneOrEmail == true
                                             ? 'phone'
                                             : 'email',
@@ -453,7 +446,6 @@ class _LoginUpState extends State<LoginUp> {
                             Navigator.pop(context);
                             showDialog(
                                 context: context,
-                                barrierColor: Colors.black87,
                                 builder: (BuildContext context) {
                                   return const SignUp();
                                 });

@@ -123,7 +123,16 @@ class _CommonCarouselState extends State<CommonCarousel> {
 
         },
       child:
-      Image.asset("images/Banner01.png",fit: BoxFit.fill,  width: SizeConfig.screenWidth),
+      CachedNetworkImage(
+          imageUrl:element.bannerUrl ?? "",
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              image: DecorationImage(
+                  image: imageProvider, fit: BoxFit.fill),
+            ),
+          ),
+          placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
     )
     )
         .toList();

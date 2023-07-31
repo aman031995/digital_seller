@@ -28,7 +28,7 @@ class _MenuListState extends State<MenuList> {
 
   @override
   void initState() {
-    homeViewModel.getAppConfigData(context);
+    homeViewModel.getAppConfig(context);
     super.initState();
   }
 

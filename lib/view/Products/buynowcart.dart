@@ -35,7 +35,6 @@ class _BuynowCartState extends State<BuynowCart> {
   final CartViewModel cartViewData = CartViewModel();
   @override
   void initState() {
-
     Map<String, dynamic> json = jsonDecode(SessionStorageHelper.getValue("token").toString());
    cartListData = CartListDataModel.fromJson(json);
     super.initState();
@@ -44,7 +43,7 @@ class _BuynowCartState extends State<BuynowCart> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Scaffold(
+    return cartListData?.cartList !=null? Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: getAppBarWithBackBtn(
             title: StringConstant.cartDetail,
@@ -60,7 +59,7 @@ class _BuynowCartState extends State<BuynowCart> {
             ?Container(
                 child: Column(
                   children: [
-                    cartPageViewIndicator(context, 0, activeStep),
+                    cartPageViewIndicator(context, 0),
                     Container(
                       width: SizeConfig.screenWidth,
                       child: Card(
@@ -306,6 +305,7 @@ class _BuynowCartState extends State<BuynowCart> {
                     ),
 
                     Card(
+                      elevation: 0.2,
                       child: Column(
                           children:  cartListData!.checkoutDetails!
                               .map((e){
@@ -351,7 +351,7 @@ class _BuynowCartState extends State<BuynowCart> {
         Container(
           child: Column(
             children: [
-              cartPageViewIndicator(context, 0, activeStep),
+              cartPageViewIndicator(context, 0),
               Container(
                 width: SizeConfig.screenWidth/3.2,
                 child: Card(
@@ -639,7 +639,8 @@ class _BuynowCartState extends State<BuynowCart> {
                   )),
             ],
           ),
-        ));
+        ))
+    :Center(child: CircularProgressIndicator());
   }
 
   Future<bool> _willPopCallback() async {

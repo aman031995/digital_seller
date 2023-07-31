@@ -5,10 +5,11 @@ import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
+import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
+import 'package:TychoStream/view/WebScreen/OnHover.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
-import 'package:TychoStream/view/widgets/video_listpage.dart';
-import 'package:TychoStream/viewmodel/auth_view_model.dart';
+
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/annotations.dart';
@@ -18,7 +19,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
-import 'package:TychoStream/utilities/AppTextField.dart';
 import 'package:TychoStream/utilities/AssetsConstants.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
@@ -29,7 +29,8 @@ import 'package:TychoStream/view/widgets/search_view.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import '../../AppRouter.gr.dart';
 import '../../main.dart';
-import '../MobileScreen/menu/app_menu.dart';
+import 'getAppBar.dart';
+
 
 @RoutePage()
 class HomePageWeb extends StatefulWidget {
@@ -49,16 +50,16 @@ class _HomePageWebState extends State<HomePageWeb> {
   void initState() {
     homeViewModel.getAppConfig(context);
     User();
+    cartViewModel.getCartCount(context);
     cartViewModel.getProductCategoryList(context,1);
-    cartViewModel.getRecommendedView(context);
-    profileViewModel.getUserDetails(context);
+    cartViewModel.getRecommendedViewData(context);
+    profileViewModel.getProfileDetails(context);
     super.initState();
   }
 
   User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     names = sharedPreferences.get('name').toString();
-    image = sharedPreferences.get('profileImg').toString();
     if (sharedPreferences.get('token') != null){
       cartViewModel.getRecentView(context);
     }
@@ -90,176 +91,77 @@ class _HomePageWebState extends State<HomePageWeb> {
               },
                 child: Scaffold(
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    extendBodyBehindAppBar: true,
                   appBar: ResponsiveWidget.isMediumScreen(context)
-                      ? homePageTopBar()
-                      : PreferredSize(
-                      preferredSize: Size.fromHeight(SizeConfig.screenHeight*0.085),
-                      child: Container(
-                        color: Theme.of(context).cardColor,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: SizedBox(
+                      ? homePageTopBar(context,_scaffoldKey)
+                      : getAppBar(context,viewmodel,profilemodel,cartViewModel.cartItemCount, () async {
+                SharedPreferences sharedPreferences =
+                await SharedPreferences.getInstance();
+                token = sharedPreferences.getString('token').toString();
+                if (token == 'null') {
+                showDialog(
+                context: context,
+                barrierColor:
+                Theme.of(context).canvasColor.withOpacity(0.6),
+                builder: (BuildContext context) {
+                return LoginUp(
+                product: true,
+                );
+                });
+                // _backBtnHandling(prodId);
+                } else {
+                context.router.push(FavouriteListPage());
+                }
+                },
+                          ()async{
+                    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                    token = sharedPreferences.getString('token').toString();
+                    if (token == 'null'){
+                      showDialog(
+                          context: context,
+                          barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
+                          builder:
+                              (BuildContext context) {
+                            return  LoginUp(
+                              product: true,
+                            );
+                          });
+                    } else{
+                      context.router.push(CartDetail(
+                          itemCount: '${cartViewModel.cartItemCount}'
+                      ));
+                    }}),
 
-                                  width: SizeConfig.screenWidth * .08),
-                            ),
-                            viewmodel.appConfigModel!=null?
-                            Container(
-                            width: SizeConfig.screenHeight*0.3,height: 50,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: viewmodel.appConfigModel!.androidConfig!.bottomNavigation!.map((e) {
-                                  return GestureDetector(
-                                    onTap: (){
-                                      print(e.title);
-                                      getPages(e);
-                                    },
-                                    child: AppBoldFont(context, msg: e.title ?? "",fontSize: 20),
-                                  );
-                                }).toList() ,
-                              ),
-                            ):
-                             Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor)),
-                            Expanded(
-                              child: SizedBox(
-
-                                  width: SizeConfig.screenWidth * .08),
-
-                            ),
-                            Container(
-                              height: 40,
-                              width: SizeConfig.screenWidth / 4.9,
-                              alignment: Alignment.topCenter,
-                              child: AppTextField(
-                                  controller: searchController,
-                                  textCapitalization:
-                                  TextCapitalization.words,
-                                  secureText: false,
-                                  floatingLabelBehavior:
-                                  FloatingLabelBehavior.never,
-                                  maxLine: searchController!.text.length > 2 ? 2 : 1,
-                                  maxLength: null,
-                                  labelText: StringConstant.searchItems,
-                                  keyBoardType: TextInputType.text,
-                                  isSearch: true,
-                                  autoFocus: true,
-                                  onSubmitted: (v) async{
-                                    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                  if (sharedPreferences.get('token') != null) {
-                                 AppIndicator.loadingIndicator(context);
-                                    viewmodel.getSearchData(context, searchController?.text ?? '', 1);
-                                    isSearch = true;
-                                    setState;}
-                                  else{
-                                    ToastMessage.message("please Login");
-                                  }
-                                  },
-                                  isTick: null),
-                            ),
-                            SizedBox(
-                                width: SizeConfig.screenWidth * .01),
-                            names == "null"
-                                ? OutlinedButton(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
-                                      builder:
-                                          (BuildContext context) {
-                                        return  LoginUp(
-                                          product: false,
-                                        );
-                                      });
-                                },
-                                style: ButtonStyle(
-                                    overlayColor: MaterialStateColor
-                                        .resolveWith((states) =>
-                                    Theme
-                                        .of(context)
-                                        .primaryColor),
-                                    fixedSize:
-                                    MaterialStateProperty.all(
-                                        Size.fromHeight(35)),
-                                    side: MaterialStateProperty.all(BorderSide(
-                                        color: Theme.of(context).canvasColor,
-
-                                        width: 1.5,
-                                        style: BorderStyle.solid),
-                                    )
-                                ),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                        AssetsConstants.icProfile,
-                                        width: 20,
-                                        height: 20, color: Theme.of(context).canvasColor),
-                                    appTextButton(
-                                        context,
-                                        'SignIn',
-                                        Alignment.center,
-                                        Theme
-                                            .of(context)
-                                            .canvasColor,
-                                        16,
-                                        true),
-                                  ],
-                                ))
-                                :
-                            appTextButton(
-                                context,
-                                names!,
-                                Alignment.center,
-                                Theme
-                                    .of(context)
-                                    .canvasColor,
-                                18,
-                                true,
-                                onPressed: () {
-                                  isLogins = true;
-                                }),
-                            names == "null"
-                                ? Container()
-                                : Image.asset(
-                              AssetsConstants.icProfile,
-                              height: 30,
-                              color: Theme.of(context).canvasColor,
-                            ),
-                            SizedBox(
-                                width: SizeConfig.screenWidth * .04),
-                          ],
-                        ),
-                      )
-                  ),
-
-                  body:
-                     // key: _scaffoldKey,
-                      //backgroundColor: Theme.of(context).backgroundColor,
-                     // drawer: AppMenu(),
-                  Stack(
+          body: checkInternet == "Offline"
+                   ?  NOInternetScreen()
+                     : Scaffold(
+              extendBodyBehindAppBar: true,
+                       key: _scaffoldKey,
+                     backgroundColor: Theme.of(context).backgroundColor,
+                          drawer: ResponsiveWidget.isMediumScreen(context)
+                              ? AppMenu():SizedBox(),
+              body:
+                                      Stack(
                         children: [
                           SingleChildScrollView(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-
-
                                 CommonCarousel(),
-                                SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?16:32),
+                                SizedBox(height: 10),
                                 Container(
                                  margin: EdgeInsets.zero,
                                     color: Theme.of(context).cardColor.withOpacity(0.6),
-                                 padding: EdgeInsets.only(left: SizeConfig.screenHeight*0.10,top: SizeConfig.screenHeight*0.04,bottom: SizeConfig.screenHeight*0.04,right: SizeConfig.screenHeight*0.10),
+                                 padding: EdgeInsets.only(left: 40,right: 40,bottom: 0,top: 20),
                                  child: Column(
                                    mainAxisAlignment: MainAxisAlignment.start,
                                    crossAxisAlignment: CrossAxisAlignment.start,
                                    children: [
                                      Container(child: AppBoldFont(context, msg: "What are you looking for?", fontSize:24)),
-                                     SizedBox(height:16),
+                                     SizedBox(height:SizeConfig.screenHeight*0.01),
                                      Container(
-                                         height: SizeConfig.screenHeight*0.28,
+                                         height: 250,
                                          child: ListView.builder(
                                              physics: BouncingScrollPhysics(),
                                              reverse: false,
@@ -283,35 +185,27 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                    // }
                                                  },
                                                  child: Container(
-                                                   decoration: BoxDecoration(
-                                                     //  borderRadius: BorderRadius.circular(100),
-                                                       shape: BoxShape.circle,
-                                                       border: Border.all(color:Theme.of(context).canvasColor.withOpacity(0.2),width: 2)
-                                                   ),
-                                                   width: ResponsiveWidget.isMediumScreen(context)
-                                                       ?110:SizeConfig.screenHeight*0.30,
-                                                   height:ResponsiveWidget.isMediumScreen(context)
-                                                       ?110:
-                                                   SizeConfig.screenHeight*0.30,
+                                                   margin: EdgeInsets.only(right: 16),
                                                    child: Column(
                                                      mainAxisAlignment: MainAxisAlignment.center,
                                                      children: [
-                                                       CachedNetworkImage(
-                                                           imageUrl: cartViewModel.categoryListModel?[position].imageUrl ?? "", fit: BoxFit.fill,
-                                                           imageBuilder: (context, imageProvider) => Container(
-                                                             height: ResponsiveWidget.isMediumScreen(context)
-                                                                 ?100:
-                                                             SizeConfig.screenHeight*0.2,width: ResponsiveWidget.isMediumScreen(context)
-                                                               ?100:
-                                                           SizeConfig.screenHeight*0.2,
-                                                             decoration: BoxDecoration(
-                                                               image: DecorationImage(
-                                                                   image: imageProvider, fit: BoxFit.cover),
+                                                       CircleAvatar(
+                                                         backgroundColor: Theme.of(context).cardColor,
+                                                         radius: 100,
+                                                         child: CachedNetworkImage(
+                                                             imageUrl: cartViewModel.categoryListModel?[position].imageUrl ?? "", fit: BoxFit.fill,
+                                                             imageBuilder: (context, imageProvider) => Container(
+                                                               decoration: BoxDecoration(
+                                                                 shape: BoxShape.circle,
+                                                                 image: DecorationImage(
+                                                                     image: imageProvider, fit: BoxFit.cover),
+                                                               ),
                                                              ),
-                                                           ),
-                                                           placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
-                                                       AppBoldFont(maxLines: 1,context, msg: cartViewModel.categoryListModel?[position].categoryTitle ?? "",fontSize: ResponsiveWidget.isMediumScreen(context)
-                                                           ?14:16)
+                                                             placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
+                                                       ),
+                                                       SizedBox(height: SizeConfig.screenHeight*0.01),
+                                                       AppBoldFont(maxLines: 1,context, msg: cartViewModel.categoryListModel?[position].categoryTitle ?? "",fontSize: ResponsiveWidget.isMediumScreen(context) ?14:16),
+                                                       SizedBox(height: SizeConfig.screenHeight*0.01),
                                                      ],
                                                    ),
                                                  ),
@@ -320,111 +214,97 @@ class _HomePageWebState extends State<HomePageWeb> {
                                    ],
                                  ),
                                ),
-                               // VideoListPage()
-                                SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?16:32),
+                                SizedBox(height: 10),
                                 Container(
                                   margin: EdgeInsets.zero,
+                                  padding: EdgeInsets.only(left: 40,right: 40,bottom: 20,top: 20),
                                   color: Theme.of(context).cardColor.withOpacity(0.6),
-                                   height: ResponsiveWidget.isMediumScreen(context)
-                                    ?185: SizeConfig.screenHeight/1.6,
-                                  padding: EdgeInsets.only(left: SizeConfig.screenHeight*0.10,right:  SizeConfig.screenHeight*0.10),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(height: SizeConfig.screenHeight*0.02),
                                       AppBoldFont(context, msg: "Recommended for You ",fontSize: ResponsiveWidget.isMediumScreen(context) ?16: 24),
-                                      SizedBox(height: SizeConfig.screenHeight*0.02),
+                                      SizedBox(height: SizeConfig.screenHeight*0.01),
                                       Container(
                                           height: ResponsiveWidget.isMediumScreen(context)
-                                              ?185: SizeConfig.screenHeight/1.92,
-
-                                          width: ResponsiveWidget.isMediumScreen(context)
-                                              ?SizeConfig.screenHeight/1.2: SizeConfig.screenWidth,
+                                              ?185: SizeConfig.screenHeight/1.9,
+                                          width: SizeConfig.screenWidth,
                                           child: ListView.builder(
                                               reverse: false,
                                               padding: EdgeInsets.zero,
                                               scrollDirection: Axis.horizontal,
                                               itemCount: cartViewModel.recommendedView?.length,
                                               itemBuilder: (context, position) {
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    context.router.push(ProductListGallery());
-                                                  },
-                                                  child: Container(
-                                                    color: Theme.of(context).cardColor,
-                                                    width: ResponsiveWidget.isMediumScreen(context)
-                                                      ?140:SizeConfig.screenHeight/3,
-                                                    margin: EdgeInsets.only(right: 16),
-                                                    child: Column(
-
-                                                      mainAxisSize: MainAxisSize.min,
-                                                      children: [
-                                                        CachedNetworkImage(
-                                                            imageUrl: '${cartViewModel.recommendedView?[position].productDetails?.productImages?[0]}', fit: BoxFit.fill,
-                                                            imageBuilder: (context, imageProvider) => Container(
-                                                              height:  ResponsiveWidget.isMediumScreen(context)
-                                                                  ?140:
-                                                              SizeConfig.screenHeight/2.2,
-                                                              width: ResponsiveWidget.isMediumScreen(context)
-                                                                ?140:SizeConfig.screenHeight/3,
-
-                                                              margin: EdgeInsets.only(bottom:
-                                                              SizeConfig.screenHeight*0.01),
-
-                                                              decoration: BoxDecoration(
-                                                                borderRadius: BorderRadius.circular(4),
-                                                                image: DecorationImage(
-                                                                    image: imageProvider, fit: BoxFit.fill),
+                                                return  GestureDetector(
+                                                    onTap: () {
+                                                      context.router.push(ProductListGallery());
+                                                    },
+                                                    child: Container(
+                                                      margin: EdgeInsets.only(right: 16),
+                                                      height: ResponsiveWidget.isMediumScreen(context)
+                                                          ?185: SizeConfig.screenHeight/1.9,
+                                                      width: ResponsiveWidget.isMediumScreen(context) ?140:SizeConfig.screenHeight/2.8,
+                                                      decoration:BoxDecoration(
+                                                        color: Theme.of(context).cardColor,
+                                                      ),
+                                                      child: Column(
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        children: [
+                                                          CachedNetworkImage(
+                                                              imageUrl: '${cartViewModel.recommendedView?[position].productDetails?.productImages?[0]}', fit: BoxFit.fill,
+                                                              imageBuilder: (context, imageProvider) => Container(
+                                                                height:  ResponsiveWidget.isMediumScreen(context) ?140: SizeConfig.screenHeight/2.1,
+                                                                width: ResponsiveWidget.isMediumScreen(context) ?140:SizeConfig.screenHeight/2.8,
+                                                                margin: EdgeInsets.only(bottom: 8),
+                                                                decoration: BoxDecoration(
+                                                                  image: DecorationImage(
+                                                                      image: imageProvider, fit: BoxFit.fill),
+                                                                ),
                                                               ),
-                                                            ),
-                                                            placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
-                                                        AppBoldFont(maxLines: 1,context, msg:getRecommendedViewTitle(position, cartViewModel),fontSize: 20),
-                                                        AppRegularFont(context, msg:"₹"+
+                                                              placeholder: (context, url) => Container(
+                                                                  height:  ResponsiveWidget.isMediumScreen(context) ?140: SizeConfig.screenHeight/2.1,
+                                                                  child: Center(child: CircularProgressIndicator(color: Colors.grey)))),
+                                                          AppBoldFont(maxLines: 1,context, msg:getRecommendedViewTitle(position, cartViewModel),fontSize: 20),
+                                                          SizedBox(height: 10)
 
-                                                            "${cartViewModel.recommendedView?[position].productDetails?.productDiscountPrice}",fontSize: 18),
-                                                        SizedBox(height:  SizeConfig.screenHeight*0.01)
-
-                                                      ],
+                                                        ],
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
-                                              })),
+                                                  );
+
+                                              }))
+
+
+
                                     ],
                                   ),
                                 ),
-                                SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?16:32),
+                                SizedBox(height: 10),
                                 (cartViewModel.recentView?.length ??0)>0 ?
                                 Container(
                                   margin: EdgeInsets.zero,
                                   color: Theme.of(context).cardColor.withOpacity(0.6),
-                                  height:ResponsiveWidget.isMediumScreen(context)
-                                      ?100:
-                                  SizeConfig.screenHeight/2.05,
-
-                                  padding: EdgeInsets.only(left: SizeConfig.screenHeight*0.10,right:  SizeConfig.screenHeight*0.10),
+                                  padding: EdgeInsets.only(left: 40,right: 40,bottom: 20,top: 20),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      SizedBox(height: SizeConfig.screenHeight*0.02),
                                        AppBoldFont(context, msg:"Recently Viewed",fontSize: ResponsiveWidget.isMediumScreen(context) ?16:24),
                                       SizedBox(height: SizeConfig.screenHeight*0.02),
                                       Container(
                                           height:ResponsiveWidget.isMediumScreen(context)
                                               ?100: SizeConfig.screenHeight/2.65,
-
-                                          width: ResponsiveWidget.isMediumScreen(context)
-                                              ?SizeConfig.screenHeight/1.2: SizeConfig.screenWidth,
+                                          width: SizeConfig.screenWidth,
                                           child: ListView.builder(
                                               reverse: false,
-
                                               padding: EdgeInsets.zero,
-
                                               scrollDirection: Axis.horizontal,
                                               itemCount: cartViewModel.recentView?.length,
                                               itemBuilder: (context, position) {
-                                                return GestureDetector(
+                                                return
+                                                  OnHover(builder: (isHovered) {
+                                                    return
+                                                  GestureDetector(
                                                   onTap: (){
                                                     context.router.push(ProductDetailPage(
                                                       productId: '${cartViewModel.recentView?[position].productId}',
@@ -439,10 +319,41 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                     ));
                                                   },
                                                   child: Container(
-                                                    color: Theme.of(context).cardColor,
                                                     width: ResponsiveWidget.isMediumScreen(context)
                                                         ?140:SizeConfig.screenHeight/4,
-
+                                                    height:ResponsiveWidget.isMediumScreen(context)
+                                                      ?100: SizeConfig.screenHeight/2.65,
+                                                    decoration:isHovered==true? BoxDecoration(
+                                                      color: Theme.of(context).cardColor,
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                            color: Theme.of(context).canvasColor.withOpacity(0.15),
+                                                            blurRadius: 10.0,
+                                                            spreadRadius: 7,
+                                                          offset: Offset(2, 2),
+                                                        ),
+                                                        BoxShadow(
+                                                            color: Theme.of(context).canvasColor.withOpacity(0.12),
+                                                            blurRadius: 7.0,
+                                                            spreadRadius: 5,
+                                                          offset: Offset(2, 2),
+                                                        ),
+                                                        BoxShadow(
+                                                            color: Theme.of(context).canvasColor.withOpacity(0.10),
+                                                            blurRadius: 4.0,
+                                                            spreadRadius: 3,
+                                                          offset: Offset(2, 2),
+                                                        ),
+                                                        BoxShadow(
+                                                            color: Theme.of(context).canvasColor.withOpacity(0.09),
+                                                            blurRadius: 1.0,
+                                                            spreadRadius: 1.0,
+                                                          offset: Offset(2, 2),
+                                                        ),
+                                                      ],
+                                                    ):BoxDecoration(
+                                                      color: Theme.of(context).cardColor,
+                                                    ),
                                                     margin: EdgeInsets.only(right: 16),
                                                     child: Column(
                                                       mainAxisSize: MainAxisSize.min,
@@ -451,33 +362,35 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                         CachedNetworkImage(
                                                             imageUrl: '${cartViewModel.recentView?[position].productDetails?.productImages?[0]}', fit: BoxFit.fill,
                                                             imageBuilder: (context, imageProvider) => Container(
-
-                                                              margin: EdgeInsets.only(bottom:  SizeConfig.screenHeight*0.01),
+                                                              margin: EdgeInsets.only(bottom:8),
                                                               height:  ResponsiveWidget.isMediumScreen(context)
                                                                   ?140:SizeConfig.screenHeight/3,
                                                               width: ResponsiveWidget.isMediumScreen(context)
                                                                 ?140:SizeConfig.screenHeight/4,
                                                               decoration: BoxDecoration(
-                                                                borderRadius: BorderRadius.circular(4),
                                                                 image: DecorationImage(
                                                                     image: imageProvider, fit: BoxFit.fill),
                                                               ),
                                                             ),
-                                                            placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
+                                                            placeholder: (context, url) => Container(
+                                                                height:  ResponsiveWidget.isMediumScreen(context) ?140: SizeConfig.screenHeight/2.1,
+                                                               child: Center(child: CircularProgressIndicator(color: Colors.grey)))),
 
                                                         AppBoldFont(context, msg:getRecentViewTitle(position,cartViewModel),fontSize: 20,maxLines: 1),
-                                                        SizedBox(height:  SizeConfig.screenHeight*0.01)
+                                                        SizedBox(height:  10)
 
                                                       ],
                                                     ),
                                                   ),
+                                                );
+                                                },
+                                                  hovered : Matrix4.identity()..translate(0,0,0),
                                                 );
                                               }))
                                     ],
                                   ),
                                 ):
                                 SizedBox(),
-
                                 SizedBox(height: 16),
 
                               ],
@@ -492,7 +405,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                               : Container()
 
                         ],
-                      )),
+                      )))
 
               );}
         )
@@ -515,166 +428,5 @@ class _HomePageWebState extends State<HomePageWeb> {
     } else {
       return cartview.recentView?[position].productDetails?.productVariantTitle ?? "";
     }
-  }
-  // method for handling bottom nav clicks
-  getPages(BottomNavigation navItem) {
-    Uri url = Uri.parse(navItem.url ?? '');
-    if(url.path == RoutesName.homepageweb){
-      return reloadPage();
-    }  else if (url.path == RoutesName.productPage){
-      return context.router.push(ProductListGallery());
-    }
-    else if(url.path==RoutesName.profilePage){
-      context.pushRoute(EditProfile(
-          isEmailVerified: '${profileViewModel.userInfoModel?.isPhoneVerified}',
-          isPhoneVerified: '${profileViewModel.userInfoModel?.isEmailVerified}'
-      ));
-    }
-  }
-
-  homePageTopBar() {
-    return AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        backgroundColor: Theme
-            .of(context)
-            .cardColor,
-        title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-          GestureDetector(
-              onTap: () async{
-                SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                if (sharedPreferences.get('token') != null){
-                  if (_scaffoldKey.currentState?.isDrawerOpen == false) {
-                    _scaffoldKey.currentState?.openDrawer();
-                  } else {
-                    _scaffoldKey.currentState?.openEndDrawer();
-                  }
-                }
-                else{
-                  ToastMessage.message("please Login");
-                }
-                },
-              child: Container(
-                  height: 35,
-                  width: 35,
-                  padding: EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    // color: Color(0xff001726),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Icon(Icons.menu_outlined))),
-               SizedBox(width: 5),
-              GestureDetector(
-               onTap: () {
-          if(isSearch==true){
-            isSearch=false;
-            searchController?.clear();
-          }
-          if( isLogins == true){
-            isLogins=false;
-            setState(() {
-
-            });
-          }
-          context.pushRoute(ProductListGallery());
-        },
-                child: Container(height: 30,
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Theme.of(context).primaryColor.withOpacity(0.6),width: 1),
-                    borderRadius: BorderRadius.circular(5)
-                  ),
-                  child: appTextButton(
-                      context,
-                      'ProductList',
-                      Alignment.center,
-                      Theme
-                          .of(context)
-                          .canvasColor,
-                      14,
-                      true),
-                ),
-              ),
-              SizedBox(width: 5),
-          GestureDetector(
-            onTap: () {
-              context.pushRoute(SearchPage());
-              // GoRouter.of(context).pushNamed(RoutesName.SearchPage);
-            },
-            child: Icon(Icons.search_sharp,size: 30)
-          ),
-          SizedBox(
-              width: SizeConfig.screenWidth * .01),
-          names == "null"
-              ?
-          OutlinedButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
-                    builder:
-                        (BuildContext context) {
-                      return LoginUp();
-                    });
-              },
-              style: ButtonStyle(
-
-                  overlayColor: MaterialStateColor
-                      .resolveWith((states) =>
-                  Theme
-                      .of(context)
-                      .primaryColor),
-                  fixedSize:
-                  MaterialStateProperty.all(
-                      Size.fromHeight(30)),
-                  side: MaterialStateProperty.all(BorderSide(
-                      color: Theme
-                          .of(context)
-                          .canvasColor,
-
-                      width: 1,
-                      style: BorderStyle.solid),
-                  )
-              ),
-              child: Row(
-                children: [
-                  Image.asset(
-                      AssetsConstants.icProfile,
-                      width: 20,
-                      height: 20, color: Theme
-                      .of(context)
-                      .canvasColor),
-                  appTextButton(
-                      context,
-                      'SignIn',
-                      Alignment.center,
-                      Theme
-                          .of(context)
-                          .canvasColor,
-                      14,
-                      true),
-                ],
-              ))
-              :
-           GestureDetector(
-            onTap: () {
-              setState(() {
-                isLogins = true;
-                if (isSearch == true) {
-                  isSearch = false;
-                  searchController?.clear();
-                }
-              });
-            },
-            child: Image.asset(
-              AssetsConstants.icProfile,
-              height: 30,
-              color: Theme
-                  .of(context)
-                  .canvasColor,
-            ),
-          ),
-        ]));
   }
 }

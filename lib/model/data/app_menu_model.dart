@@ -1,13 +1,16 @@
+// App Menu Modal
 class AppMenuModel {
   final List<Menu>? appMenu;
+  final String? menuVersion;
 
-  AppMenuModel({this.appMenu});
+  AppMenuModel({this.appMenu, this.menuVersion});
 
   factory AppMenuModel.fromJson(Map<String, dynamic> json) {
     return AppMenuModel(
-      appMenu: List<Menu>.from(
-        json['appMenu'].map((menu) => Menu.fromJson(menu)),
-      ),
+        appMenu: List<Menu>.from(
+          json['appMenu'].map((menu) => Menu.fromJson(menu)),
+        ),
+        menuVersion: json['version']
     );
   }
 }

@@ -21,7 +21,7 @@ class _SocialLoginViewState extends State<SocialLoginView> {
 
   @override
   void initState() {
-    homeViewModel.getAppConfigData(context);
+    homeViewModel.getAppConfig(context);
     super.initState();
   }
 

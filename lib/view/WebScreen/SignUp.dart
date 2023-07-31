@@ -37,9 +37,9 @@ class _SignUpState extends State<SignUp> {
 
   @override
   void initState() {
-    super.initState();
-    homeViewModel.getAppConfigData(context);
 
+    homeViewModel.getAppConfig(context);
+    super.initState();
   }
 
   @override
@@ -82,7 +82,7 @@ class _SignUpState extends State<SignUp> {
                             SizedBox(
                                 height: SizeConfig.screenHeight * .02),
                             StreamBuilder(
-                                stream: viewmodel.loginWithPhone == false
+                                stream:  viewmodel.appConfigModel?.androidConfig?.loginWithPhone  == false
                                     ? validation.registerWithoutNumberUser
                                     : validation.registerUser,
                                 builder: (context, snapshot) {
@@ -146,7 +146,8 @@ class _SignUpState extends State<SignUp> {
 
 
           AlertDialog(
-                  elevation: 8,
+                  elevation: 0.2,
+                  actionsPadding: EdgeInsets.zero,
                   backgroundColor: Colors.transparent,
                   contentPadding: EdgeInsets.zero,
                   shape: RoundedRectangleBorder(
@@ -163,27 +164,20 @@ class _SignUpState extends State<SignUp> {
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Image.asset(
+                              'images/LoginPageLogo.png',
+                              fit: BoxFit.fill,   height: SizeConfig.screenHeight / 1.45,
+                              width: SizeConfig.screenWidth * 0.29,
+                            ),
                             Container(
+                              margin: EdgeInsets.only(left: 50, right: 50),
+                              height: SizeConfig.screenHeight / 1.45,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20),
-                                      bottomLeft: Radius.circular(20))),
-                              height: SizeConfig.screenHeight / 1.35,
-                              width: SizeConfig.screenWidth * 0.29,
-                              child: Image.asset(
-                                'images/LoginPageLogo.png',
-                                fit: BoxFit.fill,
-                              ),
-                            ),
-                            SingleChildScrollView(
-                              child: Container(
-                                margin: EdgeInsets.only(left: 50, right: 50),
-                                height: SizeConfig.screenHeight / 1.35,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.only(
-                                        topRight: Radius.circular(20),
-                                        bottomRight: Radius.circular(20))),
-                                width: SizeConfig.screenWidth * 0.25,
+                                      topRight: Radius.circular(20),
+                                      bottomRight: Radius.circular(20))),
+                              width: SizeConfig.screenWidth * 0.25,
+                              child: SingleChildScrollView(
                                 child: Column(
                                   children: [
                                     SizedBox(
@@ -196,11 +190,13 @@ class _SignUpState extends State<SignUp> {
                                     AppRegularFont(context,
                                         msg: StringConstant.letsRegister,
                                         fontSize: 18),
+                                    SizedBox(
+                                        height: SizeConfig.screenHeight * .02),
                                     registerForms(viewmodel),
                                     SizedBox(
                                         height: SizeConfig.screenHeight * .02),
                                     StreamBuilder(
-                                        stream: viewmodel.loginWithPhone == false
+                                        stream: viewmodel.appConfigModel?.androidConfig?.loginWithPhone == false
                                             ? validation.registerWithoutNumberUser
                                             : validation.registerUser,
                                         builder: (context, snapshot) {
@@ -253,7 +249,6 @@ class _SignUpState extends State<SignUp> {
                                           Navigator.pop(context);
                                           showDialog(
                                               context: context,
-                                              barrierColor: Colors.black87,
                                               builder: (BuildContext context) {
                                                 return LoginUp();
                                               });
@@ -275,12 +270,34 @@ class _SignUpState extends State<SignUp> {
         signUpAppTextField(nameController, StringConstant.name, TextInputType.text, validation.sinkFirstName, 100, validation.firstName, isName),
         SizedBox(height: 15),
         signUpAppTextField(emailController, StringConstant.email, TextInputType.emailAddress, validation.sinkEmail, 100, validation.email, isEmail),
-        viewmodel.loginWithPhone == false ? SizedBox() : SizedBox(height: 15),
-        viewmodel.loginWithPhone == false
+        viewmodel.appConfigModel?.androidConfig?.loginWithPhone  == false ? SizedBox() : SizedBox(height: 15),
+        viewmodel.appConfigModel?.androidConfig?.loginWithPhone == false
             ? SizedBox()
             : signUpAppTextField(phoneController, StringConstant.phone, TextInputType.number, validation.sinkPhoneNo, 10, validation.phoneNo, isPhone),
         SizedBox(height: 15),
-        signUpAppTextField(passwordController, StringConstant.password, TextInputType.visiblePassword, validation.sinkPassword, 100, validation.password, isPassword),
+        StreamBuilder(
+            stream: validation.password,
+            builder: (context, snapshot) {
+              return AppTextField(
+                  maxLine: 1,
+                  controller: passwordController,
+                  labelText: StringConstant.password,
+                  prefixText: '',
+                  isShowPassword: true,
+                  isTick: true,
+                  isColor: isPassword,
+                  keyBoardType: TextInputType.visiblePassword,
+                  errorText: snapshot.hasError
+                      ? snapshot.error.toString()
+                      : null,
+                  onChanged: (m) {
+                    validation.sinkPassword.add(m);
+                    isPassword = true;
+                    setState(() {});
+                  },
+                  onSubmitted: (m) {});
+            }),
+        //signUpAppTextField(passwordController, StringConstant.password, TextInputType.visiblePassword, validation.sinkPassword, 100, validation.password, isPassword),
         const SizedBox(height: 15),
         // Container(
         //     alignment: Alignment.topLeft,

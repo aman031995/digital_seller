@@ -50,76 +50,111 @@ class CommonMethods {
   //           }));
   // }
 }
-Widget cartPageViewIndicator(BuildContext context,int pageIndex,int activeStep){
+
+Widget cartPageViewIndicator(
+    BuildContext context,int activeStep) {
   return Container(
-    child: EasyStepper(
-      activeStep: pageIndex,
-      lineLength: SizeConfig.screenWidth * 0.10,
-      lineSpace: 0,
-      lineType: LineType.normal,
-      defaultLineColor: Theme.of(context).canvasColor.withOpacity(0.6),
-      finishedStepBackgroundColor: Theme.of(context).primaryColor ,
-      activeStepBackgroundColor: Theme.of(context).primaryColor,
-      finishedLineColor: Theme.of(context).primaryColor,
-      activeStepTextColor: Theme.of(context).canvasColor,
-      finishedStepTextColor: Theme.of(context).primaryColor,
-      internalPadding: 0,
-      showLoadingAnimation: false,
-      stepRadius: 13,
-      showStepBorder: false,
-      lineDotRadius: 1.5,
-      steps: [
-        EasyStep(
-          customStep: CircleAvatar(
-            radius: 8,
-            backgroundColor: activeStep >= 0
-                ? Colors.white :Theme.of(context).canvasColor.withOpacity(0.6),
-            child: CircleAvatar(
-              radius: 7,
-              backgroundColor: activeStep >= 0
-                  ? Theme.of(context).primaryColor
-                  :  Theme.of(context).canvasColor.withOpacity(0.6),
-            ),
-          ),
-          title: 'My Cart',
-        ),
-        EasyStep(
-          customStep: CircleAvatar(
-            radius: 8,
-            backgroundColor:  activeStep >= 1
-                ? Colors.white :Theme.of(context).canvasColor.withOpacity(0.6),
-            child: CircleAvatar(
-              radius: 7,
-              backgroundColor: activeStep >= 1
-                  ? Theme.of(context)
-                  .primaryColor
-                  : Colors.white,
-            ),
-          ),
-          title: 'Payment',
-        ),
-        EasyStep(
-          customStep: CircleAvatar(
-            radius: 8,
-            backgroundColor:  activeStep >= 2
-                ? Colors.white :Theme.of(context).canvasColor.withOpacity(0.6),
-            child: CircleAvatar(
-              radius: 7,
-              backgroundColor: activeStep >= 2
-                  ? Theme.of(context)
-                  .primaryColor
-                  : Colors.white,
-            ),
-          ),
-          title: 'Order Placed',
-        ),
-      ],
-      onStepReached: (index) {
-        activeStep = index;
-      },
-    ),
-  ) ;
+      margin: EdgeInsets.only(bottom: 10,left: SizeConfig.screenHeight*0.25,right: SizeConfig.screenHeight*0.25,top: 12),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          stepView(context,"Step 1 \n${StringConstant.myCart}",activeStep,0),
+          Icon(Icons.arrow_forward_ios_sharp, size: 10,    color: activeStep >= 0
+              ? Theme.of(context).primaryColor
+              : Theme.of(context).canvasColor.withOpacity(0.8)),
+          // stepView(context,"Step 2 \n${StringConstant.chooseAddress}",activeStep,1),
+          // Icon(Icons.arrow_forward_ios_sharp, size: 10, color: Theme.of(context).canvasColor),
+          stepView(context,"Step 2 \n${StringConstant.payment}",activeStep,1),
+          Icon(Icons.arrow_forward_ios_sharp, size: 10,    color: activeStep >= 2
+              ? Theme.of(context).primaryColor
+              : Theme.of(context).canvasColor.withOpacity(0.8),),
+          stepView(context,"Step 3 \n${StringConstant.orderPlaced}",activeStep,2),
+        ],
+      )
+
+  );
 }
+
+Widget stepView(BuildContext context,String title,int activeStep,int index){
+  return AppBoldFont(context,
+      msg: title,fontWeight: FontWeight.w500,
+      color: activeStep >= index
+          ? Theme.of(context).primaryColor
+          : Theme.of(context).canvasColor.withOpacity(0.8),
+      fontSize: 14);
+}
+
+// Widget cartPageViewIndicator(BuildContext context,int pageIndex,int activeStep){
+//   return Container(
+//     child: EasyStepper(
+//       activeStep: pageIndex,
+//       lineLength: SizeConfig.screenWidth * 0.10,
+//       lineSpace: 0,
+//       lineType: LineType.normal,
+//       defaultLineColor: Theme.of(context).canvasColor.withOpacity(0.6),
+//       finishedStepBackgroundColor: Theme.of(context).primaryColor ,
+//       activeStepBackgroundColor: Theme.of(context).primaryColor,
+//       finishedLineColor: Theme.of(context).primaryColor,
+//       activeStepTextColor: Theme.of(context).canvasColor,
+//       finishedStepTextColor: Theme.of(context).primaryColor,
+//       internalPadding: 0,
+//       showLoadingAnimation: false,
+//       stepRadius: 13,
+//       showStepBorder: false,
+//       lineDotRadius: 1.5,
+//       steps: [
+//         EasyStep(
+//           customStep: CircleAvatar(
+//             radius: 8,
+//             backgroundColor: activeStep >= 0
+//                 ? Colors.white :Theme.of(context).canvasColor.withOpacity(0.6),
+//             child: CircleAvatar(
+//               radius: 7,
+//               backgroundColor: activeStep >= 0
+//                   ? Theme.of(context).primaryColor
+//                   :  Theme.of(context).canvasColor.withOpacity(0.6),
+//             ),
+//           ),
+//           title: 'My Cart',
+//         ),
+//         EasyStep(
+//           customStep: CircleAvatar(
+//             radius: 8,
+//             backgroundColor:  activeStep >= 1
+//                 ? Colors.white :Theme.of(context).canvasColor.withOpacity(0.6),
+//             child: CircleAvatar(
+//               radius: 7,
+//               backgroundColor: activeStep >= 1
+//                   ? Theme.of(context)
+//                   .primaryColor
+//                   : Colors.white,
+//             ),
+//           ),
+//           title: 'Payment',
+//         ),
+//         EasyStep(
+//           customStep: CircleAvatar(
+//             radius: 8,
+//             backgroundColor:  activeStep >= 2
+//                 ? Colors.white :Theme.of(context).canvasColor.withOpacity(0.6),
+//             child: CircleAvatar(
+//               radius: 7,
+//               backgroundColor: activeStep >= 2
+//                   ? Theme.of(context)
+//                   .primaryColor
+//                   : Colors.white,
+//             ),
+//           ),
+//           title: 'Order Placed',
+//         ),
+//       ],
+//       onStepReached: (index) {
+//         activeStep = index;
+//       },
+//     ),
+//   ) ;
+// }
+
 //PriceDetailWidget Method
 Widget priceDetailWidget(BuildContext context, String str1, String val) {
   return Container(

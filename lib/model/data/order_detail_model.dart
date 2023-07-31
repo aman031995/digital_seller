@@ -1,76 +1,5 @@
 
-class OrderDataModel {
-  Pagination? pagination;
-  List<OrderList>? orderList;
-
-  OrderDataModel({this.pagination, this.orderList});
-
-  OrderDataModel.fromJson(Map<String, dynamic> json) {
-    pagination = json['pagination'] != null
-        ? new Pagination.fromJson(json['pagination'])
-        : null;
-    if (json['orderList'] != null) {
-      orderList = <OrderList>[];
-      json['orderList'].forEach((v) {
-        orderList!.add(new OrderList.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.pagination != null) {
-      data['pagination'] = this.pagination!.toJson();
-    }
-    if (this.orderList != null) {
-      data['orderList'] = this.orderList!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
-
-class Pagination {
-  int? current;
-  int? numberPerPage;
-  bool? hasPrevious;
-  int? previous;
-  bool? hasNext;
-  int? next;
-  int? lastPage;
-
-  Pagination(
-      {this.current,
-        this.numberPerPage,
-        this.hasPrevious,
-        this.previous,
-        this.hasNext,
-        this.next,
-        this.lastPage});
-
-  Pagination.fromJson(Map<String, dynamic> json) {
-    current = json['current'];
-    numberPerPage = json['numberPerPage'];
-    hasPrevious = json['has_previous'];
-    previous = json['previous'];
-    hasNext = json['has_next'];
-    next = json['next'];
-    lastPage = json['last_page'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['current'] = this.current;
-    data['numberPerPage'] = this.numberPerPage;
-    data['has_previous'] = this.hasPrevious;
-    data['previous'] = this.previous;
-    data['has_next'] = this.hasNext;
-    data['next'] = this.next;
-    data['last_page'] = this.lastPage;
-    return data;
-  }
-}
-
-class OrderList {
+class OrderDetailModel {
   String? appId;
   String? userId;
   String? orderId;
@@ -81,16 +10,18 @@ class OrderList {
   VariationSku? variationSku;
   List<String>? productImages;
   String? shippingCharge;
-  int? quantity;
+  String? totalPaidAmount;
   String? productFinalPrice;
+  int? quantity;
   String? orderDate;
   String? orderStatus;
   int? orderStatusId;
   ShippingAddress? shippingAddress;
   String? deliveryDate;
+  List<FinalCheckOut>? checkoutDetails;
   OrderTracking? orderTracking;
 
-  OrderList(
+  OrderDetailModel(
       {this.appId,
         this.userId,
         this.orderId,
@@ -101,16 +32,18 @@ class OrderList {
         this.variationSku,
         this.productImages,
         this.shippingCharge,
-        this.quantity,
+        this.totalPaidAmount,
         this.productFinalPrice,
+        this.quantity,
         this.orderDate,
         this.orderStatus,
         this.orderStatusId,
         this.shippingAddress,
         this.deliveryDate,
+        this.checkoutDetails,
         this.orderTracking});
 
-  OrderList.fromJson(Map<String, dynamic> json) {
+  OrderDetailModel.fromJson(Map<String, dynamic> json) {
     appId = json['appId'];
     userId = json['userId'];
     orderId = json['orderId'];
@@ -123,8 +56,9 @@ class OrderList {
         : null;
     productImages = json['productImages'].cast<String>();
     shippingCharge = json['shippingCharge'];
-    quantity = json['quantity'];
+    totalPaidAmount = json['totalPaidAmount'];
     productFinalPrice = json['productFinalPrice'];
+    quantity = json['quantity'];
     orderDate = json['orderDate'];
     orderStatus = json['orderStatus'];
     orderStatusId = json['orderStatusId'];
@@ -132,6 +66,12 @@ class OrderList {
         ? new ShippingAddress.fromJson(json['shippingAddress'])
         : null;
     deliveryDate = json['deliveryDate'];
+    if (json['checkoutDetails'] != null) {
+      checkoutDetails = <FinalCheckOut>[];
+      json['checkoutDetails'].forEach((v) {
+        checkoutDetails!.add(new FinalCheckOut.fromJson(v));
+      });
+    }
     orderTracking = json['orderTracking'] != null
         ? new OrderTracking.fromJson(json['orderTracking'])
         : null;
@@ -151,13 +91,19 @@ class OrderList {
     }
     data['productImages'] = this.productImages;
     data['shippingCharge'] = this.shippingCharge;
-    data['quantity'] = this.quantity;
+    data['totalPaidAmount'] = this.totalPaidAmount;
     data['productFinalPrice'] = this.productFinalPrice;
+    data['quantity'] = this.quantity;
     data['orderDate'] = this.orderDate;
     data['orderStatus'] = this.orderStatus;
     data['orderStatusId'] = this.orderStatusId;
     if (this.shippingAddress != null) {
       data['shippingAddress'] = this.shippingAddress!.toJson();
+    }
+    data['deliveryDate'] = this.deliveryDate;
+    if (this.checkoutDetails != null) {
+      data['checkoutDetails'] =
+          this.checkoutDetails!.map((v) => v.toJson()).toList();
     }
     if (this.orderTracking != null) {
       data['orderTracking'] = this.orderTracking!.toJson();
@@ -170,15 +116,17 @@ class VariationSku {
   Size? size;
   Size? color;
   Size? materialType;
+  Size? style;
+  Size? unitCount;
 
-  VariationSku({this.size, this.color, this.materialType});
+  VariationSku({this.size, this.color, this.materialType, this.unitCount, this.style});
 
   VariationSku.fromJson(Map<String, dynamic> json) {
     size = json['size'] != null ? new Size.fromJson(json['size']) : null;
     color = json['color'] != null ? new Size.fromJson(json['color']) : null;
-    materialType = json['material_type'] != null
-        ? new Size.fromJson(json['material_type'])
-        : null;
+    materialType = json['material_type'] != null ? new Size.fromJson(json['material_type']) : null;
+    unitCount = json['unit_count'] != null ? new Size.fromJson(json['unit_count']) : null;
+    style = json['style'] != null ? new Size.fromJson(json['style']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -276,6 +224,25 @@ class ShippingAddress {
     data['state'] = this.state;
     data['cityName'] = this.cityName;
     data['country'] = this.country;
+    return data;
+  }
+}
+
+class FinalCheckOut {
+  String? name;
+  String? value;
+
+  FinalCheckOut({this.name, this.value});
+
+  FinalCheckOut.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    value = json['value'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['value'] = this.value;
     return data;
   }
 }

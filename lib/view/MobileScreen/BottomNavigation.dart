@@ -25,7 +25,7 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   HomeViewModel homeViewModel=HomeViewModel();
   @override
   void initState() {
-    homeViewModel.getAppConfigData(context);
+    homeViewModel.getAppConfig(context);
     super.initState();
   }
 

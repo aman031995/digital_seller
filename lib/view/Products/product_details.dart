@@ -15,9 +15,12 @@ import 'package:TychoStream/utilities/size_dropdown.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/Products/productSkuDetailView.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
+import 'package:TychoStream/view/WebScreen/getAppBar.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
+import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -57,9 +60,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   String? token;
   List<Widget> cardWidgets = [];
   var proDetails;
-
+  HomeViewModel homeViewModel = HomeViewModel();
+  ProfileViewModel profileViewModel = ProfileViewModel();
   void initState() {
+    homeViewModel.getAppConfig(context);
+    profileViewModel.getUserDetails(context);
     SessionStorageHelper.removeValue('token');
+    SessionStorageHelper.clearAll();
     cartView.getCartCount(context);
     getProductDetails();
     super.initState();
@@ -101,36 +108,73 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         value: cartView,
         child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
           return Scaffold(
-                appBar: getAppBarWithBackBtn(
-                  title: "Product Details",
-                    context: context,
-                    isBackBtn: false,
-                    isShopping: true,
-                    isFavourite: false,
-                    itemCount: viewmodel.cartItemCount,
-                    onCartPressed: ()async{
-                      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                      token = sharedPreferences.getString('token').toString();
-                      if (token == 'null'){
-                        showDialog(
-                            context: context,
-                            barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
-                            builder:
-                                (BuildContext context) {
-                              return  LoginUp(
-                                product: true,
-                              );
-                            });
-                        // _backBtnHandling(prodId);
-                      } else{
-                        context.router.push(CartDetail(
-                            itemCount: '${viewmodel.cartItemCount}'
-                        ));
-                      }
-
-                    },
-                    onBackPressed: () {
-                    }),
+              appBar:getAppBar(context,homeViewModel,profileViewModel,viewmodel.cartItemCount, () async {
+                SharedPreferences sharedPreferences =
+                await SharedPreferences.getInstance();
+                token = sharedPreferences.getString('token').toString();
+                if (token == 'null') {
+                  showDialog(
+                      context: context,
+                      barrierColor:
+                      Theme.of(context).canvasColor.withOpacity(0.6),
+                      builder: (BuildContext context) {
+                        return LoginUp(
+                          product: true,
+                        );
+                      });
+                  // _backBtnHandling(prodId);
+                } else {
+                  context.router.push(FavouriteListPage());
+                }
+              },
+                      ()async{
+                    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                    token = sharedPreferences.getString('token').toString();
+                    if (token == 'null'){
+                      showDialog(
+                          context: context,
+                          barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
+                          builder:
+                              (BuildContext context) {
+                            return  LoginUp(
+                              product: true,
+                            );
+                          });
+                    } else{
+                      context.router.push(CartDetail(
+                          itemCount: '${viewmodel.cartItemCount}'
+                      ));
+                    }}),
+                // appBar: getAppBarWithBackBtn(
+                //   title: "Product Details",
+                //     context: context,
+                //     isBackBtn: false,
+                //     isShopping: true,
+                //     isFavourite: false,
+                //     itemCount: viewmodel.cartItemCount,
+                //     onCartPressed: ()async{
+                //       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                //       token = sharedPreferences.getString('token').toString();
+                //       if (token == 'null'){
+                //         showDialog(
+                //             context: context,
+                //             barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
+                //             builder:
+                //                 (BuildContext context) {
+                //               return  LoginUp(
+                //                 product: true,
+                //               );
+                //             });
+                //         // _backBtnHandling(prodId);
+                //       } else{
+                //         context.router.push(CartDetail(
+                //             itemCount: '${viewmodel.cartItemCount}'
+                //         ));
+                //       }
+                //
+                //     },
+                //     onBackPressed: () {
+                //     }),
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
            body: viewmodel.productListDetails != null ?
            SingleChildScrollView(child:

@@ -171,19 +171,31 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                   if(m.length==6){
 
                                     cartViewData.getCityState(context, m, (result, isSuccess) {
+                                      if(isSuccess){
+                                        setState(() {
+                                          _cityStateModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+                                          if(_cityStateModel.state==null || _cityStateModel.city==null ){
+                                            ToastMessage.message("Pincode Not Found");
+                                          }
+                                          else{
+                                            cityController.text = _cityStateModel.city ?? "";
+                                            stateController.text = _cityStateModel.state ?? "";
+                                            validation.sinkState.add(stateController.text);
+                                            validation.sinkCityName.add(cityController.text);
+                                          }
 
-                                      _cityStateModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-                                      setState(() {
-                                        cityController.text=_cityStateModel.city ?? "";
-                                        stateController.text=_cityStateModel.state ?? "";
-                                      });
+                                        });
+                                        //
+                                      }
+                                      else{
+                                        print("dsjdskj");
+                                      }
+
                                     });
 
                                   }},
                                 keyBoardType: TextInputType.number,
-                                onSubmitted: (m) {
-                                  setState(() {});
-                                });
+                               );
                           }),
 
                       // addAddressTextField(pinCodeController, StringConstant.pincode, TextInputType.number, validation.sinkPincode, 6, validation.pincode),
@@ -205,13 +217,8 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                 errorText: snapshot.hasError
                                     ? snapshot.error.toString()
                                     : null,
-                                onChanged: (m) {
-                                  validation.sinkCityName.add(m);
-                                },
                                 keyBoardType: TextInputType.streetAddress,
-                                onSubmitted: (m) {
-                                  validation.sinkCityName.add(m);
-                                });
+                            );
                           }),
                       SizedBox(height: 10.0),
                       StreamBuilder(
@@ -231,25 +238,10 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                 errorText: snapshot.hasError
                                     ? snapshot.error.toString()
                                     : null,
-                                onChanged: (m) {
-                                  validation.sinkState.add(m);
-                                  // if(m.length==6){
-                                  //   cartViewData.getCityState(context, m).then((value) {
-                                  //     if(value != null){
-                                  //       cityController.text=value.city ?? "";
-                                  //       stateController.text=value.state ?? "";
-                                  //       setState(() {});
-                                  //     }
-                                  //   });
-                                  // }
-                                },
-                                keyBoardType: TextInputType.streetAddress,
-                                onSubmitted: (m) {
-                                  validation.sinkState.add(m);
-                                });
+                                keyBoardType: TextInputType.streetAddress);
                           }),
                       // addAddressTextField(cityController, StringConstant.cityName, TextInputType.streetAddress, validation.sinkCityName, 20, validation.cityName),
-                      SizedBox(height: 10.0),
+
                      // addAddressTextField(countryController, StringConstant.countryName, TextInputType.streetAddress, validation.sinkCountry, 20, validation.country),
                       SizedBox(
                         height: 15.0,

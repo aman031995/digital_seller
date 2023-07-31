@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:TychoStream/model/data/cart_detail_model.dart';
 import 'package:TychoStream/model/data/homepage_data_model.dart';
 import 'package:TychoStream/model/data/tray_data_model.dart';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -63,7 +64,7 @@ class HomeViewModel with ChangeNotifier {
   String? get isNetworkAvailable => _isNetworkAvailable;
   int lastPage = 1, nextPage = 1;
   bool isLoading = false;
-  bool loginWithPhone = false;
+   bool loginWithPhone = false;
   String notificationItem = '0';
   String? menuVersion, message;
   // getBanner(BuildContext context) async{
@@ -158,6 +159,7 @@ class HomeViewModel with ChangeNotifier {
     if(await jsonCache.contains(StringConstant.kAppConfig)){
       CacheDataManager.getCachedData(key: StringConstant.kAppConfig).then((jsonData) {
         _appConfigModel = AppConfigModel.fromJson(jsonData!['data']);
+        GlobalVariable.cod=_appConfigModel?.androidConfig?.cod;
         loginWithPhone = _appConfigModel?.androidConfig?.loginWithPhone ?? false;
         print('From Cached AppConfig Data');
         notifyListeners();
@@ -168,8 +170,11 @@ class HomeViewModel with ChangeNotifier {
   Future getAppConfig(BuildContext context) async{
     _homePageRepo.getAppConfiguration(context, (result, isSuccess) {
       if(isSuccess) {
+
         _appConfigModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-        navigation(context, _appConfigModel);
+        GlobalVariable.cod=_appConfigModel?.androidConfig?.cod;
+        loginWithPhone = _appConfigModel?.androidConfig?.loginWithPhone ?? false;
+        //navigation(context, _appConfigModel);
         notifyListeners();
       }
     });

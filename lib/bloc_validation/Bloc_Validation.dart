@@ -80,7 +80,7 @@ class ValidationBloc {
   Stream<bool> get submitValid => Rx.combineLatest2(emailAndMobile, password, (e, p) => true);
   Stream<bool> get validateUserEditProfile => Rx.combineLatest2(firstName, phoneNo, (a, b) => true);
   Stream<bool> get validateContactUs => Rx.combineLatest3(firstName, email, address, (a, b, c) => true);
-  Stream<bool> get validateAddAddress => Rx.combineLatest9(firstName,lastName, phoneNo,email,address,addressOne,pincode,state,cityName, (a, b,c,d,e,f,g,h,i) => true);
+  Stream<bool> get validateAddAddress => Rx.combineLatest9(firstName,lastName, phoneNo,email,address,addressOne,pincode,cityName,state, (a,b,c,d,e,f,g,h,i) => true);
 
   final validateFullName =
   StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {

@@ -87,7 +87,7 @@ class CartViewModel extends ChangeNotifier {
   bool isLoading = false;
   bool isSelect = false;
   bool iswishlist = false;
-  // get menu from cache api data
+  // get GetProductList from cache api data
   getProductListData(BuildContext context, int pageNum) async{
     final box = await Hive.openBox<String>('appBox');
     final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
@@ -112,6 +112,7 @@ class CartViewModel extends ChangeNotifier {
       }
     });
   }
+
   //getRecentView
   Future<void> getRecentView(BuildContext context) async{
     _cartRepo.getRecentView(context,(result ,isSuccess ){
@@ -122,7 +123,32 @@ class CartViewModel extends ChangeNotifier {
       }
     });
   }
-  //getRecentView
+
+  // get RecommendedView from cache api data
+  getRecommendedViewData(BuildContext context) async {
+    final box = await Hive.openBox<String>('appBox');
+    final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
+    if (await jsonCache.contains(StringConstant.kRecommended)) {
+      CacheDataManager.getCachedData(key: StringConstant.kRecommended).then((jsonData) {
+        if(jsonData != null){
+          if (jsonData['data'] is List<dynamic>) {
+            var dataList = jsonData['data'] as List<dynamic>;
+            var items = <ProductList>[];
+            dataList.forEach((element) {
+              items.add(ProductList.fromJson(element));
+            });
+            _recommendedView = items;
+          }
+
+          print('From Cached UserData');
+          notifyListeners();
+        }
+      });
+    } else {
+      getRecommendedView(context);
+    }
+  }
+  // getRecommendedView Method
   Future<void> getRecommendedView(BuildContext context) async{
     _cartRepo.getRecommendedView(context,(result ,isSuccess ){
       if(isSuccess){
@@ -132,6 +158,7 @@ class CartViewModel extends ChangeNotifier {
       }
     });
   }
+
   // GetProductList By Category Method
   Future<void> getProductListCategory(BuildContext context, String prodId, String categoryId, int pageNum) async {
     _cartRepo.getProductByCategory(context, prodId, categoryId, pageNum, (result, isSuccess) {
@@ -146,6 +173,44 @@ class CartViewModel extends ChangeNotifier {
       }
     });
   }
+
+
+  // get ProductCategoryLists
+  getProductCategoryLists(BuildContext context) async {
+    final box = await Hive.openBox<String>('appBox');
+    final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
+    if (await jsonCache.contains(StringConstant.kcategory)) {
+      CacheDataManager.getCachedData(key: StringConstant.kcategory).then((jsonData) {
+        if(jsonData != null){
+          if (jsonData['data'] is List<dynamic>) {
+            var dataList = jsonData['data'] as List<dynamic>;
+            var items = <CategoryListModel>[];
+            dataList.forEach((element) {
+              items.add(CategoryListModel.fromJson(element));
+            });
+            _categoryListModel = items;
+          }
+
+          print('From Cached UserData');
+          notifyListeners();
+        }
+      });
+    } else {
+      getProductCategoryList(context,1);
+    }
+  }
+  // GetProductCategoryLists By Category Method
+  Future<void> getProductCategoryList(BuildContext context, pageNum) async {
+    _cartRepo.getProductCategoryList(context, (result, isSuccess) {
+      if (isSuccess) {
+        _categoryListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        AppIndicator.disposeIndicator();
+        notifyListeners();
+      }
+    });
+  }
+
+
 
   //getFavList Method
   Future<void> getFavList(BuildContext context, int pageNum) async {
@@ -171,7 +236,8 @@ class CartViewModel extends ChangeNotifier {
       _productListModel?.productList?.addAll(_newProductListModel!.productList!);
     }
   }
-  // GetProductList Method
+
+  // GetCityState Method
   Future<void> getCityState(BuildContext context, String pincode, NetworkResponseHandler responseHandler) async {
     _cartRepo.getCityState(context, pincode, (result, isSuccess) {
       if (isSuccess) {
@@ -184,6 +250,7 @@ class CartViewModel extends ChangeNotifier {
     }
     );
   }
+
   //buyNow Method
   Future<void> buyNow(
       String productId,
@@ -192,7 +259,7 @@ class CartViewModel extends ChangeNotifier {
       bool cartDetail,
       BuildContext context,
       ) async {
-    AppIndicator.loadingIndicator(context);
+   // AppIndicator.loadingIndicator(context);
     _cartRepo.buynow(productId, quantity, variantId, context,
             (result, isSuccess) {
           if (isSuccess) {
@@ -213,17 +280,6 @@ class CartViewModel extends ChangeNotifier {
         _itemCountModel =
             ((result as SuccessState).value as ASResponseModal).dataModal;
         cartItemCount = _itemCountModel?.count.toString() ?? '';
-        notifyListeners();
-      }
-    });
-  }
-
-  // GetProductList By Category Method
-  Future<void> getProductCategoryList(BuildContext context, pageNum) async {
-    _cartRepo.getProductCategoryList(context, (result, isSuccess) {
-      if (isSuccess) {
-        _categoryListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-       // AppIndicator.disposeIndicator();
         notifyListeners();
       }
     });
@@ -276,15 +332,20 @@ class CartViewModel extends ChangeNotifier {
     _cartRepo.getProductDetails(context, productId, colorId: color,
         sizeName: size, materialType: material, style: style, unitCount: unit,(result, isSuccess) {
       if (isSuccess) {
-        _productListDetails =
-            ((result as SuccessState).value as ASResponseModal).dataModal;
-        isAddedToCart =
-            _productListDetails?.productDetails?.isAddToCart ?? false;
-
+        _productListDetails = ((result as SuccessState).value as ASResponseModal).dataModal;
+        if(_productListDetails != null){
+          isAddedToCart = _productListDetails?.productDetails?.isAddToCart ?? false;
+          AppIndicator.disposeIndicator();
+          notifyListeners();
+        }
+        if (((result as SuccessState).value as ASResponseModal).dataModal == null){
+          ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+        }
         AppIndicator.disposeIndicator();
         notifyListeners();
       }
-    });
+      notifyListeners();
+        });
   }
 
   //GetProductDetailsFromProduct Method
@@ -332,10 +393,7 @@ class CartViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateUnitCountName(BuildContext context, String name) {
-    selectedUnitCountName = name;
-    notifyListeners();
-  }
+
 
   Future<void> getAddressList(BuildContext context) async {
     _cartRepo.addressList(context, (result, isSuccess) {
@@ -425,7 +483,7 @@ class CartViewModel extends ChangeNotifier {
     AppIndicator.loadingIndicator(context);
     _cartRepo.deleteAddress(addressId, context, (result, isSuccess) {
       if (isSuccess) {
-        ToastMessage.message("adress deleted");
+        ToastMessage.message("address deleted");
         getAddressList(context);
         AppIndicator.disposeIndicator();
         notifyListeners();
@@ -436,7 +494,7 @@ class CartViewModel extends ChangeNotifier {
   // ADDToFavourite Method
   Future<void> addToFavourite(BuildContext context, String productId,
       String variantId, bool fav, String pageName,{int? listIndex}) async {
-    AppIndicator.loadingIndicator(context);
+    //AppIndicator.loadingIndicator(context);
     _cartRepo.addToFavourite(productId, variantId, fav, context,
         (result, isSuccess) {
           favouriteCallback = true;

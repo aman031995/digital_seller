@@ -51,6 +51,8 @@ class AndroidConfig {
   String? images;
   String? googleServiceFile;
   bool? pushNotification;
+  bool? cod;
+  bool? themeType;
   DeviceOrientation? deviceOrientation;
   AppTheme? appTheme;
   FontStyle? fontStyle;
@@ -66,6 +68,8 @@ class AndroidConfig {
       {this.images,
         this.googleServiceFile,
         this.pushNotification,
+        this.cod,
+        this.themeType,
         this.deviceOrientation,
         this.appTheme,
         this.fontStyle,
@@ -81,6 +85,8 @@ class AndroidConfig {
     images = json['images'];
     googleServiceFile = json['googleServiceFile'];
     pushNotification = json['pushNotification'];
+    cod=json['cod'];
+    themeType=json['themeType'];
     deviceOrientation = json['deviceOrientation'] != null
         ? new DeviceOrientation.fromJson(json['deviceOrientation'])
         : null;
@@ -117,6 +123,8 @@ class AndroidConfig {
     data['images'] = this.images;
     data['googleServiceFile'] = this.googleServiceFile;
     data['pushNotification'] = this.pushNotification;
+    data['cod']=this.cod;
+    data['themeType']=this.themeType;
     if (this.deviceOrientation != null) {
       data['deviceOrientation'] = this.deviceOrientation!.toJson();
     }
@@ -169,26 +177,21 @@ class AppTheme {
   ThemeColor? primaryColor;
   ThemeColor? secondaryColor;
   ThemeColor? textColor;
+  ThemeColor? buttonTextColor;
 
   AppTheme(
       {this.themeColor,
         this.primaryColor,
         this.secondaryColor,
-        this.textColor});
+        this.textColor,
+        this.buttonTextColor});
 
   AppTheme.fromJson(Map<String, dynamic> json) {
-    themeColor = json['themeColor'] != null
-        ? new ThemeColor.fromJson(json['themeColor'])
-        : null;
-    primaryColor = json['primaryColor'] != null
-        ? new ThemeColor.fromJson(json['primaryColor'])
-        : null;
-    secondaryColor = json['secondaryColor'] != null
-        ? new ThemeColor.fromJson(json['secondaryColor'])
-        : null;
-    textColor = json['textColor'] != null
-        ? new ThemeColor.fromJson(json['textColor'])
-        : null;
+    themeColor = json['themeColor'] != null ? new ThemeColor.fromJson(json['themeColor']) : null;
+    primaryColor = json['primaryColor'] != null ? new ThemeColor.fromJson(json['primaryColor']) : null;
+    secondaryColor = json['secondaryColor'] != null ? new ThemeColor.fromJson(json['secondaryColor']) : null;
+    textColor = json['textColor'] != null ? new ThemeColor.fromJson(json['textColor']) : null;
+    buttonTextColor = json['buttonTextColor'] != null ? new ThemeColor.fromJson(json['buttonTextColor']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -204,6 +207,9 @@ class AppTheme {
     }
     if (this.textColor != null) {
       data['textColor'] = this.textColor!.toJson();
+    }
+    if (this.buttonTextColor != null) {
+      data['buttonTextColor'] = this.buttonTextColor!.toJson();
     }
     return data;
   }

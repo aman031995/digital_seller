@@ -151,7 +151,7 @@ Widget AddressButton(BuildContext context,GestureTapCallback? ontap){
     onTap: ontap,
     child: Container(
       width:ResponsiveWidget.isMediumScreen(context)
-          ?SizeConfig.screenWidth/0.5: SizeConfig.screenWidth*0.29,
+          ?SizeConfig.screenWidth/0.5:SizeConfig.screenWidth*0.30,
       margin: EdgeInsets.only(top:5,bottom: 5,left: 10,right: 10),
       alignment: Alignment.center,
       decoration: BoxDecoration(

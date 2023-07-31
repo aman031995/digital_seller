@@ -23,19 +23,21 @@ class _ImageSliderState extends State<ImageSlider> {
       children: [
         widget.images?.length==1? Container(
             height:ResponsiveWidget.isMediumScreen(context)
-                ? 189: 320,width: SizeConfig.screenWidth,
+                ? 189: 400,
+            width: SizeConfig.screenWidth,
             child: CachedNetworkImage(
-                imageUrl: '${widget.images![0]}',fit: BoxFit.cover,
+                imageUrl: '${widget.images![0]}',fit: BoxFit.fill,
                 placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey)))
 
         ) : CarouselSlider(
           items: widget.images
               ?.map((img) => Container(
-            child: Image.network(img),
+            width: SizeConfig.screenWidth,
+            child: Image.network(img,fit: BoxFit.fill,),
           )).toList(),
           options: CarouselOptions(
             height:ResponsiveWidget.isMediumScreen(context)
-                ?189: 320,
+                ?189: 400,
             aspectRatio: 16/8,
             viewportFraction: 2,
             initialPage:  0,
@@ -52,27 +54,6 @@ class _ImageSliderState extends State<ImageSlider> {
             },
           ),
         ),
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.center,
-        //   crossAxisAlignment: CrossAxisAlignment.center,
-        //   children: widget.images!.map((url) {
-        //  index = widget.images!.indexOf(url);
-        // return Container(
-        //   width: 8.0,
-        //   height: 8.0,
-        //   margin: EdgeInsets.symmetric(vertical: 5.0, horizontal: 2.0),
-        //   decoration:
-        //   widget.images?.length==1?  BoxDecoration():
-        //   BoxDecoration(
-        //     shape: BoxShape.circle,
-        //     color: _current == index
-        //         ? Theme.of(context).primaryColor
-        //         :Theme.of(context).primaryColor.withOpacity(0.5),
-        //   ),
-        // );
-        //   }).toList(),
-        // ),
-
         Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -173,7 +173,7 @@ onPagination(BuildContext context, int lastPage, int nextPage, bool isLoading, S
 Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
   final authVM = Provider.of<AuthViewModel>(context);
   return Positioned(
-      right: 20,
+      right: 30,top:80,
       child: Container(
         width: 150,
         color: Theme.of(context).cardColor,
@@ -218,7 +218,7 @@ Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
                 // GoRouter.of(context).pushNamed(
                 //     RoutesName.MyOrderPage
                 // );
-                context.pushRoute(MyOrderPage());
+               // context.pushRoute(MyOrderPage());
               }
             }),
             SizedBox(height: 5),

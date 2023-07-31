@@ -201,13 +201,9 @@ class _ProductListMobileState extends State<ProductListMobile> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Container(
-                    color: Colors.white,
-                    child: ImageSlider(
-                        images: productListData?.productDetails?.productImages,
-                      ),
-                    height: 200.0,
-                  ),
+                  ImageSlider(
+                      images: productListData?.productDetails?.productImages,
+                    ),
                   productGalleryTitleSection(context, productListData,false)
                 ],
               ),

@@ -8,6 +8,8 @@ class StringConstant {
   static String kAppConfig = "app_configuration";
   static String kAppMenu = "app_menu";
   static String kProductList = "product_list";
+  static String kRecommended='recommeded_list';
+  static String kcategory='category_list';
 
 // **************Login Page ***************
   static String mobileNumber = "Mobile Number";
@@ -196,4 +198,8 @@ class StringConstant {
   static String Fav='Favourite';
   static String fabAdded="product added successfully" ;
   static String fabremove='product removed successfully';
+  static String myCart = "My Cart";
+  static String chooseAddress = 'Choose Address';
+  static String payment = "Payment";
+  static String orderPlaced = 'Order Placed';
 }

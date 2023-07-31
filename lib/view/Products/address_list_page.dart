@@ -7,6 +7,7 @@ import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/CartDetalRepository.dart';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
@@ -111,7 +112,7 @@ else{
                       ResponsiveWidget.isMediumScreen(context)
                           ?  Column(
                         children: [
-                          cartPageViewIndicator(context,1,activeStep),
+                          cartPageViewIndicator(context,1),
                           // Address Button
                           AddressButton(context, () {
                             showDialog(
@@ -251,51 +252,135 @@ else{
                                   );
                                 }),
                           ),
-                          Card(
-                            child: Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: <Widget>[
-                                  Padding(
-                                      padding:
-                                      EdgeInsets.only(left: 10, top: 10,bottom: 10),
-                                      child: AppBoldFont(context,
-                                          msg: "SelectPayment",
-                                          fontSize: 16.0)),
-                                  Divider(
-                                    height: 1,
-                                    color:
+                          // Card(
+                          //   child: Container(
+                          //     child: Column(
+                          //       crossAxisAlignment: CrossAxisAlignment.start,
+                          //       mainAxisSize: MainAxisSize.max,
+                          //       mainAxisAlignment: MainAxisAlignment.end,
+                          //       children: <Widget>[
+                          //         Padding(
+                          //             padding:
+                          //             EdgeInsets.only(left: 10, top: 10,bottom: 10),
+                          //             child: AppBoldFont(context,
+                          //                 msg: "SelectPayment",
+                          //                 fontSize: 16.0)),
+                          //         Divider(
+                          //           height: 1,
+                          //           color:
+                          //           Theme.of(context).canvasColor,
+                          //         ),
+                          //         Theme(
+                          //             data: ThemeData(
+                          //               unselectedWidgetColor:
+                          //               Theme.of(context).canvasColor,
+                          //             ),
+                          //             child: RadioListTile(
+                          //               value: 1,
+                          //               groupValue: selectedRadioTile,
+                          //               title: AppBoldFont(context,
+                          //                   msg: StringConstant.cardWalletsText,
+                          //                   fontSize: 14.0),
+                          //               onChanged: (val) {
+                          //                 print("Radio Tile pressed $val");
+                          //                 if (val == 1) {
+                          //                   setSelectedRadioTile(1);
+                          //                 }
+                          //                 setState(() {
+                          //                   google_pay = true;
+                          //                 });
+                          //               },
+                          //               activeColor:
+                          //               Theme.of(context).primaryColor,
+                          //               selected: google_pay,
+                          //             )),
+                          //         SizedBox(height: 5)
+                          //       ],
+                          //     ),
+                          //   ),
+                          // ),
+                          Container(
+                            color: Theme.of(context).cardColor,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                Container(
+                                    padding: EdgeInsets.only(left: 20, top: 8, bottom: 10),
+                                    child: AppBoldFont(context, msg: StringConstant.selectPayment)),
+                                Divider(
+                                  color: Theme.of(context).canvasColor,
+                                  thickness: 0.2,
+                                  height: 1,
+                                ),
+                                Theme(
+                                  data: ThemeData(
+                                    unselectedWidgetColor:
                                     Theme.of(context).canvasColor,
                                   ),
-                                  Theme(
-                                      data: ThemeData(
-                                        unselectedWidgetColor:
-                                        Theme.of(context).canvasColor,
-                                      ),
-                                      child: RadioListTile(
-                                        value: 1,
-                                        groupValue: selectedRadioTile,
-                                        title: AppBoldFont(context,
-                                            msg: StringConstant.cardWalletsText,
-                                            fontSize: 14.0),
-                                        onChanged: (val) {
-                                          print("Radio Tile pressed $val");
-                                          if (val == 1) {
-                                            setSelectedRadioTile(1);
-                                          }
-                                          setState(() {
-                                            google_pay = true;
-                                          });
-                                        },
-                                        activeColor:
-                                        Theme.of(context).primaryColor,
-                                        selected: google_pay,
-                                      )),
-                                  SizedBox(height: 5)
-                                ],
-                              ),
+                                  child: RadioListTile(
+                                    tileColor: Theme.of(context).canvasColor,
+                                    value: 1, dense: true,
+                                    groupValue: selectedRadioTile,
+                                    materialTapTargetSize: MaterialTapTargetSize.padded,
+                                    visualDensity: VisualDensity.compact,
+                                    contentPadding: EdgeInsets.only(left: 8),
+                                    title: AppBoldFont(context,
+                                        msg: StringConstant.cardWalletsText,
+                                        fontSize: 14.0),
+                                    onChanged: (val) {
+                                      print("Radio Tile pressed $val");
+                                      if (val == 1) {
+                                        setSelectedRadioTile(1);
+                                      }
+                                      setState(() {
+                                        google_pay = true;
+                                        cod = false;
+                                      });
+                                    },
+                                    activeColor: Theme.of(context).primaryColor,
+                                    selected: google_pay,
+                                  ),
+                                ),
+                                Divider(
+                                  color: Theme.of(context).canvasColor,
+                                  thickness: 0.2,
+                                  height: 1,
+                                ),
+                                GlobalVariable.cod==true?
+                                Theme(
+                                  data: ThemeData(
+                                    unselectedWidgetColor:
+                                    Theme.of(context).canvasColor,
+                                  ),
+                                  child: RadioListTile(
+                                    visualDensity: VisualDensity.compact,
+                                    tileColor: Theme.of(context).canvasColor,
+                                    materialTapTargetSize: MaterialTapTargetSize.padded,
+                                    dense: true,
+                                    value: 2, groupValue: selectedRadioTile,
+                                    contentPadding: EdgeInsets.only(left: 8),
+                                    title: AppBoldFont(context,
+                                        msg: 'COD (Cash On Delivery)',
+                                        fontSize: 14.0),
+                                    onChanged: (val) {
+                                      print("Radio Tile pressed $val");
+                                      if (val == 2) {
+                                        setSelectedRadioTile(2);
+                                      }
+                                      setState(() {
+                                        cod = true;
+                                        google_pay = false;
+                                      });
+                                    },
+                                    activeColor: Theme.of(context).primaryColor,
+                                    selected: cod,
+                                  ),
+                                ):
+                                SizedBox(),
+
+                              ],
                             ),
                           ),
                           // Total Bill detail
@@ -385,28 +470,28 @@ else{
                             ],
                           ),
                           SizedBox(height: 10),
-                          ElevatedButton(onPressed: (){
-                            if (google_pay != true) {
-                              ToastMessage.message(StringConstant.selectPaymentOption);
-                            } else if (agree == false) {
-                              ToastMessage.message(StringConstant.acceptReturnPolicy);
-                            }
-                            else if (cartViewModel.addressListModel?.length ==0) {
-                              ToastMessage.message("please add address");
-                            }
-                            else if ((cod == true || google_pay == true) && (agree == true)) {
-                              var amount = 10;
-                              //double.parse(cartViewModel.cartListData?.checkoutDetails?.totalPayableAmount ?? '1');
-                              if (amount != 0 && cartViewModel.addressListModel?.length!=0) {
-                               // widget.buynow==true?createOrder(cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.totalItems.toString() ??"",context):  createOrder('','','',context);
-                                widget.buynow==true?createOrder(cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
-                                    .value ??
-                                    "",context):  createOrder('','','',context);
-
-                              }
-                            }
-
-                          }, child: Text("checkout",style: TextStyle(fontSize: 18),)),
+                          // ElevatedButton(onPressed: (){
+                          //   if (google_pay != true) {
+                          //     ToastMessage.message(StringConstant.selectPaymentOption);
+                          //   } else if (agree == false) {
+                          //     ToastMessage.message(StringConstant.acceptReturnPolicy);
+                          //   }
+                          //   else if (cartViewModel.addressListModel?.length ==0) {
+                          //     ToastMessage.message("please add address");
+                          //   }
+                          //   else if ((cod == true || google_pay == true) && (agree == true)) {
+                          //     var amount = 10;
+                          //     //double.parse(cartViewModel.cartListData?.checkoutDetails?.totalPayableAmount ?? '1');
+                          //     if (amount != 0 && cartViewModel.addressListModel?.length!=0) {
+                          //      // widget.buynow==true?createOrder(cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.totalItems.toString() ??"",context):  createOrder('','','',context);
+                          //       widget.buynow==true?createOrder(cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
+                          //           .value ??
+                          //           "",context):  createOrder('','','',context);
+                          //
+                          //     }
+                          //   }
+                          //
+                          // }, child: Text("checkout",style: TextStyle(fontSize: 18),)),
 
                          SizedBox(height: 10),
                           footerMobile(context)
@@ -414,7 +499,7 @@ else{
                       ):
                       Column(
                         children: [
-                          cartPageViewIndicator(context,1,activeStep),
+                          cartPageViewIndicator(context,1),
                           // Address Button
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -568,6 +653,7 @@ else{
                                 SizedBox(height: 5),
                                 // Total Bill detail
                                widget.buynow==true? Card(
+                                 elevation: 0.2,
                                  child: Column(
                                      children:  cartListData!.checkoutDetails!
                                          .map((e){
@@ -586,6 +672,7 @@ else{
                                  ),
                                ):
                                 Card(
+                                  elevation: 0.2,
                                  child: Column(
                                      children: cartViewModel.cartListData!.checkoutDetails!
                                          .map((e){
@@ -603,112 +690,140 @@ else{
                                      } ).toList()
                                  ),
                                ),
-
-                               // Card(
+                              //   Card(
+                              //     elevation: 0.2,
                               //   child: Container(
-                              //     width: SizeConfig.screenWidth*0.24,
+                              //     width: SizeConfig.screenWidth/3.22,
                               //     child: Column(
-                              //       children: [
-                              //         SizedBox(height: 16),
-                              //         priceDetailWidget(
-                              //             context,
-                              //             StringConstant.totalItems,
-                              //             cartListData?.checkoutDetails?.totalItems
-                              //                 .toString() ??
-                              //                 ''),
-                              //         SizedBox(height: 8),
-                              //         priceDetailWidget(
-                              //             context,
-                              //             StringConstant.basePrice,
-                              //             "₹ " +
-                              //                 (cartListData?.checkoutDetails
-                              //                     ?.cartTotalPrice
-                              //                     .toString() ??
-                              //                     '')),
-                              //         SizedBox(height: 8),
-                              //         priceDetailWidget(
-                              //             context,
-                              //             StringConstant.discountedPrice,
-                              //             "₹ " +
-                              //                 (cartListData?.checkoutDetails
-                              //                     ?.discountedPrice
-                              //                     .toString() ??
-                              //                     "")),
-                              //         SizedBox(height: 8),
-                              //         priceDetailWidget(
-                              //             context,
-                              //             StringConstant.shipping,
-                              //             "₹ " +""),
-                              //         SizedBox(height: 8),
+                              //       crossAxisAlignment: CrossAxisAlignment.start,
+                              //       mainAxisSize: MainAxisSize.max,
+                              //       mainAxisAlignment: MainAxisAlignment.end,
+                              //       children: <Widget>[
+                              //         Padding(
+                              //             padding:
+                              //             EdgeInsets.only(left: 10, top: 10,bottom: 10),
+                              //             child: AppBoldFont(context,
+                              //                 msg: "SelectPayment",
+                              //                 fontSize: 16.0)),
                               //         Divider(
                               //           height: 1,
-                              //           color: Theme.of(context).canvasColor,
+                              //           color:
+                              //           Theme.of(context).canvasColor,
                               //         ),
-                              //         SizedBox(height: 8),
-                              //         priceDetailWidget(
-                              //             context,
-                              //             StringConstant.amountPayable,
-                              //             "₹" +
-                              //                 (cartListData?.checkoutDetails
-                              //                     ?.totalPayableAmount
-                              //                     .toString() ??
-                              //                     "")),
-                              //         SizedBox(height: 8)
+                              //         Theme(
+                              //             data: ThemeData(
+                              //               unselectedWidgetColor:
+                              //               Theme.of(context).canvasColor,
+                              //             ),
+                              //             child: RadioListTile(
+                              //               value: 1,
+                              //               groupValue: selectedRadioTile,
+                              //               title: AppBoldFont(context,
+                              //                   msg: StringConstant.cardWalletsText,
+                              //                   fontSize: 14.0),
+                              //               onChanged: (val) {
+                              //                 print("Radio Tile pressed $val");
+                              //                 if (val == 1) {
+                              //                   setSelectedRadioTile(1);
+                              //                 }
+                              //                 setState(() {
+                              //                   google_pay = true;
+                              //                 });
+                              //               },
+                              //               activeColor:
+                              //               Theme.of(context).primaryColor,
+                              //               selected: google_pay,
+                              //             )),
+                              //         SizedBox(height: 5)
                               //       ],
                               //     ),
                               //   ),
-                              // ):billCard(context,cartViewModel),
+                              // ),
 
-                              Card(
-                                child: Container(
-                                    width: SizeConfig.screenWidth*0.24,
+                                Container(
+                                  width: SizeConfig.screenWidth/3.22,
+                                  color: Theme.of(context).cardColor,
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: <Widget>[
-                                      Padding(
-                                          padding:
-                                          EdgeInsets.only(left: 10, top: 10,bottom: 10),
-                                          child: AppBoldFont(context,
-                                              msg: "SelectPayment",
-                                              fontSize: 16.0)),
+                                      Container(
+                                          padding: EdgeInsets.only(left: 20, top: 8, bottom: 10),
+                                          child: AppBoldFont(context, msg: StringConstant.selectPayment)),
                                       Divider(
+                                        color: Theme.of(context).canvasColor,
+                                        thickness: 0.2,
                                         height: 1,
-                                        color:
-                                        Theme.of(context).canvasColor,
                                       ),
                                       Theme(
-                                          data: ThemeData(
-                                            unselectedWidgetColor:
-                                            Theme.of(context).canvasColor,
-                                          ),
-                                          child: RadioListTile(
-                                            value: 1,
-                                            groupValue: selectedRadioTile,
-                                            title: AppBoldFont(context,
-                                                msg: StringConstant.cardWalletsText,
-                                                fontSize: 14.0),
-                                            onChanged: (val) {
-                                              print("Radio Tile pressed $val");
-                                              if (val == 1) {
-                                                setSelectedRadioTile(1);
-                                              }
-                                              setState(() {
-                                                google_pay = true;
-                                              });
-                                            },
-                                            activeColor:
-                                            Theme.of(context).primaryColor,
-                                            selected: google_pay,
-                                          )),
-                                      SizedBox(height: 5)
+                                        data: ThemeData(
+                                          unselectedWidgetColor:
+                                          Theme.of(context).canvasColor,
+                                        ),
+                                        child: RadioListTile(
+                                          tileColor: Theme.of(context).canvasColor,
+                                          value: 1, dense: true,
+                                          groupValue: selectedRadioTile,
+                                          materialTapTargetSize: MaterialTapTargetSize.padded,
+                                          visualDensity: VisualDensity.compact,
+                                          contentPadding: EdgeInsets.only(left: 8),
+                                          title: AppBoldFont(context,
+                                              msg: StringConstant.cardWalletsText,
+                                              fontSize: 14.0),
+                                          onChanged: (val) {
+                                            print("Radio Tile pressed $val");
+                                            if (val == 1) {
+                                              setSelectedRadioTile(1);
+                                            }
+                                            setState(() {
+                                              google_pay = true;
+                                              cod = false;
+                                            });
+                                          },
+                                          activeColor: Theme.of(context).primaryColor,
+                                          selected: google_pay,
+                                        ),
+                                      ),
+                                      Divider(
+                                        color: Theme.of(context).canvasColor,
+                                        thickness: 0.2,
+                                        height: 1,
+                                      ),
+
+                                      GlobalVariable.cod==true? Theme(
+                                        data: ThemeData(
+                                          unselectedWidgetColor:
+                                          Theme.of(context).canvasColor,
+                                        ),
+                                        child: RadioListTile(
+                                          visualDensity: VisualDensity.compact,
+                                          tileColor: Theme.of(context).canvasColor,
+                                          materialTapTargetSize: MaterialTapTargetSize.padded,
+                                          dense: true,
+                                          value: 2, groupValue: selectedRadioTile,
+                                          contentPadding: EdgeInsets.only(left: 8),
+                                          title: AppBoldFont(context,
+                                              msg: 'COD (Cash On Delivery)',
+                                              fontSize: 14.0),
+                                          onChanged: (val) {
+                                            print("Radio Tile pressed $val");
+                                            if (val == 2) {
+                                              setSelectedRadioTile(2);
+                                            }
+                                            setState(() {
+                                              cod = true;
+                                              google_pay = false;
+                                            });
+                                          },
+                                          activeColor: Theme.of(context).primaryColor,
+                                          selected: cod,
+                                        ),
+                                      ):SizedBox()
+
                                     ],
                                   ),
                                 ),
-                              ),
-
-
                                 Row(
                                   children: [
                                     Material(
@@ -758,27 +873,46 @@ else{
                                 ),
                                 SizedBox(height: 5),
                                 ElevatedButton(onPressed: (){
-                      if (google_pay != true) {
-                        ToastMessage.message(StringConstant.selectPaymentOption);
-                      } else if (agree == false) {
-                        ToastMessage.message(StringConstant.acceptReturnPolicy);
-                      }
-                      else if (cartViewModel.addressListModel?.length ==0) {
-                        ToastMessage.message("please add address");
-                      }
-                      else if ((cod == true || google_pay == true) && (agree == true)) {
-                        var amount=10;
-                      //  var amount = double.parse(cartViewModel.cartListData?.checkoutDetails?.totalPayableAmount ?? '1');
-                         if (amount != 0 && cartViewModel.addressListModel?.length!=0) {
-                           widget.buynow==true?createOrder(cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
-                               .value ??
-                               "",context):  createOrder('','','',context);
+                                  if (agree != true) {
+                                    ToastMessage.message(StringConstant.acceptReturnPolicy);
+                                  } else if ((google_pay == true) && (agree == true)) {
+                                    widget.buynow==true?
+                                    createOrder("online",cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
+                                        .value ??
+                                        "",context,addressId: addressId):
+                                    createOrder("online",'','','',context,addressId: addressId);
+                                  } else if ((cod == true) && (agree == true)){
+                                    print('order with cod options');
+                                    widget.buynow==true?
+          createOrder("cod",cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
+              .value ??
+          "",context,addressId: addressId):
+          createOrder("cod",'','','',context,addressId: addressId);
+                                  }
 
+                                  else {
+                                    ToastMessage.message(StringConstant.selectPaymentOption);
+                                  }},
+                      //
+                      // if (google_pay != true) {
+                      //   ToastMessage.message(StringConstant.selectPaymentOption);
+                      // } else if (agree == false) {
+                      //   ToastMessage.message(StringConstant.acceptReturnPolicy);
+                      // }
+                      // else if (cartViewModel.addressListModel?.length ==0) {
+                      //   ToastMessage.message("please add address");
+                      // }
+                      // else if ((cod == true || google_pay == true) && (agree == true)) {
+                      //   var amount=10;
+                      // //  var amount = double.parse(cartViewModel.cartListData?.checkoutDetails?.totalPayableAmount ?? '1');
+                      //    if (amount != 0 && cartViewModel.addressListModel?.length!=0) {
+                      //
+                      //
+                      //
+                      //   }
+                      // }
 
-                        }
-                      }
-
-                                }, child: Text("checkout",style: TextStyle(fontSize: 18),))
+                      child: Text("checkout",style: TextStyle(fontSize: 18),))
 
                               ],)
                             ],
@@ -799,14 +933,24 @@ else{
     selectedRadioTile = val;
   }
 
-  Future<void> createOrder(String productId,String variantId,String quantity,BuildContext context) async {
+  Future<void> createOrder(String paymentMethod,String productId,String variantId,String quantity,BuildContext context,{String? addressId, String? gateway}) async {
     AppIndicator.loadingIndicator(context);
-    _cartRepo.createOrder(productId,variantId,quantity,context, (result, isSuccess) {
+    _cartRepo.createOrder(paymentMethod,productId,variantId,quantity, gateway,context, (result, isSuccess) {
       if (isSuccess) {
         AppIndicator.disposeIndicator();
-        _createOrderModel =
-            ((result as SuccessState).value as ASResponseModal).dataModal;
-       openPaymentGateway(_createOrderModel);
+        _createOrderModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        if(paymentMethod == "online"){
+          openPaymentGateway(_createOrderModel);
+        }
+      // openPaymentGateway(_createOrderModel);
+        else{
+        cartViewModel.placeOrder(context,  addressId ?? '', '',"",
+            paymentMethod,
+            widget.buynow==true?cartListData?.cartList![0].productId ?? "":'',
+            widget.buynow==true?cartListData?.cartList![0].productDetails?.variantId ?? "" :'',
+            widget.buynow==true?cartListData?.checkoutDetails!.elementAt(0).value ?? "":'',
+            'Success');
+      }
 
       }
     });

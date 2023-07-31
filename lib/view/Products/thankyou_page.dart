@@ -54,7 +54,7 @@ class _ThankYouPageState extends State<ThankYouPage> {
                 onWillPop: _willPopCallback,
                 child: Column(
                   children: <Widget>[
-                    cartPageViewIndicator(context, 2, activeStep),
+                    cartPageViewIndicator(context, 2),
                     SizedBox(height:thankyoumodel.isThankyouPage == false
                         ? 0: SizeConfig.screenHeight * 0.2,),
                     thankyoumodel.isThankyouPage == false
