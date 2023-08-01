@@ -53,7 +53,7 @@ class StringConstant {
 
 ///////////////////////////
   static String login = "Login";
-  static String enterCredentials = 'Enter your credential to login.';
+  static String enterCredentials = 'Enter your credentials to continue with us.';
   static String alreadyAccount = 'Already have an account?';
   static String reset = 'Reset';
   static String createAccount = 'Create Account';

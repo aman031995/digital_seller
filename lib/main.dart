@@ -15,6 +15,7 @@ import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:TychoStream/viewmodel/sociallogin_view_model.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'dart:html' as html;
+
 String? names;
 String? token='false';
 bool isLogin = false;
@@ -91,6 +92,7 @@ class _MyAppState extends State<MyApp> {
               final font = viewmodel.appConfigModel?.androidConfig?.fontStyle?.fontFamily;
               final secondaryColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.secondaryColor?.hex;
               final txtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.textColor?.hex;
+              final buttonTxtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.buttonTextColor?.hex;
               return MaterialApp.router(
                   theme: ThemeData(
                       scrollbarTheme: ScrollbarThemeData(
@@ -102,8 +104,9 @@ class _MyAppState extends State<MyApp> {
                       backgroundColor: (bgColor)?.toColor(),
                       cardColor: (secondaryColor)?.toColor(),
                       fontFamily: font,
-                      canvasColor: (txtColor)?.toColor()),
-                  builder: EasyLoading.init(),
+                      canvasColor: (txtColor)?.toColor(),
+                      hintColor: (buttonTxtColor)?.toColor()),
+                builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
                   scrollBehavior: MyCustomScrollBehavior(),
                 routerConfig: _appRouter.config(),

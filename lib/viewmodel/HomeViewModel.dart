@@ -161,6 +161,8 @@ class HomeViewModel with ChangeNotifier {
         _appConfigModel = AppConfigModel.fromJson(jsonData!['data']);
         GlobalVariable.cod=_appConfigModel?.androidConfig?.cod;
         loginWithPhone = _appConfigModel?.androidConfig?.loginWithPhone ?? false;
+        GlobalVariable.cod = _appConfigModel?.androidConfig?.cod;
+        GlobalVariable.isLightTheme = _appConfigModel?.androidConfig?.themeType;
         print('From Cached AppConfig Data');
         notifyListeners();
       });
@@ -172,7 +174,15 @@ class HomeViewModel with ChangeNotifier {
       if(isSuccess) {
 
         _appConfigModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-        GlobalVariable.cod=_appConfigModel?.androidConfig?.cod;
+        GlobalVariable.cod = _appConfigModel?.androidConfig?.cod;
+        GlobalVariable.isLightTheme = _appConfigModel?.androidConfig?.themeType;
+
+        _appConfigModel?.androidConfig?.paymentGateway?.forEach((e) {
+          if(e.isAvailable == true){
+            GlobalVariable.payGatewayName = e.gatewayName;
+          }
+        });
+
         loginWithPhone = _appConfigModel?.androidConfig?.loginWithPhone ?? false;
         //navigation(context, _appConfigModel);
         notifyListeners();

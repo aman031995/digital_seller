@@ -63,6 +63,7 @@ class AndroidConfig {
   SocialLogin? socialLogin;
   AppVersion? appVersion;
   List<BottomNavigation>? bottomNavigation;
+  List<PaymentGateway>? paymentGateway;
 
   AndroidConfig(
       {this.images,
@@ -79,7 +80,8 @@ class AndroidConfig {
         this.maxOtp,
         this.socialLogin,
         this.appVersion,
-        this.bottomNavigation});
+        this.bottomNavigation,
+        this.paymentGateway});
 
   AndroidConfig.fromJson(Map<String, dynamic> json) {
     images = json['images'];
@@ -114,6 +116,12 @@ class AndroidConfig {
       bottomNavigation = <BottomNavigation>[];
       json['bottomNavigation'].forEach((v) {
         bottomNavigation!.add(new BottomNavigation.fromJson(v));
+      });
+    }
+    if (json['payment_gateway'] != null) {
+      paymentGateway = <PaymentGateway>[];
+      json['payment_gateway'].forEach((v) {
+        paymentGateway!.add(new PaymentGateway.fromJson(v));
       });
     }
   }
@@ -151,6 +159,10 @@ class AndroidConfig {
     if (this.bottomNavigation != null) {
       data['bottomNavigation'] =
           this.bottomNavigation!.map((v) => v.toJson()).toList();
+    }
+    if (this.paymentGateway != null) {
+      data['payment_gateway'] =
+          this.paymentGateway!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -408,6 +420,25 @@ class BottomNavigation {
     data['title'] = this.title;
     data['icon'] = this.icon;
     data['url'] = this.url;
+    return data;
+  }
+}
+
+class PaymentGateway {
+  String? gatewayName;
+  bool? isAvailable;
+
+  PaymentGateway({this.gatewayName, this.isAvailable});
+
+  PaymentGateway.fromJson(Map<String, dynamic> json) {
+    gatewayName = json['gateway_name'];
+    isAvailable = json['isAvailable'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['gateway_name'] = this.gatewayName;
+    data['isAvailable'] = this.isAvailable;
     return data;
   }
 }

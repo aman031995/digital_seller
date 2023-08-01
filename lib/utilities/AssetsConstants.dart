@@ -47,5 +47,6 @@ class AssetsConstants {
   static String icFrontArrow = "images/ic_ForwordArrow.png";
   static String icNextArrow = "images/ic_next_arrow.png";
   static String icBackArrow = "images/ic_BackArrow.png";
+  static String icCross = "images/ic_cross.png";
 
 }
