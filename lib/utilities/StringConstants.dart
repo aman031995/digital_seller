@@ -13,7 +13,7 @@ class StringConstant {
 
 // **************Login Page ***************
   static String mobileNumber = "Mobile Number";
-  static String forgotPassword = "   Forgot Password?";
+  static String forgotPassword = "Forgot Password?";
   static String forgotPass = "Forgot Password?";
   static String password = "Password";
   static String phone = "Phone";
@@ -53,7 +53,7 @@ class StringConstant {
 
 ///////////////////////////
   static String login = "Login";
-  static String enterCredentials = 'Enter your credential to login.';
+  static String enterCredentials = 'Enter your credentials to continue with us.';
   static String alreadyAccount = 'Already have an account?';
   static String reset = 'Reset';
   static String createAccount = 'Create Account';

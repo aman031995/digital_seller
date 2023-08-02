@@ -47,10 +47,14 @@ class AssetsConstants {
   static String icFrontArrow = "images/ic_ForwordArrow.png";
   static String icNextArrow = "images/ic_next_arrow.png";
   static String icBackArrow = "images/ic_BackArrow.png";
-
+  static String icCross = "images/ic_cross.png";
+  static String appLogo="images/playstore-icon.png";
+  static String ic_ShareIcon = "images/ic_ShareIcon.png";
   /// Homepage asset constant
   static String icCreditCard = 'images/bx-credit-card-front.png';
   static String icSupport = 'images/bx-support.png';
   static String icTimer = 'images/bx-timer.png';
   static String icNewUpdate = 'images/NewUpdate.png';
+  static String ic_wishlistSelect = "images/ic_wishlistSelect.png";
+  static String ic_wishlistUnselect = "images/ic_wishlistDeselect.png";
 }

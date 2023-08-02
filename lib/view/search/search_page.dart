@@ -82,12 +82,7 @@ class _SearchPageState extends State<SearchPage> {
             });
             return GestureDetector(
                 onTap: () async {
-                  context.router.push(
-                      DetailPage(
-                          VideoDetails:["${ viewmodel.searchDataModel?.searchList?[index].youtubeVideoId}","${viewmodel.searchDataModel?.searchList?[index].videoId}","${viewmodel.searchDataModel?.searchList?[index].videoTitle}","${viewmodel.searchDataModel?.searchList?[index].videoDescription}"]
-                      )
 
-                  );
                 },
                 child: listContent(item, context));
           },

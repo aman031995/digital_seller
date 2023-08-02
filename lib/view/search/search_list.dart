@@ -41,12 +41,7 @@ Widget searchList(
                   });
                   return GestureDetector(
                       onTap: () async {
-                        context.router.push(
-                            DetailPage(
-                                VideoDetails:["${ viewmodel.searchDataModel?.searchList?[index].youtubeVideoId}","${viewmodel.searchDataModel?.searchList?[index].videoId}","${viewmodel.searchDataModel?.searchList?[index].videoTitle}","${viewmodel.searchDataModel?.searchList?[index].videoDescription}"]
-                            )
 
-                        );
 
                         // GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParameters: {
                         //   'movieID':"${ viewmodel.searchDataModel?.searchList?[index].youtubeVideoId}",

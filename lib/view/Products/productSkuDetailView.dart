@@ -24,7 +24,7 @@ class ProductSkuView extends StatelessWidget {
             children: skuDetails!.map((e) {
               return Container(
                   padding: ResponsiveWidget.isMediumScreen(context)
-                      ? EdgeInsets.only(bottom: 10) :EdgeInsets.all(10),
+                      ? EdgeInsets.only(bottom: 10) :EdgeInsets.zero,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -32,7 +32,7 @@ class ProductSkuView extends StatelessWidget {
                         SizedBox(height: 8),
                         Container(
                             height:ResponsiveWidget.isMediumScreen(context)
-                                ? 35:50,
+                                ? 35:45,
                             child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: e.data?.length,
@@ -66,7 +66,7 @@ class ProductSkuView extends StatelessWidget {
                                                 color: (variationItem?.val)?.toColor(),
                                                 shape: BoxShape.circle,
                                                 border: Border.all(
-                                                    color: Colors.black,
+                                                    color:  productList?.color?.name == itemName ?Theme.of(context).primaryColor.withOpacity(0.8)   :Theme.of(context).canvasColor.withOpacity(0.3),
                                                     width: productList?.color?.name == itemName ? 3 : 1)))
                                         : Container(
                                              padding: EdgeInsets.all(5),
@@ -79,7 +79,7 @@ class ProductSkuView extends StatelessWidget {
                                             child: AppBoldFont(
                                               context,
                                               msg: "${itemName}",
-                                              fontSize: 14.0,
+                                              fontSize: 16.0,
                                               color:_textcolor(e, context, itemName, selectedProduct, index),
                                             )),
                                   );
@@ -133,10 +133,10 @@ class ProductSkuView extends StatelessWidget {
       return RichText(
           text: TextSpan(
               text: '${e.variationName!}  :  ',
-              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
               children: <InlineSpan>[
                 TextSpan(
-                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                   text: '${defaultProduct?.color?.name}',
                 )
               ]
@@ -147,10 +147,10 @@ class ProductSkuView extends StatelessWidget {
       return RichText(
           text: TextSpan(
               text: '${e.variationName!}  :  ',
-              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
               children: <InlineSpan>[
                 TextSpan(
-                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                   text: '${defaultProduct?.unitCount?.name}',
                 )
               ]
@@ -161,10 +161,10 @@ class ProductSkuView extends StatelessWidget {
       return RichText(
           text: TextSpan(
               text: '${e.variationName!}  :  ',
-              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
               children: <InlineSpan>[
                 TextSpan(
-                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                   text: '${defaultProduct?.size?.name}',
                 )
               ]
@@ -176,10 +176,10 @@ class ProductSkuView extends StatelessWidget {
         RichText(
             text: TextSpan(
                 text: '${e.variationName!}  :  ',
-                style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                 children: <InlineSpan>[
                   TextSpan(
-                    style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                    style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                     text: '${defaultProduct?.materialType?.name}',
                   )
                 ]
@@ -189,10 +189,10 @@ class ProductSkuView extends StatelessWidget {
       return  RichText(
           text: TextSpan(
               text: '${e.variationName!}  :  ',
-              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
               children: <InlineSpan>[
                 TextSpan(
-                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                   text: '${defaultProduct?.style?.name}',
                 )
               ]
@@ -217,13 +217,13 @@ class ProductSkuView extends StatelessWidget {
   }
   _textcolor(ProductSkuDetails e, BuildContext context, String? itemName, List<SkuData>? selectedProduct, int index) {
     if (e.variationKey == 'unit_count') {
-      return productList?.unitCount?.name == itemName ?  Theme.of(context).canvasColor.withOpacity(0.8) : Theme.of(context).canvasColor.withOpacity(0.3);
+      return productList?.unitCount?.name == itemName ?  Theme.of(context).canvasColor : Theme.of(context).canvasColor.withOpacity(0.3);
     } else if (e.variationKey == 'size') {
-      return productList?.size?.name == itemName ?  Theme.of(context).canvasColor.withOpacity(0.8) : Theme.of(context).canvasColor.withOpacity(0.3);
+      return productList?.size?.name == itemName ?  Theme.of(context).canvasColor : Theme.of(context).canvasColor.withOpacity(0.3);
     } else if (e.variationKey == 'material_type') {
-      return productList?.materialType?.name == itemName ?  Theme.of(context).canvasColor.withOpacity(0.8): Theme.of(context).canvasColor.withOpacity(0.3);
+      return productList?.materialType?.name == itemName ?  Theme.of(context).canvasColor: Theme.of(context).canvasColor.withOpacity(0.3);
     } else if (e.variationKey == 'style') {
-      return productList?.style?.name == itemName ? Theme.of(context).canvasColor.withOpacity(0.8) : Theme.of(context).canvasColor.withOpacity(0.3);
+      return productList?.style?.name == itemName ? Theme.of(context).canvasColor : Theme.of(context).canvasColor.withOpacity(0.3);
     } else {
       return TRANSPARENT_COLOR;
     }

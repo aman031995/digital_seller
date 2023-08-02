@@ -10,7 +10,6 @@ import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
-import 'package:TychoStream/view/widgets/search_view.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
@@ -113,8 +112,8 @@ class _PrivacyState extends State<Privacy> {
                                 // isLogins == true
                                 //     ? profile(context, setState)
                                 //     : Container(),
-                                if (homeViewModel.searchDataModel != null)
-                                  searchView(context, homeViewModel, isSearch, _scrollController, homeViewModel, searchController!, setState)
+                                // if (homeViewModel.searchDataModel != null)
+                                //   searchView(context, homeViewModel, isSearch, _scrollController, homeViewModel, searchController!, setState)
                               ],
 
                             ),

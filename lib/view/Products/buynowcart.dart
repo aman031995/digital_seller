@@ -124,15 +124,10 @@ class _BuynowCartState extends State<BuynowCart> {
                                     ),
                                     Expanded(
                                       flex: 50,
-                                      child: Container(
-                                          height: 24,
-                                          alignment: Alignment.center,
-                                          color:Colors.white,
-                                          padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                                          child: AppBoldFont(context,
-                                              color: BLACK_COLOR,
-                                              msg: cartListData?.checkoutDetails?.elementAt(0).value ?? "",
-                                              fontSize: 16.0)),
+                                      child: AppBoldFont(context,
+                                          color: Theme.of(context).canvasColor,
+                                          msg: cartListData?.checkoutDetails?.elementAt(0).value ?? "",
+                                          fontSize: 16.0),
                                     ),
                                     Container(
                                         height: 30,width: 1,
@@ -171,7 +166,7 @@ class _BuynowCartState extends State<BuynowCart> {
                                 Container(
                                   width: SizeConfig.screenWidth * 0.50,
                                   child: AppMediumFont(
-                                      color: BLACK_COLOR,
+                                      color: Theme.of(context).canvasColor,
                                       context,maxLines: 2,
                                       msg:cartListData?.cartList?[0].productName,
                                      // cartdata['cartList'][0]['productName'],
@@ -184,11 +179,11 @@ class _BuynowCartState extends State<BuynowCart> {
                                     AppMediumFont(context,
                                         msg: "₹" +
                                             " ${cartListData?.cartList?[0].productDetails?.productDiscountPrice}",
-                                        color: BLACK_COLOR.withOpacity(0.8),
+                                        color: Theme.of(context).canvasColor.withOpacity(0.8),
                                         fontSize: 18.0),
                                     SizedBox(width: 5),
                                     AppMediumFont(context,
-                                        color: BLACK_COLOR.withOpacity(0.8),
+                                        color: Theme.of(context).canvasColor.withOpacity(0.8),
                                         msg:"₹" +
                                             "${
                                                cartListData
@@ -215,10 +210,10 @@ class _BuynowCartState extends State<BuynowCart> {
                                     ? RichText(
                                     text: TextSpan(
                                         text: 'Color  :  ',
-                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                                         children: <InlineSpan>[
                                           TextSpan(
-                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                                             text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.color?.name}',
                                           )
                                         ]
@@ -230,10 +225,10 @@ class _BuynowCartState extends State<BuynowCart> {
                                     ?  RichText(
                                     text: TextSpan(
                                         text: 'Size  :  ',
-                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                                         children: <InlineSpan>[
                                           TextSpan(
-                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                                             text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.size?.name}',
                                           )
                                         ]
@@ -246,10 +241,10 @@ class _BuynowCartState extends State<BuynowCart> {
                                 RichText(
                                     text: TextSpan(
                                         text: 'Style  :  ',
-                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                                         children: <InlineSpan>[
                                           TextSpan(
-                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                                             text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.style?.name}',
                                           )
                                         ]
@@ -265,10 +260,10 @@ class _BuynowCartState extends State<BuynowCart> {
                                     ?  RichText(
                                     text: TextSpan(
                                         text: 'MaterialType  :  ',
-                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                                         children: <InlineSpan>[
                                           TextSpan(
-                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                                             text: '${
                                               cartListData!.cartList![0].productDetails!.defaultVariationSku!.materialType!.name!.length > 35 ?
                                                cartListData!.cartList![0].productDetails!.defaultVariationSku!.materialType?.name!.replaceRange(35, cartListData?.cartList?[0].productDetails!.defaultVariationSku!.materialType?.name?.length, '...') : cartListData?.cartList?[0].productDetails!.defaultVariationSku!.materialType?.name ?? ""
@@ -287,10 +282,10 @@ class _BuynowCartState extends State<BuynowCart> {
                                 RichText(
                                     text: TextSpan(
                                         text: 'UnitCount  :  ',
-                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                        style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                                         children: <InlineSpan>[
                                           TextSpan(
-                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                            style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                                             text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.unitCount?.name}',
                                           )
                                         ]
@@ -352,257 +347,248 @@ class _BuynowCartState extends State<BuynowCart> {
           child: Column(
             children: [
               cartPageViewIndicator(context, 0),
+              SizedBox(height: 4),
               Container(
-                width: SizeConfig.screenWidth/3.2,
-                child: Card(
-                  color: WHITE_COLOR,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          InkWell(
-                            onTap: () {
-                            },
-                            child: Container(
-                              height: 120,
-                              width: 150,
-                              color: WHITE_COLOR,
-                              margin: EdgeInsets.only(
-                                  left: 5, top: 5, right: 8, bottom: 5),
-                              child: Image.network(
-                                  cartListData?.cartList?[0].productDetails?.productImages?[0] ?? ""
-                                // cartdata['cartList'][0]['productDetails']['productImages'][0]
-                                // widget.cartListData?.cartList?[0].productDetails?.productImages?[0] ??
-                                //     "",
-                              ),
+                color: Theme.of(context).cardColor,
+                width: SizeConfig.screenWidth/3,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          onTap: () {},
+                          child: Container(
+                            height: 150,
+                            width: 180,
+                            margin: EdgeInsets.only(
+                                left: 5, top: 5, right: 8, bottom: 5),
+                            child: Image.network(
+                                cartListData?.cartList?[0].productDetails?.productImages?[0] ?? ""
+                             ,fit: BoxFit.fill,
                             ),
                           ),
-                          Container(
-                            height: 30,
-                            margin: EdgeInsets.only(left: 5, top: 5, right: 8, bottom: 5),
-                            width: 120,
-                            decoration:BoxDecoration(
-                                border: Border.all(color: Theme.of(context).canvasColor.withOpacity(0.2),width: 1)
+                        ),
+                        Container(
+                          height: 30,
+                          margin: EdgeInsets.only(left: 5, top: 5, right: 8, bottom: 5),
+                          width: 120,
+                          decoration:BoxDecoration(
+                              border: Border.all(color: Theme.of(context).canvasColor.withOpacity(0.2),width: 1)
+                          ),
+                          child: Row(children: [
+                            Expanded(
+                              flex: 25,
+                              child: GestureDetector(
+                                child: Icon(
+                                  Icons.remove,
+                                  size: 18.0,
+                                  color: Colors.grey,
+                                ),
+                                onTap: () async {
+                                  int value= int.parse(cartListData!.checkoutDetails!.elementAt(0).value ?? "");
+                                  print(value);
+                                  value=value-1;
+                                  if(value >= 1){
+                                    cartListData?.checkoutDetails?.elementAt(0).value =value.toString();
+                                    cartViewData.buyNow(
+                                        cartListData?.cartList?[0].productId ??"",
+                                        cartListData!.checkoutDetails!.elementAt(0).value.toString(),  cartListData?.cartList?[0].productDetails?.variantId,
+                                        false, context);
+                                  }
+                                },
+                              ),
                             ),
-                            child: Row(children: [
-                              Expanded(
-                                flex: 25,
-                                child: GestureDetector(
+                            Container(
+                                height: 30,width: 1,
+                                color: Theme.of(context).canvasColor.withOpacity(0.2)
+                            ),
+                            Expanded(
+                              flex: 50,
+                              child: AppBoldFont(context,
+                                  textAlign: TextAlign.center,
+                                  color: Theme.of(context).canvasColor,
+                                  msg: cartListData?.checkoutDetails?.elementAt(0).value ?? "",
+                                  fontSize: 16.0),
+                            ),
+                            Container(
+                                height: 30,width: 1,
+                                color: Theme.of(context).canvasColor.withOpacity(0.2)
+                            ),
+                            Expanded(
+                              flex: 25,
+                              child: GestureDetector(
                                   child: Icon(
-                                    Icons.remove,
+                                    Icons.add,
                                     size: 18.0,
                                     color: Colors.grey,
                                   ),
-                                  onTap: () async {
+                                  onTap: () {
                                     int value= int.parse(cartListData!.checkoutDetails!.elementAt(0).value ?? "");
                                     print(value);
-                                    value=value-1;
-                                    if(value >= 1){
-                                      cartListData?.checkoutDetails?.elementAt(0).value =value.toString();
-                                      cartViewData.buyNow(
-                                          cartListData?.cartList?[0].productId ??"",
-                                          cartListData!.checkoutDetails!.elementAt(0).value.toString(),  cartListData?.cartList?[0].productDetails?.variantId,
-                                          false, context);
-                                    }
-                                  },
-                                ),
+                                    value=value+1;
+                                    cartListData?.checkoutDetails?.elementAt(0).value =value.toString();
+                                    cartViewData.buyNow(
+                                        cartListData?.cartList?[0].productId ??"",
+                                        cartListData!.checkoutDetails!.elementAt(0).value.toString(),  cartListData?.cartList?[0].productDetails?.variantId,
+                                        false, context);
+                                  }
                               ),
-                              Container(
-                                  height: 30,width: 1,
-                                  color: Theme.of(context).canvasColor.withOpacity(0.2)
-                              ),
-                              Expanded(
-                                flex: 50,
-                                child: Container(
-                                    height: 24,
-                                    alignment: Alignment.center,
-                                    color:Colors.white,
-                                    padding: EdgeInsets.only(left: 20.0, right: 20.0),
-                                    child: AppBoldFont(context,
-                                        color: BLACK_COLOR,
-                                        msg: cartListData?.checkoutDetails?.elementAt(0).value ?? "",
-                                        fontSize: 16.0)),
-                              ),
-                              Container(
-                                  height: 30,width: 1,
-                                  color: Theme.of(context).canvasColor.withOpacity(0.2)
-                              ),
-                              Expanded(
-                                flex: 25,
-                                child: GestureDetector(
-                                    child: Icon(
-                                      Icons.add,
-                                      size: 18.0,
-                                      color: Colors.grey,
-                                    ),
-                                    onTap: () {
-                                      int value= int.parse(cartListData!.checkoutDetails!.elementAt(0).value ?? "");
-                                      print(value);
-                                      value=value+1;
-                                      cartListData?.checkoutDetails?.elementAt(0).value =value.toString();
-                                      cartViewData.buyNow(
-                                          cartListData?.cartList?[0].productId ??"",
-                                          cartListData!.checkoutDetails!.elementAt(0).value.toString(),  cartListData?.cartList?[0].productDetails?.variantId,
-                                          false, context);
-                                    }
-                                ),
-                              )
-                            ]),
-                          ),
-                          SizedBox(height: 10)
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: 15),
-                          Container(
-                            width: SizeConfig.screenWidth /4.5,
-                            child: AppMediumFont(
-                                color: BLACK_COLOR,
-                                context,
-                                msg:cartListData?.cartList?[0].productName,
-                                // cartdata['cartList'][0]['productName'],
-                                // widget.cartListData?.cartList?[0].productName,
-                                fontSize: 16.0),
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: [
-                              AppMediumFont(context,
-                                  msg: "₹" +
-                                      " ${cartListData?.cartList?[0].productDetails?.productDiscountPrice}",
-                                  color: BLACK_COLOR.withOpacity(0.9),
-                                  fontSize: 18.0),
-                              SizedBox(width: 5),
-                              AppMediumFont(context,
-                                  color: BLACK_COLOR.withOpacity(0.8),
-                                  msg:"₹" +
-                                      "${
-                                          cartListData
-                                              ?.cartList?[0]
-                                              .productDetails
-                                              ?.productPrice
-                                              .toString()
-                                      }",
-                                  textDecoration:
-                                  TextDecoration.lineThrough,
-                                  fontSize: 18.0),
-                              SizedBox(width: 5),
-                              AppMediumFont(context,
-                                  msg:
-                                  "${cartListData?.cartList?[0].productDetails?.productDiscountPercent}" +
-                                      r"%OFF",
-                                  color: GREEN,
-                                  fontSize: 18.0),
-                            ],
-                          ),
-                          cartListData?.cartList?[0].productDetails
-                              ?.defaultVariationSku?.color?.name !=
-                              null
-                              ? RichText(
-                              text: TextSpan(
-                                  text: 'Color  :  ',
-                                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
-                                  children: <InlineSpan>[
-                                    TextSpan(
-                                      style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
-                                      text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.color?.name}',
-                                    )
-                                  ]
-                              ))
-                              : SizedBox(),
-                          cartListData?.cartList?[0].productDetails
-                              ?.defaultVariationSku?.size?.name !=
-                              null
-                              ?  RichText(
-                              text: TextSpan(
-                                  text: 'Size  :  ',
-                                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
-                                  children: <InlineSpan>[
-                                    TextSpan(
-                                      style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
-                                      text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.size?.name}',
-                                    )
-                                  ]
-                              ))
-                              : SizedBox(),
-                          cartListData?.cartList?[0].productDetails
-                              ?.defaultVariationSku?.style?.name !=
-                              null
-                              ?
-                          RichText(
-                              text: TextSpan(
-                                  text: 'Style  :  ',
-                                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
-                                  children: <InlineSpan>[
-                                    TextSpan(
-                                      style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
-                                      text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.style?.name}',
-                                    )
-                                  ]
-                              ))
-                              : SizedBox(),
-                          cartListData
-                              ?.cartList?[0]
-                              .productDetails
-                              ?.defaultVariationSku
-                              ?.materialType
-                              ?.name !=
-                              null
-                              ?  RichText(
-                              text: TextSpan(
-                                  text: 'MaterialType  :  ',
-                                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
-                                  children: <InlineSpan>[
-                                    TextSpan(
-                                      style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
-                                      text: '${
-                                          cartListData!.cartList![0].productDetails!.defaultVariationSku!.materialType!.name!.length > 35 ?
-                                          cartListData!.cartList![0].productDetails!.defaultVariationSku!.materialType?.name!.replaceRange(35, cartListData?.cartList?[0].productDetails!.defaultVariationSku!.materialType?.name?.length, '...') : cartListData?.cartList?[0].productDetails!.defaultVariationSku!.materialType?.name ?? ""
-                                      }',                                        )
-                                  ]
-                              ))
-                              : SizedBox(),
-                          cartListData
-                              ?.cartList?[0]
-                              .productDetails
-                              ?.defaultVariationSku
-                              ?.unitCount
-                              ?.name !=
-                              null
-                              ?
-                          RichText(
-                              text: TextSpan(
-                                  text: 'UnitCount  :  ',
-                                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Colors.black,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
-                                  children: <InlineSpan>[
-                                    TextSpan(
-                                      style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Colors.black.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
-                                      text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.unitCount?.name}',
-                                    )
-                                  ]
-                              ))
-                              : SizedBox(),
-                          SizedBox(height: 15),
-                        ],
-                      )
-                    ],
-                  ),
+                            )
+                          ]),
+                        ),
+                        SizedBox(height: 10)
+                      ],
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 15),
+                        Container(
+                          width: SizeConfig.screenWidth /4.5,
+                          child: AppMediumFont(
+                              color: Theme.of(context).canvasColor,
+                              context,
+                              msg:cartListData?.cartList?[0].productName,
+                              fontSize: 16.0),
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: [
+                            AppMediumFont(context,
+                                msg: "₹" +
+                                    " ${cartListData?.cartList?[0].productDetails?.productDiscountPrice}",
+                                color: Theme.of(context).canvasColor.withOpacity(0.9),
+                                fontSize: 18.0),
+                            SizedBox(width: 5),
+                            AppMediumFont(context,
+                                color: Theme.of(context).canvasColor.withOpacity(0.8),
+                                msg:"₹" +
+                                    "${
+                                        cartListData
+                                            ?.cartList?[0]
+                                            .productDetails
+                                            ?.productPrice
+                                            .toString()
+                                    }",
+                                textDecoration:
+                                TextDecoration.lineThrough,
+                                fontSize: 18.0),
+                            SizedBox(width: 5),
+                            AppMediumFont(context,
+                                msg:
+                                "${cartListData?.cartList?[0].productDetails?.productDiscountPercent}" +
+                                    r"%OFF",
+                                color: GREEN,
+                                fontSize: 18.0),
+                          ],
+                        ),
+                        cartListData?.cartList?[0].productDetails
+                            ?.defaultVariationSku?.color?.name !=
+                            null
+                            ? RichText(
+                            text: TextSpan(
+                                text: 'Color  :  ',
+                                style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                children: <InlineSpan>[
+                                  TextSpan(
+                                    style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                    text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.color?.name}',
+                                  )
+                                ]
+                            ))
+                            : SizedBox(),
+                        cartListData?.cartList?[0].productDetails
+                            ?.defaultVariationSku?.size?.name !=
+                            null
+                            ?  RichText(
+                            text: TextSpan(
+                                text: 'Size  :  ',
+                                style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                children: <InlineSpan>[
+                                  TextSpan(
+                                    style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                    text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.size?.name}',
+                                  )
+                                ]
+                            ))
+                            : SizedBox(),
+                        cartListData?.cartList?[0].productDetails
+                            ?.defaultVariationSku?.style?.name !=
+                            null
+                            ?
+                        RichText(
+                            text: TextSpan(
+                                text: 'Style  :  ',
+                                style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                children: <InlineSpan>[
+                                  TextSpan(
+                                    style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                    text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.style?.name}',
+                                  )
+                                ]
+                            ))
+                            : SizedBox(),
+                        cartListData
+                            ?.cartList?[0]
+                            .productDetails
+                            ?.defaultVariationSku
+                            ?.materialType
+                            ?.name !=
+                            null
+                            ?  RichText(
+                            text: TextSpan(
+                                text: 'MaterialType  :  ',
+                                style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                children: <InlineSpan>[
+                                  TextSpan(
+                                    style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                    text: '${
+                                        cartListData!.cartList![0].productDetails!.defaultVariationSku!.materialType!.name!.length > 35 ?
+                                        cartListData!.cartList![0].productDetails!.defaultVariationSku!.materialType?.name!.replaceRange(35, cartListData?.cartList?[0].productDetails!.defaultVariationSku!.materialType?.name?.length, '...') : cartListData?.cartList?[0].productDetails!.defaultVariationSku!.materialType?.name ?? ""
+                                    }',                                        )
+                                ]
+                            ))
+                            : SizedBox(),
+                        cartListData
+                            ?.cartList?[0]
+                            .productDetails
+                            ?.defaultVariationSku
+                            ?.unitCount
+                            ?.name !=
+                            null
+                            ?
+                        RichText(
+                            text: TextSpan(
+                                text: 'UnitCount  :  ',
+                                style: TextStyle(fontSize: 16,fontWeight: FontWeight.w400,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                children: <InlineSpan>[
+                                  TextSpan(
+                                    style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                    text: '${cartListData?.cartList?[0].productDetails?.defaultVariationSku?.unitCount?.name}',
+                                  )
+                                ]
+                            ))
+                            : SizedBox(),
+                        SizedBox(height: 15),
+                      ],
+                    )
+                  ],
                 ),
               ),
-
-              Card(
+              SizedBox(height: 6),
+              Container(
+                  padding: EdgeInsets.only(top: 4, bottom: 10),
+                  color: Theme.of(context).cardColor,
                 child: Column(
                     children:  cartListData!.checkoutDetails!
                         .map((e){
                       return Container(
-                        width: SizeConfig.screenWidth/3.22,
+                        width: SizeConfig.screenWidth/3,
                         child: Column(
                           children: [
                             SizedBox(height: 8),

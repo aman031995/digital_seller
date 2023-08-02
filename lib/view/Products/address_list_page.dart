@@ -917,6 +917,7 @@ else{
                               ],)
                             ],
                           ),
+                          SizedBox(height: 50),
                           footerDesktop()
                         ],
                       ),

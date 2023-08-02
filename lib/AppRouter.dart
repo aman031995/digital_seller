@@ -7,7 +7,9 @@ import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
+import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'AppRouter.gr.dart';
@@ -20,8 +22,8 @@ class AppRouter extends $AppRouter {
   // TODO: implement routes
   List<AutoRoute> routes = [
      AutoRoute(page: HomePageWeb.page, path: '/',initial: true),
-    AutoRoute(page: DetailPage.page,path: '/DetailPage'),
-    AutoRoute(page: SeeAllListPages.page,path: '/SeeAllListPages'),
+    // AutoRoute(page: DetailPage.page,path: '/DetailPage'),
+    // AutoRoute(page: SeeAllListPages.page,path: '/SeeAllListPages'),
     AutoRoute(page: SearchPage.page,path: '/SearchPage',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
@@ -36,17 +38,26 @@ class AppRouter extends $AppRouter {
         },
       )]),
     AutoRoute(page: Banner_product.page,path: '/banner_product/:bannerId',guards: [
-      AutoRouteGuard.simple(
-            (resolver, scope) async {
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-          if (sharedPreferences.get('token') != null) {
-            resolver.next();
-          } else {
-            ToastMessage.message("Please Login User");
-            resolver.redirect(HomePageWeb());
-          }
-        },
-      )]),
+      // AutoRouteGuard.simple(
+      //       (resolver, scope) async {
+      //     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      //     if (sharedPreferences.get('token') != null) {
+      //       resolver.next();
+      //     } else {
+      //       showDialog(
+      //           context: GlobalVariable.navState.currentState!.context,
+      //           builder:
+      //               (BuildContext context) {
+      //             return  LoginUp(
+      //               product: false,
+      //             );
+      //           });
+      //       ToastMessage.message("Please Login User");
+      //       resolver.redirect(HomePageWeb());
+      //     }
+      //   },
+      // )
+    ]),
     AutoRoute(page: EditProfile.page,path: '/EditProfile',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {

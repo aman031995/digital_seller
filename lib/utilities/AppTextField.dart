@@ -23,13 +23,13 @@ class AppTextField extends StatefulWidget {
   TextInputType? keyBoardType;
   int? maxLength;
   double? height;
-  double? width;
   bool? isEnable;
   bool? isColor;
   ValueChanged<String>? onChanged;
   void Function()? verifySubmit;
-  bool? isTick;
   bool? isEditPage;
+  bool? isTick;
+  bool? isRead;
   int? maxLine;
   String? errorText;
   TextCapitalization? textCapitalization;
@@ -37,32 +37,33 @@ class AppTextField extends StatefulWidget {
   FocusNode? focusNode;
   bool? isSearch;
   bool? autoFocus = false;
-  bool? isRead;
+
   AppTextField(
       {Key? key,
         this.isShowCountryCode,
         required this.controller,
-        this.verifySubmit, this.isRead,
+        this.verifySubmit,
         this.labelText,
         this.isVerifyNumber,
         this.secureText,
         this.prefixText,
+        this.isRead,
         this.onSubmitted,
         this.isError,
-        this.isEditPage,
         this.keyBoardType,
         this.maxLength,
         this.isShowPassword,
         this.height,
-        this.width,
         this.isEnable,
+        this.isEditPage,
         this.isColor,
         this.onChanged,
         this.maxLine,
         required this.isTick,
         this.errorText,
         this.textCapitalization,
-        this.floatingLabelBehavior, this.focusNode,
+        this.floatingLabelBehavior,
+        this.focusNode,
         this.isSearch,
         this.autoFocus})
       : super(key: key);
@@ -73,10 +74,17 @@ class AppTextField extends StatefulWidget {
 
 class _CustomTextFieldState extends State<AppTextField> {
   final _focusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _focusNode.dispose(); // Dispose the focus node when the widget is disposed
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only( right: 10),
+      //  margin: EdgeInsets.only(left: 10, right: 10),
       height: widget.height,
       child: Theme(
         data: new ThemeData(
@@ -100,10 +108,11 @@ class _CustomTextFieldState extends State<AppTextField> {
                 inputFormatters: [
                   LengthLimitingTextInputFormatter(widget.maxLength),
                 ],
+
                 controller: widget.controller,
                 style: TextStyle(
                     color: widget.isEnable == false
-                        ? Theme.of(context).primaryColor.withOpacity(0.6)
+                        ? Theme.of(context).canvasColor.withOpacity(0.6)
                         : Theme.of(context).canvasColor,
                     fontSize: 18),
                 onSubmitted: widget.onSubmitted,
@@ -114,30 +123,30 @@ class _CustomTextFieldState extends State<AppTextField> {
                       .copyWith(color: RED_COLOR, fontSize: 12),
                   errorMaxLines: 3,
                   focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                    borderSide: BorderSide(color: RED_COLOR, width: 0.2),
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    borderSide: BorderSide(color: RED_COLOR, width: 2),
                   ),
                   errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2.0)),
-                    borderSide: BorderSide(color: RED_COLOR, width: 0.2),
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    borderSide: BorderSide(color: RED_COLOR, width: 2),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     borderSide: BorderSide(
                         color: Theme.of(context).canvasColor.withOpacity(0.4),
-                        width: 0.2),
+                        width: 2),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     borderSide: BorderSide(
                         color: Theme.of(context).primaryColor.withOpacity(0.4),
-                        width: 0.2),
+                        width: 2),
                   ),
                   disabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     borderSide: BorderSide(
                         color: Theme.of(context).canvasColor.withOpacity(0.2),
-                        width:0.2),
+                        width: 2),
                   ),
                   isDense: true,
                   //  <- you can it to 0.0 for no space
@@ -170,7 +179,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                     ),
                     height: 10,
                     width: 10,
-                    child: Icon(Icons.check, color: Colors.black),
+                    child: Icon(Icons.check, color: Theme.of(context).canvasColor),
                   )
                       : widget.isSearch == true
                       ? IconButton(
@@ -181,14 +190,14 @@ class _CustomTextFieldState extends State<AppTextField> {
                           Container(
                             color: Theme.of(context).canvasColor.withOpacity(0.5),
                             width: 1,
-                            margin: EdgeInsets.only(right: 2),
+                            margin: EdgeInsets.only(right: 6),
                           ),
                           Expanded(
                             child: Container(
-                              margin: EdgeInsets.only(right: 18),
+                              margin: EdgeInsets.only(right: 8),
                               child: Icon(Icons.search_outlined,
-                                  color: Theme.of(context).canvasColor.withOpacity(0.5),
-                                  size: 25),
+                                  color: Theme.of(context).canvasColor,
+                                  size: 22),
                             ),
                           ),
                         ],
@@ -196,7 +205,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                       : null,
                   labelText: widget.labelText,
                   contentPadding:
-                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
+                  EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
                   labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
                       color: widget.isColor == true
                           ? Theme.of(context).canvasColor.withOpacity(0.4)

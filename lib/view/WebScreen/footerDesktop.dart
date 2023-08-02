@@ -18,7 +18,7 @@ class _footerDesktopState extends State<footerDesktop> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).cardColor,
+      color: Theme.of(context).canvasColor,
       height: 200,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(bottom: 30, left: SizeConfig.screenWidth * 0.04, right: SizeConfig.screenWidth * 0.04, top: 30),
@@ -43,7 +43,7 @@ class _footerDesktopState extends State<footerDesktop> {
         Container(
           width: 226,
           child: appTextButton(context, "Download Now", Alignment.center,
-              Theme.of(context).canvasColor, 17, false),
+              Theme.of(context).scaffoldBackgroundColor, 17, false),
         ),
         SizedBox(height: 25,),
         Container(
@@ -70,7 +70,7 @@ class _footerDesktopState extends State<footerDesktop> {
                     throw 'Could not launch $url';
                   }
                 },
-                child: Image.asset("images/google.png", height: 35, width: 108,),),
+                child: Image.asset("images/google.png", height: 35, width: 108),),
             ],
           ),
         )
@@ -84,7 +84,7 @@ class _footerDesktopState extends State<footerDesktop> {
         Container(
           width: 150,
           child: appTextButton(context, "Connect With Us", Alignment.center,
-              Theme.of(context).canvasColor, 17, false),
+              Theme.of(context).scaffoldBackgroundColor, 17, false),
         ),
         SizedBox(height: 25,),
         Container(
@@ -93,7 +93,7 @@ class _footerDesktopState extends State<footerDesktop> {
             children: [
               GestureDetector(
                   child: Image.asset("images/ic_fb.png",
-                      height: 33,width: 30, color: Theme.of(context).canvasColor),
+                      height: 33,width: 30, color: Theme.of(context).scaffoldBackgroundColor),
                   onTap: () async {
                     const url = 'https://www.facebook.com';
                     if (await canLaunch(url)) {
@@ -105,7 +105,7 @@ class _footerDesktopState extends State<footerDesktop> {
               SizedBox(width: MediaQuery.of(context).size.width * .01),
               GestureDetector(
                   child: Image.asset("images/ic_instgram.png",
-                      height: 33,width: 30, color: Theme.of(context).canvasColor),
+                      height: 33,width: 30, color: Theme.of(context).scaffoldBackgroundColor),
                   onTap: () async {
                     const url = 'https://www.instagram.com';
                     if (await canLaunch(url)) {
@@ -117,7 +117,7 @@ class _footerDesktopState extends State<footerDesktop> {
               SizedBox(width: MediaQuery.of(context).size.width * .01),
               GestureDetector(
                   child: Image.asset("images/ic_twitter.png",
-                      height: 33,width: 30, color: Theme.of(context).canvasColor),
+                      height: 33,width: 30, color: Theme.of(context).scaffoldBackgroundColor),
                   onTap: () async {
                     const url =
                         'https://twitter.com/i/flow/login?input_flow_data=%7B%22requested_variant%22%3A%22eyJsYW5nIjoiZW4ifQ%3D%3D%22%7D';
@@ -143,7 +143,7 @@ class _footerDesktopState extends State<footerDesktop> {
           width: SizeConfig.screenWidth / 2,
           child: Row(
             children: [
-              AppButton(context, 'About Us', onPressed: () {
+              AppButton(context, 'About Us',onPressed: () {
                 setState(() {
                   // GoRouter.of(context).pushNamed(RoutesName.AboutUsPage);
                 });
@@ -175,7 +175,7 @@ class _footerDesktopState extends State<footerDesktop> {
           child: AppMediumFont(context,
               msg:
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante",
-              fontSize: 14, color: Theme.of(context).canvasColor, lineBetweenSpace: 1.5 ),
+              fontSize: 14, color: Theme.of(context).scaffoldBackgroundColor, lineBetweenSpace: 1.5 ),
         ),
       ],
     );
@@ -246,7 +246,7 @@ Widget footerMobile(BuildContext context) {
               children: [
                 AppBoldFont(context,
                     fontWeight: FontWeight.w200,
-                    msg: "Connect With Us",
+                    msg: "Connect With Us",color: Theme.of(context).scaffoldBackgroundColor,
                     fontSize: 16),
                 SizedBox(height: 8),
                 Row(
@@ -282,7 +282,7 @@ Widget footerMobile(BuildContext context) {
               children: [
                 AppBoldFont(context,
                     fontWeight: FontWeight.w200,
-                    msg: "Download Now",
+                    msg: "Download Now",color: Theme.of(context).scaffoldBackgroundColor,
                     fontSize: 16),
                 SizedBox(height: 8),
                 Row(
@@ -297,7 +297,7 @@ Widget footerMobile(BuildContext context) {
                             throw 'Could not launch $url';
                           }
                         },
-                        child: Image.asset("images/apple.png", height: 30)),
+                        child: Image.asset("images/apple.png", height: 30,color: Theme.of(context).scaffoldBackgroundColor)),
                     SizedBox(width: SizeConfig.screenWidth * 0.01),
                     GestureDetector(
                         onTap: () async {
@@ -308,7 +308,7 @@ Widget footerMobile(BuildContext context) {
                             throw 'Could not launch $url';
                           }
                         },
-                        child: Image.asset("images/google.png", height: 30)),
+                        child: Image.asset("images/google.png", height: 30,color: Theme.of(context).scaffoldBackgroundColor,)),
                   ],
                 )
               ],

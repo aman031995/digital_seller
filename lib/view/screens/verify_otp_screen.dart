@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/TextStyling.dart';
 import 'package:TychoStream/view/widgets/PinEntryTextFiled.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 String? otpValue;
 
@@ -95,9 +97,11 @@ class _VerifyOtpState extends State<VerifyOtp> {
     }
     return AlertDialog(
         elevation: 8,
-        backgroundColor: Colors.transparent,
+        titlePadding: EdgeInsets.zero,
+        backgroundColor: Theme.of(context).cardColor,
         contentPadding: EdgeInsets.zero,
-        shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        insetPadding: EdgeInsets.all(10),
+
         content: verificationSection(authVM,mobileOTPVerificaton!));
   }
 
@@ -105,37 +109,103 @@ class _VerifyOtpState extends State<VerifyOtp> {
     return
       ResponsiveWidget.isMediumScreen(context) ?
       Container(
-          height: 350,
-          width: 500,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Theme.of(context).cardColor.withOpacity(0.8),
-              border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.6))
-          ),
+          padding: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(
+                  children: [
+                    Positioned(
+                      child: Container(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                            onPressed: (){
+                              Navigator.pop(context);
+                            }, icon: Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor)),
+                      ),
+                    )
+                  ],
+                ),
+                AppBoldFont(context,
+                  msg: StringConstant.verification,
+                  fontSize: 18,
+                ),
+                SizedBox(height: 10),
+                AppMediumFont(
+                    context,textAlign: TextAlign.left,
+                    msg: mobileOTPVerificaton == true ? StringConstant.codeVerify : StringConstant.emailVerify,
+                    fontSize:16,
+                    maxLines: 2),
+                SizedBox(height: 20),
+                Container(
+                  height: 50,
+                  width: 400,
+                  child: PinEntryTextFiledView(),
+                ),
+                SizedBox(height: 10),
+                resendPin(authVM,mobileOTPVerificaton),
+                isOTPInput == true ? Container() : errorText(),
+                SizedBox(height: 20),
+                appButton(context, StringConstant.verify,SizeConfig.screenWidth, 50,
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).hintColor,
+                    16, 5.0, isOTPInput, onTap: () {
+                      checkVerificationValidate(authVM,mobileOTPVerificaton);
+                    }),
+                SizedBox(height: 10),
+                GestureDetector(
+                  onTap: () async{
+                    const url = 'http://digitalseller.in/';
+                    if (await canLaunch(url)) {
+                      await launch(url, forceWebView: false, enableJavaScript: true);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
+                  child: Center(
+                    child: GlobalVariable.isLightTheme == true ?
+                    Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: 100) :
+                    Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: 100),
+                  ),
+                ),
+                SizedBox(height: 5),
+              ],
+            ),
+          )) :
+      Container(
+          height: SizeConfig.screenHeight / 1.8,
+          width: SizeConfig.screenWidth * 0.25,
           child: SingleChildScrollView(
             child: Column(
               children: [
+                Stack(
+                  children: [
+                    Positioned(
+                      child: Container(
+                        alignment: Alignment.topRight,
+                        child: IconButton(
+                            onPressed: (){
+                              Navigator.pop(context);
+                            }, icon: Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor)),
+                      ),
+                    )
+                  ],
+                ),
                 SizedBox(height: 20),
                 AppBoldFont(context,
                   msg: StringConstant.verification,
-                  fontSize:  ResponsiveWidget.isMediumScreen(context)
-                      ? 18 :22,
+                  fontSize: 20,
                 ),
-                SizedBox(height: 5),
-                Padding(
-                  padding: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context)
-                      ?10:0,right: ResponsiveWidget.isMediumScreen(context)
-                      ?10:0),
-                  child: AppMediumFont(
-                      context,textAlign: TextAlign.left,
-                      msg: mobileOTPVerificaton == true ? StringConstant.codeVerify : StringConstant.emailVerify,
-                      fontSize: ResponsiveWidget.isMediumScreen(context)? 14:16,
-                      maxLines: 2),
-                ),
+                SizedBox(height: 15),
+                AppMediumFont(
+                    context,textAlign: TextAlign.left,
+                    msg: mobileOTPVerificaton == true ? StringConstant.codeVerify : StringConstant.emailVerify,
+                    fontSize: 16,
+                    maxLines: 2),
                 SizedBox(height: 30),
                 Container(
-                  height:ResponsiveWidget.isMediumScreen(context)
-                      ?50: 60,
+                  height: 60,
                   width: 400,
                   child: PinEntryTextFiledView(),
                 ),
@@ -143,86 +213,33 @@ class _VerifyOtpState extends State<VerifyOtp> {
                 resendPin(authVM,mobileOTPVerificaton),
                 isOTPInput == true ? Container() : errorText(),
                 SizedBox(height: 30),
-                appButton(context, StringConstant.verify, ResponsiveWidget.isMediumScreen(context)
-                    ?  SizeConfig.screenWidth*0.67  :SizeConfig.screenWidth/8,ResponsiveWidget.isMediumScreen(context)
-                    ? 50: 60.0, LIGHT_THEME_COLOR,Theme.of(context).canvasColor,
+                appButton(context, StringConstant.verify, SizeConfig.screenWidth/8, 60.0,
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).hintColor,
                     16, 5.0, isOTPInput, onTap: () {
                       checkVerificationValidate(authVM,mobileOTPVerificaton);
                     }),
-                SizedBox(height: 10),
-
+                SizedBox(height:20),
+                GestureDetector(
+                  onTap: () async{
+                    const url = 'http://digitalseller.in/';
+                    if (await canLaunch(url)) {
+                      await launch(url, forceWebView: false, enableJavaScript: true);
+                    } else {
+                      throw 'Could not launch $url';
+                    }
+                  },
+                  child: Container(
+                    // margin: EdgeInsets.only(left: 120, right: 120, bottom: 5),
+                      width: SizeConfig.screenWidth * 0.08,
+                      child: GlobalVariable.isLightTheme == true ?
+                      Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: 50) :
+                      Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: 50)),
+                ),
+                SizedBox(height:10),
               ],
             ),
-          )) :
-      Container(
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(width: 2, color: Theme.of(context).primaryColor.withOpacity(0.4)),
-              color: Theme.of(context).cardColor),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center, children: [
-            Stack(
-              children: [
-                Container(
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          bottomLeft: Radius.circular(20))),
-                  height: SizeConfig.screenHeight / 1.45,
-                  width: SizeConfig.screenWidth * 0.29,
-                  child: Image.asset(
-                    'images/LoginPageLogo.png',
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ],
-            ),
-            SingleChildScrollView(
-              child: Container(
-                width: SizeConfig.screenWidth * 0.29,
-                margin: EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    SizedBox(height: 20),
-                    AppBoldFont(context,
-                      msg: StringConstant.verification,
-                      fontSize:  ResponsiveWidget.isMediumScreen(context)
-                          ? 18 :22,
-                    ),
-                    SizedBox(height: 15),
-                    Padding(
-                      padding: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context)
-                          ?10:0,right: ResponsiveWidget.isMediumScreen(context)
-                          ?10:0),
-                      child: AppMediumFont(
-                          context,textAlign: TextAlign.left,
-                          msg: mobileOTPVerificaton == true ? StringConstant.codeVerify : StringConstant.emailVerify,
-                          fontSize: ResponsiveWidget.isMediumScreen(context)? 14:16,
-                          maxLines: 2),
-                    ),
-                    SizedBox(height: 30),
-                    Container(
-                      height:ResponsiveWidget.isMediumScreen(context)
-                          ?50: 60,
-                      width: 400,
-                      child: PinEntryTextFiledView(),
-                    ),
-                    SizedBox(height: 10),
-                    resendPin(authVM,mobileOTPVerificaton),
-                    isOTPInput == true ? Container() : errorText(),
-                    SizedBox(height: 30),
-                    appButton(context, StringConstant.verify, ResponsiveWidget.isMediumScreen(context)
-                        ?  SizeConfig.screenWidth*0.67  :SizeConfig.screenWidth/8,ResponsiveWidget.isMediumScreen(context)
-                        ? 50: 60.0, LIGHT_THEME_COLOR,Theme.of(context).canvasColor,
-                        16, 5.0, isOTPInput, onTap: () {
-                          checkVerificationValidate(authVM,mobileOTPVerificaton);
-                        }),
-                    SizedBox(height: 10),
-                  ],
-                ),
-              ),
-            )
-          ]));
+          ));
   }
 
   Widget errorText() {

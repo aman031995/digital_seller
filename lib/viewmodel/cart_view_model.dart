@@ -499,9 +499,10 @@ class CartViewModel extends ChangeNotifier {
         (result, isSuccess) {
           favouriteCallback = true;
       if (isSuccess) {
+        reloadPage();
         // getPageName(context, pageName, result,variantId,listIndex);
-        ToastMessage.message(
-            ((result as SuccessState).value as ASResponseModal).message);
+        // ToastMessage.message(
+        //     ((result as SuccessState).value as ASResponseModal).message);
         notifyListeners();
       }
     });

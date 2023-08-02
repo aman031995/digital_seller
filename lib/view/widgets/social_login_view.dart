@@ -34,6 +34,7 @@ class _SocialLoginViewState extends State<SocialLoginView> {
       child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             socialLogin?.google != null
                 ? socialNetworkButton(AssetsConstants.icGoogle, () {
@@ -41,13 +42,13 @@ class _SocialLoginViewState extends State<SocialLoginView> {
               widget.socialLoginViewModel?.signInWithGoogle(context);
               Navigator.pop(context);   },context)
                 : Container(),
-            SizedBox(width: 10),
-            socialLogin?.facebook != null
-                ? socialNetworkButton(AssetsConstants.icFacebook, () {
-              widget.socialLoginViewModel?.loginWithFB(context);
-              widget.socialLoginViewModel?.isGoogle = false;
-            },context)
-                : Container(),
+            // SizedBox(width: 10),
+            // socialLogin?.facebook != null
+            //     ? socialNetworkButton(AssetsConstants.icFacebook, () {
+            //   widget.socialLoginViewModel?.loginWithFB(context);
+            //   widget.socialLoginViewModel?.isGoogle = false;
+            // },context)
+            //     : Container(),
 
 
           ],

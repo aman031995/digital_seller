@@ -11,7 +11,6 @@ import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
-import 'package:TychoStream/view/widgets/search_view.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 
@@ -182,8 +181,8 @@ class _FAQState extends State<FAQ> {
                   // isLogins == true
                   //     ? profile(context, setState)
                   //     : Container(),
-                  if (homeViewModel.searchDataModel != null)
-                    searchView(context, homeViewModel, isSearch, _scrollController, homeViewModel, searchController!, setState)
+                  // if (homeViewModel.searchDataModel != null)
+                  //   searchView(context, homeViewModel, isSearch, _scrollController, homeViewModel, searchController!, setState)
                 ],
 
           ),

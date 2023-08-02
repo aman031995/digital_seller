@@ -44,11 +44,11 @@ Widget appButton(
             AppBoldFont(
                 context,
                 msg: title,
-                color: isSelected == true ? Theme.of(context).canvasColor : Theme.of(context).canvasColor.withOpacity(0.6),
+                color: isSelected == true ? Theme.of(context).hintColor : Theme.of(context).hintColor.withOpacity(0.6),
                 fontSize: fontSize,
                 textAlign: TextAlign.center),
-            SizedBox(width: 5,),
-            Image.asset("images/ic_ForwordArrow.png", width: 15, height: 15,color:Theme.of(context).canvasColor),
+            // SizedBox(width: 5,),
+            // Image.asset("images/ic_ForwordArrow.png", width: 15, height: 15,color:Theme.of(context).canvasColor),
           ],
         ),
       ),
@@ -111,7 +111,7 @@ Widget AppButton(BuildContext context,String msg,{VoidCallback? onPressed}){
           alignment: Alignment.center,
           overlayColor: MaterialStateColor.resolveWith(
                   (states) => Theme.of(context).primaryColor.withOpacity(0.1))),
-      child: AppBoldFont(context, msg: msg, fontSize: ResponsiveWidget.isMediumScreen(context)? 16:17, color: Theme.of(context).canvasColor ));
+      child: AppBoldFont(context, msg: msg, fontSize: ResponsiveWidget.isMediumScreen(context)? 16:17, color: Theme.of(context).scaffoldBackgroundColor ));
       // Text(
       //
       //   msg,

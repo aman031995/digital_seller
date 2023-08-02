@@ -32,6 +32,8 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(width: SizeConfig.screenWidth * .01),
+           // Image.asset(AssetsConstants.appLogo,width: 100,height: 60,fit: BoxFit.fill,),
             Expanded(
               child: SizedBox(width: SizeConfig.screenWidth * .06)),
             viewmodel.appConfigModel!=null?
@@ -45,7 +47,7 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
                       print(e.title);
                       getPages(e,context,profileViewModel);
                     },
-                    child: AppBoldFont(context, msg: e.title ?? "",fontSize: 20),
+                    child: AppBoldFont(context, msg: e.title ?? "",fontSize: 16,fontWeight: FontWeight.w600),
                   );
                 }).toList() ,
               ),
@@ -93,7 +95,7 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
                 width: SizeConfig.screenWidth * .01),
             GestureDetector(
                 onTap: onFavPressed,
-                child: Icon(Icons.favorite_border, color: Theme.of(context).canvasColor, size: 30)),
+                child: Icon(Icons.favorite_border, color: Theme.of(context).canvasColor, size: 25)),
             SizedBox(
                 width: SizeConfig.screenWidth * .01),
             Stack(
@@ -101,7 +103,7 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
                 GestureDetector(
                     onTap: onCartPressed,
                     child: Icon(Icons.shopping_cart,
-                        color: Theme.of(context).canvasColor, size: 30)),
+                        color: Theme.of(context).canvasColor, size: 25)),
                 itemCount != '0'
                     ? Positioned(
                     right: 0,
@@ -127,7 +129,6 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
                 onPressed: () {
                   showDialog(
                       context: context,
-                      barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
                       builder:
                           (BuildContext context) {
                         return  LoginUp(
@@ -198,12 +199,36 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
 getPages(BottomNavigation navItem,BuildContext context,ProfileViewModel profileViewModel) {
   Uri url = Uri.parse(navItem.url ?? '');
   if(url.path == RoutesName.homepageweb){
-    return context.router.push(HomePageWeb());
+    return names == "null"?showDialog(
+        context: context,
+        barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
+        builder:
+            (BuildContext context) {
+          return  LoginUp(
+            product: true,
+          );
+        }):context.router.push(HomePageWeb());
   }  else if (url.path == RoutesName.productPage){
-    return context.router.push(ProductListGallery());
+    return names == "null"?showDialog(
+        context: context,
+        barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
+        builder:
+            (BuildContext context) {
+          return  LoginUp(
+            product: true,
+          );
+        }):context.router.push(ProductListGallery());
   }
   else if(url.path==RoutesName.profilePage){
-    context.pushRoute(EditProfile(
+    names == "null"?showDialog(
+        context: context,
+        barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
+        builder:
+            (BuildContext context) {
+          return  LoginUp(
+            product: true,
+          );
+        }):context.pushRoute(EditProfile(
         isEmailVerified: '${profileViewModel.userInfoModel?.isPhoneVerified}',
         isPhoneVerified: '${profileViewModel.userInfoModel?.isEmailVerified}'
     ));
@@ -287,7 +312,6 @@ AppBar homePageTopBar(BuildContext context,GlobalKey<ScaffoldState> _scaffoldKey
                 onPressed: () {
                   showDialog(
                       context: context,
-                      barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
                       builder:
                           (BuildContext context) {
                         return LoginUp();

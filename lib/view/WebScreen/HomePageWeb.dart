@@ -142,7 +142,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                           drawer: ResponsiveWidget.isMediumScreen(context)
                               ? AppMenu():SizedBox(),
               body:
-                                      Stack(
+              Stack(
                         children: [
                           SingleChildScrollView(
                             child: Column(
@@ -159,8 +159,11 @@ class _HomePageWebState extends State<HomePageWeb> {
                                    mainAxisAlignment: MainAxisAlignment.start,
                                    crossAxisAlignment: CrossAxisAlignment.start,
                                    children: [
-                                     Container(child: AppBoldFont(context, msg: "What are you looking for?", fontSize:24)),
+                                     Container(child: AppBoldFont(context, msg: "What are you looking for?", fontSize:20)),
                                      SizedBox(height:SizeConfig.screenHeight*0.01),
+
+                                     //subcategory page tap-----
+
                                      Container(
                                          height: 250,
                                          child: ListView.builder(
@@ -224,7 +227,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      AppBoldFont(context, msg: "Recommended for You ",fontSize: ResponsiveWidget.isMediumScreen(context) ?16: 24),
+                                      AppBoldFont(context, msg: "Recommended for You ",fontSize: ResponsiveWidget.isMediumScreen(context) ?16: 20),
                                       SizedBox(height: SizeConfig.screenHeight*0.01),
                                       Container(
                                           height: ResponsiveWidget.isMediumScreen(context)
@@ -274,9 +277,6 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                   );
 
                                               }))
-
-
-
                                     ],
                                   ),
                                 ),
@@ -290,7 +290,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                       AppBoldFont(context, msg:"Recently Viewed",fontSize: ResponsiveWidget.isMediumScreen(context) ?16:24),
+                                       AppBoldFont(context, msg:"Recently Viewed",fontSize: ResponsiveWidget.isMediumScreen(context) ?16:20),
                                       SizedBox(height: SizeConfig.screenHeight*0.02),
                                       Container(
                                           height:ResponsiveWidget.isMediumScreen(context)
@@ -399,7 +399,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      AppBoldFont(context, msg:"What We Offer !",fontSize: ResponsiveWidget.isMediumScreen(context) ?16:24,),
+                                      AppBoldFont(context, msg:"What We Offer !",fontSize: ResponsiveWidget.isMediumScreen(context) ?16:20),
                                       SizedBox(height: 10,),
                                       Container(
                                         margin: EdgeInsets.only(right: 5),
@@ -418,7 +418,6 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 getLatestUpdate(),
                                 SizedBox(height: 16),
                                 footerDesktop(),
-
                               ],
                             ),
                           ),
@@ -479,9 +478,14 @@ class _HomePageWebState extends State<HomePageWeb> {
 
   Widget getLatestUpdate( ){
     return Stack(
+
       children: [
-        Image.asset( AssetsConstants.icNewUpdate, height: 290, width: SizeConfig.screenWidth ,),
-        AppBoldFont(context, msg: StringConstant.getLatestupdate, fontWeight: FontWeight.w600, fontSize: 20),
+        Image.asset( AssetsConstants.icNewUpdate, height: 300, width: SizeConfig.screenWidth,fit: BoxFit.fill,),
+        Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.only(top: 120),
+            child: AppBoldFont(context, msg: StringConstant.getLatestupdate, fontWeight: FontWeight.w500, fontSize: 30,color: Colors.white,textAlign: TextAlign.center)),
+
       ],
     );
   }

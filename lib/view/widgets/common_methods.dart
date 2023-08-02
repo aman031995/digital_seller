@@ -28,27 +28,6 @@ class CommonMethods {
     }
   }
 
-  // // upload image function
-  // static uploadImageVideo(BuildContext context, ProfileViewModel viewmodel) {
-  //   return showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) =>
-  //           PhotoAndVideoPopUp(onCameraSelection: () {
-  //             GetImageFile.pickImage(ImageSource.camera, context,
-  //                 (result, isSuccess) {
-  //               if (isSuccess) {
-  //                 viewmodel.imageUpload(context, result);
-  //               }
-  //             });
-  //           }, onGallerySelection: () {
-  //             GetImageFile.pickImage(ImageSource.gallery, context,
-  //                 (result, isSuccess) {
-  //               if (isSuccess) {
-  //                 viewmodel.imageUpload(context, result);
-  //               }
-  //             });
-  //           }));
-  // }
 }
 
 Widget cartPageViewIndicator(
@@ -84,77 +63,6 @@ Widget stepView(BuildContext context,String title,int activeStep,int index){
       fontSize: 14);
 }
 
-// Widget cartPageViewIndicator(BuildContext context,int pageIndex,int activeStep){
-//   return Container(
-//     child: EasyStepper(
-//       activeStep: pageIndex,
-//       lineLength: SizeConfig.screenWidth * 0.10,
-//       lineSpace: 0,
-//       lineType: LineType.normal,
-//       defaultLineColor: Theme.of(context).canvasColor.withOpacity(0.6),
-//       finishedStepBackgroundColor: Theme.of(context).primaryColor ,
-//       activeStepBackgroundColor: Theme.of(context).primaryColor,
-//       finishedLineColor: Theme.of(context).primaryColor,
-//       activeStepTextColor: Theme.of(context).canvasColor,
-//       finishedStepTextColor: Theme.of(context).primaryColor,
-//       internalPadding: 0,
-//       showLoadingAnimation: false,
-//       stepRadius: 13,
-//       showStepBorder: false,
-//       lineDotRadius: 1.5,
-//       steps: [
-//         EasyStep(
-//           customStep: CircleAvatar(
-//             radius: 8,
-//             backgroundColor: activeStep >= 0
-//                 ? Colors.white :Theme.of(context).canvasColor.withOpacity(0.6),
-//             child: CircleAvatar(
-//               radius: 7,
-//               backgroundColor: activeStep >= 0
-//                   ? Theme.of(context).primaryColor
-//                   :  Theme.of(context).canvasColor.withOpacity(0.6),
-//             ),
-//           ),
-//           title: 'My Cart',
-//         ),
-//         EasyStep(
-//           customStep: CircleAvatar(
-//             radius: 8,
-//             backgroundColor:  activeStep >= 1
-//                 ? Colors.white :Theme.of(context).canvasColor.withOpacity(0.6),
-//             child: CircleAvatar(
-//               radius: 7,
-//               backgroundColor: activeStep >= 1
-//                   ? Theme.of(context)
-//                   .primaryColor
-//                   : Colors.white,
-//             ),
-//           ),
-//           title: 'Payment',
-//         ),
-//         EasyStep(
-//           customStep: CircleAvatar(
-//             radius: 8,
-//             backgroundColor:  activeStep >= 2
-//                 ? Colors.white :Theme.of(context).canvasColor.withOpacity(0.6),
-//             child: CircleAvatar(
-//               radius: 7,
-//               backgroundColor: activeStep >= 2
-//                   ? Theme.of(context)
-//                   .primaryColor
-//                   : Colors.white,
-//             ),
-//           ),
-//           title: 'Order Placed',
-//         ),
-//       ],
-//       onStepReached: (index) {
-//         activeStep = index;
-//       },
-//     ),
-//   ) ;
-// }
-
 //PriceDetailWidget Method
 Widget priceDetailWidget(BuildContext context, String str1, String val) {
   return Container(
@@ -164,20 +72,20 @@ Widget priceDetailWidget(BuildContext context, String str1, String val) {
       children: [
         str1 == "Total Amount"
             ? AppBoldFont(context,
-            msg: str1 + ":", fontSize: 16.0, color: Colors.black)
+            msg: str1 + ":", fontSize: 16.0, color: Theme.of(context).canvasColor)
             : AppRegularFont(context,
-            msg: str1 + ":", fontSize: 16.0, color: Colors.black),
+            msg: str1 + ":", fontSize: 16.0, color: Theme.of(context).canvasColor),
         str1 == "Total Amount"
             ? AppBoldFont(context,
             msg: "₹" + val,
             fontSize: 16.0,
-            color: Colors.black.withOpacity(0.9))
+            color: Theme.of(context).canvasColor.withOpacity(0.9))
             : AppRegularFont(context,
             msg: (str1 == "Total items" ? "" : "₹") + val,
             fontSize: 16.0,
             color: str1.contains("Discount")
                 ? Colors.green
-                : Colors.black.withOpacity(0.8))
+                :Theme.of(context).canvasColor.withOpacity(0.8))
       ],
     ),
   );
@@ -202,66 +110,3 @@ Widget checkoutButton(BuildContext context,String msg,CartViewModel cartViewData
   );
 }
 
-// //BillCard Method
-// Widget billCard(BuildContext context,CartViewModel cartViewData){
-//   return
-//     Card(
-//     child: Container(
-//       width: SizeConfig.screenWidth*0.24,
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.start,
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           SizedBox(height: 25),
-//           priceDetailWidget(context,StringConstant.totalItems,cartViewData.cartListData?.checkoutDetails?.totalItems.toString() ?? ''),
-//           SizedBox(height: 15),
-//           priceDetailWidget(context,StringConstant.basePrice,"₹ " +
-//               (cartViewData.cartListData?.checkoutDetails?.cartTotalPrice.toString() ?? '')),
-//           SizedBox(height: 15),
-//           priceDetailWidget(context,StringConstant.discountedPrice, "₹ " +
-//               (cartViewData.cartListData?.checkoutDetails?.discountedPrice.toString() ?? "")),
-//           SizedBox(height: 15),
-//           priceDetailWidget(context,StringConstant.shipping,"₹ " +
-//               (cartViewData.cartListData?.checkoutDetails?.deliveryCharge.toString() ?? "")),
-//           SizedBox(height: 15),
-//           Divider(height: 1, color: Theme.of(context).canvasColor,),
-//           SizedBox(height: 15),
-//           priceDetailWidget(context,StringConstant.amountPayable,"₹" + (cartViewData.cartListData?.checkoutDetails?.totalPayableAmount.toString() ?? "")),
-//           SizedBox(height: 15),
-//         ],
-//       ),
-//     ),
-//   );
-// }
-
-/*
-//BillCard Method
-Widget billCardMobile(BuildContext context,CartViewModel cartViewData){
-  return  Card(
-    child: Container(
-
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 25),
-          priceDetailWidget(context,StringConstant.totalItems,cartViewData.cartListData?.checkoutDetails?.totalItems.toString() ?? ''),
-          SizedBox(height: 15),
-          priceDetailWidget(context,StringConstant.basePrice,"₹ " +
-              (cartViewData.cartListData?.checkoutDetails?.cartTotalPrice.toString() ?? '')),
-          SizedBox(height: 15),
-          priceDetailWidget(context,StringConstant.discountedPrice, "₹ " +
-              (cartViewData.cartListData?.checkoutDetails?.discountedPrice.toString() ?? "")),
-          SizedBox(height: 15),
-          priceDetailWidget(context,StringConstant.shipping,"₹ " +
-              (cartViewData.cartListData?.checkoutDetails?.deliveryCharge.toString() ?? "")),
-          SizedBox(height: 15),
-          Divider(height: 1, color: Theme.of(context).canvasColor,),
-          SizedBox(height: 15),
-          priceDetailWidget(context,StringConstant.amountPayable,"₹" + (cartViewData.cartListData?.checkoutDetails?.totalPayableAmount.toString() ?? "")),
-          SizedBox(height: 15),
-        ],
-      ),
-    ),
-  );
-}*/

@@ -158,8 +158,7 @@ class AuthViewModel with ChangeNotifier {
     AppIndicator.loadingIndicator(context);
     _authRepo.register(phone, email, loginType, context, (result, isSuccess) {
       if (isSuccess) {
-        ToastMessage.message(
-            ((result as SuccessState).value as ASResponseModal).message);
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
         AppIndicator.disposeIndicator();
         Navigator.pop(context);
         User();

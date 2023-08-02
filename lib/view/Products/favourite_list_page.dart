@@ -1,3 +1,4 @@
+import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
@@ -315,41 +316,25 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                   Positioned(
                       right: 10,
                       top: 5,
-                      child: GestureDetector(
-                          onTap: () {
-                            final isFav = productListData!
-                                .productDetails!.isFavorite =
-                            !productListData.productDetails!.isFavorite!;
-                            viewmodel.addToFavourite(
-                                context,
-                                "${productListData.productId}",
-                                "${productListData.productDetails?.variantId}",
-                                isFav,
-                                'productList');
-                            // viewmodel.addToFavourite(
-                            //     context,
-                            //     "${productListData?.productId}",
-                            //     "${productListData?.productDetails?.productColor}",
-                            //     productListData?.productDetails
-                            //         ?.isFavorite ==
-                            //         true
-                            //         ? false
-                            //         : true,
-                            //     'productList');
-                          },
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Theme.of(context).canvasColor),
-                              height: 35,
-                              width: 35,
-                              child: Icon(Icons.favorite,
-                                  color: productListData
-                                      ?.productDetails?.isFavorite ==
-                                      true
-                                      ? Colors.red
-                                      : Colors.white,
-                                  size: 25))))
+                      child: IconButton(
+                          iconSize: 45,
+                          icon: Image.asset(
+                            productListData
+                                ?.productDetails?.isFavorite ==
+                                true
+                                ? AssetsConstants.ic_wishlistSelect
+                                : AssetsConstants.ic_wishlistUnselect,
+                          ),onPressed: (){
+                        final isFav = productListData!
+                            .productDetails!.isFavorite =
+                        !productListData.productDetails!.isFavorite!;
+                        viewmodel.addToFavourite(
+                            context,
+                            "${productListData.productId}",
+                            "${productListData.productDetails?.variantId}",
+                            isFav,
+                            'productList');
+                      },))
                 ],
               ),
             ));

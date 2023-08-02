@@ -1,28 +1,15 @@
 import 'package:auto_route/annotations.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
-import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
-import 'package:TychoStream/utilities/AppTextField.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
-import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
-import 'package:TychoStream/utilities/TextStyling.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
-import 'package:TychoStream/view/WebScreen/DesktopAppBar.dart';
-import 'package:TychoStream/view/WebScreen/EditProfile.dart';
-import 'package:TychoStream/view/WebScreen/HomePageWeb.dart';
-import 'package:TychoStream/view/WebScreen/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/SignUp.dart';
-import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
-import 'package:TychoStream/view/widgets/search_view.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
@@ -81,16 +68,10 @@ class _TermsState extends State<Terms> {
               }
             },
             child: Scaffold(
-
-
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              appBar:  homePageTopBar(),
-              body:
-
-
-              Scaffold(
+              appBar: homePageTopBar(),
+              body: Scaffold(
                 key: _scaffoldKey,
-                // drawer: AppMenu(homeViewModel: viewmodel),
                 body: SingleChildScrollView(
                   child: Stack(
                     children: [
@@ -120,11 +101,6 @@ class _TermsState extends State<Terms> {
 
                             ]),
                       ),
-                      // isLogins == true
-                      //     ? profile(context, setState)
-                      //     : Container(),
-                      if (homeViewModel.searchDataModel != null)
-                        searchView(context, homeViewModel, isSearch, _scrollController, homeViewModel, searchController!, setState)
                     ],
 
                   ),

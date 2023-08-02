@@ -32,7 +32,7 @@ class NOInternetScreen extends StatelessWidget {
               AppMediumFont(
                   context,
                   msg: StringConstant.noInternet,
-                  fontSize: 16,
+                  fontSize: 16,color: Theme.of(context).canvasColor,
                   textAlign: TextAlign.center,
                   maxLines: 3)
             ],

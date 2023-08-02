@@ -1,3 +1,4 @@
+import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
@@ -102,53 +103,6 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                             itemCount: '${cartViewModel.cartItemCount}'
                         ));
                       }}),
-                // getAppBarWithBackBtn(
-                //     context: context,
-                //     itemCount: viewmodel.cartItemCount,
-                //     isShopping: true,
-                //     isBackBtn: false,
-                //     isFavourite: true,
-                //     title: StringConstant.forumTitle,
-                //     onCartPressed: () async {
-                //       SharedPreferences sharedPreferences =
-                //           await SharedPreferences.getInstance();
-                //       token = sharedPreferences.getString('token').toString();
-                //       if (token == 'null') {
-                //         showDialog(
-                //             context: context,
-                //             barrierColor:
-                //                 Theme.of(context).canvasColor.withOpacity(0.6),
-                //             builder: (BuildContext context) {
-                //               return LoginUp(
-                //                 product: true,
-                //               );
-                //             });
-                //         // _backBtnHandling(prodId);
-                //       } else {
-                //         context.router.push(CartDetail(
-                //             itemCount: '${viewmodel.cartItemCount}'));
-                //       }
-                //     },
-                //     onFavPressed: () async {
-                //       SharedPreferences sharedPreferences =
-                //           await SharedPreferences.getInstance();
-                //       token = sharedPreferences.getString('token').toString();
-                //       if (token == 'null') {
-                //         showDialog(
-                //             context: context,
-                //             barrierColor:
-                //                 Theme.of(context).canvasColor.withOpacity(0.6),
-                //             builder: (BuildContext context) {
-                //               return LoginUp(
-                //                 product: true,
-                //               );
-                //             });
-                //         // _backBtnHandling(prodId);
-                //       } else {
-                //         context.router.push(FavouriteListPage());
-                //       }
-                //     },
-                //     onBackPressed: () {}),
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 body: viewmodel.productListModel?.productList != null
                     ? viewmodel.productListModel!.productList!.length > 0
@@ -314,8 +268,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
             child: Container(
               decoration: isHovered == true
                   ? BoxDecoration(
-
-                       color: Theme.of(context).cardColor,
+                color: Theme.of(context).cardColor,
                       boxShadow: [
                         BoxShadow(
                           color:
@@ -367,41 +320,40 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                   Positioned(
                       right: 10,
                       top: 5,
-                      child: GestureDetector(
-                          onTap: () {
-                            final isFav = productListData!
-                                    .productDetails!.isFavorite =
-                                !productListData.productDetails!.isFavorite!;
-                            viewmodel.addToFavourite(
-                                context,
-                                "${productListData.productId}",
-                                "${productListData.productDetails?.variantId}",
-                                isFav,
-                                'productList');
-                            // viewmodel.addToFavourite(
-                            //     context,
-                            //     "${productListData?.productId}",
-                            //     "${productListData?.productDetails?.productColor}",
-                            //     productListData?.productDetails
-                            //         ?.isFavorite ==
-                            //         true
-                            //         ? false
-                            //         : true,
-                            //     'productList');
-                          },
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: Theme.of(context).canvasColor),
-                              height: 35,
-                              width: 35,
-                              child: Icon(Icons.favorite,
-                                  color: productListData
-                                              ?.productDetails?.isFavorite ==
-                                          true
-                                      ? Colors.red
-                                      : Colors.white,
-                                  size: 25))))
+                      child: IconButton(
+                          iconSize: 45,
+                          icon: Image.asset(
+                            productListData
+                                ?.productDetails?.isFavorite ==
+                                true
+                                ? AssetsConstants.ic_wishlistSelect
+                                : AssetsConstants.ic_wishlistUnselect,
+                          ),onPressed: ()async{
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        token = sharedPreferences.getString('token').toString();
+        if (token == 'null'){
+        showDialog(
+        context: context,
+        builder:
+        (BuildContext context) {
+        return  LoginUp(
+        product: true,
+        );
+        });
+        // _backBtnHandling(prodId);
+        } else {
+          final isFav = productListData!
+              .productDetails!.isFavorite =
+          !productListData.productDetails!.isFavorite!;
+          viewmodel.addToFavourite(
+              context,
+              "${productListData.productId}",
+              "${productListData.productDetails?.variantId}",
+              isFav,
+              'productList');
+        } },
+
+                      ))
                 ],
               ),
             ));

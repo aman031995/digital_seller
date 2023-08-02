@@ -254,7 +254,7 @@ class _CartDetailState extends State<CartDetail> {
                                         child: AppBoldFont(
                                             context,
                                             color:
-                                            BLACK_COLOR,
+                                            Theme.of(context).canvasColor,
                                             msg: itemInCart
                                                 ?.cartQuantity
                                                 .toString() ??
@@ -326,7 +326,7 @@ class _CartDetailState extends State<CartDetail> {
                               //             margin: const EdgeInsets.all(5.0),
                               //             decoration: BoxDecoration(
                               //               shape: BoxShape.circle,
-                              //               color: BLACK_COLOR,
+                              //               color: Theme.of(context).canvasColor,
                               //             ),
                               //             child: Icon(Icons.remove, size: 13.0, color: WHITE_COLOR,
                               //             ),
@@ -358,7 +358,7 @@ class _CartDetailState extends State<CartDetail> {
                               //           padding: EdgeInsets.only(left: 20.0, right: 20.0),
                               //           child: AppBoldFont(
                               //               context,
-                              //               color: BLACK_COLOR,
+                              //               color: Theme.of(context).canvasColor,
                               //               msg: itemInCart?.cartQuantity.toString() ?? "",
                               //               fontSize: 16.0)),
                               //       GestureDetector(
@@ -371,7 +371,7 @@ class _CartDetailState extends State<CartDetail> {
                               //             margin: const EdgeInsets.all(4.0),
                               //             decoration: BoxDecoration(
                               //               shape: BoxShape.circle,
-                              //               color: BLACK_COLOR,),
+                              //               color: Theme.of(context).canvasColor,),
                               //             child: Icon(
                               //               Icons.add,
                               //               size: 13.0,
@@ -404,7 +404,7 @@ class _CartDetailState extends State<CartDetail> {
                               Container(
                                 width:SizeConfig.screenWidth*0.50,
                                 child: AppMediumFont(
-                                    color: BLACK_COLOR,
+                                    color: Theme.of(context).canvasColor,
                                     context,
                                     msg: itemInCart?.productDetails?.productVariantTitle,
                                     fontSize: 18.0),
@@ -414,13 +414,13 @@ class _CartDetailState extends State<CartDetail> {
                                 children: [
                                   AppMediumFont(context,
                                       msg: "₹" + " ${itemInCart?.productDetails?.productDiscountPrice}",
-                                      color: BLACK_COLOR,
+                                      color: Theme.of(context).canvasColor,
                                       fontSize: 16.0),
                                   SizedBox(
                                     width: SizeConfig.safeBlockVertical * 1,
                                   ),
                                   AppMediumFont(context,
-                                      color: BLACK_COLOR,
+                                      color: Theme.of(context).canvasColor,
                                       msg: itemInCart?.productDetails?.productPrice.toString() ?? "",
                                       textDecoration: TextDecoration.lineThrough,
                                       fontSize: 12.0),
@@ -435,12 +435,12 @@ class _CartDetailState extends State<CartDetail> {
                               ),
                               SizedBox(height: 5),
                               // AppMediumFont(context,
-                              //     color: BLACK_COLOR,
+                              //     color: Theme.of(context).canvasColor,
                               //     msg: "Color : " +(itemInCart?.productSkuDetails.map((e) => e.) ?? ""),
                               //     fontSize: 13.0),
                               SizedBox(height: 5),
                               // AppMediumFont(context,
-                              //     color: BLACK_COLOR,
+                              //     color: Theme.of(context).canvasColor,
                               //     msg: "Size : " + (itemInCart?.productDetails?.productSize ?? ''),
                               //     fontSize: 13.0),
                               SizedBox(height: 15),
@@ -459,7 +459,7 @@ class _CartDetailState extends State<CartDetail> {
                                           borderRadius: BorderRadius.circular(8),
                                           border: Border.all(
                                             width: 1,
-                                            color: BLACK_COLOR,
+                                            color: Theme.of(context).canvasColor,
                                           )),
                                       child: AppRegularFont(
                                           context,
@@ -562,7 +562,7 @@ class _CartDetailState extends State<CartDetail> {
                                 itemBuilder: (context, index) {
                                   final itemInCart = cartViewData.cartListData?.cartList?[index];
                                   return Container(
-                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5), color: WHITE_COLOR.withOpacity(0.9),),
+                                    color: Theme.of(context).cardColor,
                                     margin: EdgeInsets.only(bottom: 5),
 
                                     child: Row(
@@ -610,12 +610,12 @@ class _CartDetailState extends State<CartDetail> {
                                                         ? Container(
                                                         child: Icon(
                                                             Icons
-                                                                .delete,
+                                                                .delete,color: Theme.of(context).canvasColor,
                                                             size:
                                                             18))
                                                         : Icon(
                                                         Icons
-                                                            .remove,
+                                                            .remove,color: Theme.of(context).canvasColor,
                                                         size:
                                                         18.0),
                                                     onTap:
@@ -670,26 +670,15 @@ class _CartDetailState extends State<CartDetail> {
                                                         0.2)),
                                                 Expanded(
                                                   flex: 50,
-                                                  child: Container(
-                                                      height: 24,
-                                                      alignment:
-                                                      Alignment
-                                                          .center,
-                                                      padding: EdgeInsets.only(
-                                                          left:
-                                                          20.0,
-                                                          right:
-                                                          20.0),
-                                                      child: AppBoldFont(
-                                                          context,
-                                                          color:
-                                                          BLACK_COLOR,
-                                                          msg: itemInCart
-                                                              ?.cartQuantity
-                                                              .toString() ??
-                                                              "",
-                                                          fontSize:
-                                                          16.0)),
+                                                  child: AppBoldFont(
+                                                      context,textAlign: TextAlign.center,
+                                                      color: Theme.of(context).canvasColor,
+                                                      msg: itemInCart
+                                                          ?.cartQuantity
+                                                          .toString() ??
+                                                          "",
+                                                      fontSize:
+                                                      16.0),
                                                 ),
                                                 Container(
                                                     height: 30,
@@ -705,7 +694,7 @@ class _CartDetailState extends State<CartDetail> {
                                                   GestureDetector(
                                                     child: Icon(
                                                       Icons.add,
-                                                      size: 18.0,
+                                                      size: 18.0,color: Theme.of(context).canvasColor,
                                                     ),
                                                     onTap: () {
                                                       if (cartViewData
@@ -747,7 +736,7 @@ class _CartDetailState extends State<CartDetail> {
                                             Container(
                                                width:SizeConfig.screenWidth*0.15,
                                               child: AppMediumFont(
-                                                  color: BLACK_COLOR,
+                                                  color:  Theme.of(context).canvasColor,
                                                   context,
                                                   msg: itemInCart?.productDetails?.productVariantTitle,
                                                   fontSize: 18.0),
@@ -760,7 +749,7 @@ class _CartDetailState extends State<CartDetail> {
                                                   width: SizeConfig.safeBlockVertical * 1,
                                                 ),
                                                 AppMediumFont(context,
-                                                    color: BLACK_COLOR,
+                                                    color: Theme.of(context).canvasColor,
                                                     msg:  "₹" + "${itemInCart?.productDetails?.productPrice}",
                                                     textDecoration: TextDecoration.lineThrough,
                                                     fontSize: 12.0),
@@ -769,7 +758,7 @@ class _CartDetailState extends State<CartDetail> {
                                                 ),
                                                 AppBoldFont(context,
                                                     msg: "₹" + " ${itemInCart?.productDetails?.productDiscountPrice}",
-                                                    color: BLACK_COLOR,
+                                                    color: Theme.of(context).canvasColor,
                                                     fontSize: 16.0),SizedBox(
                                                   width: SizeConfig.safeBlockVertical * 1,
                                                 ),
@@ -783,19 +772,19 @@ class _CartDetailState extends State<CartDetail> {
                                             ),
                                             SizedBox(height: 5),
                                             itemInCart?.productSelectedSku?.color?.name != null?      AppMediumFont(context,
-                                                maxLines: 1, msg: "color"+'- ${itemInCart?.productSelectedSku?.color?.name}',  color: BLACK_COLOR,fontSize: 16.0):SizedBox(),
+                                                maxLines: 1, msg: "color"+'- ${itemInCart?.productSelectedSku?.color?.name}',  color: Theme.of(context).canvasColor,fontSize: 16.0):SizedBox(),
                                             itemInCart?.productSelectedSku?.size?.name != null?      AppMediumFont(context,
-                                                maxLines: 1,  msg: "size"+'- ${itemInCart?.productSelectedSku?.size?.name}', color: BLACK_COLOR, fontSize: 16.0):SizedBox(),
+                                                maxLines: 1,  msg: "size"+'- ${itemInCart?.productSelectedSku?.size?.name}', color: Theme.of(context).canvasColor, fontSize: 16.0):SizedBox(),
                                             itemInCart?.productSelectedSku?.style?.name != null?       AppMediumFont(context,
-                                                maxLines: 1,  msg: "style"+'- ${itemInCart?.productSelectedSku?.style?.name}', color: BLACK_COLOR, fontSize: 16.0):SizedBox(),
+                                                maxLines: 1,  msg: "style"+'- ${itemInCart?.productSelectedSku?.style?.name}', color: Theme.of(context).canvasColor, fontSize: 16.0):SizedBox(),
                                             itemInCart?.productSelectedSku?.materialType?.name != null?
                                             AppMediumFont(context,
                                                 maxLines: 2,  msg: "MaterialType"+'- ${
                                                     itemInCart!.productSelectedSku!.materialType!.name!.length > 35 ?
                                                     itemInCart.productSelectedSku?.materialType?.name!.replaceRange(35, itemInCart.productSelectedSku?.materialType?.name?.length, '...') : itemInCart.productSelectedSku?.materialType?.name ?? ""
-                                                }', color: BLACK_COLOR, fontSize: 16.0):SizedBox(),
+                                                }', color: Theme.of(context).canvasColor, fontSize: 16.0):SizedBox(),
                                             itemInCart?.productSelectedSku?.unitCount?.name != null?
-                                            AppMediumFont(context, color: BLACK_COLOR,
+                                            AppMediumFont(context, color: Theme.of(context).canvasColor,
                                                 maxLines: 1,   msg: "UnitCount"+'- ${itemInCart?.productSelectedSku?.unitCount?.name}', fontSize: 16.0):SizedBox(),
 
                                             SizedBox(height: 15),
@@ -807,17 +796,18 @@ class _CartDetailState extends State<CartDetail> {
                                                     index);
                                               },
                                               child: Container(
-                                                padding: EdgeInsets.all(5),
-                                                decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(8),
-                                                        border: Border.all(
-                                                          width: 1,
-                                                          color: BLACK_COLOR,
-                                                        )),
+                                                padding:
+                                                EdgeInsets.all(
+                                                    5),
+                                                decoration:
+                                                BoxDecoration(
+                                                  color: Theme.of(context).primaryColor,
+                                                  borderRadius: BorderRadius.circular(2),
+                                                ),
                                                 child: AppRegularFont(
                                                     context,
-                                                    color: RED_COLOR,
-                                                    msg: "remove",
+                                                    color: Theme.of(context).hintColor,
+                                                    msg: StringConstant.remove,
                                                     fontSize: 14.0),
                                               ),
                                             ),
