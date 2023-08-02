@@ -202,4 +202,15 @@ class StringConstant {
   static String chooseAddress = 'Choose Address';
   static String payment = "Payment";
   static String orderPlaced = 'Order Placed';
+
+
+  // HomePage String Constant
+
+static String  offerContent = 'Nor again is there anyone who loves or pursues or desires to obtain pain of itself.';
+static String  offerOnTimeDelivery = 'On Time Delivery';
+static String  offerSecurePayment = 'Secure Payment';
+static String offerSupport = '24/7 Support';
+static String getLatestupdate = 'Get Latest Update by Subscribe Our News later';
+
+
 }

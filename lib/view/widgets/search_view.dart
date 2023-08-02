@@ -306,7 +306,7 @@ Widget Header(BuildContext context,setState,HomeViewModel viewmodel){
                     .resolveWith((states) =>
                 Theme
                     .of(context)
-                    .primaryColor),
+                    .primaryColor.withOpacity(0.4)),
                 fixedSize:
                 MaterialStateProperty.all(
                     Size.fromHeight(35)),
@@ -378,7 +378,7 @@ Widget Header(BuildContext context,setState,HomeViewModel viewmodel){
                     .resolveWith((states) =>
                 Theme
                     .of(context)
-                    .primaryColor),
+                    .primaryColor.withOpacity(0.4)),
                 fixedSize:
                 MaterialStateProperty.all(
                     Size.fromHeight(35)),

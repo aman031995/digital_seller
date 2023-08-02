@@ -110,12 +110,13 @@ Widget AppButton(BuildContext context,String msg,{VoidCallback? onPressed}){
       style: ButtonStyle(
           alignment: Alignment.center,
           overlayColor: MaterialStateColor.resolveWith(
-                  (states) => Theme.of(context).primaryColor)),
-      child:  Text(
-
-        msg,
-        style: TextStyle(color:Theme.of(context).canvasColor,fontSize: ResponsiveWidget.isMediumScreen(context)? 16:18),
-      ));
+                  (states) => Theme.of(context).primaryColor.withOpacity(0.1))),
+      child: AppBoldFont(context, msg: msg, fontSize: ResponsiveWidget.isMediumScreen(context)? 16:17, color: Theme.of(context).canvasColor ));
+      // Text(
+      //
+      //   msg,
+      //   style: TextStyle(color:Theme.of(context).canvasColor,fontSize: ResponsiveWidget.isMediumScreen(context)? 16:18),
+      // ));
 }
 
 

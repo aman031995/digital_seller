@@ -140,7 +140,7 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
                         .resolveWith((states) =>
                     Theme
                         .of(context)
-                        .primaryColor),
+                        .primaryColor.withOpacity(0.4)),
                     fixedSize:
                     MaterialStateProperty.all(
                         Size.fromHeight(35)),
@@ -299,7 +299,7 @@ AppBar homePageTopBar(BuildContext context,GlobalKey<ScaffoldState> _scaffoldKey
                         .resolveWith((states) =>
                     Theme
                         .of(context)
-                        .primaryColor),
+                        .primaryColor.withOpacity(0.4)),
                     fixedSize:
                     MaterialStateProperty.all(
                         Size.fromHeight(30)),

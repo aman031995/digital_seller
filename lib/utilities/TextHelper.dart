@@ -25,6 +25,7 @@ Text AppMediumFont(
         double? fontSize,
         FontWeight? fontWeight,
         int? maxLines,
+        double? lineBetweenSpace,
         TextAlign? textAlign,
         Color? color,
             TextDecoration? textDecoration,
@@ -35,7 +36,8 @@ Text AppMediumFont(
         overflow: overflowBar,
 
         style: CustomTextStyle.textFormFieldInterMedium
-            .copyWith(color: color??Theme.of(context).canvasColor, fontSize: fontSize, fontWeight: fontWeight,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily, decoration: textDecoration));
+            .copyWith(color: color??Theme.of(context).canvasColor, fontSize: fontSize, fontWeight: fontWeight,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily,
+            decoration: textDecoration, height: lineBetweenSpace ));
 }
 
 Text AppRegularFont(

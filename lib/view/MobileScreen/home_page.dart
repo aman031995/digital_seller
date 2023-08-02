@@ -225,7 +225,7 @@ class _HomePageMobileState extends State<HomePageMobile> {
                           .resolveWith((states) =>
                       Theme
                           .of(context)
-                          .primaryColor),
+                          .primaryColor.withOpacity(0.4)),
                       fixedSize:
                       MaterialStateProperty.all(
                           Size.fromHeight(30)),

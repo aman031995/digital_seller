@@ -76,7 +76,7 @@ class _CustomTextFieldState extends State<AppTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 10, right: 10),
+      margin: EdgeInsets.only( right: 10),
       height: widget.height,
       child: Theme(
         data: new ThemeData(

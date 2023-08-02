@@ -82,7 +82,7 @@ class _SignUpState extends State<SignUp> {
                             SizedBox(
                                 height: SizeConfig.screenHeight * .02),
                             StreamBuilder(
-                                stream:  viewmodel.appConfigModel?.androidConfig?.loginWithPhone  == false
+                                stream:   viewmodel.loginWithPhone  == false
                                     ? validation.registerWithoutNumberUser
                                     : validation.registerUser,
                                 builder: (context, snapshot) {
@@ -105,7 +105,7 @@ class _SignUpState extends State<SignUp> {
                                             emailController.text,
                                             phoneController.text ?? '',
                                             passwordController.text,
-                                            viewmodel.appConfigModel?.androidConfig?.loginWithPhone == true? 'phone':'email', viewmodel);
+                                             viewmodel.loginWithPhone == true? 'phone':'email', viewmodel);
                                       });
                                 }),
                             SizedBox(height: SizeConfig.screenHeight * .02),
@@ -196,7 +196,7 @@ class _SignUpState extends State<SignUp> {
                                     SizedBox(
                                         height: SizeConfig.screenHeight * .02),
                                     StreamBuilder(
-                                        stream: viewmodel.appConfigModel?.androidConfig?.loginWithPhone == false
+                                        stream:  viewmodel.loginWithPhone == false
                                             ? validation.registerWithoutNumberUser
                                             : validation.registerUser,
                                         builder: (context, snapshot) {
@@ -219,7 +219,7 @@ class _SignUpState extends State<SignUp> {
                                                     emailController.text,
                                                     phoneController.text ?? '',
                                                     passwordController.text,
-                                                    viewmodel.appConfigModel?.androidConfig?.loginWithPhone == true? 'phone':'email', viewmodel);
+                                                     viewmodel.loginWithPhone == true? 'phone':'email', viewmodel);
                                               });
                                         }),
                                     SizedBox(
@@ -270,8 +270,8 @@ class _SignUpState extends State<SignUp> {
         signUpAppTextField(nameController, StringConstant.name, TextInputType.text, validation.sinkFirstName, 100, validation.firstName, isName),
         SizedBox(height: 15),
         signUpAppTextField(emailController, StringConstant.email, TextInputType.emailAddress, validation.sinkEmail, 100, validation.email, isEmail),
-        viewmodel.appConfigModel?.androidConfig?.loginWithPhone  == false ? SizedBox() : SizedBox(height: 15),
-        viewmodel.appConfigModel?.androidConfig?.loginWithPhone == false
+         viewmodel.loginWithPhone  == false ? SizedBox() : SizedBox(height: 15),
+         viewmodel.loginWithPhone == false
             ? SizedBox()
             : signUpAppTextField(phoneController, StringConstant.phone, TextInputType.number, validation.sinkPhoneNo, 10, validation.phoneNo, isPhone),
         SizedBox(height: 15),

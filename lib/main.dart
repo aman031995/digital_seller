@@ -55,12 +55,6 @@ class _MyAppState extends State<MyApp> {
   HomeViewModel homeViewModel = HomeViewModel();
   final _appRouter = AppRouter();
 
-  // @override
-  // getTokent() async {
-  //   String? deviceToken = await FirebaseMessaging.instance.getToken();
-  //   print('DEVICE TOKEN ' + deviceToken!);
-  // }
-
   void initState() {
     User();
     homeViewModel.getAppConfig(context);
@@ -91,6 +85,8 @@ class _MyAppState extends State<MyApp> {
               final font = viewmodel.appConfigModel?.androidConfig?.fontStyle?.fontFamily;
               final secondaryColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.secondaryColor?.hex;
               final txtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.textColor?.hex;
+              final buttonTxtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.buttonTextColor?.hex;
+
               return MaterialApp.router(
                   theme: ThemeData(
                       scrollbarTheme: ScrollbarThemeData(
@@ -102,7 +98,9 @@ class _MyAppState extends State<MyApp> {
                       backgroundColor: (bgColor)?.toColor(),
                       cardColor: (secondaryColor)?.toColor(),
                       fontFamily: font,
-                      canvasColor: (txtColor)?.toColor()),
+                      canvasColor: (txtColor)?.toColor(),
+                    hintColor: (buttonTxtColor)?.toColor()),
+
                   builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
                   scrollBehavior: MyCustomScrollBehavior(),

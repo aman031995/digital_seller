@@ -7,6 +7,7 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/OnHover.dart';
+import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 
@@ -391,7 +392,32 @@ class _HomePageWebState extends State<HomePageWeb> {
                                   ),
                                 ):
                                 SizedBox(),
+                                SizedBox(height: 10),
+                                Container(
+                                  padding: EdgeInsets.only(left: 40,right: 40,bottom: 20,top: 20),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      AppBoldFont(context, msg:"What We Offer !",fontSize: ResponsiveWidget.isMediumScreen(context) ?16:24,),
+                                      SizedBox(height: 10,),
+                                      Container(
+                                        margin: EdgeInsets.only(right: 5),
+                                        child: Row(
+                                          children: [
+                                              whatWeOfferWidget(AssetsConstants.icSupport,StringConstant.offerOnTimeDelivery ,StringConstant.offerContent),
+                                            whatWeOfferWidget(AssetsConstants.icCreditCard,StringConstant.offerSecurePayment , StringConstant.offerContent),
+                                            whatWeOfferWidget(AssetsConstants.icTimer, StringConstant.offerSupport, StringConstant.offerContent),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                                 SizedBox(height: 16),
+                                getLatestUpdate(),
+                                SizedBox(height: 16),
+                                footerDesktop(),
 
                               ],
                             ),
@@ -428,5 +454,41 @@ class _HomePageWebState extends State<HomePageWeb> {
     } else {
       return cartview.recentView?[position].productDetails?.productVariantTitle ?? "";
     }
+  }
+  
+  Widget whatWeOfferWidget(String img, String heading, String msg){
+    return Container(
+      padding:  EdgeInsets.all(20),
+      margin: EdgeInsets.only(right: 20),
+      height: 250,
+      width: 397,
+      color:  Theme.of(context).cardColor,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset( img, width: 72, height: 72,),
+          SizedBox(height: 20,),
+          AppBoldFont(context, msg: heading, fontWeight: FontWeight.w600, fontSize: 20),
+          SizedBox(height: 15,),
+          AppRegularFont(context, msg: msg, fontWeight: FontWeight.w400, fontSize: 16),
+        ],
+      ),
+    );
+  }
+
+  Widget getLatestUpdate( ){
+    return Stack(
+      children: [
+        Image.asset( AssetsConstants.icNewUpdate, height: 290, width: SizeConfig.screenWidth ,),
+        AppBoldFont(context, msg: StringConstant.getLatestupdate, fontWeight: FontWeight.w600, fontSize: 20),
+      ],
+    );
+  }
+
+  Widget getLatestUpdateRowTextField(){
+    return Row(
+
+    );
   }
 }
