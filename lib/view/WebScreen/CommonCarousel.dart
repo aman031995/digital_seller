@@ -171,7 +171,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
     var imageSliders = generateImageTileMobile(context);
     return Center(
       child: Container(
-        margin: EdgeInsets.only(left: 20.0,right: 20,top: 8),
+        margin: EdgeInsets.only(left: 16.0,right: 16,top: 8),
         width: SizeConfig.screenWidth,
         child: CarouselSlider(
           items: imageSliders,

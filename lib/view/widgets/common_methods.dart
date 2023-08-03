@@ -1,4 +1,5 @@
 
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -33,7 +34,9 @@ class CommonMethods {
 Widget cartPageViewIndicator(
     BuildContext context,int activeStep) {
   return Container(
-      margin: EdgeInsets.only(bottom: 10,left: SizeConfig.screenHeight*0.25,right: SizeConfig.screenHeight*0.25,top: 12),
+      margin: EdgeInsets.only(bottom: 10,left: ResponsiveWidget.isMediumScreen(context)
+          ?16:SizeConfig.screenHeight*0.40,right: ResponsiveWidget.isMediumScreen(context)
+          ?16:SizeConfig.screenHeight*0.40,top: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

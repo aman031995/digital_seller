@@ -38,7 +38,7 @@ class ProfileRepository {
         }
       } else {
         var response = (result as SuccessState).value;
-        ToastMessage.message(response['message']);
+       // ToastMessage.message(response['message']);
       }
     });
   }
@@ -126,7 +126,7 @@ class ProfileRepository {
         responseHandler(Result.success(response), isSuccess);
       } else {
         var response = (result as SuccessState).value;
-        ToastMessage.message(response['message']);
+      //  ToastMessage.message(response['message']);
       }
     });
   }

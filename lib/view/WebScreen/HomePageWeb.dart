@@ -84,12 +84,12 @@ class _HomePageWebState extends State<HomePageWeb> {
         child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
           return
             GestureDetector(
-              onTap: (){
-                if(isSearch==true){
-                  isSearch=false;
-                  searchController?.clear();
-                }
-              },
+                onTap: () {
+                  if (isLogins == true) {
+                    isLogins = false;
+                    setState(() {});
+                  }
+                },
                 child: Scaffold(
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     extendBodyBehindAppBar: true,
@@ -154,18 +154,22 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 Container(
                                  margin: EdgeInsets.zero,
                                     color: Theme.of(context).cardColor.withOpacity(0.6),
-                                 padding: EdgeInsets.only(left: 40,right: 40,bottom: 0,top: 20),
+                                 padding: EdgeInsets.only(left:ResponsiveWidget.isMediumScreen(context)
+                                     ?16: 40,right:ResponsiveWidget.isMediumScreen(context)
+                                     ?16: 40,bottom: 0,top: 20),
                                  child: Column(
                                    mainAxisAlignment: MainAxisAlignment.start,
                                    crossAxisAlignment: CrossAxisAlignment.start,
                                    children: [
-                                     Container(child: AppBoldFont(context, msg: "What are you looking for?", fontSize:20)),
+                                     Container(child: AppBoldFont(context, msg: "What are you looking for?", fontSize:ResponsiveWidget.isMediumScreen(context)
+                                         ?14:18)),
                                      SizedBox(height:SizeConfig.screenHeight*0.01),
 
                                      //subcategory page tap-----
 
                                      Container(
-                                         height: 250,
+                                         height:  ResponsiveWidget.isMediumScreen(context)
+                                             ? 150:250,
                                          child: ListView.builder(
                                              physics: BouncingScrollPhysics(),
                                              reverse: false,
@@ -195,7 +199,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                      children: [
                                                        CircleAvatar(
                                                          backgroundColor: Theme.of(context).cardColor,
-                                                         radius: 100,
+                                                         radius:  ResponsiveWidget.isMediumScreen(context)
+                                                             ?55:100,
                                                          child: CachedNetworkImage(
                                                              imageUrl: cartViewModel.categoryListModel?[position].imageUrl ?? "", fit: BoxFit.fill,
                                                              imageBuilder: (context, imageProvider) => Container(
@@ -221,13 +226,15 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 SizedBox(height: 10),
                                 Container(
                                   margin: EdgeInsets.zero,
-                                  padding: EdgeInsets.only(left: 40,right: 40,bottom: 20,top: 20),
+                                  padding: EdgeInsets.only(left:ResponsiveWidget.isMediumScreen(context)
+                                      ?16: 40,right:ResponsiveWidget.isMediumScreen(context)
+                                      ?16: 40,bottom: 20,top: 20),
                                   color: Theme.of(context).cardColor.withOpacity(0.6),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      AppBoldFont(context, msg: "Recommended for You ",fontSize: ResponsiveWidget.isMediumScreen(context) ?16: 20),
+                                      AppBoldFont(context, msg: "Recommended for You ",fontSize: ResponsiveWidget.isMediumScreen(context) ?14: 18),
                                       SizedBox(height: SizeConfig.screenHeight*0.01),
                                       Container(
                                           height: ResponsiveWidget.isMediumScreen(context)
@@ -268,7 +275,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                               placeholder: (context, url) => Container(
                                                                   height:  ResponsiveWidget.isMediumScreen(context) ?140: SizeConfig.screenHeight/2.1,
                                                                   child: Center(child: CircularProgressIndicator(color: Colors.grey)))),
-                                                          AppBoldFont(maxLines: 1,context, msg:getRecommendedViewTitle(position, cartViewModel),fontSize: 20),
+                                                          AppBoldFont(maxLines: 1,context, msg:getRecommendedViewTitle(position, cartViewModel),fontSize:ResponsiveWidget.isMediumScreen(context)
+                                                              ?14 :18),
                                                           SizedBox(height: 10)
 
                                                         ],
@@ -285,16 +293,18 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 Container(
                                   margin: EdgeInsets.zero,
                                   color: Theme.of(context).cardColor.withOpacity(0.6),
-                                  padding: EdgeInsets.only(left: 40,right: 40,bottom: 20,top: 20),
+                                  padding: EdgeInsets.only(left:ResponsiveWidget.isMediumScreen(context)
+                                      ?16: 40,right:ResponsiveWidget.isMediumScreen(context)
+                                      ?16: 40,bottom: 20,top: 20),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                       AppBoldFont(context, msg:"Recently Viewed",fontSize: ResponsiveWidget.isMediumScreen(context) ?16:20),
+                                       AppBoldFont(context, msg:"Recently Viewed",fontSize: ResponsiveWidget.isMediumScreen(context) ?14:18),
                                       SizedBox(height: SizeConfig.screenHeight*0.02),
                                       Container(
                                           height:ResponsiveWidget.isMediumScreen(context)
-                                              ?100: SizeConfig.screenHeight/2.65,
+                                              ?200: SizeConfig.screenHeight/2.65,
                                           width: SizeConfig.screenWidth,
                                           child: ListView.builder(
                                               reverse: false,
@@ -323,7 +333,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                     width: ResponsiveWidget.isMediumScreen(context)
                                                         ?140:SizeConfig.screenHeight/4,
                                                     height:ResponsiveWidget.isMediumScreen(context)
-                                                      ?100: SizeConfig.screenHeight/2.65,
+                                                      ?185: SizeConfig.screenHeight/2.65,
                                                     decoration:isHovered==true? BoxDecoration(
                                                       color: Theme.of(context).cardColor,
                                                       boxShadow: [
@@ -377,7 +387,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                 height:  ResponsiveWidget.isMediumScreen(context) ?140: SizeConfig.screenHeight/2.1,
                                                                child: Center(child: CircularProgressIndicator(color: Colors.grey)))),
 
-                                                        AppBoldFont(context, msg:getRecentViewTitle(position,cartViewModel),fontSize: 20,maxLines: 1),
+                                                        AppBoldFont(context, msg:getRecentViewTitle(position,cartViewModel),fontSize:ResponsiveWidget.isMediumScreen(context)
+                                                            ?14: 18,maxLines: 1),
                                                         SizedBox(height:  10)
 
                                                       ],
@@ -394,21 +405,26 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 SizedBox(),
                                 SizedBox(height: 10),
                                 Container(
-                                  padding: EdgeInsets.only(left: 40,right: 40,bottom: 20,top: 20),
+                                  padding: EdgeInsets.only(left:ResponsiveWidget.isMediumScreen(context)
+                                      ?16: 40,right:ResponsiveWidget.isMediumScreen(context)
+                                      ?16: 40,bottom: 20,top: 20),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      AppBoldFont(context, msg:"What We Offer !",fontSize: ResponsiveWidget.isMediumScreen(context) ?16:20),
+                                      AppBoldFont(context, msg:"What We Offer !",fontSize: ResponsiveWidget.isMediumScreen(context) ?14:18),
                                       SizedBox(height: 10,),
                                       Container(
                                         margin: EdgeInsets.only(right: 5),
-                                        child: Row(
-                                          children: [
-                                              whatWeOfferWidget(AssetsConstants.icSupport,StringConstant.offerOnTimeDelivery ,StringConstant.offerContent),
-                                            whatWeOfferWidget(AssetsConstants.icCreditCard,StringConstant.offerSecurePayment , StringConstant.offerContent),
-                                            whatWeOfferWidget(AssetsConstants.icTimer, StringConstant.offerSupport, StringConstant.offerContent),
-                                          ],
+                                        child: SingleChildScrollView(
+                                          scrollDirection: Axis.horizontal,
+                                          child: Row(
+                                            children: [
+                                                whatWeOfferWidget(AssetsConstants.icSupport,StringConstant.offerOnTimeDelivery ,StringConstant.offerContent),
+                                              whatWeOfferWidget(AssetsConstants.icCreditCard,StringConstant.offerSecurePayment , StringConstant.offerContent),
+                                              whatWeOfferWidget(AssetsConstants.icTimer, StringConstant.offerSupport, StringConstant.offerContent),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ],
@@ -417,12 +433,15 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 SizedBox(height: 16),
                                 getLatestUpdate(),
                                 SizedBox(height: 16),
-                                footerDesktop(),
+                                ResponsiveWidget.isMediumScreen(context)
+                                    ?footerMobile(context): footerDesktop(),
                               ],
                             ),
                           ),
                           isLogins == true
-                              ? profile(context, setState,profilemodel)
+                              ? Positioned(
+                              top: 80,right: 35,
+                              child: profile(context, setState,profilemodel))
                               : Container(),
 
                           isSearch==true?
@@ -457,20 +476,30 @@ class _HomePageWebState extends State<HomePageWeb> {
   
   Widget whatWeOfferWidget(String img, String heading, String msg){
     return Container(
-      padding:  EdgeInsets.all(20),
-      margin: EdgeInsets.only(right: 20),
-      height: 250,
-      width: 397,
+      padding:  EdgeInsets.all(ResponsiveWidget.isMediumScreen(context)
+          ?10:20),
+      margin: EdgeInsets.only(right:ResponsiveWidget.isMediumScreen(context)
+          ?10: 20),
+      height:ResponsiveWidget.isMediumScreen(context)
+          ?150: 250,
+      width:ResponsiveWidget.isMediumScreen(context)
+          ?250: 397,
       color:  Theme.of(context).cardColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset( img, width: 72, height: 72,),
-          SizedBox(height: 20,),
-          AppBoldFont(context, msg: heading, fontWeight: FontWeight.w600, fontSize: 20),
-          SizedBox(height: 15,),
-          AppRegularFont(context, msg: msg, fontWeight: FontWeight.w400, fontSize: 16),
+          Image.asset( img, width: ResponsiveWidget.isMediumScreen(context)
+              ?30:72, height:ResponsiveWidget.isMediumScreen(context)
+              ?30: 72,),
+          SizedBox(height:ResponsiveWidget.isMediumScreen(context)
+              ?10: 20,),
+          AppBoldFont(context, msg: heading, fontWeight: FontWeight.w600, fontSize:ResponsiveWidget.isMediumScreen(context)
+              ?14: 16),
+          SizedBox(height: ResponsiveWidget.isMediumScreen(context)
+              ?7:15,),
+          AppRegularFont(context, msg: msg, fontWeight: FontWeight.w400, fontSize: ResponsiveWidget.isMediumScreen(context)
+              ?12:16),
         ],
       ),
     );
@@ -480,11 +509,14 @@ class _HomePageWebState extends State<HomePageWeb> {
     return Stack(
 
       children: [
-        Image.asset( AssetsConstants.icNewUpdate, height: 300, width: SizeConfig.screenWidth,fit: BoxFit.fill,),
+        Image.asset( AssetsConstants.icNewUpdate, height: ResponsiveWidget.isMediumScreen(context)
+            ?150:300, width: SizeConfig.screenWidth,fit: BoxFit.fill,),
         Container(
             alignment: Alignment.center,
-            margin: EdgeInsets.only(top: 120),
-            child: AppBoldFont(context, msg: StringConstant.getLatestupdate, fontWeight: FontWeight.w500, fontSize: 30,color: Colors.white,textAlign: TextAlign.center)),
+            margin: EdgeInsets.only(top: ResponsiveWidget.isMediumScreen(context)
+                ?70:120),
+            child: AppBoldFont(context, msg: StringConstant.getLatestupdate, fontWeight: FontWeight.w500, fontSize:ResponsiveWidget.isMediumScreen(context)
+                ?18: 30,color: Colors.white,textAlign: TextAlign.center)),
 
       ],
     );

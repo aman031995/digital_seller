@@ -186,7 +186,7 @@ class _footerDesktopState extends State<footerDesktop> {
 
 Widget footerMobile(BuildContext context) {
   return Container(
-    color: Theme.of(context).cardColor,
+    color: Theme.of(context).canvasColor,
     width: MediaQuery.of(context).size.width,
     padding: EdgeInsets.only(bottom: 40),
     child: Column(
@@ -232,7 +232,7 @@ Widget footerMobile(BuildContext context) {
             child: AppMediumFont(context,
                 msg:
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante, velmolestie enim tincidunt ac. Aenean erat justo, fringilla cursus ligula ac, accumsan Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante',
-                fontSize: 14)
+                fontSize: 14,color: Theme.of(context).scaffoldBackgroundColor)
 
             //Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante, velmolestie enim tincidunt ac. Aenean erat justo, fringilla cursus ligula ac, accumsan Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante",style: TextStyle(color:  fontSize: 14)),
             ),
@@ -253,7 +253,7 @@ Widget footerMobile(BuildContext context) {
                   children: [
                     GestureDetector(
                         child: Image.asset("images/ic_fb.png",
-                            height: 38),
+                            height: 30, color: Theme.of(context).scaffoldBackgroundColor),
                         onTap: () async {
                           const url = 'https://www.facebook.com';
                           if (await canLaunch(url)) {
@@ -265,7 +265,7 @@ Widget footerMobile(BuildContext context) {
                     SizedBox(width: SizeConfig.screenWidth * 0.05),
                     GestureDetector(
                         child: Image.asset("images/ic_instgram.png",
-                            height: 38),
+                            height: 30, color: Theme.of(context).scaffoldBackgroundColor),
                         onTap: () async {
                           const url = 'https://www.instagram.com';
                           if (await canLaunch(url)) {
@@ -297,7 +297,7 @@ Widget footerMobile(BuildContext context) {
                             throw 'Could not launch $url';
                           }
                         },
-                        child: Image.asset("images/apple.png", height: 30,color: Theme.of(context).scaffoldBackgroundColor)),
+                        child: Image.asset("images/apple.png", height: 30)),
                     SizedBox(width: SizeConfig.screenWidth * 0.01),
                     GestureDetector(
                         onTap: () async {
@@ -308,7 +308,7 @@ Widget footerMobile(BuildContext context) {
                             throw 'Could not launch $url';
                           }
                         },
-                        child: Image.asset("images/google.png", height: 30,color: Theme.of(context).scaffoldBackgroundColor,)),
+                        child: Image.asset("images/google.png", height: 30)),
                   ],
                 )
               ],
@@ -321,107 +321,3 @@ Widget footerMobile(BuildContext context) {
   );
 }
 
-// Widget footerMobile(BuildContext context){
-//   return Container(
-//
-//     width: SizeConfig.screenWidth,
-//     padding: EdgeInsets.only(bottom: 40),
-//     child: Column(
-//       crossAxisAlignment: CrossAxisAlignment.end,
-//       mainAxisAlignment: MainAxisAlignment.end,
-//       children: [
-//         SizedBox(height: 10),
-//         Row(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             SizedBox(width: 10),
-//             appTextButton(context, "About Us", Alignment.center,
-//                   16, false),
-//             appTextButton(context, "Term Of Conditon", Alignment.center,
-//                   16, false),
-//             appTextButton(context, "Privacy Policy", Alignment.center,
-//                   16, false),
-//
-//
-//
-//             MediaQuery.of(context).size.width < 417?Container():     appTextButton(context, "FAQ", Alignment.center,
-//                  16, false),
-//             MediaQuery.of(context).size.width < 490?  Container() :         appTextButton(context, "Helpdesk", Alignment.center,
-//                   16, false), SizedBox(width: 25),
-//           ],
-//         ),
-//         Row(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             SizedBox(width: 10),
-//             MediaQuery.of(context).size.width < 417?    appTextButton(context, "FAQ", Alignment.center,
-//                   16, false):Container(),
-//             MediaQuery.of(context).size.width < 490?appTextButton(context, "Helpdesk", Alignment.center,
-//                   16, false): Container()
-//           ],
-//         ),
-//         SizedBox(height: 10),
-//         Container(
-//           padding: EdgeInsets.only(left: 15),
-//           child: Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante, velmolestie enim tincidunt ac. Aenean erat justo, fringilla cursus ligula ac, accumsan Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante",style: TextStyle(color:   fontSize: 14)),
-//         ),
-//         SizedBox(height: 20),
-//         Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             SizedBox(width: 10),
-//             Column(
-//               children: [
-//                 appTextButton(context, "Connect With Us", Alignment.center,
-//                  16, false),
-//                 SizedBox(height: 8),
-//                 Row(
-//
-//                   children: [
-//                     GestureDetector(
-//                         child: Image.asset("images/ic_fb.png", height: 38, color:Colors.white),
-//                         onTap: () async {
-//                           const url = 'https://www.facebook.com';
-//                           if (await canLaunch(url)) {
-//                             await launch(url);
-//                           } else {
-//                             throw 'Could not launch $url';
-//                           }
-//                         }),  SizedBox(width: SizeConfig.screenWidth * 0.01),
-//                     GestureDetector(
-//                         child: Image.asset("images/ic_instgram.png", height: 38,color:   ),
-//                         onTap: () async {
-//                           const url = 'https://www.instagram.com';
-//                           if (await canLaunch(url)) {
-//                             await launch(url);
-//                           } else {
-//                             throw 'Could not launch $url';
-//                           }
-//                         }),
-//                   ],
-//                 ),
-//               ],
-//             ),
-//             Column(
-//               children: [
-//                 appTextButton(context, "Download Now", Alignment.center,
-//                   16, false),
-//                 SizedBox(height: 8),
-//                 Row(
-//                   children: [
-//
-//                     Image.asset("images/apple.png", height: 30),  SizedBox(width: SizeConfig.screenWidth * 0.01),
-//                     Image.asset("images/google.png", height: 30),
-//                   ],
-//                 )
-//               ],
-//             ),
-//             SizedBox(width: 15),
-//           ],
-//         ),
-//       ],
-//     ),
-//
-//   );
-// }

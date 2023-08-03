@@ -172,86 +172,84 @@ onPagination(BuildContext context, int lastPage, int nextPage, bool isLoading, S
 }
 Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
   final authVM = Provider.of<AuthViewModel>(context);
-  return Positioned(
-      right: 30,top:80,
-      child: Container(
-        width: 150,
-        color: Theme.of(context).cardColor,
-        child: Column(
-          children: [
-            SizedBox(height: 5),
-            appTextButton(
-                context,
-                "  My Account",
-                Alignment.centerLeft,
-                Theme.of(context).canvasColor,
-                18,
-                false, onPressed: () {
-              isProfile = true;
-              if (isProfile == true) {
-                context.pushRoute(EditProfile(
-                  isEmailVerified: '${profileViewModel.userInfoModel?.isPhoneVerified}',
-                  isPhoneVerified: '${profileViewModel.userInfoModel?.isEmailVerified}'
-                ));
-                // GoRouter.of(context).pushNamed(
-                //   RoutesName.EditProfille,queryParameters: {
-                //     'isPhoneVerified':"${profileViewModel.userInfoModel?.isPhoneVerified}",
-                //   'isEmailVerified':"${profileViewModel.userInfoModel?.isEmailVerified}"
-                // }
-                // );
-              }
-            }),
-            SizedBox(height: 5),
-            Container(
-              height: 1,
-              color: Colors.black,
-            ),
-            appTextButton(
-                context,
-                " My Order ",
-                Alignment.centerLeft,
-                Theme.of(context).canvasColor,
-                18,
-                false, onPressed: () {
-              isProfile = true;
-              if (isProfile == true) {
-                // GoRouter.of(context).pushNamed(
-                //     RoutesName.MyOrderPage
-                // );
-               // context.pushRoute(MyOrderPage());
-              }
-            }),
-            SizedBox(height: 5),
-            Container(
-              height: 1,
-              color: Colors.black,
-            ),
-            SizedBox(height: 5),
-            appTextButton(
-                context,
-                "  LogOut",
-                Alignment.centerLeft,
-                Theme.of(context).canvasColor,
-                18,
-                false, onPressed: () {
-              setState(() {
-                authVM.logoutButtonPressed(context);
-                context.router.stack.clear();
-                context.router.dispose();
-
-                isLogins = false;
-                if (isSearch == true) {
-                  isSearch = false;
-                  searchController?.clear();
-                  setState(() {});
-                }
-              });
-            }),
-            SizedBox(height: 5),
-          ],
+  return Container(
+    width: 150,
+    color: Theme.of(context).cardColor,
+    child: Column(
+      children: [
+        SizedBox(height: 5),
+        appTextButton(
+            context,
+            "  My Account",
+            Alignment.centerLeft,
+            Theme.of(context).canvasColor,
+            18,
+            false, onPressed: () {
+          isProfile = true;
+          if (isProfile == true) {
+            context.pushRoute(EditProfile(
+              isEmailVerified: '${profileViewModel.userInfoModel?.isPhoneVerified}',
+              isPhoneVerified: '${profileViewModel.userInfoModel?.isEmailVerified}'
+            ));
+            // GoRouter.of(context).pushNamed(
+            //   RoutesName.EditProfille,queryParameters: {
+            //     'isPhoneVerified':"${profileViewModel.userInfoModel?.isPhoneVerified}",
+            //   'isEmailVerified':"${profileViewModel.userInfoModel?.isEmailVerified}"
+            // }
+            // );
+          }
+        }),
+        SizedBox(height: 5),
+        Container(
+          height: 1,
+          color: Colors.black,
         ),
-        // height: 20,width: 20,
-      ));
+        appTextButton(
+            context,
+            " My Order ",
+            Alignment.centerLeft,
+            Theme.of(context).canvasColor,
+            18,
+            false, onPressed: () {
+          isProfile = true;
+          if (isProfile == true) {
+            // GoRouter.of(context).pushNamed(
+            //     RoutesName.MyOrderPage
+            // );
+           // context.pushRoute(MyOrderPage());
+          }
+        }),
+        SizedBox(height: 5),
+        Container(
+          height: 1,
+          color: Colors.black,
+        ),
+        SizedBox(height: 5),
+        appTextButton(
+            context,
+            "  LogOut",
+            Alignment.centerLeft,
+            Theme.of(context).canvasColor,
+            18,
+            false, onPressed: () {
+          setState(() {
+            authVM.logoutButtonPressed(context);
+            context.router.stack.clear();
+            context.router.dispose();
+
+            isLogins = false;
+            if (isSearch == true) {
+              isSearch = false;
+              searchController?.clear();
+              setState(() {});
+            }
+          });
+        }),
+        SizedBox(height: 5),
+      ],
+    ),
+    // height: 20,width: 20,
+  );
 
 }
 

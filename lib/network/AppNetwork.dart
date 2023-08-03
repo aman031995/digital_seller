@@ -43,7 +43,7 @@ class AppNetwork {
   }
 
   handleErrorResponse(String message) {
-    ToastMessage.message(message);
+    //ToastMessage.message(message);
   }
 
   handleSuccessResponse(Result result, ASRequestModal forRequest,

@@ -124,7 +124,7 @@ class _BuynowCartState extends State<BuynowCart> {
                                     ),
                                     Expanded(
                                       flex: 50,
-                                      child: AppBoldFont(context,
+                                      child: AppBoldFont(context,textAlign: TextAlign.center,
                                           color: Theme.of(context).canvasColor,
                                           msg: cartListData?.checkoutDetails?.elementAt(0).value ?? "",
                                           fontSize: 16.0),
