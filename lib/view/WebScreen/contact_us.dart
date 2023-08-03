@@ -335,7 +335,6 @@ class _ContactUsState extends State<ContactUs> {
               isLogins = true;
               if (isSearch == true) {
                 isSearch = false;
-                searchController?.clear();
                 setState(() {});
               }
             });

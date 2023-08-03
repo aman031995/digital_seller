@@ -27,10 +27,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 @RoutePage()
 class EditProfile extends StatefulWidget {
   ProfileViewModel? viewmodel;
-  String? isEmailVerified;
-  String? isPhoneVerified;
+  // String? isEmailVerified;
+  // String? isPhoneVerified;
 
-  EditProfile({Key? key, this.viewmodel,this.isEmailVerified,this.isPhoneVerified}) : super(key: key);
+  EditProfile({Key? key, this.viewmodel}) : super(key: key);
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -49,13 +49,15 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   void initState() {
+    profileViewModel.getProfileDetails(context);
     getUser();
-    profileViewModel.getUserDetails(context);
+
     addressController = TextEditingController();
     nameController = TextEditingController();
     phoneController = TextEditingController();
     emailController = TextEditingController();
     fetchCurrentUserDetails();
+
     super.initState();
   }
   getUser() async {
@@ -69,10 +71,10 @@ class _EditProfileState extends State<EditProfile> {
     phoneController?.text = phone ?? '';
     addressController?.text = address ?? '';
     emailController?.text = email ?? '';
-    profileViewModel.getVerificationButtonStatus(
-        context,
-        widget.isPhoneVerified,
-        widget.isEmailVerified);
+    // profileViewModel.getVerificationButtonStatus(
+    //     context,
+    //     profileViewModel?.userInfoModel?.isPhoneVerified,
+    //     profileViewModel?.userInfoModel?.isEmailVerified);
     validateEditDetails();
     setState(() {});
   }
@@ -84,10 +86,10 @@ class _EditProfileState extends State<EditProfile> {
     validation.sinkEmail.add(email ?? '');
   }
   fetchCurrentUserDetails() {
-    profileViewModel.getVerificationButtonStatus(
-        context,
-        widget.isPhoneVerified,
-        widget.isEmailVerified);
+    // profileViewModel.getVerificationButtonStatus(
+    //     context,
+    //     profileViewModel.userInfoModel?.isPhoneVerified,
+    //     profileViewModel.userInfoModel?.isEmailVerified);
     validateEditDetails();
     setState(() {});
   }
@@ -265,7 +267,7 @@ class _EditProfileState extends State<EditProfile> {
                     StringConstant.Save,
                     ResponsiveWidget.isMediumScreen(context)
                         ? SizeConfig.screenWidth/1.5  :SizeConfig.screenWidth/4.5,
-                    60,
+                    50,
                     LIGHT_THEME_COLOR,
                     WHITE_COLOR,
                     20,
@@ -365,20 +367,13 @@ class _EditProfileState extends State<EditProfile> {
         otpValue = '';
         if (verifyType == 'email') {
           profileViewModel.getVerificationButtonStatus(
-              context, widget.isPhoneVerified, "true");
-        } else {
-          profileViewModel.getVerificationButtonStatus(
-              context, "true", widget.isEmailVerified);
+              context, profileViewModel.userInfoModel?.isPhoneVerified, true);
         }
-        // if (phoneController?.text != '') {
-        //   enableMobileField = false;
-        //   enableVerifyButton = false;
-        // } else {
-        //   enableEmailField = false;
-        //   enableEmailVerifyButton = false;
-        // }
-      }
-    });
+        else {
+          profileViewModel.getVerificationButtonStatus(
+              context, true,profileViewModel.userInfoModel?.isEmailVerified);
+        }}}
+        );
   }
 
   //ResendCode Method

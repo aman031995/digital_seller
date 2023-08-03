@@ -213,7 +213,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                 resendPin(authVM,mobileOTPVerificaton),
                 isOTPInput == true ? Container() : errorText(),
                 SizedBox(height: 30),
-                appButton(context, StringConstant.verify, SizeConfig.screenWidth/8, 60.0,
+                appButton(context, StringConstant.verify, SizeConfig.screenWidth/8, 50.0,
                     Theme.of(context).primaryColor,
                     Theme.of(context).hintColor,
                     16, 5.0, isOTPInput, onTap: () {

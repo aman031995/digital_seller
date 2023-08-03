@@ -17,6 +17,7 @@ import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/Products/productSkuDetailView.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
+import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/view/widgets/search_view.dart';
@@ -62,9 +63,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   String? token;
   List<Widget> cardWidgets = [];
   var proDetails;
+  ScrollController scrollController = ScrollController();
   HomeViewModel homeViewModel = HomeViewModel();
   ProfileViewModel profileViewModel = ProfileViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
+  TextEditingController? searchController = TextEditingController();
 
   void initState() {
     homeViewModel.getAppConfig(context);
@@ -113,7 +116,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
           return Scaffold(
               appBar:ResponsiveWidget.isMediumScreen(context)
-                  ? homePageTopBar(context,_scaffoldKey):getAppBar(context,homeViewModel,profileViewModel,viewmodel.cartItemCount, () async {
+                  ? homePageTopBar(context,_scaffoldKey):getAppBar(context,homeViewModel,profileViewModel,viewmodel.cartItemCount,searchController, () async {
                 SharedPreferences sharedPreferences =
                 await SharedPreferences.getInstance();
                 token = sharedPreferences.getString('token').toString();
@@ -553,6 +556,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                    child: profile(context, setState,
                        profileViewModel))
                    : Container(),
+               isSearch==true?
+               Positioned(
+                   top: ResponsiveWidget.isMediumScreen(context) ? 0:0,
+                   right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.09,
+
+                   child: searchList(context, homeViewModel, scrollController,homeViewModel, searchController!,cartView.cartItemCount))
+                   : Container()
              ],
            )
 

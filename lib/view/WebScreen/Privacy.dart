@@ -36,10 +36,7 @@ class _PrivacyState extends State<Privacy> {
   void initState() {
     profileViewModel.getTermsPrivacy(context);
     // homeViewModel.getAppConfig(context);
-    searchController?.addListener(() {
-      homeViewModel.getSearchData(
-          context, '${searchController?.text}', pageNum);
-    });
+
     super.initState();
   }
 
@@ -58,7 +55,7 @@ class _PrivacyState extends State<Privacy> {
                       onTap: () {
                         if (isSearch == true) {
                           isSearch = false;
-                          searchController?.clear();
+
                           setState(() {});
                         }
                         if( isLogins == true){
@@ -154,7 +151,6 @@ class _PrivacyState extends State<Privacy> {
               isLogins = true;
               if (isSearch == true) {
                 isSearch = false;
-                searchController?.clear();
                 setState(() {});
               }
             });

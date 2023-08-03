@@ -165,13 +165,13 @@ class AppDialog {
             margin: EdgeInsets.only(left: 10, right: 10),
             child: Column(
                 children: [
-                SizedBox(height: 20),
+                SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?10:20),
                   Container(
                       margin: EdgeInsets.only(left: 10),
                       alignment: Alignment.topCenter,
                       child: AppBoldFont(context,
-                          msg: msg,
-                          fontSize: 26,
+                          msg: msg, color: Theme.of(context).canvasColor,
+                          fontSize:ResponsiveWidget.isMediumScreen(context) ?16: 20,
                          )),
                   SizedBox(height: 20),
                   Container(
@@ -191,7 +191,7 @@ class AppDialog {
                         AppRegularFont(
                             context,msg: StringConstant.didntGetCode,
                             fontSize: 14,
-                            color: TEXT_COLOR,
+                            color: Theme.of(context).canvasColor,
                             textAlign: TextAlign.center,
                             maxLines: 2),
                         TextButton(onPressed: resendOtp, child: Text('Resend'))
@@ -309,7 +309,7 @@ confirmButton(BuildContext context,double height, double width, String msg, Void
         borderRadius: BorderRadius.circular(8),
       ),
       child: Center(
-        child: AppRegularFont(context,msg: msg, color: Theme.of(context).canvasColor,fontSize: ResponsiveWidget.isMediumScreen(context)?16:22),
+        child: AppRegularFont(context,msg: msg, color: Theme.of(context).hintColor,fontSize: ResponsiveWidget.isMediumScreen(context)?16:22),
       ),
     ),
   );

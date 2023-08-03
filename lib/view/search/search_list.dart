@@ -5,6 +5,7 @@ import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import '../../AppRouter.gr.dart';
 
@@ -14,19 +15,18 @@ Widget searchList(
     HomeViewModel viewmodel,
     ScrollController _scrollController,
     HomeViewModel homeViewModel,
-    TextEditingController searchController) {
+    TextEditingController searchController,String count) {
   return viewmodel.searchDataModel!=null?
-    Positioned(
-    right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.06,
-    child: Container(
-      width: SizeConfig.screenWidth*0.25,height: SizeConfig.screenHeight/2.1,color: Colors.pinkAccent,
+    Container(
+      width: SizeConfig.screenWidth*0.25,height: SizeConfig.screenHeight/2.1,
       child: Stack(children: [
-        viewmodel.searchDataModel!.searchList!.isNotEmpty
+        viewmodel.searchDataModel!.productList!.isNotEmpty
             ? ListView.builder(
                 controller: _scrollController,
+                padding: EdgeInsets.zero,
                 physics: BouncingScrollPhysics(),
                 itemBuilder: (_, index) {
-                  final item = viewmodel.searchDataModel?.searchList?[index];
+                  final item = viewmodel.searchDataModel?.productList?[index];
                   _scrollController.addListener(() {
                     if (_scrollController.position.pixels ==
                         _scrollController.position.maxScrollExtent) {
@@ -41,25 +41,56 @@ Widget searchList(
                   });
                   return GestureDetector(
                       onTap: () async {
+                        context.router.push(
+                        ProductDetailPage(
+                          productId: '${item?.productId}',
+                          productdata: [
+                            '${count}',
+                            '${item?.productDetails?.defaultVariationSku?.size?.name}',
+                            '${item?.productDetails?.defaultVariationSku?.color?.name}',
+                            '${item?.productDetails?.defaultVariationSku?.style?.name}',
+                            '${item?.productDetails?.defaultVariationSku?.unitCount?.name}',
+                            '${item?.productDetails?.defaultVariationSku?.materialType?.name}',
+                          ],
+                        ));},
 
+                      child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(2),
+                              color: Theme.of(context).cardColor
+                          ),
 
-                        // GoRouter.of(context).pushNamed(RoutesName.DeatilPage,queryParameters: {
-                        //   'movieID':"${ viewmodel.searchDataModel?.searchList?[index].youtubeVideoId}",
-                        //   'VideoId':"${viewmodel.searchDataModel?.searchList?[index].videoId}",
-                        //   'Title':"${viewmodel.searchDataModel?.searchList?[index].videoTitle}",
-                        //   'Desc':"${viewmodel.searchDataModel?.searchList?[index].videoDescription}"
-                        //   // 'movieID':"${homeViewModel.homePageDataModel?.videoList?[index].youtubeVideoId}",
-                        //   // 'VideoId':'${homeViewModel.homePageDataModel?.videoList?[index].videoId}',
-                        //   // 'Title':"${homeViewModel.homePageDataModel?.videoList?[index].videoTitle}",
-                        //   // 'Desc':'${homeViewModel.homePageDataModel?.videoList?[index].videoDescription}'
-                        // });
-                        // AppNavigator.push(context, MovieDetailPage(
-                        //   searchDataList: viewmodel.searchDataModel?.searchList?[index], movieID: viewmodel.searchDataModel?.searchList?[index].youtubeVideoId,
-                        // ));
-                      },
-                      child: listContent(item, context));
+                          child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(width: 10),
+                                CachedNetworkImage(
+                                    imageUrl: item?.productDetails?.productImages?[0]  ?? '', fit: BoxFit.fill,
+                                    imageBuilder: (context, imageProvider) => Container(
+                                      margin: EdgeInsets.only(bottom: 2),height: 100,width: 120,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(4),
+                                        image: DecorationImage(
+                                            image: imageProvider, fit: BoxFit.fill),
+                                      ),
+                                    ),
+                                    placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
+                                SizedBox(width: 10),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        width: SizeConfig.screenWidth*0.15,
+                                        child: AppMediumFont(context, msg: item?.productName ?? '', maxLines: 1)),
+                                    AppRegularFont(context, msg: item?.productDetails?.productDiscountPrice)
+                                  ],
+                                )
+
+                              ])));
                 },
-                itemCount: viewmodel.searchDataModel?.searchList?.length)
+                itemCount: viewmodel.searchDataModel?.productList?.length)
             : Center(child: dataNotAvailable(viewmodel, context)),
         homeViewModel.isLoading == true
             ? Container(
@@ -69,8 +100,7 @@ Widget searchList(
                     color: Theme.of(context).primaryColor))
             : SizedBox()
       ]),
-    ),
-  ):
+    ):
     Center(
         child: ThreeArchedCircle(
             size: 50.0))
@@ -79,35 +109,35 @@ Widget searchList(
 }
 
 // list item
-listContent(SearchList? item, BuildContext context) {
-  return Container(
-      width: SizeConfig.screenWidth*0.08,
-      child: Card(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0.0),
-          ),
-          color: Theme.of(context).cardColor,
-          elevation: 10,
-          child: Row(children: <Widget>[
-            Expanded(
-              flex: 30,
-              child: Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxWidth: 120,
-                        maxHeight: 120,
-                      ),
-                      child: Image.network(item?.thumbnail ?? '', fit: BoxFit.fill))),
-            ),
-            Expanded(
-                flex: 70,
-                child: Container(
-                  child: AppMediumFont(context,
-                      msg: item?.videoTitle ?? '', maxLines: 3),
-                ))
-          ])));
-}
+// listContent( productList item, BuildContext context) {
+//   return Container(
+//       width: SizeConfig.screenWidth*0.08,
+//       child: Card(
+//           shape: RoundedRectangleBorder(
+//             borderRadius: BorderRadius.circular(0.0),
+//           ),
+//           color: Theme.of(context).cardColor,
+//           elevation: 10,
+//           child: Row(children: <Widget>[
+//             Expanded(
+//               flex: 30,
+//               child: Padding(
+//                   padding: const EdgeInsets.all(2.0),
+//                   child: ConstrainedBox(
+//                       constraints: BoxConstraints(
+//                         maxWidth: 120,
+//                         maxHeight: 120,
+//                       ),
+//                       child: Image.network(item?.thumbnail ?? '', fit: BoxFit.fill))),
+//             ),
+//             Expanded(
+//                 flex: 70,
+//                 child: Container(
+//                   child: AppMediumFont(context,
+//                       msg: item?.videoTitle ?? '', maxLines: 3),
+//                 ))
+//           ])));
+// }
 
 // view of no available data
 dataNotAvailable(HomeViewModel viewmodel, BuildContext context) {

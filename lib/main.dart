@@ -23,7 +23,7 @@ bool isSearch = false;
 bool isProfile=false;
 bool isDelete=false;
 bool isNotification=false;
-TextEditingController? searchController = TextEditingController();
+
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 Future<void> main() async {
@@ -106,7 +106,7 @@ class _MyAppState extends State<MyApp> {
                       hintColor: (buttonTxtColor)?.toColor()),
                 builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
-                  scrollBehavior: MyCustomScrollBehavior(),
+                  //scrollBehavior: MyCustomScrollBehavior(),
                 routerConfig: _appRouter.config(),
               );
             })
@@ -119,10 +119,10 @@ class _MyAppState extends State<MyApp> {
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.invertedStylus,
-        PointerDeviceKind.trackpad
+       // PointerDeviceKind.touch,
+      //  PointerDeviceKind.mouse,
+      //  PointerDeviceKind.invertedStylus,
+     //   PointerDeviceKind.trackpad
       };
 }
 

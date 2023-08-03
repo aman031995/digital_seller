@@ -133,13 +133,13 @@ class _CustomTextFieldState extends State<AppTextField> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     borderSide: BorderSide(
-                        color: Theme.of(context).canvasColor.withOpacity(0.4),
+                        color: Theme.of(context).canvasColor.withOpacity(0.2),
                         width: 2),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor.withOpacity(0.4),
+                        color: Theme.of(context).primaryColor.withOpacity(0.2),
                         width: 2),
                   ),
                   disabledBorder: OutlineInputBorder(
@@ -205,7 +205,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                       : null,
                   labelText: widget.labelText,
                   contentPadding:
-                  EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
                   labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
                       color: widget.isColor == true
                           ? Theme.of(context).canvasColor.withOpacity(0.4)

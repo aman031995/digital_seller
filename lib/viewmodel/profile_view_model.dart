@@ -69,27 +69,26 @@ class ProfileViewModel with ChangeNotifier {
       getProfileDetails(context);
     }
   }
+
   //GetVerificationButtonStatus Method
-  getVerificationButtonStatus(BuildContext context, String? isPhoneVerified, String? isEmailVerified){
-    enableMobileField = isPhoneVerified?.toLowerCase() == 'true';
-    enableEmailField =isEmailVerified?.toLowerCase() == 'true';
+  getVerificationButtonStatus(BuildContext context, bool? isPhoneVerified, bool? isEmailVerified){
+    enableMobileField = isPhoneVerified ?? false;
+    enableEmailField = isEmailVerified ?? false;
     notifyListeners();
   }
   Future<void> getProfileDetails(BuildContext context) async {
     //AppIndicator.loadingIndicator(context);
-    _profileRepo.getTermsPrivacy(context, (result, isSuccess) {
-      if (isSuccess) {
-        _termsPrivacyModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-        print('Terms Privacy api Successfully');
-      }
-    });
     _profileRepo.getUserProfileDetails(context, (result, isSuccess) {
       if (isSuccess) {
         _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        getVerificationButtonStatus(
+            context,
+            _userInfoModel?.isPhoneVerified,
+            _userInfoModel?.isEmailVerified);
         notifyListeners();
-        Future.delayed(Duration(milliseconds: 1500),(){
-          AppIndicator.disposeIndicator();
-        });
+        // Future.delayed(Duration(milliseconds: 1500),(){
+        //   AppIndicator.disposeIndicator();
+        // });
       }
     });
   }
@@ -144,7 +143,7 @@ class ProfileViewModel with ChangeNotifier {
         ToastMessage.message(
             ((result as SuccessState).value as ASResponseModal).message);
         Navigator.of(context, rootNavigator: true).pop();
-        GoRouter.of(context).pushNamed(RoutesName.home);
+       // GoRouter.of(context).pushNamed(RoutesName.home);
         // await Future.delayed(const Duration(seconds: 1)).then((value) =>
         //     Navigator.pushAndRemoveUntil(
         //         context,

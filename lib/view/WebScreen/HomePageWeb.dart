@@ -47,6 +47,7 @@ class _HomePageWebState extends State<HomePageWeb> {
   ProfileViewModel profileViewModel = ProfileViewModel();
   String? checkInternet;
   CartViewModel cartViewModel = CartViewModel();
+  TextEditingController? searchController = TextEditingController();
 
   void initState() {
     homeViewModel.getAppConfig(context);
@@ -95,7 +96,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                     extendBodyBehindAppBar: true,
                   appBar: ResponsiveWidget.isMediumScreen(context)
                       ? homePageTopBar(context,_scaffoldKey)
-                      : getAppBar(context,viewmodel,profilemodel,cartViewModel.cartItemCount, () async {
+                      : getAppBar(context,viewmodel,profilemodel,cartViewModel.cartItemCount,searchController, () async {
                 SharedPreferences sharedPreferences =
                 await SharedPreferences.getInstance();
                 token = sharedPreferences.getString('token').toString();
@@ -440,12 +441,17 @@ class _HomePageWebState extends State<HomePageWeb> {
                           ),
                           isLogins == true
                               ? Positioned(
-                              top: 80,right: 35,
+                              top:ResponsiveWidget.isMediumScreen(context)
+                                  ?45: 80,right: ResponsiveWidget.isMediumScreen(context)
+                              ?20:35,
                               child: profile(context, setState,profilemodel))
                               : Container(),
 
                           isSearch==true?
-                          searchList(context, viewmodel, scrollController,homeViewModel, searchController!)
+                          Positioned(
+                              top: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.04,
+                              right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.08,
+                              child: searchList(context, viewmodel, scrollController,homeViewModel, searchController!,cartViewModel.cartItemCount))
                               : Container()
 
                         ],

@@ -11,8 +11,7 @@ class NetworkConstants{
   static String kContactUs = "add-contactUs";
   static String kOpenWebViewUrl = "web-view?appId={APP_ID}&query={QUERY}";
   static String kSendLogSupport = "email-support";
-  static String kGetSearchData = "search?query={SEARCH_QUERY}&pageNum={PAGE_NUM}&appId={APP_ID}";
-  static String kGetAppMenu = "getAppMenu?appId={APP_ID}&deviceType={DEVICE_TYPE}";
+  static String kGetSearchData = "search-product?appId={APP_ID}&userId={USER_ID}&query={SEARCH_QUERY}&pageNum={PAGE_NUM}";  static String kGetAppMenu = "getAppMenu?appId={APP_ID}&deviceType={DEVICE_TYPE}";
 
   // homepage api section
   static String kGetBannerList = "get-all-banner?appId={APP_ID}";

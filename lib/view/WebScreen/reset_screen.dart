@@ -125,7 +125,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                         context,
                         'Reset',
                         SizeConfig.screenWidth,
-                        50.0,
+                        40.0,
                         Theme.of(context).primaryColor,
                         Theme.of(context).hintColor,
                         18,
@@ -138,20 +138,24 @@ class _ResetPasswordState extends State<ResetPassword> {
                     });
                   }),
               SizedBox(height: 10),
-              GestureDetector(
-                onTap: () async{
-                  const url = 'http://digitalseller.in/';
-                  if (await canLaunch(url)) {
-                    await launch(url, forceWebView: false, enableJavaScript: true);
-                  } else {
-                    throw 'Could not launch $url';
-                  }
-                },
-                child: Center(
-                  child: GlobalVariable.isLightTheme == true ?
-                  Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: 100) :
-                  Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: 100),
-                ),
+              Stack(
+                children: [
+                  GestureDetector(
+                    onTap: () async{
+                      const url = 'http://digitalseller.in/';
+                      if (await canLaunch(url)) {
+                        await launch(url, forceWebView: false, enableJavaScript: true);
+                      } else {
+                        throw 'Could not launch $url';
+                      }
+                    },
+                    child: Center(
+                      child: GlobalVariable.isLightTheme == true ?
+                      Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: 100) :
+                      Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: 100),
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 5),
             ],
@@ -236,14 +240,15 @@ class _ResetPasswordState extends State<ResetPassword> {
               ),
               SizedBox(height: 20),
               Container(
+                width: 400,
                 child: StreamBuilder(
                     stream: validation.checkResetPasswordValidate,
                     builder: (context, snapshot) {
                       return appButton(
                           context,
                           'Reset',
-                            SizeConfig.screenWidth /8,
-                           60.0,
+                            SizeConfig.screenWidth,
+                           50.0,
                           Theme.of(context).primaryColor,
                           Theme.of(context).hintColor,
                           18,

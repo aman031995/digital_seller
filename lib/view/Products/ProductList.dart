@@ -10,11 +10,13 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
+import 'package:TychoStream/view/Products/CategoryFilterWidget.dart';
 import 'package:TychoStream/view/Products/image_slider.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/OnHover.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
+import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
@@ -23,6 +25,7 @@ import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,6 +46,10 @@ class _ProductListGalleryState extends State<ProductListGallery> {
   HomeViewModel homeViewModel = HomeViewModel();
   ProfileViewModel profileViewModel = ProfileViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
+  TextEditingController? searchController = TextEditingController();
+  ScrollController scrollController = ScrollController();
+  List<String> sortDropDownList = ["Recommended", "What's New", "Popularity", "Better Discount", "Price: High to Low", "Price: Low to High", "Customers Rating"];
+
 
   void initState() {
     homeViewModel.getAppConfig(context);
@@ -76,7 +83,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                 child: Scaffold(
                   appBar:  ResponsiveWidget.isMediumScreen(context)
                       ? homePageTopBar(context,_scaffoldKey):getAppBar(context, homeViewModel, profileViewModel,
-                      cartViewModel.cartItemCount, () async {
+                      cartViewModel.cartItemCount, searchController,() async {
                     SharedPreferences sharedPreferences =
                         await SharedPreferences.getInstance();
                     token = sharedPreferences.getString('token').toString();
@@ -199,84 +206,95 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                     SingleChildScrollView(
                                       child: Column(
                                         children: [
-                                          Container(
-                                            // height:SizeConfig.screenHeight/1.2,
-                                            width: SizeConfig.screenWidth,
-                                            margin: EdgeInsets.only(
-                                                left: SizeConfig.screenWidth *
-                                                    0.13,
-                                                right: SizeConfig.screenWidth *
-                                                    0.13),
-                                            child: Stack(
-                                              children: [
-                                                GridView.builder(
-                                                  shrinkWrap: true,
-                                                  controller: _scrollController,
-                                                  physics:
-                                                      BouncingScrollPhysics(),
-                                                  padding:
-                                                      EdgeInsets.only(top: 30),
-                                                  gridDelegate:
-                                                      SliverGridDelegateWithMaxCrossAxisExtent(
-                                                          mainAxisSpacing: 15,
-                                                          mainAxisExtent: 470,
-                                                          maxCrossAxisExtent:
-                                                              350),
-                                                  itemCount: viewmodel
-                                                      .productListModel
-                                                      ?.productList
-                                                      ?.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    _scrollController
-                                                        .addListener(() {
-                                                      if (_scrollController
-                                                              .position
-                                                              .pixels ==
-                                                          _scrollController
-                                                              .position
-                                                              .maxScrollExtent) {
-                                                        viewmodel.onPagination(
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: SizeConfig.screenWidth / 6.5,
+                                                height: SizeConfig.screenHeight * 2,
+                                                child: CategoryFilterScreen(items: [],),
+                                              ),
+                                              Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Container(
+                                                      margin: EdgeInsets.only(top: 30,),
+                                                      width: SizeConfig.screenWidth/2.03,
+                                                      color: Theme.of(context).cardColor,
+                                                      child: catrgoryTopSortWidget()),
+                                                  Container(
+                                                    width: SizeConfig.screenWidth/2,
+                                                    child: GridView.builder(
+                                                      shrinkWrap: true,
+                                                      controller: _scrollController,
+                                                      physics:
+                                                          BouncingScrollPhysics(),
+                                                      padding:
+                                                          EdgeInsets.only(top: 30),
+                                                      gridDelegate:
+                                                          SliverGridDelegateWithMaxCrossAxisExtent(
+                                                              mainAxisSpacing: 15,
+                                                              mainAxisExtent: 470,
+                                                              maxCrossAxisExtent:
+                                                                  350),
+                                                      itemCount: viewmodel
+                                                          .productListModel
+                                                          ?.productList
+                                                          ?.length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        _scrollController
+                                                            .addListener(() {
+                                                          if (_scrollController
+                                                                  .position
+                                                                  .pixels ==
+                                                              _scrollController
+                                                                  .position
+                                                                  .maxScrollExtent) {
+                                                            viewmodel.onPagination(
+                                                                context,
+                                                                viewmodel.lastPage,
+                                                                viewmodel.nextPage,
+                                                                viewmodel.isLoading,
+                                                                'productList');
+                                                          }
+                                                        });
+                                                        final productListData =
+                                                            cartViewModel
+                                                                    .productListModel
+                                                                    ?.productList?[
+                                                                index];
+                                                        return productListItems(
                                                             context,
-                                                            viewmodel.lastPage,
-                                                            viewmodel.nextPage,
-                                                            viewmodel.isLoading,
-                                                            'productList');
-                                                      }
-                                                    });
-                                                    final productListData =
-                                                        cartViewModel
-                                                                .productListModel
-                                                                ?.productList?[
-                                                            index];
-                                                    return productListItems(
-                                                        context,
-                                                        productListData,
-                                                        index,
-                                                        viewmodel);
-                                                  },
-                                                ),
-                                                viewmodel.isLoading == true
-                                                    ? Container(
-                                                        margin: EdgeInsets.only(
-                                                            top: 50),
-                                                        alignment: Alignment
-                                                            .bottomCenter,
-                                                        child:
-                                                            CircularProgressIndicator(
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .primaryColor,
-                                                        ))
-                                                    : SizedBox()
-                                              ],
-                                            ),
+                                                            productListData,
+                                                            index,
+                                                            viewmodel);
+                                                      },
+                                                    ),
+                                                  ),
+
+                                                ],
+                                              ),
+                                            ],
                                           ),
-                                          SizedBox(height: 50),
+                                          SizedBox(height: 100),
                                           footerDesktop()
                                         ],
                                       ),
                                     ),
+                                    viewmodel.isLoading == true
+                                        ? Container(
+                                        alignment: Alignment
+                                            .bottomCenter,
+                                        child:
+                                        CircularProgressIndicator(
+                                          color:
+                                          Theme.of(context)
+                                              .primaryColor,
+                                        ))
+                                        : SizedBox(),
                                     isLogins == true
                                         ? Positioned(
                                             top: 0,
@@ -284,6 +302,13 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                             child: profile(context, setState,
                                                 profileViewModel))
                                         : Container(),
+                                    isSearch==true?
+                                    Positioned(
+                                        top: ResponsiveWidget.isMediumScreen(context) ? 0:0,
+                                        right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.09,
+
+                                        child: searchList(context, homeViewModel, scrollController,homeViewModel, searchController!,cartViewModel.cartItemCount))
+                                        : Container()
                                   ],
                                 )
                           : Center(
@@ -296,6 +321,92 @@ class _ProductListGalleryState extends State<ProductListGallery> {
               );
             }));
   }
+
+
+
+  Widget catrgoryTopSortWidget(){
+    return Container(
+      height: SizeConfig.screenHeight * 0.05,
+      child: Row(
+        children: [
+          SizedBox(width: 10),
+          Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Theme.of(context).scaffoldBackgroundColor,
+            ),
+            child: AppRegularFont(context, msg: "1240 Item found", color: Theme.of(context).canvasColor),
+          ),
+          Expanded(child: SizedBox(width: SizeConfig.screenWidth/ 8,)),
+          Container(
+              child: dropdown(sortDropDownList, context))
+        ],
+      ),
+    );
+  }
+
+  Widget dropdown(List<String> txt,BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: Theme.of(context).scaffoldBackgroundColor,
+          ),
+          child: AppRegularFont(context, msg: "Sort By", color: Theme.of(context).canvasColor, fontWeight: FontWeight.w500),
+        ),
+        SizedBox(width: 15,),
+        Container(
+          height: SizeConfig.screenHeight * .04,
+          width: ResponsiveWidget.isMediumScreen(context)? 150:200,
+          margin: EdgeInsets.only(left: 10,right: 10),
+          child: DropdownButtonFormField2(
+
+            dropdownStyleData: DropdownStyleData(
+              decoration: BoxDecoration(
+                // borderRadius: BorderRadius.circular(14),
+                color: Theme.of(context).cardColor.withOpacity(0.8),
+
+              ),
+            ),
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Theme.of(context).cardColor.withOpacity(0.9),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(width: 1, color: Theme.of(context).primaryColor.withOpacity(0.2)),
+              ),
+              // isDense: true,
+              contentPadding: EdgeInsets.only(bottom: 15),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            //isExpanded: true,
+            hint: Text(
+              txt[0],
+              style: TextStyle(fontSize:ResponsiveWidget.isMediumScreen(context)?12: 14, color: Theme.of(context).canvasColor.withOpacity(0.4),),
+            ),
+            isExpanded: true,
+            items: txt
+                .map((item) => DropdownMenuItem<String>(
+              value: item,
+              child: Text(
+                item,
+                style: TextStyle(fontSize: ResponsiveWidget.isMediumScreen(context)?12:14, color:Theme.of(context).canvasColor.withOpacity(0.6),),
+              ),
+            ))
+                .toList(),
+            onChanged: (String? value) {
+//selectedValue = value.toString();
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
 
   Widget productListItems(BuildContext context, ProductList? productListData,
       int index, CartViewModel viewmodel) {

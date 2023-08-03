@@ -358,7 +358,7 @@ class _LoginUpState extends State<LoginUp> {
                               keyBoardType: TextInputType.emailAddress,
                               onSubmitted: (m) {});
                         }),
-                SizedBox(height: 10),
+                SizedBox(height: 15),
                 isCheckCredentialPhoneOrEmail == true
                     ? SizedBox()
                     : StreamBuilder(
@@ -410,7 +410,7 @@ class _LoginUpState extends State<LoginUp> {
                       return appButton(
                           context,
                           StringConstant.login,
-                          SizeConfig.screenWidth * 0.23,
+                          SizeConfig.screenWidth,
                           50.0,
                           Theme.of(context).primaryColor,
                           Theme.of(context).hintColor,
@@ -458,6 +458,7 @@ class _LoginUpState extends State<LoginUp> {
                   ],
                 ),
                 SizedBox(height: 20),
+
                 GestureDetector(
                   onTap: () async{
                     const url = 'http://digitalseller.in/';

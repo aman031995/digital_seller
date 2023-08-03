@@ -13,16 +13,18 @@ import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
+import 'package:TychoStream/view/effect/ShimmerEffect.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../AppRouter.gr.dart';
 
-PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileViewModel profileViewModel, String? itemCount,VoidCallback? onFavPressed,
+PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileViewModel profileViewModel, String? itemCount,TextEditingController? searchController,VoidCallback? onFavPressed,
     VoidCallback? onCartPressed){
   return  PreferredSize(
       preferredSize: Size.fromHeight(SizeConfig.screenHeight*0.085),
@@ -53,7 +55,23 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
               ),
             ):
             Center(
-              child:CircularProgressIndicator(),
+              child: Container(
+                width: 300,height: 50,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 3,
+                    itemBuilder: (context, index) {
+                      return Shimmer.fromColors(
+                          baseColor: Theme.of(context).primaryColor.withOpacity(0.8),
+                          highlightColor:Theme.of(context).primaryColor.withOpacity(0.2),
+                          child: Container(
+                            margin: EdgeInsets.all(8),
+                            width: 80,height: 30,
+                            color: Colors.grey,
+                          )
+                      );
+                    }),
+              ),
             ),
             Expanded(
               child: SizedBox(
@@ -87,6 +105,22 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
                      }
                     else{
                       ToastMessage.message("please Login");
+                    }
+                  },
+                  onChanged: (v) async{
+                    if(v.isEmpty){
+                      isSearch = false;
+                    }
+                    else{
+                      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                      if (sharedPreferences.get('token') != null) {
+                        AppIndicator.loadingIndicator(context);
+                        viewmodel.getSearchData(context, searchController.text ?? '', 1);
+                        isSearch = true;
+                      }
+                      else{
+                        ToastMessage.message("please Login");
+                      }
                     }
                   },
                   isTick: null),
@@ -229,8 +263,8 @@ getPages(BottomNavigation navItem,BuildContext context,ProfileViewModel profileV
             product: true,
           );
         }):context.pushRoute(EditProfile(
-        isEmailVerified: '${profileViewModel.userInfoModel?.isPhoneVerified}',
-        isPhoneVerified: '${profileViewModel.userInfoModel?.isEmailVerified}'
+        // isEmailVerified: '${profileViewModel.userInfoModel?.isPhoneVerified}',
+        // isPhoneVerified: '${profileViewModel.userInfoModel?.isEmailVerified}'
     ));
   }
 }
@@ -273,7 +307,6 @@ AppBar homePageTopBar(BuildContext context,GlobalKey<ScaffoldState> _scaffoldKey
               onTap: () {
                 if(isSearch==true){
                   isSearch=false;
-                  searchController?.clear();
                 }
                 if( isLogins == true){
                   isLogins=false;
@@ -362,7 +395,7 @@ AppBar homePageTopBar(BuildContext context,GlobalKey<ScaffoldState> _scaffoldKey
                   isLogins = true;
                   if (isSearch == true) {
                     isSearch = false;
-                    searchController?.clear();
+
                 }
               },
               child: Image.asset(

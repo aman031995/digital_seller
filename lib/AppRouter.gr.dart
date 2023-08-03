@@ -145,8 +145,6 @@ abstract class $AppRouter extends _i16.RootStackRouter {
         child: _i11.EditProfile(
           key: args.key,
           viewmodel: args.viewmodel,
-          isEmailVerified: args.isEmailVerified,
-          isPhoneVerified: args.isPhoneVerified,
         ),
       );
     },
@@ -479,16 +477,12 @@ class EditProfile extends _i16.PageRouteInfo<EditProfileArgs> {
   EditProfile({
     _i18.Key? key,
     _i19.ProfileViewModel? viewmodel,
-    String? isEmailVerified,
-    String? isPhoneVerified,
     List<_i16.PageRouteInfo>? children,
   }) : super(
           EditProfile.name,
           args: EditProfileArgs(
             key: key,
             viewmodel: viewmodel,
-            isEmailVerified: isEmailVerified,
-            isPhoneVerified: isPhoneVerified,
           ),
           initialChildren: children,
         );
@@ -503,21 +497,15 @@ class EditProfileArgs {
   const EditProfileArgs({
     this.key,
     this.viewmodel,
-    this.isEmailVerified,
-    this.isPhoneVerified,
   });
 
   final _i18.Key? key;
 
   final _i19.ProfileViewModel? viewmodel;
 
-  final String? isEmailVerified;
-
-  final String? isPhoneVerified;
-
   @override
   String toString() {
-    return 'EditProfileArgs{key: $key, viewmodel: $viewmodel, isEmailVerified: $isEmailVerified, isPhoneVerified: $isPhoneVerified}';
+    return 'EditProfileArgs{key: $key, viewmodel: $viewmodel}';
   }
 }
 

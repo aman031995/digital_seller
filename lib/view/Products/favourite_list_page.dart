@@ -13,6 +13,7 @@ import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/OnHover.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
+import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
@@ -42,11 +43,13 @@ class FavouriteListPage extends StatefulWidget {
 class _FavouriteListPageState extends State<FavouriteListPage> {
   CartViewModel cartViewModel = CartViewModel();
   ScrollController _scrollController = ScrollController();
+  ScrollController scrollController = ScrollController();
   String? checkInternet;
   int pageNum = 1;
   bool isfab = false;
   HomeViewModel homeViewModel = HomeViewModel();
   ProfileViewModel profileViewModel = ProfileViewModel();
+  TextEditingController? searchController = TextEditingController();
 
   @override
   void initState() {
@@ -81,7 +84,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                 },
                 child: Scaffold(
                   appBar: getAppBar(context, homeViewModel, profileViewModel,
-                      viewmodel.cartItemCount, () async {
+                      viewmodel.cartItemCount,searchController, () async {
                     SharedPreferences sharedPreferences =
                         await SharedPreferences.getInstance();
                     token = sharedPreferences.getString('token').toString();
@@ -269,6 +272,13 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                       child: profile(context, setState,
                                           profileViewModel))
                                       : Container(),
+                                  isSearch==true?
+                                  Positioned(
+                                      top: ResponsiveWidget.isMediumScreen(context) ? 0:0,
+                                      right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.09,
+
+                                      child: searchList(context, homeViewModel, scrollController,homeViewModel, searchController!,cartViewModel.cartItemCount))
+                                      : Container()
                                 ],
                               )
                           : Center(

@@ -5,6 +5,7 @@
 import 'package:TychoStream/model/data/cart_detail_model.dart';
 import 'package:TychoStream/model/data/category_data_model.dart';
 import 'package:TychoStream/model/data/homepage_data_model.dart';
+import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/model/data/tray_data_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -275,7 +276,7 @@ class HomePageRepository {
     };
     Map<String, String> urlParams = {
       '{SEARCH_QUERY}': search,
-      "{PAGE_NUM}": '$pageNum',
+      "{PAGE_NUM}": '$pageNum', "{USER_ID}" : sharedPreferences.get("userId").toString(),
       "{APP_ID}": NetworkConstants.kAppID,
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
@@ -287,7 +288,7 @@ class HomePageRepository {
         Map<String, dynamic> map =
             (result as SuccessState).value as Map<String, dynamic>;
         if (map["data"] is Map<String, dynamic>) {
-          response.dataModal = SearchDataModel.fromJson(map["data"]);
+          response.dataModal = ProductListModel.fromJson(map["data"]);
         }
         responseHandler(Result.success(response), isSuccess);
       } else {

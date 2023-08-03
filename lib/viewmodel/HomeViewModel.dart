@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:TychoStream/model/data/cart_detail_model.dart';
 import 'package:TychoStream/model/data/homepage_data_model.dart';
+import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/model/data/tray_data_model.dart';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:flutter/material.dart';
@@ -48,16 +49,17 @@ class HomeViewModel with ChangeNotifier {
   AppConfigModel? _appConfigModel;
   AppConfigModel? get appConfigModel => _appConfigModel;
 
-  SearchDataModel? _searchDataModel;
-  SearchDataModel? get searchDataModel => _searchDataModel;
+  ProductListModel? _searchDataModel;
+  ProductListModel? get searchDataModel => _searchDataModel;
 
 
   ItemCountModel? _itemCountModel;
 
   ItemCountModel? get itemCountModel => _itemCountModel;
 
-  SearchDataModel? _newSearchDataModel;
-  SearchDataModel? get newSearchDataModel => _newSearchDataModel;
+  ProductListModel? _newSearchDataModel;
+  ProductListModel? get newSearchDataModel => _newSearchDataModel;
+
   AppMenuModel? _appMenuModel;
   AppMenuModel? get appMenuModel => _appMenuModel;
   String? _isNetworkAvailable;
@@ -215,7 +217,8 @@ class HomeViewModel with ChangeNotifier {
           lastPage = _newSearchDataModel?.pagination?.lastPage ?? 1;
           nextPage = _newSearchDataModel?.pagination?.next ?? 1;
           if(_newSearchDataModel != null){
-            _searchDataModel?.searchList?.addAll(_newSearchDataModel!.searchList!);
+            _searchDataModel?.productList
+                ?.addAll(_newSearchDataModel!.productList!);
           }
         }
         isLoading = false;

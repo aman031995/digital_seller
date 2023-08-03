@@ -84,6 +84,7 @@ dependencies:
 #  client_information: ^2.0.3+1
   device_info_plus: ^8.1.0
   auto_route: 7.4.0
+  shimmer: ^3.0.0
   
   #  social_embed_webview:
   #  flutter_html_video:

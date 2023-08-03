@@ -156,7 +156,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               isLogins = true;
               if (isSearch == true) {
                 isSearch = false;
-                searchController?.clear();
+
                 setState(() {});
               }
             });
