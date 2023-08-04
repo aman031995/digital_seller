@@ -1,13 +1,15 @@
 /*
   By Aman Singh
  */
-
+import 'package:http/http.dart' as http;
 import 'package:TychoStream/model/data/cart_detail_model.dart';
 import 'package:TychoStream/model/data/category_data_model.dart';
 import 'package:TychoStream/model/data/homepage_data_model.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/model/data/tray_data_model.dart';
+import 'package:TychoStream/utilities/LogsMessage.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/model/data/AppConfigModel.dart';
 import 'package:TychoStream/model/data/BannerDataModel.dart';
@@ -44,74 +46,6 @@ class HomePageRepository {
             (result as SuccessState).value as Map<String, dynamic>;
         if (map["data"] is Map<String, dynamic>) {
           response.dataModal = BannerDataModel.fromJson(map["data"]);
-          // CacheDataManager.cacheData(key: StringConstant.kBannerList, jsonData: map);
-        }
-        responseHandler(Result.success(response), isSuccess);
-      } else {
-        responseHandler(result, isSuccess);
-      }
-    });
-  }
-
-  Future<Result?> getHomePageData(int videoFor,String type, int pageNum,
-      BuildContext context, NetworkResponseHandler responseHandler) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var header = {
-      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
-    };
-    AppNetwork appNetwork = AppNetwork();
-    Map<String, String> urlParams = {
-      "{USER_ID}": sharedPreferences.get("userId").toString(),
-      "{APP_ID}": NetworkConstants.kAppID,
-      "{VIDEO_FOR}": '$videoFor',
-      "{TYPE}": type,
-      "{PAGE_NUM}": '$pageNum',
-    };
-    ASRequestModal requestModal = ASRequestModal.withUrlParams(
-        urlParams, NetworkConstants.kGetHomePageData, RequestType.get,
-        headers: header);
-    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
-      if (isSuccess) {
-        var response = ASResponseModal.fromResult(result);
-        Map<String, dynamic> map =
-            (result as SuccessState).value as Map<String, dynamic>;
-        if (map["data"] is Map<String, dynamic>) {
-          response.dataModal = HomePageDataModel.fromJson(map["data"]);
-          // CacheDataManager.cacheData(key: StringConstant.kHomePageData, jsonData: map);
-        }
-        responseHandler(Result.success(response), isSuccess);
-      } else {
-        responseHandler(result, isSuccess);
-      }
-    });
-  }
-
-  Future<Result?> getTrayDataList(
-      BuildContext context, NetworkResponseHandler responseHandler) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var header = {
-      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
-    };
-    AppNetwork appNetwork = AppNetwork();
-    Map<String, String> urlParams = {
-      "{APP_ID}": NetworkConstants.kAppID,
-    };
-    ASRequestModal requestModal = ASRequestModal.withUrlParams(
-        urlParams, NetworkConstants.kGetTrayData, RequestType.get,
-        headers: header);
-    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
-      if (isSuccess) {
-        var response = ASResponseModal.fromResult(result);
-        Map<String, dynamic> map =
-            (result as SuccessState).value as Map<String, dynamic>;
-        if (map['data'] is List<dynamic>) {
-          var dataList = map['data'] as List<dynamic>;
-          var items = <TrayDataModel>[];
-          dataList.forEach((element) {
-            items.add(TrayDataModel.fromJson(element));
-          });
-          response.dataModal = items;
-          responseHandler(Result.success(response), isSuccess);
         }
         responseHandler(Result.success(response), isSuccess);
       } else {
@@ -141,7 +75,6 @@ class HomePageRepository {
             (result as SuccessState).value as Map<String, dynamic>;
         if (map["data"] is Map<String, dynamic>) {
           response.dataModal = CategoryDataModel.fromJson(map["data"]);
-          // CacheDataManager.cacheData(key: StringConstant.kCategoryList, jsonData: map);
         }
         responseHandler(Result.success(response), isSuccess);
       } else {
@@ -170,35 +103,6 @@ class HomePageRepository {
         var response = ASResponseModal.fromResult(result);
         Map<String, dynamic> map =
             (result as SuccessState).value as Map<String, dynamic>;
-        if (map["data"] is Map<String, dynamic>) {
-          response.dataModal = HomePageDataModel.fromJson(map["data"]);
-        }
-        responseHandler(Result.success(response), isSuccess);
-      } else {
-        responseHandler(result, isSuccess);
-      }
-    });
-  }
-
-  Future<Result?> getMoreLikeThisData(String videoId, BuildContext context,
-      NetworkResponseHandler responseHandler) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var header = {
-      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
-    };
-    AppNetwork appNetwork = AppNetwork();
-    Map<String, String> urlParams = {
-      "{VIDEO_ID}": '$videoId',
-      "{APP_ID}": NetworkConstants.kAppID,
-    };
-    ASRequestModal requestModal = ASRequestModal.withUrlParams(
-        urlParams, NetworkConstants.kGetMoreLikeThis, RequestType.get,
-        headers: header);
-    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
-      if (isSuccess) {
-        var response = ASResponseModal.fromResult(result);
-        Map<String, dynamic> map =
-        (result as SuccessState).value as Map<String, dynamic>;
         if (map["data"] is Map<String, dynamic>) {
           response.dataModal = HomePageDataModel.fromJson(map["data"]);
         }
@@ -245,8 +149,7 @@ class HomePageRepository {
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
       "{APP_ID}": NetworkConstants.kAppID,
-      // "{APP_ID}": '7a72f14a-314c-4038-a7ec-b36e64f1ebd1',
-      "{USER_ID}": "203d96e8-11c1-422e-8453-199de344687a",
+      "{USER_ID}":  sharedPreferences.get("userId").toString(),
       "{PAGE_NUM}": '$pageNum'
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
@@ -271,12 +174,12 @@ class HomePageRepository {
     AppNetwork appNetwork = AppNetwork();
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var header = {
-      "x-access-token": sharedPreferences.get("token") as String,
       "Content-Type": "application/json"
     };
     Map<String, String> urlParams = {
       '{SEARCH_QUERY}': search,
-      "{PAGE_NUM}": '$pageNum', "{USER_ID}" : sharedPreferences.get("userId").toString(),
+      "{PAGE_NUM}": '$pageNum',
+      "{USER_ID}" : sharedPreferences.get("userId").toString(),
       "{APP_ID}": NetworkConstants.kAppID,
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
@@ -353,15 +256,17 @@ class HomePageRepository {
     });
   }
 
-  Future<ASRequestModal?> openWebUrl(BuildContext context, String query) async {
-    ASRequestConstructor requestConstructor = ASRequestConstructor();
-    Map<String, String> urlParams = {
-      "{APP_ID}": NetworkConstants.kAppID,
-      "{QUERY}": query
-    };
-    ASRequestModal requestModal = ASRequestModal.withUrlParams(
-        urlParams, NetworkConstants.kOpenWebViewUrl, RequestType.get);
-    requestConstructor.processRequestFor(requestModal, (result, isSuccess) {});
-    return requestModal;
+  // open webview/html api request
+  Future<Map<String, dynamic>?> openHtmlWebUrl(BuildContext context, String query,
+      NotificationHandler responseHandler) async {
+    var url = '${NetworkConstants.kAppBaseUrl + 'web-view?appId=${NetworkConstants.kAppID}&query=${query}'}';
+    final response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      responseHandler(response.body);
+    } else {
+      print('Error with Status Code ' + response.statusCode.toString());
+      LogsMessage.logMessage(message: response.statusCode.toString(), level: Level.error);
+      throw Exception('Failed to load data');
+    }
   }
 }

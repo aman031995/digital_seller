@@ -1,14 +1,20 @@
 
+import 'package:TychoStream/AppRouter.gr.dart';
+import 'package:TychoStream/main.dart';
+import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
+import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 
 import 'image_source.dart';
@@ -21,13 +27,6 @@ class CommonMethods {
     return mappedUrl;
   }
 
-  // send screen name on analytics
-  static setScreenName(String? screenName) {
-    if (screenName != null) {
-      // firebaseAnalytics?.setCurrentScreen(screenName: screenName);
-      print('page saved: $screenName');
-    }
-  }
 
 }
 
@@ -44,8 +43,6 @@ Widget cartPageViewIndicator(
           Icon(Icons.arrow_forward_ios_sharp, size: 10,    color: activeStep >= 0
               ? Theme.of(context).primaryColor
               : Theme.of(context).canvasColor.withOpacity(0.8)),
-          // stepView(context,"Step 2 \n${StringConstant.chooseAddress}",activeStep,1),
-          // Icon(Icons.arrow_forward_ios_sharp, size: 10, color: Theme.of(context).canvasColor),
           stepView(context,"Step 2 \n${StringConstant.payment}",activeStep,1),
           Icon(Icons.arrow_forward_ios_sharp, size: 10,    color: activeStep >= 2
               ? Theme.of(context).primaryColor
@@ -113,3 +110,72 @@ Widget checkoutButton(BuildContext context,String msg,CartViewModel cartViewData
   );
 }
 
+Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
+  final authVM = Provider.of<AuthViewModel>(context);
+  return Container(
+    width: 150,
+    color: Theme.of(context).cardColor,
+    child: Column(
+      children: [
+        SizedBox(height: 5),
+        appTextButton(
+            context,
+            "  My Account",
+            Alignment.centerLeft,
+            Theme.of(context).canvasColor,
+            18,
+            false, onPressed: () {
+          isProfile = true;
+          if (isProfile == true) {
+            context.pushRoute(EditProfile());
+          }
+        }),
+        SizedBox(height: 5),
+        Container(
+          height: 1,
+          color: Colors.black,
+        ),
+        appTextButton(
+            context,
+            " My Order ",
+            Alignment.centerLeft,
+            Theme.of(context).canvasColor,
+            18,
+            false, onPressed: () {
+          isProfile = true;
+          if (isProfile == true) {
+            context.pushRoute(MyOrderPage());
+          }
+        }),
+        SizedBox(height: 5),
+        Container(
+          height: 1,
+          color: Colors.black,
+        ),
+        SizedBox(height: 5),
+        appTextButton(
+            context,
+            "  LogOut",
+            Alignment.centerLeft,
+            Theme.of(context).canvasColor,
+            18,
+            false, onPressed: () {
+          setState(() {
+            authVM.logoutButtonPressed(context);
+            context.router.stack.clear();
+            context.router.dispose();
+
+            isLogins = false;
+            if (isSearch == true) {
+              isSearch = false;
+              setState(() {});
+            }
+          });
+        }),
+        SizedBox(height: 5),
+      ],
+    ),
+    // height: 20,width: 20,
+  );
+
+}

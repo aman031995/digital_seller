@@ -1,15 +1,8 @@
 
-
-import 'dart:js';
-
 import 'package:TychoStream/main.dart';
-import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
-import 'package:TychoStream/utilities/Responsive.dart';
-import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'AppRouter.gr.dart';
@@ -96,10 +89,8 @@ class AppRouter extends $AppRouter {
         },
       )]),
     AutoRoute(page: AddressListPage.page,path: '/AddressListPage/:buynow',guards: [
-      AutoRouteGuard.simple(
-            (resolver, scope) async {
+      AutoRouteGuard.simple((resolver, scope) async {
               token= SessionStorageHelper.getValue("payment");
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
           if(token==null){
             resolver.next();
           }
@@ -107,37 +98,24 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             resolver.redirect(HomePageWeb());
-             ToastMessage.message("Please Login User");
+             //ToastMessage.message("Please Login User");
           }
         },
       )]),
-    //AutoRoute(page: MyOrderPage.page,path:'/MyOrderPage',guards: [
-    //   AutoRouteGuard.simple(
-    //         (resolver, scope) async {
-    //       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    //       if (sharedPreferences.get('token') != null) {
-    //         resolver.next();
-    //       } else {
-    //         ToastMessage.message("Please Login User");
-    //         resolver.redirect(HomePageWeb());
-    //
-    //       }
-    //     },
-    //   )]),
-    AutoRoute(page: ProductDetailPage.page,path: '/ProductDetailPage/:productId',
-      //   guards: [
-      // AutoRouteGuard.simple(
-      //       (resolver, scope) async {
-      //     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      //     if (sharedPreferences.get('token') != null) {
-      //       resolver.next();
-      //     } else {
-      //       ToastMessage.message("Please Login User");
-      //
-      //     }
-      //   },
-      // )]
-    ),
+    AutoRoute(page: MyOrderPage.page,path:'/MyOrderPage',guards: [
+      AutoRouteGuard.simple(
+            (resolver, scope) async {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token') != null) {
+            resolver.next();
+          } else {
+            ToastMessage.message("Please Login User");
+            resolver.redirect(HomePageWeb());
+
+          }
+        },
+      )]),
+    AutoRoute(page: ProductDetailPage.page,path: '/ProductDetailPage/:productId'),
     AutoRoute(page: CartDetail.page,path: '/CartDetails/:itemCount',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
@@ -151,33 +129,8 @@ class AppRouter extends $AppRouter {
         },
       )]),
     AutoRoute(page: ContactUs.page,path: '/ContactUs',
-      //   guards: [
-      // AutoRouteGuard.simple(
-      //       (resolver, scope) async {
-      //     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      //     if (sharedPreferences.get('token') != null) {
-      //       resolver.next();
-      //     } else {
-      //       ToastMessage.message("Please Login User");
-      //      // resolver.redirect(HomePageWeb());
-      //     }
-      //   },
-      // )]
     ),
-    AutoRoute(page: FAQ.page,path: '/FAQ',
-      //   guards: [
-      // AutoRouteGuard.simple(
-      //       (resolver, scope) async {
-      //     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      //     if (sharedPreferences.get('token') != null) {
-      //       resolver.next();
-      //     } else {
-      //       ToastMessage.message("Please Login User");
-      //      // resolver.redirect(HomePageWeb());
-      //     }
-      //   },
-      // )]
-    ),
+    AutoRoute(page: WebHtmlPage.page,path: '/WebHtmlPage',),
     AutoRoute(page: Privacy.page,path: '/Privacy',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
@@ -190,23 +143,11 @@ class AppRouter extends $AppRouter {
           }
         },
       )]),
-    AutoRoute(page: Terms.page,path: '/Terms',guards: [
-      AutoRouteGuard.simple(
-            (resolver, scope) async {
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-          if (sharedPreferences.get('token') != null) {
-            resolver.next();
-          } else {
-            ToastMessage.message("Please Login User");
-           // resolver.redirect(HomePageWeb());
-          }
-        },
-      )]),
+
     AutoRoute(page: ThankYouPage.page,path: '/ThankYouPage',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
           token= SessionStorageHelper.getValue("payment");
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
           if(token==null){
             resolver.next();
           }
@@ -226,7 +167,6 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             ToastMessage.message("Please Login User");
-            // resolver.redirect(HomePageWeb());
           }
         },
       )])

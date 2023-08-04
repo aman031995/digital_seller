@@ -2,7 +2,6 @@ import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
-import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
@@ -17,7 +16,7 @@ import 'package:TychoStream/view/WebScreen/OnHover.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
 import 'package:TychoStream/view/search/search_list.dart';
-import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
+import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
@@ -30,7 +29,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../AppRouter.gr.dart';
-import '../widgets/search_view.dart';
 
 @RoutePage()
 class ProductListGallery extends StatefulWidget {
@@ -79,6 +77,12 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                     isLogins = false;
                     setState(() {});
                   }
+                  if(isSearch==true){
+                    isSearch=false;
+                    setState(() {
+
+                    });
+                  }
                 },
                 child: Scaffold(
                   appBar:  ResponsiveWidget.isMediumScreen(context)
@@ -126,17 +130,15 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                               ? Scaffold(
                     extendBodyBehindAppBar: true,
                     key: _scaffoldKey,
-                    backgroundColor: Theme.of(context).backgroundColor,
-                    drawer: ResponsiveWidget.isMediumScreen(context)
-                        ? AppMenu():SizedBox(),
-
-                                body: Stack(
-                                  children: [
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    drawer: AppMenu(),
+                    body: Stack(
+                      children: [
                                     SingleChildScrollView(
                                         child: Column(
                                         children: [
                                           Container(
-                                            height: SizeConfig.screenHeight,
+                                           height: SizeConfig.screenHeight/1.2,
                                             child: GridView.builder(
                                               shrinkWrap: true,
                                               controller: _scrollController,
@@ -212,7 +214,6 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                             children: [
                                               Container(
                                                 width: SizeConfig.screenWidth / 6.5,
-                                                height: SizeConfig.screenHeight * 2,
                                                 child: CategoryFilterScreen(items: [],),
                                               ),
                                               Column(
@@ -274,7 +275,6 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                                       },
                                                     ),
                                                   ),
-
                                                 ],
                                               ),
                                             ],
@@ -305,8 +305,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                     isSearch==true?
                                     Positioned(
                                         top: ResponsiveWidget.isMediumScreen(context) ? 0:0,
-                                        right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.09,
-
+                                        right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.15,
                                         child: searchList(context, homeViewModel, scrollController,homeViewModel, searchController!,cartViewModel.cartItemCount))
                                         : Container()
                                   ],
@@ -334,7 +333,6 @@ class _ProductListGalleryState extends State<ProductListGallery> {
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: Theme.of(context).scaffoldBackgroundColor,
             ),
             child: AppRegularFont(context, msg: "1240 Item found", color: Theme.of(context).canvasColor),
           ),
@@ -351,24 +349,19 @@ class _ProductListGalleryState extends State<ProductListGallery> {
       children: [
         Container(
           padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Theme.of(context).scaffoldBackgroundColor,
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),
           ),
           child: AppRegularFont(context, msg: "Sort By", color: Theme.of(context).canvasColor, fontWeight: FontWeight.w500),
         ),
         SizedBox(width: 15,),
         Container(
-          height: SizeConfig.screenHeight * .04,
+          height: SizeConfig.screenHeight * .04,color: Theme.of(context).cardColor.withOpacity(0.8),
           width: ResponsiveWidget.isMediumScreen(context)? 150:200,
           margin: EdgeInsets.only(left: 10,right: 10),
           child: DropdownButtonFormField2(
-
             dropdownStyleData: DropdownStyleData(
               decoration: BoxDecoration(
-                // borderRadius: BorderRadius.circular(14),
                 color: Theme.of(context).cardColor.withOpacity(0.8),
-
               ),
             ),
             decoration: InputDecoration(
@@ -377,7 +370,6 @@ class _ProductListGalleryState extends State<ProductListGallery> {
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(width: 1, color: Theme.of(context).primaryColor.withOpacity(0.2)),
               ),
-              // isDense: true,
               contentPadding: EdgeInsets.only(bottom: 15),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(4),
@@ -399,7 +391,6 @@ class _ProductListGalleryState extends State<ProductListGallery> {
             ))
                 .toList(),
             onChanged: (String? value) {
-//selectedValue = value.toString();
             },
           ),
         ),
@@ -504,7 +495,6 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                     product: true,
                                   );
                                 });
-                            // _backBtnHandling(prodId);
                           } else {
                             final isFav = productListData!
                                     .productDetails!.isFavorite =
@@ -526,14 +516,6 @@ class _ProductListGalleryState extends State<ProductListGallery> {
     );
   }
 
-  // this method is called when navigate to this page using dynamic link
-  receivedArgumentsNotification() {
-    if (ModalRoute.of(context)?.settings.arguments != null) {
-      final Map<String, dynamic> data =
-          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-      cartViewModel.getProductList(context, pageNum);
-    }
-  }
 }
 
 String? getFavTitle(ProductList? productListData) {

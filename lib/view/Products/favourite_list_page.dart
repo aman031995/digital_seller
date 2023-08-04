@@ -2,7 +2,6 @@ import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
-import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
@@ -14,10 +13,9 @@ import 'package:TychoStream/view/WebScreen/OnHover.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
 import 'package:TychoStream/view/search/search_list.dart';
-import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
+import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
-import 'package:TychoStream/view/widgets/search_view.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
@@ -68,8 +66,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
         checkInternet = result;
       });
     });
-    // handle push notification/notification scenerio to show data
-    // receivedArgumentsNotification();
+
     return checkInternet == "Offline"
         ? NOInternetScreen()
         : ChangeNotifierProvider.value(
@@ -80,6 +77,12 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                   if (isLogins == true) {
                     isLogins = false;
                     setState(() {});
+                  }
+                  if(isSearch==true){
+                    isSearch=false;
+                    setState(() {
+
+                    });
                   }
                 },
                 child: Scaffold(
@@ -275,7 +278,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                   isSearch==true?
                                   Positioned(
                                       top: ResponsiveWidget.isMediumScreen(context) ? 0:0,
-                                      right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.09,
+                                      right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.15,
 
                                       child: searchList(context, homeViewModel, scrollController,homeViewModel, searchController!,cartViewModel.cartItemCount))
                                       : Container()

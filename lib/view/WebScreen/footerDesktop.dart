@@ -1,5 +1,8 @@
 import 'package:TychoStream/AppRouter.gr.dart';
+import 'package:TychoStream/Utilities/AssetsConstants.dart';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
+import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
@@ -15,6 +18,8 @@ class footerDesktop extends StatefulWidget {
 }
 
 class _footerDesktopState extends State<footerDesktop> {
+ HomeViewModel homeViewModel=HomeViewModel();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +36,14 @@ class _footerDesktopState extends State<footerDesktop> {
           footerMiddleWidgetContent(context),
           SizedBox(width: 20,),
           Container(child: footerRightWidgetContent(context)),
-          SizedBox(width: 30,),
+          SizedBox(width: 50,),
+          Container(
+              alignment: Alignment.bottomCenter,
+              // margin: EdgeInsets.only(left: 120, right: 120, bottom: 5),
+              // width: SizeConfig.screenWidth / 6.5,
+              child: GlobalVariable.isLightTheme == true ?
+              Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: SizeConfig.screenWidth * 0.1) :
+              Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: SizeConfig.screenWidth * 0.1)),
         ],
       ),
     );
@@ -150,12 +162,15 @@ class _footerDesktopState extends State<footerDesktop> {
               }),
               SizedBox(width: MediaQuery.of(context).size.width * .02),
               AppButton(context, 'Terms Of Use', onPressed: () {
-                context.pushRoute(Terms());
+              //  context.pushRoute(Terms());
+                homeViewModel.openWebHtmlView(context, 'terms_condition',
+                    title: 'Terms And Condition');
                 // GoRouter.of(context).pushNamed(RoutesName.Terms);
               }),
               SizedBox(width: MediaQuery.of(context).size.width * .02),
               AppButton(context, 'Privacy Policy', onPressed: () {
-                context.pushRoute(Privacy());
+                homeViewModel.openWebHtmlView(context, 'privacy_policy',
+                    title: 'Privacy Policy');
               }),
               // Container(width: MediaQuery.of(context).size.width * .02),
               // AppButton(context, 'FAQ', onPressed: () {
@@ -163,7 +178,9 @@ class _footerDesktopState extends State<footerDesktop> {
               // }),
               SizedBox(width: MediaQuery.of(context).size.width * .02),
               AppButton(context, 'Helpdesk', onPressed: () {
-                context.pushRoute(FAQ());
+                homeViewModel.openWebHtmlView(
+                    context, 'return_policy',
+                    title: 'Return Policy');
               }),
               // SizedBox(width: ResponsiveWidget.isMediumScreen(context)? SizeConfig.screenWidth * 0.22 : SizeConfig.screenWidth * 0.32,),
             ],
@@ -252,7 +269,7 @@ Widget footerMobile(BuildContext context) {
                 Row(
                   children: [
                     GestureDetector(
-                        child: Image.asset("images/ic_fb.png",
+                        child: Image.asset(AssetsConstants.icFacebook,
                             height: 30, color: Theme.of(context).scaffoldBackgroundColor),
                         onTap: () async {
                           const url = 'https://www.facebook.com';

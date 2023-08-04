@@ -2,8 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
-
-import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 
 class FullImage extends StatefulWidget {
@@ -16,13 +14,12 @@ class FullImage extends StatefulWidget {
 
 class _FullImageState extends State<FullImage> {
   var index = 0;
-
   PageController? pageController;
 
   @override
   void initState() {
-    super.initState();
     pageController = PageController(initialPage: index);
+    super.initState();
   }
 
   @override
@@ -39,7 +36,6 @@ class _FullImageState extends State<FullImage> {
                 height: 200,
                 fit: BoxFit.cover,
               ),
-              // getImageView(),
               Positioned(
                 top: 40.0,
                 right: 20.0,
@@ -89,7 +85,7 @@ class _FullImageState extends State<FullImage> {
           pageController: pageController,
           onPageChanged: onPageChanged,
           enableRotation: true,
-          // reverse: true,
-        ));
+        )
+    );
   }
 }

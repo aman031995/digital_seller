@@ -2,7 +2,6 @@ import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/UserInfoModel.dart';
@@ -14,27 +13,26 @@ import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/auth_repository.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
-import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/view/WebScreen/reset_screen.dart';
 import 'package:TychoStream/view/screens/verify_otp_screen.dart';
-
 import 'dart:html' as html;
-
 import '../AppRouter.gr.dart';
 
 void reloadPage() {
   html.window.location.reload();
-
 }
+
 class AuthViewModel with ChangeNotifier {
   final _authRepo = AuthRepository();
 
   UserInfoModel? _userInfoModel;
   UserInfoModel? get userInfoModel => _userInfoModel;
+
   User() async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     names=sharedPreferences.get('name').toString();
   }
+
   Future<void> login(
       String phone,
       String password,
@@ -126,26 +124,24 @@ class AuthViewModel with ChangeNotifier {
               AppDataManager.getInstance.updateUserDetails(userInfoModel!);
               print('Login api Successfully');
               AppIndicator.disposeIndicator();
-              // Navigator.pop(context);
               User();
               reloadPage();
               ResponsiveWidget.isMediumScreen(context) ? null :
               product==true? Navigator.pop(context):context.router.push(HomePageWeb());
-             // GoRouter.of(context).pushNamed(RoutesName.home);
             }
-
             notifyListeners();
           }
         });
   }
+
   logoutButtonPressed(BuildContext context) async {
     AppDataManager.deleteSavedDetails();
     CacheDataManager.clearCachedData();
     isLogins = false;
     isLogin=false;
-    // context.router.push(HomePageWeb());
      reloadPage();
   }
+
 // method for user register from api
   Future<void> register(
       HomeViewModel viewModel,
@@ -172,7 +168,6 @@ class AuthViewModel with ChangeNotifier {
                 password: password,
                 loginPage: false,
                 isNotVerified: false,
-
                 isForgotPassword: false,
                 viewmodel: viewModel,
               );});
@@ -180,33 +175,7 @@ class AuthViewModel with ChangeNotifier {
       }
     });
   }
-  // Future<void> register(HomeViewModel viewModel,String name, String phone, String email,
-  //     String password, BuildContext context) async {
-  //   AppIndicator.loadingIndicator(context);
-  //   _authRepo.register(phone, email, context, (result, isSuccess) {
-  //     if (isSuccess) {
-  //       ToastMessage.message(
-  //           ((result as SuccessState).value as ASResponseModal).message);
-  //       AppIndicator.disposeIndicator();
-  //       Navigator.pop(context);
-  //       User();
-  //       showDialog(
-  //           context: context,
-  //           builder: (BuildContext context) {
-  //             return VerifyOtp(
-  //                 mobileNo: phone,
-  //                 name: name,
-  //                 email: email,
-  //                 password: password,
-  //                 isForgotPassword: false,
-  //               viewmodel: viewModel,
-  //             );});
-  //       notifyListeners();
-  //     }
-  //   });
-  // }
 
-  // method for otp verify
   Future<void> verifyOTP(BuildContext context, String phone, String otp,
       {bool? isForgotPW,bool?product,
         String? name,
@@ -225,20 +194,10 @@ class AuthViewModel with ChangeNotifier {
           if (isSuccess) {
             handler!(Result.success(result), isSuccess);
             AppIndicator.disposeIndicator();
-           // Navigator.pop(context);
             ToastMessage.message(
                 ((result as SuccessState).value as ASResponseModal).message);
             print('otp verified Successfully');
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-            // if(loginType == 'phone'){
-            //   _authRepo.resendOTP(mobileNumber ?? '', context, (result, isSuccess) {
-            //     if (isSuccess) {
-            //       otpValue = '';
-            //       ToastMessage.message(
-            //           ((result as SuccessState).value as ASResponseModal).message);
-            //       notifyListeners();
-            //   }});
-            // }else if(loginType == 'email'){
             if (isForgotPW == true) {
               AppIndicator.disposeIndicator();
               Navigator.pop(context);
@@ -248,7 +207,6 @@ class AuthViewModel with ChangeNotifier {
                     return ResetPassword(
                       product: product,
                       phone: phone,loginType: loginType,);});
-              // AppNavigator.pushReplacement(context, ResetPassword(phone: phone, loginType: loginType),screenName: RouteBuilder.resetPage);
             } else if (verifyNumber == true) {
               otpValue = '';
               Navigator.of(context, rootNavigator: true).pop();
@@ -258,17 +216,15 @@ class AuthViewModel with ChangeNotifier {
               AppIndicator.disposeIndicator();
               reloadPage();
               product==true?  Navigator.pop(context):context.router.push(HomePageWeb());
-              // GoRouter.of(context).pushNamed(RoutesName.home);
-              // Navigator.pop(context);
-              // AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.bottomNavigation, screenName: RouteBuilder.homePage);
             } else {
               registerUser(context, name, mobileNumber, password, email, deviceId, firebaseId);
             }
           }
-          // }
-          // notifyListeners();
+
+          notifyListeners();
         });
   }
+
   registerUser(BuildContext context, String? name, String? phone,
       String? password, String? email, String? deviceId, String? deviceToken) {
     AppIndicator.loadingIndicator(context);
@@ -285,31 +241,11 @@ class AuthViewModel with ChangeNotifier {
             print('Register api Successfully');
             AppIndicator.disposeIndicator();
             reloadPage();
-           // GoRouter.of(context).pushNamed(RoutesName.home);
             Navigator.pop(context);
-            // AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.bottomNavigation, screenName: RouteBuilder.homePage);
             notifyListeners();
           }
         });
   }
-  // registerUser(BuildContext context, String? name, String? phone, String? password, String? email, String? deviceToken) {
-  //   _authRepo.registerUser(name!, email!, phone!, password!, deviceToken!, context,
-  //           (result, isSuccess) {
-  //         if (isSuccess) {
-  //           _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-  //           AppDataManager.getInstance.updateUserDetails(userInfoModel!);
-  //           ToastMessage.message(
-  //               ((result as SuccessState).value as ASResponseModal).message);
-  //           isLogin=true;
-  //           User();
-  //           print('Register api Successfully');
-  //           AppIndicator.disposeIndicator();
-  //           GoRouter.of(context).pushNamed(RoutesName.home);
-  //           Navigator.pop(context);
-  //           notifyListeners();
-  //         }
-  //       });
-  // }
 
   Future<void> resendOtp(
       String? phone, BuildContext context, NetworkResponseHandler handler,
@@ -318,26 +254,12 @@ class AuthViewModel with ChangeNotifier {
     _authRepo.resendOTP(phone ?? '',verifyDetailType ?? '',context, (result, isSuccess) {
       if (isSuccess) {
         AppIndicator.disposeIndicator();
-        _userInfoModel =
-            ((result as SuccessState).value as ASResponseModal).dataModal;
+        _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         if (_userInfoModel != null) {
           AppDataManager.getInstance.updateUserDetails(userInfoModel!);
         }
-        ToastMessage.message(
-            ((result as SuccessState).value as ASResponseModal).message);
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
         print('otp verified Successfully');
-        // if (isEditPage == true) {
-        // } else {
-        //   Navigator.pushReplacement(
-        //       context,
-        //       MaterialPageRoute(
-        //           builder: (_) => VerifyOtp(
-        //               name: name,
-        //               email: email,
-        //               password: password,
-        //               mobileNo: phone,
-        //               isForgotPassword: isForgotPassword)));
-        // }
         notifyListeners();
       }
     });
@@ -348,8 +270,7 @@ class AuthViewModel with ChangeNotifier {
     _authRepo.forgotPassword(phone, loginType == true ? 'phone' : 'email',context, (result, isSuccess) {
       if (isSuccess) {
         print('forgot password api Successfully');
-        ToastMessage.message(
-            ((result as SuccessState).value as ASResponseModal).message);
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
         AppIndicator.disposeIndicator();
         Navigator.pop(context);
         showDialog(
@@ -373,9 +294,6 @@ class AuthViewModel with ChangeNotifier {
             ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
             AppIndicator.disposeIndicator();
             Navigator.pop(context);
-            //
-            // Navigator.pushNamedAndRemoveUntil(context, RoutesName.home, (route) => false);
-           // GoRouter.of(context).pushNamed(RoutesName.home);
             notifyListeners();
           }
         });

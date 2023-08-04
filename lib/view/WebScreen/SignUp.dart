@@ -4,7 +4,6 @@ import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
-import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppTextField.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
@@ -63,14 +62,14 @@ class _SignUpState extends State<SignUp> {
         create: (BuildContext context) => homeViewModel,
         child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
           return viewmodel.appConfigModel?.androidConfig!=null?
-            ResponsiveWidget.isMediumScreen(context)
-              ? AlertDialog(
-                  elevation: 8,
-                  titlePadding: EdgeInsets.zero,   insetPadding: EdgeInsets.all(10),
+            AlertDialog(
+                  elevation: 10,
+                  titlePadding: EdgeInsets.zero,
+                insetPadding: EdgeInsets.all(10),
                      actionsPadding: EdgeInsets.zero,
-                backgroundColor:Theme.of(context).cardColor,
                   contentPadding: EdgeInsets.zero,
-                  content: Container(
+                  content:  ResponsiveWidget.isMediumScreen(context)
+                      ?Container(
                       padding: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
                       child: SingleChildScrollView(
                         child: Column(
@@ -173,12 +172,8 @@ class _SignUpState extends State<SignUp> {
 
                           ],
                         ),
-                      )))
-              : AlertDialog(
-              elevation: 10,backgroundColor:Theme.of(context).cardColor,
-              actionsPadding: EdgeInsets.zero,
-              contentPadding: EdgeInsets.zero,
-                  content: Container(
+                      ))
+              :  Container(
                     margin: EdgeInsets.only(left: 50, right: 50,top: 20),
                     height: SizeConfig.screenHeight / 1.45,
                     width: SizeConfig.screenWidth * 0.25,
@@ -275,7 +270,6 @@ class _SignUpState extends State<SignUp> {
                                 }
                               },
                               child: Container(
-                                // margin: EdgeInsets.only(left: 120, right: 120, bottom: 5),
                                   width: SizeConfig.screenWidth * 0.08,
                                   child: GlobalVariable.isLightTheme == true ?
                                   Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: 50) :
@@ -295,12 +289,11 @@ class _SignUpState extends State<SignUp> {
   registerForms(HomeViewModel viewmodel) {
     return Column(
       children: [
-        signUpAppTextField(nameController, StringConstant.name, TextInputType.text, validation.sinkFirstName, 100, validation.firstName, isName),
+        signUpAppTextField(nameController, StringConstant.name, TextInputType.text, validation.sinkFirstName, 50, validation.firstName, isName),
         SizedBox(height: 15),
-        signUpAppTextField(emailController, StringConstant.email, TextInputType.emailAddress, validation.sinkEmail, 100, validation.email, isEmail),
+        signUpAppTextField(emailController, StringConstant.email, TextInputType.emailAddress, validation.sinkEmail, 50, validation.email, isEmail),
         viewmodel.appConfigModel?.androidConfig?.loginWithPhone  == false ? SizedBox() : SizedBox(height: 15),
-        viewmodel.appConfigModel?.androidConfig?.loginWithPhone == false
-            ? SizedBox()
+        viewmodel.appConfigModel?.androidConfig?.loginWithPhone == false ? SizedBox()
             : signUpAppTextField(phoneController, StringConstant.phone, TextInputType.number, validation.sinkPhoneNo, 10, validation.phoneNo, isPhone),
         SizedBox(height: 15),
         StreamBuilder(
@@ -325,14 +318,11 @@ class _SignUpState extends State<SignUp> {
                   },
                   onSubmitted: (m) {});
             }),
-        //signUpAppTextField(passwordController, StringConstant.password, TextInputType.visiblePassword, validation.sinkPassword, 100, validation.password, isPassword),
-        const SizedBox(height: 15),
-        // Container(
-        //     alignment: Alignment.topLeft,
-        //     child: TermsConditionAgreement(width: SizeConfig.screenWidth)),
+        SizedBox(height: 15),
       ],
     );
   }
+
   Widget signUpAppTextField(TextEditingController signUpController, String msg, var keyBoardType, var validationType, int maximumLength, var streamValidationType, bool isValidation){
     return StreamBuilder(
         stream: streamValidationType,
@@ -359,7 +349,6 @@ class _SignUpState extends State<SignUp> {
               onSubmitted: (m) {});
         });
   }
-
 
   Widget socialLoginView(
       SocialLoginViewModel socialVM, HomeViewModel viewmodel) {
@@ -392,48 +381,6 @@ class _SignUpState extends State<SignUp> {
     );
   }
 
-
-  //
-  // Widget socialLoginViewMobile(SocialLoginViewModel socialVM) {
-  //   return Container(
-  //     width: SizeConfig.screenWidth / 1.5,
-  //     child: Column(
-  //       children: [
-  //         Row(
-  //           mainAxisAlignment: MainAxisAlignment.center,
-  //           children: [
-  //             Expanded(
-  //               child: Container(
-  //                 width: SizeConfig.screenWidth * 0.15,
-  //                 child: Divider(
-  //                   color: BLACK_COLOR,
-  //                 ),
-  //               ),
-  //             ),
-  //             Padding(
-  //               padding: EdgeInsets.only(left: 10, right: 10),
-  //               child: AppMediumFont(context,
-  //                   msg: StringConstant.orContinueWith,
-  //                   color: TEXT_COLOR,
-  //                   fontSize: 14),
-  //             ),
-  //             Expanded(
-  //               child: Container(
-  //                 width: SizeConfig.screenWidth * 0.15,
-  //                 child: Divider(
-  //                   color: BLACK_COLOR,
-  //                 ),
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-  //         SizedBox(height: 15),
-  //         SocialLoginView(socialLoginViewModel: socialVM)
-  //       ],
-  //     ),
-  //   );
-  // }
-  // register button pressed handle
   registerButtonPressed(
       AuthViewModel authVM,
       String name,
@@ -445,8 +392,4 @@ class _SignUpState extends State<SignUp> {
     authVM.register(
         viewModel, name, phone, email, password, loginType, context);
   }
-  // registerButtonPressed(AuthViewModel authVM, String name, String email,
-  //     String phone, String password, HomeViewModel viewModel) {
-  //   authVM.register(viewModel,name, phone, email, password, context);
-  // }
 }

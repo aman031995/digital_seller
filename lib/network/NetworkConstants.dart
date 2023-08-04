@@ -11,7 +11,8 @@ class NetworkConstants{
   static String kContactUs = "add-contactUs";
   static String kOpenWebViewUrl = "web-view?appId={APP_ID}&query={QUERY}";
   static String kSendLogSupport = "email-support";
-  static String kGetSearchData = "search-product?appId={APP_ID}&userId={USER_ID}&query={SEARCH_QUERY}&pageNum={PAGE_NUM}";  static String kGetAppMenu = "getAppMenu?appId={APP_ID}&deviceType={DEVICE_TYPE}";
+  static String kGetSearchData = "search-product?appId={APP_ID}&userId={USER_ID}&query={SEARCH_QUERY}&pageNum={PAGE_NUM}";
+  static String kGetAppMenu = "getAppMenu?appId={APP_ID}&deviceType={DEVICE_TYPE}";
 
   // homepage api section
   static String kGetBannerList = "get-all-banner?appId={APP_ID}";
@@ -47,7 +48,7 @@ class NetworkConstants{
 
   static String kGetOrderList = "order-list?userId={USER_ID}&appId={APP_ID}&pageNum={PAGE_NUM}";
   static String kgetAllAddress = "get-all-address?userId={USER_ID}&appId={APP_ID}";
-  static String kGetOrderListDetail = "order-detail?userId={USER_ID}&appId={APP_ID}&orderId={ORDER_ID}";
+  static String kGetOrderListDetail = "order-detail?userId={USER_ID}&appId={APP_ID}&orderItemId={ORDER_ITEM_ID}";
   static String kAddToFavourite = "add-favorite";
   static String KGetFavourite="get-all-favorite?appId={APP_ID}&userId={USER_ID}&pageNum={PAGE_NUM}";
   static String placeOrder = "place-order";

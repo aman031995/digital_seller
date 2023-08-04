@@ -1,5 +1,6 @@
 
 import 'package:TychoStream/model/data/order_data_model.dart';
+import 'package:TychoStream/model/data/order_detail_model.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/network/ASRequestModal.dart';
@@ -40,15 +41,15 @@ class OrderDetailRepository {
   }
 
 
-  // GetOrderListDetail Method
-  Future<Result?> getOrderListDetail( String orderId,
+  //GetOrderListDetail Method
+  Future<Result?> getOrderListDetail(String orderItemId,
       BuildContext context, NetworkResponseHandler responseHandler) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     AppNetwork appNetwork = AppNetwork();
     Map<String, String> urlParams = {
       "{USER_ID}": sharedPreferences.get("userId").toString(),
       "{APP_ID}": NetworkConstants.kAppID,
-      "{ORDER_ID}": orderId,
+      "{ORDER_ITEM_ID}" : '$orderItemId'
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
         urlParams, NetworkConstants.kGetOrderListDetail, RequestType.get);
@@ -58,7 +59,7 @@ class OrderDetailRepository {
         Map<String, dynamic> map =
         (result as SuccessState).value as Map<String, dynamic>;
         if (map["data"] is Map<String, dynamic>) {
-          response.dataModal = OrderDataModel.fromJson(map["data"]);
+          response.dataModal = OrderDetailModel.fromJson(map["data"]);
         }
         responseHandler(Result.success(response), isSuccess);
       } else {

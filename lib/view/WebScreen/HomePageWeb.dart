@@ -1,16 +1,12 @@
-import 'package:TychoStream/model/data/AppConfigModel.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
-import 'package:TychoStream/utilities/AppColor.dart';
-import 'package:TychoStream/utilities/AppIndicator.dart';
-import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/OnHover.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/search/search_list.dart';
+import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
-
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/annotations.dart';
@@ -19,14 +15,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AssetsConstants.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
-import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/view/WebScreen/CommonCarousel.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
-import 'package:TychoStream/view/widgets/search_view.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import '../../AppRouter.gr.dart';
 import '../../main.dart';
@@ -89,6 +82,12 @@ class _HomePageWebState extends State<HomePageWeb> {
                   if (isLogins == true) {
                     isLogins = false;
                     setState(() {});
+                  }
+                  if(isSearch==true){
+                    isSearch=false;
+                    setState(() {
+
+                    });
                   }
                 },
                 child: Scaffold(
@@ -449,8 +448,8 @@ class _HomePageWebState extends State<HomePageWeb> {
 
                           isSearch==true?
                           Positioned(
-                              top: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.04,
-                              right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.08,
+                              top: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.041,
+                              right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.15,
                               child: searchList(context, viewmodel, scrollController,homeViewModel, searchController!,cartViewModel.cartItemCount))
                               : Container()
 

@@ -1,290 +1,456 @@
-// import 'package:TychoStream/model/data/order_data_model.dart';
-// import 'package:TychoStream/utilities/AppColor.dart';
-// import 'package:TychoStream/utilities/Responsive.dart';
-// import 'package:TychoStream/utilities/SizeConfig.dart';
-// import 'package:TychoStream/utilities/StringConstants.dart';
-// import 'package:TychoStream/utilities/TextHelper.dart';
-// import 'package:TychoStream/view/widgets/common_methods.dart';
-// import 'package:TychoStream/view/widgets/no_internet.dart';
-// import 'package:TychoStream/viewmodel/order_view_model.dart';
-// import 'package:flutter/material.dart';
-// import 'package:provider/provider.dart';
-//
-//
-// class OrderDetails extends StatefulWidget {
-//   OrderList? orderItem;
-//   OrderDetails({Key? key,this.orderItem}) : super(key: key);
-//
-//   @override
-//   State<OrderDetails> createState() => _OrderDetailsState();
-// }
-//
-// class _OrderDetailsState extends State<OrderDetails> {
-//   final OrderViewModel orderView = OrderViewModel();
-//   String? checkInternet;
-//
-//   void initState() {
-//     super.initState();
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     SizeConfig().init(context);
-//     return ChangeNotifierProvider.value(
-//         value: orderView,
-//         child: Consumer<OrderViewModel>(builder: (context, orderView, _) {
-//           return AlertDialog(
-//               elevation: 8,
-//               backgroundColor:Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
-//               contentPadding: EdgeInsets.zero,
-//               shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-//               content: checkInternet == "Offline"
-//                   ? NOInternetScreen()
-//                   : SingleChildScrollView(
-//                     child: Container(
-//                       width: 500,
-//                 margin: EdgeInsets.only(left: 15.0, right: 15.0),
-//                 child: Column(
-//                     mainAxisAlignment: MainAxisAlignment.start,
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     children: [
-//                       SizedBox(height: 10),
-//                       AppMediumFont(context,
-//                           msg: StringConstant.orderDetailed+' - ${widget.orderItem?.orderId}'),
-//                       SingleChildScrollView(
-//                         child: Container(
-//                           height: 180.0* widget.orderItem!.itemDetails!.length,
-//                           child: ListView.builder(
-//                             itemCount: widget.orderItem?.itemDetails?.length,
-//                               physics:ScrollPhysics(),
-//                               itemBuilder: (context,index){
-//                             return itemView(index);
-//                           }),
-//                         ),
-//                       ),
-//                       shippingDetails(),
-//                       priceDetails(),
-//                       SizedBox(
-//                         height: 5,
-//                       ),
-//                     ],
-//                 ),
-//               ),
-//                   )
-//             // : Center(child: ThreeArchedCircle(size: 45.0)),
-//           );
-//         }));
-//   }
-//
-//   //ItemsView Method
-//   itemView(int index) {
-//     return Container(
-//       decoration: BoxDecoration(
-//           color: Theme
-//               .of(context)
-//               .cardColor
-//               .withOpacity(0.9),
-//           borderRadius: BorderRadius.all(Radius.circular(5.0))),
-//
-//       height: 180,
-//       alignment: Alignment.topLeft,
-//       margin: EdgeInsets.only(top: 10, bottom: 10),
-//        padding: EdgeInsets.only(left: 20,top: 10),
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.start,
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Column(
-//                 mainAxisAlignment: MainAxisAlignment.start,
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   Container(
-//                     width:  ResponsiveWidget.isMediumScreen(context)
-//                         ?100:300,
-//                     child: AppBoldFont(context,maxLines: 2,
-//                         msg: '${getTitle(index)}', fontSize: 16.0,),
-//                   ),
-//                   SizedBox(
-//                     height: 5,
-//                   ),
-//                   Container(
-//                       width:  ResponsiveWidget.isMediumScreen(context)
-//                           ?130:300,
-//                     child: Row(
-//                       children: [
-//                         AppMediumFont(
-//                             context,
-//                             msg: "₹" +
-//                                 "${widget.orderItem?.itemDetails?[index].productDetails?.productDiscountPrice}",
-//                             fontSize: 14.0),
-//                         AppMediumFont(
-//                             context,
-//                             msg: "${widget.orderItem?.itemDetails?[index].productDetails?.productPrice}",
-//                             textDecoration:
-//                             TextDecoration
-//                                 .lineThrough,
-//                             fontSize: 12.0),
-//                         SizedBox(width: 2),
-//                         AppMediumFont(
-//                             context,
-//                             msg: "${widget.orderItem?.itemDetails?[index].productDetails?.productDiscountPercent}" +
-//                                 r"%OFF",
-//                             color: GREEN,
-//                             fontSize: 12.0),
-//                       ],
-//                     ),
-//                   ),
-//                   SizedBox(
-//                     height: 5,
-//                   ),
-//                   AppMediumFont(
-//                       context,
-//                       msg: "QTY : "+"${widget.orderItem?.itemDetails?[0].cartQuantity}" ,
-//                       fontSize: 14.0),
-//                   widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.color?.name != null?      AppRegularFont(context,
-//                       maxLines: 1, msg: "color"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.color?.name}', fontSize: 16.0):SizedBox(),
-//                   widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.size?.name != null?      AppRegularFont(context,
-//                       maxLines: 1,  msg: "size"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.size?.name}', fontSize: 16.0):SizedBox(),
-//                   widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.style?.name != null?       AppRegularFont(context,
-//                       maxLines: 1,  msg: "style"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.style?.name}', fontSize: 16.0):SizedBox(),
-//                   widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.materialType?.name != null?
-//                   AppRegularFont(context,
-//                       maxLines: 2,  msg: "MaterialType"+'- ${getMaterialType(index)}', fontSize: 16.0):SizedBox(),
-//                   widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.unitCount?.name != null?
-//                   AppRegularFont(context,
-//                       maxLines: 1,   msg: "UnitCount"+'- ${widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.unitCount?.name}', fontSize: 16.0):SizedBox(),
-//
-//
-//                   SizedBox(
-//                     height: 15,
-//                   ),
-//                 ],
-//               ),
-//               InkWell(
-//                   onTap: () {},
-//                   child: ClipRRect(
-//                     borderRadius: BorderRadius.circular(8.0),
-//                     child: Image.network('${widget.orderItem?.itemDetails?[index].productDetails?.productImages?[0]}',
-//                       height: ResponsiveWidget.isMediumScreen(context)
-//                           ?80: 150,
-//                       width: ResponsiveWidget.isMediumScreen(context)
-//                           ?80: 150,fit: BoxFit.fill,
-//                     ),
-//                   )),
-//               SizedBox(width: 10)
-//             ],
-//           ),
-//
-//
-//         ],
-//       ),
-//     );
-//   }
-//   String? getMaterialType(int index) {
-//     if (widget.orderItem!.itemDetails![index].productDetails!.defaultVariationSku!.materialType!.name!.length > 35) {
-//       return widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.materialType?.name!.replaceRange(
-//           35, widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.materialType?.name!.length, '...');
-//     } else {
-//       return widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.materialType?.name ?? "";
-//     }
-//   }
-//   String? getTitle(int index) {
-//     if (widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle!.length > 25) {
-//       return widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle!.replaceRange(
-//           25, widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle!.length, '...');
-//     } else {
-//       return widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle! ?? "";
-//     }
-//   }
-//   //Shipping Details Method
-//   shippingDetails() {
-//     return Container(
-//         decoration: BoxDecoration(
-//             color: Theme
-//                 .of(context)
-//                 .cardColor
-//                 .withOpacity(0.9),
-//             borderRadius: BorderRadius.all(Radius.circular(5.0))),
-//         width: SizeConfig.screenWidth,
-//         alignment: Alignment.topLeft,
-//         margin: EdgeInsets.only(top: 10, bottom: 10),
-//         // padding: EdgeInsets.only(left: 20, right: 20),
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.start,
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             SizedBox(height: 10),
-//             AppBoldFont(context, msg: StringConstant.shippingDetails),
-//             Divider(
-//               color: Theme
-//                   .of(context)
-//                   .cardColor,
-//               thickness: 1,
-//             ),
-//             Container(
-//               padding: EdgeInsets.only(left: 20, right: 20),
-//               child: AppMediumFont(context,
-//                   msg: '${widget.orderItem?.shippingAddress?.firstName}' +' ${widget.orderItem?.shippingAddress?.lastName}'
-//                       "\n" +
-//                       '${widget.orderItem?.shippingAddress?.firstAddress},' +
-//                       "\n" +
-//                       '${widget.orderItem?.shippingAddress?.secondAddress},'+
-//                       "\n" +
-//                       '${widget.orderItem?.shippingAddress?.cityName},' +'${widget.orderItem?.shippingAddress?.state},'
-//                       "\n" +
-//                       '${widget.orderItem?.shippingAddress?.pinCode},'
-//                       "\n" +
-//                       "Phone: ${widget.orderItem?.shippingAddress?.mobileNumber}"),
-//             ),
-//             SizedBox(height: 10),
-//           ],
-//         ));
-//   }
-//
-//   //Price Details Method
-//   priceDetails() {
-//     return Container(
-//         decoration: BoxDecoration(
-//             color: Theme
-//                 .of(context)
-//                 .cardColor
-//                 .withOpacity(0.9),
-//             borderRadius: BorderRadius.all(Radius.circular(5.0))),
-//         width: SizeConfig.screenWidth,
-//         alignment: Alignment.topLeft,
-//         margin: EdgeInsets.only(top: 10, bottom: 10),
-//         child: Column(
-//             mainAxisAlignment: MainAxisAlignment.start,
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               SizedBox(height: 10),
-//               AppBoldFont(context, msg: StringConstant.priceDetails),
-//               Divider(color: Theme
-//                   .of(context)
-//                   .cardColor, thickness: 1),
-//               priceDetailWidget(
-//                   context, StringConstant.basePrice , '${widget.orderItem?.totalPrice}'),
-//               SizedBox(height: 3),
-//               priceDetailWidget(
-//                   context, StringConstant.discountedPrice,'${widget.orderItem?.discountedprice}'),
-//               SizedBox(height: 3),
-//               priceDetailWidget(context, StringConstant.shipping , '${widget.orderItem?.shippingCharge}'),
-//               SizedBox(height: 5),
-//               Divider(
-//                 height: 1,
-//                 thickness: 0.6,
-//                 color: Theme
-//                     .of(context)
-//                     .canvasColor,
-//               ),
-//               SizedBox(height: 5),
-//               priceDetailWidget(
-//                   context, StringConstant.totalAmount , '${widget.orderItem?.totalPaidAmount}'),
-//               SizedBox(height: 8)
-//             ]));
-//   }
-// }
+import 'package:TychoStream/model/data/order_data_model.dart';
+import 'package:TychoStream/model/data/order_detail_model.dart';
+import 'package:TychoStream/utilities/AppColor.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
+import 'package:TychoStream/utilities/SizeConfig.dart';
+import 'package:TychoStream/utilities/StringConstants.dart';
+import 'package:TychoStream/utilities/TextHelper.dart';
+import 'package:TychoStream/utilities/three_arched_circle.dart';
+import 'package:TychoStream/view/widgets/common_methods.dart';
+import 'package:TychoStream/view/widgets/no_internet.dart';
+import 'package:TychoStream/viewmodel/order_view_model.dart';
+import 'package:another_stepper/another_stepper.dart';
+import 'package:another_stepper/widgets/another_stepper.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+
+class OrderDetails extends StatefulWidget {
+  OrderList? orderItem;
+  OrderDetails({Key? key,this.orderItem}) : super(key: key);
+
+  @override
+  State<OrderDetails> createState() => _OrderDetailsState();
+}
+
+class _OrderDetailsState extends State<OrderDetails> {
+  final OrderViewModel orderView = OrderViewModel();
+  String? checkInternet;
+
+  void initState() {
+    orderView.getOrderDetails(context, '${widget.orderItem?.orderItemId}');
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider.value(
+        value: orderView,
+        child: Consumer<OrderViewModel>(builder: (context, order, _) {
+          return AlertDialog(
+              elevation: 0.8,
+              buttonPadding: EdgeInsets.zero,
+              actionsPadding: EdgeInsets.zero,
+              backgroundColor:Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
+              contentPadding: EdgeInsets.zero,
+              content: order.orderDetailModel!=null? SingleChildScrollView(
+                child: Container(
+                      width: 500,height: 810,
+                  margin: EdgeInsets.only(left: 15.0, right: 15.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 10),
+                      itemView(order),
+                      shippingDetails(),
+                      priceDetails(order.orderDetailModel),
+                      Container(
+                          margin: EdgeInsets.only(top: 8, bottom: 8),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).cardColor.withOpacity(0.9),
+                              borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                          padding: EdgeInsets.only(left: 20),
+                          child: AnotherStepper(
+                              stepperDirection: Axis.vertical,
+                              iconWidth: 25,
+                              iconHeight: 25,
+                              activeBarColor: GREEN,
+                              inActiveBarColor: Theme.of(context).canvasColor.withOpacity(0.4),
+                              inverted: false,
+                              verticalGap: 20,
+                              activeIndex: orderView.orderDetailModel!.orderTracking!.activeIndex! -1 ?? 1,
+                              barThickness: 2,
+                              stepperList:_stepperList(context,orderView.orderDetailModel)
+
+                          )),
+                      SizedBox(
+                        height: 5,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+
+             : Container(
+                  width: 500,height: 800,
+                  child: Center(child: ThreeArchedCircle(size: 45.0))),
+          );
+        }));
+  }
+
+  String? getMaterialType(OrderViewModel order) {
+    if(order.orderDetailModel!.variationSku!.materialType!.name!.length > 35) {
+      return order.orderDetailModel!.variationSku!.materialType!.name!.replaceRange(35, order.orderDetailModel!.variationSku!.materialType!.name!.length, '...');
+    } else {
+      return order.orderDetailModel!.variationSku!.materialType!.name! ?? "";
+    }
+
+    // if (widget.orderItem!.itemDetails![index].productDetails!.defaultVariationSku!.materialType!.name!.length > 35) {
+    //   return widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.materialType?.name!.replaceRange(
+    //       35, widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.materialType?.name!.length, '...');
+    // } else {
+    //   return widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.materialType?.name ?? "";
+    // }
+  }
+
+  String? getTitle(OrderViewModel order) {
+    if(order.orderDetailModel!.productName!.length > 35) {
+      return order.orderDetailModel!.productName!.replaceRange(35, order.orderDetailModel!.productName!.length, '...');
+    } else {
+      return order.orderDetailModel!.productName! ?? "";
+    }
+
+    // if (widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle!.length > 35) {
+    //   return widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle!.replaceRange(
+    //       35, widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle!.length, '...');
+    // } else {
+    //   return widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle! ?? "";
+    // }
+  }
+
+  productDetailTopView(OrderViewModel order) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        AppBoldFont(context, msg: StringConstant.orderDetailed+'-${order.orderDetailModel?.orderId}', fontSize: 13),
+        AppRegularFont(context, msg: '${order.orderDetailModel?.orderDate}', fontSize: 13)
+      ],
+    );
+  }
+
+  priceView(OrderViewModel order) {
+    return Row(
+      children: [
+        // AppMediumFont(
+        //     context,
+        //     // msg: "₹" + "${widget.orderItem?.itemDetails?[index].productDetails?.productPrice}",
+        //     msg: "₹" + "${order.orderDetailModel?.totalPaidAmount}",
+        //     textDecoration: TextDecoration.lineThrough,
+        //     fontSize: 16.0),
+        // SizedBox(width: SizeConfig.safeBlockVertical * 1),
+        AppMediumFont(
+            context,
+            msg: "₹" + "${order.orderDetailModel?.productFinalPrice}",
+            fontSize: 16.0),
+        SizedBox(width: SizeConfig.safeBlockVertical * 1),
+        // AppMediumFont(
+        //     context,
+        //     msg: "${widget.orderItem?.itemDetails?[index].productDetails?.productDiscountPercent}" + r"%OFF",
+        //     color:GREEN, fontSize: 12.0),
+      ],
+    );
+  }
+  //ItemsView Method
+  itemView(OrderViewModel order) {
+    return Container(
+      decoration: BoxDecoration(
+          color: Theme.of(context).cardColor.withOpacity(0.9),
+          borderRadius: BorderRadius.all(Radius.circular(5.0))),
+      width:500,
+      alignment: Alignment.topLeft,
+      margin: EdgeInsets.only(top: 10, bottom: 4),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 10, left: 20, right: 15),
+            child: productDetailTopView(order),
+          ),
+          Divider(
+            color: Theme.of(context).canvasColor,
+            thickness: 0.2,
+          ),
+          Container(
+            padding: EdgeInsets.only(left: 20, right: 15),
+            margin: EdgeInsets.only(top: 10.0, bottom: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width:300,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppBoldFont(context,maxLines: 2, msg: getTitle(order), fontSize: 14.0),
+                      SizedBox(height: 5),
+                      priceView(order),
+                      AppRegularFont(context, msg:"Quantity - "+ "${orderView.orderDetailModel?.quantity}", fontSize: 16.0),
+                      order.orderDetailModel?.variationSku?.color?.name != null ?
+                      RichText(
+                          text: TextSpan(
+                              text:
+                              'Color  :  ',
+                              style: TextStyle(
+                                  fontSize:
+                                  16,
+                                  fontWeight:
+                                  FontWeight
+                                      .w400,
+                                  color: Theme.of(context).canvasColor,
+                                  fontFamily: Theme.of(context)
+                                      .textTheme
+                                      .displayMedium
+                                      ?.fontFamily),
+                              children: <InlineSpan>[
+                                TextSpan(
+                                    style: TextStyle(
+                                        fontSize:
+                                        16,
+                                        fontWeight: FontWeight
+                                            .w400,
+                                        color: Theme.of(context).canvasColor.withOpacity(
+                                            0.7),
+                                        fontFamily: Theme.of(context)
+                                            .textTheme
+                                            .displayMedium
+                                            ?.fontFamily),
+                                    // text: '${widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.color?.name}',
+                                    text: '${order.orderDetailModel?.variationSku?.color?.name}'
+                                )
+                              ]))
+                          : SizedBox(),
+                      order.orderDetailModel?.variationSku?.size?.name != null ?
+                      RichText(
+                          text: TextSpan(
+                              text:
+                              'Size  :  ',
+                              style: TextStyle(
+                                  fontSize:
+                                  16,
+                                  fontWeight:
+                                  FontWeight.w400,
+                                  color: Theme.of(context).canvasColor,
+                                  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                              children: <InlineSpan>[
+                                TextSpan(
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400,
+                                        color: Theme.of(context).canvasColor.withOpacity(0.7),
+                                        fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                    // text: '${widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.size?.name}',
+                                    text: '${order.orderDetailModel?.variationSku?.size?.name}'
+                                )
+                              ]))
+                          : SizedBox(),
+                      order.orderDetailModel?.variationSku?.style?.name != null ?
+                      RichText(
+                          text: TextSpan(
+                              text:
+                              'Style  :  ',
+                              style: TextStyle(
+                                  fontSize:
+                                  16,
+                                  fontWeight:
+                                  FontWeight
+                                      .w400,
+                                  color:Theme.of(context).canvasColor,
+                                  fontFamily: Theme.of(context)
+                                      .textTheme
+                                      .displayMedium
+                                      ?.fontFamily),
+                              children: <InlineSpan>[
+                                TextSpan(
+                                  style: TextStyle(
+                                      fontSize:
+                                      16,
+                                      fontWeight: FontWeight
+                                          .w400,
+                                      color: Theme.of(context).canvasColor.withOpacity(
+                                          0.7),
+                                      fontFamily: Theme.of(context)
+                                          .textTheme
+                                          .displayMedium
+                                          ?.fontFamily),
+                                  text: '${order.orderDetailModel?.variationSku?.style?.name}',
+                                )
+                              ]))
+                          : SizedBox(),
+                      order.orderDetailModel?.variationSku?.materialType?.name != null ?
+                      RichText(
+                          text: TextSpan(
+                              text: 'MaterialType  :  ',
+                              style: TextStyle(fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: Theme.of(context).canvasColor,
+                                  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                              children: <InlineSpan>[
+                                TextSpan(
+                                  style: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.w400,
+                                      color: Theme.of(context).canvasColor.withOpacity(0.7),
+                                      fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                                  text: '${getMaterialType(order)}',
+                                )
+                              ]))
+                          : SizedBox(),
+                      order.orderDetailModel?.variationSku?.unitCount?.name != null ?
+                      RichText(
+                          text: TextSpan(
+                              text:
+                              'UnitCount  :  ',
+                              style: TextStyle(
+                                  fontSize:
+                                  16,
+                                  fontWeight:
+                                  FontWeight
+                                      .w400,
+                                  color:Theme.of(context).canvasColor,
+                                  fontFamily: Theme.of(context)
+                                      .textTheme
+                                      .displayMedium
+                                      ?.fontFamily),
+                              children: <InlineSpan>[
+                                TextSpan(
+                                  style: TextStyle(
+                                      fontSize:
+                                      16,
+                                      fontWeight: FontWeight
+                                          .w400,
+                                      color: Theme.of(context).canvasColor.withOpacity(
+                                          0.7),
+                                      fontFamily: Theme.of(context)
+                                          .textTheme
+                                          .displayMedium
+                                          ?.fontFamily),
+                                  text: '${order.orderDetailModel?.variationSku?.unitCount?.name}',
+                                )
+                              ]))
+                          : SizedBox(),
+                      SizedBox(height: 15),
+                    ],
+                  ),
+                ),
+                InkWell(
+                    onTap: (){},
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(4.0),
+                      // child: Image.network('${widget.orderItem?.itemDetails?[index].productDetails?.productImages?[0]}',
+                      child: Image.network('${order.orderDetailModel?.productImages?[0] ?? ""}',
+                        height: 120,
+                        width: 120,fit: BoxFit.fill,
+                      ),
+                    )),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+  //Shipping Details Method
+  shippingDetails() {
+    return Container(
+        decoration: BoxDecoration(
+            color: Theme
+                .of(context)
+                .cardColor
+                .withOpacity(0.9),
+            borderRadius: BorderRadius.all(Radius.circular(5.0))),
+        width: SizeConfig.screenWidth,
+        alignment: Alignment.topLeft,
+        margin: EdgeInsets.only(top: 10, bottom: 10),
+        // padding: EdgeInsets.only(left: 20, right: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 10),
+            AppBoldFont(context, msg: StringConstant.shippingDetails),
+            Divider(
+              color: Theme
+                  .of(context)
+                  .canvasColor,
+              thickness: 0.2,
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 20, right: 20),
+              child: AppMediumFont(context,
+                  msg: '${widget.orderItem?.shippingAddress?.firstName}' +' ${widget.orderItem?.shippingAddress?.lastName}'
+                      "\n" +
+                      '${widget.orderItem?.shippingAddress?.firstAddress},' +
+                      "\n" +
+                      '${widget.orderItem?.shippingAddress?.secondAddress},'+
+                      "\n" +
+                      '${widget.orderItem?.shippingAddress?.cityName},' +'${widget.orderItem?.shippingAddress?.state},'
+                      "\n" +
+                      '${widget.orderItem?.shippingAddress?.pinCode},'
+                      "\n" +
+                      "Phone: ${widget.orderItem?.shippingAddress?.mobileNumber}"),
+            ),
+            SizedBox(height: 10),
+          ],
+        ));
+  }
+  //Price Details Method
+  priceDetails(OrderDetailModel? orderDetailModel) {
+    return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          color: Theme.of(context).cardColor.withOpacity(0.9),
+        ),
+        width: SizeConfig.screenWidth,
+        alignment: Alignment.topLeft,
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(padding: EdgeInsets.only(left: 20, right: 20,top: 8,bottom: 8), child: AppBoldFont(context, msg: StringConstant.priceDetails)),
+              Divider(
+                color: Theme.of(context).canvasColor,
+                thickness: 0.2,
+                height: 1,
+              ),
+              Container(child: _priceList(orderDetailModel?.checkoutDetails)),
+              SizedBox(height: 8)
+            ]));
+  }
+  _priceList(List<FinalCheckOut>? finalCheckOut){
+    return Column(
+        children: finalCheckOut!.map((e) {
+          return Column(
+            children: [
+              priceDetailWidget(
+                  context,
+                  e.name ?? "",
+                  e.value ?? ""),
+            ],
+          );
+        }).toList());
+
+    // return finalCheckOut?.map((e){
+    //   priceDetailWidget(context, e.name ?? "", e.value ?? "");
+    // }).toList();
+  }
+
+  List<StepperData> _stepperList(BuildContext context, OrderDetailModel? orderView) {
+    return orderView?.orderTracking?.trackStatus?.map((e) {
+      return StepperData(
+        title: StepperText('${e.displayOrder}',
+          textStyle: TextStyle(color: (orderView.orderTracking!.activeIndex! >= e.id!) ?
+          Theme.of(context).canvasColor :
+          Theme.of(context).canvasColor.withOpacity(0.4),),
+        ),
+        iconWidget: CircleAvatar(
+          radius: 10,
+          backgroundColor: e.displayOrder == 'Cancelled' ? RED_COLOR : (orderView.orderTracking!.activeIndex! >= e.id!) ? GREEN : Theme.of(context).canvasColor.withOpacity(0.4),
+          child: e.displayOrder == 'Cancelled' ? Icon(Icons.close_outlined, size: 20, color: Theme.of(context).hintColor) : Icon(Icons.done, size: 20, color: Theme.of(context).hintColor),
+        ),
+      );
+    }).toList() ?? []; // Use the null-aware operator to handle null case
+  }
+}

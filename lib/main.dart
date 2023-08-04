@@ -94,8 +94,9 @@ class _MyAppState extends State<MyApp> {
               return MaterialApp.router(
                   theme: ThemeData(
                       scrollbarTheme: ScrollbarThemeData(
-                        thumbColor: MaterialStateProperty.all(Theme.of(context).canvasColor),
-                        trackColor: MaterialStateProperty.all(Colors.grey),
+                        isAlwaysShown: false,
+                        showTrackOnHover: false,
+                        thickness: MaterialStateProperty.all(0.0),
                       ),
                       scaffoldBackgroundColor: (bgColor)?.toColor(),
                       primaryColor: (themeColor)?.toColor(),
@@ -106,7 +107,7 @@ class _MyAppState extends State<MyApp> {
                       hintColor: (buttonTxtColor)?.toColor()),
                 builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
-                  //scrollBehavior: MyCustomScrollBehavior(),
+                  scrollBehavior: MyCustomScrollBehavior(),
                 routerConfig: _appRouter.config(),
               );
             })
@@ -119,10 +120,10 @@ class _MyAppState extends State<MyApp> {
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
   @override
   Set<PointerDeviceKind> get dragDevices => {
-       // PointerDeviceKind.touch,
-      //  PointerDeviceKind.mouse,
-      //  PointerDeviceKind.invertedStylus,
-     //   PointerDeviceKind.trackpad
+       PointerDeviceKind.touch,
+       PointerDeviceKind.mouse,
+       PointerDeviceKind.invertedStylus,
+       PointerDeviceKind.trackpad
       };
 }
 

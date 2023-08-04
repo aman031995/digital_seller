@@ -279,7 +279,6 @@ class _LoginUpState extends State<LoginUp> {
         contentPadding: EdgeInsets.zero,
               backgroundColor:Theme.of(context).cardColor,
         content: Container(
-
           margin:  EdgeInsets.only(left: 50, right: 50,top: 20),
           height: SizeConfig.screenHeight / 1.45,
           width: SizeConfig.screenWidth * 0.25,
@@ -458,7 +457,6 @@ class _LoginUpState extends State<LoginUp> {
                   ],
                 ),
                 SizedBox(height: 20),
-
                 GestureDetector(
                   onTap: () async{
                     const url = 'http://digitalseller.in/';
@@ -470,7 +468,6 @@ class _LoginUpState extends State<LoginUp> {
                   },
                   child: Center(
                     child: Container(
-                        // margin: EdgeInsets.only(left: 120, right: 120, bottom: 5),
                         width: SizeConfig.screenWidth * 0.08,
                         child: GlobalVariable.isLightTheme == true ?
                         Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: 50) :

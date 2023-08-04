@@ -8,9 +8,9 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i16;
-import 'package:easy_stepper/easy_stepper.dart' as _i17;
-import 'package:flutter/material.dart' as _i18;
+import 'package:auto_route/auto_route.dart' as _i18;
+import 'package:easy_stepper/easy_stepper.dart' as _i19;
+import 'package:flutter/material.dart' as _i20;
 import 'package:TychoStream/view/Products/address_list_page.dart' as _i1;
 import 'package:TychoStream/view/Products/banner_product.dart' as _i2;
 import 'package:TychoStream/view/Products/buynowcart.dart' as _i3;
@@ -19,26 +19,27 @@ import 'package:TychoStream/view/Products/favourite_list_page.dart' as _i5;
 import 'package:TychoStream/view/Products/product_details.dart' as _i7;
 import 'package:TychoStream/view/Products/ProductList.dart' as _i6;
 import 'package:TychoStream/view/Products/thankyou_page.dart' as _i8;
-import 'package:TychoStream/view/search/search_page.dart' as _i9;
-import 'package:TychoStream/view/WebScreen/contact_us.dart' as _i10;
-import 'package:TychoStream/view/WebScreen/EditProfile.dart' as _i11;
-import 'package:TychoStream/view/WebScreen/FAQ.dart' as _i12;
-import 'package:TychoStream/view/WebScreen/HomePageWeb.dart' as _i13;
-import 'package:TychoStream/view/WebScreen/Privacy.dart' as _i14;
-import 'package:TychoStream/view/WebScreen/Terms.dart' as _i15;
-import 'package:TychoStream/viewmodel/profile_view_model.dart' as _i19;
+import 'package:TychoStream/view/Profile/my_order_page.dart' as _i9;
+import 'package:TychoStream/view/search/search_page.dart' as _i10;
+import 'package:TychoStream/view/WebScreen/contact_us.dart' as _i11;
+import 'package:TychoStream/view/WebScreen/EditProfile.dart' as _i12;
+import 'package:TychoStream/view/WebScreen/FAQ.dart' as _i13;
+import 'package:TychoStream/view/WebScreen/HomePageWeb.dart' as _i14;
+import 'package:TychoStream/view/WebScreen/Privacy.dart' as _i15;
+import 'package:TychoStream/view/widgets/web_html_page.dart' as _i17;
+import 'package:TychoStream/viewmodel/profile_view_model.dart' as _i21;
 
-abstract class $AppRouter extends _i16.RootStackRouter {
+abstract class $AppRouter extends _i18.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i16.PageFactory> pagesMap = {
+  final Map<String, _i18.PageFactory> pagesMap = {
     AddressListPage.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<AddressListPageArgs>(
           orElse: () =>
               AddressListPageArgs(buynow: pathParams.optBool('buynow')));
-      return _i16.AutoRoutePage<dynamic>(
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i1.AddressListPage(
           key: args.key,
@@ -54,7 +55,7 @@ abstract class $AppRouter extends _i16.RootStackRouter {
                 productId: pathParams.optString('bannerId'),
                 productdata: queryParams.optString('productdata'),
               ));
-      return _i16.AutoRoutePage<dynamic>(
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i2.banner_product(
           productId: args.productId,
@@ -66,7 +67,7 @@ abstract class $AppRouter extends _i16.RootStackRouter {
     BuynowCart.name: (routeData) {
       final args = routeData.argsAs<BuynowCartArgs>(
           orElse: () => const BuynowCartArgs());
-      return _i16.AutoRoutePage<dynamic>(
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i3.BuynowCart(key: args.key),
       );
@@ -76,7 +77,7 @@ abstract class $AppRouter extends _i16.RootStackRouter {
       final args = routeData.argsAs<CartDetailArgs>(
           orElse: () =>
               CartDetailArgs(itemCount: pathParams.optString('itemCount')));
-      return _i16.AutoRoutePage<dynamic>(
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i4.CartDetail(
           key: args.key,
@@ -88,7 +89,7 @@ abstract class $AppRouter extends _i16.RootStackRouter {
     FavouriteListPage.name: (routeData) {
       final args = routeData.argsAs<FavouriteListPageArgs>(
           orElse: () => const FavouriteListPageArgs());
-      return _i16.AutoRoutePage<dynamic>(
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i5.FavouriteListPage(
           key: args.key,
@@ -97,7 +98,7 @@ abstract class $AppRouter extends _i16.RootStackRouter {
       );
     },
     ProductListGallery.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i6.ProductListGallery(),
       );
@@ -110,7 +111,7 @@ abstract class $AppRouter extends _i16.RootStackRouter {
                 productId: pathParams.optString('productId'),
                 productdata: queryParams.get('productdata'),
               ));
-      return _i16.AutoRoutePage<dynamic>(
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i7.ProductDetailPage(
           productId: args.productId,
@@ -120,56 +121,68 @@ abstract class $AppRouter extends _i16.RootStackRouter {
       );
     },
     ThankYouPage.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i8.ThankYouPage(),
       );
     },
-    SearchPage.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
+    MyOrderPage.name: (routeData) {
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i9.SearchPage(),
+        child: const _i9.MyOrderPage(),
+      );
+    },
+    SearchPage.name: (routeData) {
+      return _i18.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i10.SearchPage(),
       );
     },
     ContactUs.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i10.ContactUs(),
+        child: const _i11.ContactUs(),
       );
     },
     EditProfile.name: (routeData) {
       final args = routeData.argsAs<EditProfileArgs>(
           orElse: () => const EditProfileArgs());
-      return _i16.AutoRoutePage<dynamic>(
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i11.EditProfile(
+        child: _i12.EditProfile(
           key: args.key,
           viewmodel: args.viewmodel,
         ),
       );
     },
     FAQ.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i12.FAQ(),
+        child: const _i13.FAQ(),
       );
     },
     HomePageWeb.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i13.HomePageWeb(),
+        child: const _i14.HomePageWeb(),
       );
     },
     Privacy.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i14.Privacy(),
+        child: const _i15.Privacy(),
       );
     },
-    Terms.name: (routeData) {
-      return _i16.AutoRoutePage<dynamic>(
+    WebHtmlPage.name: (routeData) {
+      final args = routeData.argsAs<WebHtmlPageArgs>(
+          orElse: () => const WebHtmlPageArgs());
+      return _i18.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i15.Terms(),
+        child: _i17.WebHtmlPage(
+          key: args.key,
+          html: args.html,
+          title: args.title,
+        ),
       );
     },
   };
@@ -177,11 +190,11 @@ abstract class $AppRouter extends _i16.RootStackRouter {
 
 /// generated route for
 /// [_i1.AddressListPage]
-class AddressListPage extends _i16.PageRouteInfo<AddressListPageArgs> {
+class AddressListPage extends _i18.PageRouteInfo<AddressListPageArgs> {
   AddressListPage({
-    _i17.Key? key,
+    _i19.Key? key,
     bool? buynow,
-    List<_i16.PageRouteInfo>? children,
+    List<_i18.PageRouteInfo>? children,
   }) : super(
           AddressListPage.name,
           args: AddressListPageArgs(
@@ -194,8 +207,8 @@ class AddressListPage extends _i16.PageRouteInfo<AddressListPageArgs> {
 
   static const String name = 'AddressListPage';
 
-  static const _i16.PageInfo<AddressListPageArgs> page =
-      _i16.PageInfo<AddressListPageArgs>(name);
+  static const _i18.PageInfo<AddressListPageArgs> page =
+      _i18.PageInfo<AddressListPageArgs>(name);
 }
 
 class AddressListPageArgs {
@@ -204,7 +217,7 @@ class AddressListPageArgs {
     this.buynow,
   });
 
-  final _i17.Key? key;
+  final _i19.Key? key;
 
   final bool? buynow;
 
@@ -216,12 +229,12 @@ class AddressListPageArgs {
 
 /// generated route for
 /// [_i2.banner_product]
-class Banner_product extends _i16.PageRouteInfo<Banner_productArgs> {
+class Banner_product extends _i18.PageRouteInfo<Banner_productArgs> {
   Banner_product({
     String? productId,
     String? productdata,
-    _i18.Key? key,
-    List<_i16.PageRouteInfo>? children,
+    _i20.Key? key,
+    List<_i18.PageRouteInfo>? children,
   }) : super(
           Banner_product.name,
           args: Banner_productArgs(
@@ -236,8 +249,8 @@ class Banner_product extends _i16.PageRouteInfo<Banner_productArgs> {
 
   static const String name = 'Banner_product';
 
-  static const _i16.PageInfo<Banner_productArgs> page =
-      _i16.PageInfo<Banner_productArgs>(name);
+  static const _i18.PageInfo<Banner_productArgs> page =
+      _i18.PageInfo<Banner_productArgs>(name);
 }
 
 class Banner_productArgs {
@@ -251,7 +264,7 @@ class Banner_productArgs {
 
   final String? productdata;
 
-  final _i18.Key? key;
+  final _i20.Key? key;
 
   @override
   String toString() {
@@ -261,10 +274,10 @@ class Banner_productArgs {
 
 /// generated route for
 /// [_i3.BuynowCart]
-class BuynowCart extends _i16.PageRouteInfo<BuynowCartArgs> {
+class BuynowCart extends _i18.PageRouteInfo<BuynowCartArgs> {
   BuynowCart({
-    _i18.Key? key,
-    List<_i16.PageRouteInfo>? children,
+    _i20.Key? key,
+    List<_i18.PageRouteInfo>? children,
   }) : super(
           BuynowCart.name,
           args: BuynowCartArgs(key: key),
@@ -273,14 +286,14 @@ class BuynowCart extends _i16.PageRouteInfo<BuynowCartArgs> {
 
   static const String name = 'BuynowCart';
 
-  static const _i16.PageInfo<BuynowCartArgs> page =
-      _i16.PageInfo<BuynowCartArgs>(name);
+  static const _i18.PageInfo<BuynowCartArgs> page =
+      _i18.PageInfo<BuynowCartArgs>(name);
 }
 
 class BuynowCartArgs {
   const BuynowCartArgs({this.key});
 
-  final _i18.Key? key;
+  final _i20.Key? key;
 
   @override
   String toString() {
@@ -290,12 +303,12 @@ class BuynowCartArgs {
 
 /// generated route for
 /// [_i4.CartDetail]
-class CartDetail extends _i16.PageRouteInfo<CartDetailArgs> {
+class CartDetail extends _i18.PageRouteInfo<CartDetailArgs> {
   CartDetail({
-    _i17.Key? key,
+    _i19.Key? key,
     String? itemCount,
     Function? callback,
-    List<_i16.PageRouteInfo>? children,
+    List<_i18.PageRouteInfo>? children,
   }) : super(
           CartDetail.name,
           args: CartDetailArgs(
@@ -309,8 +322,8 @@ class CartDetail extends _i16.PageRouteInfo<CartDetailArgs> {
 
   static const String name = 'CartDetail';
 
-  static const _i16.PageInfo<CartDetailArgs> page =
-      _i16.PageInfo<CartDetailArgs>(name);
+  static const _i18.PageInfo<CartDetailArgs> page =
+      _i18.PageInfo<CartDetailArgs>(name);
 }
 
 class CartDetailArgs {
@@ -320,7 +333,7 @@ class CartDetailArgs {
     this.callback,
   });
 
-  final _i17.Key? key;
+  final _i19.Key? key;
 
   final String? itemCount;
 
@@ -334,11 +347,11 @@ class CartDetailArgs {
 
 /// generated route for
 /// [_i5.FavouriteListPage]
-class FavouriteListPage extends _i16.PageRouteInfo<FavouriteListPageArgs> {
+class FavouriteListPage extends _i18.PageRouteInfo<FavouriteListPageArgs> {
   FavouriteListPage({
-    _i18.Key? key,
+    _i20.Key? key,
     Function? callback,
-    List<_i16.PageRouteInfo>? children,
+    List<_i18.PageRouteInfo>? children,
   }) : super(
           FavouriteListPage.name,
           args: FavouriteListPageArgs(
@@ -350,8 +363,8 @@ class FavouriteListPage extends _i16.PageRouteInfo<FavouriteListPageArgs> {
 
   static const String name = 'FavouriteListPage';
 
-  static const _i16.PageInfo<FavouriteListPageArgs> page =
-      _i16.PageInfo<FavouriteListPageArgs>(name);
+  static const _i18.PageInfo<FavouriteListPageArgs> page =
+      _i18.PageInfo<FavouriteListPageArgs>(name);
 }
 
 class FavouriteListPageArgs {
@@ -360,7 +373,7 @@ class FavouriteListPageArgs {
     this.callback,
   });
 
-  final _i18.Key? key;
+  final _i20.Key? key;
 
   final Function? callback;
 
@@ -372,8 +385,8 @@ class FavouriteListPageArgs {
 
 /// generated route for
 /// [_i6.ProductListGallery]
-class ProductListGallery extends _i16.PageRouteInfo<void> {
-  const ProductListGallery({List<_i16.PageRouteInfo>? children})
+class ProductListGallery extends _i18.PageRouteInfo<void> {
+  const ProductListGallery({List<_i18.PageRouteInfo>? children})
       : super(
           ProductListGallery.name,
           initialChildren: children,
@@ -381,17 +394,17 @@ class ProductListGallery extends _i16.PageRouteInfo<void> {
 
   static const String name = 'ProductListGallery';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i7.ProductDetailPage]
-class ProductDetailPage extends _i16.PageRouteInfo<ProductDetailPageArgs> {
+class ProductDetailPage extends _i18.PageRouteInfo<ProductDetailPageArgs> {
   ProductDetailPage({
     String? productId,
     List<String>? productdata,
-    _i18.Key? key,
-    List<_i16.PageRouteInfo>? children,
+    _i20.Key? key,
+    List<_i18.PageRouteInfo>? children,
   }) : super(
           ProductDetailPage.name,
           args: ProductDetailPageArgs(
@@ -406,8 +419,8 @@ class ProductDetailPage extends _i16.PageRouteInfo<ProductDetailPageArgs> {
 
   static const String name = 'ProductDetailPage';
 
-  static const _i16.PageInfo<ProductDetailPageArgs> page =
-      _i16.PageInfo<ProductDetailPageArgs>(name);
+  static const _i18.PageInfo<ProductDetailPageArgs> page =
+      _i18.PageInfo<ProductDetailPageArgs>(name);
 }
 
 class ProductDetailPageArgs {
@@ -421,7 +434,7 @@ class ProductDetailPageArgs {
 
   final List<String>? productdata;
 
-  final _i18.Key? key;
+  final _i20.Key? key;
 
   @override
   String toString() {
@@ -431,8 +444,8 @@ class ProductDetailPageArgs {
 
 /// generated route for
 /// [_i8.ThankYouPage]
-class ThankYouPage extends _i16.PageRouteInfo<void> {
-  const ThankYouPage({List<_i16.PageRouteInfo>? children})
+class ThankYouPage extends _i18.PageRouteInfo<void> {
+  const ThankYouPage({List<_i18.PageRouteInfo>? children})
       : super(
           ThankYouPage.name,
           initialChildren: children,
@@ -440,13 +453,27 @@ class ThankYouPage extends _i16.PageRouteInfo<void> {
 
   static const String name = 'ThankYouPage';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i9.SearchPage]
-class SearchPage extends _i16.PageRouteInfo<void> {
-  const SearchPage({List<_i16.PageRouteInfo>? children})
+/// [_i9.MyOrderPage]
+class MyOrderPage extends _i18.PageRouteInfo<void> {
+  const MyOrderPage({List<_i18.PageRouteInfo>? children})
+      : super(
+          MyOrderPage.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MyOrderPage';
+
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i10.SearchPage]
+class SearchPage extends _i18.PageRouteInfo<void> {
+  const SearchPage({List<_i18.PageRouteInfo>? children})
       : super(
           SearchPage.name,
           initialChildren: children,
@@ -454,13 +481,13 @@ class SearchPage extends _i16.PageRouteInfo<void> {
 
   static const String name = 'SearchPage';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i10.ContactUs]
-class ContactUs extends _i16.PageRouteInfo<void> {
-  const ContactUs({List<_i16.PageRouteInfo>? children})
+/// [_i11.ContactUs]
+class ContactUs extends _i18.PageRouteInfo<void> {
+  const ContactUs({List<_i18.PageRouteInfo>? children})
       : super(
           ContactUs.name,
           initialChildren: children,
@@ -468,16 +495,16 @@ class ContactUs extends _i16.PageRouteInfo<void> {
 
   static const String name = 'ContactUs';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i11.EditProfile]
-class EditProfile extends _i16.PageRouteInfo<EditProfileArgs> {
+/// [_i12.EditProfile]
+class EditProfile extends _i18.PageRouteInfo<EditProfileArgs> {
   EditProfile({
-    _i18.Key? key,
-    _i19.ProfileViewModel? viewmodel,
-    List<_i16.PageRouteInfo>? children,
+    _i20.Key? key,
+    _i21.ProfileViewModel? viewmodel,
+    List<_i18.PageRouteInfo>? children,
   }) : super(
           EditProfile.name,
           args: EditProfileArgs(
@@ -489,8 +516,8 @@ class EditProfile extends _i16.PageRouteInfo<EditProfileArgs> {
 
   static const String name = 'EditProfile';
 
-  static const _i16.PageInfo<EditProfileArgs> page =
-      _i16.PageInfo<EditProfileArgs>(name);
+  static const _i18.PageInfo<EditProfileArgs> page =
+      _i18.PageInfo<EditProfileArgs>(name);
 }
 
 class EditProfileArgs {
@@ -499,9 +526,9 @@ class EditProfileArgs {
     this.viewmodel,
   });
 
-  final _i18.Key? key;
+  final _i20.Key? key;
 
-  final _i19.ProfileViewModel? viewmodel;
+  final _i21.ProfileViewModel? viewmodel;
 
   @override
   String toString() {
@@ -510,9 +537,9 @@ class EditProfileArgs {
 }
 
 /// generated route for
-/// [_i12.FAQ]
-class FAQ extends _i16.PageRouteInfo<void> {
-  const FAQ({List<_i16.PageRouteInfo>? children})
+/// [_i13.FAQ]
+class FAQ extends _i18.PageRouteInfo<void> {
+  const FAQ({List<_i18.PageRouteInfo>? children})
       : super(
           FAQ.name,
           initialChildren: children,
@@ -520,13 +547,13 @@ class FAQ extends _i16.PageRouteInfo<void> {
 
   static const String name = 'FAQ';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i13.HomePageWeb]
-class HomePageWeb extends _i16.PageRouteInfo<void> {
-  const HomePageWeb({List<_i16.PageRouteInfo>? children})
+/// [_i14.HomePageWeb]
+class HomePageWeb extends _i18.PageRouteInfo<void> {
+  const HomePageWeb({List<_i18.PageRouteInfo>? children})
       : super(
           HomePageWeb.name,
           initialChildren: children,
@@ -534,13 +561,13 @@ class HomePageWeb extends _i16.PageRouteInfo<void> {
 
   static const String name = 'HomePageWeb';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i14.Privacy]
-class Privacy extends _i16.PageRouteInfo<void> {
-  const Privacy({List<_i16.PageRouteInfo>? children})
+/// [_i15.Privacy]
+class Privacy extends _i18.PageRouteInfo<void> {
+  const Privacy({List<_i18.PageRouteInfo>? children})
       : super(
           Privacy.name,
           initialChildren: children,
@@ -548,13 +575,13 @@ class Privacy extends _i16.PageRouteInfo<void> {
 
   static const String name = 'Privacy';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i15.Terms]
-class Terms extends _i16.PageRouteInfo<void> {
-  const Terms({List<_i16.PageRouteInfo>? children})
+/// [_i16.Terms]
+class Terms extends _i18.PageRouteInfo<void> {
+  const Terms({List<_i18.PageRouteInfo>? children})
       : super(
           Terms.name,
           initialChildren: children,
@@ -562,5 +589,48 @@ class Terms extends _i16.PageRouteInfo<void> {
 
   static const String name = 'Terms';
 
-  static const _i16.PageInfo<void> page = _i16.PageInfo<void>(name);
+  static const _i18.PageInfo<void> page = _i18.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i17.WebHtmlPage]
+class WebHtmlPage extends _i18.PageRouteInfo<WebHtmlPageArgs> {
+  WebHtmlPage({
+    _i20.Key? key,
+    String? html,
+    String? title,
+    List<_i18.PageRouteInfo>? children,
+  }) : super(
+          WebHtmlPage.name,
+          args: WebHtmlPageArgs(
+            key: key,
+            html: html,
+            title: title,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'WebHtmlPage';
+
+  static const _i18.PageInfo<WebHtmlPageArgs> page =
+      _i18.PageInfo<WebHtmlPageArgs>(name);
+}
+
+class WebHtmlPageArgs {
+  const WebHtmlPageArgs({
+    this.key,
+    this.html,
+    this.title,
+  });
+
+  final _i20.Key? key;
+
+  final String? html;
+
+  final String? title;
+
+  @override
+  String toString() {
+    return 'WebHtmlPageArgs{key: $key, html: $html, title: $title}';
+  }
 }

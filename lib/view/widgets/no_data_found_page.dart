@@ -32,22 +32,6 @@ Widget noDataFoundMessage(BuildContext context, String message){
           ],
         ),
       ),
-      // Align(
-      //   alignment: Alignment.bottomCenter,
-      //   child: Padding(
-      //       padding: const EdgeInsets.only(top: 40, bottom: 20),
-      //       child: appButton(
-      //           context,
-      //           StringConstant.tryAgain,
-      //           SizeConfig.screenWidth * 0.85,
-      //           60,
-      //           LIGHT_THEME_COLOR,
-      //           WHITE_COLOR,
-      //           20,
-      //           10,
-      //           true,
-      //           onTap: null)),
-      // )
     ],
   );
 }

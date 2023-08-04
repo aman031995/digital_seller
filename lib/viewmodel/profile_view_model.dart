@@ -3,9 +3,7 @@ import 'dart:html';
 import 'package:TychoStream/AppRouter.gr.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:http/http.dart' as http;
-
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_cache/json_cache.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,7 +18,7 @@ import 'package:TychoStream/repository/profile_repository.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
-import 'package:TychoStream/utilities/route_service/routes_name.dart';
+
 
 
 class ProfileViewModel with ChangeNotifier {
@@ -77,7 +75,6 @@ class ProfileViewModel with ChangeNotifier {
     notifyListeners();
   }
   Future<void> getProfileDetails(BuildContext context) async {
-    //AppIndicator.loadingIndicator(context);
     _profileRepo.getUserProfileDetails(context, (result, isSuccess) {
       if (isSuccess) {
         _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
@@ -86,12 +83,10 @@ class ProfileViewModel with ChangeNotifier {
             _userInfoModel?.isPhoneVerified,
             _userInfoModel?.isEmailVerified);
         notifyListeners();
-        // Future.delayed(Duration(milliseconds: 1500),(){
-        //   AppIndicator.disposeIndicator();
-        // });
       }
     });
   }
+
   Future<void> updateProfile(BuildContext context, String? name, String? phone,
       String? address, String? email) async {
     AppIndicator.loadingIndicator(context);
@@ -130,29 +125,7 @@ class ProfileViewModel with ChangeNotifier {
       });
     });
   }
-  Future<void> deleteProfile(BuildContext context) async {
-    AppIndicator.loadingIndicator(context);
-    _profileRepo.deleteUserAccount(context, (result, isSuccess) async {
-      if (isSuccess) {
-        AppIndicator.disposeIndicator();
-        AppDataManager.deleteSavedDetails();
-        CacheDataManager.clearCachedData(key: StringConstant.kPrivacyTerms);
-        CacheDataManager.clearCachedData(key: StringConstant.kUserDetails);
-        CacheDataManager.clearCachedData(key: StringConstant.kBannerList);
-        CacheDataManager.clearCachedData(key: StringConstant.kCategoryList);
-        ToastMessage.message(
-            ((result as SuccessState).value as ASResponseModal).message);
-        Navigator.of(context, rootNavigator: true).pop();
-       // GoRouter.of(context).pushNamed(RoutesName.home);
-        // await Future.delayed(const Duration(seconds: 1)).then((value) =>
-        //     Navigator.pushAndRemoveUntil(
-        //         context,
-        //         MaterialPageRoute(builder: (_) => LoginScreen()),
-        //             (route) => false));
-        notifyListeners();
-      }
-    });
-  }
+
 
   Future<void> uploadProfileImage(BuildContext context) async {
     var input = FileUploadInputElement()..accept = 'image/*';

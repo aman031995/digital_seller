@@ -199,6 +199,7 @@ class CartViewModel extends ChangeNotifier {
       getProductCategoryList(context,1);
     }
   }
+
   // GetProductCategoryLists By Category Method
   Future<void> getProductCategoryList(BuildContext context, pageNum) async {
     _cartRepo.getProductCategoryList(context, (result, isSuccess) {
@@ -521,12 +522,11 @@ class CartViewModel extends ChangeNotifier {
         addressId, transactionId, orderId, payMethod, payStatus, context,
         (result, isSuccess) {
       if (isSuccess) {
-        ToastMessage.message(
-            ((result as SuccessState).value as ASResponseModal).message);
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(StringConstant.paymentSuccessful)));
-        SessionStorageHelper.savevalue("payment","true");
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+
+
         context.pushRoute(ThankYouPage());
+        SessionStorageHelper.savevalue("payment","true");
         notifyListeners();
       }
     });

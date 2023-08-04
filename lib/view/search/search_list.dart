@@ -18,94 +18,85 @@ Widget searchList(
     TextEditingController searchController,String count) {
   return viewmodel.searchDataModel!=null?
     Container(
-      width: SizeConfig.screenWidth*0.25,height: SizeConfig.screenHeight/2.1,
-      child: Stack(children: [
-        viewmodel.searchDataModel!.productList!.isNotEmpty
-            ? ListView.builder(
-                controller: _scrollController,
-                padding: EdgeInsets.zero,
-                physics: BouncingScrollPhysics(),
-                itemBuilder: (_, index) {
-                  final item = viewmodel.searchDataModel?.productList?[index];
-                  _scrollController.addListener(() {
-                    if (_scrollController.position.pixels ==
-                        _scrollController.position.maxScrollExtent) {
-                      onPagination(
-                          context,
-                          viewmodel.lastPage,
-                          viewmodel.nextPage,
-                          viewmodel.isLoading,
-                          searchController.text ?? '',
-                          viewmodel);
-                    }
-                  });
-                  return GestureDetector(
-                      onTap: () async {
-                        context.router.push(
-                        ProductDetailPage(
-                          productId: '${item?.productId}',
-                          productdata: [
-                            '${count}',
-                            '${item?.productDetails?.defaultVariationSku?.size?.name}',
-                            '${item?.productDetails?.defaultVariationSku?.color?.name}',
-                            '${item?.productDetails?.defaultVariationSku?.style?.name}',
-                            '${item?.productDetails?.defaultVariationSku?.unitCount?.name}',
-                            '${item?.productDetails?.defaultVariationSku?.materialType?.name}',
-                          ],
-                        ));},
+     color: Theme.of(context).cardColor,
+      width: SizeConfig.screenWidth*0.25,
+      child: viewmodel.searchDataModel!.productList!.isNotEmpty
+          ? ListView.builder(
+        shrinkWrap: true,
+              controller: _scrollController,
+              padding: EdgeInsets.zero,
+              physics: BouncingScrollPhysics(),
+              itemBuilder: (_, index) {
+                final item = viewmodel.searchDataModel?.productList?[index];
+                _scrollController.addListener(() {
+                  if (_scrollController.position.pixels ==
+                      _scrollController.position.maxScrollExtent) {
+                    onPagination(
+                        context,
+                        viewmodel.lastPage,
+                        viewmodel.nextPage,
+                        viewmodel.isLoading,
+                        searchController.text ?? '',
+                        viewmodel);
+                  }
+                });
+                return GestureDetector(
+                    onTap: () async {
+                      context.router.push(
+                      ProductDetailPage(
+                        productId: '${item?.productId}',
+                        productdata: [
+                          '${count}',
+                          '${item?.productDetails?.defaultVariationSku?.size?.name}',
+                          '${item?.productDetails?.defaultVariationSku?.color?.name}',
+                          '${item?.productDetails?.defaultVariationSku?.style?.name}',
+                          '${item?.productDetails?.defaultVariationSku?.unitCount?.name}',
+                          '${item?.productDetails?.defaultVariationSku?.materialType?.name}',
+                        ],
+                      ));},
 
-                      child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(2),
-                              color: Theme.of(context).cardColor
-                          ),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(2),
+                            color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5)
 
-                          child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(width: 10),
-                                CachedNetworkImage(
-                                    imageUrl: item?.productDetails?.productImages?[0]  ?? '', fit: BoxFit.fill,
-                                    imageBuilder: (context, imageProvider) => Container(
-                                      margin: EdgeInsets.only(bottom: 2),height: 100,width: 120,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4),
-                                        image: DecorationImage(
-                                            image: imageProvider, fit: BoxFit.fill),
-                                      ),
+                        ),
+margin: EdgeInsets.only(bottom: 6),
+                        child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(width: 10),
+                              CachedNetworkImage(
+                                  imageUrl: item?.productDetails?.productImages?[0]  ?? '', fit: BoxFit.fill,
+                                  imageBuilder: (context, imageProvider) => Container(
+                                    margin: EdgeInsets.only(bottom: 2),height: 100,width: 120,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      image: DecorationImage(
+                                          image: imageProvider, fit: BoxFit.fill),
                                     ),
-                                    placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
-                                SizedBox(width: 10),
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                        width: SizeConfig.screenWidth*0.15,
-                                        child: AppMediumFont(context, msg: item?.productName ?? '', maxLines: 1)),
-                                    AppRegularFont(context, msg: item?.productDetails?.productDiscountPrice)
-                                  ],
-                                )
+                                  ),
+                                 // placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))
+                              ),
+                              SizedBox(width: 10),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                      width: SizeConfig.screenWidth*0.15,
+                                      child: AppMediumFont(context, msg: item?.productName ?? '', maxLines: 1)),
+                                  AppRegularFont(context, msg: item?.productDetails?.productDiscountPrice)
+                                ],
+                              )
 
-                              ])));
-                },
-                itemCount: viewmodel.searchDataModel?.productList?.length)
-            : Center(child: dataNotAvailable(viewmodel, context)),
-        homeViewModel.isLoading == true
-            ? Container(
-                margin: EdgeInsets.only(bottom: 10),
-                alignment: Alignment.bottomCenter,
-                child: CircularProgressIndicator(
-                    color: Theme.of(context).primaryColor))
-            : SizedBox()
-      ]),
-    ):
-    Center(
-        child: ThreeArchedCircle(
-            size: 50.0))
-
-  ;
+                            ])));
+              },
+              itemCount: viewmodel.searchDataModel?.productList?.length)
+          : Center(child: dataNotAvailable(viewmodel, context)),
+    )
+  : Center(child: ThreeArchedCircle(size: 45.0));
 }
 
 // list item

@@ -62,8 +62,9 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
                     itemCount: 3,
                     itemBuilder: (context, index) {
                       return Shimmer.fromColors(
-                          baseColor: Theme.of(context).primaryColor.withOpacity(0.8),
-                          highlightColor:Theme.of(context).primaryColor.withOpacity(0.2),
+                          period: Duration(milliseconds: 1000),
+                          baseColor: Colors.black38.withOpacity(0.4),
+                          highlightColor:Colors.black38.withOpacity(0.1),
                           child: Container(
                             margin: EdgeInsets.all(8),
                             width: 80,height: 30,
@@ -100,11 +101,11 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
                     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                     if (sharedPreferences.get('token') != null) {
                       AppIndicator.loadingIndicator(context);
-                      viewmodel.getSearchData(context, searchController?.text ?? '', 1);
+                      viewmodel.getSearchData(context, searchController.text ?? '', 1);
                       isSearch = true;
                      }
                     else{
-                      ToastMessage.message("please Login");
+                     // ToastMessage.message("please Login");
                     }
                   },
                   onChanged: (v) async{
@@ -112,15 +113,10 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
                       isSearch = false;
                     }
                     else{
-                      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                      if (sharedPreferences.get('token') != null) {
-                        AppIndicator.loadingIndicator(context);
+                      AppIndicator.loadingIndicator(context);
                         viewmodel.getSearchData(context, searchController.text ?? '', 1);
                         isSearch = true;
-                      }
-                      else{
-                        ToastMessage.message("please Login");
-                      }
+
                     }
                   },
                   isTick: null),
@@ -129,7 +125,7 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
                 width: SizeConfig.screenWidth * .01),
             GestureDetector(
                 onTap: onFavPressed,
-                child: Icon(Icons.favorite_border, color: Theme.of(context).canvasColor, size: 25)),
+                child: Icon(Icons.favorite_border, color: Theme.of(context).canvasColor, size: 30)),
             SizedBox(
                 width: SizeConfig.screenWidth * .01),
             Stack(
@@ -137,10 +133,10 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
                 GestureDetector(
                     onTap: onCartPressed,
                     child: Icon(Icons.shopping_cart,
-                        color: Theme.of(context).canvasColor, size: 25)),
+                        color: Theme.of(context).canvasColor, size: 30)),
                 itemCount != '0'
                     ? Positioned(
-                    right: 0,
+                    right: 1,
                     top: 0,
                     child: Container(
                       padding: EdgeInsets.all(4),
@@ -233,25 +229,9 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
 getPages(BottomNavigation navItem,BuildContext context,ProfileViewModel profileViewModel) {
   Uri url = Uri.parse(navItem.url ?? '');
   if(url.path == RoutesName.homepageweb){
-    return names == "null"?showDialog(
-        context: context,
-        barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
-        builder:
-            (BuildContext context) {
-          return  LoginUp(
-            product: true,
-          );
-        }):context.router.push(HomePageWeb());
+    return context.router.push(HomePageWeb());
   }  else if (url.path == RoutesName.productPage){
-    return names == "null"?showDialog(
-        context: context,
-        barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
-        builder:
-            (BuildContext context) {
-          return  LoginUp(
-            product: true,
-          );
-        }):context.router.push(ProductListGallery());
+    return context.router.push(ProductListGallery());
   }
   else if(url.path==RoutesName.profilePage){
     names == "null"?showDialog(

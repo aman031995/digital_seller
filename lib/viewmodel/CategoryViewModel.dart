@@ -12,7 +12,6 @@ import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 class CategoryViewModel with ChangeNotifier{
   final _categoryPageRepo = HomePageRepository();
-  final _homePageRepo = HomePageRepository();
 
   CategoryDataModel? _categoryDataModel;
   CategoryDataModel? get categoryDataModel => _categoryDataModel;
@@ -22,13 +21,13 @@ class CategoryViewModel with ChangeNotifier{
 
   HomePageDataModel? _newHomePageDataModel;
   HomePageDataModel? get newHomePageDataModel => _newHomePageDataModel;
+
   List<VideoList>? getPreviousPageList;
   int lastPage = 2, nextPage = 1 ,homeNextPage = 2;
   bool isLoading = false;
 
 
   Future<void> getCategoryListData(BuildContext context, int pageNum) async {
-    // AppIndicator.loadingIndicator();
     _categoryPageRepo.getCategoryList(pageNum, context, (result, isSuccess) {
       if (isSuccess) {
         _categoryDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
@@ -37,10 +36,6 @@ class CategoryViewModel with ChangeNotifier{
     });
   }
 
-  Future<void> getMovieList(BuildContext context, List<VideoList>? moviesList)async {
-    getPreviousPageList = moviesList!;
-    notifyListeners();
-  }
 
   Future<void> runIndicator(BuildContext context)async {
     isLoading = true;
@@ -65,48 +60,9 @@ class CategoryViewModel with ChangeNotifier{
           nextPage = _newHomePageDataModel?.pagination?.next ?? 1;
           getPreviousPageList?.addAll(_newHomePageDataModel!.videoList!);
         }
-        // lastPage = _homePageDataModel?.pagination?.lastPage ?? 1;
-        // nextPage = _homePageDataModel?.pagination?.next ?? 1;
-        // getPreviousPageList = _homePageDataModel!.videoList!;
         notifyListeners();
       }
     });
-  }
-
-  // Future<void> getAllPaginatedData(
-  //     BuildContext context, int trayId,String type,int pageNum) async {
-  //   _homePageRepo.getHomePageData(trayId,type ,pageNum, context,
-  //           (result, isSuccess) {
-  //         if (isSuccess) {
-  //           _newHomePageDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-  //           lastPage = _newHomePageDataModel?.pagination?.lastPage ?? 1;
-  //           homeNextPage = _newHomePageDataModel?.pagination?.next ?? 1;
-  //           getPreviousPageList?.addAll(_newHomePageDataModel!.videoList!);
-  //           isLoading = false;
-  //           notifyListeners();
-  //         }
-  //       });
-  // }
-        seealll(BuildContext context,int trayId,String type,int pagenum){
-    _homePageRepo.getHomePageData(trayId,type, pagenum, context,
-            (result, isSuccess) {
-          if (isSuccess) {
-            ASResponseModal responseModal = (result as SuccessState).value as ASResponseModal;
-           // _homePageDataModel = responseModal.dataModal;
-            _newHomePageDataModel = responseModal.dataModal;
-            if (_newHomePageDataModel?.pagination?.current == 1) {
-              lastPage = _newHomePageDataModel?.pagination?.lastPage ?? 1;
-              nextPage = _newHomePageDataModel?.pagination?.next ?? 1;
-              getPreviousPageList = _newHomePageDataModel?.videoList;
-            } else {
-              lastPage = _newHomePageDataModel?.pagination?.lastPage ?? 1;
-              nextPage = _newHomePageDataModel?.pagination?.next ?? 1;
-              getPreviousPageList?.addAll(_newHomePageDataModel!.videoList!);
-            }
-            isLoading = false;
-            notifyListeners();
-          }
-        });
   }
 
 }

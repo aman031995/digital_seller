@@ -50,7 +50,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         backgroundColor: Theme.of(context).cardColor,
         contentPadding: EdgeInsets.zero,
         insetPadding: EdgeInsets.all(10),
-        // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         content: forgotPasswordSection(authVM));
   }
 

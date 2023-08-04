@@ -172,7 +172,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                       child: Text('Verify'))
                       : widget.isEditPage == true
                       ? Container(
-                    margin: EdgeInsets.all(13.0),
+                    margin: EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.green,

@@ -1,5 +1,6 @@
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
+import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/auth_repository.dart';
@@ -114,33 +115,47 @@ class _EditProfileState extends State<EditProfile> {
     return ChangeNotifierProvider.value(
         value: profileViewModel,
         child: Consumer<ProfileViewModel>(builder: (context, viewmodel, _) {
-          return Scaffold(
-              appBar: getAppBarWithBackBtn(
-                  title: StringConstant.editProfile,
-                  isBackBtn: false,
-                  context: context,
-                  onBackPressed: () {
-                    Navigator.pop(context, true);
-                  }),
-              backgroundColor: Theme.of(context).backgroundColor,
-              body: checkInternet == "Offline"
-                  ? NOInternetScreen()
-                  : SafeArea(
-                  child: SingleChildScrollView(
-                      child: Center(
-                        child: Column(
+          return GestureDetector(
+            onTap: () {
+              if (isLogins == true) {
+                isLogins = false;
+                setState(() {});
+              }
+              if(isSearch==true){
+                isSearch=false;
+                setState(() {
 
-                            children: [
-                          SizedBox(height: 35),
-                          _profileImageView(viewmodel),
-                          SizedBox(height: 40),
-                          _editFormField(viewmodel, authVM),
-                              SizedBox(height:ResponsiveWidget.isMediumScreen(context)
-                                  ?100: 220),
-                              ResponsiveWidget.isMediumScreen(context)
-                                  ?  footerMobile(context) : footerDesktop()
-                        ]),
-                      ))));
+                });
+              }
+            },
+            child: Scaffold(
+                appBar: getAppBarWithBackBtn(
+                    title: StringConstant.editProfile,
+                    isBackBtn: false,
+                    context: context,
+                    onBackPressed: () {
+                      Navigator.pop(context, true);
+                    }),
+                backgroundColor: Theme.of(context).backgroundColor,
+                body: checkInternet == "Offline"
+                    ? NOInternetScreen()
+                    : SafeArea(
+                    child: SingleChildScrollView(
+                        child: Center(
+                          child: Column(
+
+                              children: [
+                            SizedBox(height: 35),
+                            _profileImageView(viewmodel),
+                            SizedBox(height: 40),
+                            _editFormField(viewmodel, authVM),
+                                SizedBox(height:ResponsiveWidget.isMediumScreen(context)
+                                    ?100: 220),
+                                ResponsiveWidget.isMediumScreen(context)
+                                    ?  footerMobile(context) : footerDesktop()
+                          ]),
+                        )))),
+          );
         }));
   }
 
@@ -327,8 +342,6 @@ class _EditProfileState extends State<EditProfile> {
             child: IconButton(
               alignment: Alignment.bottomCenter,
               onPressed: () => viewmodel.uploadProfileImage(context),
-
-    // CommonMethods.uploadImageVideo(context, viewmodel),
               icon: Image.asset(
                 AssetsConstants.icAddImage,
                 height: 30,
