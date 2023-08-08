@@ -4,7 +4,6 @@ import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
-import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppTextField.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
@@ -214,7 +213,7 @@ class _LoginUpState extends State<LoginUp> {
                                   ? ToastMessage.message(StringConstant.fillOut)
                                   : emailController.text.length > 10 &&
                                   isCheckCredentialPhoneOrEmail == true
-                                  ? ToastMessage.message("'mobile number cant be more than 10 digits'")
+                                  ? ToastMessage.message(StringConstant.mobileNumberLimit)
                                   : loginButtonPressed(
                                   authVM,
                                   emailController.text,
@@ -264,8 +263,8 @@ class _LoginUpState extends State<LoginUp> {
                     },
                     child: Center(
                       child: GlobalVariable.isLightTheme == true ?
-                      Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: 100) :
-                      Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: 100),
+                      Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 100) :
+                      Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 100),
                     ),
                   ),
                   SizedBox(height: 5),
@@ -421,7 +420,7 @@ class _LoginUpState extends State<LoginUp> {
                                 ? ToastMessage.message(StringConstant.fillOut)
                                 : emailController.text.length > 10 &&
                                 isCheckCredentialPhoneOrEmail == true
-                                ? ToastMessage.message("'mobile number cant be more than 10 digits'")
+                                ? ToastMessage.message(StringConstant.mobileNumberLimit)
                                 : loginButtonPressed(
                                 authVM,
                                 emailController.text,
@@ -470,8 +469,8 @@ class _LoginUpState extends State<LoginUp> {
                     child: Container(
                         width: SizeConfig.screenWidth * 0.08,
                         child: GlobalVariable.isLightTheme == true ?
-                        Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: 50) :
-                        Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: 50)),
+                        Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 50) :
+                        Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 50)),
                   ),
                 ),
                 SizedBox(height: 10),

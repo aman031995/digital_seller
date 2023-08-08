@@ -233,15 +233,12 @@ class AuthViewModel with ChangeNotifier {
             (result, isSuccess) {
           if (isSuccess) {
             AppIndicator.disposeIndicator();
-            _userInfoModel =
-                ((result as SuccessState).value as ASResponseModal).dataModal;
+            _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             AppDataManager.getInstance.updateUserDetails(userInfoModel!);
-            ToastMessage.message(
-                ((result as SuccessState).value as ASResponseModal).message);
-            print('Register api Successfully');
+            ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
             AppIndicator.disposeIndicator();
-            reloadPage();
             Navigator.pop(context);
+            reloadPage();
             notifyListeners();
           }
         });
@@ -259,7 +256,6 @@ class AuthViewModel with ChangeNotifier {
           AppDataManager.getInstance.updateUserDetails(userInfoModel!);
         }
         ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
-        print('otp verified Successfully');
         notifyListeners();
       }
     });

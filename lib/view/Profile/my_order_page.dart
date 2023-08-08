@@ -13,6 +13,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../utilities/StringConstants.dart';
+
 @RoutePage()
 class MyOrderPage extends StatefulWidget {
   const MyOrderPage({Key? key}) : super(key: key);
@@ -27,7 +28,6 @@ class _MyOrderPageState extends State<MyOrderPage> {
   int pageNum=1;
   String? checkInternet;
   ScrollController scrollController = new ScrollController();
-  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
   @override
   void initState() {
@@ -52,7 +52,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
       value: orderView,
       child: Consumer<OrderViewModel>(builder: (context, orderview, _) {
         return Scaffold(
-              backgroundColor: Theme.of(context).backgroundColor,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
               appBar: getAppBarWithBackBtn(
                   title: StringConstant.myOrders,
                   isBackBtn: false,

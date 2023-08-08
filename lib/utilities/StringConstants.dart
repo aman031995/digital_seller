@@ -48,7 +48,6 @@ class StringConstant {
   static String newPassword = "New Password";
   static String confirmPassword = "Confirm Password";
   static String enterNewPassword = 'Enter your new password to login again.';
-
   static String backButton = 'Back';
 
 ///////////////////////////
@@ -61,17 +60,14 @@ class StringConstant {
   static String letsRegister = 'Lets register your self to make profile. ';
   static String orContinueWith = "Or, continue with";
   static String shareOnSketchFab = "Share on Sketchfab";
-  static String terms = "terms";
   static String privacyPolicy = 'Privacy Policy';
   static String followUs = 'Follow Us';
-  static String privacyOfPolicy = "privacyPolicy";
   static String agreeTermsFinancier = "By signing you are agree to our ";
-  static String privacy = "Privacy Policy.";
   static String termsAndCondition = 'Terms & Condition ';
   static String noInternet = "There is no Internet please check your network connection.";
   static String settings = "Settings";
   static String deleteAccount = "Delete Account";
-  static String logout = "Logout";
+  static String logout = " Logout";
   static String cameraPer = 'Camera Permission';
   static String galleryPer = 'Gallery Permission';
 
@@ -164,8 +160,7 @@ class StringConstant {
   static String pincodeSmall = "pincode";
   static String totalPrice = "Total Price";
   static String selectPaymentOption = "Please Select Any Payment Option.";
-  static String acceptReturnPolicy =
-      "Accept the Return Policy and Terms of Use";
+  static String acceptReturnPolicy = "Accept the Return Policy and Terms of Use";
   static String paymentSuccessful = 'Payment Successful';
   static String enterValidEmail = 'Enter a valid email address';
   static String enterValidNumber = 'Enter a valid number';
@@ -184,10 +179,8 @@ class StringConstant {
   static String newVersionAvailable = "New version available ";
   static String pleaseUpdate = "Please, update app to new version";
   static String mobileNumberLimit = "'mobile number cant be more than 10 digits'";
-  static String iosAppLink =
-      "https://apps.apple.com/us/app/scanamaze/id1613520722";
-  static String androidAppLink =
-      "https://play.google.com/store/apps/details?id=com.tycho.scanamaze";
+  static String iosAppLink = "https://apps.apple.com/us/app/scanamaze/id1613520722";
+  static String androidAppLink = "https://play.google.com/store/apps/details?id=com.tycho.scanamaze";
   static String orderDetailed='Order Id';
   static String shippingDetails='    Shipping Details';
   static String priceDetails='   Price details';
@@ -202,15 +195,30 @@ class StringConstant {
   static String chooseAddress = 'Choose Address';
   static String payment = "Payment";
   static String orderPlaced = 'Order Placed';
+  static String Recommended="Recommended for You ";
+  static String RecentView="Recently Viewed";
+  static String WhatWeoffer="What We Offer !";
+  static String myAccount="  My Account";
+  static String myOrder= " My Order ";
+  static String productList='ProductList';
+  static String Download= "Download Now";
+
+
 
 
   // HomePage String Constant
+  static String connectus="Connect With Us";
+  static String AboutUs='About Us';
+  static String TermsOfuse='Terms Of Use';
+  static String HelpDesk='Helpdesk';
 
 static String  offerContent = 'Nor again is there anyone who loves or pursues or desires to obtain pain of itself.';
 static String  offerOnTimeDelivery = 'On Time Delivery';
 static String  offerSecurePayment = 'Secure Payment';
 static String offerSupport = '24/7 Support';
 static String getLatestupdate = 'Get Latest Update by Subscribe Our News later';
-
+static String digitalSellerLitelogo="https://eacademyeducation.com:8011/logo/lite_logo.png";
+static String digitalSellerDarklogo="https://eacademyeducation.com:8011/logo/dark_logo.png";
+static String Loremtext= "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante";
 
 }

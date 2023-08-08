@@ -12,8 +12,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../AppRouter.gr.dart';
-
 @RoutePage()
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -52,6 +50,7 @@ class _SearchPageState extends State<SearchPage> {
                   : SizedBox();
             })));
   }
+
 // widget of search list
   Widget searchListMobile(
       BuildContext context,
@@ -81,7 +80,6 @@ class _SearchPageState extends State<SearchPage> {
             });
             return GestureDetector(
                 onTap: () async {
-
                 },
                 child: Container(
                     decoration: BoxDecoration(

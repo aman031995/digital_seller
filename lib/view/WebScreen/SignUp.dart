@@ -164,8 +164,8 @@ class _SignUpState extends State<SignUp> {
                               },
                               child: Center(
                                 child: GlobalVariable.isLightTheme == true ?
-                                Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: 100) :
-                                Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: 100),
+                                Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 100) :
+                                Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 100),
                               ),
                             ),
                             SizedBox(height: 5),
@@ -211,7 +211,7 @@ class _SignUpState extends State<SignUp> {
                                 return appButton(
                                     context,
                                     StringConstant.createAccount,
-                                    SizeConfig.screenWidth * 0.8,
+                                    SizeConfig.screenWidth,
                                     50.0,
                                     Theme.of(context).primaryColor,
                                     Theme.of(context).hintColor,
@@ -272,8 +272,8 @@ class _SignUpState extends State<SignUp> {
                               child: Container(
                                   width: SizeConfig.screenWidth * 0.08,
                                   child: GlobalVariable.isLightTheme == true ?
-                                  Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: 50) :
-                                  Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: 50)),
+                                  Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 50) :
+                                  Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 50)),
                             ),
                           ),
                           SizedBox(

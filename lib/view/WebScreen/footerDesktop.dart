@@ -1,14 +1,14 @@
-import 'package:TychoStream/AppRouter.gr.dart';
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/services/global_variable.dart';
-import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../AppRouter.gr.dart';
 import '../../utilities/AppTextButton.dart';
+import '../../utilities/StringConstants.dart';
 
 class footerDesktop extends StatefulWidget {
   const footerDesktop({Key? key}) : super(key: key);
@@ -39,11 +39,9 @@ class _footerDesktopState extends State<footerDesktop> {
           SizedBox(width: 50,),
           Container(
               alignment: Alignment.bottomCenter,
-              // margin: EdgeInsets.only(left: 120, right: 120, bottom: 5),
-              // width: SizeConfig.screenWidth / 6.5,
               child: GlobalVariable.isLightTheme == true ?
-              Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: SizeConfig.screenWidth * 0.1) :
-              Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: SizeConfig.screenWidth * 0.1)),
+              Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: SizeConfig.screenWidth * 0.1) :
+              Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: SizeConfig.screenWidth * 0.1)),
         ],
       ),
     );
@@ -54,7 +52,7 @@ class _footerDesktopState extends State<footerDesktop> {
       children: [
         Container(
           width: 226,
-          child: appTextButton(context, "Download Now", Alignment.center,
+          child: appTextButton(context,StringConstant.Download, Alignment.center,
               Theme.of(context).scaffoldBackgroundColor, 17, false),
         ),
         SizedBox(height: 25,),
@@ -71,7 +69,7 @@ class _footerDesktopState extends State<footerDesktop> {
                       throw 'Could not launch $url';
                     }
                   },
-                  child: Image.asset("images/apple.png", height: 35, width: 108)),
+                  child: Image.asset(AssetsConstants.icApple, height: 35, width: 108)),
               SizedBox(width: 10,),
               GestureDetector(
                 onTap: () async{
@@ -82,7 +80,7 @@ class _footerDesktopState extends State<footerDesktop> {
                     throw 'Could not launch $url';
                   }
                 },
-                child: Image.asset("images/google.png", height: 35, width: 108),),
+                child: Image.asset(AssetsConstants.icGoogle, height: 35, width: 108),),
             ],
           ),
         )
@@ -95,7 +93,7 @@ class _footerDesktopState extends State<footerDesktop> {
       children: [
         Container(
           width: 150,
-          child: appTextButton(context, "Connect With Us", Alignment.center,
+          child: appTextButton(context, StringConstant.connectus, Alignment.center,
               Theme.of(context).scaffoldBackgroundColor, 17, false),
         ),
         SizedBox(height: 25,),
@@ -104,7 +102,7 @@ class _footerDesktopState extends State<footerDesktop> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               GestureDetector(
-                  child: Image.asset("images/ic_fb.png",
+                  child: Image.asset(AssetsConstants.icFacebook,
                       height: 33,width: 30, color: Theme.of(context).scaffoldBackgroundColor),
                   onTap: () async {
                     const url = 'https://www.facebook.com';
@@ -155,34 +153,29 @@ class _footerDesktopState extends State<footerDesktop> {
           width: SizeConfig.screenWidth / 2,
           child: Row(
             children: [
-              AppButton(context, 'About Us',onPressed: () {
-                setState(() {
-                  // GoRouter.of(context).pushNamed(RoutesName.AboutUsPage);
-                });
+              AppButton(context, StringConstant.AboutUs,onPressed: () {
               }),
+
               SizedBox(width: MediaQuery.of(context).size.width * .02),
-              AppButton(context, 'Terms Of Use', onPressed: () {
-              //  context.pushRoute(Terms());
-                homeViewModel.openWebHtmlView(context, 'terms_condition',
-                    title: 'Terms And Condition');
-                // GoRouter.of(context).pushNamed(RoutesName.Terms);
+              AppButton(context, StringConstant.TermsOfuse, onPressed: () {
+                // homeViewModel.openWebHtmlView(context, 'terms_condition',
+                //     title: 'Terms And Condition');
+                context.router.push(WebHtmlPage(title:'TermsAndCondition',html: 'terms_condition' ));
               }),
+
               SizedBox(width: MediaQuery.of(context).size.width * .02),
-              AppButton(context, 'Privacy Policy', onPressed: () {
-                homeViewModel.openWebHtmlView(context, 'privacy_policy',
-                    title: 'Privacy Policy');
+              AppButton(context, StringConstant.privacyPolicy, onPressed: () {
+                context.router.push(WebHtmlPage(title:'PrivacyPolicy',html: 'privacy_policy' ));
               }),
-              // Container(width: MediaQuery.of(context).size.width * .02),
-              // AppButton(context, 'FAQ', onPressed: () {
-              //    context.pushRoute(FAQ());
-              // }),
+
               SizedBox(width: MediaQuery.of(context).size.width * .02),
-              AppButton(context, 'Helpdesk', onPressed: () {
-                homeViewModel.openWebHtmlView(
-                    context, 'return_policy',
-                    title: 'Return Policy');
+              AppButton(context, StringConstant.HelpDesk, onPressed: () {
+                // homeViewModel.openWebHtmlView(
+                //     context, 'return_policy',
+                //     title: 'Return Policy');
+                context.pushRoute(ContactUs());
+
               }),
-              // SizedBox(width: ResponsiveWidget.isMediumScreen(context)? SizeConfig.screenWidth * 0.22 : SizeConfig.screenWidth * 0.32,),
             ],
           ),
         ),
@@ -191,7 +184,7 @@ class _footerDesktopState extends State<footerDesktop> {
           width: SizeConfig.screenWidth / 2,
           child: AppMediumFont(context,
               msg:
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante",
+             StringConstant.Loremtext,
               fontSize: 14, color: Theme.of(context).scaffoldBackgroundColor, lineBetweenSpace: 1.5 ),
         ),
       ],
@@ -215,20 +208,16 @@ Widget footerMobile(BuildContext context) {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(width: 10),
-            AppButton(context, 'About Us', onPressed: () {
-            //  GoRouter.of(context).pushNamed(RoutesName.AboutUsPage);
+            AppButton(context, StringConstant.AboutUs, onPressed: () {
             }),
-            AppButton(context, 'Terms Of Use', onPressed: () {
-              context.pushRoute(Terms());
-
+            AppButton(context, StringConstant.TermsOfuse, onPressed: () {
             }),
-            AppButton(context, 'PrivacyPolicy', onPressed: () {
-              context.pushRoute(Privacy());
+            AppButton(context,StringConstant.privacyPolicy, onPressed: () {
             }),
             MediaQuery.of(context).size.width < 417
                 ? Container()
-                : AppButton(context, 'FAQ', onPressed: () {
-              context.pushRoute(FAQ());
+                : AppButton(context, StringConstant.HelpDesk, onPressed: () {
+
                   }),
           ],
         ),
@@ -237,7 +226,7 @@ Widget footerMobile(BuildContext context) {
           children: [
             SizedBox(width: 10),
             MediaQuery.of(context).size.width < 417
-                ? AppButton(context, 'FAQ', onPressed: () {
+                ? AppButton(context, StringConstant.HelpDesk, onPressed: () {
 
                   })
                 : Container(),
@@ -245,14 +234,11 @@ Widget footerMobile(BuildContext context) {
         ),
         SizedBox(height: 10),
         Container(
-            padding: EdgeInsets.only(left: 15),
+            padding: EdgeInsets.only(left: 15,right: 10),
             child: AppMediumFont(context,
-                msg:
-                    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante, velmolestie enim tincidunt ac. Aenean erat justo, fringilla cursus ligula ac, accumsan Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante',
+                msg:StringConstant.Loremtext,
                 fontSize: 14,color: Theme.of(context).scaffoldBackgroundColor)
-
-            //Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante, velmolestie enim tincidunt ac. Aenean erat justo, fringilla cursus ligula ac, accumsan Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante",style: TextStyle(color:  fontSize: 14)),
-            ),
+         ),
         SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -263,7 +249,7 @@ Widget footerMobile(BuildContext context) {
               children: [
                 AppBoldFont(context,
                     fontWeight: FontWeight.w200,
-                    msg: "Connect With Us",color: Theme.of(context).scaffoldBackgroundColor,
+                    msg: StringConstant.connectus,color: Theme.of(context).scaffoldBackgroundColor,
                     fontSize: 16),
                 SizedBox(height: 8),
                 Row(
@@ -299,7 +285,7 @@ Widget footerMobile(BuildContext context) {
               children: [
                 AppBoldFont(context,
                     fontWeight: FontWeight.w200,
-                    msg: "Download Now",color: Theme.of(context).scaffoldBackgroundColor,
+                    msg: StringConstant.Download,color: Theme.of(context).scaffoldBackgroundColor,
                     fontSize: 16),
                 SizedBox(height: 8),
                 Row(
@@ -314,7 +300,7 @@ Widget footerMobile(BuildContext context) {
                             throw 'Could not launch $url';
                           }
                         },
-                        child: Image.asset("images/apple.png", height: 30)),
+                        child: Image.asset(AssetsConstants.icApple, height: 30)),
                     SizedBox(width: SizeConfig.screenWidth * 0.01),
                     GestureDetector(
                         onTap: () async {
@@ -325,7 +311,7 @@ Widget footerMobile(BuildContext context) {
                             throw 'Could not launch $url';
                           }
                         },
-                        child: Image.asset("images/google.png", height: 30)),
+                        child: Image.asset(AssetsConstants.icGoogle, height: 30)),
                   ],
                 )
               ],

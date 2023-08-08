@@ -12,7 +12,7 @@ import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CommonCarousel extends StatefulWidget with ChangeNotifier {
-  CommonCarousel({Key? key}) : super(key: key);
+ CommonCarousel({Key? key}) : super(key: key);
 
   @override
   State<CommonCarousel> createState() => _CommonCarouselState();
@@ -49,7 +49,6 @@ class _CommonCarouselState extends State<CommonCarousel> {
                   ));
 
         }));
-    ;
   }
 
 //--WebCarousel---//
@@ -80,30 +79,6 @@ class _CommonCarouselState extends State<CommonCarousel> {
             carouselController: carouselController,
           ),
         ),
-        // Positioned(
-        //   left: SizeConfig.screenWidth*0.17,top:  SizeConfig.screenHeight/4,
-        //   child: InkWell(
-        //       child: Image.asset(
-        //           'images/prev.png',
-        //           height: 40,
-        //           width: 30,
-        //           color: Colors.black45
-        //       ),
-        //       onTap: previous
-        //   ),
-        // ),
-        // Positioned(
-        //   top:  SizeConfig.screenHeight/4,right:SizeConfig.screenWidth*0.17,
-        //   child: InkWell(
-        //       child: Image.asset(
-        //           'images/next.png',
-        //           height: 40,
-        //           width: 30,
-        //           color: Colors.black45
-        //       ),
-        //       onTap:next
-        //   ),
-        // )
       ],
     );
   }
@@ -112,13 +87,6 @@ class _CommonCarouselState extends State<CommonCarousel> {
         .map((element) =>  InkWell(
       focusNode: carouselFocus,
       onTap: () async {
-        // print(current);
-        // url = '${homeViewModel.bannerDataModal?.bannerList?[current].bannerUrl }';
-        // if (await canLaunch(url)) {
-        //   await launch(url);
-        // } else {
-        //   throw 'Could not launch $url';
-        // }
         redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
 
         },
@@ -143,29 +111,25 @@ class _CommonCarouselState extends State<CommonCarousel> {
 
       if(element.bannerType == 'Product'){
         if(element.productId != ""){
-          context.router.push(Banner_product(
+          context.router.push(ProductDetailPage(
             productId: element.productId,
-            productdata: '${element.catId}'
+              productdata: ['${element.catId}']
           ));
-         // AppNavigator.push(context, ProductDetailPage(bannerData: element));
+
         } else {
           context.router.push(ProductListGallery(
           ));
-         // AppNavigator.push(context, ProductListGallery(bannerListData: element));
+
         }
       } else if (element.bannerType == 'Video') {
-        // AppNavigator.push(context, MovieDetailPage(
-        //     isHomeBanner: true,
-        //     movieID: element.videoUrl,
-        //     bannerList:
-        //     homeViewModel.bannerDataModal?.bannerList?[current]
-        // ));
+
       } else {
         launch(element.bannerUrl! , forceSafariVC: false);
       }
 
     }
   }
+
   //--MobileCarousel--//
   Widget carouselImageMobile() {
     var imageSliders = generateImageTileMobile(context);

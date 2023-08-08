@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:TychoStream/model/data/UserInfoModel.dart';
@@ -13,7 +12,6 @@ import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
-
 
 class SocialLoginViewModel with ChangeNotifier {
   final _socialRepo = SocialLoginProvider();
@@ -27,6 +25,7 @@ class SocialLoginViewModel with ChangeNotifier {
   String? imageUrl;
   String? accesstoken;
   bool isGoogle = false;
+
   // for google Login
   Future<User?> signInWithGoogle(context) async {
     User? user;
@@ -60,20 +59,6 @@ class SocialLoginViewModel with ChangeNotifier {
     return user;
   }
 
-
-// for facebook login
-  Future<void> loginWithFB(BuildContext context) async {
-
-    final LoginResult result = await FacebookAuth.instance.login();
-    if (result.status == LoginStatus.success) {
-      final userData = await FacebookAuth.instance.getUserData();
-
-    } else {
-
-    }
-
-  }
-
   updateSocialDetail(BuildContext context, SocialLoginViewModel socialVM,
       String? userEmail, String? phone, String? userId) async {
     AppIndicator.loadingIndicator(context);
@@ -92,6 +77,7 @@ class SocialLoginViewModel with ChangeNotifier {
           }
         });
   }
+  
   socialLoginPressed(
       context,
       String socialID,
@@ -120,55 +106,14 @@ class SocialLoginViewModel with ChangeNotifier {
         AppDataManager.setFirstTimeValue();
         reloadPage();
         Navigator.pop(context);
-       // GoRouter.of(context).pushNamed(RoutesName.home);
-
         notifyListeners();
-      } else {
+      }
+      else {
         var response = (result as SuccessState).value;
-        // if (provider == "apple" && userEmail == '') {
-        //   successDialog(context, StringConstant.appleAlertTitle,
-        //       response["message"], false, onOkayTap: () {
-        //     Navigator.pop(context, true);
-        //   });
-        // } else {
         ToastMessage.message(response['message']);
         notifyListeners();
-        // }
       }
     });
   }
-  // socialLoginPressed(
-  //     context,
-  //     String socialID,
-  //     String accessToken,
-  //     String deviceToken,
-  //     String provider,
-  //     String userEmail,
-  //     String userName,
-  //     ) async {
-  //   AppIndicator.loadingIndicator(context);
-  //   _socialRepo.loginWithSocialMedia(
-  //       socialID,
-  //       accessToken,
-  //       provider,
-  //       deviceToken,
-  //       userEmail,
-  //       userName,
-  //       context, (result, isSuccess) {
-  //     if (isSuccess) {
-  //       AppIndicator.disposeIndicator();
-  //       UserInfoModel? userInfoModel;
-  //       userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-  //       AppDataManager.getInstance.updateUserDetails(userInfoModel!);
-  //       AppDataManager.setFirstTimeValue();
-  //       reloadPage();
-  //       notifyListeners();
-  //     } else {
-  //       var response = (result as SuccessState).value;
-  //       ToastMessage.message(response['message']);
-  //       notifyListeners();
-  //     }
-  //   });
-  // }
 }
 

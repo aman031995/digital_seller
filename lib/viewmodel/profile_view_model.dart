@@ -74,6 +74,7 @@ class ProfileViewModel with ChangeNotifier {
     enableEmailField = isEmailVerified ?? false;
     notifyListeners();
   }
+
   Future<void> getProfileDetails(BuildContext context) async {
     _profileRepo.getUserProfileDetails(context, (result, isSuccess) {
       if (isSuccess) {
@@ -149,13 +150,14 @@ class ProfileViewModel with ChangeNotifier {
       }
     });
   }
+
   Future<void> contactUs(BuildContext context, String name, String email, String query) async{
     AppIndicator.loadingIndicator(context);
     _profileRepo.contactUsApi(context, name, email, query, (result, isSuccess) {
       if(isSuccess){
         AppIndicator.disposeIndicator();
         ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
-        Navigator.of(context, rootNavigator: true).pop();
+        context.router.push(HomePageWeb());
         notifyListeners();
       }
     });

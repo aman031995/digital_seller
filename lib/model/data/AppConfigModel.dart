@@ -62,8 +62,9 @@ class AndroidConfig {
   int? maxOtp;
   SocialLogin? socialLogin;
   AppVersion? appVersion;
+  String? paymentGateway;
   List<BottomNavigation>? bottomNavigation;
-  List<PaymentGateway>? paymentGateway;
+  // List<PaymentGateway>? paymentGateway;
 
   AndroidConfig(
       {this.images,
@@ -80,8 +81,8 @@ class AndroidConfig {
         this.maxOtp,
         this.socialLogin,
         this.appVersion,
-        this.bottomNavigation,
-        this.paymentGateway});
+        this.paymentGateway,
+        this.bottomNavigation});
 
   AndroidConfig.fromJson(Map<String, dynamic> json) {
     images = json['images'];
@@ -118,12 +119,14 @@ class AndroidConfig {
         bottomNavigation!.add(new BottomNavigation.fromJson(v));
       });
     }
-    if (json['payment_gateway'] != null) {
-      paymentGateway = <PaymentGateway>[];
-      json['payment_gateway'].forEach((v) {
-        paymentGateway!.add(new PaymentGateway.fromJson(v));
-      });
-    }
+    paymentGateway = json['paymentGateway'];
+
+    // if (json['payment_gateway'] != null) {
+    //   paymentGateway = <PaymentGateway>[];
+    //   json['payment_gateway'].forEach((v) {
+    //     paymentGateway!.add(new PaymentGateway.fromJson(v));
+    //   });
+    // }
   }
 
   Map<String, dynamic> toJson() {
@@ -161,9 +164,12 @@ class AndroidConfig {
           this.bottomNavigation!.map((v) => v.toJson()).toList();
     }
     if (this.paymentGateway != null) {
-      data['payment_gateway'] =
-          this.paymentGateway!.map((v) => v.toJson()).toList();
+      data['paymentGateway'] = this.paymentGateway;
     }
+    // if (this.paymentGateway != null) {
+    //   data['payment_gateway'] =
+    //       this.paymentGateway!.map((v) => v.toJson()).toList();
+    // }
     return data;
   }
 }
@@ -424,21 +430,21 @@ class BottomNavigation {
   }
 }
 
-class PaymentGateway {
-  String? gatewayName;
-  bool? isAvailable;
-
-  PaymentGateway({this.gatewayName, this.isAvailable});
-
-  PaymentGateway.fromJson(Map<String, dynamic> json) {
-    gatewayName = json['gateway_name'];
-    isAvailable = json['isAvailable'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['gateway_name'] = this.gatewayName;
-    data['isAvailable'] = this.isAvailable;
-    return data;
-  }
-}
+// class PaymentGateway {
+//   String? gatewayName;
+//   bool? isAvailable;
+//
+//   PaymentGateway({this.gatewayName, this.isAvailable});
+//
+//   PaymentGateway.fromJson(Map<String, dynamic> json) {
+//     gatewayName = json['gateway_name'];
+//     isAvailable = json['isAvailable'];
+//   }
+//
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     data['gateway_name'] = this.gatewayName;
+//     data['isAvailable'] = this.isAvailable;
+//     return data;
+//   }
+// }

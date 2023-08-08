@@ -165,8 +165,8 @@ class _VerifyOtpState extends State<VerifyOtp> {
                   },
                   child: Center(
                     child: GlobalVariable.isLightTheme == true ?
-                    Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: 100) :
-                    Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: 100),
+                    Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 100) :
+                    Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 100),
                   ),
                 ),
                 SizedBox(height: 5),
@@ -233,8 +233,8 @@ class _VerifyOtpState extends State<VerifyOtp> {
                     // margin: EdgeInsets.only(left: 120, right: 120, bottom: 5),
                       width: SizeConfig.screenWidth * 0.08,
                       child: GlobalVariable.isLightTheme == true ?
-                      Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: 50) :
-                      Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: 50)),
+                      Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 50) :
+                      Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 50)),
                 ),
                 SizedBox(height:10),
               ],

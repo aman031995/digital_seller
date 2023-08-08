@@ -1,5 +1,3 @@
-import 'package:TychoStream/model/data/search_data_model.dart';
-import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
@@ -36,7 +34,7 @@ Widget searchList(
                         viewmodel.lastPage,
                         viewmodel.nextPage,
                         viewmodel.isLoading,
-                        searchController.text ?? '',
+                        searchController.text,
                         viewmodel);
                   }
                 });

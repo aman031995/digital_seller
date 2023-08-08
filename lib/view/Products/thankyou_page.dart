@@ -1,14 +1,10 @@
-import 'dart:async';
 import 'package:TychoStream/utilities/SizeConfig.dart';
-import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../AppRouter.gr.dart';
 
@@ -28,11 +24,8 @@ class _ThankYouPageState extends State<ThankYouPage> {
   @override
   void initState() {
     thankYouModel.thankYouPageImageTimer(context);
-    // context.router.stack.clear();
     super.initState();
-    // Timer.periodic(Duration(seconds: 5), (_) {
-    //   context.router.popUntilRoot();
-    // } );
+
   }
 
   @override
@@ -44,28 +37,24 @@ class _ThankYouPageState extends State<ThankYouPage> {
           context: context,
           isBackBtn: false,
           onBackPressed: () {
-            // Navigator.pushNamedAndRemoveUntil(
-            //     context, RoutesName.productPage, (route) => false);
           }),
       body: ChangeNotifierProvider.value(
           value: thankYouModel,
           child: Consumer<CartViewModel>(builder: (context, thankyoumodel, _) {
-            return WillPopScope(
-                onWillPop: _willPopCallback,
-                child: Column(
-                  children: <Widget>[
-                    cartPageViewIndicator(context, 2),
-                    SizedBox(height:thankyoumodel.isThankyouPage == false
-                        ? 0: SizeConfig.screenHeight * 0.2,),
-                    thankyoumodel.isThankyouPage == false
-                        ? Image.asset('images/ic_celebration.gif')
-                        : SizedBox(),
-                    SizedBox(height: 50),
-                    thankyoumodel.isThankyouPage == false
-                        ? SizedBox()
-                        : _textLiquidFillAnimation()
-                  ],
-                ));
+            return Column(
+              children: <Widget>[
+                cartPageViewIndicator(context, 2),
+                SizedBox(height:thankyoumodel.isThankyouPage == false
+                    ? 0: SizeConfig.screenHeight * 0.2,),
+                thankyoumodel.isThankyouPage == false
+                    ? Image.asset('images/ic_celebration.gif')
+                    : SizedBox(),
+                SizedBox(height: 50),
+                thankyoumodel.isThankyouPage == false
+                    ? SizedBox()
+                    : _textLiquidFillAnimation()
+              ],
+            );
           })),
     );
   }
@@ -95,31 +84,9 @@ class _ThankYouPageState extends State<ThankYouPage> {
           ),
 
           )
-          // Container(
-          //
-          //
-          //     child: Text("Continue Shopping"))
-
-          // TextLiquidFill(
-          //   boxHeight: 200,boxWidth: SizeConfig.screenWidth,
-          //   text: 'Continue Shopping',
-          //   textAlign: TextAlign.center,
-          //   boxBackgroundColor: Theme.of(context).cardColor,
-          //   textStyle: TextStyle(
-          //     fontSize: 80.0,
-          //     color: Colors.yellow,
-          //     fontWeight: FontWeight.bold,
-          //   ),
-          // ),
         ),
       ],
     );
   }
 
-  // MobileBackbutton method
-  Future<bool> _willPopCallback() async {
-    GoRouter.of(context).pushNamed(RoutesName.productList);
-   // AppNavigator.pushNamedAndRemoveUntil(context, RoutesName.bottomNavigation,screenName: RouteBuilder.homePage);
-    return Future.value(true);
-  }
 }

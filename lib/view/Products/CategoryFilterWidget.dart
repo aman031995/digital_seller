@@ -1,4 +1,3 @@
-import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -304,13 +303,6 @@ SizedBox(height: 50),
         Container(
           child: AppMediumFont(context, msg: msg, fontSize: 16, fontWeight: FontWeight.w500),
         ),
-         // GestureDetector(onTap: (){
-         //   downUpArrow = !downUpArrow;
-         // }, child: Container(
-         //   color: Theme.of(context).scaffoldBackgroundColor,
-         //  child: downUpArrow == true ? Image.asset(AssetsConstants.icUpArrow, height: 15, width: 20, color: Theme.of(context).canvasColor,) : Image.asset(AssetsConstants.icDownArrow, height: 15, width: 20, color: Theme.of(context).canvasColor,) ,
-         // ),
-         // ),
         ],
       ),
     );

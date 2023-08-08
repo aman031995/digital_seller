@@ -28,10 +28,6 @@ class ShippingAddressPage extends StatefulWidget {
   String? pinCode;
   String? addressId;
 
-
-
-
-
   ShippingAddressPage({Key? key, this.address, required this.isAlreadyAdded,this.addressId,this.firstName,this.lastName,this.mobileNumber,this.pinCode,this.state,this.cityName,this.secondAddress,this.firstAddress,this.email})
       : super(key: key);
 
@@ -49,7 +45,6 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
   TextEditingController stateController =  TextEditingController();
   TextEditingController cityController =  TextEditingController();
   TextEditingController pinCodeController =  TextEditingController();
-  // TextEditingController countryController = TextEditingController(text: "India");
   final validation = ValidationBloc();
   String? checkInternet;
   CartViewModel cartViewData = CartViewModel();
@@ -66,7 +61,6 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
     stateController.text = widget.state ?? '';
     cityController.text = widget.cityName ?? '';
     pinCodeController.text = widget.pinCode ?? '';
-    // countryController.text = widget.address?.country ?? '';
     validateAddressDetails();
     super.initState();
   }
@@ -81,7 +75,6 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
     validation.sinkPincode.add(widget.pinCode ?? '');
     validation.sinkCityName.add(widget.cityName ?? '');
     validation.sinkState.add(widget.state ?? '');
-    // validation.sinkCountry.add(widget.address?.country ?? 'India');
   }
 
   @override
@@ -188,7 +181,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                         //
                                       }
                                       else{
-                                        print("dsjdskj");
+
                                       }
 
                                     });
@@ -197,8 +190,6 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                 keyBoardType: TextInputType.number,
                                );
                           }),
-
-                      // addAddressTextField(pinCodeController, StringConstant.pincode, TextInputType.number, validation.sinkPincode, 6, validation.pincode),
                       SizedBox(height: 10.0),
                       StreamBuilder(
                           stream: validation.cityName,
@@ -240,9 +231,6 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                     : null,
                                 keyBoardType: TextInputType.streetAddress);
                           }),
-                      // addAddressTextField(cityController, StringConstant.cityName, TextInputType.streetAddress, validation.sinkCityName, 20, validation.cityName),
-
-                     // addAddressTextField(countryController, StringConstant.countryName, TextInputType.streetAddress, validation.sinkCountry, 20, validation.country),
                       SizedBox(
                         height: 15.0,
                       ),

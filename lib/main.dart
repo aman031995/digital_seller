@@ -6,6 +6,8 @@ import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/repository/subscription_provider.dart';
@@ -27,6 +29,9 @@ bool isNotification=false;
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 Future<void> main() async {
+  Stripe.publishableKey = "pk_test_51NXhtjSJK48GkIWFjJzBm88uzgrwb7i4aIyls9YoPHT5IvYAV9rMnlEW0U8AUY1VpIJB3ZOBFTFdSFuMYnxM0fkK00KqwNEEeH";
+
+
   setPathUrlStrategy();
   await WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

@@ -1,10 +1,11 @@
+import 'dart:convert';
+
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
-import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -63,13 +64,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   ProfileViewModel profileViewModel = ProfileViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   TextEditingController? searchController = TextEditingController();
+   ProductList? productListDetails;
+  // ProductList? get productListDetails => _productListDetails;
 
   void initState() {
     homeViewModel.getAppConfig(context);
     profileViewModel.getUserDetails(context);
     SessionStorageHelper.removeValue('token');
     SessionStorageHelper.removeValue('payment');
-    SessionStorageHelper.clearAll();
     cartView.getCartCount(context);
     getProductDetails();
     super.initState();
@@ -79,6 +81,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     if(widget.productdata?.length ==1){
       cartView.getProductListCategory(
           context, widget.productId ?? "", widget.productdata?[0] ?? "", 1);
+      Map<String, dynamic> json = jsonDecode(SessionStorageHelper.getValue("productDeatils").toString());
+      productListDetails = ProductList.fromJson(json);
     } else {
       if (widget.productId != null)
          cartView.updatecolorName(context,'');
@@ -128,8 +132,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ? homePageTopBar(context,_scaffoldKey):getAppBar(context,homeViewModel,profileViewModel,viewmodel.cartItemCount,searchController, () async {
                   SharedPreferences sharedPreferences =
                   await SharedPreferences.getInstance();
-                  token = sharedPreferences.getString('token').toString();
-                  if (token == 'null') {
+
+                  if (sharedPreferences.getString('token')== null) {
                     showDialog(
                         context: context,
                         barrierColor:
@@ -139,15 +143,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             product: true,
                           );
                         });
-                    // _backBtnHandling(prodId);
                   } else {
                     context.router.push(FavouriteListPage());
                   }
                 },
                         ()async{
                       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                      token = sharedPreferences.getString('token').toString();
-                      if (token == 'null'){
+                      if (sharedPreferences.getString('token')== null){
                         showDialog(
                             context: context,
                             barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
@@ -242,8 +244,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                        ),
                                        onPressed: ()async{
                                          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                         token = sharedPreferences.getString('token').toString();
-                                         if (token == 'null'){
+                                         if (sharedPreferences.getString('token')== null){
                                            showDialog(
                                                context: context,
                                                builder:
@@ -252,7 +253,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                    product: true,
                                                  );
                                                });
-                                           // _backBtnHandling(prodId);
                                          } else {
                                            final isFav =
                                            viewmodel.productListDetails?.productDetails!.isFavorite = !viewmodel.productListDetails!.productDetails!.isFavorite!;
@@ -264,40 +264,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                'productList');
                                          }
                                        }),
-
-                                   // GestureDetector(
-                                   //     onTap: ()async{
-                                   //       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                   //       token = sharedPreferences.getString('token').toString();
-                                   //       if (token == 'null'){
-                                   //         showDialog(
-                                   //             context: context,
-                                   //             builder:
-                                   //                 (BuildContext context) {
-                                   //               return  LoginUp(
-                                   //                 product: true,
-                                   //               );
-                                   //             });
-                                   //         // _backBtnHandling(prodId);
-                                   //       } else {
-                                   //         final isFav =
-                                   //             viewmodel.productListDetails?.productDetails!.isFavorite = !viewmodel.productListDetails!.productDetails!.isFavorite!;
-                                   //         viewmodel.addToFavourite(
-                                   //             context,
-                                   //             "${viewmodel.productListDetails?.productId}",
-                                   //             "${viewmodel.productListDetails?.productDetails?.variantId}",
-                                   //             isFav!,
-                                   //             'productList');
-                                   //       }
-                                   //       },
-                                   //     child:  Image.asset(
-                                   //       cartView.productListDetails
-                                   //           ?.productDetails?.isFavorite ==
-                                   //           true
-                                   //           ? AssetsConstants.ic_wishlistSelect
-                                   //           : AssetsConstants.ic_wishlistUnselect,
-                                   //     ))
-
                                  )
                                ])),
                          ),
@@ -311,7 +277,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                  children: [
                                    AppBoldFont(context, msg: viewmodel.productListDetails?.productDetails?.productVariantTitle ?? '', fontSize:
                                         16,),
-                                   // SizedBox(height: 10),
+                                    SizedBox(height: 15),
                                    AppMediumFont(
                                      context, color: Theme.of(context).canvasColor.withOpacity(0.8),
                                      msg:
@@ -371,7 +337,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                        : Container(),
                    Positioned(
                      bottom: 0.1,
-                     child:  bottomNavigationButton(),),
+                     child:  bottomNavigationButton()),
                  ],
                ),
              ):
@@ -444,8 +410,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                ),
                                onPressed: ()async{
                                  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                 token = sharedPreferences.getString('token').toString();
-                                 if (token == 'null'){
+                                 if (sharedPreferences.getString('token')== null){
                                    showDialog(
                                        context: context,
                                        builder:
@@ -454,7 +419,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                            product: true,
                                          );
                                        });
-                                   // _backBtnHandling(prodId);
                                  } else {
                                    final isFav =
                                    viewmodel.productListDetails?.productDetails!.isFavorite = !viewmodel.productListDetails!.productDetails!.isFavorite!;
@@ -467,57 +431,27 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                  }
                                }),
 
-                           // GestureDetector(
-                           //     onTap: ()async{
-                           //       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                           //       token = sharedPreferences.getString('token').toString();
-                           //       if (token == 'null'){
-                           //         showDialog(
-                           //             context: context,
-                           //             builder:
-                           //                 (BuildContext context) {
-                           //               return  LoginUp(
-                           //                 product: true,
-                           //               );
-                           //             });
-                           //         // _backBtnHandling(prodId);
-                           //       } else {
-                           //         final isFav =
-                           //             viewmodel.productListDetails?.productDetails!.isFavorite = !viewmodel.productListDetails!.productDetails!.isFavorite!;
-                           //         viewmodel.addToFavourite(
-                           //             context,
-                           //             "${viewmodel.productListDetails?.productId}",
-                           //             "${viewmodel.productListDetails?.productDetails?.variantId}",
-                           //             isFav!,
-                           //             'productList');
-                           //       }
-                           //       },
-                           //     child:  Image.asset(
-                           //       cartView.productListDetails
-                           //           ?.productDetails?.isFavorite ==
-                           //           true
-                           //           ? AssetsConstants.ic_wishlistSelect
-                           //           : AssetsConstants.ic_wishlistUnselect,
-                           //     ))
 
                        )
                      ])),
                  Container(
                      width: SizeConfig.screenWidth/3,
                      margin: EdgeInsets.only(left: 20,top: SizeConfig.screenHeight*0.02),
-                     padding: EdgeInsets.only(left: 10.0, top: 5, bottom: 5),
+                     padding: EdgeInsets.only(left: 10.0, top: 5,),
                      child: Column(
                          mainAxisAlignment: MainAxisAlignment.start,
                          crossAxisAlignment: CrossAxisAlignment.start,
                          children: [
                            AppBoldFont(context, msg: viewmodel.productListDetails?.productDetails?.productVariantTitle ?? '', fontSize: 22),
-                           // SizedBox(height: 10),
+                            SizedBox(height: 8),
                            AppMediumFont(
                              context,
                              msg:
                              "${viewmodel.productListDetails?.productShortDesc ?? ''}",
                              fontSize: 16.0,
                            ),
+                           SizedBox(height: 8),
+
                            Row(
                                mainAxisAlignment: MainAxisAlignment.start,
                                crossAxisAlignment: CrossAxisAlignment.center,
@@ -547,6 +481,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                          : '',color: GREEN,
                                      fontSize: 18)
                                ]),
+                           SizedBox(height: 8),
                            Container(
                              child: ProductSkuView(
                                  selected: true,
@@ -573,41 +508,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
                      child: searchList(context, homeViewModel, scrollController,homeViewModel, searchController!,cartView.cartItemCount))
                      : Container()
-               ],
+               ],)
              )
-
-            )
          : Center(child: ThreeArchedCircle(size: 45.0))),
           );
         })
       );
   }
 
-  getProductUpdateDetails(String? colorName, sizeName, ProductList product){
-    // cartView.getProductDetails(
-    //       context, widget.productId ?? prodId, product.productDetails?.variantId ?? '', colorName ?? '', sizeName ?? '');
-
-  }
-
-  // this method is called when navigate to this page using dynamic link
-  receivedArgumentsNotification() {
-    if (ModalRoute.of(context)?.settings.arguments != null && prodId == '') {
-      final Map<String, dynamic> data =
-      ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-      prodId = data['prodId'];
-      variantId = data['variantId'];
-      colorName = data['colorName'];
-     // cartView.getProductDetails(context, prodId, variantId,colorName,"");
-      cartView.updatecolorName(
-          context,
-          colorName);
-    }
-  }
-
-  // give toast according to the empty field
   addToBagButtonPressed() {
-
-          cartView.addToCart(
+    cartView.addToCart(
               cartView.productListDetails?.productId ?? '',
               "1",
               cartView.productListDetails?.productDetails?.variantId ?? '',
@@ -667,7 +577,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       : addToBagButtonPressed();
                 }
               }),
-              SizedBox(width: 5),
+              SizedBox(width: 20),
               ElevatedButton(
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
@@ -682,8 +592,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   msg: " BUYNOW", fontSize: 16),
               onPressed: ()async{
                 SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                token = sharedPreferences.getString('token').toString();
-                if (token == 'null'){
+                if (sharedPreferences.getString('token') == null){
                   showDialog(
                       context: context,
                       builder:
@@ -692,45 +601,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           product: true,
                         );
                       });
-                 // _backBtnHandling(prodId);
                 }
                 else if (cartView.productListDetails?.productDetails?.isAvailable == true) {
                   cartView.buyNow(
                       cartView.productListDetails?.productId ?? '',
                       "1", cartView.productListDetails?.productDetails?.variantId,
                       false, context);  //context.router.push(FavouriteListPage());
-
-                  // AppNavigator.push(
-                  //     context,
-                  //     FavouriteListPage(
-                  //         callback: (value) {
-                  //           if (value == false) {
-                  //             AppIndicator.loadingIndicator(context);
-                  //             cartView.getProductDetails(context, widget.items?.productId ?? '', '', cartView.selectedColorId, '');
-                  //           }
-                  //         }),
-                  //     screenName: RouteBuilder.Favourite,
-                  //     function: (v) {
-                  //       cartView.updateCartCount(context, v);
-                  //       AppIndicator.loadingIndicator(context);
-                  //       cartView.getProductDetails(context, widget.items?.productId ?? '', '', cartView.selectedColorId, '');
-                  //     });
                 }
               })
         ]));
   }
 
-  void _backBtnHandling(String prodId) async{
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    token = sharedPreferences.getString('token').toString();
-    if(prodId != '' && token != 'null'){
-      // AppNavigator.pushReplacement(context, BottomNavigationWidget());
-    } else if (token == 'null'){
-      ToastMessage.message("Please Login");
-      // AppNavigator.pushReplacement(context, LoginScreen());
-    } else {
-      Navigator.pop(context, cartView.cartItemCount);
-
-    }
-  }
 }

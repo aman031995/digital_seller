@@ -28,8 +28,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 @RoutePage()
 class EditProfile extends StatefulWidget {
   ProfileViewModel? viewmodel;
-  // String? isEmailVerified;
-  // String? isPhoneVerified;
 
   EditProfile({Key? key, this.viewmodel}) : super(key: key);
 
@@ -40,7 +38,6 @@ class EditProfile extends StatefulWidget {
 class _EditProfileState extends State<EditProfile> {
   final ProfileViewModel profileViewModel = ProfileViewModel();
   final _authRepo = AuthRepository();
-
   final validation = ValidationBloc();
   String? name, email, phone, address, profileImg, checkInternet;
   TextEditingController? addressController,
@@ -52,15 +49,14 @@ class _EditProfileState extends State<EditProfile> {
   void initState() {
     profileViewModel.getProfileDetails(context);
     getUser();
-
     addressController = TextEditingController();
     nameController = TextEditingController();
     phoneController = TextEditingController();
     emailController = TextEditingController();
     fetchCurrentUserDetails();
-
     super.initState();
   }
+
   getUser() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     name = sharedPreferences.getString('name');
@@ -72,10 +68,6 @@ class _EditProfileState extends State<EditProfile> {
     phoneController?.text = phone ?? '';
     addressController?.text = address ?? '';
     emailController?.text = email ?? '';
-    // profileViewModel.getVerificationButtonStatus(
-    //     context,
-    //     profileViewModel?.userInfoModel?.isPhoneVerified,
-    //     profileViewModel?.userInfoModel?.isEmailVerified);
     validateEditDetails();
     setState(() {});
   }
@@ -87,10 +79,6 @@ class _EditProfileState extends State<EditProfile> {
     validation.sinkEmail.add(email ?? '');
   }
   fetchCurrentUserDetails() {
-    // profileViewModel.getVerificationButtonStatus(
-    //     context,
-    //     profileViewModel.userInfoModel?.isPhoneVerified,
-    //     profileViewModel.userInfoModel?.isEmailVerified);
     validateEditDetails();
     setState(() {});
   }
@@ -136,7 +124,7 @@ class _EditProfileState extends State<EditProfile> {
                     onBackPressed: () {
                       Navigator.pop(context, true);
                     }),
-                backgroundColor: Theme.of(context).backgroundColor,
+                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 body: checkInternet == "Offline"
                     ? NOInternetScreen()
                     : SafeArea(
@@ -309,31 +297,22 @@ class _EditProfileState extends State<EditProfile> {
     return Container(
       child: Stack(
         children: [
-          GestureDetector(
-            onTap: () {
-              // AppNavigator.push(
-              //     context,
-              //     FullImage(
-              //         imageUrl:
-              //         '${viewmodel.userInfoModel?.profilePic ?? widget.viewmodel?.userInfoModel?.profilePic ?? profileImg}'));
-            },
-            child: CircleAvatar(
-              backgroundColor: WHITE_COLOR,
-              radius: 57,
-              child: CachedNetworkImage(
-                imageUrl:
-                '${viewmodel.userInfoModel?.profilePic ?? widget.viewmodel?.userInfoModel?.profilePic ?? profileImg}',
-                imageBuilder: (context, imageProvider) => Container(
-                  width: 110.0,
-                  height: 110.0,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                        image: imageProvider, fit: BoxFit.cover),
-                  ),
+          CircleAvatar(
+            backgroundColor: WHITE_COLOR,
+            radius: 57,
+            child: CachedNetworkImage(
+              imageUrl:
+              '${viewmodel.userInfoModel?.profilePic ?? widget.viewmodel?.userInfoModel?.profilePic ?? profileImg}',
+              imageBuilder: (context, imageProvider) => Container(
+                width: 110.0,
+                height: 110.0,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: imageProvider, fit: BoxFit.cover),
                 ),
-                placeholder: (context, url) => CircularProgressIndicator(),
               ),
+              placeholder: (context, url) => CircularProgressIndicator(),
             ),
           ),
           Positioned(

@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:TychoStream/model/data/cart_detail_model.dart';
 import 'package:TychoStream/model/data/category_list_model.dart';
 import 'package:TychoStream/model/data/checkout_data_model.dart';
 import 'package:TychoStream/model/data/city_state_model.dart';
 import 'package:TychoStream/model/data/create_order_model.dart';
 import 'package:TychoStream/model/data/promocode_data_model.dart';
+import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
@@ -12,7 +15,8 @@ import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/network/NetworkConstants.dart';
 import 'package:TychoStream/network/result.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:flutter_stripe/flutter_stripe.dart';
 class CartDetailRepository {
 
 //Get ProductList Method
@@ -120,6 +124,46 @@ class CartDetailRepository {
         responseHandler(result, isSuccess);
       }
     });
+  }
+  createPaymentIntent(BuildContext context, CreateOrderModel? createOrderModel, String? addressId,
+      String productId, String variantId, quantity, String secretKey, NotificationHandler responseHandler, {String? gatewayName}) async{
+    try {
+      Map<String, dynamic> body = {
+        'amount': createOrderModel?.total,
+        'currency': "INR",
+        'payment_method_types[]': 'card'
+      };
+
+      var response = await http.post(
+          Uri.parse('https://api.stripe.com/v1/payment_intents'),
+          body: body,
+          headers: {
+            'Authorization': 'Bearer $secretKey',
+            'Content-Type': 'application/x-www-form-urlencoded'
+          });
+
+      try {
+        var paymentIntent = json.decode(response.body);
+        //Payment Sheet
+        if (paymentIntent != null) {
+     // await Stripe.instance.initPaymentSheet(
+          //     paymentSheetParameters: SetupPaymentSheetParameters(
+          //         paymentIntentClientSecret: paymentIntent!['client_secret'],
+          //         style: ThemeMode.dark,
+          //         merchantDisplayName: 'merchant name',
+          //         customerId: '1234',
+          //         customerEphemeralKeySecret: '1234',
+          //         billingDetails: BillingDetails()));
+          // responseHandler(paymentIntent);
+           //displayPaymentSheet(paymentIntent, context, createOrderModel, addressId, productId, variantId, quantity);
+        }
+      } catch (e, s) {
+        ToastMessage.message(e.toString());
+        print(e);
+      }
+    } catch (err) {
+      debugPrint(err.toString());
+    }
   }
 
   // GetCartDetail Method

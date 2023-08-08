@@ -11,6 +11,6 @@ class ResponsiveWidget {
     return MediaQuery
         .of(context)
         .size
-        .width > 900;
+        .width < 1300;
   }
 }

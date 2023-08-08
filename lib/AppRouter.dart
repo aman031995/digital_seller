@@ -15,8 +15,7 @@ class AppRouter extends $AppRouter {
   // TODO: implement routes
   List<AutoRoute> routes = [
      AutoRoute(page: HomePageWeb.page, path: '/',initial: true),
-    // AutoRoute(page: DetailPage.page,path: '/DetailPage'),
-    // AutoRoute(page: SeeAllListPages.page,path: '/SeeAllListPages'),
+
     AutoRoute(page: SearchPage.page,path: '/SearchPage',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
@@ -30,27 +29,7 @@ class AppRouter extends $AppRouter {
           }
         },
       )]),
-    AutoRoute(page: Banner_product.page,path: '/banner_product/:bannerId',guards: [
-      // AutoRouteGuard.simple(
-      //       (resolver, scope) async {
-      //     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-      //     if (sharedPreferences.get('token') != null) {
-      //       resolver.next();
-      //     } else {
-      //       showDialog(
-      //           context: GlobalVariable.navState.currentState!.context,
-      //           builder:
-      //               (BuildContext context) {
-      //             return  LoginUp(
-      //               product: false,
-      //             );
-      //           });
-      //       ToastMessage.message("Please Login User");
-      //       resolver.redirect(HomePageWeb());
-      //     }
-      //   },
-      // )
-    ]),
+
     AutoRoute(page: EditProfile.page,path: '/EditProfile',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
@@ -63,21 +42,10 @@ class AppRouter extends $AppRouter {
           }
         },
       )]),
-    AutoRoute(page: ProductListGallery.page,path: '/ProductListGallery',guards: [
-    //   AutoRouteGuard.simple(
-    //       (resolver, scope) async {
-    //     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    //      if (sharedPreferences.get('token') != null) {
-    //       resolver.next();
-    //     } else {
-    //        ToastMessage.message("Please Login User");
-    //        //resolver.redirect(HomePageWeb());
-    //     }
-    //   },
-    // )
-    ]),
-    AutoRoute(page: FavouriteListPage.page,path: '/FavouriteListPage',guards: [
-      AutoRouteGuard.simple(
+
+    AutoRoute(page: ProductListGallery.page,path: '/ProductListGallery'),
+
+    AutoRoute(page: FavouriteListPage.page,path: '/FavouriteListPage',guards: [AutoRouteGuard.simple(
             (resolver, scope) async {
           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
           if (sharedPreferences.get('token') != null) {
@@ -88,6 +56,7 @@ class AppRouter extends $AppRouter {
           }
         },
       )]),
+
     AutoRoute(page: AddressListPage.page,path: '/AddressListPage/:buynow',guards: [
       AutoRouteGuard.simple((resolver, scope) async {
               token= SessionStorageHelper.getValue("payment");
@@ -98,10 +67,10 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             resolver.redirect(HomePageWeb());
-             //ToastMessage.message("Please Login User");
           }
         },
       )]),
+
     AutoRoute(page: MyOrderPage.page,path:'/MyOrderPage',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
@@ -115,7 +84,9 @@ class AppRouter extends $AppRouter {
           }
         },
       )]),
+
     AutoRoute(page: ProductDetailPage.page,path: '/ProductDetailPage/:productId'),
+
     AutoRoute(page: CartDetail.page,path: '/CartDetails/:itemCount',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
@@ -128,22 +99,11 @@ class AppRouter extends $AppRouter {
           }
         },
       )]),
-    AutoRoute(page: ContactUs.page,path: '/ContactUs',
-    ),
-    AutoRoute(page: WebHtmlPage.page,path: '/WebHtmlPage',),
-    AutoRoute(page: Privacy.page,path: '/Privacy',guards: [
-      AutoRouteGuard.simple(
-            (resolver, scope) async {
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-          if (sharedPreferences.get('token') != null) {
-            resolver.next();
-          } else {
-            ToastMessage.message("Please Login User");
-           // resolver.redirect(HomePageWeb());
-          }
-        },
-      )]),
 
+
+    AutoRoute(page: WebHtmlPage.page,path: '/WebHtmlPage/:title'),
+
+    AutoRoute(page: ContactUs.page,path: '/ContactUs'),
     AutoRoute(page: ThankYouPage.page,path: '/ThankYouPage',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
@@ -155,10 +115,10 @@ class AppRouter extends $AppRouter {
             resolver.next();
           } else {
             resolver.redirect(HomePageWeb());
-           // ToastMessage.message("Please Login User");
           }
         },
       )]),
+
     AutoRoute(page:BuynowCart.page,path: '/Buynow',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {

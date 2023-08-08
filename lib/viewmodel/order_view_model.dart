@@ -3,7 +3,6 @@ import 'package:TychoStream/model/data/order_detail_model.dart';
 import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/OrderDetailRepository.dart';
-import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:flutter/cupertino.dart';
 
 class OrderViewModel extends ChangeNotifier {

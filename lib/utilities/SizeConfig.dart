@@ -14,6 +14,7 @@ class SizeConfig {
 
   void init(BuildContext context) {
     _mediaQueryData = MediaQuery.of(context);
+    _mediaQueryData?.devicePixelRatio;
     screenWidth = _mediaQueryData!.size.width;
     screenHeight = _mediaQueryData!.size.height;
     blockSizeHorizontal = screenWidth / 100;
@@ -27,3 +28,4 @@ class SizeConfig {
     safeBlockVertical = (screenHeight - _safeAreaVertical) / 100;
   }
 }
+//_mediaQueryData?.devicePixelRatio

@@ -10,7 +10,7 @@ class AssetsConstants {
   static String icGoogle = "images/ic_google.png";
   static String icFacebook = "images/ic_fb.png";
   static String icApple = "images/ic_apple.png";
-
+static String icbanner='images/Banner.png';
 
   static String icHome = "images/ic_home.png";
   static String icSelectHome = "images/ic_select_home.png";

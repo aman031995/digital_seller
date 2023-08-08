@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/cart_detail_model.dart';
 import 'package:TychoStream/model/data/create_order_model.dart';
 import 'package:TychoStream/network/ASResponseModal.dart';
@@ -9,7 +7,6 @@ import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/CartDetalRepository.dart';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/session_storage.dart';
-import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
@@ -22,7 +19,6 @@ import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
-import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
@@ -60,8 +56,10 @@ class _AddressListPageState extends State<AddressListPage> {
   final _cartRepo = CartDetailRepository();
 
   CreateOrderModel? _createOrderModel;
-
   CreateOrderModel? get createOrderModel => _createOrderModel;
+
+
+
   @override
   void initState() {
     _razorpay = Razorpay();
@@ -113,7 +111,7 @@ else{
                           ?  Column(
                         children: [
                           cartPageViewIndicator(context,1),
-                          // Address Button
+
                           AddressButton(context, () {
                             showDialog(
                                 context: context,
@@ -121,184 +119,8 @@ else{
                                   return  ShippingAddressPage(isAlreadyAdded: false);
                                 });
                           }),
-                          cartViewData
-                              .addressListModel?.length==0?Container(): Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5)
-                            ),
-                            width: SizeConfig.screenWidth,
-                            height: SizeConfig.screenHeight - 500,
-                            child: ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                itemCount: cartViewData
-                                    .addressListModel?.length,
-                                itemBuilder: (context, index) {
-                                  final addressItem = cartViewData.addressListModel?[index];
-                                  cartViewData.selectedAddress = cartViewData.addressListModel?[cartViewData.selectedAddressIndex];
-                                  return Stack(
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.only(left: 8,top: 8,bottom: 10),
-                                        margin:EdgeInsets.only(left: 5,right: 5,top: 8),
-                                        color: Theme.of(context).cardColor,
-                                        child: Row(
-                                          children: [
-                                            GestureDetector(
-                                              onTap: (){
-                                                cartViewData.selectedAddressIndex = index;
-                                                cartViewData.selectedAddress = cartViewData.addressListModel?[cartViewData.selectedAddressIndex];
-                                                addressId=cartViewData.selectedAddress?.addressId;
-                                              },
-                                              child: radioTileButton(cartViewData.selectedAddressIndex , index,),
-                                            ),
-                                            SizedBox(width: 10),
-                                            InkWell(
-                                              onTap: () {
-                                                cartViewData.selectedAddressIndex = index;
 
-                                                cartViewData.selectedAddress = cartViewData.addressListModel?[cartViewData.selectedAddressIndex];
-                                                addressId=cartViewData.selectedAddress?.addressId;
-                                              },
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment
-                                                    .start,
-                                                mainAxisSize:
-                                                MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .end,
-                                                children: <Widget>[
-                                                  AppMediumFont(context,
-                                                      msg: (addressItem?.firstName?.toUpperCase() ?? '') +
-                                                          " " +
-                                                          (addressItem?.lastName?.toUpperCase() ?? ''),
-                                                      color: Theme.of(context).canvasColor,
-                                                      fontSize: 14.0),
-
-
-                                                  Container(
-                                                    margin: EdgeInsets.only(top: 1),
-                                                    width: SizeConfig.screenWidth*0.25,
-                                                    child: AppRegularFont(context,
-                                                        msg: (addressItem?.firstAddress ?? '') +
-                                                            ", " +
-                                                            (addressItem?.secondAddress ??
-                                                                '') +
-                                                            ", " +
-                                                            (addressItem?.cityName ?? '') +", " +
-                                                            "\n" +
-                                                            (addressItem?.state ?? '') +
-                                                            " - " +
-                                                            (addressItem?.pinCode.toString() ?? '') +
-                                                            "\n" +"\n"+
-                                                            (addressItem?.mobileNumber ?? ''),
-                                                        color: Theme.of(context).canvasColor,
-                                                        fontSize: 14.0),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Positioned(
-                                          bottom: 0,
-                                          right: 20,
-                                          child: IconButton(
-                                            icon: Icon(
-                                              Icons.delete,
-                                              size: 18,
-                                              color:
-                                              Theme.of(context)
-                                                  .primaryColor,
-                                            ),
-                                            onPressed: () {
-                                              cartViewModel.deleteAddress(context,cartViewData.addressListModel?[index].addressId ?? "").whenComplete(() => {
-                                                cartViewData.selectedAddressIndex=0
-                                              });
-                                            },
-                                          )),
-                                      Positioned(
-                                          bottom: 0,
-                                          right: 50,
-                                          child: IconButton(
-                                              icon: Icon(
-                                                Icons.edit,
-                                                size: 18,
-                                                color:
-                                                Theme.of(context).primaryColor,
-                                              ),
-                                              onPressed: () {
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (BuildContext context) {
-                                                      return  ShippingAddressPage(isAlreadyAdded: true,
-                                                        addressId: cartViewData.addressListModel?[index].addressId,
-                                                        firstName: cartViewData.addressListModel?[index].firstName,
-                                                        lastName: cartViewData.addressListModel?[index].lastName,
-                                                        mobileNumber: cartViewData.addressListModel?[index].mobileNumber,
-                                                        email: cartViewData.addressListModel?[index].email,
-                                                        firstAddress: cartViewData.addressListModel?[index].firstAddress,
-                                                        secondAddress: cartViewData.addressListModel?[index].secondAddress,
-                                                        state: cartViewData.addressListModel?[index].state,
-                                                        cityName: cartViewData.addressListModel?[index].cityName,
-                                                        pinCode: cartViewData.addressListModel?[index].pinCode,
-                                                      );
-                                                    });
-                                              })
-                                      ),
-                                    ],
-                                  );
-                                }),
-                          ),
-                          // Card(
-                          //   child: Container(
-                          //     child: Column(
-                          //       crossAxisAlignment: CrossAxisAlignment.start,
-                          //       mainAxisSize: MainAxisSize.max,
-                          //       mainAxisAlignment: MainAxisAlignment.end,
-                          //       children: <Widget>[
-                          //         Padding(
-                          //             padding:
-                          //             EdgeInsets.only(left: 10, top: 10,bottom: 10),
-                          //             child: AppBoldFont(context,
-                          //                 msg: "SelectPayment",
-                          //                 fontSize: 16.0)),
-                          //         Divider(
-                          //           height: 1,
-                          //           color:
-                          //           Theme.of(context).canvasColor,
-                          //         ),
-                          //         Theme(
-                          //             data: ThemeData(
-                          //               unselectedWidgetColor:
-                          //               Theme.of(context).canvasColor,
-                          //             ),
-                          //             child: RadioListTile(
-                          //               value: 1,
-                          //               groupValue: selectedRadioTile,
-                          //               title: AppBoldFont(context,
-                          //                   msg: StringConstant.cardWalletsText,
-                          //                   fontSize: 14.0),
-                          //               onChanged: (val) {
-                          //                 print("Radio Tile pressed $val");
-                          //                 if (val == 1) {
-                          //                   setSelectedRadioTile(1);
-                          //                 }
-                          //                 setState(() {
-                          //                   google_pay = true;
-                          //                 });
-                          //               },
-                          //               activeColor:
-                          //               Theme.of(context).primaryColor,
-                          //               selected: google_pay,
-                          //             )),
-                          //         SizedBox(height: 5)
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
+                          cartViewData.addressListModel?.length==0?Container(): addressDetails(context,addressId,cartViewData),
                           Container(
                             color: Theme.of(context).cardColor,
                             child: Column(
@@ -383,9 +205,8 @@ else{
                               ],
                             ),
                           ),
-                          // Total Bill detail
-                          widget.buynow==true? Card(
-                            child: Column(
+                          SizedBox(height: 10),
+                          widget.buynow==true? Column(
                                 children:  cartListData!.checkoutDetails!
                                     .map((e){
                                   return Container(
@@ -400,27 +221,8 @@ else{
                                     ),
                                   );
                                 } ).toList()
-                            ),
-                          ):
-                          Card(
-                            child: Column(
-                                children: cartViewModel.cartListData!.checkoutDetails!
-                                    .map((e){
-                                  return Container(
-                                    width: SizeConfig.screenWidth,
-                                    child: Column(
-                                      children: [
-                                        SizedBox(height: 8),
-                                        e.name=='Total items'?  priceDetailWidget(context, e.name ?? "", "1"):
-                                        priceDetailWidget(context, e.name ?? "", e.value ??""),
-                                        SizedBox(height: 8)
-                                      ],
-                                    ),
-                                  );
-                                } ).toList()
-                            ),
-                          ),
-                         // billCardMobile(context,cartViewModel),
+                            ):
+                          pricedetails(context,cartViewData),
                           SizedBox(height: 10),
                           Row(
                             children: [
@@ -451,8 +253,8 @@ else{
                                   msg: "Accept ", fontSize: 16.0),
                               InkWell(
                                   onTap: () {
-
-                                  },
+                                    context.router.push(WebHtmlPage(title:'ReturnPolicy',html: 'return_policy' ));
+                                    },
                                   child: AppMediumFont(context,
                                       msg: "Return Policy",
                                       color: Theme.of(context).primaryColor,
@@ -461,7 +263,7 @@ else{
                                   msg: " and ", fontSize: 16.0),
                               InkWell(
                                   onTap: () {
-
+                                    context.router.push(WebHtmlPage(title:'TermsAndCondition',html: 'terms_condition' ));
                                   },
                                   child: AppMediumFont(context,
                                       msg: "Terms Of Use",
@@ -469,38 +271,42 @@ else{
                                       fontSize: 16.0)),
                             ],
                           ),
-                          SizedBox(height: 10),
-                          // ElevatedButton(onPressed: (){
-                          //   if (google_pay != true) {
-                          //     ToastMessage.message(StringConstant.selectPaymentOption);
-                          //   } else if (agree == false) {
-                          //     ToastMessage.message(StringConstant.acceptReturnPolicy);
-                          //   }
-                          //   else if (cartViewModel.addressListModel?.length ==0) {
-                          //     ToastMessage.message("please add address");
-                          //   }
-                          //   else if ((cod == true || google_pay == true) && (agree == true)) {
-                          //     var amount = 10;
-                          //     //double.parse(cartViewModel.cartListData?.checkoutDetails?.totalPayableAmount ?? '1');
-                          //     if (amount != 0 && cartViewModel.addressListModel?.length!=0) {
-                          //      // widget.buynow==true?createOrder(cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.totalItems.toString() ??"",context):  createOrder('','','',context);
-                          //       widget.buynow==true?createOrder(cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
-                          //           .value ??
-                          //           "",context):  createOrder('','','',context);
-                          //
-                          //     }
-                          //   }
-                          //
-                          // }, child: Text("checkout",style: TextStyle(fontSize: 18),)),
+                          SizedBox(height: 20),
+                          ElevatedButton(
+                              onPressed: (){
+                            if (agree != true) {
+                              ToastMessage.message(StringConstant.acceptReturnPolicy);
+                            } else if ((google_pay == true) && (agree == true)) {
+                              widget.buynow==true?
+                              createOrder("online",cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
+                                  .value ??
+                                  "",context,addressId: addressId,gateway: GlobalVariable.payGatewayName,):
+                              createOrder("online",'','','',context,addressId: addressId,gateway: GlobalVariable.payGatewayName,);
+                            } else if ((cod == true) && (agree == true)){
+                              print('order with cod options');
+                              widget.buynow==true?
+                              createOrder("cod",cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
+                                  .value ??
+                                  "",context,addressId: addressId):
+                              createOrder("cod",'','','',context,addressId: addressId);
+                            }
 
-                         SizedBox(height: 10),
+                            else {
+                              ToastMessage.message(StringConstant.selectPaymentOption);
+                            }},
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                                backgroundColor: Theme.of(context).primaryColor
+                              ),
+                              child: Text("checkout",style: TextStyle(fontSize: 18,color: Theme.of(context).hintColor))),
+                          SizedBox(height: 20),
                           footerMobile(context)
                         ],
                       ):
                       Column(
                         children: [
                           cartPageViewIndicator(context,1),
-                          // Address Button
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -514,147 +320,14 @@ else{
                                           return  ShippingAddressPage(isAlreadyAdded: false);
                                         });
                                   }),
-                                  // Address Details
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5)
-                                    ),
-                                    width: SizeConfig.screenWidth*0.30,
-                                    height: SizeConfig.screenHeight - 300,
-                                    child: ListView.builder(
-                                        scrollDirection: Axis.vertical,
-                                        itemCount: cartViewData
-                                            .addressListModel?.length,
-                                        itemBuilder: (context, index) {
-                                          final addressItem = cartViewData.addressListModel?[index];
-                                          cartViewData.selectedAddress = cartViewData.addressListModel?[cartViewData.selectedAddressIndex];
-                                          return Stack(
-                                            children: [
-                                              Container(
-                                                width: SizeConfig.screenWidth*0.30,
-                                                padding: EdgeInsets.only(left: 8,top: 8,bottom: 10),
-                                                margin:EdgeInsets.only(left: 5,right: 5,top: 8),
-                                                color: Theme.of(context).cardColor,
-                                                child: Row(
-                                                  children: [
-                                                    GestureDetector(
-                                                      onTap: (){
-                                                        cartViewData.selectedAddressIndex = index;
-                                                        cartViewData.selectedAddress = cartViewData.addressListModel?[cartViewData.selectedAddressIndex];
-                                                        addressId=cartViewData.selectedAddress?.addressId;
-                                                      },
-                                                      child: radioTileButton(cartViewData.selectedAddressIndex , index,),
-                                                    ),
-                                                    SizedBox(width: 10),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        cartViewData.selectedAddressIndex = index;
-
-                                                        cartViewData.selectedAddress = cartViewData.addressListModel?[cartViewData.selectedAddressIndex];
-                                                        addressId=cartViewData.selectedAddress?.addressId;
-                                                      },
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                        mainAxisSize:
-                                                        MainAxisSize.max,
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .end,
-                                                        children: <Widget>[
-                                                          AppMediumFont(context,
-                                                              msg: (addressItem?.firstName?.toUpperCase() ?? '') +
-                                                                  " " +
-                                                                  (addressItem?.lastName?.toUpperCase() ?? ''),
-                                                              color: Theme.of(context).canvasColor,
-                                                              fontSize: 14.0),
-
-
-                                                          Container(
-                                                            margin: EdgeInsets.only(top: 1),
-                                                            width: SizeConfig.screenWidth*0.25,
-                                                            child: AppRegularFont(context,
-                                                                msg: (addressItem?.firstAddress ?? '') +
-                                                                    ", " +
-                                                                    (addressItem?.secondAddress ??
-                                                                        '') +
-                                                                    ", " +
-                                                                    (addressItem?.cityName ?? '') +", " +
-                                                                    "\n" +
-                                                                    (addressItem?.state ?? '') +
-                                                                    " - " +
-                                                                    (addressItem?.pinCode.toString() ?? '') +
-                                                                    "\n" +"\n"+
-                                                                    (addressItem?.mobileNumber ?? ''),
-                                                                color: Theme.of(context).canvasColor,
-                                                                fontSize: 14.0),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Positioned(
-                                                  bottom: 0,
-                                                  right: 20,
-                                                  child: IconButton(
-                                                    icon: Icon(
-                                                      Icons.delete,
-                                                      size: 18,
-                                                      color:
-                                                      Theme.of(context)
-                                                          .primaryColor,
-                                                    ),
-                                                    onPressed: () {
-                                                      cartViewModel.deleteAddress(context,cartViewData.addressListModel?[index].addressId ?? "").whenComplete(() => {
-                                                        cartViewData.selectedAddressIndex=0
-                                                      });
-                                                    },
-                                                  )),
-                                              Positioned(
-                                                  bottom: 0,
-                                                  right: 50,
-                                                  child: IconButton(
-                                                      icon: Icon(
-                                                        Icons.edit,
-                                                        size: 18,
-                                                        color:
-                                                        Theme.of(context).primaryColor,
-                                                      ),
-                                                      onPressed: () {
-                                                        showDialog(
-                                                            context: context,
-                                                            builder: (BuildContext context) {
-                                                              return  ShippingAddressPage(isAlreadyAdded: true,
-                                                              addressId: cartViewData.addressListModel?[index].addressId,
-                                                              firstName: cartViewData.addressListModel?[index].firstName,
-                                                              lastName: cartViewData.addressListModel?[index].lastName,
-                                                                mobileNumber: cartViewData.addressListModel?[index].mobileNumber,
-                                                                email: cartViewData.addressListModel?[index].email,
-                                                                firstAddress: cartViewData.addressListModel?[index].firstAddress,
-                                                                secondAddress: cartViewData.addressListModel?[index].secondAddress,
-                                                                state: cartViewData.addressListModel?[index].state,
-                                                                cityName: cartViewData.addressListModel?[index].cityName,
-                                                                pinCode: cartViewData.addressListModel?[index].pinCode,
-                                                              );
-                                                            });
-                                                      })
-                                              ),
-                                            ],
-                                          );
-                                        }),
-                                  ),
+                                  cartViewData.addressListModel?.length==0?Container():
+                                  addressDetails(context,addressId,cartViewData),
                                 ],
                               ),
-                              Column(children: [
 
+                              Column(children: [
                                 SizedBox(height: 5),
-                                // Total Bill detail
-                               widget.buynow==true? Card(
-                                 elevation: 0.2,
-                                 child: Column(
+                               widget.buynow==true?  Column(
                                      children:  cartListData!.checkoutDetails!
                                          .map((e){
                                        return Container(
@@ -669,77 +342,9 @@ else{
                                          ),
                                        );
                                      } ).toList()
-                                 ),
                                ):
-                                Card(
-                                  elevation: 0.2,
-                                 child: Column(
-                                     children: cartViewModel.cartListData!.checkoutDetails!
-                                         .map((e){
-                                       return Container(
-                                         width: SizeConfig.screenWidth/3.22,
-                                         child: Column(
-                                           children: [
-                                             SizedBox(height: 8),
-                                             e.name=='Total items'?  priceDetailWidget(context, e.name ?? "", "1"):
-                                             priceDetailWidget(context, e.name ?? "", e.value ??""),
-                                             SizedBox(height: 8)
-                                           ],
-                                         ),
-                                       );
-                                     } ).toList()
-                                 ),
-                               ),
-                              //   Card(
-                              //     elevation: 0.2,
-                              //   child: Container(
-                              //     width: SizeConfig.screenWidth/3.22,
-                              //     child: Column(
-                              //       crossAxisAlignment: CrossAxisAlignment.start,
-                              //       mainAxisSize: MainAxisSize.max,
-                              //       mainAxisAlignment: MainAxisAlignment.end,
-                              //       children: <Widget>[
-                              //         Padding(
-                              //             padding:
-                              //             EdgeInsets.only(left: 10, top: 10,bottom: 10),
-                              //             child: AppBoldFont(context,
-                              //                 msg: "SelectPayment",
-                              //                 fontSize: 16.0)),
-                              //         Divider(
-                              //           height: 1,
-                              //           color:
-                              //           Theme.of(context).canvasColor,
-                              //         ),
-                              //         Theme(
-                              //             data: ThemeData(
-                              //               unselectedWidgetColor:
-                              //               Theme.of(context).canvasColor,
-                              //             ),
-                              //             child: RadioListTile(
-                              //               value: 1,
-                              //               groupValue: selectedRadioTile,
-                              //               title: AppBoldFont(context,
-                              //                   msg: StringConstant.cardWalletsText,
-                              //                   fontSize: 14.0),
-                              //               onChanged: (val) {
-                              //                 print("Radio Tile pressed $val");
-                              //                 if (val == 1) {
-                              //                   setSelectedRadioTile(1);
-                              //                 }
-                              //                 setState(() {
-                              //                   google_pay = true;
-                              //                 });
-                              //               },
-                              //               activeColor:
-                              //               Theme.of(context).primaryColor,
-                              //               selected: google_pay,
-                              //             )),
-                              //         SizedBox(height: 5)
-                              //       ],
-                              //     ),
-                              //   ),
-                              // ),
-
+                               pricedetails(context,cartViewData),
+                                SizedBox(height: 5),
                                 Container(
                                   width: SizeConfig.screenWidth/3.22,
                                   color: Theme.of(context).cardColor,
@@ -853,8 +458,8 @@ else{
                                         msg: "Accept ", fontSize: 16.0),
                                     InkWell(
                                         onTap: () {
-
-                                        },
+                                          context.router.push(WebHtmlPage(title:'ReturnPolicy',html: 'return_policy' ));
+                                          },
                                         child: AppMediumFont(context,
                                             msg: "Return Policy",
                                             color: Theme.of(context).primaryColor,
@@ -863,8 +468,8 @@ else{
                                         msg: " and ", fontSize: 16.0),
                                     InkWell(
                                         onTap: () {
-
-                                        },
+                                          context.router.push(WebHtmlPage(title:'TermsAndCondition',html: 'terms_condition' ));
+                                          },
                                         child: AppMediumFont(context,
                                             msg: "Terms Of Use",
                                             color: Theme.of(context).primaryColor,
@@ -879,8 +484,8 @@ else{
                                     widget.buynow==true?
                                     createOrder("online",cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
                                         .value ??
-                                        "",context,addressId: addressId):
-                                    createOrder("online",'','','',context,addressId: addressId);
+                                        "",context,addressId: addressId,gateway: GlobalVariable.payGatewayName,):
+                                    createOrder("online",'','','',context,addressId: addressId,gateway: GlobalVariable.payGatewayName,);
                                   } else if ((cod == true) && (agree == true)){
                                     print('order with cod options');
                                     widget.buynow==true?
@@ -892,27 +497,10 @@ else{
 
                                   else {
                                     ToastMessage.message(StringConstant.selectPaymentOption);
-                                  }},
-                      //
-                      // if (google_pay != true) {
-                      //   ToastMessage.message(StringConstant.selectPaymentOption);
-                      // } else if (agree == false) {
-                      //   ToastMessage.message(StringConstant.acceptReturnPolicy);
-                      // }
-                      // else if (cartViewModel.addressListModel?.length ==0) {
-                      //   ToastMessage.message("please add address");
-                      // }
-                      // else if ((cod == true || google_pay == true) && (agree == true)) {
-                      //   var amount=10;
-                      // //  var amount = double.parse(cartViewModel.cartListData?.checkoutDetails?.totalPayableAmount ?? '1');
-                      //    if (amount != 0 && cartViewModel.addressListModel?.length!=0) {
-                      //
-                      //
-                      //
-                      //   }
-                      // }
-
-                      child: Text("checkout",style: TextStyle(fontSize: 18),))
+                                  }},style: ElevatedButton.styleFrom(
+                                    backgroundColor: Theme.of(context).primaryColor
+                                ),
+                                    child: Text("checkout",style: TextStyle(fontSize: 18,color: Theme.of(context).hintColor)))
 
                               ],)
                             ],
@@ -941,9 +529,11 @@ else{
         AppIndicator.disposeIndicator();
         _createOrderModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         if(paymentMethod == "online"){
+          if(gateway == "stripe"){
+            cartViewModel.createPaymentIntent(context, createOrderModel, addressId, productId, variantId, quantity);
+          } else if (gateway == "razorpay") {
           openPaymentGateway(_createOrderModel);
-        }
-      // openPaymentGateway(_createOrderModel);
+        }}
         else{
         cartViewModel.placeOrder(context,  addressId ?? '', '',"",
             paymentMethod,
@@ -956,6 +546,9 @@ else{
       }
     });
   }
+
+
+
 
   void openPaymentGateway(CreateOrderModel? createOrderModel) async{
     double total=double.parse(createOrderModel?.total ??"");
@@ -985,7 +578,6 @@ else{
     } catch (e) {
       debugPrint('Error: e');
     }
-    // razorPay.open(options);
   }
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
@@ -1017,19 +609,5 @@ else{
   void _handleExternalWallet(ExternalWalletResponse response) {
     print('External SDK Response: $response');
     Fluttertoast.showToast(msg: "EXTERNAL_WALLET: ${response.walletName!}", toastLength: Toast.LENGTH_SHORT);
-  }
-  radioTileButton(int? selectedAddressIndex, int index){
-    return CircleAvatar(
-      radius: 12,
-      backgroundColor: Theme.of(context).canvasColor,
-      child: CircleAvatar(
-        radius: 10,
-        backgroundColor: WHITE_COLOR,
-        child: CircleAvatar(
-          radius: 8,
-          backgroundColor: selectedAddressIndex == index? Theme.of(context).primaryColor: WHITE_COLOR,
-        ),
-      ),
-    );
   }
 }

@@ -11,4 +11,7 @@ class GlobalVariable {
   static bool? fromCart;
   static bool? fromFavourite;
   static String? payGatewayName;
+  static String SECRET_KEY =
+      "sk_test_51NXhtjSJK48GkIWFaWaMUY1amdUDTtvYdzwmbi8rXmsIFuz7sB2HraObpFPJZWtyrD5NVtJplj3E6d853NIjx7ko00MmnjVc2K";
+
 }

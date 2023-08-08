@@ -1,3 +1,4 @@
+import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -320,11 +321,11 @@ class _ContactUsState extends State<ContactUs> {
       automaticallyImplyLeading: false,
       backgroundColor: Theme.of(context).cardColor,
       title: Row(children: <Widget>[
-        GestureDetector(
-            onTap: (){
-              GoRouter.of(context).pushNamed(RoutesName.home);
-            },
-            child: Image.asset(AssetsConstants.icLogo,width: ResponsiveWidget.isMediumScreen(context) ? 35:45, height:ResponsiveWidget.isMediumScreen(context) ? 35: 45)),
+        // GestureDetector(
+        //     onTap: (){
+        //       GoRouter.of(context).pushNamed(RoutesName.home);
+        //     },
+        //     child: Image.asset(AssetsConstants.icLogo,width: ResponsiveWidget.isMediumScreen(context) ? 35:45, height:ResponsiveWidget.isMediumScreen(context) ? 35: 45)),
         SizedBox(width: SizeConfig.screenWidth*0.04),
         AppBoldFont(context,msg:"Contact Us",fontSize:ResponsiveWidget.isMediumScreen(context) ? 16: 20, fontWeight: FontWeight.w700),
       ]),
@@ -341,8 +342,48 @@ class _ContactUsState extends State<ContactUs> {
           },
           child: Row(
             children: [
-              appTextButton(context, names!, Alignment.center, Theme.of(context).canvasColor,ResponsiveWidget.isMediumScreen(context)
+              names == "null"
+                  ?
+              OutlinedButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder:
+                            (BuildContext context) {
+                          return LoginUp();
+                        });
+                  },
+                  style: ButtonStyle(
+
+                      overlayColor: MaterialStateColor
+                          .resolveWith((states) =>
+                          Theme
+                              .of(context)
+                              .primaryColor.withOpacity(0.4)),
+                      fixedSize:
+                      MaterialStateProperty.all(
+                          Size.fromHeight(30)),
+                      side: MaterialStateProperty.all(BorderSide(
+                          color: Theme
+                              .of(context)
+                              .canvasColor,
+
+                          width: 1,
+                          style: BorderStyle.solid),
+                      )
+                  ),
+                  child: appTextButton(
+                      context,
+                      'SignIn',
+                      Alignment.center,
+                      Theme
+                          .of(context)
+                          .canvasColor,
+                      14,
+                      true))
+                  :   appTextButton(context, names!, Alignment.center, Theme.of(context).canvasColor,ResponsiveWidget.isMediumScreen(context)
                   ?16: 18, true),
+              SizedBox(width: 5),
               Image.asset(
                 AssetsConstants.icProfile,
                 height:ResponsiveWidget.isMediumScreen(context)

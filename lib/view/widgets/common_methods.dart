@@ -1,23 +1,24 @@
 
 import 'package:TychoStream/AppRouter.gr.dart';
+import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
+import 'package:TychoStream/model/data/product_list_model.dart';
+import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
+import 'package:TychoStream/view/Products/image_slider.dart';
+import 'package:TychoStream/view/Products/shipping_address_page.dart';
+import 'package:TychoStream/view/WebScreen/OnHover.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-
-
-import 'image_source.dart';
 
 class CommonMethods {
 
@@ -26,12 +27,9 @@ class CommonMethods {
     var mappedUrl = Uri.parse(url);
     return mappedUrl;
   }
-
-
 }
 
-Widget cartPageViewIndicator(
-    BuildContext context,int activeStep) {
+Widget cartPageViewIndicator(BuildContext context,int activeStep) {
   return Container(
       margin: EdgeInsets.only(bottom: 10,left: ResponsiveWidget.isMediumScreen(context)
           ?16:SizeConfig.screenHeight*0.40,right: ResponsiveWidget.isMediumScreen(context)
@@ -62,7 +60,6 @@ Widget stepView(BuildContext context,String title,int activeStep,int index){
           : Theme.of(context).canvasColor.withOpacity(0.8),
       fontSize: 14);
 }
-
 //PriceDetailWidget Method
 Widget priceDetailWidget(BuildContext context, String str1, String val) {
   return Container(
@@ -90,7 +87,6 @@ Widget priceDetailWidget(BuildContext context, String str1, String val) {
     ),
   );
 }
-
 
 //CheckOut button
 Widget checkoutButton(BuildContext context,String msg,CartViewModel cartViewData,  VoidCallback? onTap,){
@@ -120,7 +116,7 @@ Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
         SizedBox(height: 5),
         appTextButton(
             context,
-            "  My Account",
+            StringConstant.myAccount,
             Alignment.centerLeft,
             Theme.of(context).canvasColor,
             18,
@@ -137,7 +133,7 @@ Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
         ),
         appTextButton(
             context,
-            " My Order ",
+           StringConstant.myOrder,
             Alignment.centerLeft,
             Theme.of(context).canvasColor,
             18,
@@ -155,7 +151,7 @@ Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
         SizedBox(height: 5),
         appTextButton(
             context,
-            "  LogOut",
+            StringConstant.logout,
             Alignment.centerLeft,
             Theme.of(context).canvasColor,
             18,
@@ -178,4 +174,700 @@ Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
     // height: 20,width: 20,
   );
 
+}
+
+String? getFavTitle(ProductList? productListData) {
+  if (productListData!.productDetails!.productVariantTitle!.length > 40) {
+    return productListData.productDetails?.productVariantTitle?.replaceRange(
+        40, productListData.productDetails?.productVariantTitle?.length, '...');
+  } else {
+    return productListData.productDetails?.productVariantTitle ?? "";
+  }
+}
+
+String? getNameTitle(ProductList? productListData) {
+  if (productListData!.productName!.length > 40) {
+    return productListData.productName
+        ?.replaceRange(40, productListData.productName?.length, '...');
+  } else {
+    return productListData.productName;
+  }
+}
+
+Widget productGalleryTitleSection(BuildContext context, ProductList? productListData, bool favbourite) {
+  return Container(
+    height: 60,
+    padding: const EdgeInsets.only(
+      left: 8.0,
+      top: 8,
+      right: 8.0,
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        AppBoldFont(
+          context,
+          maxLines: 1,
+          msg: favbourite == true
+              ? getFavTitle(productListData) ?? ''
+              : getNameTitle(productListData) ?? '',
+          fontSize: 18.0,
+        ),
+        SizedBox(height: 2),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            FittedBox(
+                child: AppMediumFont(context,
+                    msg: "₹" '${productListData?.productDetails?.productPrice}',
+                    fontSize:
+                    ResponsiveWidget.isMediumScreen(context) ? 14 : 18.0,
+                    color: Theme.of(context).canvasColor.withOpacity(0.6),
+                    textDecoration: TextDecoration.lineThrough)),
+            SizedBox(width: 4.0),
+            FittedBox(
+                child: AppMediumFont(
+                  context,
+                  color: Theme.of(context).canvasColor.withOpacity(0.9),
+                  msg: "₹"
+                      '${productListData?.productDetails?.productDiscountPrice}',
+                  fontSize: ResponsiveWidget.isMediumScreen(context) ? 14 : 18.0,
+                )),
+            SizedBox(width: 4.0),
+            FittedBox(
+                child: AppMediumFont(context,
+                    fontSize:
+                    ResponsiveWidget.isMediumScreen(context) ? 14 : 16.0,
+                    msg:
+                    '${productListData?.productDetails?.productDiscountPercent}' +
+                        '%OFF',
+                    color: GREEN)),
+          ],
+        ),
+        SizedBox(height: 3)
+      ],
+    ),
+  );
+}
+
+//ProductListItems
+Widget productListItems(BuildContext context, ProductList? productListData, int index, CartViewModel viewmodel) {
+  return OnHover(
+    builder: (isHovered) {
+      return GestureDetector(
+          onTap: () {
+            context.router.push(
+              ProductDetailPage(
+                productId: '${productListData?.productId}',
+                productdata: [
+                  '${viewmodel.cartItemCount}',
+                  '${productListData?.productDetails?.defaultVariationSku?.size?.name}',
+                  '${productListData?.productDetails?.defaultVariationSku?.color?.name}',
+                  '${productListData?.productDetails?.defaultVariationSku?.style?.name}',
+                  '${productListData?.productDetails?.defaultVariationSku?.unitCount?.name}',
+                  '${productListData?.productDetails?.defaultVariationSku?.materialType?.name}',
+                ],
+              ),
+            );
+          },
+          child: Container(
+            decoration: isHovered == true
+                ? BoxDecoration(
+              color: Theme.of(context).cardColor,
+              boxShadow: [
+                BoxShadow(
+                  color:
+                  Theme.of(context).canvasColor.withOpacity(0.15),
+                  blurRadius: 10.0,
+                  spreadRadius: 7,
+                  offset: Offset(2, 2),
+                ),
+                BoxShadow(
+                  color:
+                  Theme.of(context).canvasColor.withOpacity(0.12),
+                  blurRadius: 7.0,
+                  spreadRadius: 5,
+                  offset: Offset(2, 2),
+                ),
+                BoxShadow(
+                  color:
+                  Theme.of(context).canvasColor.withOpacity(0.10),
+                  blurRadius: 4.0,
+                  spreadRadius: 3,
+                  offset: Offset(2, 2),
+                ),
+                BoxShadow(
+                  color:
+                  Theme.of(context).canvasColor.withOpacity(0.09),
+                  blurRadius: 1.0,
+                  spreadRadius: 1.0,
+                  offset: Offset(2, 2),
+                ),
+              ],
+            )
+                : BoxDecoration(
+              color: Theme.of(context).cardColor,
+            ),
+            margin: EdgeInsets.only(right: 16),
+            child: Stack(
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    ImageSlider(
+                      images: productListData?.productDetails?.productImages,
+                    ),
+                    productGalleryTitleSection(context, productListData, true)
+                  ],
+                ),
+                Positioned(
+                    right: 10,
+                    top: 5,
+                    child: IconButton(
+                      iconSize: 45,
+                      icon: Image.asset(
+                        productListData?.productDetails?.isFavorite == true
+                            ? AssetsConstants.ic_wishlistSelect
+                            : AssetsConstants.ic_wishlistUnselect,
+                      ),
+                      onPressed: () {
+                        final isFav =
+                        productListData!.productDetails!.isFavorite =
+                        !productListData.productDetails!.isFavorite!;
+                        viewmodel.addToFavourite(
+                            context,
+                            "${productListData.productId}",
+                            "${productListData.productDetails?.variantId}",
+                            isFav,
+                            'productList');
+                      },
+                    ))
+              ],
+            ),
+          ));
+    },
+    hovered: Matrix4.identity()..translate(0, 0, 0),
+  );
+}
+
+Widget  cardDeatils(BuildContext context,ProductList itemInCart,int index,CartViewModel cartViewData){
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            height:  ResponsiveWidget.isMediumScreen(context)
+                ? 120 : 200,
+            width: ResponsiveWidget.isMediumScreen(context)
+                ? 150 :SizeConfig
+                .screenWidth *
+                0.14,
+            margin:
+            EdgeInsets.only(
+                top: 5,
+                right: 8,
+                bottom: 5),
+            child:
+            Image.network(
+              itemInCart.productDetails?.productImages?[0] ?? "",
+              fit: BoxFit.fill,
+            ),
+          ),
+          Container(
+            height: 30,
+            width: 120,
+            decoration: BoxDecoration(
+                border: Border.all(
+                    color: Theme.of(context).canvasColor.withOpacity(0.2),
+                    width: 1)),
+            margin:
+            EdgeInsets.only(
+                left: 5,
+                top: 5,
+                right: 8,
+                bottom: 5),
+            child: Row(
+                children: [
+                  Expanded(
+                    flex: 25,
+                    child:
+                    GestureDetector(
+                      child: itemInCart.cartQuantity ==
+                          1
+                          ? Container(
+                          child: Icon(Icons.delete, color: Theme.of(context).canvasColor, size: 18))
+                          : Icon(Icons.remove, color: Theme.of(context).canvasColor, size: 18.0),
+                      onTap:
+                          () async {
+                        if (cartViewData.deactiveQuantity ==
+                            false) {
+                          cartViewData.deactiveQuantity =
+                          true;
+                          itemInCart.cartQuantity = (itemInCart.cartQuantity ?? 1) - 1;
+                          if (itemInCart.cartQuantity! >
+                              0) {
+                            cartViewData.addToCart(
+                                itemInCart.productId ?? '',
+                                itemInCart.cartQuantity.toString(),
+                                itemInCart.productDetails?.variantId ?? '',
+                                true,
+                                context,
+                                    (result, isSuccess) {});
+                          } else {
+                            if (itemInCart.cartQuantity ==
+                                0)
+                              cartViewData.removeProductFromCart(context, itemInCart.productDetails?.variantId ?? "", index);
+                          }
+                        }
+                      },
+                    ),
+                  ),
+                  Container(
+                      height:
+                      30,
+                      width: 1,
+                      color: Theme.of(
+                          context)
+                          .canvasColor
+                          .withOpacity(
+                          0.2)),
+                  Expanded(
+                    flex: 50,
+                    child: AppBoldFont(
+                        context,
+                        textAlign:
+                        TextAlign
+                            .center,
+                        color: Theme.of(context)
+                            .canvasColor,
+                        msg: itemInCart.cartQuantity.toString() ,
+                        fontSize:
+                        16.0),
+                  ),
+                  Container(
+                      height:
+                      30,
+                      width: 1,
+                      color: Theme.of(
+                          context)
+                          .canvasColor
+                          .withOpacity(
+                          0.2)),
+                  Expanded(
+                    flex: 25,
+                    child:
+                    GestureDetector(
+                      child:
+                      Icon(
+                        Icons
+                            .add,
+                        size:
+                        18.0,
+                        color: Theme.of(context)
+                            .canvasColor,
+                      ),
+                      onTap:
+                          () {
+                        if (cartViewData.activeQuantity ==
+                            false) {
+                          cartViewData.activeQuantity =
+                          true;
+                          itemInCart
+                              .cartQuantity = (itemInCart.cartQuantity ??
+                              1) +
+                              1;
+                          cartViewData.addToCart(
+                              itemInCart.productId ?? '',
+                              itemInCart.cartQuantity.toString() ,
+                              itemInCart.productDetails?.variantId ?? '',
+                              true,
+                              context,
+                                  (result, isSuccess) {});
+                        }
+                      },
+                    ),
+                  ),
+                ]),
+          ),
+          SizedBox(height: 10)
+        ],
+      ),
+      Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 15),
+          Container(
+            width: ResponsiveWidget.isMediumScreen(context)
+                ?SizeConfig.screenWidth * 0.50: SizeConfig.screenWidth * 0.15,
+            child: AppMediumFont(
+                color: Theme.of(context).canvasColor,
+                context,
+                msg: itemInCart.productDetails
+                    ?.productVariantTitle,
+                fontSize: 18.0),
+          ),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              SizedBox(
+                width: SizeConfig
+                    .safeBlockVertical *
+                    1,
+              ),
+              AppMediumFont(
+                  context,
+                  color: Theme
+                      .of(
+                      context)
+                      .canvasColor,
+                  msg: "₹" +
+                      "${itemInCart.productDetails?.productPrice}",
+                  textDecoration:
+                  TextDecoration
+                      .lineThrough,
+                  fontSize:
+                  12.0),
+              SizedBox(
+                width: SizeConfig
+                    .safeBlockVertical *
+                    1,
+              ),
+              AppBoldFont(
+                  context,
+                  msg: "₹" +
+                      " ${itemInCart.productDetails?.productDiscountPrice}",
+                  color: Theme.of(
+                      context)
+                      .canvasColor,
+                  fontSize:
+                  16.0),
+              SizedBox(
+                width: SizeConfig
+                    .safeBlockVertical *
+                    1,
+              ),
+              AppMediumFont(
+                  context,
+                  msg: "${itemInCart.productDetails?.productDiscountPercent}" +
+                      r" % OFF",
+                  color: GREEN,
+                  fontSize:
+                  12.0),
+              SizedBox(
+                width: SizeConfig
+                    .safeBlockVertical *
+                    1,
+              ),
+            ],
+          ),
+          SizedBox(height: 5),
+          itemInCart.productSelectedSku
+              ?.color
+              ?.name !=
+              null
+              ? AppMediumFont(
+              context,
+              maxLines: 1,
+              msg: "Color" +
+                  '- ${itemInCart.productSelectedSku?.color?.name}',
+              color: Theme.of(
+                  context)
+                  .canvasColor,
+              fontSize:
+              16.0)
+              : SizedBox(),
+          itemInCart
+              .productSelectedSku
+              ?.size
+              ?.name !=
+              null
+              ? AppMediumFont(
+              context,
+              maxLines: 1,
+              msg: "Size" +
+                  '- ${itemInCart.productSelectedSku?.size?.name}',
+              color: Theme.of(
+                  context)
+                  .canvasColor,
+              fontSize:
+              16.0)
+              : SizedBox(),
+          itemInCart
+              .productSelectedSku
+              ?.style
+              ?.name !=
+              null
+              ? AppMediumFont(
+              context,
+              maxLines: 1,
+              msg: "Style" +
+                  '- ${itemInCart.productSelectedSku?.style?.name}',
+              color: Theme.of(
+                  context)
+                  .canvasColor,
+              fontSize:
+              16.0)
+              : SizedBox(),
+          itemInCart
+              .productSelectedSku
+              ?.materialType
+              ?.name !=
+              null
+              ? AppMediumFont(
+              context,
+              maxLines: 2,
+              msg: "MaterialType" +
+                  '- ${itemInCart.productSelectedSku!.materialType!.name!.length > 35 ? itemInCart.productSelectedSku?.materialType?.name!.replaceRange(35, itemInCart.productSelectedSku?.materialType?.name?.length, '...') : itemInCart.productSelectedSku?.materialType?.name ?? ""}',
+              color: Theme.of(
+                  context)
+                  .canvasColor,
+              fontSize:
+              16.0)
+              : SizedBox(),
+          itemInCart
+              .productSelectedSku
+              ?.unitCount
+              ?.name !=
+              null
+              ? AppMediumFont(
+              context,
+              color: Theme.of(
+                  context)
+                  .canvasColor,
+              maxLines: 1,
+              msg: "UnitCount" +
+                  '- ${itemInCart.productSelectedSku?.unitCount?.name}',
+              fontSize:
+              16.0)
+              : SizedBox(),
+          SizedBox(height: 15),
+          GestureDetector(
+            onTap: () async {
+              cartViewData.removeProductFromCart(
+                  context,
+                  itemInCart
+                      .productDetails
+                      ?.variantId ??
+                      "",
+                  index);
+            },
+            child: Container(
+              padding:
+              EdgeInsets
+                  .all(5),
+              decoration:
+              BoxDecoration(
+                color: Theme.of(
+                    context)
+                    .primaryColor,
+                borderRadius:
+                BorderRadius
+                    .circular(
+                    2),
+              ),
+              child: AppRegularFont(
+                  context,
+                  color: Theme.of(
+                      context)
+                      .hintColor,
+                  msg: StringConstant
+                      .remove,
+                  fontSize:
+                  14.0),
+            ),
+          ),
+          SizedBox(height: 5),
+        ],
+      )
+    ],
+  );
+}
+
+Widget pricedetails(BuildContext context,CartViewModel cartViewData){
+  return  Column(
+      children: cartViewData
+          .cartListData!
+          .checkoutDetails!
+          .map((e) {
+        return Container(
+          width:ResponsiveWidget.isMediumScreen(context)
+              ? SizeConfig.screenWidth:
+          SizeConfig.screenWidth *
+              0.30,
+          color: Theme.of(context).cardColor,
+          child: Column(
+            children: [
+              SizedBox(height: 8),
+              priceDetailWidget(
+                  context,
+                  e.name ?? "",
+                  e.value ?? ""),
+              SizedBox(height: 8)
+            ],
+          ),
+        );
+      }).toList());
+}
+
+Widget addressDetails(BuildContext context, String? addressId,CartViewModel cartViewData){
+  return  Container(
+    decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5)
+    ),
+    width: ResponsiveWidget.isMediumScreen(context)
+        ? SizeConfig.screenWidth:SizeConfig.screenWidth*0.30,
+    height:ResponsiveWidget.isMediumScreen(context)
+        ?SizeConfig.screenHeight - 500: SizeConfig.screenHeight - 300,
+    child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        itemCount: cartViewData
+            .addressListModel?.length,
+        itemBuilder: (context, index) {
+          final addressItem = cartViewData.addressListModel?[index];
+          cartViewData.selectedAddress = cartViewData.addressListModel?[cartViewData.selectedAddressIndex];
+          return Stack(
+            children: [
+              Container(
+                width: ResponsiveWidget.isMediumScreen(context)
+                    ? SizeConfig.screenWidth:SizeConfig.screenWidth*0.30,
+                padding: EdgeInsets.only(left: 8,top: 8,bottom: 10),
+                margin:EdgeInsets.only(left:ResponsiveWidget.isMediumScreen(context)
+                    ? 0: 5,right: ResponsiveWidget.isMediumScreen(context)
+                    ? 0:5,top: 8),
+                color: Theme.of(context).cardColor,
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: (){
+                        cartViewData.selectedAddressIndex = index;
+                        cartViewData.selectedAddress = cartViewData.addressListModel?[cartViewData.selectedAddressIndex];
+                        addressId=cartViewData.selectedAddress?.addressId;
+                      },
+                      child: radioTileButton(context,cartViewData.selectedAddressIndex , index,),
+                    ),
+                    SizedBox(width: 10),
+                    InkWell(
+                      onTap: () {
+                        cartViewData.selectedAddressIndex = index;
+
+                        cartViewData.selectedAddress = cartViewData.addressListModel?[cartViewData.selectedAddressIndex];
+                        addressId=cartViewData.selectedAddress?.addressId;
+                      },
+                      child: Column(
+                        crossAxisAlignment:
+                        CrossAxisAlignment
+                            .start,
+                        mainAxisSize:
+                        MainAxisSize.max,
+                        mainAxisAlignment:
+                        MainAxisAlignment
+                            .end,
+                        children: <Widget>[
+                          AppMediumFont(context,
+                              msg: (addressItem?.firstName?.toUpperCase() ?? '') +
+                                  " " +
+                                  (addressItem?.lastName?.toUpperCase() ?? ''),
+                              color: Theme.of(context).canvasColor,
+                              fontSize: 14.0),
+
+
+                          Container(
+                            margin: EdgeInsets.only(top: 1),
+                            width: SizeConfig.screenWidth*0.25,
+                            child: AppRegularFont(context,
+                                msg: (addressItem?.firstAddress ?? '') +
+                                    ", " +
+                                    (addressItem?.secondAddress ??
+                                        '') +
+                                    ", " +
+                                    (addressItem?.cityName ?? '') +", " +
+                                    "\n" +
+                                    (addressItem?.state ?? '') +
+                                    " - " +
+                                    (addressItem?.pinCode.toString() ?? '') +
+                                    "\n" +"\n"+
+                                    (addressItem?.mobileNumber ?? ''),
+                                color: Theme.of(context).canvasColor,
+                                fontSize: 14.0),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                  bottom: 0,
+                  right: 20,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.delete,
+                      size: 18,
+                      color:
+                      Theme.of(context)
+                          .primaryColor,
+                    ),
+                    onPressed: () {
+                      cartViewData.deleteAddress(context,cartViewData.addressListModel?[index].addressId ?? "").whenComplete(() => {
+                        cartViewData.selectedAddressIndex=0
+                      });
+                    },
+                  )),
+              Positioned(
+                  bottom: 0,
+                  right: 50,
+                  child: IconButton(
+                      icon: Icon(
+                        Icons.edit,
+                        size: 18,
+                        color:
+                        Theme.of(context).primaryColor,
+                      ),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return  ShippingAddressPage(isAlreadyAdded: true,
+                                addressId: cartViewData.addressListModel?[index].addressId,
+                                firstName: cartViewData.addressListModel?[index].firstName,
+                                lastName: cartViewData.addressListModel?[index].lastName,
+                                mobileNumber: cartViewData.addressListModel?[index].mobileNumber,
+                                email: cartViewData.addressListModel?[index].email,
+                                firstAddress: cartViewData.addressListModel?[index].firstAddress,
+                                secondAddress: cartViewData.addressListModel?[index].secondAddress,
+                                state: cartViewData.addressListModel?[index].state,
+                                cityName: cartViewData.addressListModel?[index].cityName,
+                                pinCode: cartViewData.addressListModel?[index].pinCode,
+                              );
+                            });
+                      })
+              ),
+            ],
+          );
+        }),
+  );
+}
+
+radioTileButton(BuildContext context,int? selectedAddressIndex, int index){
+  return CircleAvatar(
+    radius: 12,
+    backgroundColor: Theme.of(context).canvasColor,
+    child: CircleAvatar(
+      radius: 10,
+      backgroundColor: WHITE_COLOR,
+      child: CircleAvatar(
+        radius: 8,
+        backgroundColor: selectedAddressIndex == index? Theme.of(context).primaryColor: WHITE_COLOR,
+      ),
+    ),
+  );
 }

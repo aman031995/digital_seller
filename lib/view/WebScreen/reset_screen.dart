@@ -3,7 +3,6 @@ import 'package:TychoStream/services/global_variable.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
-import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppTextField.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
@@ -11,7 +10,6 @@ import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
-
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,6 +17,7 @@ class ResetPassword extends StatefulWidget {
   String? phone;
   String? loginType;
   bool? product;
+
   ResetPassword({Key? key, this.phone,this.loginType,this.product}) : super(key: key);
 
   @override
@@ -69,9 +68,9 @@ class _ResetPasswordState extends State<ResetPassword> {
               ),
               AppBoldFont(
                   textAlign: TextAlign.center,
-                  context,msg: 'Reset', fontSize: 18),
+                  context,msg: StringConstant.reset, fontSize: 18),
               AppRegularFont(
-                  context,msg: 'Enter your new password to login again.',
+                  context,msg: StringConstant.enterNewPassword,
                   fontSize:16),
               SizedBox(height: 30),
               StreamBuilder(
@@ -80,7 +79,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     return AppTextField(
                         maxLine: 1,
                         controller: newPasswordController,
-                        labelText: 'New Password',
+                        labelText: StringConstant.newPassword,
                         prefixText: '',
                         isShowPassword: true,
                         isTick: true,
@@ -102,7 +101,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     return AppTextField(
                         maxLine: 1,
                         controller: confirmPasswordController,
-                        labelText: 'Confirm Password',
+                        labelText: StringConstant.confirmPassword,
                         prefixText: '',
                         isShowPassword: true,
                         isTick: true,
@@ -123,7 +122,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   builder: (context, snapshot) {
                     return appButton(
                         context,
-                        'Reset',
+                        StringConstant.reset,
                         SizeConfig.screenWidth,
                         40.0,
                         Theme.of(context).primaryColor,
@@ -151,8 +150,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                     },
                     child: Center(
                       child: GlobalVariable.isLightTheme == true ?
-                      Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: 100) :
-                      Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: 100),
+                      Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 100) :
+                      Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 100),
                     ),
                   ),
                 ],
@@ -183,10 +182,10 @@ class _ResetPasswordState extends State<ResetPassword> {
               ),
               AppBoldFont(
                   textAlign: TextAlign.center,
-                  context,msg: 'Reset', fontSize: 20),
+                  context,msg:StringConstant.reset, fontSize: 20),
               SizedBox(height: 15,),
               AppRegularFont(
-                  context,msg: 'Enter your new password to login again.',
+                  context,msg: StringConstant.enterNewPassword,
                   fontSize:16),
               SizedBox(height: 30),
               Container(
@@ -197,7 +196,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                       return AppTextField(
                           maxLine: 1,
                           controller: newPasswordController,
-                          labelText: 'New Password',
+                          labelText: StringConstant.newPassword,
                           prefixText: '',
                           isShowPassword: true,
                           isTick: true,
@@ -222,7 +221,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                       return AppTextField(
                           maxLine: 1,
                           controller: confirmPasswordController,
-                          labelText: 'Confirm Password',
+                          labelText:  StringConstant.confirmPassword,
                           prefixText: '',
                           isShowPassword: true,
                           isTick: true,
@@ -246,7 +245,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     builder: (context, snapshot) {
                       return appButton(
                           context,
-                          'Reset',
+                          StringConstant.reset,
                             SizeConfig.screenWidth,
                            50.0,
                           Theme.of(context).primaryColor,
@@ -275,8 +274,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                   // margin: EdgeInsets.only(left: 120, right: 120, bottom: 5),
                     width: SizeConfig.screenWidth * 0.08,
                     child: GlobalVariable.isLightTheme == true ?
-                    Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: 50) :
-                    Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: 50)),
+                    Image.network(StringConstant.digitalSellerLitelogo,  fit: BoxFit.fill, width: 50) :
+                    Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 50)),
               ),
               SizedBox(height:10),
             ],

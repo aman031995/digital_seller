@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
@@ -66,30 +65,7 @@ class AppDialog {
                   )
                 ])
           ),
-          // actions: [
-          //   Container(
-          //       margin: EdgeInsets.only(left: 1,bottom: 6),
-          //       padding: EdgeInsets.only(left: 8,),
-          //       alignment: Alignment.centerLeft,
-          //       width: SizeConfig.screenWidth * 0.8,
-          //       child: Row(children: [
-          //         AppRegularFont(
-          //             context,msg: StringConstant.didntGetCode,
-          //             fontSize: 14,
-          //             color: TEXT_COLOR,
-          //             textAlign: TextAlign.center,
-          //             maxLines: 2),
-          //         TextButton(onPressed: resendOtp, child: Text('Resend'))
-          //       ])),
-          //   Container(
-          //     alignment: Alignment.center,
-          //     width: SizeConfig.screenWidth * 0.8,
-          //     margin: EdgeInsets.only(left: 1, right: 1),
-          //     padding: EdgeInsets.all(8),
-          //     child: confirmButton(context,35, 110, StringConstant.confirm, onTap!),
-          //   )
-          // ],
-        );;
+        );
       },
     );
   }

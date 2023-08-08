@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:TychoStream/model/data/cart_detail_model.dart';
 import 'package:TychoStream/model/data/homepage_data_model.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
@@ -7,7 +5,6 @@ import 'package:TychoStream/model/data/tray_data_model.dart';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_cache/json_cache.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +12,6 @@ import 'package:TychoStream/model/data/AppConfigModel.dart';
 import 'package:TychoStream/model/data/BannerDataModel.dart';
 import 'package:TychoStream/model/data/app_menu_model.dart';
 import 'package:TychoStream/model/data/notification_model.dart';
-import 'package:TychoStream/model/data/search_data_model.dart';
 import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/network/CacheDataManager.dart';
@@ -23,7 +19,6 @@ import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/HomePageRepository.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
-
 import '../AppRouter.gr.dart';
 
 
@@ -136,12 +131,8 @@ class HomeViewModel with ChangeNotifier {
         _appConfigModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         GlobalVariable.cod = _appConfigModel?.androidConfig?.cod;
         GlobalVariable.isLightTheme = _appConfigModel?.androidConfig?.themeType;
+        GlobalVariable.payGatewayName = _appConfigModel?.androidConfig?.paymentGateway;
 
-        _appConfigModel?.androidConfig?.paymentGateway?.forEach((e) {
-          if(e.isAvailable == true){
-            GlobalVariable.payGatewayName = e.gatewayName;
-          }
-        });
         loginWithPhone = _appConfigModel?.androidConfig?.loginWithPhone ?? false;
         notifyListeners();
       }
@@ -234,13 +225,13 @@ class HomeViewModel with ChangeNotifier {
 
   // method for open html content from api
   openWebHtmlView(BuildContext context, String query, {String? title}){
-    AppIndicator.loadingIndicator(context);
+  //  AppIndicator.loadingIndicator(context);
     _homePageRepo.openHtmlWebUrl(context, query, (response) {
       if (response != null) {
-        AppIndicator.disposeIndicator();
+       // AppIndicator.disposeIndicator();
         _html = response;
-        print(response);
-        context.pushRoute(WebHtmlPage(html: _html, title: title));
+     //   print(response);
+      //  context.pushRoute(WebHtmlPage(html: _html, title: title));
         notifyListeners();
       }
     });

@@ -1,7 +1,4 @@
 import 'dart:convert';
-
-import 'package:TychoStream/local_storage.dart';
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/cart_detail_model.dart';
 import 'package:TychoStream/model/data/checkout_data_model.dart';
 import 'package:TychoStream/model/data/city_state_model.dart';
@@ -14,24 +11,22 @@ import 'package:TychoStream/network/NetworkApiServices.dart';
 import 'package:TychoStream/network/NetworkConstants.dart';
 import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/CartDetalRepository.dart';
-import 'package:TychoStream/repository/razorpay_services.dart';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
-import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_cache/json_cache.dart';
-import 'package:razorpay_web/razorpay_web.dart';
-
 import '../AppRouter.gr.dart';
 import '../model/data/category_list_model.dart';
 
 class CartViewModel extends ChangeNotifier {
+
   final _cartRepo = CartDetailRepository();
 
   CartListDataModel? _cartListDataModel;
@@ -60,10 +55,13 @@ class CartViewModel extends ChangeNotifier {
 
   PromoCodeDataModel? _promoCodeDataModel;
   PromoCodeDataModel? get promocodeData => _promoCodeDataModel;
+
   CityStateModel? _cityStateModel;
   CityStateModel? get citystateModel=> _cityStateModel;
+
   CreateOrderModel? _createOrderModel;
   CreateOrderModel? get createOrderModel => _createOrderModel;
+
   List<CategoryListModel>? _categoryListModel;
   List<CategoryListModel>? get categoryListModel => _categoryListModel;
 
@@ -76,17 +74,12 @@ class CartViewModel extends ChangeNotifier {
   int selectedAddressIndex = 0;
   bool? isThankyouPage = false;
   String selectedcolorName = '';
-  String selectedSizeName = '';
-  String selectedStyleName = '';
-  String selectedMaterialName = '';
-  String selectedUnitCountName = '';
-  String defaultName = '';
   bool favouriteCallback = false;
-
   int lastPage = 1, nextPage = 1;
   bool isLoading = false;
   bool isSelect = false;
   bool iswishlist = false;
+
   // get GetProductList from cache api data
   getProductListData(BuildContext context, int pageNum) async{
     final box = await Hive.openBox<String>('appBox');
@@ -94,7 +87,6 @@ class CartViewModel extends ChangeNotifier {
     if(await jsonCache.contains(StringConstant.kProductList)){
       CacheDataManager.getCachedData(key: StringConstant.kProductList).then((jsonData) {
         _productListModel = ProductListModel.fromJson(jsonData!['data']);
-        print('From Cached AppConfig Data');
         notifyListeners();
       });
     } else {
@@ -118,7 +110,6 @@ class CartViewModel extends ChangeNotifier {
     _cartRepo.getRecentView(context,(result ,isSuccess ){
       if(isSuccess){
         _recentView=((result as SuccessState).value as ASResponseModal).dataModal;
-        // AppIndicator.disposeIndicator();
         notifyListeners();
       }
     });
@@ -153,7 +144,6 @@ class CartViewModel extends ChangeNotifier {
     _cartRepo.getRecommendedView(context,(result ,isSuccess ){
       if(isSuccess){
         _recommendedView=((result as SuccessState).value as ASResponseModal).dataModal;
-        // AppIndicator.disposeIndicator();
         notifyListeners();
       }
     });
@@ -166,6 +156,8 @@ class CartViewModel extends ChangeNotifier {
         AppIndicator.disposeIndicator();
         if(prodId != ""){
           _productListDetails = ((result as SuccessState).value as ASResponseModal).dataModal;
+         String productDeatils=jsonEncode(_productListDetails);
+          SessionStorageHelper.savevalue("productDeatils","${productDeatils}");
         } else {
           dataPagination(result);
         }
@@ -260,12 +252,10 @@ class CartViewModel extends ChangeNotifier {
       bool cartDetail,
       BuildContext context,
       ) async {
-   // AppIndicator.loadingIndicator(context);
     _cartRepo.buynow(productId, quantity, variantId, context,
             (result, isSuccess) {
           if (isSuccess) {
-            _cartListDataModel =
-                ((result as SuccessState).value as ASResponseModal).dataModal;
+            _cartListDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             buynow=jsonEncode(_cartListDataModel);
             SessionStorageHelper.savevalue("token","${buynow}");
             context.router.push(BuynowCart(
@@ -384,15 +374,6 @@ class CartViewModel extends ChangeNotifier {
     _cartListDataModel = checkOutData;
     notifyListeners();
   }
-  updateStyleName(BuildContext context, String name) {
-    selectedStyleName = name;
-    notifyListeners();
-  }
-
-  updateMaterialName(BuildContext context, String name) {
-    selectedMaterialName = name;
-    notifyListeners();
-  }
 
 
 
@@ -436,7 +417,6 @@ class CartViewModel extends ChangeNotifier {
         AppIndicator.disposeIndicator();
         Navigator.pop(context);
         reloadPage();
-        // GoRouter.of(context).pushNamed(RoutesName.AddressListPage);
         notifyListeners();
       }
     });
@@ -495,15 +475,11 @@ class CartViewModel extends ChangeNotifier {
   // ADDToFavourite Method
   Future<void> addToFavourite(BuildContext context, String productId,
       String variantId, bool fav, String pageName,{int? listIndex}) async {
-    //AppIndicator.loadingIndicator(context);
     _cartRepo.addToFavourite(productId, variantId, fav, context,
         (result, isSuccess) {
           favouriteCallback = true;
       if (isSuccess) {
         reloadPage();
-        // getPageName(context, pageName, result,variantId,listIndex);
-        // ToastMessage.message(
-        //     ((result as SuccessState).value as ASResponseModal).message);
         notifyListeners();
       }
     });
@@ -523,8 +499,6 @@ class CartViewModel extends ChangeNotifier {
         (result, isSuccess) {
       if (isSuccess) {
         ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
-
-
         context.pushRoute(ThankYouPage());
         SessionStorageHelper.savevalue("payment","true");
         notifyListeners();
@@ -556,11 +530,6 @@ class CartViewModel extends ChangeNotifier {
 
   updatecolorName(BuildContext context,String name) {
     selectedcolorName = name;
-    notifyListeners();
-  }
-
-  updatesizeName(BuildContext context,String name) {
-    selectedSizeName = name;
     notifyListeners();
   }
 
@@ -602,4 +571,43 @@ class CartViewModel extends ChangeNotifier {
   } Future<void> runIndicator(BuildContext context) async {
     isLoading = true;
     notifyListeners();
-  }}
+  }
+  createPaymentIntent(BuildContext context, CreateOrderModel? createOrderModel, String? addressId, String productId, String variantId, quantity,{String? gatewayName}) async {
+    AppIndicator.loadingIndicator(context);
+    Map<String, dynamic> paymentIntent;
+    _cartRepo.createPaymentIntent(context, createOrderModel, addressId, productId, variantId, quantity, GlobalVariable.SECRET_KEY, (response) {
+      if(response != null) {
+        paymentIntent = response;
+        displayPaymentSheet(paymentIntent, context, createOrderModel, addressId, productId, variantId, quantity);
+        // notifyListeners();
+      }
+    });
+
+
+  }
+  void displayPaymentSheet(Map<String, dynamic>? paymentIntent, BuildContext context, CreateOrderModel? _createOrderModel, String? addressId, String productId, String variantId, quantity) async {
+    try {
+      AppIndicator.disposeIndicator();
+      await Stripe.instance.presentPaymentSheet().then((e) {
+        Stripe.instance.confirmPaymentSheetPayment();
+       paymentResponse(
+            context,
+            createOrderModel?.receipt ?? '',
+            createOrderModel?.paymentOrderId ?? '',
+            paymentIntent?['id'] ?? '',
+            'Success',
+            '',
+            '${addressId}');
+      placeOrder(context, '${addressId}', paymentIntent?['id'] ?? '', createOrderModel?.paymentOrderId ?? '', 'Online',
+            productId, variantId, quantity, 'Success');
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(StringConstant.paymentSuccessful)));
+      });
+      print("Transaction ID: ${paymentIntent?['id']}");
+    } catch (e) {
+      print("Failed");
+      placeOrder(context, '${addressId}', paymentIntent?['id'] ?? '', createOrderModel?.paymentOrderId ?? '', 'Online',
+          productId, variantId, quantity, 'Failed');
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Payment Failed.')));
+    }
+  }
+}

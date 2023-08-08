@@ -36,6 +36,7 @@ class ProductSkuView extends StatelessWidget {
                             child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: e.data?.length,
+                                padding: EdgeInsets.zero,
                                 itemBuilder: (context, index) {
                                   final variationItem = e.data?[index];
                                   final itemName = variationItem?.name;
@@ -47,7 +48,6 @@ class ProductSkuView extends StatelessWidget {
                                           productList?.size?.name == itemName || productList?.unitCount?.name == itemName || productList?.style?.name == itemName
                                           || productList?.materialType?.name == itemName){
                                       } else {
-                                       // viewmodel.checkSelect(context);
                                         onSelected(viewmodel, context, e, itemName, selectedProduct, index);
                                       }
                                       },
@@ -69,7 +69,7 @@ class ProductSkuView extends StatelessWidget {
                                                     color:  productList?.color?.name == itemName ?Theme.of(context).primaryColor.withOpacity(0.8)   :Theme.of(context).canvasColor.withOpacity(0.3),
                                                     width: productList?.color?.name == itemName ? 3 : 1)))
                                         : Container(
-                                             padding: EdgeInsets.all(5),
+                                             padding: EdgeInsets.all(12),
                                             margin: EdgeInsets.only(right: 15),
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(
@@ -197,7 +197,6 @@ class ProductSkuView extends StatelessWidget {
                 )
               ]
           ));
-      //AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.style?.name}', fontSize: 18);
     }
   }
 

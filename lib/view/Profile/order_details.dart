@@ -1,16 +1,13 @@
 import 'package:TychoStream/model/data/order_data_model.dart';
 import 'package:TychoStream/model/data/order_detail_model.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
-import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
-import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/order_view_model.dart';
 import 'package:another_stepper/another_stepper.dart';
-import 'package:another_stepper/widgets/another_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -55,7 +52,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                       itemView(order),
                       shippingDetails(),
                       priceDetails(order.orderDetailModel),
-                      Container(
+                      order.orderDetailModel?.orderStatus == "Failed" ?
+                      Container() :  Container(
                           margin: EdgeInsets.only(top: 8, bottom: 8),
                           decoration: BoxDecoration(
                               color: Theme.of(context).cardColor.withOpacity(0.9),
@@ -69,7 +67,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                               inActiveBarColor: Theme.of(context).canvasColor.withOpacity(0.4),
                               inverted: false,
                               verticalGap: 20,
-                              activeIndex: orderView.orderDetailModel!.orderTracking!.activeIndex! -1 ?? 1,
+                              activeIndex: orderView.orderDetailModel!.orderTracking!.activeIndex! -1,
                               barThickness: 2,
                               stepperList:_stepperList(context,orderView.orderDetailModel)
 
@@ -93,30 +91,17 @@ class _OrderDetailsState extends State<OrderDetails> {
     if(order.orderDetailModel!.variationSku!.materialType!.name!.length > 35) {
       return order.orderDetailModel!.variationSku!.materialType!.name!.replaceRange(35, order.orderDetailModel!.variationSku!.materialType!.name!.length, '...');
     } else {
-      return order.orderDetailModel!.variationSku!.materialType!.name! ?? "";
+      return order.orderDetailModel!.variationSku!.materialType!.name!;
     }
 
-    // if (widget.orderItem!.itemDetails![index].productDetails!.defaultVariationSku!.materialType!.name!.length > 35) {
-    //   return widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.materialType?.name!.replaceRange(
-    //       35, widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.materialType?.name!.length, '...');
-    // } else {
-    //   return widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.materialType?.name ?? "";
-    // }
   }
 
   String? getTitle(OrderViewModel order) {
     if(order.orderDetailModel!.productName!.length > 35) {
       return order.orderDetailModel!.productName!.replaceRange(35, order.orderDetailModel!.productName!.length, '...');
     } else {
-      return order.orderDetailModel!.productName! ?? "";
+      return order.orderDetailModel!.productName! ;
     }
-
-    // if (widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle!.length > 35) {
-    //   return widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle!.replaceRange(
-    //       35, widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle!.length, '...');
-    // } else {
-    //   return widget.orderItem!.itemDetails![index].productDetails!.productVariantTitle! ?? "";
-    // }
   }
 
   productDetailTopView(OrderViewModel order) {
@@ -132,22 +117,12 @@ class _OrderDetailsState extends State<OrderDetails> {
   priceView(OrderViewModel order) {
     return Row(
       children: [
-        // AppMediumFont(
-        //     context,
-        //     // msg: "₹" + "${widget.orderItem?.itemDetails?[index].productDetails?.productPrice}",
-        //     msg: "₹" + "${order.orderDetailModel?.totalPaidAmount}",
-        //     textDecoration: TextDecoration.lineThrough,
-        //     fontSize: 16.0),
-        // SizedBox(width: SizeConfig.safeBlockVertical * 1),
         AppMediumFont(
             context,
             msg: "₹" + "${order.orderDetailModel?.productFinalPrice}",
             fontSize: 16.0),
         SizedBox(width: SizeConfig.safeBlockVertical * 1),
-        // AppMediumFont(
-        //     context,
-        //     msg: "${widget.orderItem?.itemDetails?[index].productDetails?.productDiscountPercent}" + r"%OFF",
-        //     color:GREEN, fontSize: 12.0),
+
       ],
     );
   }
@@ -216,7 +191,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                                             .textTheme
                                             .displayMedium
                                             ?.fontFamily),
-                                    // text: '${widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.color?.name}',
                                     text: '${order.orderDetailModel?.variationSku?.color?.name}'
                                 )
                               ]))
@@ -240,7 +214,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         fontWeight: FontWeight.w400,
                                         color: Theme.of(context).canvasColor.withOpacity(0.7),
                                         fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
-                                    // text: '${widget.orderItem?.itemDetails?[index].productDetails?.defaultVariationSku?.size?.name}',
                                     text: '${order.orderDetailModel?.variationSku?.size?.name}'
                                 )
                               ]))
@@ -337,7 +310,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                     onTap: (){},
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(4.0),
-                      // child: Image.network('${widget.orderItem?.itemDetails?[index].productDetails?.productImages?[0]}',
                       child: Image.network('${order.orderDetailModel?.productImages?[0] ?? ""}',
                         height: 120,
                         width: 120,fit: BoxFit.fill,
@@ -364,7 +336,6 @@ class _OrderDetailsState extends State<OrderDetails> {
         width: SizeConfig.screenWidth,
         alignment: Alignment.topLeft,
         margin: EdgeInsets.only(top: 10, bottom: 10),
-        // padding: EdgeInsets.only(left: 20, right: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -431,10 +402,6 @@ class _OrderDetailsState extends State<OrderDetails> {
             ],
           );
         }).toList());
-
-    // return finalCheckOut?.map((e){
-    //   priceDetailWidget(context, e.name ?? "", e.value ?? "");
-    // }).toList();
   }
 
   List<StepperData> _stepperList(BuildContext context, OrderDetailModel? orderView) {
