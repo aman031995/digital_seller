@@ -1,10 +1,12 @@
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/services/global_variable.dart';
+import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../AppRouter.gr.dart';
 import '../../utilities/AppTextButton.dart';
@@ -36,7 +38,7 @@ class _footerDesktopState extends State<footerDesktop> {
           footerMiddleWidgetContent(context),
           SizedBox(width: 20,),
           Container(child: footerRightWidgetContent(context)),
-          SizedBox(width: 50,),
+          SizedBox(width: 50),
           Container(
               alignment: Alignment.bottomCenter,
               child: GlobalVariable.isLightTheme == true ?
@@ -154,6 +156,7 @@ class _footerDesktopState extends State<footerDesktop> {
           child: Row(
             children: [
               AppButton(context, StringConstant.AboutUs,onPressed: () {
+                context.router.push(WebHtmlPage(title:'AboutUs',html: 'about_us'));
               }),
 
               SizedBox(width: MediaQuery.of(context).size.width * .02),
@@ -169,11 +172,19 @@ class _footerDesktopState extends State<footerDesktop> {
               }),
 
               SizedBox(width: MediaQuery.of(context).size.width * .02),
-              AppButton(context, StringConstant.HelpDesk, onPressed: () {
-                // homeViewModel.openWebHtmlView(
-                //     context, 'return_policy',
-                //     title: 'Return Policy');
-                context.pushRoute(ContactUs());
+              AppButton(context, StringConstant.HelpDesk, onPressed: () async {
+                SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                if (sharedPreferences.getString('token') == null) {
+                showDialog(
+                context: context,
+                barrierColor:
+                Theme.of(context).canvasColor.withOpacity(0.6),
+                builder: (BuildContext context) {
+                return LoginUp(
+                product: true,
+                );
+                });
+                } else {   context.router.push(ContactUs());}
 
               }),
             ],
@@ -209,14 +220,21 @@ Widget footerMobile(BuildContext context) {
           children: [
             SizedBox(width: 10),
             AppButton(context, StringConstant.AboutUs, onPressed: () {
+              context.router.push(WebHtmlPage(title:'AboutUs',html: 'about_us'));
+
             }),
             AppButton(context, StringConstant.TermsOfuse, onPressed: () {
+              context.router.push(WebHtmlPage(title:'TermsAndCondition',html: 'terms_condition' ));
+
             }),
             AppButton(context,StringConstant.privacyPolicy, onPressed: () {
+              context.router.push(WebHtmlPage(title:'PrivacyPolicy',html: 'privacy_policy' ));
+
             }),
             MediaQuery.of(context).size.width < 417
                 ? Container()
                 : AppButton(context, StringConstant.HelpDesk, onPressed: () {
+              context.router.push(ContactUs());
 
                   }),
           ],
@@ -227,6 +245,7 @@ Widget footerMobile(BuildContext context) {
             SizedBox(width: 10),
             MediaQuery.of(context).size.width < 417
                 ? AppButton(context, StringConstant.HelpDesk, onPressed: () {
+              context.router.push(ContactUs());
 
                   })
                 : Container(),

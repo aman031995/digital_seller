@@ -39,6 +39,8 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(width: SizeConfig.screenWidth * .01),
+              Image.asset("images/CG-icon(2).webp",width: 60,height: 80,),
+              SizedBox(width: SizeConfig.screenWidth * .01),
               Expanded(
                 child: SizedBox(width: SizeConfig.screenWidth * .06)),
               viewmodel.appConfigModel!=null?
@@ -219,7 +221,7 @@ PreferredSize getAppBar(BuildContext context, HomeViewModel viewmodel,ProfileVie
                   18,
                   true,
                   onPressed: () {
-                    isLogins = true;
+                    isLogins =true;
                   }),
               names == "null"
                   ? Container()
@@ -253,7 +255,7 @@ getPages(BottomNavigation navItem,BuildContext context,ProfileViewModel profileV
             product: true,
           );
         }):
-    context.pushRoute(EditProfile());
+    context.router.push(EditProfile());
   }
 }
 
@@ -278,17 +280,10 @@ AppBar homePageTopBar(BuildContext context,GlobalKey<ScaffoldState> _scaffoldKey
                     }
                   }
                   else{
-                   // ToastMessage.message("please Login");
+                   ToastMessage.message("please Login");
                   }
                 },
-                child: Container(
-                    height: 35,
-                    width: 35,
-                    padding: EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    child: Icon(Icons.menu_outlined))),
+                child: Icon(Icons.menu_outlined,color: Theme.of(context).canvasColor)),
             SizedBox(width: 5),
             GestureDetector(
               onTap: () {
@@ -322,7 +317,7 @@ AppBar homePageTopBar(BuildContext context,GlobalKey<ScaffoldState> _scaffoldKey
                   context.pushRoute(SearchPage());
                   // GoRouter.of(context).pushNamed(RoutesName.SearchPage);
                 },
-                child: Icon(Icons.search_sharp,size: 30)
+                child: Icon(Icons.search_sharp,size: 30,color: Theme.of(context).canvasColor,)
             ),
             SizedBox(
                 width: SizeConfig.screenWidth * .01),

@@ -1,5 +1,9 @@
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
+import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
+import 'package:TychoStream/viewmodel/HomeViewModel.dart';
+import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,6 +20,9 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
+
+import '../../AppRouter.gr.dart';
+import 'getAppBar.dart';
 @RoutePage()
 class ContactUs extends StatefulWidget {
   const ContactUs({Key? key}) : super(key: key);
@@ -28,10 +35,17 @@ class _ContactUsState extends State<ContactUs> {
   TextEditingController? nameController, messageController, emailController;
   final validation = ValidationBloc();
   ProfileViewModel profileViewModel = ProfileViewModel();
+  HomeViewModel homeViewModel=HomeViewModel();
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
+  ScrollController scrollController = ScrollController();
+  CartViewModel cartViewModel = CartViewModel();
+  TextEditingController? searchController = TextEditingController();
   String? name, email, pageTitle;
 
   @override
   void initState() {
+    homeViewModel.getAppConfig(context);
+
     super.initState();
     messageController = TextEditingController();
     nameController = TextEditingController();
@@ -73,7 +87,49 @@ class _ContactUsState extends State<ContactUs> {
       pageTitle = data['title'];
     }
     return Scaffold(
-      appBar: homePageTopBar(),
+        appBar: ResponsiveWidget.isMediumScreen(context)
+            ? homePageTopBar(context, _scaffoldKey)
+            : getAppBar(
+            context,
+            homeViewModel,
+            profileViewModel,
+            cartViewModel.cartItemCount,
+            searchController, () async {
+          SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token') !=
+              null) {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return LoginUp(
+                    product: true,
+                  );
+                });
+          } else {
+            context.router.push(FavouriteListPage());
+          }
+        }, () async {
+          SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+          if (sharedPreferences
+              .getString('token')== null) {
+            showDialog(
+                context: context,
+                barrierColor: Theme.of(context)
+                    .canvasColor
+                    .withOpacity(0.6),
+                builder: (BuildContext context) {
+                  return LoginUp(
+                    product: true,
+                  );
+                });
+          } else {
+            context.router.push(CartDetail(
+                itemCount:
+                '${cartViewModel.cartItemCount}'));
+          }
+        }),
       body:ResponsiveWidget.isMediumScreen(context)
           ? Container(
         margin: EdgeInsets.only(top: 50),
@@ -189,6 +245,9 @@ class _ContactUsState extends State<ContactUs> {
                             messageController?.text ?? '');
                   });
                 }),
+            SizedBox(height: 80),
+            ResponsiveWidget.isMediumScreen(context)
+                ? footerMobile(context):footerDesktop()
           ],
         ),
       ) :
@@ -315,88 +374,6 @@ class _ContactUsState extends State<ContactUs> {
     );
   }
 
-  homePageTopBar() {
-    return AppBar(
-      elevation: 0,
-      automaticallyImplyLeading: false,
-      backgroundColor: Theme.of(context).cardColor,
-      title: Row(children: <Widget>[
-        // GestureDetector(
-        //     onTap: (){
-        //       GoRouter.of(context).pushNamed(RoutesName.home);
-        //     },
-        //     child: Image.asset(AssetsConstants.icLogo,width: ResponsiveWidget.isMediumScreen(context) ? 35:45, height:ResponsiveWidget.isMediumScreen(context) ? 35: 45)),
-        SizedBox(width: SizeConfig.screenWidth*0.04),
-        AppBoldFont(context,msg:"Contact Us",fontSize:ResponsiveWidget.isMediumScreen(context) ? 16: 20, fontWeight: FontWeight.w700),
-      ]),
-      actions: [
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              isLogins = true;
-              if (isSearch == true) {
-                isSearch = false;
-                setState(() {});
-              }
-            });
-          },
-          child: Row(
-            children: [
-              names == "null"
-                  ?
-              OutlinedButton(
-                  onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder:
-                            (BuildContext context) {
-                          return LoginUp();
-                        });
-                  },
-                  style: ButtonStyle(
-
-                      overlayColor: MaterialStateColor
-                          .resolveWith((states) =>
-                          Theme
-                              .of(context)
-                              .primaryColor.withOpacity(0.4)),
-                      fixedSize:
-                      MaterialStateProperty.all(
-                          Size.fromHeight(30)),
-                      side: MaterialStateProperty.all(BorderSide(
-                          color: Theme
-                              .of(context)
-                              .canvasColor,
-
-                          width: 1,
-                          style: BorderStyle.solid),
-                      )
-                  ),
-                  child: appTextButton(
-                      context,
-                      'SignIn',
-                      Alignment.center,
-                      Theme
-                          .of(context)
-                          .canvasColor,
-                      14,
-                      true))
-                  :   appTextButton(context, names!, Alignment.center, Theme.of(context).canvasColor,ResponsiveWidget.isMediumScreen(context)
-                  ?16: 18, true),
-              SizedBox(width: 5),
-              Image.asset(
-                AssetsConstants.icProfile,
-                height:ResponsiveWidget.isMediumScreen(context)
-                    ?20: 30,
-                color: Theme.of(context).canvasColor,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(width: SizeConfig.screenWidth*0.04),
-      ],
-    );
-  }
   saveButtonPressed(String name, String email, String message) {
     profileViewModel.contactUs(context, name, email, message);
   }

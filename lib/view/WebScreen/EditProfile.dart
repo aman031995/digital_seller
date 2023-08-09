@@ -12,18 +12,27 @@ import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
+import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
+import 'package:TychoStream/view/WebScreen/getAppBar.dart';
 import 'package:TychoStream/view/screens/verify_otp_screen.dart';
+import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/AppDialog.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
+import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
+import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
+import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../AppRouter.gr.dart';
 
 @RoutePage()
 class EditProfile extends StatefulWidget {
@@ -44,9 +53,20 @@ class _EditProfileState extends State<EditProfile> {
       nameController,
       phoneController,
       emailController;
+  HomeViewModel homeViewModel=HomeViewModel();
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
+  ScrollController scrollController = ScrollController();
+  TextEditingController? searchController = TextEditingController();
+  CartViewModel cartViewModel = CartViewModel();
+
+
+
 
   @override
   void initState() {
+    cartViewModel.getCartCount(context);
+
+    homeViewModel.getAppConfig(context);
     profileViewModel.getProfileDetails(context);
     getUser();
     addressController = TextEditingController();
@@ -102,8 +122,12 @@ class _EditProfileState extends State<EditProfile> {
     final authVM = Provider.of<AuthViewModel>(context);
     return ChangeNotifierProvider.value(
         value: profileViewModel,
-        child: Consumer<ProfileViewModel>(builder: (context, viewmodel, _) {
-          return GestureDetector(
+        child: Consumer<ProfileViewModel>(builder: (context, profilemodel, _) {
+          return ChangeNotifierProvider.value(
+              value: homeViewModel,
+              child:
+              Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
+                return GestureDetector(
             onTap: () {
               if (isLogins == true) {
                 isLogins = false;
@@ -117,33 +141,105 @@ class _EditProfileState extends State<EditProfile> {
               }
             },
             child: Scaffold(
-                appBar: getAppBarWithBackBtn(
-                    title: StringConstant.editProfile,
-                    isBackBtn: false,
-                    context: context,
-                    onBackPressed: () {
-                      Navigator.pop(context, true);
-                    }),
+                appBar:  ResponsiveWidget.isMediumScreen(context)
+                    ? homePageTopBar(context, _scaffoldKey)
+                    : getAppBar(
+                    context,
+                    viewmodel,
+                    profilemodel,
+                    cartViewModel.cartItemCount,
+                    searchController, () async {
+                  SharedPreferences sharedPreferences =
+                  await SharedPreferences.getInstance();
+                  if (sharedPreferences.get('token') !=
+                      null) {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return LoginUp(
+                            product: true,
+                          );
+                        });
+                  } else {
+                    context.router.push(FavouriteListPage());
+                  }
+                }, () async {
+                  SharedPreferences sharedPreferences =
+                  await SharedPreferences.getInstance();
+                  if (sharedPreferences
+                      .getString('token')== null) {
+                    showDialog(
+                        context: context,
+                        barrierColor: Theme.of(context)
+                            .canvasColor
+                            .withOpacity(0.6),
+                        builder: (BuildContext context) {
+                          return LoginUp(
+                            product: true,
+                          );
+                        });
+                  } else {
+                    context.router.push(CartDetail(
+                        itemCount:
+                        '${cartViewModel.cartItemCount}'));
+                  }
+                }),
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 body: checkInternet == "Offline"
                     ? NOInternetScreen()
-                    : SafeArea(
-                    child: SingleChildScrollView(
-                        child: Center(
-                          child: Column(
-
-                              children: [
-                            SizedBox(height: 35),
-                            _profileImageView(viewmodel),
-                            SizedBox(height: 40),
-                            _editFormField(viewmodel, authVM),
-                                SizedBox(height:ResponsiveWidget.isMediumScreen(context)
-                                    ?100: 220),
-                                ResponsiveWidget.isMediumScreen(context)
-                                    ?  footerMobile(context) : footerDesktop()
-                          ]),
-                        )))),
-          );
+                    : SingleChildScrollView(
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Column(
+                                  children: [
+                                SizedBox(height: 35),
+                                _profileImageView(profilemodel),
+                                SizedBox(height: 40),
+                                _editFormField(profilemodel, authVM),
+                                    SizedBox(height:ResponsiveWidget.isMediumScreen(context)
+                                        ?100: 220),
+                                    ResponsiveWidget.isMediumScreen(context)
+                                        ?  footerMobile(context) : footerDesktop()
+                              ]),
+                            ),
+                            isLogins == true
+                                ? Positioned(
+                                top: ResponsiveWidget
+                                    .isMediumScreen(context)
+                                    ? 15
+                                    : 0,
+                                right: ResponsiveWidget
+                                    .isMediumScreen(context)
+                                    ? 20
+                                    : 40,
+                                child: profile(context,
+                                    setState, profileViewModel))
+                                : Container(),
+                            isSearch == true
+                                ? Positioned(
+                                top: ResponsiveWidget
+                                    .isMediumScreen(context)
+                                    ? 0
+                                    : SizeConfig.screenWidth *
+                                    0.001,
+                                right: ResponsiveWidget
+                                    .isMediumScreen(context)
+                                    ? 0
+                                    : SizeConfig.screenWidth *
+                                    0.15,
+                                child: searchList(
+                                    context,
+                                    homeViewModel,
+                                    scrollController,
+                                    homeViewModel,
+                                    searchController!,
+                                    cartViewModel
+                                        .cartItemCount))
+                                : Container()
+                          ],
+                        ))),
+          );}));
         }));
   }
 

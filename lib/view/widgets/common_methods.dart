@@ -311,7 +311,10 @@ Widget productListItems(BuildContext context, ProductList? productListData, int 
                 : BoxDecoration(
               color: Theme.of(context).cardColor,
             ),
-            margin: EdgeInsets.only(right: 16),
+            margin: EdgeInsets.only(right: ResponsiveWidget
+                .isMediumScreen(
+                context)
+                ?0: 16),
             child: Stack(
               children: [
                 Column(
@@ -367,7 +370,8 @@ Widget  cardDeatils(BuildContext context,ProductList itemInCart,int index,CartVi
             height:  ResponsiveWidget.isMediumScreen(context)
                 ? 120 : 200,
             width: ResponsiveWidget.isMediumScreen(context)
-                ? 150 :SizeConfig
+                ? SizeConfig
+                .screenWidth  :SizeConfig
                 .screenWidth *
                 0.14,
             margin:

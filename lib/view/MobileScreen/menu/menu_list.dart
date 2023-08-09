@@ -93,12 +93,18 @@ class _MenuListState extends State<MenuList> {
        if(url.path.contains('faq') == true){
 
         } else if (appMenu.url?.contains('privacy_policy') == true) {
+         context.router.push(WebHtmlPage(title:'PrivacyPolicy',html: 'privacy_policy' ));
 
-        } else if (appMenu.url?.contains('terms_condition') == true){
 
-        } else if (url.path.contains('about_us') == true) {
+       } else if (appMenu.url?.contains('terms_condition') == true){
+         context.router.push(WebHtmlPage(title:'TermsAndCondition',html: 'terms_condition' ));
 
-        } else if (url.path == RoutesName.EditProfille){
+
+       } else if (url.path.contains('about_us') == true) {
+         context.router.push(WebHtmlPage(title:'AboutUs',html: 'about_us'));
+
+
+       } else if (url.path == RoutesName.EditProfille){
          context.router.push(EditProfile());
 
         } else if (url.path == RoutesName.ContactUs){

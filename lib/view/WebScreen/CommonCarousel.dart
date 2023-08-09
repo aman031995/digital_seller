@@ -133,28 +133,28 @@ class _CommonCarouselState extends State<CommonCarousel> {
   //--MobileCarousel--//
   Widget carouselImageMobile() {
     var imageSliders = generateImageTileMobile(context);
-    return Center(
-      child: Container(
-        margin: EdgeInsets.only(left: 16.0,right: 16,top: 8),
-        width: SizeConfig.screenWidth,
-        child: CarouselSlider(
-          items: imageSliders,
-          options: CarouselOptions(
-              height: SizeConfig.screenHeight*0.45,
-              scrollDirection: Axis.horizontal,
-              scrollPhysics: PageScrollPhysics(),
-              viewportFraction: 1,
-              enableInfiniteScroll: true,
-              enlargeCenterPage: false,
-              autoPlay: true,
-              autoPlayInterval: Duration(seconds: 5),
-              onPageChanged: (index, reason) {
-                setState(() {
-                  current = index;
-                });
-              }),
-          carouselController: carouselController,
-        ),
+    return Container(
+      margin: EdgeInsets.only(left: 20.0,right: 20,top: 8),
+      width: SizeConfig.screenWidth,
+      child: CarouselSlider(
+        items: imageSliders,
+        options: CarouselOptions(
+            height: SizeConfig.screenHeight*0.45,
+            scrollDirection: Axis.horizontal,
+            scrollPhysics: PageScrollPhysics(),
+            viewportFraction: 1,
+            enableInfiniteScroll: true,
+            enlargeCenterPage: false,
+            autoPlay: true,
+            autoPlayAnimationDuration: Duration(milliseconds: 800),
+
+            autoPlayInterval: Duration(seconds: 5),
+            onPageChanged: (index, reason) {
+              setState(() {
+                current = index;
+              });
+            }),
+        carouselController: carouselController,
       ),
     );
   }

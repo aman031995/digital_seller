@@ -24,7 +24,7 @@ class ProductSkuView extends StatelessWidget {
             children: skuDetails!.map((e) {
               return Container(
                   padding: ResponsiveWidget.isMediumScreen(context)
-                      ? EdgeInsets.only(bottom: 10) :EdgeInsets.zero,
+                      ? EdgeInsets.only(bottom: 0) :EdgeInsets.zero,
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -32,7 +32,7 @@ class ProductSkuView extends StatelessWidget {
                         SizedBox(height: 8),
                         Container(
                             height:ResponsiveWidget.isMediumScreen(context)
-                                ? 35:45,
+                                ? 45:45,
                             child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
                                 itemCount: e.data?.length,

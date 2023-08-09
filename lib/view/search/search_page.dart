@@ -1,3 +1,5 @@
+import 'package:TychoStream/Utilities/AssetsConstants.dart';
+import 'package:TychoStream/main.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppTextField.dart';
@@ -130,8 +132,15 @@ class _SearchPageState extends State<SearchPage> {
   searchTextField() {
     return Row(
         mainAxisAlignment: MainAxisAlignment.center,
+
         children: [
-      Container(
+             GestureDetector(
+                 onTap: (){
+                   Navigator.pop(context, true);
+                 },
+                 child: Image.asset(AssetsConstants.icBackArrow,color: Theme.of(context).canvasColor,)),
+          SizedBox(width: 2),
+          Container(
           height: 50,
           width: 300,
           alignment: Alignment.center,
@@ -151,11 +160,23 @@ class _SearchPageState extends State<SearchPage> {
               autoFocus: true,
               onSubmitted: (v) {
                 AppIndicator.loadingIndicator(context);
-                homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
+                homeViewModel.getSearchData(context, searchController?.text ?? '', 1);
+                isSearch = true;
+             //   homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
               },
               verifySubmit: (){
                 AppIndicator.loadingIndicator(context);
                 homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
+              },
+              onChanged: (v) async{
+                if(v.isEmpty){
+                  isSearch = false;
+                }
+                else{
+                  AppIndicator.loadingIndicator(context);
+                  homeViewModel.getSearchData(context, searchController?.text ?? '', 1);
+
+                }
               },
               isTick: null)),
     ]);

@@ -146,15 +146,15 @@ class CartDetailRepository {
         var paymentIntent = json.decode(response.body);
         //Payment Sheet
         if (paymentIntent != null) {
-     // await Stripe.instance.initPaymentSheet(
-          //     paymentSheetParameters: SetupPaymentSheetParameters(
-          //         paymentIntentClientSecret: paymentIntent!['client_secret'],
-          //         style: ThemeMode.dark,
-          //         merchantDisplayName: 'merchant name',
-          //         customerId: '1234',
-          //         customerEphemeralKeySecret: '1234',
-          //         billingDetails: BillingDetails()));
-          // responseHandler(paymentIntent);
+     await Stripe.instance.initPaymentSheet(
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret: paymentIntent!['client_secret'],
+                  style: ThemeMode.dark,
+                  merchantDisplayName: 'merchant name',
+                  customerId: '1234',
+                  customerEphemeralKeySecret: '1234',
+                  billingDetails: BillingDetails()));
+          responseHandler(paymentIntent);
            //displayPaymentSheet(paymentIntent, context, createOrderModel, addressId, productId, variantId, quantity);
         }
       } catch (e, s) {

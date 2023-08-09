@@ -32,12 +32,6 @@ class _ThankYouPageState extends State<ThankYouPage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Scaffold(
-      appBar: getAppBarWithBackBtn(
-          title: '',
-          context: context,
-          isBackBtn: false,
-          onBackPressed: () {
-          }),
       body: ChangeNotifierProvider.value(
           value: thankYouModel,
           child: Consumer<CartViewModel>(builder: (context, thankyoumodel, _) {

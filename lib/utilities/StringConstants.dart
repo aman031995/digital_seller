@@ -11,6 +11,7 @@ class StringConstant {
   static String kRecommended='recommeded_list';
   static String kcategory='category_list';
 
+
 // **************Login Page ***************
   static String mobileNumber = "Mobile Number";
   static String forgotPassword = "Forgot Password?";
@@ -134,6 +135,7 @@ class StringConstant {
   static String continueText = "CONTINUE";
   static String goToCart = 'GO TO CART';
   static String addToBag = 'ADD TO BAG';
+  static String buynow= "BUY NOW";
   static String addAddress = '+ Add Address';
   static String size = 'Size : ';
   static String descriptionText = 'Description';
@@ -171,7 +173,6 @@ class StringConstant {
   static String seeAll = "See All";
   static String notifications = 'Notifications';
   static String selectaddress = 'Please add Delivery Address';
-  static String buynow = 'Wishlist';
   static String sizecheck = "Please Select Size";
   static String applyPromoCode = 'Apply Promo Code';
   static String applyCodebutton = 'Apply';
