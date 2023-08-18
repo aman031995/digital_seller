@@ -1,3 +1,4 @@
+import 'package:TychoStream/AppRouter.gr.dart';
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
@@ -8,6 +9,7 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
+import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -26,10 +28,14 @@ class _SearchPageState extends State<SearchPage> {
   TextEditingController? searchController = TextEditingController();
   HomeViewModel homeViewModel = HomeViewModel();
   ScrollController scrollController = ScrollController();
+  CartViewModel cartViewModel = CartViewModel();
+
   int pageNum = 1;
 
   @override
   void dispose() {
+    cartViewModel.getCartCount(context);
+
     searchController?.dispose();
     scrollController.dispose();
     super.dispose();
@@ -63,9 +69,16 @@ class _SearchPageState extends State<SearchPage> {
     return  viewmodel.searchDataModel!.productList==null?
     Container(): Stack(children: [
       viewmodel.searchDataModel!.productList!.isNotEmpty
-          ? ListView.builder(
+          ? GridView.builder(
+          shrinkWrap: true,
           controller: _scrollController,
+          padding: EdgeInsets.all(8),
           physics: BouncingScrollPhysics(),
+          gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.78,
+          ),
           itemBuilder: (_, index) {
             final item = viewmodel.searchDataModel?.productList?[index];
             _scrollController.addListener(() {
@@ -76,26 +89,38 @@ class _SearchPageState extends State<SearchPage> {
                     viewmodel.lastPage,
                     viewmodel.nextPage,
                     viewmodel.isLoading,
-                    searchController.text ?? '',
+                    searchController.text,
                     viewmodel);
               }
             });
             return GestureDetector(
                 onTap: () async {
+                  context.router.push(ProductDetailPage(
+                    productName: '${item?.productName?.replaceAll(' ', '')}',
+                    productdata: [
+                      '${item?.productId}',
+                      '${cartViewModel.cartItemCount}',
+                      '${item?.productDetails?.defaultVariationSku?.size?.name}',
+                      '${item?.productDetails?.defaultVariationSku?.color?.name}',
+                      '${item?.productDetails?.defaultVariationSku?.style?.name}',
+                      '${item?.productDetails?.defaultVariationSku?.unitCount?.name}',
+                      '${item?.productDetails?.defaultVariationSku?.materialType?.name}',
+                    ],
+                  ));
                 },
                 child: Container(
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(2),
                         color: Theme.of(context).cardColor
                     ),
 
                     child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           SizedBox(
                               height: 180,
-                              width: SizeConfig.screenWidth,
+                              width: SizeConfig.screenWidth/1.5,
                               child: CachedNetworkImage(
                                   imageUrl: item?.productDetails?.productImages?[0]  ?? '', fit: BoxFit.fill,
                                   imageBuilder: (context, imageProvider) => Container(
@@ -109,11 +134,12 @@ class _SearchPageState extends State<SearchPage> {
                                   placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey)))),
 
                           Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.only(left: 6),
+                            alignment: Alignment.topLeft,
+padding: EdgeInsets.only(left: 4),
                             width: SizeConfig.screenWidth/1.2,
                             child: AppMediumFont(context, msg: item?.productName ?? '', maxLines: 1),
                           ),
+                          AppMediumFont(context, msg:" ₹"+ '${item?.productDetails?.productDiscountPrice}'),
                           SizedBox(height: 8)
                         ])));
           },
@@ -160,7 +186,7 @@ class _SearchPageState extends State<SearchPage> {
               autoFocus: true,
               onSubmitted: (v) {
                 AppIndicator.loadingIndicator(context);
-                homeViewModel.getSearchData(context, searchController?.text ?? '', 1);
+                homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
                 isSearch = true;
              //   homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
               },
@@ -174,7 +200,7 @@ class _SearchPageState extends State<SearchPage> {
                 }
                 else{
                   AppIndicator.loadingIndicator(context);
-                  homeViewModel.getSearchData(context, searchController?.text ?? '', 1);
+                  homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
 
                 }
               },

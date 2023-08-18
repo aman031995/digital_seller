@@ -1,12 +1,10 @@
 import 'dart:ui';
 import 'package:TychoStream/AppRouter.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,15 +21,10 @@ bool isLogin = false;
 bool isLogins = false;
 bool isSearch = false;
 bool isProfile=false;
-bool isDelete=false;
-bool isNotification=false;
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 Future<void> main() async {
-  Stripe.publishableKey = "pk_test_51NXhtjSJK48GkIWFjJzBm88uzgrwb7i4aIyls9YoPHT5IvYAV9rMnlEW0U8AUY1VpIJB3ZOBFTFdSFuMYnxM0fkK00KqwNEEeH";
-
-
   setPathUrlStrategy();
   await WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -59,12 +52,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   HomeViewModel homeViewModel = HomeViewModel();
   final _appRouter = AppRouter();
-
-  // @override
-  // getTokent() async {
-  //   String? deviceToken = await FirebaseMessaging.instance.getToken();
-  //   print('DEVICE TOKEN ' + deviceToken!);
-  // }
 
   void initState() {
     User();

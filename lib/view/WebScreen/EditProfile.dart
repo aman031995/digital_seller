@@ -12,13 +12,13 @@ import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
+import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
 import 'package:TychoStream/view/screens/verify_otp_screen.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/AppDialog.dart';
-import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
@@ -36,12 +36,9 @@ import '../../AppRouter.gr.dart';
 
 @RoutePage()
 class EditProfile extends StatefulWidget {
-  ProfileViewModel? viewmodel;
-
-  EditProfile({Key? key, this.viewmodel}) : super(key: key);
 
   @override
-  _EditProfileState createState() => _EditProfileState();
+  State<EditProfile> createState() => _EditProfileState();
 }
 
 class _EditProfileState extends State<EditProfile> {
@@ -104,17 +101,6 @@ class _EditProfileState extends State<EditProfile> {
   }
 
 
-  @override
-  void dispose() {
-    validation.closeStream();
-    addressController?.dispose();
-    nameController?.dispose();
-    phoneController?.dispose();
-    emailController?.dispose();
-    otpValue = '';
-    super.dispose();
-  }
-
   //-------Profile Screen---------
   @override
   Widget build(BuildContext context) {
@@ -125,8 +111,7 @@ class _EditProfileState extends State<EditProfile> {
         child: Consumer<ProfileViewModel>(builder: (context, profilemodel, _) {
           return ChangeNotifierProvider.value(
               value: homeViewModel,
-              child:
-              Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
+              child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
                 return GestureDetector(
             onTap: () {
               if (isLogins == true) {
@@ -142,16 +127,16 @@ class _EditProfileState extends State<EditProfile> {
             },
             child: Scaffold(
                 appBar:  ResponsiveWidget.isMediumScreen(context)
-                    ? homePageTopBar(context, _scaffoldKey)
+                    ? homePageTopBar(context, _scaffoldKey,cartViewModel.cartItemCount)
                     : getAppBar(
                     context,
                     viewmodel,
                     profilemodel,
-                    cartViewModel.cartItemCount,
+                    cartViewModel.cartItemCount,1,
                     searchController, () async {
                   SharedPreferences sharedPreferences =
                   await SharedPreferences.getInstance();
-                  if (sharedPreferences.get('token') !=
+                  if (sharedPreferences.get('token') ==
                       null) {
                     showDialog(
                         context: context,
@@ -161,6 +146,14 @@ class _EditProfileState extends State<EditProfile> {
                           );
                         });
                   } else {
+                    if (isLogins == true) {
+                      isLogins = false;
+                      setState(() {});
+                    }
+                    if (isSearch == true) {
+                      isSearch = false;
+                      setState(() {});
+                    }
                     context.router.push(FavouriteListPage());
                   }
                 }, () async {
@@ -179,66 +172,100 @@ class _EditProfileState extends State<EditProfile> {
                           );
                         });
                   } else {
+                    if (isLogins == true) {
+                      isLogins = false;
+                      setState(() {});
+                    }
+                    if (isSearch == true) {
+                      isSearch = false;
+                      setState(() {});
+                    }
                     context.router.push(CartDetail(
                         itemCount:
                         '${cartViewModel.cartItemCount}'));
                   }
                 }),
                 backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                body:  Scaffold(
+                extendBodyBehindAppBar: true,
+                key: _scaffoldKey,
+                backgroundColor: Theme.of(context)
+                    .scaffoldBackgroundColor,
+                drawer:
+                ResponsiveWidget.isMediumScreen(context)
+                ? AppMenu()
+                    : SizedBox(),
                 body: checkInternet == "Offline"
                     ? NOInternetScreen()
-                    : SingleChildScrollView(
-                        child: Stack(
-                          children: [
-                            Center(
+                    : Stack(
+                      children: [
+                        SingleChildScrollView(
+                            child: Center(
                               child: Column(
                                   children: [
                                 SizedBox(height: 35),
                                 _profileImageView(profilemodel),
                                 SizedBox(height: 40),
                                 _editFormField(profilemodel, authVM),
+                                    StreamBuilder(
+                                        stream: validation.validateUserEditProfile,
+                                        builder: (context, snapshot) {
+                                          return appButton(
+                                              context,
+                                              StringConstant.logout,
+                                              ResponsiveWidget.isMediumScreen(context)
+                                                  ?   SizeConfig.screenWidth/1.5:  SizeConfig.screenWidth/4.5,
+                                              50,
+                                              Theme.of(context).primaryColor,
+                                              Theme.of(context).hintColor,
+                                              20,
+                                              10,
+                                              snapshot.data != true ? false : true, onTap: () {
+                                            authVM.logoutButtonPressed(context);
+                                            context.router.stack.clear();
+                                            context.router.dispose();
+                                          });
+                                        }),
                                     SizedBox(height:ResponsiveWidget.isMediumScreen(context)
                                         ?100: 220),
                                     ResponsiveWidget.isMediumScreen(context)
                                         ?  footerMobile(context) : footerDesktop()
                               ]),
-                            ),
-                            isLogins == true
-                                ? Positioned(
-                                top: ResponsiveWidget
-                                    .isMediumScreen(context)
-                                    ? 15
-                                    : 0,
-                                right: ResponsiveWidget
-                                    .isMediumScreen(context)
-                                    ? 20
-                                    : 40,
-                                child: profile(context,
-                                    setState, profileViewModel))
-                                : Container(),
-                            isSearch == true
-                                ? Positioned(
-                                top: ResponsiveWidget
-                                    .isMediumScreen(context)
-                                    ? 0
-                                    : SizeConfig.screenWidth *
-                                    0.001,
-                                right: ResponsiveWidget
-                                    .isMediumScreen(context)
-                                    ? 0
-                                    : SizeConfig.screenWidth *
-                                    0.15,
-                                child: searchList(
-                                    context,
-                                    homeViewModel,
-                                    scrollController,
-                                    homeViewModel,
-                                    searchController!,
-                                    cartViewModel
-                                        .cartItemCount))
-                                : Container()
-                          ],
-                        ))),
+                            )),
+                        ResponsiveWidget
+                            .isMediumScreen(context)
+                            ?Container(): isLogins == true
+                            ? Positioned(
+                            top:  10,
+                            right: 180,
+                            child: profile(context,
+                                setState, profilemodel))
+                            : Container(),
+                        ResponsiveWidget
+                            .isMediumScreen(context)
+                            ? Container():    isSearch == true
+                            ? Positioned(
+                            top: ResponsiveWidget
+                                .isMediumScreen(context)
+                                ? 0
+                                : SizeConfig.screenWidth *
+                                0.001,
+                            right: ResponsiveWidget
+                                .isMediumScreen(context)
+                                ? 0
+                                : SizeConfig.screenWidth *
+                                0.15,
+                            child: searchList(
+                                context,
+                                homeViewModel,
+                                scrollController,
+                                homeViewModel,
+                                searchController!,
+                                cartViewModel
+                                    .cartItemCount))
+                            : Container()
+                      ],
+                    ))),
           );}));
         }));
   }
@@ -367,8 +394,8 @@ class _EditProfileState extends State<EditProfile> {
                     ResponsiveWidget.isMediumScreen(context)
                         ? SizeConfig.screenWidth/1.5  :SizeConfig.screenWidth/4.5,
                     50,
-                    LIGHT_THEME_COLOR,
-                    WHITE_COLOR,
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).hintColor,
                     20,
                     10,
                     snapshot.data != true ? false : true, onTap: () {
@@ -378,7 +405,7 @@ class _EditProfileState extends State<EditProfile> {
                       viewmodel.enableEmailField != true
                       ? ToastMessage.message(StringConstant.verifyDetails)
                       : saveButtonPressed(
-                      widget.viewmodel ?? profileViewModel,
+                      profileViewModel,
                       nameController?.text,
                       phoneController?.text,
                       emailController?.text,
@@ -398,7 +425,7 @@ class _EditProfileState extends State<EditProfile> {
             radius: 57,
             child: CachedNetworkImage(
               imageUrl:
-              '${viewmodel.userInfoModel?.profilePic ?? widget.viewmodel?.userInfoModel?.profilePic ?? profileImg}',
+              '${viewmodel.userInfoModel?.profilePic  ?? profileImg}',
               imageBuilder: (context, imageProvider) => Container(
                 width: 110.0,
                 height: 110.0,

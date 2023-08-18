@@ -47,7 +47,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
   void initState() {
     homeViewModel.getAppConfig(context);
     profileViewModel.getUserDetails(context);
-    cartViewModel.getProductListData(context, pageNum);
+    cartViewModel.getProductList(context, pageNum);
     cartViewModel.getCartCount(context);
     super.initState();
   }
@@ -80,8 +80,8 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                 },
                 child: Scaffold(
                   appBar:  ResponsiveWidget.isMediumScreen(context)
-                      ? homePageTopBar(context,_scaffoldKey):getAppBar(context, homeViewModel, profileViewModel,
-                      cartViewModel.cartItemCount, searchController,() async {
+                      ? homePageTopBar(context,_scaffoldKey,cartViewModel.cartItemCount):getAppBar(context, homeViewModel, profileViewModel,
+                      cartViewModel.cartItemCount, 1,searchController,() async {
                     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                     if (sharedPreferences.getString('token') == null) {
                       showDialog(
@@ -94,6 +94,14 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                             );
                           });
                     } else {
+                      if (isLogins == true) {
+                        isLogins = false;
+                        setState(() {});
+                      }
+                      if (isSearch == true) {
+                        isSearch = false;
+                        setState(() {});
+                      }
                       context.router.push(FavouriteListPage());
                     }
                   }, () async {
@@ -109,16 +117,29 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                             );
                           });
                     } else {
+                      if (isLogins == true) {
+                        isLogins = false;
+                        setState(() {});
+                      }
+                      if (isSearch == true) {
+                        isSearch = false;
+                        setState(() {});
+                      }
                       context.router.push(CartDetail(
                           itemCount: '${cartViewModel.cartItemCount}'));
                     }
                   }),
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                   body: Scaffold(
+
                     extendBodyBehindAppBar: true,
                     key: _scaffoldKey,
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    drawer: AppMenu(),
+                    backgroundColor: Theme.of(context)
+                        .scaffoldBackgroundColor,
+                    drawer:
+                    ResponsiveWidget.isMediumScreen(context)
+                        ? AppMenu()
+                        : SizedBox(),
                     body: viewmodel.productListModel?.productList != null ?
                   (viewmodel.productListModel?.productList?.length ?? 0)  > 0
                       ?
@@ -187,6 +208,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                                     color: Theme.of(context).cardColor,
                                                     child: catrgoryTopSortWidget()),
                                                 Container(
+                                                  height: SizeConfig.screenHeight*1.5,
                                                   width: SizeConfig.screenWidth/2,
                                                   child: GridView.builder(
                                                     shrinkWrap: true,
@@ -248,7 +270,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                       )),
                                     viewmodel.isLoading == true
                                         ? Container(
-                                      margin: EdgeInsets.only(bottom: 20),
+                                      margin: EdgeInsets.only(bottom:40),
                                         alignment:
                                         Alignment.bottomCenter,
                                         child:
@@ -257,15 +279,18 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                               .primaryColor,
                                         ))
                                         : SizedBox(),
-                                    isLogins == true
+                        ResponsiveWidget
+                            .isMediumScreen(context)
+                            ?Container():  isLogins == true
                                         ? Positioned(
                                         top: 0,
-                                        right:  ResponsiveWidget.isMediumScreen(context)
-                                            ? 10:35,
+                                        right: 180,
                                         child: profile(context, setState,
                                             profileViewModel))
                                         : Container(),
-                        isSearch==true?
+                        ResponsiveWidget
+                            .isMediumScreen(context)
+                            ? Container():  isSearch==true?
                         Positioned(
                             top: ResponsiveWidget.isMediumScreen(context) ? 0:0,
                             right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.15,

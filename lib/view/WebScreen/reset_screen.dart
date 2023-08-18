@@ -68,7 +68,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               ),
               AppBoldFont(
                   textAlign: TextAlign.center,
-                  context,msg: StringConstant.reset, fontSize: 18),
+                  context,msg: StringConstant.reset, fontSize: 22),
               AppRegularFont(
                   context,msg: StringConstant.enterNewPassword,
                   fontSize:16),
@@ -136,25 +136,21 @@ class _ResetPasswordState extends State<ResetPassword> {
                           confirmPasswordController.text,widget.loginType);
                     });
                   }),
-              SizedBox(height: 10),
-              Stack(
-                children: [
-                  GestureDetector(
-                    onTap: () async{
-                      const url = 'http://digitalseller.in/';
-                      if (await canLaunch(url)) {
-                        await launch(url, forceWebView: false, enableJavaScript: true);
-                      } else {
-                        throw 'Could not launch $url';
-                      }
-                    },
-                    child: Center(
-                      child: GlobalVariable.isLightTheme == true ?
-                      Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 100) :
-                      Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 100),
-                    ),
-                  ),
-                ],
+              SizedBox(height: 20),
+              GestureDetector(
+                onTap: () async{
+                  const url = 'http://digitalseller.in/';
+                  if (await canLaunch(url)) {
+                    await launch(url, forceWebView: false, enableJavaScript: true);
+                  } else {
+                    throw 'Could not launch $url';
+                  }
+                },
+                child: Center(
+                  child: GlobalVariable.isLightTheme == true ?
+                  Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 100) :
+                  Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 100),
+                ),
               ),
               SizedBox(height: 5),
             ],
@@ -182,11 +178,11 @@ class _ResetPasswordState extends State<ResetPassword> {
               ),
               AppBoldFont(
                   textAlign: TextAlign.center,
-                  context,msg:StringConstant.reset, fontSize: 20),
+                  context,msg:StringConstant.reset, fontSize: 30),
               SizedBox(height: 15,),
               AppRegularFont(
                   context,msg: StringConstant.enterNewPassword,
-                  fontSize:16),
+                  fontSize:18),
               SizedBox(height: 30),
               Container(
                 width: 400,
@@ -260,7 +256,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                       });
                     }),
               ),
-              SizedBox(height:20),
+              SizedBox(height:30),
               GestureDetector(
                 onTap: () async{
                   const url = 'http://digitalseller.in/';

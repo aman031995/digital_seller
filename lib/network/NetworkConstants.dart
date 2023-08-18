@@ -5,8 +5,9 @@ typedef void InternetResponseHandler(bool isSuccess, dynamic result);
 typedef void NotificationHandler(dynamic response);
 typedef void ApiCallback(dynamic response);
 class NetworkConstants{
-  static String kAppBaseUrl = 'https://eacademyeducation.com:8011/api/';
 
+  static String kAppBaseUrl = 'https://api.digitalseller.in:8011/api/';
+ //static String kAppBaseUrl = 'https://eacademyeducation.com:8011/api/';
   static String kGetAppConfig = 'getAppConfigurations?appId={APP_ID}';
   static String kContactUs = "add-contactUs";
   static String kOpenWebViewUrl = "web-view?appId={APP_ID}&query={QUERY}";
@@ -54,19 +55,13 @@ class NetworkConstants{
   static String placeOrder = "place-order";
   static String removeFromCart = "remove-cartItems";
   static String getCartCount = 'cart-item-count?userId={USER_ID}&appId={APP_ID}';
-  // static String getCheckOutData = 'check-out?userId={USER_ID}&appId={APP_ID}';
   static String addNewAddress = 'add-address';
   static String updateAddress = 'update-address';
   static String deleteAddress='delete-address';
   static String kAddToCart = "add-and-update-cart";
   static String kGetCartList = "getall-cart?userId={USER_ID}&appId={APP_ID}";
-  // static String kGetPromocode = "get-all-promocode?userId={USER_ID}&appId={APP_ID}";
   static String kGetPromocode = "get-all-promocode?userId={USER_ID}&appId={APP_ID}";
-  // static String kGetProductList = "product-list?userId={USER_ID}&appId={APP_ID}";
   static String kGetProductList = "product-listing?userId={USER_ID}&appId={APP_ID}&pageNum={PAGE_NUM}";
-  // static String kGetProductById = "get-by-product-id?productId={PRODUCT_ID}&userId={USER_ID}&appId={APP_ID}";
- // static String kGetProductById = "product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&colorName={COLOR_ID}&sizeName={SIZE_NAME}&variantId={VARIANT_ID}";
-  //static String kGetProductById = "product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&color={COLOR_ID}&size={SIZE_NAME}&variantId={VARIANT_ID}";
   static String kGetProductById = 'product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&variant=[{"color" : "{COLOR_ID}"}, {"size" : "{SIZE_NAME}"},{"material_type" : "{MATERIAL_TYPE}"}, {"style" : "{STYLE}"}, {"unit_count" : "{UNIT_COUNT}"}]';
   static String buynow='buy-now';
   static String kGetProductByCategory = "get-banner-product?appId={APP_ID}&catId={CAT_ID}&productId={PROD_ID}";
@@ -79,6 +74,7 @@ class NetworkConstants{
   static String kcityState='get-city-state?pincode={PINCODE}';
 
   // static String kAppID = '8b7e56d4-8d6c-4053-8991-64374d95c353';
-   static String kAppID = 'c5d97fa9-a6b9-48c5-bf23-b847f1a12b09';
+ //static String kAppID = 'c5d97fa9-a6b9-48c5-bf23-b847f1a12b09';
+  static String kAppID = '5d3f0631-40fd-4047-afa9-47138ee59fc2';
 // static String kAppID = 'f11e5fd9-a395-49fb-bbd8-7e6554dc4549';
 }

@@ -84,12 +84,12 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                 },
                 child: Scaffold(
                     appBar: ResponsiveWidget.isMediumScreen(context)
-                        ? homePageTopBar(context, _scaffoldKey)
+                        ? homePageTopBar(context, _scaffoldKey, viewmodel.cartItemCount)
                         : getAppBar(
                             context,
                             homeViewModel,
                             profileViewModel,
-                            viewmodel.cartItemCount,
+                            viewmodel.cartItemCount,1,
                             searchController, () async {
                             SharedPreferences sharedPreferences =
                                 await SharedPreferences.getInstance();
@@ -105,6 +105,15 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                     );
                                   });
                             } else {
+                              if (isLogins == true) {
+                                isLogins = false;
+                                setState(() {});
+                              }
+                              if (isSearch == true) {
+                                isSearch = false;
+                                setState(() {});
+                              }
+
                               reloadPage();
                             }
                           }, () async {
@@ -122,17 +131,30 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                     );
                                   });
                             } else {
+                              if (isLogins == true) {
+                                isLogins = false;
+                                setState(() {});
+                              }
+                              if (isSearch == true) {
+                                isSearch = false;
+                                setState(() {});
+                              }
                               context.router.push(CartDetail(
                                   itemCount: '${viewmodel.cartItemCount}'));
                             }
                           }),
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+
                     body: Scaffold(
+
                       extendBodyBehindAppBar: true,
                       key: _scaffoldKey,
-                      backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
-                      drawer: AppMenu(),
+                      backgroundColor: Theme.of(context)
+                          .scaffoldBackgroundColor,
+                      drawer:
+                      ResponsiveWidget.isMediumScreen(context)
+                          ? AppMenu()
+                          : SizedBox(),
                       body: viewmodel.productListModel?.productList != null
                           ? viewmodel.productListModel!.productList!.length > 0
                               ? Stack(
@@ -266,15 +288,18 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                         ],
                                       ),
                                     ),
-                                    isLogins == true
+                                    ResponsiveWidget
+                                        .isMediumScreen(context)
+                                        ?Container():    isLogins == true
                                         ? Positioned(
                                             top: 0,
-                                            right: ResponsiveWidget.isMediumScreen(context)
-                                                ? 10: 35,
+                                            right:  180,
                                             child: profile(context, setState,
                                                 profileViewModel))
                                         : Container(),
-                                    isSearch == true
+                                    ResponsiveWidget
+                                        .isMediumScreen(context)
+                                        ? Container():   isSearch == true
                                         ? Positioned(
                                             top:
                                                 ResponsiveWidget.isMediumScreen(

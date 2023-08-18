@@ -24,7 +24,6 @@ import 'package:TychoStream/view/WebScreen/contact_us.dart' as _i10;
 import 'package:TychoStream/view/WebScreen/EditProfile.dart' as _i11;
 import 'package:TychoStream/view/WebScreen/HomePageWeb.dart' as _i12;
 import 'package:TychoStream/view/widgets/web_html_page.dart' as _i13;
-import 'package:TychoStream/viewmodel/profile_view_model.dart' as _i17;
 
 abstract class $AppRouter extends _i14.RootStackRouter {
   $AppRouter({super.navigatorKey});
@@ -88,13 +87,13 @@ abstract class $AppRouter extends _i14.RootStackRouter {
       final queryParams = routeData.queryParams;
       final args = routeData.argsAs<ProductDetailPageArgs>(
           orElse: () => ProductDetailPageArgs(
-                productId: pathParams.optString('productId'),
+                productName: pathParams.optString('productName'),
                 productdata: queryParams.get('productdata'),
               ));
       return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i6.ProductDetailPage(
-          productId: args.productId,
+          productName: args.productName,
           productdata: args.productdata,
           key: args.key,
         ),
@@ -125,14 +124,9 @@ abstract class $AppRouter extends _i14.RootStackRouter {
       );
     },
     EditProfile.name: (routeData) {
-      final args = routeData.argsAs<EditProfileArgs>(
-          orElse: () => const EditProfileArgs());
       return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i11.EditProfile(
-          key: args.key,
-          viewmodel: args.viewmodel,
-        ),
+        child: _i11.EditProfile(),
       );
     },
     HomePageWeb.name: (routeData) {
@@ -329,18 +323,18 @@ class ProductListGallery extends _i14.PageRouteInfo<void> {
 /// [_i6.ProductDetailPage]
 class ProductDetailPage extends _i14.PageRouteInfo<ProductDetailPageArgs> {
   ProductDetailPage({
-    String? productId,
+    String? productName,
     List<String>? productdata,
     _i16.Key? key,
     List<_i14.PageRouteInfo>? children,
   }) : super(
           ProductDetailPage.name,
           args: ProductDetailPageArgs(
-            productId: productId,
+            productName: productName,
             productdata: productdata,
             key: key,
           ),
-          rawPathParams: {'productId': productId},
+          rawPathParams: {'productName': productName},
           rawQueryParams: {'productdata': productdata},
           initialChildren: children,
         );
@@ -353,12 +347,12 @@ class ProductDetailPage extends _i14.PageRouteInfo<ProductDetailPageArgs> {
 
 class ProductDetailPageArgs {
   const ProductDetailPageArgs({
-    this.productId,
+    this.productName,
     this.productdata,
     this.key,
   });
 
-  final String? productId;
+  final String? productName;
 
   final List<String>? productdata;
 
@@ -366,7 +360,7 @@ class ProductDetailPageArgs {
 
   @override
   String toString() {
-    return 'ProductDetailPageArgs{productId: $productId, productdata: $productdata, key: $key}';
+    return 'ProductDetailPageArgs{productName: $productName, productdata: $productdata, key: $key}';
   }
 }
 
@@ -428,40 +422,16 @@ class ContactUs extends _i14.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i11.EditProfile]
-class EditProfile extends _i14.PageRouteInfo<EditProfileArgs> {
-  EditProfile({
-    _i16.Key? key,
-    _i17.ProfileViewModel? viewmodel,
-    List<_i14.PageRouteInfo>? children,
-  }) : super(
+class EditProfile extends _i14.PageRouteInfo<void> {
+  const EditProfile({List<_i14.PageRouteInfo>? children})
+      : super(
           EditProfile.name,
-          args: EditProfileArgs(
-            key: key,
-            viewmodel: viewmodel,
-          ),
           initialChildren: children,
         );
 
   static const String name = 'EditProfile';
 
-  static const _i14.PageInfo<EditProfileArgs> page =
-      _i14.PageInfo<EditProfileArgs>(name);
-}
-
-class EditProfileArgs {
-  const EditProfileArgs({
-    this.key,
-    this.viewmodel,
-  });
-
-  final _i16.Key? key;
-
-  final _i17.ProfileViewModel? viewmodel;
-
-  @override
-  String toString() {
-    return 'EditProfileArgs{key: $key, viewmodel: $viewmodel}';
-  }
+  static const _i14.PageInfo<void> page = _i14.PageInfo<void>(name);
 }
 
 /// generated route for

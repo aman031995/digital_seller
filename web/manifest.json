@@ -1,6 +1,6 @@
 {
-    "name": "firebase_signup",
-    "short_name": "firebase_signup",
+    "name": "digital_seller",
+    "short_name": "digital_seller",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

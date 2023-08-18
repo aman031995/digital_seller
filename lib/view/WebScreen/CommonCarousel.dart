@@ -57,19 +57,20 @@ class _CommonCarouselState extends State<CommonCarousel> {
     return Stack(
       children: [
         Container(
-          height: SizeConfig.screenHeight/1.4,
+          margin: EdgeInsets.only(top: 60),
+          height: SizeConfig.screenWidth/3,
           width: SizeConfig.screenWidth,
           child: CarouselSlider(
             items: imageSliders,
             disableGesture: true,
             options: CarouselOptions(
+              // height: SizeConfig.screenHeight/1.2,
                 autoPlayInterval: Duration(seconds: 2),
                 scrollDirection: Axis.horizontal,
                 scrollPhysics: PageScrollPhysics(),
                 viewportFraction:  1,
                 enlargeCenterPage: false,
                 autoPlayCurve: Curves.linear,
-                aspectRatio:16/9,
                 autoPlay: false,
                 onPageChanged: (index, reason) {
                   setState(() {
@@ -94,8 +95,9 @@ class _CommonCarouselState extends State<CommonCarousel> {
       CachedNetworkImage(
           imageUrl:element.bannerUrl ?? "",
           imageBuilder: (context, imageProvider) => Container(
+            height: SizeConfig.screenWidth/3,
+            width: SizeConfig.screenWidth,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
               image: DecorationImage(
                   image: imageProvider, fit: BoxFit.fill),
             ),
@@ -112,7 +114,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
       if(element.bannerType == 'Product'){
         if(element.productId != ""){
           context.router.push(ProductDetailPage(
-            productId: element.productId,
+            productName: element.productId,
               productdata: ['${element.catId}']
           ));
 

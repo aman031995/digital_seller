@@ -197,6 +197,7 @@ class AuthViewModel with ChangeNotifier {
             ToastMessage.message(
                 ((result as SuccessState).value as ASResponseModal).message);
             print('otp verified Successfully');
+            reloadPage();
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             if (isForgotPW == true) {
               AppIndicator.disposeIndicator();
@@ -291,6 +292,7 @@ class AuthViewModel with ChangeNotifier {
             AppIndicator.disposeIndicator();
             Navigator.pop(context);
             notifyListeners();
+            reloadPage();
           }
         });
   }

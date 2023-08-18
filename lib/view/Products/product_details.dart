@@ -8,9 +8,11 @@ import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
+import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/build_indicator.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
+import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/Products/productSkuDetailView.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
@@ -32,12 +34,14 @@ import '../../AppRouter.gr.dart';
 @RoutePage()
 class ProductDetailPage extends StatefulWidget {
   final List<String>? productdata;
-  final String? productId;
-    ProductDetailPage(
+  final String? productName;
+
+
+  ProductDetailPage(
       {
-        @PathParam('productId') this.productId,
+        @PathParam('productName') this.productName ,
         @QueryParam() this.productdata,
-        Key? key}) : super(key: key);
+        Key? key, }) : super(key: key);
 
   @override
   _ProductDetailPageState createState() => _ProductDetailPageState();
@@ -81,21 +85,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   getProductDetails(){
     if(widget.productdata?.length ==1){
       cartView.getProductListCategory(
-          context, widget.productId ?? "", widget.productdata?[0] ?? "", 1);
+          context, widget.productdata?[0] ?? "", widget.productdata?[1] ?? "", 1);
       Map<String, dynamic> json = jsonDecode(SessionStorageHelper.getValue("productDeatils").toString());
       productListDetails = ProductList.fromJson(json);
     } else {
-      if (widget.productId != null)
+      if (widget.productdata?[0] != null)
          cartView.updatecolorName(context,'');
-      cartView.updateCartCount(context, widget.productdata?[0] ?? '');
+      cartView.updateCartCount(context, widget.productdata?[1] ?? '');
         cartView.getProductDetails(
             context,
-            widget.productId ?? "",
-            widget.productdata?[1] ?? "",
+            widget.productdata?[0] ?? "",
             widget.productdata?[2] ?? "",
             widget.productdata?[3] ?? "",
             widget.productdata?[4] ?? "",
             widget.productdata?[5] ?? "",
+            widget.productdata?[6] ?? "",
             );
     }
   }
@@ -130,7 +134,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             },
             child: Scaffold(
                 appBar:ResponsiveWidget.isMediumScreen(context)
-                    ? homePageTopBar(context,_scaffoldKey):getAppBar(context,homeViewModel,profileViewModel,viewmodel.cartItemCount,searchController, () async {
+                    ? homePageTopBar(context,_scaffoldKey, viewmodel.cartItemCount):getAppBar(context,homeViewModel,profileViewModel,viewmodel.cartItemCount,1,searchController, () async {
                   SharedPreferences sharedPreferences =
                   await SharedPreferences.getInstance();
 
@@ -145,6 +149,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           );
                         });
                   } else {
+                    if (isLogins == true) {
+                      isLogins = false;
+                      setState(() {});
+                    }
+                    if (isSearch == true) {
+                      isSearch = false;
+                      setState(() {});
+                    }
                     context.router.push(FavouriteListPage());
                   }
                 },
@@ -161,13 +173,36 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                               );
                             });
                       } else{
+                        if (isLogins == true) {
+                          isLogins = false;
+                          setState(() {});
+                        }
+                        if (isSearch == true) {
+                          isSearch = false;
+                          setState(() {});
+                        }
                         context.router.push(CartDetail(
                             itemCount: '${viewmodel.cartItemCount}'
                         ));
                       }}),
 
                   backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-             body: viewmodel.productListDetails != null ?
+
+                body: Scaffold(
+
+                    extendBodyBehindAppBar: true,
+                    key: _scaffoldKey,
+                    backgroundColor: Theme.of(context)
+                        .scaffoldBackgroundColor,
+                    drawer:
+                    ResponsiveWidget.isMediumScreen(context)
+                        ? AppMenu()
+                        : SizedBox(),
+
+             body:
+
+
+             viewmodel.productListDetails != null ?
              SingleChildScrollView(child:
              ResponsiveWidget.isMediumScreen(context)
                  ?
@@ -276,45 +311,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                  mainAxisAlignment: MainAxisAlignment.start,
                                  crossAxisAlignment: CrossAxisAlignment.start,
                                  children: [
-                                   AppBoldFont(context, msg: viewmodel.productListDetails?.productDetails?.productVariantTitle ?? '', fontSize:
-                                        16),
-                                    SizedBox(height: 5),
-                                   AppBoldFont(
-                                     context, color: Theme.of(context).canvasColor.withOpacity(0.8),
-                                     msg:
-                                     "${viewmodel.productListDetails?.productShortDesc ?? ''}",
-                                     fontSize: 16,
-                                   ),
-                                   SizedBox(height: 5),
-                                   Row(
-                                       mainAxisAlignment: MainAxisAlignment.start,
-                                       crossAxisAlignment: CrossAxisAlignment.center,
-                                       children: [
-                                         viewmodel.productListDetails?.productDetails
-                                             ?.productPrice !=
-                                             ''
-                                             ? AppMediumFont(context,color:Theme.of(context).canvasColor.withOpacity(0.7),
-                                             msg: "₹"
-                                                 "${viewmodel.productListDetails?.productDetails?.productPrice ?? ''}",
-                                             textDecoration:
-                                             TextDecoration.lineThrough,
-                                             fontSize: 14)
-                                             : SizedBox(),
-                                         SizedBox(width: 8.0), AppBoldFont(context,
-                                             msg: "₹ "
-                                                 "${viewmodel.productListDetails?.productDetails?.productDiscountPrice ?? ''}",
-                                             fontSize: 16),SizedBox(width: 8.0),
-                                         AppMediumFont(context,
-                                             msg: viewmodel
-                                                 .productListDetails
-                                                 ?.productDetails
-                                                 ?.productDiscountPercent !=
-                                                 ''
-                                                 ? "${viewmodel.productListDetails?.productDetails?.productDiscountPercent}" +
-                                                 '% OFF'
-                                                 : '',color: GREEN,
-                                             fontSize: 16)
-                                       ]),
+                                   productDescription(viewmodel),
                                    SizedBox(height: 8),
                                    Container(
                                      child: ProductSkuView(
@@ -323,8 +320,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                          cartView: cartView,
                                          productList: cartView.productListDetails?.productDetails?.defaultVariationSku),
                                    ),
-
-
                                  ])),
                          SizedBox(height: 12),
                          bottomNavigationButton(),
@@ -335,15 +330,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                        ],
                      ),
                    ),
-
-
-                   isLogins == true
-                       ? Positioned(
-                       top: 0,
-                       right: 10,
-                       child: profile(context, setState,
-                           profileViewModel))
-                       : Container(),
 
                  ],
                ),
@@ -451,45 +437,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                              mainAxisAlignment: MainAxisAlignment.start,
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
-                               AppBoldFont(context, msg: viewmodel.productListDetails?.productDetails?.productVariantTitle ?? '', fontSize: 22),
-                                SizedBox(height: 8),
-                               AppMediumFont(
-                                 context,
-                                 msg:
-                                 "${viewmodel.productListDetails?.productShortDesc ?? ''}",
-                                 fontSize: 16.0,
-                               ),
-                               SizedBox(height: 8),
-
-                               Row(
-                                   mainAxisAlignment: MainAxisAlignment.start,
-                                   crossAxisAlignment: CrossAxisAlignment.center,
-                                   children: [
-                                     viewmodel.productListDetails?.productDetails
-                                         ?.productPrice !=
-                                         ''
-                                         ? AppMediumFont(context,
-                                         msg: "₹ "
-                                             "${viewmodel.productListDetails?.productDetails?.productPrice ?? ''}",
-                                         textDecoration:
-                                         TextDecoration.lineThrough,
-                                         fontSize: 16)
-                                         : SizedBox(),
-                                     SizedBox(width: 8.0), AppBoldFont(context,
-                                         msg: "₹ "
-                                             "${viewmodel.productListDetails?.productDetails?.productDiscountPrice ?? ''}",
-                                         fontSize: 18),SizedBox(width: 8.0),
-                                     AppMediumFont(context,
-                                         msg: viewmodel
-                                             .productListDetails
-                                             ?.productDetails
-                                             ?.productDiscountPercent !=
-                                             ''
-                                             ? "${viewmodel.productListDetails?.productDetails?.productDiscountPercent}" +
-                                             '% OFF'
-                                             : '',color: GREEN,
-                                         fontSize: 18)
-                                   ]),
+                               productDescription(viewmodel),
                                SizedBox(height: 8),
                                Container(
                                  child: ProductSkuView(
@@ -512,7 +460,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                  isLogins == true
                      ? Positioned(
                      top: 0,
-                     right: 35,
+                     right: 180,
                      child: profile(context, setState,
                          profileViewModel))
                      : Container(),
@@ -526,9 +474,70 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                ],)
              )
          : Center(child: ThreeArchedCircle(size: 45.0))),
-          );
+          ));
         })
       );
+  }
+
+  // product Description
+  productDescription(CartViewModel cartView) {
+    return Container(
+      width: SizeConfig.screenWidth,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            AppBoldFont(context, msg: cartView.productListDetails?.productDetails?.productVariantTitle ?? '', fontSize: 22),
+            SizedBox(height: 8),
+            AppMediumFont(
+              context,color: Theme.of(context).canvasColor.withOpacity(0.8),
+              msg:
+              "${cartView.productListDetails?.productShortDesc ?? ''}",
+              fontSize: 16.0,
+            ),
+            SizedBox(height: 8),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  cartView.productListDetails?.productDetails
+                      ?.productPrice !=
+                      ''
+                      ? AppMediumFont(context,
+                      msg: "₹ "
+                          "${cartView.productListDetails?.productDetails?.productPrice ?? ''}",
+                      textDecoration:
+                      TextDecoration.lineThrough,
+                      fontSize: 16)
+                      : SizedBox(),
+                  SizedBox(width: 8.0), AppBoldFont(context,
+                      msg: "₹ "
+                          "${cartView.productListDetails?.productDetails?.productDiscountPrice ?? ''}",
+                      fontSize: 18),SizedBox(width: 8.0),
+                  AppMediumFont(context,
+                      msg: cartView
+                          .productListDetails
+                          ?.productDetails
+                          ?.productDiscountPercent !=
+                          ''
+                          ? "${cartView.productListDetails?.productDetails?.productDiscountPercent}" +
+                          '% OFF'
+                          : '',color: GREEN,
+                      fontSize: 18)
+                ]),
+            SizedBox(height: 8),
+            AppBoldFont(context,color:Theme.of(context).canvasColor,
+                msg: StringConstant.descriptionText, fontSize: 16),
+            SizedBox(height: 8),
+            AppMediumFont(
+              context,
+              color: Theme.of(context).canvasColor.withOpacity(0.8),
+              msg: "${cartView.productListDetails?.productLongDesc ?? ''}",
+              fontSize: 14.0,
+            ),
+            SizedBox(height: 6),
+          ]),
+    );
   }
 
   addToBagButtonPressed() {
@@ -572,7 +581,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         ? "Go to Cart"
                         : "Add to Bag",color: Theme.of(context).canvasColor,
                     fontSize: 16),
-                onPressed: ()async{
+                onPressed: ()async{ if (isLogins == true) {
+                  isLogins = false;
+                  setState(() {});
+                }
+                if (isSearch == true) {
+                  isSearch = false;
+                  setState(() {});
+                }
                   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                   token = sharedPreferences.getString('token').toString();
                   if (token == 'null'){
@@ -613,7 +629,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         ))),
                 child: AppBoldFont(context, color: Theme.of(context).hintColor,
                     msg: " BUYNOW", fontSize: 16),
-                onPressed: ()async{
+                onPressed: ()async{ if (isLogins == true) {
+                  isLogins = false;
+                  setState(() {});
+                }
+                if (isSearch == true) {
+                  isSearch = false;
+                  setState(() {});
+                }
                   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                   if (sharedPreferences.getString('token') == null){
                     showDialog(
@@ -629,7 +652,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     cartView.buyNow(
                         cartView.productListDetails?.productId ?? '',
                         "1", cartView.productListDetails?.productDetails?.variantId,
-                        false, context);  //context.router.push(FavouriteListPage());
+                        true, context);  //context.router.push(FavouriteListPage());
                   }
                 }),
               )

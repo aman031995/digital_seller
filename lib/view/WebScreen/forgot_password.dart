@@ -59,6 +59,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Stack(
                   children: [
@@ -76,14 +77,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 AppBoldFont(
                   textAlign: TextAlign.start,
                   context,msg: StringConstant.forgotPassword,
-                  fontSize: 18 ,
+                  fontSize: 22 ,
                 ),
                 SizedBox(height: 20),
                 AppMediumFont(
                     context, msg: widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false
                     ? StringConstant.enterEmailOtpText
                     : StringConstant.enterOtpText,
-                    fontSize: 14 ,
+                    fontSize: 16 ,
                     textAlign: TextAlign.left),
                 SizedBox(height: 30),
                 Container(
@@ -167,7 +168,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             widget.viewModel!);
                       });
                     }),
-                SizedBox(height: 10),
+                SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async{
                     const url = 'http://digitalseller.in/';
@@ -209,11 +210,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 margin:  EdgeInsets.only(left: 20, right: 20,top: 20,bottom: 10),
                 alignment: Alignment.topLeft,
                 child: AppBoldFont(context, msg: StringConstant.forgotPassword,
-                    fontSize: ResponsiveWidget.isMediumScreen(context) ? 18 : 22,)),
+                    fontSize:  30)),
             Container(
                 margin:  EdgeInsets.only(left: 20, right: 20,bottom: 20),
                 alignment: Alignment.topLeft,
-                child: AppMediumFont(context, msg: widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false ? StringConstant.enterEmailOtpText: StringConstant.enterOtpText, fontSize: 16)),
+                child: AppMediumFont(context, msg: widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false ? StringConstant.enterEmailOtpText: StringConstant.enterOtpText, fontSize: 18)),
             Container(
               margin:  EdgeInsets.only(left: 20, right: 20,bottom: 30),
               alignment: Alignment.center,
@@ -297,7 +298,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                     });
                                   }),
                             ),
-            SizedBox(height:20),
+            SizedBox(height:30),
             GestureDetector(
               onTap: () async{
                 const url = 'http://digitalseller.in/';

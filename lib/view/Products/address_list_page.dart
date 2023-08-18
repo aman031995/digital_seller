@@ -15,6 +15,7 @@ import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
+import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/Products/shipping_address_page.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
@@ -122,16 +123,16 @@ else{
               child: Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: ResponsiveWidget.isMediumScreen(context)
-                  ? homePageTopBar(context, _scaffoldKey)
+                  ? homePageTopBar(context, _scaffoldKey,  cartViewData.cartItemCount)
                   : getAppBar(
                   context,
                   homeViewModel,
                   profileViewModel,
-                  cartViewData.cartItemCount,
+                  cartViewData.cartItemCount,1,
                   searchController, () async {
                 SharedPreferences sharedPreferences =
                 await SharedPreferences.getInstance();
-                if (sharedPreferences.get('token') !=
+                if (sharedPreferences.get('token') ==
                     null) {
                   showDialog(
                       context: context,
@@ -141,6 +142,14 @@ else{
                         );
                       });
                 } else {
+                  if (isLogins == true) {
+                    isLogins = false;
+                    setState(() {});
+                  }
+                  if (isSearch == true) {
+                    isSearch = false;
+                    setState(() {});
+                  }
                   context.router.push(FavouriteListPage());
                 }
               }, () async {
@@ -159,11 +168,30 @@ else{
                         );
                       });
                 } else {
+                  if (isLogins == true) {
+                    isLogins = false;
+                    setState(() {});
+                  }
+                  if (isSearch == true) {
+                    isSearch = false;
+                    setState(() {});
+                  }
                   context.router.push(CartDetail(
                       itemCount:
                       '${cartViewModel.cartItemCount}'));
                 }
               }),
+
+          body: Scaffold(
+
+          extendBodyBehindAppBar: true,
+          key: _scaffoldKey,
+          backgroundColor: Theme.of(context)
+              .scaffoldBackgroundColor,
+          drawer:
+          ResponsiveWidget.isMediumScreen(context)
+          ? AppMenu()
+              : SizedBox(),
       body:  (cartViewData.addressListModel != null && widget.buynow == false) || widget.buynow == true
                       ?  Stack(
                         children: [
@@ -582,20 +610,18 @@ else{
                               ],
                             ),
                           ),
-                          isLogins == true
+                          ResponsiveWidget
+                              .isMediumScreen(context)
+                              ?Container(): isLogins == true
                               ? Positioned(
-                              top: ResponsiveWidget
-                                  .isMediumScreen(context)
-                                  ? 15
-                                  : 0,
-                              right: ResponsiveWidget
-                                  .isMediumScreen(context)
-                                  ? 20
-                                  : 40,
+                              top:0,
+                              right:  180,
                               child: profile(context,
                                   setState, profileViewModel))
                               : Container(),
-                          isSearch == true
+                          ResponsiveWidget
+                              .isMediumScreen(context)
+                              ? Container():  isSearch == true
                               ? Positioned(
                               top: ResponsiveWidget
                                   .isMediumScreen(context)
@@ -622,7 +648,7 @@ else{
                       : Center(
                           child: ThreeArchedCircle(size: 45.0),
                         )),
-            );
+            ));
               }));
   }
 

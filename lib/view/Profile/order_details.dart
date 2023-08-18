@@ -1,6 +1,7 @@
 import 'package:TychoStream/model/data/order_data_model.dart';
 import 'package:TychoStream/model/data/order_detail_model.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -43,15 +44,17 @@ class _OrderDetailsState extends State<OrderDetails> {
               content: order.orderDetailModel!=null? SingleChildScrollView(
                 child: Container(
                       width: 500,height: 810,
-                  margin: EdgeInsets.only(left: 15.0, right: 15.0),
+                  margin: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context)
+                      ?10:15.0, right:ResponsiveWidget.isMediumScreen(context)
+                      ?10: 15.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(height: 10),
                       itemView(order),
-                      shippingDetails(),
-                      priceDetails(order.orderDetailModel),
+                       shippingDetails(),
+                       priceDetails(order.orderDetailModel),
                       order.orderDetailModel?.orderStatus == "Failed" ?
                       Container() :  Container(
                           margin: EdgeInsets.only(top: 8, bottom: 8),
@@ -113,6 +116,16 @@ class _OrderDetailsState extends State<OrderDetails> {
       ],
     );
   }
+  productDetailTopViewMobile(OrderViewModel order) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        AppBoldFont(context, msg: StringConstant.orderDetailed+'-${order.orderDetailModel?.orderId}', fontSize: 13),
+        AppRegularFont(context, msg: '${order.orderDetailModel?.orderDate}', fontSize: 13)
+      ],
+    );
+  }
 
   priceView(OrderViewModel order) {
     return Row(
@@ -121,7 +134,6 @@ class _OrderDetailsState extends State<OrderDetails> {
             context,
             msg: "₹" + "${order.orderDetailModel?.productFinalPrice}",
             fontSize: 16.0),
-        SizedBox(width: SizeConfig.safeBlockVertical * 1),
 
       ],
     );
@@ -132,35 +144,46 @@ class _OrderDetailsState extends State<OrderDetails> {
       decoration: BoxDecoration(
           color: Theme.of(context).cardColor.withOpacity(0.9),
           borderRadius: BorderRadius.all(Radius.circular(5.0))),
-      width:500,
-      alignment: Alignment.topLeft,
+      width:ResponsiveWidget.isMediumScreen(context)
+          ?SizeConfig.screenWidth:500,
       margin: EdgeInsets.only(top: 10, bottom: 4),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
           Container(
-            padding: EdgeInsets.only(top: 10, left: 20, right: 15),
-            child: productDetailTopView(order),
+            padding: EdgeInsets.only(top: 10, left: ResponsiveWidget.isMediumScreen(context)
+                ?10:20, right:ResponsiveWidget.isMediumScreen(context)
+                ?0: 15),
+            child:ResponsiveWidget.isMediumScreen(context)
+                ?productDetailTopViewMobile(order): productDetailTopView(order),
           ),
           Divider(
             color: Theme.of(context).canvasColor,
             thickness: 0.2,
           ),
           Container(
-            padding: EdgeInsets.only(left: 20, right: 15),
+            padding: EdgeInsets.only(left:ResponsiveWidget.isMediumScreen(context)
+                ?10: 20, right: ResponsiveWidget.isMediumScreen(context)
+                ?8:15),
             margin: EdgeInsets.only(top: 10.0, bottom: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  width:300,
+                  width:ResponsiveWidget.isMediumScreen(context)
+                      ?150:300,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       AppBoldFont(context,maxLines: 2, msg: getTitle(order), fontSize: 14.0),
                       SizedBox(height: 5),
-                      priceView(order),
+                      AppMediumFont(
+                          context,
+                          msg: "₹" + "${order.orderDetailModel?.productFinalPrice}",
+                          fontSize: 16.0),
                       AppRegularFont(context, msg:"Quantity - "+ "${orderView.orderDetailModel?.quantity}", fontSize: 16.0),
                       order.orderDetailModel?.variationSku?.color?.name != null ?
                       RichText(
@@ -311,8 +334,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(4.0),
                       child: Image.network('${order.orderDetailModel?.productImages?[0] ?? ""}',
-                        height: 120,
-                        width: 120,fit: BoxFit.fill,
+                        height:ResponsiveWidget.isMediumScreen(context)
+                            ?60: 120,
+                        width: ResponsiveWidget.isMediumScreen(context)
+                            ?60:120,fit: BoxFit.fill,
                       ),
                     )),
               ],

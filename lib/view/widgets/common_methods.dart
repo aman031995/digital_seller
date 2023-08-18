@@ -16,6 +16,7 @@ import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -124,6 +125,7 @@ Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
           isProfile = true;
           if (isProfile == true) {
             context.pushRoute(EditProfile());
+            isLogins = false;
           }
         }),
         SizedBox(height: 5),
@@ -141,6 +143,8 @@ Widget profile(BuildContext context,setState,ProfileViewModel profileViewModel){
           isProfile = true;
           if (isProfile == true) {
             context.pushRoute(MyOrderPage());
+            isLogins = false;
+
           }
         }),
         SizedBox(height: 5),
@@ -258,11 +262,17 @@ Widget productListItems(BuildContext context, ProductList? productListData, int 
   return OnHover(
     builder: (isHovered) {
       return GestureDetector(
-          onTap: () {
+          onTap: () { if (isLogins == true) {
+            isLogins = false;
+          }
+          if (isSearch == true) {
+            isSearch = false;
+          }
             context.router.push(
               ProductDetailPage(
-                productId: '${productListData?.productId}',
+                productName: '${productListData?.productName?.replaceAll(' ', '')}',
                 productdata: [
+                '${productListData?.productId}',
                   '${viewmodel.cartItemCount}',
                   '${productListData?.productDetails?.defaultVariationSku?.size?.name}',
                   '${productListData?.productDetails?.defaultVariationSku?.color?.name}',
@@ -359,30 +369,31 @@ Widget productListItems(BuildContext context, ProductList? productListData, int 
 
 Widget  cardDeatils(BuildContext context,ProductList itemInCart,int index,CartViewModel cartViewData){
   return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
+    mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Column(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             height:  ResponsiveWidget.isMediumScreen(context)
                 ? 120 : 200,
             width: ResponsiveWidget.isMediumScreen(context)
-                ? SizeConfig
-                .screenWidth  :SizeConfig
+                ? 120  :SizeConfig
                 .screenWidth *
                 0.14,
             margin:
             EdgeInsets.only(
                 top: 5,
                 right: 8,
+                left:8,
                 bottom: 5),
             child:
             Image.network(
               itemInCart.productDetails?.productImages?[0] ?? "",
               fit: BoxFit.fill,
+
             ),
           ),
           Container(
@@ -394,7 +405,7 @@ Widget  cardDeatils(BuildContext context,ProductList itemInCart,int index,CartVi
                     width: 1)),
             margin:
             EdgeInsets.only(
-                left: 5,
+                left:  8,
                 top: 5,
                 right: 8,
                 bottom: 5),
@@ -705,8 +716,7 @@ Widget pricedetails(BuildContext context,CartViewModel cartViewData){
         return Container(
           width:ResponsiveWidget.isMediumScreen(context)
               ? SizeConfig.screenWidth:
-          SizeConfig.screenWidth *
-              0.30,
+          SizeConfig.screenWidth /3.22,
           color: Theme.of(context).cardColor,
           child: Column(
             children: [
@@ -874,4 +884,318 @@ radioTileButton(BuildContext context,int? selectedAddressIndex, int index){
       ),
     ),
   );
+}
+
+Widget CategoryList(BuildContext context,CartViewModel cartViewModel){
+  return  Container(
+    margin: EdgeInsets.zero,
+    color: Theme.of(context)
+        .cardColor
+        .withOpacity(0.6),
+    padding: EdgeInsets.only(
+        left: ResponsiveWidget.isMediumScreen(context) ? 16
+            : SizeConfig
+            .screenWidth *
+            0.12,
+        right: ResponsiveWidget
+            .isMediumScreen(
+            context)
+            ? 4
+            : SizeConfig
+            .screenWidth *
+            0.12,
+        top: ResponsiveWidget
+            .isMediumScreen(
+            context)
+            ? 4
+            : 20),
+    child: Column(
+      mainAxisAlignment:
+      MainAxisAlignment.start,
+      crossAxisAlignment:
+      CrossAxisAlignment.start,
+      children: [
+        AppBoldFont(context,
+            msg:
+            "What are you looking for?",fontWeight: FontWeight.w700,
+            fontSize: ResponsiveWidget
+                .isMediumScreen(
+                context)
+                ? 14
+                : 18),
+        SizedBox(
+            height: SizeConfig
+                .screenHeight *
+                0.01),
+        Container(
+            height: ResponsiveWidget
+                .isMediumScreen(
+                context)
+                ? 140
+                : SizeConfig
+                .screenWidth *
+                0.22,
+            child: ListView.builder(
+                physics:
+                BouncingScrollPhysics(),
+                reverse: false,
+                padding:
+                EdgeInsets.zero,
+                scrollDirection:
+                Axis.horizontal,
+                itemCount: cartViewModel
+                    .categoryListModel
+                    ?.length,
+                itemBuilder:
+                    (context,
+                    position) {
+                  return InkWell(
+                    onTap: () {},
+                    child:
+                    Container(
+                      margin: EdgeInsets.only(
+                          right: ResponsiveWidget.isMediumScreen(
+                              context)
+                              ? 8
+                              : 18,
+                          left: ResponsiveWidget.isMediumScreen(
+                              context)
+                              ? 8
+                              : 18),
+                      child: Column(
+                        mainAxisAlignment:
+                        MainAxisAlignment
+                            .center,
+                        children: [
+                          CircleAvatar(
+                            radius: ResponsiveWidget.isMediumScreen(context)
+                                ? 50
+                                : SizeConfig.screenWidth *
+                                0.085,
+                            child: CachedNetworkImage(
+                                imageUrl: cartViewModel.categoryListModel?[position].imageUrl ?? "",
+                                fit: BoxFit.fill,
+                                imageBuilder: (context, imageProvider) => Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                ),
+                                placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
+                          ),
+                          SizedBox(
+                              height:ResponsiveWidget.isMediumScreen(context)
+                                  ? 2:
+                              SizeConfig.screenHeight * 0.01),
+                          Container(
+                            width: ResponsiveWidget.isMediumScreen(context)
+                                ?100 : SizeConfig.screenHeight *
+                                0.3,
+                            // color: Theme.of(context)
+                            //     .primaryColor,
+                            alignment:
+                            Alignment.center,
+                            padding: EdgeInsets.only(
+                                top:
+                                8,
+                                bottom:
+                                8),
+                            child: AppBoldFont(
+                                maxLines:
+                                1,
+                                context,
+                                msg: cartViewModel.categoryListModel?[position].categoryTitle ??
+                                    "",
+                                fontSize: ResponsiveWidget.isMediumScreen(context)
+                                    ? 14
+                                    : 18,
+                                color:
+                                Theme.of(context).canvasColor),
+                          ),
+                          SizedBox(
+                              height:
+                              ResponsiveWidget.isMediumScreen(context)
+                                  ? 2: SizeConfig.screenHeight * 0.01),
+                        ],
+                      ),
+                    ),
+                  );
+                })),
+      ],
+    ),
+  );
+}
+
+Widget offerList(BuildContext context){
+  return Container(
+    padding: EdgeInsets.only(
+      left: ResponsiveWidget
+          .isMediumScreen(
+          context)
+          ? 16
+          : SizeConfig.screenWidth *
+          0.12,
+      right: ResponsiveWidget
+          .isMediumScreen(
+          context)
+          ? 8
+          : SizeConfig.screenWidth *
+          0.12,
+    ),
+    child: Column(
+      mainAxisAlignment:
+      MainAxisAlignment.start,
+      crossAxisAlignment:
+      CrossAxisAlignment.start,
+      children: [
+        AppBoldFont(context,
+            msg: StringConstant
+                .WhatWeoffer,
+            fontSize: ResponsiveWidget
+                .isMediumScreen(
+                context)
+                ? 14
+                : 18,fontWeight: FontWeight.w700),
+        SizedBox(
+          height: 10,
+        ),
+        Container(
+          margin: EdgeInsets.only(
+              right: 5),
+          child:
+          SingleChildScrollView(
+            scrollDirection:
+            Axis.horizontal,
+            child: Row(
+              children: [
+                whatWeOfferWidget(context,AssetsConstants.icSupport,
+                    StringConstant
+                        .offerOnTimeDelivery,
+                    StringConstant
+                        .offerContent),
+                whatWeOfferWidget(context,
+                    AssetsConstants
+                        .icCreditCard,
+                    StringConstant
+                        .offerSecurePayment,
+                    StringConstant
+                        .offerContent),
+                whatWeOfferWidget(context,
+                    AssetsConstants
+                        .icTimer,
+                    StringConstant
+                        .offerSupport,
+                    StringConstant
+                        .offerContent),
+              ],
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget whatWeOfferWidget(BuildContext context,String img, String heading, String msg) {
+  return Container(
+    padding:
+    EdgeInsets.all(ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
+    margin: EdgeInsets.only(
+        right: ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
+    height: ResponsiveWidget.isMediumScreen(context) ? 130 : 250,
+    width: ResponsiveWidget.isMediumScreen(context)
+        ? 200
+        : SizeConfig.screenWidth * 0.244,
+    color: Theme.of(context).cardColor,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Image.asset(
+          img,
+          width: ResponsiveWidget.isMediumScreen(context) ? 30 : 72,
+          height: ResponsiveWidget.isMediumScreen(context) ? 30 : 72,
+        ),
+        SizedBox(
+          height: ResponsiveWidget.isMediumScreen(context) ? 10 : 20,
+        ),
+        AppBoldFont(context,
+            msg: heading,
+            fontWeight: FontWeight.w600,
+            fontSize: ResponsiveWidget.isMediumScreen(context) ? 14 : 16),
+        SizedBox(
+          height: ResponsiveWidget.isMediumScreen(context) ? 7 : 15,
+        ),
+        AppRegularFont(context,
+            msg: msg,
+            fontWeight: FontWeight.w400,
+            fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 16),
+      ],
+    ),
+  );
+}
+
+
+
+// Widget getLatestUpdate(BuildContext context) {
+//   return Stack(
+//     children: [
+//       Image.asset(
+//         AssetsConstants.icNewUpdate,
+//         height: ResponsiveWidget.isMediumScreen(context) ? 150 : 300,
+//         width: SizeConfig.screenWidth,
+//         fit: BoxFit.fill,
+//       ),
+//       Container(
+//           alignment: Alignment.center,
+//           margin: EdgeInsets.only(
+//               top: ResponsiveWidget.isMediumScreen(context) ? 70 : 120),
+//           child: AppBoldFont(context,
+//               msg: StringConstant.getLatestupdate,
+//               fontWeight: FontWeight.w500,
+//               fontSize: ResponsiveWidget.isMediumScreen(context) ? 18 : 30,
+//               color: Colors.white,
+//               textAlign: TextAlign.center)),
+//     ],
+//   );
+// }
+
+String? getRecommendedViewTitle(int position, CartViewModel cartview) {
+  if ((cartview.recommendedView?[position].productDetails?.productVariantTitle
+      ?.length ??
+      0) >
+      35) {
+    return cartview
+        .recommendedView?[position].productDetails?.productVariantTitle
+        ?.replaceRange(
+        35,
+        cartview.recommendedView?[position].productDetails
+            ?.productVariantTitle?.length,
+        '...');
+  } else {
+    return cartview
+        .recommendedView?[position].productDetails?.productVariantTitle ??
+        "";
+  }
+}
+
+String? getRecentViewTitle(int position, CartViewModel cartview) {
+  if ((cartview.recentView?[position].productDetails?.productVariantTitle
+      ?.length ??
+      0) >
+      35) {
+    return cartview.recentView?[position].productDetails?.productVariantTitle
+        ?.replaceRange(
+        35,
+        cartview.recentView?[position].productDetails?.productVariantTitle
+            ?.length,
+        '...');
+  } else {
+    return cartview
+        .recentView?[position].productDetails?.productVariantTitle ??
+        "";
+  }
 }

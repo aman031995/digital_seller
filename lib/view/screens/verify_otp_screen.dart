@@ -129,7 +129,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                 ),
                 AppBoldFont(context,
                   msg: StringConstant.verification,
-                  fontSize: 18,
+                  fontSize: 22,
                 ),
                 SizedBox(height: 10),
                 AppMediumFont(
@@ -143,17 +143,17 @@ class _VerifyOtpState extends State<VerifyOtp> {
                   width: 400,
                   child: PinEntryTextFiledView(),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 5),
                 resendPin(authVM,mobileOTPVerificaton),
                 isOTPInput == true ? Container() : errorText(),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 appButton(context, StringConstant.verify,SizeConfig.screenWidth, 50,
                     Theme.of(context).primaryColor,
                     Theme.of(context).hintColor,
                     16, 5.0, isOTPInput, onTap: () {
                       checkVerificationValidate(authVM,mobileOTPVerificaton);
                     }),
-                SizedBox(height: 10),
+                SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async{
                     const url = 'http://digitalseller.in/';

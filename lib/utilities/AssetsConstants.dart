@@ -10,7 +10,7 @@ class AssetsConstants {
   static String icGoogle = "images/ic_google.png";
   static String icFacebook = "images/ic_fb.png";
   static String icApple = "images/ic_apple.png";
-static String icbanner='images/Banner.png';
+static String icbanner='images/banner.webp';
 
   static String icHome = "images/ic_home.png";
   static String icSelectHome = "images/ic_select_home.png";
@@ -49,7 +49,7 @@ static String icbanner='images/Banner.png';
   static String icCreditCard = 'images/bx-credit-card-front.png';
   static String icSupport = 'images/bx-support.png';
   static String icTimer = 'images/bx-timer.png';
-  static String icNewUpdate = 'images/NewUpdate.png';
   static String ic_wishlistSelect = "images/ic_wishlistSelect.png";
   static String ic_wishlistUnselect = "images/ic_wishlistDeselect.png";
+  static String ic_myOrder='images/ic_MyOrders.png';
 }

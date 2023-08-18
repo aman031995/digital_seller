@@ -24,7 +24,7 @@ class ProductSkuView extends StatelessWidget {
             children: skuDetails!.map((e) {
               return Container(
                   padding: ResponsiveWidget.isMediumScreen(context)
-                      ? EdgeInsets.only(bottom: 0) :EdgeInsets.zero,
+                      ? EdgeInsets.only(bottom: 10) :EdgeInsets.only(bottom: 10),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -45,7 +45,7 @@ class ProductSkuView extends StatelessWidget {
                                   return GestureDetector(
                                     onTap: () {
                                       if(productList?.color?.name == itemName ||
-                                          productList?.size?.name == itemName || productList?.unitCount?.name == itemName || productList?.style?.name == itemName
+                                          productList?.size?.name  == itemName || productList?.unitCount?.name == itemName || productList?.style?.name == itemName
                                           || productList?.materialType?.name == itemName){
                                       } else {
                                         onSelected(viewmodel, context, e, itemName, selectedProduct, index);

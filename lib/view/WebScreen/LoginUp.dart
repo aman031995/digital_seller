@@ -94,7 +94,7 @@ class _LoginUpState extends State<LoginUp> {
                       )
                     ],
                   ),
-                  AppBoldFont(context, msg: StringConstant.login, fontSize: 24),
+                  AppBoldFont(context, msg: StringConstant.login, fontSize: 22),
                   SizedBox(height: 10),
                   AppMediumFont(context, msg:StringConstant.enterCredentials, fontSize: 16),
                   SizedBox(height: 15),
@@ -190,7 +190,7 @@ class _LoginUpState extends State<LoginUp> {
                           return  ForgotPassword(viewModel: viewmodel,);
                         });
                   }),
-                  SizedBox(height: 20),
+                  SizedBox(height: 10),
                   StreamBuilder(
                       stream:  viewmodel.appConfigModel?.androidConfig?.loginWithPhone == false
                           ? validation.checkUserEmailLogin
@@ -251,7 +251,7 @@ class _LoginUpState extends State<LoginUp> {
                           }),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height:20),
                   GestureDetector(
                     onTap: () async{
                       const url = 'http://digitalseller.in/';
@@ -397,7 +397,7 @@ class _LoginUpState extends State<LoginUp> {
                         });
                   }),
                 ),
-                SizedBox(height: 35),
+                SizedBox(height: 5),
                 StreamBuilder(
                     stream:  viewmodel.appConfigModel?.androidConfig?.loginWithPhone == false
                         ? validation.checkUserEmailLogin
@@ -455,7 +455,7 @@ class _LoginUpState extends State<LoginUp> {
                     }),
                   ],
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 30),
                 GestureDetector(
                   onTap: () async{
                     const url = 'http://digitalseller.in/';

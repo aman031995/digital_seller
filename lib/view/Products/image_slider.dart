@@ -26,14 +26,13 @@ class _ImageSliderState extends State<ImageSlider> {
                 ? 189: 400,
             width: SizeConfig.screenWidth,
             child: CachedNetworkImage(
-                imageUrl: '${widget.images![0]}',fit: BoxFit.fill,
+                imageUrl: '${widget.images![0]}',fit: BoxFit.contain,
                 placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey)))
-
         ) : CarouselSlider(
           items: widget.images
               ?.map((img) => Container(
             width: SizeConfig.screenWidth,
-            child: Image.network(img,fit: BoxFit.fill,),
+            child: Image.network(img,fit: BoxFit.contain),
           )).toList(),
           options: CarouselOptions(
             height:ResponsiveWidget.isMediumScreen(context)

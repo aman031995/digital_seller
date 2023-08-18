@@ -258,8 +258,9 @@ class CartViewModel extends ChangeNotifier {
             _cartListDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             buynow=jsonEncode(_cartListDataModel);
             SessionStorageHelper.savevalue("token","${buynow}");
-            context.router.push(BuynowCart(
-            ));
+            updateCartCount(context, _itemCountModel?.count.toString() ?? '');
+
+            cartDetail==false?reloadPage() :context.router.push(BuynowCart());
             notifyListeners();
           }
         });

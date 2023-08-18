@@ -43,7 +43,18 @@ class AppRouter extends $AppRouter {
         },
       )]),
 
-    AutoRoute(page: ProductListGallery.page,path: '/ProductListGallery'),
+    AutoRoute(page: ProductListGallery.page,path: '/ProductListGallery',guards: [
+      AutoRouteGuard.simple(
+            (resolver, scope) async {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token') != null) {
+            resolver.next();
+          } else {
+            //ToastMessage.message("Please Login User");
+            resolver.next();
+          }
+        },
+      )]),
 
     AutoRoute(page: FavouriteListPage.page,path: '/FavouriteListPage',guards: [AutoRouteGuard.simple(
             (resolver, scope) async {
@@ -85,7 +96,18 @@ class AppRouter extends $AppRouter {
         },
       )]),
 
-    AutoRoute(page: ProductDetailPage.page,path: '/ProductDetailPage/:productId'),
+    AutoRoute(page: ProductDetailPage.page,path: '/ProductDetailPage/:productName',guards: [
+  AutoRouteGuard.simple(
+  (resolver, scope) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  if (sharedPreferences.get('token') != null) {
+  resolver.next();
+  } else {
+  //ToastMessage.message("Please Login User");
+  resolver.next();
+  }
+  },
+  )]),
 
     AutoRoute(page: CartDetail.page,path: '/CartDetails/:itemCount',guards: [
       AutoRouteGuard.simple(
@@ -101,10 +123,21 @@ class AppRouter extends $AppRouter {
       )]),
 
 
-    AutoRoute(page: WebHtmlPage.page,path: '/WebHtmlPage/:title'),
+    AutoRoute(page: WebHtmlPage.page,path: '/WebHtmlPage/:title',guards: [
+  AutoRouteGuard.simple(
+  (resolver, scope) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  if (sharedPreferences.get('token') != null) {
+  resolver.next();
+  } else {
+  //ToastMessage.message("Please Login User");
+  resolver.next();
+  }
+  },
+  )]),
 
     AutoRoute(page: ContactUs.page,path: '/ContactUs'),
-    AutoRoute(page: ThankYouPage.page,path: '/ThankYouPage',guards: [
+    AutoRoute(page: ThankYouPage.page,path: '/ThankYouPage',keepHistory: false,guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
           token= SessionStorageHelper.getValue("payment");

@@ -8,6 +8,7 @@ import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppTextField.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -87,38 +88,44 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
     });
     return AlertDialog(
         elevation: 8,
-        titlePadding: EdgeInsets.zero,
+        buttonPadding:EdgeInsets.zero,
+        actionsPadding: EdgeInsets.zero,
         contentPadding: EdgeInsets.zero,
+        titlePadding: EdgeInsets.zero,
+        insetPadding: EdgeInsets.all(12),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(2)),
         backgroundColor: Theme.of(context).cardColor.withOpacity(0.9),
         content:  Container(
-          height: SizeConfig.screenHeight/1.73,
-          width: SizeConfig.screenWidth*0.25,
+          height: ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenHeight/1.2:SizeConfig.screenHeight/1.6,
+          width:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth: SizeConfig.screenWidth*0.25,
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 10),
                 AppBoldFont(context,
-                    msg: "contactDetails",
-                    fontSize: 15.0),
+                    msg: "ContactDetails",
+                    fontSize: 16.0),
                 Container(
                   padding: EdgeInsets.only(
                       top: 10, bottom: 10, left: 15, right: 15),
                   child: Column(
                     children: [
+                      SizedBox(
+                        height: 5.0,
+                      ),
                       addAddressTextField(firstNameController, StringConstant.firstName, TextInputType.text, validation.sinkFirstName, 50, validation.firstName),
                       SizedBox(
-                        height: 10.0,
+                        height: 15.0,
                       ),
                       addAddressTextField(lastNameController, StringConstant.lastName, TextInputType.text, validation.sinkLastName, 50, validation.lastName),
                       SizedBox(
-                        height: 10.0,
+                        height: 15.0,
                       ),
                       addAddressTextField(mobileNumberController, StringConstant.mobileNo, TextInputType.phone, validation.sinkPhoneNo, 10, validation.phoneNo),
                       SizedBox(
-                        height: 10.0,
+                        height: 15.0,
                       ),
                       addAddressTextField(emailController, StringConstant.email, TextInputType.emailAddress, validation.sinkEmail, 50, validation.email),
                       SizedBox(
@@ -136,11 +143,11 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                     child: Column(children: [
                       addAddressTextField(addressFirstController, StringConstant.address1, TextInputType.streetAddress, validation.sinkAddress, 50, validation.address),
                       SizedBox(
-                        height: 10.0,
+                        height: 15.0,
                       ),
                       addAddressTextField(addressSecondController, StringConstant.address2, TextInputType.streetAddress, validation.sinkAddressOne, 50, validation.addressOne),
                       SizedBox(
-                        height: 10.0,
+                        height: 15.0,
                       ),
                       StreamBuilder(
                           stream: validation.pincode,
@@ -176,9 +183,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                             validation.sinkState.add(stateController.text);
                                             validation.sinkCityName.add(cityController.text);
                                           }
-
                                         });
-                                        //
                                       }
                                       else{
 
@@ -190,7 +195,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                 keyBoardType: TextInputType.number,
                                );
                           }),
-                      SizedBox(height: 10.0),
+                      SizedBox(height: 15.0),
                       StreamBuilder(
                           stream: validation.cityName,
                           builder: (context, snapshot) {
@@ -211,7 +216,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                 keyBoardType: TextInputType.streetAddress,
                             );
                           }),
-                      SizedBox(height: 10.0),
+                      SizedBox(height: 15.0),
                       StreamBuilder(
                           stream: validation.state,
                           builder: (context, snapshot) {
@@ -231,9 +236,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                     : null,
                                 keyBoardType: TextInputType.streetAddress);
                           }),
-                      SizedBox(
-                        height: 15.0,
-                      ),
+                      SizedBox(height: 15.0,),
                       StreamBuilder(
                           stream: validation.validateAddAddress,
                           builder: (context, snapshot) {
@@ -272,7 +275,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                       : addNewAddress();
                             });
                           }),
-                      SizedBox(height: 20.0),
+                      SizedBox(height: 10.0),
                     ])),
               ],
             ),

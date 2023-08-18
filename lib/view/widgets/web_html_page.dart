@@ -2,6 +2,7 @@ import 'package:TychoStream/main.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
+import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
@@ -77,16 +78,16 @@ HomeViewModel homeViewModel=HomeViewModel();
            },
            child: Scaffold(
         appBar: ResponsiveWidget.isMediumScreen(context)
-              ? homePageTopBar(context, _scaffoldKey)
+              ? homePageTopBar(context, _scaffoldKey, cartViewModel.cartItemCount)
               : getAppBar(
               context,
                 viewmodel,
               profileViewModel,
-              cartViewModel.cartItemCount,
+              cartViewModel.cartItemCount,1,
               searchController, () async {
             SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
-            if (sharedPreferences.get('token') !=
+            if (sharedPreferences.get('token') ==
                 null) {
               showDialog(
                   context: context,
@@ -119,6 +120,17 @@ HomeViewModel homeViewModel=HomeViewModel();
                   '${cartViewModel.cartItemCount}'));
             }
         }),
+
+          body: Scaffold(
+
+          extendBodyBehindAppBar: true,
+          key: _scaffoldKey,
+          backgroundColor: Theme.of(context)
+              .scaffoldBackgroundColor,
+          drawer:
+          ResponsiveWidget.isMediumScreen(context)
+          ? AppMenu()
+              : SizedBox(),
         body:
         SingleChildScrollView(
                       child: Stack(
@@ -135,16 +147,12 @@ HomeViewModel homeViewModel=HomeViewModel();
                                   :footerDesktop(),
                             ],
                           ),
-                          isLogins == true
+                          ResponsiveWidget
+                              .isMediumScreen(context)
+                              ?  Container():isLogins == true
                               ? Positioned(
-                              top: ResponsiveWidget
-                                  .isMediumScreen(context)
-                                  ? 20
-                                  : 80,
-                              right: ResponsiveWidget
-                                  .isMediumScreen(context)
-                                  ? 20
-                                  : 35,
+                              top: 80,
+                              right: 35,
                               child: profile(context,
                                   setState, profileViewModel))
                               : Container(),
@@ -172,7 +180,7 @@ HomeViewModel homeViewModel=HomeViewModel();
                         ],
                       )
         )),
-         );})
+           ));})
     );
   }
 }

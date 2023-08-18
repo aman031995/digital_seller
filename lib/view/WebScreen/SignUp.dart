@@ -70,6 +70,7 @@ class _SignUpState extends State<SignUp> {
                   contentPadding: EdgeInsets.zero,
                   content:  ResponsiveWidget.isMediumScreen(context)
                       ?Container(
+                      color: Theme.of(context).cardColor.withOpacity(0.8),
                       padding: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
                       child: SingleChildScrollView(
                         child: Column(
@@ -90,9 +91,9 @@ class _SignUpState extends State<SignUp> {
                                 )
                               ],
                             ),
-                            AppBoldFont(context, msg: StringConstant.register, fontSize: 16),
+                            AppBoldFont(context, msg: StringConstant.register, fontSize: 22),
                             SizedBox(height: 10),
-                            AppRegularFont(context, msg: StringConstant.letsRegister, fontSize: 14),
+                            AppRegularFont(context, msg: StringConstant.letsRegister, fontSize: 16),
                             SizedBox(height: 15),
                             registerForms(viewmodel),
                             SizedBox(height: 10),
@@ -152,7 +153,7 @@ class _SignUpState extends State<SignUp> {
                                 }),
                               ],
                             ),
-                            SizedBox(height: 10),
+                            SizedBox(height:20),
                             GestureDetector(
                               onTap: () async{
                                 const url = 'http://digitalseller.in/';
@@ -195,14 +196,11 @@ class _SignUpState extends State<SignUp> {
                             ],
                           ),
                           AppBoldFont(context, msg: StringConstant.register, fontSize: 30),
-                          SizedBox(
-                              height: 10),
+                          SizedBox(height: 10),
                           AppMediumFont(context, msg:StringConstant.letsRegister, fontSize: 16),
-                          SizedBox(
-                              height: 20),
+                          SizedBox(height: 20),
                           registerForms(viewmodel),
-                          SizedBox(
-                              height: 10),
+                          SizedBox(height: 10),
                           StreamBuilder(
                               stream: viewmodel.appConfigModel?.androidConfig?.loginWithPhone == false
                                   ? validation.registerWithoutNumberUser

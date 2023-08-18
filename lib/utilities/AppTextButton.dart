@@ -161,7 +161,7 @@ Widget AddressButton(BuildContext context,GestureTapCallback? ontap){
       padding: EdgeInsets.only(left: 10,top: 10,bottom: 10),
 
       child: AppBoldFont(context,
-          msg: "AddAddress",fontSize: 18),
+          msg: "AddAddress",fontSize: 18,color: Theme.of(context).hintColor),
     ),
   );
 }

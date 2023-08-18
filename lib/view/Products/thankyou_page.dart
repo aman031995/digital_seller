@@ -1,5 +1,4 @@
 import 'package:TychoStream/utilities/SizeConfig.dart';
-import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';

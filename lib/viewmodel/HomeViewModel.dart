@@ -158,6 +158,7 @@ class HomeViewModel with ChangeNotifier {
           }
         }
         isLoading = false;
+        AppIndicator.disposeIndicator();
         notifyListeners();
       }
     });

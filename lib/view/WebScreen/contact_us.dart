@@ -1,3 +1,4 @@
+import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
@@ -5,7 +6,6 @@ import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
 import 'package:TychoStream/main.dart';
@@ -13,12 +13,9 @@ import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppTextField.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
-import 'package:TychoStream/utilities/AssetsConstants.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
-import 'package:TychoStream/utilities/TextHelper.dart';
-import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 
 import '../../AppRouter.gr.dart';
@@ -88,12 +85,12 @@ class _ContactUsState extends State<ContactUs> {
     }
     return Scaffold(
         appBar: ResponsiveWidget.isMediumScreen(context)
-            ? homePageTopBar(context, _scaffoldKey)
+            ? homePageTopBar(context, _scaffoldKey,cartViewModel.cartItemCount)
             : getAppBar(
             context,
             homeViewModel,
             profileViewModel,
-            cartViewModel.cartItemCount,
+            cartViewModel.cartItemCount,1,
             searchController, () async {
           SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
@@ -107,6 +104,14 @@ class _ContactUsState extends State<ContactUs> {
                   );
                 });
           } else {
+            if (isLogins == true) {
+              isLogins = false;
+              setState(() {});
+            }
+            if (isSearch == true) {
+              isSearch = false;
+              setState(() {});
+            }
             context.router.push(FavouriteListPage());
           }
         }, () async {
@@ -125,11 +130,30 @@ class _ContactUsState extends State<ContactUs> {
                   );
                 });
           } else {
+            if (isLogins == true) {
+              isLogins = false;
+              setState(() {});
+            }
+            if (isSearch == true) {
+              isSearch = false;
+              setState(() {});
+            }
             context.router.push(CartDetail(
                 itemCount:
                 '${cartViewModel.cartItemCount}'));
           }
         }),
+
+    body: Scaffold(
+
+    extendBodyBehindAppBar: true,
+    key: _scaffoldKey,
+    backgroundColor: Theme.of(context)
+        .scaffoldBackgroundColor,
+    drawer:
+    ResponsiveWidget.isMediumScreen(context)
+    ? AppMenu()
+        : SizedBox(),
       body:ResponsiveWidget.isMediumScreen(context)
           ? Container(
         margin: EdgeInsets.only(top: 50),
@@ -230,7 +254,7 @@ class _ContactUsState extends State<ContactUs> {
                       context,
                       StringConstant.send,
                       SizeConfig.screenWidth * 0.8,
-                      60,
+                      50,
                       LIGHT_THEME_COLOR,
                       WHITE_COLOR,
                       20,
@@ -246,8 +270,7 @@ class _ContactUsState extends State<ContactUs> {
                   });
                 }),
             SizedBox(height: 80),
-            ResponsiveWidget.isMediumScreen(context)
-                ? footerMobile(context):footerDesktop()
+           footerMobile(context)
           ],
         ),
       ) :
@@ -371,7 +394,7 @@ class _ContactUsState extends State<ContactUs> {
           ),
         ),
       )
-    );
+    ));
   }
 
   saveButtonPressed(String name, String email, String message) {

@@ -6,6 +6,7 @@ import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
+import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
@@ -52,9 +53,10 @@ class _CartDetailState extends State<CartDetail> {
 
   @override
   void initState() {
+    homeViewModel.getAppConfig(context);
     SessionStorageHelper.removeValue('token');
     SessionStorageHelper.removeValue('payment');
-    homeViewModel.getAppConfig(context);
+
     cartViewData.getCartCount(context);
     cartViewData.updateCartCount(context, widget.itemCount ?? '');
     cartViewData.getCartListData(context);
@@ -71,7 +73,9 @@ class _CartDetailState extends State<CartDetail> {
     });
     return checkInternet == "Offline"
         ? NOInternetScreen()
-        : ChangeNotifierProvider.value(
+        :
+
+    ChangeNotifierProvider.value(
             value: cartViewData,
             child: Consumer<CartViewModel>(builder: (context, cartViewData, _) {
               return GestureDetector(
@@ -88,16 +92,16 @@ class _CartDetailState extends State<CartDetail> {
                 child: Scaffold(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     appBar:  ResponsiveWidget.isMediumScreen(context)
-                        ? homePageTopBar(context, _scaffoldKey)
+                        ? homePageTopBar(context, _scaffoldKey, cartViewData.cartItemCount)
                         : getAppBar(
                         context,
                         homeViewModel,
                         profileViewModel,
-                        cartViewData.cartItemCount,
+                        cartViewData.cartItemCount,1,
                         searchController, () async {
                       SharedPreferences sharedPreferences =
                       await SharedPreferences.getInstance();
-                      if (sharedPreferences.get('token') !=
+                      if (sharedPreferences.get('token') ==
                           null) {
                         showDialog(
                             context: context,
@@ -107,6 +111,14 @@ class _CartDetailState extends State<CartDetail> {
                               );
                             });
                       } else {
+                        if (isLogins == true) {
+                          isLogins = false;
+                          setState(() {});
+                        }
+                        if (isSearch == true) {
+                          isSearch = false;
+                          setState(() {});
+                        }
                         context.router.push(FavouriteListPage());
                       }
                     }, () async {
@@ -125,9 +137,26 @@ class _CartDetailState extends State<CartDetail> {
                               );
                             });
                       } else {
+                        if (isLogins == true) {
+                          isLogins = false;
+                          setState(() {});
+                        }
+                        if (isSearch == true) {
+                          isSearch = false;
+                          setState(() {});
+                        }
                         reloadPage();
                       }
                     }),
+
+              body: Scaffold(
+                  extendBodyBehindAppBar: true,
+              key: _scaffoldKey,
+              backgroundColor: Theme.of(context)
+                  .scaffoldBackgroundColor,
+              drawer:
+              ResponsiveWidget.isMediumScreen(context)
+              ? AppMenu() : SizedBox(),
                     body: cartViewData.cartListData != null
                         ? cartViewData.cartListData!.cartList!.length > 0
                             ? Stack(
@@ -208,7 +237,14 @@ class _CartDetailState extends State<CartDetail> {
                                                       child: checkoutButton(
                                                           context,
                                                           StringConstant.continueText,
-                                                          cartViewData, () {
+                                                          cartViewData, () { if (isLogins == true) {
+                                                        isLogins = false;
+                                                        setState(() {});
+                                                      }
+                                                      if (isSearch == true) {
+                                                        isSearch = false;
+                                                        setState(() {});
+                                                      }
                                                         context.router.push(
                                                             AddressListPage(
                                                                 buynow: false));
@@ -238,7 +274,14 @@ class _CartDetailState extends State<CartDetail> {
                                                         context,
                                                         StringConstant
                                                             .continueText,
-                                                        cartViewData, () {
+                                                        cartViewData, () { if (isLogins == true) {
+                                                      isLogins = false;
+                                                      setState(() {});
+                                                    }
+                                                    if (isSearch == true) {
+                                                      isSearch = false;
+                                                      setState(() {});
+                                                    }
                                                       context.router.push(
                                                           AddressListPage(
                                                               buynow: false));
@@ -254,20 +297,18 @@ class _CartDetailState extends State<CartDetail> {
                                           ],
                                         ),
                                       ),
-                                isLogins == true
+                                ResponsiveWidget
+                                    .isMediumScreen(context)
+                                    ?Container(): isLogins == true
                                     ? Positioned(
-                                    top: ResponsiveWidget
-                                        .isMediumScreen(context)
-                                        ? 15
-                                        : 0,
-                                    right: ResponsiveWidget
-                                        .isMediumScreen(context)
-                                        ? 20
-                                        : 40,
+                                    top: 0,
+                                    right:  180,
                                     child: profile(context,
                                         setState, profileViewModel))
                                     : Container(),
-                                isSearch == true
+                                ResponsiveWidget
+                                    .isMediumScreen(context)
+                                    ? Container():   isSearch == true
                                     ? Positioned(
                                     top: ResponsiveWidget
                                         .isMediumScreen(context)
@@ -299,7 +340,7 @@ class _CartDetailState extends State<CartDetail> {
                                 Container(child: ThreeArchedCircle(size: 45.0)),
                           )
                 ),
-              );
+              ));
             })
     );
   }
