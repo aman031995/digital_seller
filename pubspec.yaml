@@ -100,8 +100,8 @@ dependencies:
   get_it: ^7.2.0
   injectable: ^1.5.0
   universal_html: ^2.2.3
-  flutter_stripe: ^9.3.0
   flutter_stripe_web: ^4.3.0
+  js: ^0.6.7
 
 dev_dependencies:
   flutter_test:

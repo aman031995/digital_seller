@@ -1,3 +1,4 @@
+import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/model/data/order_data_model.dart';
 import 'package:TychoStream/model/data/order_detail_model.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
@@ -7,6 +8,7 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
+import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/viewmodel/order_view_model.dart';
 import 'package:another_stepper/another_stepper.dart';
 import 'package:flutter/material.dart';
@@ -42,8 +44,9 @@ class _OrderDetailsState extends State<OrderDetails> {
               backgroundColor:Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
               contentPadding: EdgeInsets.zero,
               content: order.orderDetailModel!=null? SingleChildScrollView(
-                child: Container(
-                      width: 500,height: 810,
+                child:
+             Container(
+                      width: 500,
                   margin: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context)
                       ?10:15.0, right:ResponsiveWidget.isMediumScreen(context)
                       ?10: 15.0),
@@ -51,7 +54,20 @@ class _OrderDetailsState extends State<OrderDetails> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 10),
+                      Stack(
+                        children: [
+                          Positioned(
+                            child: Container(
+                              alignment: Alignment.topRight,
+                              child: IconButton(
+                                  onPressed: (){
+                                    Navigator.pop(context);
+                                  }, icon: Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor)),
+                            ),
+                          )
+                        ],
+                      ),
+
                       itemView(order),
                        shippingDetails(),
                        priceDetails(order.orderDetailModel),
@@ -80,7 +96,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                       ),
                     ],
                   ),
-                ),
+                )
               )
 
              : Container(
@@ -411,6 +427,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                 thickness: 0.2,
                 height: 1,
               ),
+              SizedBox(height: 8),
+
               Container(child: _priceList(orderDetailModel?.checkoutDetails)),
               SizedBox(height: 8)
             ]));

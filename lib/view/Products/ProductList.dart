@@ -1,5 +1,6 @@
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
@@ -150,11 +151,12 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                         children: [
                                           ResponsiveWidget.isMediumScreen(context)
                                               ?  Container(
-                                           height: SizeConfig.screenHeight/1.2,
+                                            margin: EdgeInsets.only(right: 12,left: 12,top: 12),
+
+                                            height: SizeConfig.screenHeight/1.2,
                                             child: GridView.builder(
                                               shrinkWrap: true,
                                               controller: _scrollController,
-                                              padding: EdgeInsets.all(8),
                                               physics: BouncingScrollPhysics(),
                                               gridDelegate:
                                                   SliverGridDelegateWithFixedCrossAxisCount(
@@ -196,7 +198,23 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                           children: [
                                             Container(
                                               width: SizeConfig.screenWidth / 6.5,
-                                              child: CategoryFilterScreen(items: [],),
+                                              child: Column(
+                                                children: [
+                                                  CategoryFilterScreen(items: [],),
+                                                 // SizedBox(height: 50),
+                                                  Container(
+                                                      color: Theme.of(context).cardColor,
+                                                      margin: EdgeInsets.only( right: 10),
+                                                      padding: EdgeInsets.only(top: 10),
+
+                                                      alignment: Alignment.bottomCenter,
+                                                      width: SizeConfig.screenWidth / 6.5,
+                                                      child: GlobalVariable.isLightTheme == true ?
+                                                      Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: SizeConfig.screenWidth * 0.08) :
+                                                      Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: SizeConfig.screenWidth * 0.08)),
+                                                  SizedBox(height: 10),
+                                                ],
+                                              ),
                                             ),
                                             Column(
                                               mainAxisAlignment: MainAxisAlignment.start,
@@ -351,12 +369,12 @@ class _ProductListGalleryState extends State<ProductListGallery> {
           child: DropdownButtonFormField2(
             dropdownStyleData: DropdownStyleData(
               decoration: BoxDecoration(
-                color: Theme.of(context).cardColor.withOpacity(0.8),
+                color: Theme.of(context).cardColor,
               ),
             ),
             decoration: InputDecoration(
               filled: true,
-              fillColor: Theme.of(context).cardColor.withOpacity(0.9),
+              fillColor: Theme.of(context).cardColor,
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(width: 1, color: Theme.of(context).primaryColor.withOpacity(0.2)),
               ),
@@ -376,7 +394,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
               value: item,
               child: Text(
                 item,
-                style: TextStyle(fontSize: ResponsiveWidget.isMediumScreen(context)?12:14, color:Theme.of(context).canvasColor.withOpacity(0.6),),
+                style: TextStyle(fontSize: ResponsiveWidget.isMediumScreen(context)?12:14, color:Theme.of(context).canvasColor),
               ),
             ))
                 .toList(),

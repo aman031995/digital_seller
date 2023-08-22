@@ -1,4 +1,7 @@
+import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
+import 'package:TychoStream/utilities/StringConstants.dart';
+import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
@@ -37,15 +40,10 @@ class _ThankYouPageState extends State<ThankYouPage> {
             return Column(
               children: <Widget>[
                 cartPageViewIndicator(context, 2),
-                SizedBox(height:thankyoumodel.isThankyouPage == false
-                    ? 0: SizeConfig.screenHeight * 0.2,),
-                thankyoumodel.isThankyouPage == false
-                    ? Image.asset('images/ic_celebration.gif')
-                    : SizedBox(),
-                SizedBox(height: 50),
-                thankyoumodel.isThankyouPage == false
-                    ? SizedBox()
-                    : _textLiquidFillAnimation()
+                SizedBox(height: SizeConfig.screenHeight * 0.2),
+                 Image.asset('images/ShoppingSuccess.png',height: 150,width: 150,),
+                SizedBox(height: 20),
+                 _textLiquidFillAnimation()
               ],
             );
           })),
@@ -57,27 +55,29 @@ class _ThankYouPageState extends State<ThankYouPage> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AnimatedTextKit(
-          isRepeatingAnimation: false,
-          // repeatForever: true,
-          animatedTexts: [
-            TypewriterAnimatedText( 'Thank You For Shopping \n Your order Has Been Placed.',cursor: "",
-                curve: Curves.easeIn,speed: Duration(milliseconds: 40),textStyle: TextStyle(color: Theme.of(context).canvasColor,fontSize: 25),textAlign: TextAlign.center)
-          ],
-        ),
-        SizedBox(height: 30),
-        Center(
-          child: TextButton(onPressed: () { context.pushRoute(HomePageWeb()); }, child: Container(
-            padding: const EdgeInsets.all(8.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4),
-              border: Border.all(color: Colors.grey,width: 3)
-            ),
-            child: Text("Continue Shopping",style: TextStyle(color: Theme.of(context).primaryColor),),
-          ),
 
-          )
-        ),
+        AppBoldFont(context, msg: StringConstant.ThankYOU,color: GREEN,fontSize: 40),
+        SizedBox(height: 10),
+        AppBoldFont(context, msg: StringConstant.orderPlacedSuccess,color:Theme.of(context).canvasColor,fontSize: 22),
+        SizedBox(height: 50),
+
+        Container(
+            height: 50,
+            decoration:BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(4)
+            ) ,
+            width: SizeConfig.screenWidth/7.6,
+            child: InkWell(
+              onTap: () {
+                context.pushRoute(HomePageWeb());
+              },
+              child: Center(
+                  child: AppMediumFont(context,
+                      msg: "Continue Shopping",
+                      fontSize: 16.0,fontWeight: FontWeight.w500,
+                      color:Theme.of(context).hintColor)),
+            )),
       ],
     );
   }

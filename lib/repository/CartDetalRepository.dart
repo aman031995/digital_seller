@@ -7,7 +7,9 @@ import 'package:TychoStream/model/data/city_state_model.dart';
 import 'package:TychoStream/model/data/create_order_model.dart';
 import 'package:TychoStream/model/data/promocode_data_model.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
+import 'package:TychoStream/view/WebScreen/stripepayment.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe_web/flutter_stripe_web.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/ASRequestModal.dart';
@@ -16,7 +18,6 @@ import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/network/NetworkConstants.dart';
 import 'package:TychoStream/network/result.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_stripe/flutter_stripe.dart';
 class CartDetailRepository {
 
 //Get ProductList Method
@@ -136,6 +137,7 @@ class CartDetailRepository {
 
       var response = await http.post(
           Uri.parse('https://api.stripe.com/v1/payment_intents'),
+          //https://api.stripe.com/v1/checkout/sessions
           body: body,
           headers: {
             'Authorization': 'Bearer $secretKey',
@@ -144,18 +146,69 @@ class CartDetailRepository {
 
       try {
         var paymentIntent = json.decode(response.body);
+
         //Payment Sheet
         if (paymentIntent != null) {
-     await Stripe.instance.initPaymentSheet(
-              paymentSheetParameters: SetupPaymentSheetParameters(
-                  paymentIntentClientSecret: paymentIntent!['client_secret'],
-                  style: ThemeMode.dark,
-                  merchantDisplayName: 'merchant name',
-                  customerId: '1234',
-                  customerEphemeralKeySecret: '1234',
-                  billingDetails: BillingDetails()));
+          final stripe =Stripe("pk_test_51NXhtjSJK48GkIWFjJzBm88uzgrwb7i4aIyls9YoPHT5IvYAV9rMnlEW0U8AUY1VpIJB3ZOBFTFdSFuMYnxM0fkK00KqwNEEeH");
+          stripe.redirectToCheckout(CheckoutOptions(
+            lineItems: [
+              LineItem(
+                  price:paymentIntent["id"],
+                  quantity:1
+              )
+
+            ],
+            mode: 'payment',
+            successUrl: 'http://localhost:8088/#/success',
+          ));
+
+            //Stripe.publishableKey = "pk_live_51NXhtjSJK48GkIWFY3NeBL1mw7CATawc8xbjlwBi5wrTr61UbS9sHQWjnEr5kb9tSytKgZGWsbMkYish4xs2ILIC00OZVlrRNY";
+
+     //
+     // await WebStripe.instance.platformPayCreatePaymentMethod(params: params)
+       
+         // SetupPaymentSheetParameters(
+         //          paymentIntentClientSecret: paymentIntent!['client_secret'],
+         //          style: ThemeMode.dark,
+         //          merchantDisplayName: 'merchant name',
+         //          customerId: '1234',
+         //          customerEphemeralKeySecret: '1234',
+         //          appearance: PaymentSheetAppearance(
+         //            colors: PaymentSheetAppearanceColors(
+         //              background: Colors.lightBlue,
+         //              primary: Colors.blue,
+         //              componentBorder: Colors.red,
+         //            ),
+         //            shapes: PaymentSheetShape(
+         //              borderWidth: 4,
+         //              shadow: PaymentSheetShadowParams(color: Colors.red),
+         //            ),
+         //            primaryButton: PaymentSheetPrimaryButtonAppearance(
+         //              shapes: PaymentSheetPrimaryButtonShape(blurRadius: 8),
+         //              colors: PaymentSheetPrimaryButtonTheme(
+         //                light: PaymentSheetPrimaryButtonThemeColors(
+         //                  background: Color.fromARGB(255, 231, 235, 30),
+         //                  text: Color.fromARGB(255, 235, 92, 30),
+         //                  border: Color.fromARGB(255, 235, 92, 30),
+         //                ),
+         //              ),
+         //            ),
+         //          ),
+         //          billingDetails: BillingDetails(  name: 'Flutter Stripe',
+         //            email: 'email@stripe.com',
+         //            phone: '+48888000888',
+         //            address: Address(
+         //              city: 'Houston',
+         //              country: 'US',
+         //              line1: '1459  Circle Drive',
+         //              line2: '',
+         //              state: 'Texas',
+         //              postalCode: '77063',
+         //            ),)));
           responseHandler(paymentIntent);
-           //displayPaymentSheet(paymentIntent, context, createOrderModel, addressId, productId, variantId, quantity);
+    // await Stripe.instance.presentPaymentSheet();
+
+          //displayPaymentSheet(paymentIntent, context, createOrderModel, addressId, productId, variantId, quantity);
         }
       } catch (e, s) {
         ToastMessage.message(e.toString());

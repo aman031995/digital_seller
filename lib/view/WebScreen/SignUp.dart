@@ -45,14 +45,6 @@ class _SignUpState extends State<SignUp> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    phoneController.dispose();
-    emailController.dispose();
-    nameController.dispose();
-    passwordController.dispose();
-  }
 
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -67,8 +59,9 @@ class _SignUpState extends State<SignUp> {
                   titlePadding: EdgeInsets.zero,
                 insetPadding: EdgeInsets.all(10),
                      actionsPadding: EdgeInsets.zero,
-                  contentPadding: EdgeInsets.zero,
-                  content:  ResponsiveWidget.isMediumScreen(context)
+                  contentPadding: EdgeInsets.zero,              backgroundColor:Theme.of(context).cardColor,
+
+                content:  ResponsiveWidget.isMediumScreen(context)
                       ?Container(
                       color: Theme.of(context).cardColor.withOpacity(0.8),
                       padding: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
@@ -279,7 +272,8 @@ class _SignUpState extends State<SignUp> {
                         ],
                       ),
                     ),
-                  )):Center(child: ThreeArchedCircle(size: 45.0));
+                  )):
+          Center(child: ThreeArchedCircle(size: 45.0));
         }));
   }
 

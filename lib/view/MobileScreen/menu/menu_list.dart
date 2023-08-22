@@ -47,6 +47,7 @@ class _MenuListState extends State<MenuList> {
                   physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   children: [
+                    SizedBox(height: 10),
                     Image.asset(
                       "images/CG-icon(2).webp",
                       width: 70,
@@ -113,7 +114,7 @@ class _MenuListState extends State<MenuList> {
                           Image.asset(AssetsConstants.ic_myOrder,
                               width: 20,
                               height: 20,
-                              color:  Theme.of(context).canvasColor),
+                              color:  Theme.of(context).canvasColor.withOpacity(0.6)),
                           SizedBox(width: 10),
                           AppRegularFont(context, msg: StringConstant.myOrder,fontSize: 15,color: Theme.of(context).canvasColor)
                         ],

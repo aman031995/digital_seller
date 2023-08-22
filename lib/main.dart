@@ -25,6 +25,9 @@ bool isProfile=false;
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 Future<void> main() async {
+
+  //Stripe.publishableKey = "pk_live_51NXhtjSJK48GkIWFY3NeBL1mw7CATawc8xbjlwBi5wrTr61UbS9sHQWjnEr5kb9tSytKgZGWsbMkYish4xs2ILIC00OZVlrRNY";
+
   setPathUrlStrategy();
   await WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -38,7 +41,7 @@ Future<void> main() async {
           measurementId: "G-RFYDXHGWCK"
   ));
   html.window.onPopState.listen((event) {
-    html.window.location.reload();
+   // html.window.location.reload();
   });
   runApp(MyApp());
 }

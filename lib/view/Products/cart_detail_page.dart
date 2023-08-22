@@ -29,9 +29,8 @@ import '../../utilities/SizeConfig.dart';
 @RoutePage()
 class CartDetail extends StatefulWidget {
   final String? itemCount;
-  Function? callback;
 
-  CartDetail({Key? key, @PathParam('itemCount') this.itemCount, this.callback})
+  CartDetail({Key? key, @PathParam('itemCount') this.itemCount})
       : super(key: key);
 
   @override
@@ -145,7 +144,7 @@ class _CartDetailState extends State<CartDetail> {
                           isSearch = false;
                           setState(() {});
                         }
-                        reloadPage();
+
                       }
                     }),
 

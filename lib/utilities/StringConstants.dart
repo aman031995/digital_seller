@@ -94,7 +94,7 @@ class StringConstant {
   static String profile = "Profile";
   static String notFoundMsg =
       "There is no data , sorry try again \n any time later.";
-  static String noItemInCart = "No item in your cart \nStart Shopping";
+  static String noItemInCart = "No item in your cart";
   static String forumTitle = "Product";
 
   static String contactDetails = 'CONTACT DETAILS';
@@ -168,7 +168,7 @@ class StringConstant {
   static String enterValidNumber = 'Enter a valid number';
   static String verifyDetails = 'Please Verify your details';
   static String enterOtp = 'Enter OTP';
-  static String searchItems = 'Search videos, shorts, products';
+  static String searchItems = 'Search products';
   static String moreLikeThis = 'More Like This';
   static String seeAll = "See All";
   static String notifications = 'Notifications';
@@ -184,7 +184,7 @@ class StringConstant {
   static String androidAppLink = "https://play.google.com/store/apps/details?id=com.tycho.scanamaze";
   static String orderDetailed='Order Id';
   static String shippingDetails='    Shipping Details';
-  static String priceDetails='   Price details';
+  static String priceDetails='Price details';
   static String noProductFound='No Products Found';
   static String noMoreMovies='No Movies';
   static String fetchPlane='Fetching Plan';
@@ -199,8 +199,8 @@ class StringConstant {
   static String Recommended="Recommended for You ";
   static String RecentView="Recently Viewed";
   static String WhatWeoffer="What We Offer !";
-  static String myAccount="  My Account";
-  static String myOrder= " My Order ";
+  static String myAccount="My Account";
+  static String myOrder= "My Order ";
   static String productList='ProductList';
   static String Download= "Download Now";
 
@@ -221,5 +221,6 @@ static String getLatestupdate = 'Get Latest Update by Subscribe Our News later';
 static String digitalSellerLitelogo="https://eacademyeducation.com:8011/logo/lite_logo.png";
 static String digitalSellerDarklogo="https://eacademyeducation.com:8011/logo/dark_logo.png";
 static String Loremtext= "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante";
-
+static String ThankYOU='Thank You For Shopping!';
+static String orderPlacedSuccess= 'Hope you enjoy shopping with us.';
 }

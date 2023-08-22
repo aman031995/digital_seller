@@ -605,7 +605,8 @@ else{
                                     ],)
                                   ],
                                 ),
-                                SizedBox(height: 50),
+                                ResponsiveWidget.isMediumScreen(context)
+                                    ? SizedBox(height: 50):SizedBox(height: 300),
                                 footerDesktop()
                               ],
                             ),
@@ -623,15 +624,9 @@ else{
                               .isMediumScreen(context)
                               ? Container():  isSearch == true
                               ? Positioned(
-                              top: ResponsiveWidget
-                                  .isMediumScreen(context)
-                                  ? 0
-                                  : SizeConfig.screenWidth *
+                              top:  SizeConfig.screenWidth *
                                   0.001,
-                              right: ResponsiveWidget
-                                  .isMediumScreen(context)
-                                  ? 0
-                                  : SizeConfig.screenWidth *
+                              right:  SizeConfig.screenWidth *
                                   0.15,
                               child: searchList(
                                   context,

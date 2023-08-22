@@ -18,10 +18,26 @@
 
   <title>Digital Seller</title>
   <link rel="manifest" href="manifest.json">
-
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+      .container {
+      width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .indicator{
+         width: 20vw;
+        height: 20vh;
+      }
+</style>
 </head>
 
-<body>
+<body style="overflow: hidden">
+<div id="loading_indicator" class="container">
+  <img class="indicator" src="./images/Indict.gif" />
+</div>
 <script type="text/javascript">
   window.flutterWebRenderer = "html";
 </script>
@@ -37,9 +53,17 @@
       });
     }
   </script>
-
 <script src="main.dart.js" type="application/javascript"></script>
-
+<script>
+  window.onload = function () {
+        setTimeout(function () {
+          var loadingIndicator =                 document.getElementById("loading_indicator");
+          if (loadingIndicator) {
+            loadingIndicator.remove();
+          }
+        }, 10000);
+};
+</script>
 
 </body>
 

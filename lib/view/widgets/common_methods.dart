@@ -5,12 +5,14 @@ import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
+import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/view/Products/image_slider.dart';
 import 'package:TychoStream/view/Products/shipping_address_page.dart';
+import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/OnHover.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
@@ -20,6 +22,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CommonMethods {
 
@@ -55,11 +58,12 @@ Widget cartPageViewIndicator(BuildContext context,int activeStep) {
 
 Widget stepView(BuildContext context,String title,int activeStep,int index){
   return AppBoldFont(context,
-      msg: title,fontWeight: FontWeight.w500,
+      msg: title,fontWeight: FontWeight.w600,
       color: activeStep >= index
           ? Theme.of(context).primaryColor
           : Theme.of(context).canvasColor.withOpacity(0.8),
-      fontSize: 14);
+      fontSize:ResponsiveWidget.isMediumScreen(context)
+          ?14: 16);
 }
 //PriceDetailWidget Method
 Widget priceDetailWidget(BuildContext context, String str1, String val) {
@@ -95,7 +99,7 @@ Widget checkoutButton(BuildContext context,String msg,CartViewModel cartViewData
     alignment: Alignment.center,
     width:SizeConfig.screenWidth*0.24,
     decoration: BoxDecoration(
-      color: Theme.of(context).primaryColor.withOpacity(0.8),
+      color: Theme.of(context).primaryColor,
      borderRadius: BorderRadius.circular(4)
     ),
     child: InkWell(
@@ -258,10 +262,10 @@ Widget productGalleryTitleSection(BuildContext context, ProductList? productList
 }
 
 //ProductListItems
-Widget productListItems(BuildContext context, ProductList? productListData, int index, CartViewModel viewmodel) {
+Widget productListItems(BuildContext context, ProductList? productListData, int index, CartViewModel viewmodel,{bool? favouritepage}) {
   return OnHover(
     builder: (isHovered) {
-      return GestureDetector(
+      return InkWell(
           onTap: () { if (isLogins == true) {
             isLogins = false;
           }
@@ -338,26 +342,46 @@ Widget productListItems(BuildContext context, ProductList? productListData, int 
                   ],
                 ),
                 Positioned(
-                    right: 10,
-                    top: 5,
+                    top: 1,right: -5,
                     child: IconButton(
-                      iconSize: 45,
+                      iconSize: 40,
                       icon: Image.asset(
                         productListData?.productDetails?.isFavorite == true
                             ? AssetsConstants.ic_wishlistSelect
                             : AssetsConstants.ic_wishlistUnselect,
                       ),
-                      onPressed: () {
-                        final isFav =
-                        productListData!.productDetails!.isFavorite =
-                        !productListData.productDetails!.isFavorite!;
-                        viewmodel.addToFavourite(
-                            context,
-                            "${productListData.productId}",
-                            "${productListData.productDetails?.variantId}",
-                            isFav,
-                            'productList');
-                      },
+                      onPressed: ()   async {
+                        if (isLogins == true) {
+                          isLogins = false;
+                        }
+                        if (isSearch == true) {
+                          isSearch = false;
+                        }
+                        SharedPreferences sharedPreferences = await SharedPreferences
+                            .getInstance();
+                        if (sharedPreferences.getString('token') == null) {
+                          showDialog(
+                              context: context,
+                              builder:
+                                  (BuildContext context) {
+                                return LoginUp(
+                                  product: true,
+                                );
+                              });
+                        }
+                        else {
+                          final isFav =
+                          productListData!.productDetails!.isFavorite =
+                          !productListData.productDetails!.isFavorite!;
+                          viewmodel.addToFavourite(
+                              context,
+                              "${productListData.productId}",
+                              "${productListData.productDetails?.variantId}",
+                              isFav,
+                              'productList',favouritepage: favouritepage);
+                        }
+                      }
+
                     ))
               ],
             ),
@@ -379,33 +403,34 @@ Widget  cardDeatils(BuildContext context,ProductList itemInCart,int index,CartVi
           Container(
             height:  ResponsiveWidget.isMediumScreen(context)
                 ? 120 : 200,
-            width: ResponsiveWidget.isMediumScreen(context)
-                ? 120  :SizeConfig
-                .screenWidth *
-                0.14,
+            // width: ResponsiveWidget.isMediumScreen(context)
+            //     ? 120  :SizeConfig
+            //     .screenWidth *
+            //     0.14,
             margin:
             EdgeInsets.only(
-                top: 5,
+                top: 12,
                 right: 8,
-                left:8,
+                left:12,
                 bottom: 5),
             child:
             Image.network(
               itemInCart.productDetails?.productImages?[0] ?? "",
-              fit: BoxFit.fill,
+              fit: BoxFit.contain,
 
             ),
           ),
           Container(
             height: 30,
-            width: 120,
+            width: ResponsiveWidget.isMediumScreen(context)
+      ? 90:150,
             decoration: BoxDecoration(
                 border: Border.all(
                     color: Theme.of(context).canvasColor.withOpacity(0.2),
                     width: 1)),
             margin:
             EdgeInsets.only(
-                left:  8,
+                left:  12,
                 top: 5,
                 right: 8,
                 bottom: 5),
@@ -491,22 +516,40 @@ Widget  cardDeatils(BuildContext context,ProductList itemInCart,int index,CartVi
                       ),
                       onTap:
                           () {
-                        if (cartViewData.activeQuantity ==
-                            false) {
-                          cartViewData.activeQuantity =
-                          true;
-                          itemInCart
-                              .cartQuantity = (itemInCart.cartQuantity ??
-                              1) +
-                              1;
-                          cartViewData.addToCart(
-                              itemInCart.productId ?? '',
-                              itemInCart.cartQuantity.toString() ,
-                              itemInCart.productDetails?.variantId ?? '',
-                              true,
-                              context,
-                                  (result, isSuccess) {});
-                        }
+                            if (cartViewData.activeQuantity == false) {
+                              if ((itemInCart.productDetails?.quantityLeft)! >
+                                  (itemInCart.cartQuantity ?? 1)) {
+                                cartViewData.activeQuantity = true;
+                                itemInCart.cartQuantity =
+                                    (itemInCart.cartQuantity ?? 1) + 1;
+                                cartViewData.addToCart(
+                                    itemInCart.productId ?? '',
+                                    itemInCart.cartQuantity.toString() ?? '1',
+                                    itemInCart.productDetails?.variantId ?? '',
+                                    true,
+                                    context,
+                                        (result, isSuccess) {});
+                              } else {
+                                ToastMessage.message(
+                                    "Sorry only ${itemInCart.productDetails?.quantityLeft} quantity is left.");
+                              }
+                            }
+                        // if (cartViewData.activeQuantity ==
+                        //     false) {
+                        //   cartViewData.activeQuantity =
+                        //   true;
+                        //   itemInCart
+                        //       .cartQuantity = (itemInCart.cartQuantity ??
+                        //       1) +
+                        //       1;
+                        //   cartViewData.addToCart(
+                        //       itemInCart.productId ?? '',
+                        //       itemInCart.cartQuantity.toString() ,
+                        //       itemInCart.productDetails?.variantId ?? '',
+                        //       true,
+                        //       context,
+                        //           (result, isSuccess) {});
+                        // }
                       },
                     ),
                   ),
@@ -533,11 +576,6 @@ Widget  cardDeatils(BuildContext context,ProductList itemInCart,int index,CartVi
           SizedBox(height: 5),
           Row(
             children: [
-              SizedBox(
-                width: SizeConfig
-                    .safeBlockVertical *
-                    1,
-              ),
               AppMediumFont(
                   context,
                   color: Theme
@@ -550,7 +588,8 @@ Widget  cardDeatils(BuildContext context,ProductList itemInCart,int index,CartVi
                   TextDecoration
                       .lineThrough,
                   fontSize:
-                  12.0),
+                  ResponsiveWidget.isMediumScreen(context)
+                      ? 12.0:14),
               SizedBox(
                 width: SizeConfig
                     .safeBlockVertical *
@@ -576,7 +615,8 @@ Widget  cardDeatils(BuildContext context,ProductList itemInCart,int index,CartVi
                       r" % OFF",
                   color: GREEN,
                   fontSize:
-                  12.0),
+                  ResponsiveWidget.isMediumScreen(context)
+                      ? 12.0:14),
               SizedBox(
                 width: SizeConfig
                     .safeBlockVertical *

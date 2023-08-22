@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
@@ -30,6 +31,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../AppRouter.gr.dart';
+import 'dart:html' as html;
 
 @RoutePage()
 class ProductDetailPage extends StatefulWidget {
@@ -73,9 +75,21 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   // ProductList? get productListDetails => _productListDetails;
 
   void initState() {
+    html.window.onPopState.listen((event) {
+      html.window.location.reload();
+
+      // window.onload = function () {
+      //   setTimeout(function () {
+      //   var loadingIndicator =document.getElementById("loading_indicator");
+      //   if (loadingIndicator != null) {
+      //   loadingIndicator.remove();
+      //   }
+      //   }, 10000);
+      // };
+    });
     homeViewModel.getAppConfig(context);
     profileViewModel.getUserDetails(context);
-    SessionStorageHelper.removeValue('token');
+    // SessionStorageHelper.removeValue('token');
     SessionStorageHelper.removeValue('payment');
     cartView.getCartCount(context);
     getProductDetails();
@@ -384,7 +398,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                            ?.productImages,
                                        currentIndex,
                                        context))),
-                           Positioned(top: 5,right: 5,
+                           Positioned(top: 2,right: -5,
                                child: IconButton(
                                    iconSize: 45,
                                    icon: Image.asset(
@@ -392,8 +406,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                    ),
                                    onPressed: () {})),
                            Positioned(
-                             right: 5,
-                               top: 45,
+                             right: -5,
+                               top: 40,
                                child:IconButton(
                                    iconSize: 45,
                                    icon: Image.asset(
@@ -629,7 +643,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         ))),
                 child: AppBoldFont(context, color: Theme.of(context).hintColor,
                     msg: " BUYNOW", fontSize: 16),
-                onPressed: ()async{ if (isLogins == true) {
+                onPressed: ()
+                async{ if (isLogins == true) {
                   isLogins = false;
                   setState(() {});
                 }

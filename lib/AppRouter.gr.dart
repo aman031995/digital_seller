@@ -61,7 +61,6 @@ abstract class $AppRouter extends _i14.RootStackRouter {
         child: _i3.CartDetail(
           key: args.key,
           itemCount: args.itemCount,
-          callback: args.callback,
         ),
       );
     },
@@ -229,14 +228,12 @@ class CartDetail extends _i14.PageRouteInfo<CartDetailArgs> {
   CartDetail({
     _i15.Key? key,
     String? itemCount,
-    Function? callback,
     List<_i14.PageRouteInfo>? children,
   }) : super(
           CartDetail.name,
           args: CartDetailArgs(
             key: key,
             itemCount: itemCount,
-            callback: callback,
           ),
           rawPathParams: {'itemCount': itemCount},
           initialChildren: children,
@@ -252,18 +249,15 @@ class CartDetailArgs {
   const CartDetailArgs({
     this.key,
     this.itemCount,
-    this.callback,
   });
 
   final _i15.Key? key;
 
   final String? itemCount;
 
-  final Function? callback;
-
   @override
   String toString() {
-    return 'CartDetailArgs{key: $key, itemCount: $itemCount, callback: $callback}';
+    return 'CartDetailArgs{key: $key, itemCount: $itemCount}';
   }
 }
 

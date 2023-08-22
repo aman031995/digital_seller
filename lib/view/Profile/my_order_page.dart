@@ -20,6 +20,7 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../AppRouter.gr.dart';
 import '../../main.dart';
@@ -38,7 +39,9 @@ class _MyOrderPageState extends State<MyOrderPage> {
   final OrderViewModel orderView = OrderViewModel();
   int pageNum = 1;
   String? checkInternet;
-  ScrollController scrollController = new ScrollController();
+  ScrollController scrollController = ScrollController();
+
+// ScrollController scrollController = new ScrollController();
   HomeViewModel homeViewModel = HomeViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   ProfileViewModel profileViewModel = ProfileViewModel();
@@ -47,16 +50,13 @@ class _MyOrderPageState extends State<MyOrderPage> {
 
   @override
   void initState() {
+
     orderView.getOrderList(context, pageNum);
     homeViewModel.getAppConfig(context);
     cartViewModel.getCartCount(context);
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -147,7 +147,6 @@ class _MyOrderPageState extends State<MyOrderPage> {
                 }
               }),
               body:Scaffold(
-
                   extendBodyBehindAppBar: true,
                   key: _scaffoldKey,
                   backgroundColor: Theme.of(context)
@@ -159,23 +158,25 @@ class _MyOrderPageState extends State<MyOrderPage> {
                   body: checkInternet == "Offline"
                   ? NOInternetScreen()
                   : orderview.orderData != null ?
-              Stack(
+                  orderView.orderData!.orderList!.length > 0?  Stack(
                 children: [
                   SingleChildScrollView(
                     child: Column(
                       children: [
                         Center(
                           child: Container(
-                              color: Theme
-                                  .of(context)
-                                  .scaffoldBackgroundColor,
-                              height: SizeConfig.screenHeight,
+
+                              // height: 140.0*orderview.orderData!.orderList
+                              //     !.length,
+                              height:  ResponsiveWidget.isMediumScreen(context)
+                                  ?SizeConfig.screenHeight/1.2:SizeConfig.screenHeight*1.2,
                               width: ResponsiveWidget.isMediumScreen(context)
                                   ? SizeConfig.screenWidth : SizeConfig
                                   .screenWidth / 1.5,
                               child: ListView.builder(
                                   padding: EdgeInsets.only(bottom: 20),
-                                  controller: scrollController,
+                                 controller: scrollController,
+                                  shrinkWrap: true,
                                   itemCount: orderview.orderData?.orderList
                                       ?.length,
                                   itemBuilder: (context, index) {
@@ -192,140 +193,140 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                       }
                                     });
                                     return
-                                      GestureDetector(
-                                        onTap: () {
-                                          if (isLogins == true) {
-                                            isLogins = false;
-                                            setState(() {});
-                                          }
-                                          if (isSearch == true) {
-                                            isSearch = false;
-                                            setState(() {});
-                                          }
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return OrderDetails(
-                                                    orderItem: orderView.orderData
-                                                        ?.orderList?[index]);
-                                              });
-                                        },
-                                        child: orderView.orderData!.orderList!
-                                            .isEmpty
-                                            ?
-                                        Center(
-                                            child:
-                                            noDataFoundMessage(context,
-                                                StringConstant.noOrderAvailable))
-                                            :
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              color: Theme
-                                                  .of(context)
-                                                  .cardColor,
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(4.0))),
-                                          width: ResponsiveWidget.isMediumScreen(
-                                              context)
-                                              ? SizeConfig.screenWidth / 1.2
-                                              : SizeConfig.screenWidth / 2.5,
-                                          height: ResponsiveWidget.isMediumScreen(
-                                              context)
-                                              ? 140 : SizeConfig.screenHeight / 4,
-                                          alignment: Alignment.topLeft,
-                                          margin: EdgeInsets.only(top: 12,
-                                              bottom: 12,
-                                              left: 12,
-                                              right: 12),
-                                          padding: EdgeInsets.only(left: 10,
-                                              right: 20,
-                                              top: 20,
-                                              bottom: 10),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment
-                                                .start,
-                                            crossAxisAlignment: CrossAxisAlignment
-                                                .start,
-                                            children: [
-                                              InkWell(
-                                                  onTap: () {},
-                                                  child: ClipRRect(
-                                                    borderRadius: BorderRadius
-                                                        .circular(8.0),
-                                                    child: Image.network(
-                                                      orderView.orderData
-                                                          ?.orderList?[index]
-                                                          .productImages?[0]
-                                                          ?? " ",
-                                                      height: ResponsiveWidget
-                                                          .isMediumScreen(context)
-                                                          ? 100 : SizeConfig
-                                                          .screenWidth / 2,
-                                                      fit: BoxFit.fill,
-                                                      width: ResponsiveWidget
-                                                          .isMediumScreen(context)
-                                                          ? 100 : SizeConfig
-                                                          .screenWidth / 8,
-                                                    ),
-                                                  )),
-                                              SizedBox(width: 12),
-                                              Container(
-                                                width: ResponsiveWidget
-                                                    .isMediumScreen(context)
-                                                    ? SizeConfig.screenWidth / 2
-                                                    :  SizeConfig
-                                                    .screenWidth / 6,
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment
-                                                      .start,
-                                                  crossAxisAlignment: CrossAxisAlignment
-                                                      .start,
-                                                  children: [
-                                                    SizedBox(height: 18),
-                                                    AppMediumFont(context,
-                                                        msg: StringConstant
-                                                            .orderDetailed +
-                                                            "-${orderView
-                                                                .orderData
-                                                                ?.orderList?[index]
-                                                                .orderId}",
-                                                        fontSize: ResponsiveWidget
-                                                            .isMediumScreen(
-                                                            context)
-                                                            ? 14 : 16.0),
-                                                    AppMediumFont(context,
-                                                        msg:
+                                      InkWell(
+                                          onTap: () {
+                                            if (isLogins == true) {
+                                              isLogins = false;
+                                              setState(() {});
+                                            }
+                                            if (isSearch == true) {
+                                              isSearch = false;
+                                              setState(() {});
+                                            }
+                                            showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return OrderDetails(
+                                                      orderItem: orderView.orderData
+                                                          ?.orderList?[index]);
+                                                });
+                                          },
+                                          child: orderView.orderData!.orderList!
+                                              .isEmpty
+                                              ?
+                                          Center(
+                                              child:
+                                              noDataFoundMessage(context,
+                                                  StringConstant.noOrderAvailable))
+                                              :
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                color: Theme
+                                                    .of(context)
+                                                    .cardColor,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(4.0))),
+                                            width: ResponsiveWidget.isMediumScreen(
+                                                context)
+                                                ? SizeConfig.screenWidth / 1.2
+                                                : SizeConfig.screenWidth / 2.5,
+                                            height: ResponsiveWidget.isMediumScreen(
+                                                context)
+                                                ? 140 : SizeConfig.screenHeight / 4,
+                                            alignment: Alignment.topLeft,
+                                            margin: EdgeInsets.only(top: 12,
+                                                bottom: 12,
+                                                left: 12,
+                                                right: 12),
+                                            padding: EdgeInsets.only(left: 10,
+                                                right: 20,
+                                                top: 20,
+                                                bottom: 10),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment
+                                                  .start,
+                                              crossAxisAlignment: CrossAxisAlignment
+                                                  .start,
+                                              children: [
+                                                InkWell(
+                                                    onTap: () {},
+                                                    child: ClipRRect(
+                                                      borderRadius: BorderRadius
+                                                          .circular(8.0),
+                                                      child: Image.network(
                                                         orderView.orderData
                                                             ?.orderList?[index]
-                                                            .productName,
-                                                        fontSize: ResponsiveWidget
-                                                            .isMediumScreen(
-                                                            context)
-                                                            ? 14 : 16.0,
-                                                        maxLines: 1),
-                                                    SizedBox(height: 5),
-                                                    AppMediumFont(context,
-                                                        msg: orderView.orderData
-                                                            ?.orderList?[index]
-                                                            .orderStatus,
-                                                        fontSize: 16.0),
-                                                    SizedBox(height: 5),
-                                                    AppMediumFont(context,
-                                                        msg: orderView.orderData
-                                                            ?.orderList?[index]
-                                                            .orderDate,
-                                                        fontSize: 16.0)
-                                                  ],
+                                                            .productImages?[0]
+                                                            ?? " ",
+                                                        height: ResponsiveWidget
+                                                            .isMediumScreen(context)
+                                                            ? 100 : SizeConfig
+                                                            .screenWidth / 2,
+                                                        fit: BoxFit.fill,
+                                                        width: ResponsiveWidget
+                                                            .isMediumScreen(context)
+                                                            ? 100 : SizeConfig
+                                                            .screenWidth / 8,
+                                                      ),
+                                                    )),
+                                                SizedBox(width: 12),
+                                                Container(
+                                                  width: ResponsiveWidget
+                                                      .isMediumScreen(context)
+                                                      ? SizeConfig.screenWidth / 2
+                                                      :  SizeConfig
+                                                      .screenWidth / 6,
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment
+                                                        .start,
+                                                    crossAxisAlignment: CrossAxisAlignment
+                                                        .start,
+                                                    children: [
+                                                      SizedBox(height: 18),
+                                                      AppMediumFont(context,
+                                                          msg: StringConstant
+                                                              .orderDetailed +
+                                                              "-${orderView
+                                                                  .orderData
+                                                                  ?.orderList?[index]
+                                                                  .orderId}",
+                                                          fontSize: ResponsiveWidget
+                                                              .isMediumScreen(
+                                                              context)
+                                                              ? 14 : 16.0),
+                                                      AppMediumFont(context,
+                                                          msg:
+                                                          orderView.orderData
+                                                              ?.orderList?[index]
+                                                              .productName,
+                                                          fontSize: ResponsiveWidget
+                                                              .isMediumScreen(
+                                                              context)
+                                                              ? 14 : 16.0,
+                                                          maxLines: 1),
+                                                      SizedBox(height: 5),
+                                                      AppMediumFont(context,
+                                                          msg: orderView.orderData
+                                                              ?.orderList?[index]
+                                                              .orderStatus,
+                                                          fontSize: 16.0),
+                                                      SizedBox(height: 5),
+                                                      AppMediumFont(context,
+                                                          msg: orderView.orderData
+                                                              ?.orderList?[index]
+                                                              .orderDate,
+                                                          fontSize: 16.0)
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
 
-                                            ],
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      );
+                                        );
                                   })),
                         ),
-                        SizedBox(height: 30),
+                        SizedBox(height: 40),
                         ResponsiveWidget.isMediumScreen(context)
                             ? footerMobile(context) : footerDesktop()
                       ],
@@ -335,24 +336,18 @@ class _MyOrderPageState extends State<MyOrderPage> {
                       .isMediumScreen(context)
                       ? Container(): isLogins == true
                       ? Positioned(
-                      top:10,
+                      top:0,
                       right: 180,
                       child: profile(context,
                           setState, profileViewModel))
                       : Container(),
                   ResponsiveWidget
                       .isMediumScreen(context)
-                      ? Container(): isSearch == true
+                      ? Container():
+                  isSearch == true
                       ? Positioned(
-                      top: ResponsiveWidget
-                          .isMediumScreen(context)
-                          ? 0
-                          : SizeConfig.screenWidth *
-                          0.041,
-                      right: ResponsiveWidget
-                          .isMediumScreen(context)
-                          ? 0
-                          : SizeConfig.screenWidth *
+                      top:  0,
+                      right: SizeConfig.screenWidth *
                           0.15,
                       child: searchList(
                           context,
@@ -372,7 +367,8 @@ class _MyOrderPageState extends State<MyOrderPage> {
                               .primaryColor))
                       : SizedBox()
                 ],
-              ) : Center(child: ThreeArchedCircle(size: 45.0))),
+              ):
+                  Center(child: noDataFoundMessage(context, StringConstant.noOrderAvailable)) : Center(child: ThreeArchedCircle(size: 45.0))),
         ));
       },
       ),

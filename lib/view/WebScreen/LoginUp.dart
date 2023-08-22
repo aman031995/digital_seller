@@ -19,7 +19,6 @@ import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/sociallogin_view_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 class LoginUp extends StatefulWidget {
 bool? product;
   LoginUp({Key? key,this.product}) : super(key: key);
@@ -48,12 +47,7 @@ class _LoginUpState extends State<LoginUp> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    validation.closeStream();
-    emailController.dispose();
-    passwordController.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {

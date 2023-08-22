@@ -26,7 +26,7 @@ class _ImageSliderState extends State<ImageSlider> {
                 ? 189: 400,
             width: SizeConfig.screenWidth,
             child: CachedNetworkImage(
-                imageUrl: '${widget.images![0]}',fit: BoxFit.contain,
+                imageUrl: '${widget.images![0]}',fit: BoxFit.cover,
                 placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey)))
         ) : CarouselSlider(
           items: widget.images

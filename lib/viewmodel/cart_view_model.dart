@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:TychoStream/model/data/cart_detail_model.dart';
 import 'package:TychoStream/model/data/checkout_data_model.dart';
@@ -19,7 +20,7 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_stripe_web/flutter_stripe_web.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_cache/json_cache.dart';
 import '../AppRouter.gr.dart';
@@ -298,8 +299,7 @@ class CartViewModel extends ChangeNotifier {
         responseHandler(Result.success(result), isSuccess);
         updateCartCount(context, _itemCountModel?.count.toString() ?? '');
         isAddedToCart = true;
-        ToastMessage.message(
-            ((result as SuccessState).value as ASResponseModal).message);
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
         notifyListeners();
       }
     });
@@ -402,7 +402,7 @@ class CartViewModel extends ChangeNotifier {
     String city_name,
     String state,
   ) async {
-    AppIndicator.loadingIndicator(context);
+    // AppIndicator.loadingIndicator(context);
     _cartRepo.addAddress(
         first_name,
         last_name,
@@ -415,7 +415,7 @@ class CartViewModel extends ChangeNotifier {
         state,
         context, (result, isSuccess) {
       if (isSuccess) {
-        AppIndicator.disposeIndicator();
+        // AppIndicator.disposeIndicator();
         Navigator.pop(context);
         reloadPage();
         notifyListeners();
@@ -438,7 +438,7 @@ class CartViewModel extends ChangeNotifier {
     String state,
     String country,
   ) async {
-    AppIndicator.loadingIndicator(context);
+    // AppIndicator.loadingIndicator(context);
     _cartRepo.updateAddress(
         addressId,
         first_name,
@@ -452,7 +452,7 @@ class CartViewModel extends ChangeNotifier {
         state,
         context, (result, isSuccess) {
       if (isSuccess) {
-        AppIndicator.disposeIndicator();
+        // AppIndicator.disposeIndicator();
         Navigator.pop(context);
         reloadPage();
         notifyListeners();
@@ -475,12 +475,17 @@ class CartViewModel extends ChangeNotifier {
 
   // ADDToFavourite Method
   Future<void> addToFavourite(BuildContext context, String productId,
-      String variantId, bool fav, String pageName,{int? listIndex}) async {
+      String variantId, bool fav, String pageName,{int? listIndex,bool? favouritepage}) async {
     _cartRepo.addToFavourite(productId, variantId, fav, context,
         (result, isSuccess) {
           favouriteCallback = true;
       if (isSuccess) {
-        reloadPage();
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+        if(favouritepage==true){
+          Timer(Duration(milliseconds: 1500), () {
+            reloadPage();
+          });
+        }
         notifyListeners();
       }
     });
@@ -589,8 +594,11 @@ class CartViewModel extends ChangeNotifier {
   void displayPaymentSheet(Map<String, dynamic>? paymentIntent, BuildContext context, CreateOrderModel? _createOrderModel, String? addressId, String productId, String variantId, quantity) async {
     try {
       AppIndicator.disposeIndicator();
-      await Stripe.instance.presentPaymentSheet().then((e) {
-        Stripe.instance.confirmPaymentSheetPayment();
+      WebStripe.instance.presentPaymentSheet().then((value) {
+        WebStripe.instance.confirmPaymentSheetPayment();
+      // });
+      // await Stripe.instance.presentPaymentSheet().then((e) {
+      //   Stripe.instance.confirmPaymentSheetPayment();
        paymentResponse(
             context,
             createOrderModel?.receipt ?? '',

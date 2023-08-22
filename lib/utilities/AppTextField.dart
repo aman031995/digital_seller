@@ -112,7 +112,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                 controller: widget.controller,
                 style: TextStyle(
                     color: widget.isEnable == false
-                        ? Theme.of(context).canvasColor.withOpacity(0.6)
+                        ? Theme.of(context).canvasColor.withOpacity(0.8)
                         : Theme.of(context).canvasColor,
                     fontSize: 18),
                 onSubmitted: widget.onSubmitted,
@@ -133,19 +133,19 @@ class _CustomTextFieldState extends State<AppTextField> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     borderSide: BorderSide(
-                        color: Theme.of(context).canvasColor.withOpacity(0.2),
+                        color: Theme.of(context).canvasColor,
                         width: 2),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor.withOpacity(0.2),
+                        color: Theme.of(context).primaryColor,
                         width: 2),
                   ),
                   disabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     borderSide: BorderSide(
-                        color: Theme.of(context).canvasColor.withOpacity(0.2),
+                        color: Theme.of(context).canvasColor,
                         width: 2),
                   ),
                   isDense: true,
@@ -188,7 +188,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Container(
-                            color: Theme.of(context).canvasColor.withOpacity(0.5),
+                            color: Theme.of(context).canvasColor,
                             width: 1,
                             margin: EdgeInsets.only(right: 6),
                           ),
@@ -208,8 +208,8 @@ class _CustomTextFieldState extends State<AppTextField> {
                   EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
                   labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
                       color: widget.isColor == true
-                          ? Theme.of(context).canvasColor.withOpacity(0.4)
-                          : Theme.of(context).canvasColor.withOpacity(0.4),
+                          ? Theme.of(context).canvasColor.withOpacity(0.6)
+                          : Theme.of(context).canvasColor.withOpacity(0.6),
                       fontSize: 17),
                   prefixText: widget.prefixText,
                   suffixStyle: CustomTextStyle.textFormFieldInterMedium

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:auto_route/auto_route.dart';
@@ -48,6 +50,8 @@ class AuthViewModel with ChangeNotifier {
             (result, isSuccess) {
           if (isSuccess) {
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+            ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+
             if (_userInfoModel?.isEmailVerified == false && _userInfoModel?.isPhoneVerified == false) {
               AppIndicator.disposeIndicator();
               Navigator.pop(context);
@@ -123,23 +127,32 @@ class AuthViewModel with ChangeNotifier {
             else {
               AppDataManager.getInstance.updateUserDetails(userInfoModel!);
               print('Login api Successfully');
-              AppIndicator.disposeIndicator();
               User();
-              reloadPage();
+              AppIndicator.disposeIndicator();
+
               ResponsiveWidget.isMediumScreen(context) ? null :
               product==true? Navigator.pop(context):context.router.push(HomePageWeb());
-            }
+              Timer(Duration(milliseconds: 1500), () {
+                reloadPage();
+              });            }
+
             notifyListeners();
           }
         });
   }
 
   logoutButtonPressed(BuildContext context) async {
+    ToastMessage.message("Logout user successfully");
+
     AppDataManager.deleteSavedDetails();
     CacheDataManager.clearCachedData();
     isLogins = false;
     isLogin=false;
-     reloadPage();
+    context.router.push(HomePageWeb());
+    // Timer(Duration(milliseconds: 1500), () {
+    //   reloadPage();
+    //
+    // });
   }
 
 // method for user register from api
@@ -193,11 +206,10 @@ class AuthViewModel with ChangeNotifier {
             (result, isSuccess) {
           if (isSuccess) {
             handler!(Result.success(result), isSuccess);
+            ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+
             AppIndicator.disposeIndicator();
-            ToastMessage.message(
-                ((result as SuccessState).value as ASResponseModal).message);
             print('otp verified Successfully');
-            reloadPage();
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             if (isForgotPW == true) {
               AppIndicator.disposeIndicator();
@@ -213,10 +225,18 @@ class AuthViewModel with ChangeNotifier {
               Navigator.of(context, rootNavigator: true).pop();
             } else if (_userInfoModel?.isEmailVerified == true || _userInfoModel?.isPhoneVerified == true) {
               print('Login api Successfully');
-              AppDataManager.getInstance.updateUserDetails(_userInfoModel!);
+              ToastMessage.message('Login User Successfully');
               AppIndicator.disposeIndicator();
-              reloadPage();
+              AppDataManager.getInstance.updateUserDetails(_userInfoModel!);
+
+
+
               product==true?  Navigator.pop(context):context.router.push(HomePageWeb());
+              Timer(Duration(milliseconds: 1500), () {
+                reloadPage();
+              });
+
+
             } else {
               registerUser(context, name, mobileNumber, password, email, deviceId, firebaseId);
             }
@@ -233,14 +253,14 @@ class AuthViewModel with ChangeNotifier {
         name!, email!, phone!, password!, deviceId!, deviceToken!, context,
             (result, isSuccess) {
           if (isSuccess) {
-            AppIndicator.disposeIndicator();
+            ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             AppDataManager.getInstance.updateUserDetails(userInfoModel!);
-            ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
             AppIndicator.disposeIndicator();
             Navigator.pop(context);
-            reloadPage();
-            notifyListeners();
+            Timer(Duration(milliseconds: 1500), () {
+              reloadPage();
+            });
           }
         });
   }
@@ -292,7 +312,7 @@ class AuthViewModel with ChangeNotifier {
             AppIndicator.disposeIndicator();
             Navigator.pop(context);
             notifyListeners();
-            reloadPage();
+
           }
         });
   }

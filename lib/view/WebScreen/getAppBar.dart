@@ -13,6 +13,7 @@ import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/OnHover.dart';
+import 'package:TychoStream/view/WebScreen/stripepayment.dart';
 import 'package:TychoStream/view/effect/ShimmerEffect.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
@@ -61,7 +62,7 @@ PreferredSize getAppBar(
                         children: viewmodel
                             .appConfigModel!.androidConfig!.bottomNavigation!
                             .map((e) {
-                          return GestureDetector(
+                          return InkWell(
                               onTap: () {
                                 print(e.title);
                                 getPages(e, context, profileViewModel);
@@ -143,15 +144,16 @@ PreferredSize getAppBar(
                     isTick: null),
               ),
               SizedBox(width: SizeConfig.screenWidth * .01),
-              GestureDetector(
+              InkWell(
                   onTap: onFavPressed,
                   child: Icon(Icons.favorite_border,
                       color: Theme.of(context).canvasColor, size: 30)),
               SizedBox(width: SizeConfig.screenWidth * .01),
               Stack(
                 children: [
-                  GestureDetector(
-                      onTap: onCartPressed,
+                  InkWell(
+                      onTap:
+                      onCartPressed,
                       child: Icon(Icons.shopping_cart,
                           color: Theme.of(context).canvasColor, size: 30)),
                   itemCount != '0'
@@ -180,7 +182,7 @@ PreferredSize getAppBar(
                             context: context,
                             builder: (BuildContext context) {
                               return LoginUp(
-                                product: false,
+                                product: true,
                               );
                             });
                       },
@@ -215,11 +217,17 @@ PreferredSize getAppBar(
                   }),
               names == "null"
                   ? Container()
-                  : Image.asset(
-                      AssetsConstants.icProfile,
-                      height: 30,
-                      color: Theme.of(context).canvasColor,
-                    ),
+                  : GestureDetector(
+                onTap: (){
+                  isLogins = !isLogins;
+                  isSearch = false;
+                },
+                    child: Image.asset(
+                        AssetsConstants.icProfile,
+                        height: 30,
+                        color: Theme.of(context).canvasColor,
+                      ),
+                  ),
               Expanded(
                 child: SizedBox(width: SizeConfig.screenWidth * .05),
               ),
@@ -275,28 +283,33 @@ AppBar homePageTopBar(BuildContext context,
             child: Icon(Icons.menu_outlined,
                 color: Theme.of(context).canvasColor)),
         SizedBox(width: 5),
-        GestureDetector(
-          onTap: () {
-            if (isSearch == true) {
-              isSearch = false;
-            }
-            if (isLogins == true) {
-              isLogins = false;
-            }
-            context.pushRoute(ProductListGallery());
-          },
-          child: Container(
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: Theme.of(context).primaryColor.withOpacity(0.6),
-                    width: 0.5),
-                borderRadius: BorderRadius.circular(5)),
+        OutlinedButton(
+            onPressed: () {
+              if (isSearch == true) {
+                isSearch = false;
+              }
+              if (isLogins == true) {
+                isLogins = false;
+              }
+              context.pushRoute(ProductListGallery());
+            },
+            style: ButtonStyle(
+                overlayColor: MaterialStateColor.resolveWith(
+                        (states) => Theme.of(context)
+                        .primaryColor
+                        .withOpacity(0.4)),
+                fixedSize:
+                MaterialStateProperty.all(Size.fromHeight(20)),
+                side: MaterialStateProperty.all(
+                  BorderSide(
+                      color: Theme.of(context).canvasColor,
+                      width: 1,
+                      style: BorderStyle.solid),
+                )),
             child: appTextButton(context, StringConstant.category,
-                Alignment.center, Theme.of(context).canvasColor, 12, true),
-          ),
-        ),
+                Alignment.center, Theme.of(context).canvasColor, 12, true)),
         SizedBox(width: 5),
-        GestureDetector(
+        InkWell(
             onTap: () {
               context.pushRoute(SearchPage());
               // GoRouter.of(context).pushNamed(RoutesName.SearchPage);
@@ -307,7 +320,7 @@ AppBar homePageTopBar(BuildContext context,
               color: Theme.of(context).canvasColor,
             )),
         SizedBox(width: 5),
-        GestureDetector(
+        InkWell(
             onTap: () async {
               SharedPreferences sharedPreferences =
                   await SharedPreferences.getInstance();
@@ -328,7 +341,7 @@ AppBar homePageTopBar(BuildContext context,
         SizedBox(width: 5),
         Stack(
           children: [
-            GestureDetector(
+            InkWell(
                 onTap: () async {
                   SharedPreferences sharedPreferences =
                       await SharedPreferences.getInstance();

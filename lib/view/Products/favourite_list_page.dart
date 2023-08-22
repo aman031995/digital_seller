@@ -114,7 +114,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                 setState(() {});
                               }
 
-                              reloadPage();
+
                             }
                           }, () async {
                             SharedPreferences sharedPreferences =
@@ -168,11 +168,12 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                   height:
                                                       SizeConfig.screenHeight /
                                                           1.1,
-                                                  child: GridView.builder(
+                                            margin: EdgeInsets.only(right: 12,left: 12,top: 12),
+
+                                            child: GridView.builder(
                                                     shrinkWrap: true,
                                                     controller:
                                                         _scrollController,
-                                                    padding: EdgeInsets.all(8),
                                                     physics:
                                                         BouncingScrollPhysics(),
                                                     gridDelegate:
@@ -213,7 +214,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                           context,
                                                           productListData,
                                                           index,
-                                                          viewmodel);
+                                                          viewmodel,favouritepage: true);
                                                     },
                                                   ),
                                                 )
@@ -273,14 +274,14 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                           context,
                                                           productListData,
                                                           index,
-                                                          viewmodel);
+                                                          viewmodel,favouritepage: true);
                                                     },
                                                   ),
                                                 ),
                                           ResponsiveWidget.isMediumScreen(
                                                   context)
                                               ? SizedBox(height: 50)
-                                              : SizedBox(height: 100),
+                                              : SizedBox(height: 200),
                                           ResponsiveWidget.isMediumScreen(
                                                   context)
                                               ? footerMobile(context)
@@ -301,15 +302,8 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                         .isMediumScreen(context)
                                         ? Container():   isSearch == true
                                         ? Positioned(
-                                            top:
-                                                ResponsiveWidget.isMediumScreen(
-                                                        context)
-                                                    ? 0
-                                                    : 0,
-                                            right: ResponsiveWidget
-                                                    .isMediumScreen(context)
-                                                ? 0
-                                                : SizeConfig.screenWidth * 0.15,
+                                            top: 0,
+                                            right:  SizeConfig.screenWidth * 0.15,
                                             child: searchList(
                                                 context,
                                                 homeViewModel,
@@ -336,7 +330,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                 )
                               : Center(
                                   child: noDataFoundMessage(
-                                      context, StringConstant.noItemInCart))
+                                      context,StringConstant.noProductFound))
                           : Center(
                               child: ThreeArchedCircle(size: 45.0),
                             ),

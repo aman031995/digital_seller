@@ -156,7 +156,7 @@ Widget AddressButton(BuildContext context,GestureTapCallback? ontap){
       margin: EdgeInsets.only(top:5,bottom: 5,left: 10,right: 10),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor.withOpacity(0.8),  borderRadius: BorderRadius.circular(5)
+        color: Theme.of(context).primaryColor,  borderRadius: BorderRadius.circular(5)
       ),
       padding: EdgeInsets.only(left: 10,top: 10,bottom: 10),
 

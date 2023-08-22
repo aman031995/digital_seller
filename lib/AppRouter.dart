@@ -16,19 +16,22 @@ class AppRouter extends $AppRouter {
   List<AutoRoute> routes = [
      AutoRoute(page: HomePageWeb.page, path: '/',initial: true),
 
-    AutoRoute(page: SearchPage.page,path: '/SearchPage',guards: [
-      AutoRouteGuard.simple(
-            (resolver, scope) async {
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-          if (sharedPreferences.get('token') != null) {
-            resolver.next();
+    AutoRoute(page: SearchPage.page,path: '/SearchPage',
+        // guards: [
+      // AutoRouteGuard.simple(
+      //       (resolver, scope) async {
+      //     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      //     if (sharedPreferences.get('token') != null) {
+      //       resolver.next();
+      //
+      //     } else {
+      //       ToastMessage.message("Please Login User");
+      //       resolver.redirect(HomePageWeb());
+      //     }
+      //   },
+      // )]
 
-          } else {
-            ToastMessage.message("Please Login User");
-            resolver.redirect(HomePageWeb());
-          }
-        },
-      )]),
+    ),
 
     AutoRoute(page: EditProfile.page,path: '/EditProfile',guards: [
       AutoRouteGuard.simple(
@@ -37,7 +40,7 @@ class AppRouter extends $AppRouter {
           if (sharedPreferences.get('token') != null) {
             resolver.next();
           } else {
-            ToastMessage.message("Please Login User");
+            // ToastMessage.message("Please Login User");
             resolver.redirect(HomePageWeb());
           }
         },

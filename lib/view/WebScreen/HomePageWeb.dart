@@ -70,7 +70,7 @@ class _HomePageWebState extends State<HomePageWeb> {
 
     super.initState();
   }
-  
+
   User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     names = sharedPreferences.get('name').toString();
@@ -92,12 +92,10 @@ class _HomePageWebState extends State<HomePageWeb> {
         ? NOInternetScreen()
         : ChangeNotifierProvider.value(
             value: profileViewModel,
-            child:
-                Consumer<ProfileViewModel>(builder: (context, profilemodel, _) {
+            child: Consumer<ProfileViewModel>(builder: (context, profilemodel, _) {
               return ChangeNotifierProvider.value(
                   value: homeViewModel,
-                  child:
-                      Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
+                  child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
                     return GestureDetector(
                         onTap: () {
                           if (isLogins == true) {
@@ -114,12 +112,14 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 Theme.of(context).scaffoldBackgroundColor,
                             extendBodyBehindAppBar: true,
                             appBar: ResponsiveWidget.isMediumScreen(context)
-                                ? homePageTopBar(context, _scaffoldKey,  cartViewModel.cartItemCount)
+                                ? homePageTopBar(context, _scaffoldKey,
+                                    cartViewModel.cartItemCount)
                                 : getAppBar(
                                     context,
                                     viewmodel,
                                     profilemodel,
-                                    cartViewModel.cartItemCount,1,
+                                    cartViewModel.cartItemCount,
+                                    1,
                                     searchController, () async {
                                     SharedPreferences sharedPreferences =
                                         await SharedPreferences.getInstance();
@@ -146,8 +146,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                   }, () async {
                                     SharedPreferences sharedPreferences =
                                         await SharedPreferences.getInstance();
-                                    if (sharedPreferences
-                                        .getString('token') == null) {
+                                    if (sharedPreferences.getString('token') ==
+                                        null) {
                                       showDialog(
                                           context: context,
                                           barrierColor: Theme.of(context)
@@ -202,7 +202,8 @@ class _HomePageWebState extends State<HomePageWeb> {
 
                                               ///category product list............
 
-                                              CategoryList(context,cartViewModel),
+                                              CategoryList(
+                                                  context, cartViewModel),
 
                                               SizedBox(
                                                   height: ResponsiveWidget
@@ -216,9 +217,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                                               Container(
                                                 height: ResponsiveWidget
                                                         .isMediumScreen(context)
-                                                    ? 250
+                                                    ? 270
                                                     : SizeConfig.screenWidth *
-                                                        0.35,
+                                                        0.37,
                                                 margin: EdgeInsets.zero,
                                                 padding: EdgeInsets.only(
                                                     left: ResponsiveWidget
@@ -264,7 +265,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                       child: AppBoldFont(
                                                           context,
                                                           msg: StringConstant
-                                                              .Recommended,fontWeight: FontWeight.w700,
+                                                              .Recommended,
+                                                          fontWeight:
+                                                              FontWeight.w700,
                                                           fontSize: ResponsiveWidget
                                                                   .isMediumScreen(
                                                                       context)
@@ -288,10 +291,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                     : SizeConfig.screenWidth *
                                                                         0.01),
                                                             height: ResponsiveWidget.isMediumScreen(context)
-                                                                ? 212
+                                                                ? 235
                                                                 : SizeConfig
                                                                         .screenWidth *
-                                                                    0.31,
+                                                                    0.32,
                                                             child: ListView
                                                                 .builder(
                                                                     reverse:
@@ -356,25 +359,25 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                       children: [
                                                                                         CachedNetworkImage(
                                                                                             imageUrl: '${cartViewModel.recommendedView?[position].productDetails?.productImages?[0]}',
-                                                                                            fit: BoxFit.fill,
+                                                                                            fit: BoxFit.cover,
                                                                                             height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.228,
                                                                                             imageBuilder: (context, imageProvider) => Container(
                                                                                                   decoration: BoxDecoration(
-                                                                                                    image: DecorationImage(image: imageProvider, fit: BoxFit.contain),
+                                                                                                    image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                                                                                                   ),
                                                                                                 ),
                                                                                             placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.23, child: Center(child: CircularProgressIndicator(color: Colors.grey)))),
-                                                                                        SizedBox(height: SizeConfig.screenWidth * 0.001),
-                                                                                        AppBoldFont(maxLines: 1, context, msg: " ${getRecommendedViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
-                                                                                        SizedBox(height: SizeConfig.screenWidth * 0.002),
-                                                                                        AppBoldFont(maxLines: 1, context, msg: " ₹" + "${cartViewModel.recommendedView?[position].productDetails?.productDiscountPrice}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
-                                                                                        SizedBox(height: SizeConfig.screenWidth * 0.005),
+                                                                                        SizedBox(height: 8),
+                                                                                        AppBoldFont(maxLines: 1, context, msg: "  ${getRecommendedViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
+                                                                                        SizedBox(height: 2),
+                                                                                        AppBoldFont(maxLines: 1, context, msg: "  ₹" + "${cartViewModel.recommendedView?[position].productDetails?.productDiscountPrice}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
+                                                                                        SizedBox(height:10),
                                                                                         InkWell(
                                                                                           onTap: () {
                                                                                             context.router.push(ProductDetailPage(
                                                                                               productName: '${cartViewModel.recommendedView?[position].productName?.replaceAll(' ', '')}',
                                                                                               productdata: [
-                                                                                            '${cartViewModel.recommendedView?[position].productId}',
+                                                                                                '${cartViewModel.recommendedView?[position].productId}',
                                                                                                 '${cartViewModel.cartItemCount}',
                                                                                                 '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.size?.name}',
                                                                                                 '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.color?.name}',
@@ -386,15 +389,14 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                           },
                                                                                           child: Container(
                                                                                             width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
-                                                                                            height: ResponsiveWidget
-                                                                                                .isMediumScreen(context)
-                                                                                                ?30: SizeConfig.screenWidth * 0.027,
+                                                                                            height: ResponsiveWidget.isMediumScreen(context) ? 30 : SizeConfig.screenWidth * 0.027,
                                                                                             alignment: Alignment.center,
+                                                                                            margin: EdgeInsets.only(left: 16,right: 16),
                                                                                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(1.5), border: Border.all(width: 1, color: Theme.of(context).canvasColor)),
                                                                                             child: AppBoldFont(context, msg: StringConstant.buynow, fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 16, fontWeight: FontWeight.w700),
                                                                                           ),
                                                                                         ),
-                                                                                        SizedBox(height: SizeConfig.screenWidth * 0.005),
+                                                                                        SizedBox(height: 10),
                                                                                       ],
                                                                                     ),
                                                                                   ),
@@ -414,37 +416,41 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                         .screenWidth *
                                                                     0.10,
                                                             right: 1,
-                                                            child:counter==cartViewModel.recommendedView?.length?Container(): InkWell(
-                                                                child:
-                                                                    Container(
-                                                                  width: ResponsiveWidget
-                                                                          .isMediumScreen(
+                                                            child: counter ==
+                                                                    cartViewModel
+                                                                        .recommendedView
+                                                                        ?.length
+                                                                ? Container()
+                                                                : InkWell(
+                                                                    child:
+                                                                        Container(
+                                                                      width: ResponsiveWidget.isMediumScreen(
                                                                               context)
-                                                                      ? 25
-                                                                      : 40,
-                                                                  height: ResponsiveWidget
-                                                                          .isMediumScreen(
+                                                                          ? 25
+                                                                          : 40,
+                                                                      height: ResponsiveWidget.isMediumScreen(
                                                                               context)
-                                                                      ? 20
-                                                                      : 35,
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .cardColor
-                                                                      .withOpacity(
-                                                                          0.8),
-                                                                  child: Icon(
-                                                                      Icons
-                                                                          .arrow_forward_ios_rounded,
-                                                                      size: ResponsiveWidget.isMediumScreen(
+                                                                          ? 20
+                                                                          : 35,
+                                                                      color: Theme.of(
                                                                               context)
-                                                                          ? 18
-                                                                          : 25),
-                                                                ),
-                                                                onTap: () {
-                                                                  _nextCounter();
-                                                                  setState(
-                                                                      () {});
-                                                                })),
+                                                                          .cardColor
+                                                                          .withOpacity(
+                                                                              0.8),
+                                                                      child: Icon(
+                                                                          Icons
+                                                                              .arrow_forward_ios_rounded,
+                                                                          size: ResponsiveWidget.isMediumScreen(context)
+                                                                              ? 18
+                                                                              : 25,
+                                                                          color:
+                                                                              Theme.of(context).canvasColor),
+                                                                    ),
+                                                                    onTap: () {
+                                                                      _nextCounter();
+                                                                      setState(
+                                                                          () {});
+                                                                    })),
                                                         Positioned(
                                                             top: ResponsiveWidget
                                                                     .isMediumScreen(
@@ -453,38 +459,40 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                 : SizeConfig
                                                                         .screenWidth *
                                                                     0.10,
-                                                            child:counter==4?Container(): InkWell(
-                                                                child:
-                                                                    Container(
-                                                                  width: ResponsiveWidget
-                                                                          .isMediumScreen(
+                                                            child: counter == 4
+                                                                ? Container()
+                                                                : InkWell(
+                                                                    child:
+                                                                        Container(
+                                                                      width: ResponsiveWidget.isMediumScreen(
                                                                               context)
-                                                                      ? 25
-                                                                      : 40,
-                                                                  height: ResponsiveWidget
-                                                                          .isMediumScreen(
+                                                                          ? 25
+                                                                          : 40,
+                                                                      height: ResponsiveWidget.isMediumScreen(
                                                                               context)
-                                                                      ? 20
-                                                                      : 35,
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .cardColor
-                                                                      .withOpacity(
-                                                                          0.8),
-                                                                  child: Icon(
-                                                                      Icons
-                                                                          .arrow_back_ios_new_outlined,
-                                                                      size: ResponsiveWidget.isMediumScreen(
+                                                                          ? 20
+                                                                          : 35,
+                                                                      color: Theme.of(
                                                                               context)
-                                                                          ? 18
-                                                                          : 25),
-                                                                ),
-                                                                onTap: () {
-                                                                  _prev();
-                                                                  setState(() {
-                                                                    counter = 4;
-                                                                  });
-                                                                }))
+                                                                          .cardColor
+                                                                          .withOpacity(
+                                                                              0.8),
+                                                                      child: Icon(
+                                                                          Icons
+                                                                              .arrow_back_ios_new_outlined,
+                                                                          size: ResponsiveWidget.isMediumScreen(context)
+                                                                              ? 18
+                                                                              : 25, color:
+                        Theme.of(context).canvasColor),
+                                                                    ),
+                                                                    onTap: () {
+                                                                      _prev();
+                                                                      setState(
+                                                                          () {
+                                                                        counter =
+                                                                            4;
+                                                                      });
+                                                                    }))
                                                       ],
                                                     ),
                                                   ],
@@ -506,38 +514,86 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                       0
                                                   ? Container(
                                                       margin: EdgeInsets.zero,
-                                                      color: Theme.of(context).cardColor.withOpacity(0.6),
-                                                      height: ResponsiveWidget.isMediumScreen(context) ? 230: SizeConfig.screenWidth * 0.31,
+                                                      color: Theme.of(context)
+                                                          .cardColor
+                                                          .withOpacity(0.6),
+                                                      height: ResponsiveWidget
+                                                              .isMediumScreen(
+                                                                  context)
+                                                          ? 260
+                                                          : SizeConfig
+                                                                  .screenWidth *
+                                                              0.32,
                                                       padding: EdgeInsets.only(
-                                                          left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11,
-                                                          right: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11,
+                                                          left: ResponsiveWidget
+                                                                  .isMediumScreen(
+                                                                      context)
+                                                              ? 8
+                                                              : SizeConfig
+                                                                      .screenWidth *
+                                                                  0.11,
+                                                          right: ResponsiveWidget
+                                                                  .isMediumScreen(
+                                                                      context)
+                                                              ? 8
+                                                              : SizeConfig
+                                                                      .screenWidth *
+                                                                  0.11,
                                                           top: 20),
                                                       child: Stack(
                                                         children: [
                                                           Column(
-                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .start,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
                                                             children: [
                                                               Container(
                                                                 padding: EdgeInsets.only(
-                                                                    left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.01,
-                                                                    right: ResponsiveWidget.isMediumScreen(context) ? 4 : SizeConfig.screenWidth * 0.01),
-                                                                child: AppBoldFont(context,
+                                                                    left: ResponsiveWidget.isMediumScreen(
+                                                                            context)
+                                                                        ? 8
+                                                                        : SizeConfig.screenWidth *
+                                                                            0.01,
+                                                                    right: ResponsiveWidget.isMediumScreen(
+                                                                            context)
+                                                                        ? 4
+                                                                        : SizeConfig.screenWidth *
+                                                                            0.01),
+                                                                child: AppBoldFont(
+                                                                    context,
                                                                     msg: StringConstant
-                                                                        .RecentView,fontWeight: FontWeight.w700,
+                                                                        .RecentView,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
                                                                     fontSize:
                                                                         ResponsiveWidget.isMediumScreen(context)
                                                                             ? 14
                                                                             : 18),
                                                               ),
                                                               SizedBox(
-                                                                  height: SizeConfig.screenWidth * 0.002),
+                                                                  height: SizeConfig
+                                                                          .screenWidth *
+                                                                      0.002),
                                                               Container(
-                                                                  height: ResponsiveWidget.isMediumScreen(context) ? 185 : SizeConfig.screenWidth * 0.26,
-                                                                  width: SizeConfig.screenWidth,
+                                                                  height: ResponsiveWidget.isMediumScreen(
+                                                                          context)
+                                                                      ? 200
+                                                                      : SizeConfig
+                                                                              .screenWidth *
+                                                                          0.27,
+                                                                  width: SizeConfig
+                                                                      .screenWidth,
                                                                   padding: EdgeInsets.only(
-                                                                      left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.01,
-                                                                      right: ResponsiveWidget.isMediumScreen(context)
+                                                                      left: ResponsiveWidget.isMediumScreen(context)
+                                                                          ? 8
+                                                                          : SizeConfig.screenWidth *
+                                                                              0.01,
+                                                                      right: ResponsiveWidget.isMediumScreen(
+                                                                              context)
                                                                           ? 8
                                                                           : SizeConfig.screenWidth *
                                                                               0.01),
@@ -601,13 +657,13 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                               height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.228,
                                                                                               imageBuilder: (context, imageProvider) => Container(
                                                                                                     decoration: BoxDecoration(
-                                                                                                      image: DecorationImage(image: imageProvider, fit: BoxFit.contain),
+                                                                                                      image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                                                                                                     ),
                                                                                                   ),
                                                                                               placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenHeight / 2.1, child: Center(child: CircularProgressIndicator(color: Colors.grey)))),
-                                                                                          SizedBox(height: 3),
-                                                                                          AppBoldFont(context, msg: " ${getRecentViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18, maxLines: 1),
-                                                                                          // SizedBox(height: 10)
+                                                                                          SizedBox(height: 10),
+                                                                                          AppBoldFont(context, msg: "  ${getRecentViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18, maxLines: 1),
+                                                                                           SizedBox(height: 10)
                                                                                         ],
                                                                                       ),
                                                                                     ),
@@ -628,34 +684,37 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                           .screenWidth *
                                                                       0.10,
                                                               right: 0.5,
-                                                              child:counter1==cartViewModel.recentView?.length?Container():  InkWell(
-                                                                  child:
-                                                                      Container(
-                                                                    width: ResponsiveWidget.isMediumScreen(
-                                                                            context)
-                                                                        ? 25
-                                                                        : 40,
-                                                                    height: ResponsiveWidget.isMediumScreen(
-                                                                            context)
-                                                                        ? 20
-                                                                        : 35,
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .cardColor
-                                                                        .withOpacity(
-                                                                            0.8),
-                                                                    child: Icon(
-                                                                        Icons
-                                                                            .arrow_forward_ios_rounded,
-                                                                        size: ResponsiveWidget.isMediumScreen(context)
-                                                                            ? 18
-                                                                            : 25),
-                                                                  ),
-                                                                  onTap: () {
-                                                                    _nextCounter1();
-                                                                    setState(
-                                                                        () {});
-                                                                  })),
+                                                              child: counter1 ==
+                                                                      cartViewModel
+                                                                          .recentView
+                                                                          ?.length
+                                                                  ? Container()
+                                                                  : InkWell(
+                                                                      child:
+                                                                          Container(
+                                                                        width: ResponsiveWidget.isMediumScreen(context)
+                                                                            ? 25
+                                                                            : 40,
+                                                                        height: ResponsiveWidget.isMediumScreen(context)
+                                                                            ? 20
+                                                                            : 35,
+                                                                        color: Theme.of(context)
+                                                                            .cardColor
+                                                                            .withOpacity(0.8),
+                                                                        child: Icon(
+                                                                            Icons
+                                                                                .arrow_forward_ios_rounded,
+                                                                            size: ResponsiveWidget.isMediumScreen(context)
+                                                                                ? 18
+                                                                                : 25, color:
+                                                                        Theme.of(context).canvasColor)
+                                                                      ),
+                                                                      onTap:
+                                                                          () {
+                                                                        _nextCounter1();
+                                                                        setState(
+                                                                            () {});
+                                                                      })),
                                                           Positioned(
                                                               top: ResponsiveWidget
                                                                       .isMediumScreen(
@@ -664,37 +723,38 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                   : SizeConfig
                                                                           .screenWidth *
                                                                       0.10,
-                                                              child:counter1==4?Container():  InkWell(
-                                                                  child:
-                                                                      Container(
-                                                                    width: ResponsiveWidget.isMediumScreen(
-                                                                            context)
-                                                                        ? 25
-                                                                        : 40,
-                                                                    height: ResponsiveWidget.isMediumScreen(
-                                                                            context)
-                                                                        ? 20
-                                                                        : 35,
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .cardColor
-                                                                        .withOpacity(
-                                                                            0.8),
-                                                                    child: Icon(
-                                                                        Icons
-                                                                            .arrow_back_ios_new_outlined,
-                                                                        size: ResponsiveWidget.isMediumScreen(context)
-                                                                            ? 18
-                                                                            : 25),
-                                                                  ),
-                                                                  onTap: () {
-                                                                    _prev1();
-                                                                    setState(
-                                                                        () {
-                                                                      counter =
-                                                                          4;
-                                                                    });
-                                                                  }))
+                                                              child: counter1 ==
+                                                                      4
+                                                                  ? Container()
+                                                                  : InkWell(
+                                                                      child:
+                                                                          Container(
+                                                                        width: ResponsiveWidget.isMediumScreen(context)
+                                                                            ? 25
+                                                                            : 40,
+                                                                        height: ResponsiveWidget.isMediumScreen(context)
+                                                                            ? 20
+                                                                            : 35,
+                                                                        color: Theme.of(context)
+                                                                            .cardColor
+                                                                            .withOpacity(0.8),
+                                                                        child: Icon(
+                                                                            Icons
+                                                                                .arrow_back_ios_new_outlined,
+                                                                            size: ResponsiveWidget.isMediumScreen(context)
+                                                                                ? 18
+                                                                                : 25, color:
+                                                                        Theme.of(context).canvasColor)
+                                                                      ),
+                                                                      onTap:
+                                                                          () {
+                                                                        _prev1();
+                                                                        setState(
+                                                                            () {
+                                                                          counter =
+                                                                              4;
+                                                                        });
+                                                                      }))
                                                         ],
                                                       ),
                                                     )
@@ -771,11 +831,13 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                         (context, index) {
                                                       return InkWell(
                                                           onTap: () {
-                                                            if (isLogins == true) {
+                                                            if (isLogins ==
+                                                                true) {
                                                               isLogins = false;
                                                               setState(() {});
                                                             }
-                                                            if (isSearch == true) {
+                                                            if (isSearch ==
+                                                                true) {
                                                               isSearch = false;
                                                               setState(() {});
                                                             }
@@ -788,7 +850,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                               return Card(
                                                                   shape:
                                                                       RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(20),
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            20),
                                                                   ),
                                                                   elevation:
                                                                       isHovered == true
@@ -803,18 +867,13 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                               context)
                                                                           ? 8
                                                                           : 16),
-                                                                  child:
-                                                                  Image
+                                                                  child: Image
                                                                       .asset(
                                                                     images[
                                                                         index],
                                                                     fit: BoxFit
                                                                         .fill,
-                                                                  )
-
-
-
-                                                              );
+                                                                  ));
                                                             },
                                                             hovered: Matrix4
                                                                 .identity()
@@ -832,7 +891,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                               context)
                                                       ? 12
                                                       : 24),
-                                             // getLatestUpdate(context),
+                                              // getLatestUpdate(context),
 
                                               SizedBox(
                                                   height: ResponsiveWidget
@@ -851,38 +910,42 @@ class _HomePageWebState extends State<HomePageWeb> {
                                             ],
                                           ),
                                         ),
-                                        ResponsiveWidget
-                                            .isMediumScreen(context)
-                                            ? Container(): isLogins == true
-                                            ? Positioned(
-                                                top: 80,
-                                                right:180,
-                                                child: profile(context,
-                                                    setState, profilemodel))
-                                            : Container(),
-                                        ResponsiveWidget
-                                            .isMediumScreen(context)
-                                            ? Container(): isSearch == true
-                                            ? Positioned(
-                                                top: ResponsiveWidget
-                                                        .isMediumScreen(context)
-                                                    ? 0
-                                                    : SizeConfig.screenWidth *
-                                                        0.041,
-                                                right: ResponsiveWidget
-                                                        .isMediumScreen(context)
-                                                    ? 0
-                                                    : SizeConfig.screenWidth *
-                                                        0.15,
-                                                child: searchList(
-                                                    context,
-                                                    viewmodel,
-                                                    scrollController,
-                                                    homeViewModel,
-                                                    searchController!,
-                                                    cartViewModel
-                                                        .cartItemCount))
-                                            : Container()
+                                        ResponsiveWidget.isMediumScreen(context)
+                                            ? Container()
+                                            : isLogins == true
+                                                ? Positioned(
+                                                    top: 80,
+                                                    right: 180,
+                                                    child: profile(context,
+                                                        setState, profilemodel))
+                                                : Container(),
+                                        ResponsiveWidget.isMediumScreen(context)
+                                            ? Container()
+                                            : isSearch == true
+                                                ? Positioned(
+                                                    top: ResponsiveWidget
+                                                            .isMediumScreen(
+                                                                context)
+                                                        ? 0
+                                                        : SizeConfig
+                                                                .screenWidth *
+                                                            0.041,
+                                                    right: ResponsiveWidget
+                                                            .isMediumScreen(
+                                                                context)
+                                                        ? 0
+                                                        : SizeConfig
+                                                                .screenWidth *
+                                                            0.15,
+                                                    child: searchList(
+                                                        context,
+                                                        viewmodel,
+                                                        scrollController,
+                                                        homeViewModel,
+                                                        searchController!,
+                                                        cartViewModel
+                                                            .cartItemCount))
+                                                : Container()
                                       ],
                                     ))));
                   }));

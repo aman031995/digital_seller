@@ -236,7 +236,7 @@ class _EditProfileState extends State<EditProfile> {
                             .isMediumScreen(context)
                             ?Container(): isLogins == true
                             ? Positioned(
-                            top:  10,
+                            top:  0,
                             right: 180,
                             child: profile(context,
                                 setState, profilemodel))

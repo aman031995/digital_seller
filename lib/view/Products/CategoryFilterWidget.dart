@@ -40,66 +40,69 @@ class _CategoryFilterScreenState extends State<CategoryFilterScreen> {
   @override
   Widget build(BuildContext context) {
     return  Container(
+      height: SizeConfig.screenHeight,
         width: SizeConfig.screenWidth / 6.5,
         color: Theme.of(context).cardColor,
         margin: EdgeInsets.only(top: 30, right: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-          Container(
-          margin: EdgeInsets.all(15),
-            color: Theme.of(context).cardColor,
-            child: AppBoldFont(context, msg: "Filter", color: Theme.of(context).canvasColor, fontWeight: FontWeight.w600),
-          ),
-          Container(
-           // margin: EdgeInsets.only(right: 10),
-            height: 1,
-            color: Theme.of(context).canvasColor.withOpacity(0.2),
-          ),
-            SizedBox(height: 10),
-            categoryFilterHeadingWidget('Categories'),
-            downUpArrow == true ? Container(height: 1,
-              margin: EdgeInsets.only(left: 10, right: 10),
-              color: Theme.of(context).canvasColor.withOpacity(0.2)) : SizedBox(),
-            downUpArrow == true ? categoryFilterWidget() : SizedBox(),
-
-            SizedBox(height: 15),
-            categoryFilterHeadingWidget('Color'),
-            downUpArrow == true ? Container(height: 1,
-              margin: EdgeInsets.only(left: 10, right: 10),
-              color: Theme.of(context).canvasColor.withOpacity(0.2),) : SizedBox(),
-           downUpArrow == true ? colorFilterWidget() : SizedBox(),
-
-           SizedBox(height: 15,),
-           categoryFilterHeadingWidget('Price'),
-            downUpArrow == true ? Container(height: 1,
-              margin: EdgeInsets.only(left: 10, right: 10),
-              color: Theme.of(context).canvasColor.withOpacity(0.2),) : SizedBox(),
-           downUpArrow == true ? priceFilterWidget() : SizedBox(),
-
-           SizedBox(height: 15,),
-            categoryFilterHeadingWidget('Brand'),
-            downUpArrow == true ? Container(height: 1,
-              margin: EdgeInsets.only(left: 10, right: 10),
-              color: Theme.of(context).canvasColor.withOpacity(0.2),) : SizedBox(),
-           downUpArrow == true ? brandFilterWidget() : SizedBox(),
-
-           SizedBox(height: 15),
-            categoryFilterHeadingWidget('Others'),
-            downUpArrow == true ? Container(height: 1,
-              margin: EdgeInsets.only(left: 10, right: 10),
-              color: Theme.of(context).canvasColor.withOpacity(0.2),) : SizedBox(),
-           downUpArrow == true ? othersFilterWidget() : SizedBox(),
-SizedBox(height: 50),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             Container(
-              alignment: Alignment.bottomCenter,
-                width: SizeConfig.screenWidth / 6.5,
-                child: GlobalVariable.isLightTheme == true ?
-                Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: SizeConfig.screenWidth * 0.08) :
-                Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: SizeConfig.screenWidth * 0.08)),
-            SizedBox(height: 10),
-          ],
+            margin: EdgeInsets.all(15),
+              color: Theme.of(context).cardColor,
+              child: AppBoldFont(context, msg: "Filter", color: Theme.of(context).canvasColor, fontWeight: FontWeight.w600),
+            ),
+            Container(
+             // margin: EdgeInsets.only(right: 10),
+              height: 1,
+              color: Theme.of(context).canvasColor.withOpacity(0.2),
+            ),
+              SizedBox(height: 10),
+              categoryFilterHeadingWidget('Categories'),
+              downUpArrow == true ? Container(height: 1,
+                margin: EdgeInsets.only(left: 10, right: 10),
+                color: Theme.of(context).canvasColor.withOpacity(0.2)) : SizedBox(),
+              downUpArrow == true ? categoryFilterWidget() : SizedBox(),
+
+              SizedBox(height: 15),
+              categoryFilterHeadingWidget('Color'),
+              downUpArrow == true ? Container(height: 1,
+                margin: EdgeInsets.only(left: 10, right: 10),
+                color: Theme.of(context).canvasColor.withOpacity(0.2),) : SizedBox(),
+             downUpArrow == true ? colorFilterWidget() : SizedBox(),
+
+             SizedBox(height: 15,),
+             categoryFilterHeadingWidget('Price'),
+              downUpArrow == true ? Container(height: 1,
+                margin: EdgeInsets.only(left: 10, right: 10),
+                color: Theme.of(context).canvasColor.withOpacity(0.2),) : SizedBox(),
+             downUpArrow == true ? priceFilterWidget() : SizedBox(),
+
+             SizedBox(height: 15,),
+              categoryFilterHeadingWidget('Brand'),
+              downUpArrow == true ? Container(height: 1,
+                margin: EdgeInsets.only(left: 10, right: 10),
+                color: Theme.of(context).canvasColor.withOpacity(0.2),) : SizedBox(),
+             downUpArrow == true ? brandFilterWidget() : SizedBox(),
+
+             SizedBox(height: 15),
+              categoryFilterHeadingWidget('Others'),
+              downUpArrow == true ? Container(height: 1,
+                margin: EdgeInsets.only(left: 10, right: 10),
+                color: Theme.of(context).canvasColor.withOpacity(0.2),) : SizedBox(),
+             downUpArrow == true ? othersFilterWidget() : SizedBox(),
+// SizedBox(height: 50),
+//               Container(
+//                 alignment: Alignment.bottomCenter,
+//                   width: SizeConfig.screenWidth / 6.5,
+//                   child: GlobalVariable.isLightTheme == true ?
+//                   Image.network("https://eacademyeducation.com:8011/logo/lite_logo.png", fit: BoxFit.fill, width: SizeConfig.screenWidth * 0.08) :
+//                   Image.network("https://eacademyeducation.com:8011/logo/dark_logo.png", fit: BoxFit.fill, width: SizeConfig.screenWidth * 0.08)),
+//               SizedBox(height: 10),
+            ],
+          ),
         ),
       );
   }

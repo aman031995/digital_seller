@@ -84,7 +84,7 @@ class _footerDesktopState extends State<footerDesktop> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            GestureDetector(
+            InkWell(
                 onTap: () async {
                   const url =
                       'https://apps.apple.com/tt/app/scanamaze/id1613520722';
@@ -98,7 +98,7 @@ class _footerDesktopState extends State<footerDesktop> {
                 child: Image.asset(AssetsConstants.icApple,
                     height: 35)),
             SizedBox(width: 5),
-            GestureDetector(
+            InkWell(
               onTap: () async {
                 const url =
                     'https://play.google.com/store/apps/details?id=com.tycho.scanamaze';
@@ -137,7 +137,7 @@ class _footerDesktopState extends State<footerDesktop> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              GestureDetector(
+              InkWell(
                   child: Image.asset(AssetsConstants.icFacebook,
                       height: 33,
                       width: 30,
@@ -151,7 +151,7 @@ class _footerDesktopState extends State<footerDesktop> {
                     }
                   }),
               SizedBox(width: MediaQuery.of(context).size.width * .01),
-              GestureDetector(
+              InkWell(
                   child: Image.asset("images/ic_instgram.png",
                       height: 33,
                       width: 30,
@@ -165,7 +165,7 @@ class _footerDesktopState extends State<footerDesktop> {
                     }
                   }),
               SizedBox(width: MediaQuery.of(context).size.width * .01),
-              GestureDetector(
+              InkWell(
                   child: Image.asset("images/ic_twitter.png",
                       height: 33,
                       width: 30,

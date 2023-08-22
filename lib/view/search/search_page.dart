@@ -32,14 +32,14 @@ class _SearchPageState extends State<SearchPage> {
 
   int pageNum = 1;
 
-  @override
-  void dispose() {
-    cartViewModel.getCartCount(context);
-
-    searchController?.dispose();
-    scrollController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   cartViewModel.getCartCount(context);
+  //
+  //   searchController?.dispose();
+  //   scrollController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -169,6 +169,7 @@ padding: EdgeInsets.only(left: 4),
           Container(
           height: 50,
           width: 300,
+          margin: EdgeInsets.only(top: 5),
           alignment: Alignment.center,
           decoration: BoxDecoration(
             border: Border.all(color: TRANSPARENT_COLOR, width: 2.0),

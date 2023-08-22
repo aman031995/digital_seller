@@ -43,7 +43,7 @@ Widget searchList(
                               viewmodel);
                         }
                       });
-                      return GestureDetector(
+                      return InkWell(
                           onTap: () async {
                             if (isLogins == true) {
                               isLogins = false;

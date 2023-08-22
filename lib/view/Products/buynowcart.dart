@@ -394,18 +394,17 @@ class _BuynowCartState extends State<BuynowCart> {
                                       onTap: () {},
                                       child: Container(
                                         height: 150,
-                                        width: 180,
                                         margin: EdgeInsets.only(
-                                            left: 5, top: 5, right: 8, bottom: 5),
+                                            left: 12, top: 12, right: 8, bottom: 5),
                                         child: Image.network(
                                           cartListData?.cartList?[0].productDetails?.productImages?[0] ?? ""
-                                          ,fit: BoxFit.fill,
+                                          ,
                                         ),
                                       ),
                                     ),
                                     Container(
                                       height: 30,
-                                      margin: EdgeInsets.only(left: 5, top: 5, right: 8, bottom: 5),
+                                      margin: EdgeInsets.only(left: 12, top: 12, right: 8, bottom: 5),
                                       width: 120,
                                       decoration:BoxDecoration(
                                           border: Border.all(color: Theme.of(context).canvasColor.withOpacity(0.2),width: 1)
@@ -653,7 +652,7 @@ class _BuynowCartState extends State<BuynowCart> {
                                 } ).toList()
                             ),
                           ),
-                          SizedBox(height: 8),
+                          SizedBox(height: 15),
                           ResponsiveWidget.isMediumScreen(context)
                               ?  Container(
                               height: 50,
@@ -686,7 +685,7 @@ class _BuynowCartState extends State<BuynowCart> {
                               :Container(
                               height: 50,
                               decoration:BoxDecoration(
-                                  color: Theme.of(context).primaryColor.withOpacity(0.8),
+                                  color: Theme.of(context).primaryColor,
                                   borderRadius: BorderRadius.circular(4)
                               ) ,
                               width: SizeConfig.screenWidth/5.2,
@@ -709,16 +708,17 @@ class _BuynowCartState extends State<BuynowCart> {
                                     child: AppMediumFont(context,
                                         msg: "CONTINUE",
                                         fontSize: 15.0,
-                                        color: Colors.white)),
+                                        color:Theme.of(context).hintColor)),
                               )),
                           ResponsiveWidget.isMediumScreen(context)
-                              ? SizedBox(height: 50):SizedBox(height: 200),
+                              ? SizedBox(height: 50):SizedBox(height: 300),
                           ResponsiveWidget.isMediumScreen(context)
                               ?footerMobile(context):footerDesktop()
                         ],
                       ),
                     ),
-                ), ResponsiveWidget
+                ),
+                ResponsiveWidget
                     .isMediumScreen(context)
                     ?Container(): isLogins == true
                     ? Positioned(
@@ -731,15 +731,9 @@ class _BuynowCartState extends State<BuynowCart> {
                     .isMediumScreen(context)
                     ? Container():isSearch == true
                     ? Positioned(
-                    top: ResponsiveWidget
-                        .isMediumScreen(context)
-                        ? 0
-                        : SizeConfig.screenWidth *
+                    top: SizeConfig.screenWidth *
                         0.001,
-                    right: ResponsiveWidget
-                        .isMediumScreen(context)
-                        ? 0
-                        : SizeConfig.screenWidth *
+                    right:  SizeConfig.screenWidth *
                         0.15,
                     child: searchList(
                         context,
