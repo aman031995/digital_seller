@@ -19,7 +19,7 @@ class AppNetwork {
             identifier: requestModal.requestTag);
         if (isSuccess == false || response.status == false) {
           AppIndicator.disposeIndicator();
-          handleErrorResponse(response.message!);
+          handleErrorResponse(response.message!,context);
         } else {
           AppIndicator.disposeIndicator();
           handleSuccessResponse(result, requestModal, responseHandler);
@@ -27,7 +27,7 @@ class AppNetwork {
       });
     } else {
       AppIndicator.disposeIndicator();
-      handleErrorResponse("internet is not available");
+      handleErrorResponse("internet is not available",context);
     }
   }
 
@@ -42,8 +42,8 @@ class AppNetwork {
     return isConnected;
   }
 
-  handleErrorResponse(String message) {
-    ToastMessage.message(message);
+  handleErrorResponse(String message,BuildContext context) {
+    ToastMessage.message(message,context);
   }
 
   handleSuccessResponse(Result result, ASRequestModal forRequest,

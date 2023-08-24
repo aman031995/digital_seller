@@ -65,7 +65,7 @@ class AppRouter extends $AppRouter {
           if (sharedPreferences.get('token') != null) {
             resolver.next();
           } else {
-            ToastMessage.message("Please Login User");
+            // ToastMessage.message("Please Login User");
             resolver.redirect(HomePageWeb());
           }
         },
@@ -92,7 +92,7 @@ class AppRouter extends $AppRouter {
           if (sharedPreferences.get('token') != null) {
             resolver.next();
           } else {
-            ToastMessage.message("Please Login User");
+          //  ToastMessage.message("Please Login User");
             resolver.redirect(HomePageWeb());
 
           }
@@ -119,7 +119,7 @@ class AppRouter extends $AppRouter {
           if (sharedPreferences.get('token') != null) {
             resolver.next();
           } else {
-            ToastMessage.message("Please Login User");
+           // ToastMessage.message("Please Login User");
             resolver.redirect(HomePageWeb());
           }
         },
@@ -162,7 +162,7 @@ class AppRouter extends $AppRouter {
           if (sharedPreferences.get('token') != null) {
             resolver.next();
           } else {
-            ToastMessage.message("Please Login User");
+          //  ToastMessage.message("Please Login User");
           }
         },
       )])

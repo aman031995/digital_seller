@@ -175,6 +175,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
           )) :
       Container(
           height: SizeConfig.screenHeight / 1.8,
+          margin:  EdgeInsets.only(left: 50, right: 50,top: 20),
           width: SizeConfig.screenWidth * 0.25,
           child: SingleChildScrollView(
             child: Column(
@@ -192,17 +193,25 @@ class _VerifyOtpState extends State<VerifyOtp> {
                     )
                   ],
                 ),
-                SizedBox(height: 20),
-                AppBoldFont(context,
-                  msg: StringConstant.verification,
-                  fontSize: 20,
+
+                Container(
+                  alignment: Alignment.topLeft,
+
+                  child: AppBoldFont(context,
+                    msg: StringConstant.verification,
+                    fontSize: 30,
+                  ),
                 ),
                 SizedBox(height: 15),
-                AppMediumFont(
-                    context,textAlign: TextAlign.left,
-                    msg: mobileOTPVerificaton == true ? StringConstant.codeVerify : StringConstant.emailVerify,
-                    fontSize: 16,
-                    maxLines: 2),
+                Container(
+                  alignment: Alignment.topLeft,
+
+                  child: AppMediumFont(
+                      context,textAlign: TextAlign.left,
+                      msg: mobileOTPVerificaton == true ? StringConstant.codeVerify : StringConstant.emailVerify,
+                      fontSize: 16,
+                      maxLines: 1),
+                ),
                 SizedBox(height: 30),
                 Container(
                   height: 60,

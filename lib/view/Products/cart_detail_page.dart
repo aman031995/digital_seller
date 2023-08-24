@@ -20,7 +20,6 @@ import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,7 +51,7 @@ class _CartDetailState extends State<CartDetail> {
 
   @override
   void initState() {
-    homeViewModel.getAppConfig(context);
+    homeViewModel.getAppConfigData(context);
     SessionStorageHelper.removeValue('token');
     SessionStorageHelper.removeValue('payment');
 
@@ -91,7 +90,7 @@ class _CartDetailState extends State<CartDetail> {
                 child: Scaffold(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     appBar:  ResponsiveWidget.isMediumScreen(context)
-                        ? homePageTopBar(context, _scaffoldKey, cartViewData.cartItemCount)
+                        ? homePageTopBar(context, _scaffoldKey, cartViewData.cartItemCount,homeViewModel, profileViewModel,)
                         : getAppBar(
                         context,
                         homeViewModel,

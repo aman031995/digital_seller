@@ -204,10 +204,10 @@ class _LoginUpState extends State<LoginUp> {
                             snapshot.data != true ? false : true,
                             onTap: () {
                               snapshot.data != true
-                                  ? ToastMessage.message(StringConstant.fillOut)
+                                  ? ToastMessage.message(StringConstant.fillOut,context)
                                   : emailController.text.length > 10 &&
                                   isCheckCredentialPhoneOrEmail == true
-                                  ? ToastMessage.message(StringConstant.mobileNumberLimit)
+                                  ? ToastMessage.message(StringConstant.mobileNumberLimit,context)
                                   : loginButtonPressed(
                                   authVM,
                                   emailController.text,
@@ -233,7 +233,7 @@ class _LoginUpState extends State<LoginUp> {
                       AppRegularFont(
                           context, msg: StringConstant.dontHaveAccount,
                           fontSize: 16),
-                      appTextButton(context, 'Create',
+                      appTextButton(context, StringConstant.create,
                           Alignment.bottomRight,
                           Theme.of(context).primaryColor, 14, true, onPressed: () {
                             Navigator.pop(context);
@@ -411,10 +411,10 @@ class _LoginUpState extends State<LoginUp> {
                           snapshot.data != true ? false : true,
                           onTap: () {
                             snapshot.data != true
-                                ? ToastMessage.message(StringConstant.fillOut)
+                                ? ToastMessage.message(StringConstant.fillOut,context)
                                 : emailController.text.length > 10 &&
                                 isCheckCredentialPhoneOrEmail == true
-                                ? ToastMessage.message(StringConstant.mobileNumberLimit)
+                                ? ToastMessage.message(StringConstant.mobileNumberLimit,context)
                                 : loginButtonPressed(
                                 authVM,
                                 emailController.text,
@@ -438,7 +438,7 @@ class _LoginUpState extends State<LoginUp> {
                   children: [
                     AppRegularFont(context, msg: StringConstant.dontHaveAccount),
                     appTextButton(
-                        context, 'Create', Alignment.bottomRight,
+                        context, StringConstant.create, Alignment.bottomRight,
                         Theme.of(context).primaryColor, 16, true, onPressed: () {
                       Navigator.pop(context);
                       showDialog(

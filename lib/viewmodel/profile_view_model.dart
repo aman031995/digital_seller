@@ -45,26 +45,18 @@ class ProfileViewModel with ChangeNotifier {
     });
   }
 
-  getUserDetails(BuildContext context) async {
+  getProfileDetails(BuildContext context) async {
     final box = await Hive.openBox<String>('appBox');
     final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
-    if (await jsonCache.contains(StringConstant.kUserDetails)) {
-      CacheDataManager.getCachedData(key: StringConstant.kUserDetails).then((jsonData) {
-        _userInfoModel = UserInfoModel.fromJson(jsonData!['data']);
-        print('From Cached UserData');
+    if (await jsonCache.contains(StringConstant.kUserDetails)) { CacheDataManager.getCachedData(key: StringConstant.kUserDetails).then((jsonData) {
+      if(jsonData != null){
+        _userInfoModel = UserInfoModel.fromJson(jsonData);
+        print('From Cached profile data');
         notifyListeners();
-      });
-      CacheDataManager.getCachedData(key: StringConstant.kPrivacyTerms).then((jsonData) {
-        var items = <TermsPrivacyModel>[];
-        jsonData?['data'].forEach((element) {
-          items.add(TermsPrivacyModel.fromJson(element));
-        });
-        _termsPrivacyModel = items;
-        print('From Cached Privacy and Terms');
-        notifyListeners();
-      });
+      }
+    });
     } else {
-      getProfileDetails(context);
+      getProfileDetail(context);
     }
   }
 
@@ -75,7 +67,7 @@ class ProfileViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> getProfileDetails(BuildContext context) async {
+  Future<void> getProfileDetail(BuildContext context) async {
     _profileRepo.getUserProfileDetails(context, (result, isSuccess) {
       if (isSuccess) {
         _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
@@ -98,7 +90,7 @@ class ProfileViewModel with ChangeNotifier {
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             AppDataManager.getInstance.updateUserDetails(userInfoModel!);
             ToastMessage.message(
-                ((result as SuccessState).value as ASResponseModal).message);
+                ((result as SuccessState).value as ASResponseModal).message,context);
             context.router.push(HomePageWeb());
             notifyListeners();
           }
@@ -156,7 +148,7 @@ class ProfileViewModel with ChangeNotifier {
     _profileRepo.contactUsApi(context, name, email, query, (result, isSuccess) {
       if(isSuccess){
         AppIndicator.disposeIndicator();
-        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
         context.router.push(HomePageWeb());
         notifyListeners();
       }

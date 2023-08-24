@@ -89,7 +89,7 @@ class ProfileRepository {
             (result as SuccessState).value as Map<String, dynamic>;
             if (map['data'] is Map<String, dynamic>) {
               response.dataModal = UserInfoModel.fromJson(map['data']);
-              CacheDataManager.cacheData(key: StringConstant.kUserDetails, jsonData: map, isCacheRemove: true);
+              CacheDataManager.cacheData(key: StringConstant.kUserDetails, jsonData: map['data'], isCacheRemove: true);
             }
             networkResponseHandler(Result.success(response), isSuccess);
           }
@@ -179,16 +179,22 @@ class ProfileRepository {
 
   Future<Result?> contactUsApi(BuildContext context, String name, String email,
       String query, NetworkResponseHandler responseHandler) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
     AppNetwork appNetwork = AppNetwork();
+    var header = {
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString(),
+      'Content-Type': 'application/json'
+    };
     var inputParams = {
-      "appId": "b07e2bbc-3ad9-441f-86fe-59caff940d1d",
+      "appId": NetworkConstants.kAppID,
       "name": name,
       "email": email,
       "query": query
     };
     ASRequestModal requestModal = ASRequestModal.withInputParams(
         inputParams, NetworkConstants.kContactUs, RequestType.post,
-        context: context, modalClass: "ABC");
+        context: context, modalClass: "ABC",headers: header);
     appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
       if (isSuccess) {
         var response = ASResponseModal.fromResult(result);

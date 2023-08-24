@@ -1,6 +1,7 @@
 class AssetsConstants {
   static String icLogo = "images/app_logo.png";
   static String icSignup="images/signup.png";
+  static String webLogo='images/webLogo.webp';
 
 
   static String icEyeFill = "images/ic_eyeFill.png";
@@ -11,6 +12,7 @@ class AssetsConstants {
   static String icFacebook = "images/ic_fb.png";
   static String icApple = "images/ic_apple.png";
 static String icbanner='images/banner.webp';
+  static String icSearch = "images/ic_search.png";
 
   static String icHome = "images/ic_home.png";
   static String icSelectHome = "images/ic_select_home.png";
@@ -52,4 +54,6 @@ static String icbanner='images/banner.webp';
   static String ic_wishlistSelect = "images/ic_wishlistSelect.png";
   static String ic_wishlistUnselect = "images/ic_wishlistDeselect.png";
   static String ic_myOrder='images/ic_MyOrders.png';
+  static String ic_outOfStock = "images/outofstock.png";
+
 }

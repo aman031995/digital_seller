@@ -78,7 +78,8 @@ HomeViewModel homeViewModel=HomeViewModel();
            },
            child: Scaffold(
         appBar: ResponsiveWidget.isMediumScreen(context)
-              ? homePageTopBar(context, _scaffoldKey, cartViewModel.cartItemCount)
+              ? homePageTopBar(context, _scaffoldKey, cartViewModel.cartItemCount,viewmodel,
+          profileViewModel,)
               : getAppBar(
               context,
                 viewmodel,

@@ -1,7 +1,6 @@
 @JS()
 library stripe;
 
-import 'package:easy_stepper/easy_stepper.dart';
 import 'package:js/js.dart';
 
 

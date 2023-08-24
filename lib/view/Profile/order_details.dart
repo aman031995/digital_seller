@@ -1,3 +1,4 @@
+import 'package:TychoStream/AppRouter.gr.dart';
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/model/data/order_data_model.dart';
 import 'package:TychoStream/model/data/order_detail_model.dart';
@@ -7,17 +8,22 @@ import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
+import 'package:TychoStream/view/Profile/bottom_nav_button.dart';
+import 'package:TychoStream/view/widgets/AppDialog.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
-import 'package:TychoStream/view/widgets/no_data_found_page.dart';
+
 import 'package:TychoStream/viewmodel/order_view_model.dart';
 import 'package:another_stepper/another_stepper.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
 class OrderDetails extends StatefulWidget {
   OrderList? orderItem;
-  OrderDetails({Key? key,this.orderItem}) : super(key: key);
+   Function? callback;
+
+   OrderDetails({Key? key,this.orderItem,this.callback}) : super(key: key);
 
   @override
   State<OrderDetails> createState() => _OrderDetailsState();
@@ -26,7 +32,7 @@ class OrderDetails extends StatefulWidget {
 class _OrderDetailsState extends State<OrderDetails> {
   final OrderViewModel orderView = OrderViewModel();
   String? checkInternet;
-
+bool? isCancel;
   void initState() {
     orderView.getOrderDetails(context, '${widget.orderItem?.orderItemId}');
     super.initState();
@@ -62,11 +68,14 @@ class _OrderDetailsState extends State<OrderDetails> {
                               child: IconButton(
                                   onPressed: (){
                                     Navigator.pop(context);
+                                    widget.callback!(isCancel);
+
                                   }, icon: Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor)),
                             ),
                           )
                         ],
                       ),
+
 
                       itemView(order),
                        shippingDetails(),
@@ -91,6 +100,16 @@ class _OrderDetailsState extends State<OrderDetails> {
                               stepperList:_stepperList(context,orderView.orderDetailModel)
 
                           )),
+                      order.orderDetailModel?.orderStatus == 'Order Confirmed' ?
+                      BottomNavButton(needHelpTap: () {
+
+                        context.router.push(ContactUs());
+                      },
+                          cancelTap: (){
+                            cancelTap(orderView, order.orderDetailModel);
+
+                          } )
+                          : SizedBox(),
                       SizedBox(
                         height: 5,
                       ),
@@ -162,7 +181,7 @@ class _OrderDetailsState extends State<OrderDetails> {
           borderRadius: BorderRadius.all(Radius.circular(5.0))),
       width:ResponsiveWidget.isMediumScreen(context)
           ?SizeConfig.screenWidth:500,
-      margin: EdgeInsets.only(top: 10, bottom: 4),
+      margin: EdgeInsets.only( bottom: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -463,4 +482,13 @@ class _OrderDetailsState extends State<OrderDetails> {
       );
     }).toList() ?? []; // Use the null-aware operator to handle null case
   }
+  void cancelTap(OrderViewModel orderView, OrderDetailModel? orderDetailModel) {
+    AppDialog.cancelOrder(context, onTap: (){
+      orderView.cancelOrder(context, orderDetailModel?.orderId ?? '',orderDetailModel?.orderItemId ?? '');
+      isCancel = true;
+      Navigator.of(context, rootNavigator: true).pop();
+    });
+
+  }
+
 }

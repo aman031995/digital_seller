@@ -46,8 +46,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
 
 
   void initState() {
-    homeViewModel.getAppConfig(context);
-    profileViewModel.getUserDetails(context);
+     homeViewModel.getAppConfigData(context);
     cartViewModel.getProductList(context, pageNum);
     cartViewModel.getCartCount(context);
     super.initState();
@@ -81,7 +80,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                 },
                 child: Scaffold(
                   appBar:  ResponsiveWidget.isMediumScreen(context)
-                      ? homePageTopBar(context,_scaffoldKey,cartViewModel.cartItemCount):getAppBar(context, homeViewModel, profileViewModel,
+                      ? homePageTopBar(context,_scaffoldKey,cartViewModel.cartItemCount,homeViewModel, profileViewModel,):getAppBar(context, homeViewModel, profileViewModel,
                       cartViewModel.cartItemCount, 1,searchController,() async {
                     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                     if (sharedPreferences.getString('token') == null) {

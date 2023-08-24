@@ -67,4 +67,33 @@ class OrderDetailRepository {
       }
     });
   }
+
+
+  Future<Result?> cancelOrder(BuildContext context, String orderId, String itemId, NetworkResponseHandler responseHandler) async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var header = {"Authorization": "Bearer " + sharedPreferences.get("token").toString()};
+
+    AppNetwork appNetwork = AppNetwork();
+    Map<String, String> urlParams = {
+      "{USER_ID}": sharedPreferences.get("userId").toString(),
+      "{APP_ID}": NetworkConstants.kAppID,
+      "{ORDER_ID}" : orderId,
+      "{ITEM_ID}" : itemId
+    };
+
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(urlParams, NetworkConstants.kCancelOrder, RequestType.put, headers: header);
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map = (result as SuccessState).value as Map<String, dynamic>;
+        if (map["data"] is Map<String, dynamic>) {
+          response.dataModal = OrderDataModel.fromJson(map["data"]);
+        }
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
+
 }

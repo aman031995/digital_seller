@@ -26,8 +26,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    homeViewModel.getBannerLists(context);
+    homeViewModel.getBannerList(context);
     super.initState();
   }
 
@@ -43,7 +42,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
             carouselImageWeb()
 
                 : Container(
-              height: SizeConfig.screenHeight/1.4,
+              height:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenHeight*0.45: SizeConfig.screenHeight/1.4,
                   child: Center(
                       child: ThreeArchedCircle( size: 50.0)
                   ));

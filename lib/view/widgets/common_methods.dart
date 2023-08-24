@@ -19,7 +19,6 @@ import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -105,7 +104,7 @@ Widget checkoutButton(BuildContext context,String msg,CartViewModel cartViewData
     child: InkWell(
       onTap: onTap,
       child: Center(
-          child: AppMediumFont(context, msg: msg, fontSize: 16.0)),
+          child: AppMediumFont(context, msg: msg, fontSize: 16.0,color: Theme.of(context).hintColor)),
     ),
     height: 50,
   );
@@ -263,7 +262,9 @@ Widget productGalleryTitleSection(BuildContext context, ProductList? productList
 
 //ProductListItems
 Widget productListItems(BuildContext context, ProductList? productListData, int index, CartViewModel viewmodel,{bool? favouritepage}) {
-  return OnHover(
+  return
+
+    OnHover(
     builder: (isHovered) {
       return InkWell(
           onTap: () { if (isLogins == true) {
@@ -531,7 +532,7 @@ Widget  cardDeatils(BuildContext context,ProductList itemInCart,int index,CartVi
                                         (result, isSuccess) {});
                               } else {
                                 ToastMessage.message(
-                                    "Sorry only ${itemInCart.productDetails?.quantityLeft} quantity is left.");
+                                    "Sorry only ${itemInCart.productDetails?.quantityLeft} quantity is left.",context);
                               }
                             }
                         // if (cartViewData.activeQuantity ==

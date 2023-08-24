@@ -158,7 +158,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                           10,
                           snapshot.data != true ? false : true, onTap: () {
                         snapshot.data != true
-                            ? ToastMessage.message(StringConstant.fillOut)
+                            ? ToastMessage.message(StringConstant.fillOut,context)
                             : sendButtonPressed(
                             authVM,
                             widget.viewModel?.appConfigModel?.androidConfig
@@ -190,6 +190,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           )) :
       Container(
         height: SizeConfig.screenHeight / 1.8,
+        margin:  EdgeInsets.only(left: 50, right: 50,top: 20),
         width: SizeConfig.screenWidth * 0.25,
         child: Column(
           children: [
@@ -207,14 +208,14 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ],
             ),
             Container(
-                margin:  EdgeInsets.only(left: 20, right: 20,top: 20,bottom: 10),
+                margin:  EdgeInsets.only(left: 20, right: 20,bottom: 10),
                 alignment: Alignment.topLeft,
                 child: AppBoldFont(context, msg: StringConstant.forgotPassword,
                     fontSize:  30)),
             Container(
                 margin:  EdgeInsets.only(left: 20, right: 20,bottom: 20),
                 alignment: Alignment.topLeft,
-                child: AppMediumFont(context, msg: widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false ? StringConstant.enterEmailOtpText: StringConstant.enterOtpText, fontSize: 18)),
+                child: AppMediumFont(context, msg: widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false ? StringConstant.enterEmailOtpText: StringConstant.enterOtpText, fontSize: 16)),
             Container(
               margin:  EdgeInsets.only(left: 20, right: 20,bottom: 30),
               alignment: Alignment.center,
@@ -287,7 +288,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                         10,
                                         snapshot.data != true ? false : true, onTap: () {
                                       snapshot.data != true
-                                          ? ToastMessage.message(StringConstant.fillOut)
+                                          ? ToastMessage.message(StringConstant.fillOut,context)
                                           : sendButtonPressed(
                                           authVM,
                                           widget.viewModel?.appConfigModel?.androidConfig

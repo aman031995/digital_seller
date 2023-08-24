@@ -6,7 +6,9 @@ import 'package:TychoStream/model/data/checkout_data_model.dart';
 import 'package:TychoStream/model/data/city_state_model.dart';
 import 'package:TychoStream/model/data/create_order_model.dart';
 import 'package:TychoStream/model/data/promocode_data_model.dart';
+import 'package:TychoStream/network/CacheDataManager.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
+import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/view/WebScreen/stripepayment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe_web/flutter_stripe_web.dart';
@@ -43,7 +45,7 @@ class CartDetailRepository {
         (result as SuccessState).value as Map<String, dynamic>;
         if (map["data"] is Map<String, dynamic>) {
           response.dataModal = ProductListModel.fromJson(map["data"]);
-          //CacheDataManager.cacheData(key: StringConstant.kProductList, jsonData: map);
+          CacheDataManager.cacheData(key: StringConstant.kProductList, jsonData: map);
         }
         responseHandler(Result.success(response), isSuccess);
       } else {
@@ -116,6 +118,10 @@ class CartDetailRepository {
               items.add(ProductList.fromJson(element));
             });
             response.dataModal = items;
+            CacheDataManager.cacheData(
+                key: StringConstant.kRecommended,
+                jsonData: map,
+                isCacheRemove: true);
           }
           responseHandler(Result.success(response), isSuccess);
         }
@@ -211,7 +217,7 @@ class CartDetailRepository {
           //displayPaymentSheet(paymentIntent, context, createOrderModel, addressId, productId, variantId, quantity);
         }
       } catch (e, s) {
-        ToastMessage.message(e.toString());
+        ToastMessage.message(e.toString(),context);
         print(e);
       }
     } catch (err) {
@@ -825,6 +831,8 @@ class CartDetailRepository {
           response.dataModal = items;
           responseHandler(Result.success(response), isSuccess);
         }
+        CacheDataManager.cacheData(
+            key: StringConstant.kcategory, jsonData: map, isCacheRemove: true);
         // CacheDataManager.cacheData(
         //     key: StringConstant.kcategory,
         //     jsonData: map,

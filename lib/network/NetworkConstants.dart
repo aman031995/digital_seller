@@ -67,6 +67,8 @@ class NetworkConstants{
   static String kGetProductByCategory = "get-banner-product?appId={APP_ID}&catId={CAT_ID}&productId={PROD_ID}";
   static String KRecentView='view-product-list?userId={USER_ID}&appId={APP_ID}';
   static String KRecommended='recommended-product?appId={APP_ID}';
+ static String kCancelOrder =
+     "cancle-order?userId={USER_ID}&appId={APP_ID}&orderId={ORDER_ID}&orderItemId={ITEM_ID}";
   // payment-order section
   static String kGetAllCategory = "getAllCategory?appId={APP_ID}";
   static String kCreateOrder = "create-order";

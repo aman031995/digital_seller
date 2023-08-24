@@ -29,7 +29,6 @@ import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:easy_stepper/easy_stepper.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
@@ -76,8 +75,7 @@ class _AddressListPageState extends State<AddressListPage> {
   void initState() {
     _razorpay = Razorpay();
     cartViewModel.getCartCount(context);
-
-    homeViewModel.getAppConfig(context);
+    homeViewModel.getAppConfigData(context);
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
@@ -123,7 +121,7 @@ else{
               child: Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: ResponsiveWidget.isMediumScreen(context)
-                  ? homePageTopBar(context, _scaffoldKey,  cartViewData.cartItemCount)
+                  ? homePageTopBar(context, _scaffoldKey,  cartViewData.cartItemCount,homeViewModel, profileViewModel,)
                   : getAppBar(
                   context,
                   homeViewModel,
@@ -275,7 +273,7 @@ else{
                                           value: 2, groupValue: selectedRadioTile,
                                           contentPadding: EdgeInsets.only(left: 8),
                                           title: AppBoldFont(context,
-                                              msg: 'COD (Cash On Delivery)',
+                                              msg: StringConstant.COD,
                                               fontSize: 14.0),
                                           onChanged: (val) {
                                             print("Radio Tile pressed $val");
@@ -346,13 +344,13 @@ else{
                                       ),
                                     ),
                                     AppMediumFont(context,
-                                        msg: "Accept ", fontSize: 16.0),
+                                        msg: StringConstant.Accept, fontSize: 16.0),
                                     InkWell(
                                         onTap: () {
                                           context.router.push(WebHtmlPage(title:'ReturnPolicy',html: 'return_policy' ));
                                           },
                                         child: AppMediumFont(context,
-                                            msg: "Return Policy",
+                                            msg: StringConstant.returnPolicy,
                                             color: Theme.of(context).primaryColor,
                                             fontSize: 16.0)),
                                     AppRegularFont(context,
@@ -362,7 +360,7 @@ else{
                                           context.router.push(WebHtmlPage(title:'TermsAndCondition',html: 'terms_condition' ));
                                         },
                                         child: AppMediumFont(context,
-                                            msg: "Terms Of Use",
+                                            msg: StringConstant.TermsOfuse,
                                             color: Theme.of(context).primaryColor,
                                             fontSize: 16.0)),
                                   ],
@@ -371,7 +369,7 @@ else{
                                 ElevatedButton(
                                     onPressed: (){
                                   if (agree != true) {
-                                    ToastMessage.message(StringConstant.acceptReturnPolicy);
+                                    ToastMessage.message(StringConstant.acceptReturnPolicy,context);
                                   } else if ((google_pay == true) && (agree == true)) {
                                     widget.buynow==true?
                                     createOrder("online",cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
@@ -379,7 +377,6 @@ else{
                                         "",context,addressId: addressId,gateway: GlobalVariable.payGatewayName,):
                                     createOrder("online",'','','',context,addressId: addressId,gateway: GlobalVariable.payGatewayName,);
                                   } else if ((cod == true) && (agree == true)){
-                                    print('order with cod options');
                                     widget.buynow==true?
                                     createOrder("cod",cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
                                         .value ??
@@ -388,13 +385,13 @@ else{
                                   }
 
                                   else {
-                                    ToastMessage.message(StringConstant.selectPaymentOption);
+                                    ToastMessage.message(StringConstant.selectPaymentOption,context);
                                   }},
                                     style: ElevatedButton.styleFrom(
                                       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                                       backgroundColor: Theme.of(context).primaryColor
                                     ),
-                                    child: Text("checkout",style: TextStyle(fontSize: 18,color: Theme.of(context).hintColor))),
+                                    child: Text(StringConstant.checkout,style: TextStyle(fontSize: 18,color: Theme.of(context).hintColor))),
                                 SizedBox(height: 20),
                                 footerMobile(context)
                               ],
@@ -509,7 +506,7 @@ else{
                                                 value: 2, groupValue: selectedRadioTile,
                                                 contentPadding: EdgeInsets.only(left: 8),
                                                 title: AppBoldFont(context,
-                                                    msg: 'COD (Cash On Delivery)',
+                                                    msg: StringConstant.COD,
                                                     fontSize: 14.0),
                                                 onChanged: (val) {
                                                   print("Radio Tile pressed $val");
@@ -555,13 +552,13 @@ else{
                                             ),
                                           ),
                                           AppMediumFont(context,
-                                              msg: "Accept ", fontSize: 16.0),
+                                              msg: StringConstant.Accept, fontSize: 16.0),
                                           InkWell(
                                               onTap: () {
                                                 context.router.push(WebHtmlPage(title:'ReturnPolicy',html: 'return_policy' ));
                                                 },
                                               child: AppMediumFont(context,
-                                                  msg: "Return Policy",
+                                                  msg: StringConstant.returnPolicy,
                                                   color: Theme.of(context).primaryColor,
                                                   fontSize: 16.0)),
                                           AppRegularFont(context,
@@ -571,7 +568,7 @@ else{
                                                 context.router.push(WebHtmlPage(title:'TermsAndCondition',html: 'terms_condition' ));
                                                 },
                                               child: AppMediumFont(context,
-                                                  msg: "Terms Of Use",
+                                                  msg: StringConstant.TermsOfuse,
                                                   color: Theme.of(context).primaryColor,
                                                   fontSize: 16.0)),
                                         ],
@@ -579,7 +576,7 @@ else{
                                       SizedBox(height: 5),
                                       ElevatedButton(onPressed: (){
                                         if (agree != true) {
-                                          ToastMessage.message(StringConstant.acceptReturnPolicy);
+                                          ToastMessage.message(StringConstant.acceptReturnPolicy,context);
                                         } else if ((google_pay == true) && (agree == true)) {
                                           widget.buynow==true?
                                           createOrder("online",cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
@@ -587,7 +584,6 @@ else{
                                               "",context,addressId: addressId,gateway: GlobalVariable.payGatewayName,):
                                           createOrder("online",'','','',context,addressId: addressId,gateway: GlobalVariable.payGatewayName,);
                                         } else if ((cod == true) && (agree == true)){
-                                          print('order with cod options');
                                           widget.buynow==true?
           createOrder("cod",cartListData?.cartList?[0].productId ?? "",cartListData?.cartList?[0].productDetails?.variantId ??'',cartListData?.checkoutDetails?.elementAt(0)
                 .value ??
@@ -596,11 +592,18 @@ else{
                                         }
 
                                         else {
-                                          ToastMessage.message(StringConstant.selectPaymentOption);
-                                        }},style: ElevatedButton.styleFrom(
-                                          backgroundColor: Theme.of(context).primaryColor
-                                      ),
-                                          child: Text("checkout",style: TextStyle(fontSize: 18,color: Theme.of(context).hintColor)))
+                                          ToastMessage.message(StringConstant.selectPaymentOption,context);
+                                        }}, style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all(
+                                              Theme.of(context).primaryColor),
+                                          padding: MaterialStateProperty.all(
+                                              EdgeInsets.symmetric(horizontal: 80, vertical: 20)),
+                                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                              RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(ResponsiveWidget.isMediumScreen(context)
+                                                    ?0:5.0),
+                                              ))),
+                                          child:AppBoldFont(context, msg: StringConstant.checkout,color: Theme.of(context).hintColor,fontSize: 18))
 
                                     ],)
                                   ],

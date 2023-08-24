@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:TychoStream/model/data/UserInfoModel.dart';
 import 'package:TychoStream/network/ASResponseModal.dart';
@@ -70,8 +69,8 @@ class SocialLoginViewModel with ChangeNotifier {
             AppDataManager.getInstance.updateUserDetails(_userInfoModel!);
             AppDataManager.setFirstTimeValue();
             ToastMessage.message(
-                ((result as SuccessState).value as ASResponseModal).message);
-            GoRouter.of(context).pushNamed(RoutesName.home);
+                ((result as SuccessState).value as ASResponseModal).message,context);
+
             notifyListeners();
             AppIndicator.disposeIndicator();
           }
@@ -110,7 +109,7 @@ class SocialLoginViewModel with ChangeNotifier {
       }
       else {
         var response = (result as SuccessState).value;
-        ToastMessage.message(response['message']);
+        ToastMessage.message(response['message'],context);
         notifyListeners();
       }
     });

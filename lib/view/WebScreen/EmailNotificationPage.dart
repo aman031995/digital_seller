@@ -3,8 +3,9 @@ import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppTextField.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
+import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
-import 'package:easy_stepper/easy_stepper.dart';
+import 'package:flutter/material.dart';
 
 
 
@@ -37,7 +38,7 @@ import 'package:easy_stepper/easy_stepper.dart';
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        inputNormalTextField(emailController, TextInputType.emailAddress, 'Enter your email', null),
+        inputNormalTextField(emailController, TextInputType.emailAddress, StringConstant.enterEmail, null),
         SizedBox(width: 40,),
        ElevatedButton(onPressed: (){},
            style: ElevatedButton.styleFrom(
@@ -61,7 +62,7 @@ Widget getLatestUpdateRowTextFieldMobile(BuildContext context) {
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      inputNormalTextField(emailController, TextInputType.emailAddress, 'Enter your email', null),
+      inputNormalTextField(emailController, TextInputType.emailAddress, StringConstant.enterEmail, null),
       SizedBox(height: 5),
       ElevatedButton(onPressed: (){},
           style: ElevatedButton.styleFrom(

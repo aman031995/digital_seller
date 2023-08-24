@@ -10,8 +10,10 @@ class StringConstant {
   static String kProductList = "product_list";
   static String kRecommended='recommeded_list';
   static String kcategory='category_list';
+  static String discard = 'Discard';
 
-
+  static String deleteAccountMessage = "This Account connot be recovered once deleted.";
+  static String cancelYourOrder = "Do you really want to cancel your order.";
 // **************Login Page ***************
   static String mobileNumber = "Mobile Number";
   static String forgotPassword = "Forgot Password?";
@@ -22,9 +24,9 @@ class StringConstant {
   static String register = "Register";
   static String update = 'Update';
   static String deleteAccountTitle = "Are you sure ?";
-  static String deleteAccountMessage = "This Account connot be recovered once deleted.";
   static String dontHaveAccount = "Don't have an account?";
   static String didntGetCode = "Didn't get code? ";
+  static String COD='COD (Cash On Delivery)';
 
   //  *********** Registration Page *************
   static String name = "Name";
@@ -43,16 +45,18 @@ class StringConstant {
   static String resend = "Resend";
   static String resendOtp = "Resend OTP";
   static String verify = "Verify";
-  static String codeVerify = 'Please check your phone we have sent\n you a 4-digit code to verify.';
+  static String codeVerify = 'Please check your phone we have sent you a 4-digit code to verify.';
   static String numberVerify = 'Please check your phone we have sent you a 4-digit code to verify.';
   static String emailVerify = 'Please check your email we have sent you a 4-digit code to verify.';
   static String newPassword = "New Password";
   static String confirmPassword = "Confirm Password";
   static String enterNewPassword = 'Enter your new password to login again.';
   static String backButton = 'Back';
-
+  static String cancelOrder = 'Cancel Order';
+  static String needHelp = 'Need Help?';
 ///////////////////////////
   static String login = "Login";
+  static String SignIn='SignIn';
   static String enterCredentials = 'Enter your credentials to continue with us.';
   static String alreadyAccount = 'Already have an account?';
   static String reset = 'Reset';
@@ -71,6 +75,7 @@ class StringConstant {
   static String logout = " Logout";
   static String cameraPer = 'Camera Permission';
   static String galleryPer = 'Gallery Permission';
+  static String enterEmail='Enter your email';
 
   static String cameraPerMessage =
       'This app needs camera access to take pictures/videos to upload.';
@@ -163,6 +168,8 @@ class StringConstant {
   static String totalPrice = "Total Price";
   static String selectPaymentOption = "Please Select Any Payment Option.";
   static String acceptReturnPolicy = "Accept the Return Policy and Terms of Use";
+  static String returnPolicy="Return Policy";
+
   static String paymentSuccessful = 'Payment Successful';
   static String enterValidEmail = 'Enter a valid email address';
   static String enterValidNumber = 'Enter a valid number';
@@ -185,7 +192,7 @@ class StringConstant {
   static String orderDetailed='Order Id';
   static String shippingDetails='    Shipping Details';
   static String priceDetails='Price details';
-  static String noProductFound='No Products Found';
+  static String noProductFound='No Items in Wishlist';
   static String noMoreMovies='No Movies';
   static String fetchPlane='Fetching Plan';
   static String deliverytime=   'Expected Delivery Time: 3-5 Days';
@@ -203,6 +210,7 @@ class StringConstant {
   static String myOrder= "My Order ";
   static String productList='ProductList';
   static String Download= "Download Now";
+  static String Accept="Accept ";
 
 
 
@@ -212,7 +220,7 @@ class StringConstant {
   static String AboutUs='About Us';
   static String TermsOfuse='Terms Of Use';
   static String HelpDesk='Helpdesk';
-
+static String OutofStock="Out of Stock";
 static String  offerContent = 'Nor again is there anyone who loves or pursues or desires to obtain pain of itself.';
 static String  offerOnTimeDelivery = 'On Time Delivery';
 static String  offerSecurePayment = 'Secure Payment';

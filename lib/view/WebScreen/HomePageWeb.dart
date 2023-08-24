@@ -63,11 +63,10 @@ class _HomePageWebState extends State<HomePageWeb> {
             Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
         axis: Axis.horizontal);
     User();
-    homeViewModel.getAppConfig(context);
+    homeViewModel.getAppConfigData(context);
     cartViewModel.getCartCount(context);
-    cartViewModel.getProductCategoryList(context, 1);
+    cartViewModel.getProductCategoryLists(context);
     cartViewModel.getRecommendedViewData(context);
-
     super.initState();
   }
 
@@ -108,12 +107,13 @@ class _HomePageWebState extends State<HomePageWeb> {
                           }
                         },
                         child: Scaffold(
-                            backgroundColor:
-                                Theme.of(context).scaffoldBackgroundColor,
-                            extendBodyBehindAppBar: true,
+                            extendBodyBehindAppBar:  ResponsiveWidget.isMediumScreen(context)
+                                ? false:true,
                             appBar: ResponsiveWidget.isMediumScreen(context)
                                 ? homePageTopBar(context, _scaffoldKey,
-                                    cartViewModel.cartItemCount)
+                                    cartViewModel.cartItemCount,
+                              viewmodel,
+                              profilemodel,)
                                 : getAppBar(
                                     context,
                                     viewmodel,
@@ -172,9 +172,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                               '${cartViewModel.cartItemCount}'));
                                     }
                                   }),
-                            body: checkInternet == "Offline"
-                                ? NOInternetScreen()
-                                : Scaffold(
+                            body: Scaffold(
                                     extendBodyBehindAppBar: true,
                                     key: _scaffoldKey,
                                     backgroundColor: Theme.of(context)
@@ -348,7 +346,6 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                   elevation: isHovered == true ? 10 : 0.1,
                                                                                   margin: EdgeInsets.all(ResponsiveWidget.isMediumScreen(context) ? 2 : 10),
                                                                                   child: Container(
-                                                                                    //height: ResponsiveWidget.isMediumScreen(context) ? 140 :SizeConfig.screenWidth * 0.23,
                                                                                     width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
                                                                                     decoration: BoxDecoration(
                                                                                       color: Theme.of(context).cardColor,
@@ -449,7 +446,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                     onTap: () {
                                                                       _nextCounter();
                                                                       setState(
-                                                                          () {});
+                                                                          () {
+                                                                            // counter++;
+                                                                          });
                                                                     })),
                                                         Positioned(
                                                             top: ResponsiveWidget
@@ -482,15 +481,13 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                               .arrow_back_ios_new_outlined,
                                                                           size: ResponsiveWidget.isMediumScreen(context)
                                                                               ? 18
-                                                                              : 25, color:
-                        Theme.of(context).canvasColor),
+                                                                              : 25, color: Theme.of(context).canvasColor),
                                                                     ),
                                                                     onTap: () {
                                                                       _prev();
+                                                                      if(counter != 0)
                                                                       setState(
                                                                           () {
-                                                                        counter =
-                                                                            4;
                                                                       });
                                                                     }))
                                                       ],
@@ -642,11 +639,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                     margin: EdgeInsets.all(ResponsiveWidget.isMediumScreen(context) ? 2 : 10),
                                                                                     child: Container(
                                                                                       width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
-                                                                                      // height: ResponsiveWidget.isMediumScreen(context) ? 185 : SizeConfig.screenWidth / 2.65,
                                                                                       decoration: BoxDecoration(
                                                                                         color: Theme.of(context).cardColor,
                                                                                       ),
-                                                                                      //margin: EdgeInsets.only(right: 16),
                                                                                       child: Column(
                                                                                         mainAxisSize: MainAxisSize.min,
                                                                                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -684,7 +679,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                           .screenWidth *
                                                                       0.10,
                                                               right: 0.5,
-                                                              child: counter1 ==
+                                                              child: cartViewModel
+                                                                  .recentView
+                                                                  !.length>4?counter1 ==
                                                                       cartViewModel
                                                                           .recentView
                                                                           ?.length
@@ -714,7 +711,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                         _nextCounter1();
                                                                         setState(
                                                                             () {});
-                                                                      })),
+                                                                      }):Container()),
                                                           Positioned(
                                                               top: ResponsiveWidget
                                                                       .isMediumScreen(
@@ -723,8 +720,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                   : SizeConfig
                                                                           .screenWidth *
                                                                       0.10,
-                                                              child: counter1 ==
-                                                                      4
+                                                              child: counter1 == 4
                                                                   ? Container()
                                                                   : InkWell(
                                                                       child:
@@ -749,11 +745,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                       onTap:
                                                                           () {
                                                                         _prev1();
-                                                                        setState(
-                                                                            () {
-                                                                          counter =
-                                                                              4;
-                                                                        });
+                                                                        if(counter != 0)
+                                                                          setState(
+                                                                                  () {
+                                                                              });
                                                                       }))
                                                         ],
                                                       ),
@@ -766,6 +761,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                               context)
                                                       ? 12
                                                       : 24),
+
                                               // what we offer.....
 
                                               offerList(context),
@@ -891,6 +887,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                               context)
                                                       ? 12
                                                       : 24),
+
                                               // getLatestUpdate(context),
 
                                               SizedBox(
@@ -910,11 +907,12 @@ class _HomePageWebState extends State<HomePageWeb> {
                                             ],
                                           ),
                                         ),
+
                                         ResponsiveWidget.isMediumScreen(context)
                                             ? Container()
                                             : isLogins == true
                                                 ? Positioned(
-                                                    top: 80,
+                                                    top: 70,
                                                     right: 180,
                                                     child: profile(context,
                                                         setState, profilemodel))
@@ -960,11 +958,9 @@ class _HomePageWebState extends State<HomePageWeb> {
   }
 
   Future _prev() async {
-    setState(() {
-      counter = 0;
-    });
+    setState(() => counter = (counter - 1));
     await controller.scrollToIndex(counter,
-        preferPosition: AutoScrollPosition.begin);
+        preferPosition: AutoScrollPosition.end);
     controller.highlight(counter);
   }
 
@@ -976,9 +972,8 @@ class _HomePageWebState extends State<HomePageWeb> {
   }
 
   Future _prev1() async {
-    setState(() {
-      counter1 = 0;
-    });
+    setState(() => counter1 = (counter1 - 1));
+
     await controller1.scrollToIndex(counter1,
         preferPosition: AutoScrollPosition.begin);
     controller1.highlight(counter1);

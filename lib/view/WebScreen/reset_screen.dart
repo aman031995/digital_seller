@@ -48,7 +48,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       contentPadding: EdgeInsets.zero,
       insetPadding: EdgeInsets.all(10),
       content: ResponsiveWidget.isMediumScreen(context)? Container(
-        padding: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
+        padding: EdgeInsets.only(left: 15,right: 15,top: 10,bottom: 15),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +72,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               AppRegularFont(
                   context,msg: StringConstant.enterNewPassword,
                   fontSize:16),
-              SizedBox(height: 30),
+              SizedBox(height: 25),
               StreamBuilder(
                   stream: validation.password,
                   builder: (context, snapshot) {
@@ -124,14 +124,14 @@ class _ResetPasswordState extends State<ResetPassword> {
                         context,
                         StringConstant.reset,
                         SizeConfig.screenWidth,
-                        40.0,
+                        50.0,
                         Theme.of(context).primaryColor,
                         Theme.of(context).hintColor,
                         18,
                         10,
                         snapshot.data != true ? false : true, onTap: () {
                       snapshot.data != true
-                          ? ToastMessage.message(StringConstant.fillOut)
+                          ? ToastMessage.message(StringConstant.fillOut,context)
                           : resetBtnPressed(authVM, newPasswordController.text,
                           confirmPasswordController.text,widget.loginType);
                     });
@@ -158,10 +158,12 @@ class _ResetPasswordState extends State<ResetPassword> {
         ),
       ) :
       Container(
-        width: SizeConfig.screenWidth * 0.29,
         height: SizeConfig.screenHeight / 1.8,
+        margin:  EdgeInsets.only(left: 50, right: 50,top: 20),
+        width: SizeConfig.screenWidth * 0.25,
         child: SingleChildScrollView(
           child: Column(
+
             children: [
               Stack(
                 children: [
@@ -176,13 +178,18 @@ class _ResetPasswordState extends State<ResetPassword> {
                   )
                 ],
               ),
-              AppBoldFont(
-                  textAlign: TextAlign.center,
-                  context,msg:StringConstant.reset, fontSize: 30),
+              Container(
+                alignment: Alignment.topLeft,
+                child: AppBoldFont(
+                    context,msg:StringConstant.reset, fontSize: 30),
+              ),
               SizedBox(height: 15,),
-              AppRegularFont(
-                  context,msg: StringConstant.enterNewPassword,
-                  fontSize:18),
+              Container(
+                alignment: Alignment.topLeft,
+                child: AppRegularFont(
+                    context,msg: StringConstant.enterNewPassword,
+                    fontSize:16),
+              ),
               SizedBox(height: 30),
               Container(
                 width: 400,
@@ -250,7 +257,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                           10,
                           snapshot.data != true ? false : true, onTap: () {
                         snapshot.data != true
-                            ? ToastMessage.message(StringConstant.fillOut)
+                            ? ToastMessage.message(StringConstant.fillOut,context)
                             : resetBtnPressed(authVM, newPasswordController.text,
                             confirmPasswordController.text,widget.loginType);
                       });
@@ -267,7 +274,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                   }
                 },
                 child: Container(
-                  // margin: EdgeInsets.only(left: 120, right: 120, bottom: 5),
                     width: SizeConfig.screenWidth * 0.08,
                     child: GlobalVariable.isLightTheme == true ?
                     Image.network(StringConstant.digitalSellerLitelogo,  fit: BoxFit.fill, width: 50) :

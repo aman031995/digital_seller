@@ -51,7 +51,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
   @override
   void initState() {
     homeViewModel.getAppConfig(context);
-    profileViewModel.getUserDetails(context);
+    // profileViewModel.getUserDetails(context);
     cartViewModel.getCartCount(context);
     cartViewModel.getFavList(context, pageNum);
     super.initState();
@@ -84,7 +84,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                 },
                 child: Scaffold(
                     appBar: ResponsiveWidget.isMediumScreen(context)
-                        ? homePageTopBar(context, _scaffoldKey, viewmodel.cartItemCount)
+                        ? homePageTopBar(context, _scaffoldKey, viewmodel.cartItemCount,homeViewModel, profileViewModel,)
                         : getAppBar(
                             context,
                             homeViewModel,

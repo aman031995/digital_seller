@@ -2,6 +2,7 @@ import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/ASResponseModal.dart';
+import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/auth_repository.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
@@ -36,6 +37,7 @@ import '../../AppRouter.gr.dart';
 
 @RoutePage()
 class EditProfile extends StatefulWidget {
+  const EditProfile({Key? key}) : super(key: key);
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -63,8 +65,8 @@ class _EditProfileState extends State<EditProfile> {
   void initState() {
     cartViewModel.getCartCount(context);
 
-    homeViewModel.getAppConfig(context);
-    profileViewModel.getProfileDetails(context);
+    homeViewModel.getAppConfigData(context);
+    profileViewModel.getProfileDetail(context);
     getUser();
     addressController = TextEditingController();
     nameController = TextEditingController();
@@ -106,7 +108,14 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final authVM = Provider.of<AuthViewModel>(context);
-    return ChangeNotifierProvider.value(
+    AppNetwork.checkInternet((isSuccess, result) {
+      setState(() {
+        checkInternet = result;
+      });
+    });
+    return  checkInternet == "Offline"
+        ? NOInternetScreen()
+        :ChangeNotifierProvider.value(
         value: profileViewModel,
         child: Consumer<ProfileViewModel>(builder: (context, profilemodel, _) {
           return ChangeNotifierProvider.value(
@@ -127,7 +136,9 @@ class _EditProfileState extends State<EditProfile> {
             },
             child: Scaffold(
                 appBar:  ResponsiveWidget.isMediumScreen(context)
-                    ? homePageTopBar(context, _scaffoldKey,cartViewModel.cartItemCount)
+                    ? homePageTopBar(context, _scaffoldKey,cartViewModel.cartItemCount,
+                  viewmodel,
+                  profilemodel,)
                     : getAppBar(
                     context,
                     viewmodel,
@@ -185,7 +196,6 @@ class _EditProfileState extends State<EditProfile> {
                         '${cartViewModel.cartItemCount}'));
                   }
                 }),
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 body:  Scaffold(
                 extendBodyBehindAppBar: true,
                 key: _scaffoldKey,
@@ -193,50 +203,47 @@ class _EditProfileState extends State<EditProfile> {
                     .scaffoldBackgroundColor,
                 drawer:
                 ResponsiveWidget.isMediumScreen(context)
-                ? AppMenu()
-                    : SizedBox(),
-                body: checkInternet == "Offline"
-                    ? NOInternetScreen()
-                    : Stack(
+                ? AppMenu() : SizedBox(),
+                body: Stack(
                       children: [
                         SingleChildScrollView(
-                            child: Center(
-                              child: Column(
-                                  children: [
-                                SizedBox(height: 35),
-                                _profileImageView(profilemodel),
-                                SizedBox(height: 40),
-                                _editFormField(profilemodel, authVM),
-                                    StreamBuilder(
-                                        stream: validation.validateUserEditProfile,
-                                        builder: (context, snapshot) {
-                                          return appButton(
-                                              context,
-                                              StringConstant.logout,
-                                              ResponsiveWidget.isMediumScreen(context)
-                                                  ?   SizeConfig.screenWidth/1.5:  SizeConfig.screenWidth/4.5,
-                                              50,
-                                              Theme.of(context).primaryColor,
-                                              Theme.of(context).hintColor,
-                                              20,
-                                              10,
-                                              snapshot.data != true ? false : true, onTap: () {
-                                            authVM.logoutButtonPressed(context);
-                                            context.router.stack.clear();
-                                            context.router.dispose();
-                                          });
-                                        }),
-                                    SizedBox(height:ResponsiveWidget.isMediumScreen(context)
-                                        ?100: 220),
-                                    ResponsiveWidget.isMediumScreen(context)
-                                        ?  footerMobile(context) : footerDesktop()
-                              ]),
-                            )),
-                        ResponsiveWidget
-                            .isMediumScreen(context)
-                            ?Container(): isLogins == true
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                              SizedBox(height: 35),
+                              _profileImageView(profilemodel),
+                              SizedBox(height: 40),
+                              _editFormField(profilemodel, authVM),
+                                  StreamBuilder(
+                                      stream: validation.validateUserEditProfile,
+                                      builder: (context, snapshot) {
+                                        return appButton(
+                                            context,
+                                            StringConstant.logout,
+                                            ResponsiveWidget.isMediumScreen(context)
+                                                ?   SizeConfig.screenWidth/1.5:  SizeConfig.screenWidth/4.5,
+                                            50,
+                                            Theme.of(context).primaryColor,
+                                            Theme.of(context).hintColor,
+                                            20,
+                                            10,
+                                            snapshot.data != true ? false : true, onTap: () {
+                                          authVM.logoutButtonPressed(context);
+                                          context.router.stack.clear();
+                                          context.router.dispose();
+                                        });
+                                      }),
+                                  SizedBox(height:ResponsiveWidget.isMediumScreen(context)
+                                      ?100: 220),
+                                  ResponsiveWidget.isMediumScreen(context)
+                                      ?  footerMobile(context) : footerDesktop(),
+
+                            ])),
+                        ResponsiveWidget.isMediumScreen(context)
+                            ? Container()
+                            : isLogins == true
                             ? Positioned(
-                            top:  0,
+                            top: 0,
                             right: 180,
                             child: profile(context,
                                 setState, profilemodel))
@@ -325,7 +332,7 @@ class _EditProfileState extends State<EditProfile> {
                   },
                   verifySubmit: () {
                     emailController?.text == '' || snapshot.hasError == true
-                        ? ToastMessage.message(StringConstant.enterValidEmail)
+                        ? ToastMessage.message(StringConstant.enterValidEmail,context)
                         : verifyInput(authVM, StringConstant.emailVerify,
                         emailController?.text ?? '', 'email');
                   },
@@ -357,7 +364,7 @@ class _EditProfileState extends State<EditProfile> {
                   },
                   verifySubmit: () {
                     phoneController!.text.length < 10
-                        ? ToastMessage.message(StringConstant.enterValidNumber)
+                        ? ToastMessage.message(StringConstant.enterValidNumber,context)
                         : verifyInput(authVM, StringConstant.numberVerify,
                         phoneController?.text ?? '', 'phone');
                   },
@@ -400,10 +407,10 @@ class _EditProfileState extends State<EditProfile> {
                     10,
                     snapshot.data != true ? false : true, onTap: () {
                   snapshot.data != true
-                      ? ToastMessage.message(StringConstant.fillOut)
+                      ? ToastMessage.message(StringConstant.fillOut,context)
                       : viewmodel.enableMobileField != true &&
                       viewmodel.enableEmailField != true
-                      ? ToastMessage.message(StringConstant.verifyDetails)
+                      ? ToastMessage.message(StringConstant.verifyDetails,context)
                       : saveButtonPressed(
                       profileViewModel,
                       nameController?.text,
@@ -478,7 +485,7 @@ class _EditProfileState extends State<EditProfile> {
         Navigator.of(context, rootNavigator: true).pop();
         AppIndicator.disposeIndicator();
         ToastMessage.message(
-            ((result as SuccessState).value as ASResponseModal).message);
+            ((result as SuccessState).value as ASResponseModal).message,context);
         otpValue = '';
         if (verifyType == 'email') {
           profileViewModel.getVerificationButtonStatus(
@@ -505,7 +512,7 @@ class _EditProfileState extends State<EditProfile> {
     AppDialog.verifyOtp(context, msg: msg, onTap: () {
       otpValue != ''
           ? verificationButtonPressed(authVM, otpValue ?? "", verifyType)
-          : ToastMessage.message(StringConstant.enterOtp);
+          : ToastMessage.message(StringConstant.enterOtp,context);
     }, resendOtp: () {
       resendCode(authVM, verifyType);
     });

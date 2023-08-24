@@ -9,8 +9,7 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i14;
-import 'package:easy_stepper/easy_stepper.dart' as _i15;
-import 'package:flutter/material.dart' as _i16;
+import 'package:flutter/material.dart' as _i15;
 import 'package:TychoStream/view/Products/address_list_page.dart' as _i1;
 import 'package:TychoStream/view/Products/buynowcart.dart' as _i2;
 import 'package:TychoStream/view/Products/cart_detail_page.dart' as _i3;
@@ -125,7 +124,7 @@ abstract class $AppRouter extends _i14.RootStackRouter {
     EditProfile.name: (routeData) {
       return _i14.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i11.EditProfile(),
+        child: const _i11.EditProfile(),
       );
     },
     HomePageWeb.name: (routeData) {
@@ -197,7 +196,7 @@ class AddressListPageArgs {
 /// [_i2.BuynowCart]
 class BuynowCart extends _i14.PageRouteInfo<BuynowCartArgs> {
   BuynowCart({
-    _i16.Key? key,
+    _i15.Key? key,
     List<_i14.PageRouteInfo>? children,
   }) : super(
           BuynowCart.name,
@@ -214,7 +213,7 @@ class BuynowCart extends _i14.PageRouteInfo<BuynowCartArgs> {
 class BuynowCartArgs {
   const BuynowCartArgs({this.key});
 
-  final _i16.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -265,7 +264,7 @@ class CartDetailArgs {
 /// [_i4.FavouriteListPage]
 class FavouriteListPage extends _i14.PageRouteInfo<FavouriteListPageArgs> {
   FavouriteListPage({
-    _i16.Key? key,
+    _i15.Key? key,
     Function? callback,
     List<_i14.PageRouteInfo>? children,
   }) : super(
@@ -289,7 +288,7 @@ class FavouriteListPageArgs {
     this.callback,
   });
 
-  final _i16.Key? key;
+  final _i15.Key? key;
 
   final Function? callback;
 
@@ -319,7 +318,7 @@ class ProductDetailPage extends _i14.PageRouteInfo<ProductDetailPageArgs> {
   ProductDetailPage({
     String? productName,
     List<String>? productdata,
-    _i16.Key? key,
+    _i15.Key? key,
     List<_i14.PageRouteInfo>? children,
   }) : super(
           ProductDetailPage.name,
@@ -350,7 +349,7 @@ class ProductDetailPageArgs {
 
   final List<String>? productdata;
 
-  final _i16.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {
@@ -448,7 +447,7 @@ class WebHtmlPage extends _i14.PageRouteInfo<WebHtmlPageArgs> {
   WebHtmlPage({
     String? title,
     String? html,
-    _i16.Key? key,
+    _i15.Key? key,
     List<_i14.PageRouteInfo>? children,
   }) : super(
           WebHtmlPage.name,
@@ -479,7 +478,7 @@ class WebHtmlPageArgs {
 
   final String? html;
 
-  final _i16.Key? key;
+  final _i15.Key? key;
 
   @override
   String toString() {

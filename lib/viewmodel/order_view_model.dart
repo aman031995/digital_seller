@@ -3,6 +3,8 @@ import 'package:TychoStream/model/data/order_detail_model.dart';
 import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/OrderDetailRepository.dart';
+import 'package:TychoStream/utilities/AppIndicator.dart';
+import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:flutter/cupertino.dart';
 
 class OrderViewModel extends ChangeNotifier {
@@ -37,7 +39,18 @@ class OrderViewModel extends ChangeNotifier {
       }
     });
   }
-
+  // cancel order method
+  Future<void> cancelOrder(BuildContext context, String orderId, String itemId) async{
+    AppIndicator.loadingIndicator(context);
+    _orderRepo.cancelOrder(context,orderId, itemId, (result, isSuccess) {
+      if(isSuccess){
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
+        AppIndicator.disposeIndicator();
+        getOrderDetails(context, itemId);
+        notifyListeners();
+      }
+    });
+  }
   dataPagination(Result result){
     _orderNewDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
     if(_orderNewDataModel?.pagination?.current == 1){

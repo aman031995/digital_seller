@@ -78,6 +78,22 @@ class HomeViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  // get BannerList
+  getBannerList(BuildContext context) async {
+    final box = await Hive.openBox<String>('appBox');
+    final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
+    if (await jsonCache.contains(StringConstant.kBannerList)) {
+      CacheDataManager.getCachedData(key: StringConstant.kBannerList).then((jsonData) {
+        if(jsonData != null){
+          _bannerDataModal = BannerDataModel.fromJson(jsonData['data']);
+          print('From Cached banner data');
+          notifyListeners();
+        }
+      });
+    } else {
+      getBannerLists(context);
+    }
+  }
   Future<void> getBannerLists(BuildContext context) async {
     _homePageRepo.getBannerData(context, (result, isSuccess) {
       if (isSuccess) {
@@ -121,6 +137,9 @@ class HomeViewModel with ChangeNotifier {
         print('From Cached AppConfig Data');
         notifyListeners();
       });
+    }
+    else{
+      getAppConfig(context);
     }
   }
 

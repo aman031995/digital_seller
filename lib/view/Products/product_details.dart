@@ -72,24 +72,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   TextEditingController? searchController = TextEditingController();
    ProductList? productListDetails;
-  // ProductList? get productListDetails => _productListDetails;
 
   void initState() {
-    html.window.onPopState.listen((event) {
-      html.window.location.reload();
+    homeViewModel.getAppConfigData(context);
 
-      // window.onload = function () {
-      //   setTimeout(function () {
-      //   var loadingIndicator =document.getElementById("loading_indicator");
-      //   if (loadingIndicator != null) {
-      //   loadingIndicator.remove();
-      //   }
-      //   }, 10000);
-      // };
-    });
-    homeViewModel.getAppConfig(context);
-    profileViewModel.getUserDetails(context);
-    // SessionStorageHelper.removeValue('token');
     SessionStorageHelper.removeValue('payment');
     cartView.getCartCount(context);
     getProductDetails();
@@ -148,7 +134,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             },
             child: Scaffold(
                 appBar:ResponsiveWidget.isMediumScreen(context)
-                    ? homePageTopBar(context,_scaffoldKey, viewmodel.cartItemCount):getAppBar(context,homeViewModel,profileViewModel,viewmodel.cartItemCount,1,searchController, () async {
+                    ? homePageTopBar(context,_scaffoldKey, viewmodel.cartItemCount,homeViewModel, profileViewModel,):getAppBar(context,homeViewModel,profileViewModel,viewmodel.cartItemCount,1,searchController, () async {
                   SharedPreferences sharedPreferences =
                   await SharedPreferences.getInstance();
 
@@ -336,7 +322,26 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                    ),
                                  ])),
                          SizedBox(height: 12),
-                         bottomNavigationButton(),
+                         cartView.productListDetails?.productDetails?.isAvailable == true
+                             ?   bottomNavigationButton(): Center(
+                               child: Container(
+                           height: 50,width: 180,
+                           decoration: BoxDecoration(
+                                 borderRadius: BorderRadius.circular(4),
+                                 color: Theme.of(context).primaryColor
+                           ),
+                           child: Row(
+                               children: [
+                                 SizedBox(width: 10),
+                                 Image.asset(AssetsConstants.ic_outOfStock,width: 20,height: 20,color: Theme.of(context).hintColor,),
+                                 SizedBox(width: 10),
+
+                                 AppBoldFont(context, color: Theme.of(context).hintColor,
+                                     msg: StringConstant.OutofStock, fontSize: 18,fontWeight: FontWeight.w500),
+                               ],
+                           ),
+                         ),
+                             ),
                          SizedBox(height: 12),
                          footerMobile(context)
 
@@ -461,7 +466,27 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                      productList: cartView.productListDetails?.productDetails?.defaultVariationSku),
                                ),
                                SizedBox(height: 50),
-                               bottomNavigationButton()
+                               cartView.productListDetails?.productDetails?.isAvailable == true
+                              ? bottomNavigationButton():
+
+                               Container( 
+                                 height: 50,width: 180,
+                                 decoration: BoxDecoration(
+                                   borderRadius: BorderRadius.circular(4),
+                                   color: Theme.of(context).primaryColor
+                                 ),
+                                 child: Row(
+                                   children: [
+                                     SizedBox(width: 10), 
+                                     Image.asset(AssetsConstants.ic_outOfStock,width: 20,height: 20,color: Theme.of(context).hintColor,),
+                                     SizedBox(width: 10),
+
+                                     AppBoldFont(context, color: Theme.of(context).hintColor,
+                                         msg: StringConstant.OutofStock, fontSize: 18,fontWeight: FontWeight.w500),
+                                   ],
+                                 ),
+                               )
+
                              ]))
          ],
        ),

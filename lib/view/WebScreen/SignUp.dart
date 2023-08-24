@@ -107,7 +107,7 @@ class _SignUpState extends State<SignUp> {
                                       snapshot.data != true ? false : true,
                                       onTap: () {
                                         snapshot.data != true
-                                            ? ToastMessage.message(StringConstant.fillOut)
+                                            ? ToastMessage.message(StringConstant.fillOut,context)
                                             : registerButtonPressed(
                                             authVM,
                                             nameController.text,
@@ -211,7 +211,7 @@ class _SignUpState extends State<SignUp> {
                                     snapshot.data != true ? false : true,
                                     onTap: () {
                                       snapshot.data != true
-                                          ? ToastMessage.message(StringConstant.fillOut)
+                                          ? ToastMessage.message(StringConstant.fillOut,context)
                                           : registerButtonPressed(
                                           authVM,
                                           nameController.text,

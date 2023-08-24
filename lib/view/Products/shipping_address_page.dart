@@ -169,13 +169,14 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                 onChanged: (m) {
                                   validation.sinkPincode.add(m);
                                   if(m.length==6){
-
+                                    cityController.clear();
+                                    stateController.clear();
                                     cartViewData.getCityState(context, m, (result, isSuccess) {
                                       if(isSuccess){
                                         setState(() {
                                           _cityStateModel = ((result as SuccessState).value as ASResponseModal).dataModal;
                                           if(_cityStateModel.state==null || _cityStateModel.city==null ){
-                                            ToastMessage.message("Pincode Not Found");
+                                            ToastMessage.message("Pincode Not Found",context);
                                           }
                                           else{
                                             cityController.text = _cityStateModel.city ?? "";
@@ -253,7 +254,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                 onTap: () {
                               snapshot.data != true
                                   ? ToastMessage.message(
-                                      StringConstant.fillOut)
+                                      StringConstant.fillOut,context)
                                   : widget.isAlreadyAdded == true
                                       ? cartViewData
                                           .updateExistingAddress(

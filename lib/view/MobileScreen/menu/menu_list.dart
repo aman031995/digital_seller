@@ -49,77 +49,51 @@ class _MenuListState extends State<MenuList> {
                   children: [
                     SizedBox(height: 10),
                     Image.asset(
-                      "images/CG-icon(2).webp",
+                      "images/webLogo.webp",
                       width: 70,
                       height: 70,
 
                     ),
                     Column(children: buildMenuList(widget.menuItem?.appMenu, homeViewModel)),
                     names == "null"
-                        ? GestureDetector(
+                        ? ListTile(
+                            title: Transform(
+                                transform: Matrix4.translationValues(-20, 0.0, 0.0),
+                                child: AppRegularFont(context, msg: StringConstant.SignIn, fontSize: 15,color: Theme.of(context).canvasColor)),
+                            leading: Image.asset(AssetsConstants.icProfile?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.6)),
+                            onTap: () =>  showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return LoginUp();
+                                }))
+                        : ListTile(
+                        title: Transform(
+                            transform: Matrix4.translationValues(-20, 0.0, 0.0),
+                            child: AppRegularFont(context, msg:StringConstant.profile, fontSize: 15,color: Theme.of(context).canvasColor)),
+                        leading: Image.asset(AssetsConstants.icProfile?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.6)),
                         onTap: () {
+                          if (isSearch == true) {
+                            isSearch = false;
+                          }
+                          context.router.push(EditProfile());
+                        }),
+                    ListTile(
+                        title: Transform(
+                            transform: Matrix4.translationValues(-20, 0.0, 0.0),
+                            child: AppRegularFont(context, msg:StringConstant.myOrder, fontSize: 15,color: Theme.of(context).canvasColor)),
+                        leading: Image.asset(AssetsConstants.ic_myOrder?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.6)),
+                        onTap: () {
+                          names == "null"?
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return LoginUp();
-                              });
-                        },
-                        child: Row(
-                          children: [
-                            SizedBox(width: 15),
-                            Image.asset(AssetsConstants.icProfile,
-                                width: 20,
-                                height: 20,
-                                color:  Theme.of(context).canvasColor),
-                            SizedBox(width: 10),
-                            AppRegularFont(context, msg: "SignIn", fontSize: 15,color: Theme.of(context).canvasColor),
-                          ],
-                        ))
-                        : GestureDetector(
-                      onTap: () {
-                        if (isSearch == true) {
-                          isSearch = false;
-                        }
-                        context.router.push(EditProfile());
-                      },
-                      child: Row(
-                        children: [
-                          SizedBox(width: 15),
-                          Image.asset(AssetsConstants.icProfile,
-                              width: 20,
-                              height: 20,
-                              color:  Theme.of(context).canvasColor),
-                          SizedBox(width: 10),
-                          AppRegularFont(context, msg:  StringConstant.profile,fontSize: 15,color: Theme.of(context).canvasColor)
-                        ],
-                      ),
-                    ),
-                  SizedBox(height: 15),
-                    GestureDetector(
-                      onTap: () {
-                        names == "null"?
-                        showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return LoginUp();
-                                }):context.pushRoute(MyOrderPage());
-                        if (isSearch == true) {
-                          isSearch = false;
+                              }):context.pushRoute(MyOrderPage());
+                          if (isSearch == true) {
+                            isSearch = false;
 
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          SizedBox(width: 15),
-                          Image.asset(AssetsConstants.ic_myOrder,
-                              width: 20,
-                              height: 20,
-                              color:  Theme.of(context).canvasColor.withOpacity(0.6)),
-                          SizedBox(width: 10),
-                          AppRegularFont(context, msg: StringConstant.myOrder,fontSize: 15,color: Theme.of(context).canvasColor)
-                        ],
-                      ),
-                    ),
+                          }
+                        }),
                     ChangeNotifierProvider.value(
                         value: homeViewModel,
                       child: Consumer<HomeViewModel>(builder: (context, viewmodel, _){

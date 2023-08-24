@@ -6,6 +6,7 @@ import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
 import 'package:TychoStream/main.dart';
@@ -43,11 +44,12 @@ class _ContactUsState extends State<ContactUs> {
   void initState() {
     homeViewModel.getAppConfig(context);
 
-    super.initState();
     messageController = TextEditingController();
     nameController = TextEditingController();
     emailController = TextEditingController();
     getUserInfo();
+    super.initState();
+
   }
 
   @override
@@ -83,9 +85,14 @@ class _ContactUsState extends State<ContactUs> {
       ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
       pageTitle = data['title'];
     }
-    return Scaffold(
+    return  ChangeNotifierProvider.value(
+        value: homeViewModel,
+        child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
+      return  Scaffold(
         appBar: ResponsiveWidget.isMediumScreen(context)
-            ? homePageTopBar(context, _scaffoldKey,cartViewModel.cartItemCount)
+            ? homePageTopBar(context, _scaffoldKey,cartViewModel.cartItemCount,
+          homeViewModel,
+          profileViewModel,)
             : getAppBar(
             context,
             homeViewModel,
@@ -155,130 +162,10 @@ class _ContactUsState extends State<ContactUs> {
     ? AppMenu()
         : SizedBox(),
       body:ResponsiveWidget.isMediumScreen(context)
-          ? Container(
+          ? SingleChildScrollView(
+            child: Container(
         margin: EdgeInsets.only(top: 50),
         child: Column(
-          children: [
-            SizedBox(height: 12),
-            Container(
-              margin: const EdgeInsets.all(20),
-              width: SizeConfig.screenWidth,
-              alignment: Alignment.center,
-              child: StreamBuilder(
-                  stream: validation.firstName,
-                  builder: (context, snapshot) {
-                    return AppTextField(
-                      maxLine: 1,
-                      controller: nameController,
-                      labelText: StringConstant.fullName,
-                      textCapitalization: TextCapitalization.words,
-                      isShowCountryCode: true,
-                      isShowPassword: false,
-                      secureText: false,
-                      maxLength: 30,
-                      isEnable: name != null ? false : true,
-                      keyBoardType: TextInputType.name,
-                      errorText:
-                          snapshot.hasError ? snapshot.error.toString() : null,
-                      onChanged: (m) {
-                        validation.sinkFirstName.add(m);
-                        setState(() {});
-                      },
-                      onSubmitted: (m) {},
-                      isTick: null,
-                    );
-                  }),
-            ),
-            Container(
-              margin: const EdgeInsets.all(20),
-              width: SizeConfig.screenWidth,
-              alignment: Alignment.center,
-              child: StreamBuilder(
-                  stream: validation.email,
-                  builder: (context, snapshot) {
-                    return AppTextField(
-                      maxLine: 1,
-                      controller: emailController,
-                      labelText: StringConstant.email,
-                      textCapitalization: TextCapitalization.words,
-                      isShowCountryCode: true,
-                      isShowPassword: false,
-                      secureText: false,
-                      maxLength: 30,
-                      isEnable: email != null ? false : true,
-                      keyBoardType: TextInputType.emailAddress,
-                      errorText:
-                          snapshot.hasError ? snapshot.error.toString() : null,
-                      onChanged: (m) {
-                        validation.sinkEmail.add(m);
-                        setState(() {});
-                      },
-                      onSubmitted: (m) {},
-                      isTick: null,
-                    );
-                  }),
-            ),
-            Container(
-              margin: const EdgeInsets.all(20),
-              width: SizeConfig.screenWidth,
-              alignment: Alignment.center,
-              child: StreamBuilder(
-                  stream: validation.address,
-                  builder: (context, snapshot) {
-                    return AppTextField(
-                      maxLine: 5,
-                      controller: messageController,
-                      labelText: StringConstant.message,
-                      textCapitalization: TextCapitalization.words,
-                      isShowCountryCode: true,
-                      isShowPassword: false,
-                      secureText: false,
-                      maxLength: 300,
-                      keyBoardType: TextInputType.multiline,
-                      errorText:
-                          snapshot.hasError ? snapshot.error.toString() : null,
-                      onChanged: (m) {
-                        validation.sinkAddress.add(m);
-                        setState(() {});
-                      },
-                      onSubmitted: (m) {},
-                      isTick: null,
-                    );
-                  }),
-            ),
-            SizedBox(height: 12),
-            StreamBuilder(
-                stream: validation.validateContactUs,
-                builder: (context, snapshot) {
-                  return appButton(
-                      context,
-                      StringConstant.send,
-                      SizeConfig.screenWidth * 0.8,
-                      50,
-                      LIGHT_THEME_COLOR,
-                      WHITE_COLOR,
-                      20,
-                      10,
-                      snapshot.data != true ? false : true, onTap: () {
-                    // snapshot.data != true ? null : " ";
-                    snapshot.data != true
-                        ? ToastMessage.message(StringConstant.fillOut)
-                        : saveButtonPressed(
-                            nameController?.text ?? '',
-                            emailController?.text ?? '',
-                            messageController?.text ?? '');
-                  });
-                }),
-            SizedBox(height: 80),
-           footerMobile(context)
-          ],
-        ),
-      ) :
-      Center(
-        child: Container(
-          width: SizeConfig.screenWidth * 0.4,
-          margin: EdgeInsets.only(top: 50, left: 20, right: 20),
-          child: Column(
             children: [
               SizedBox(height: 12),
               Container(
@@ -300,7 +187,7 @@ class _ContactUsState extends State<ContactUs> {
                         isEnable: name != null ? false : true,
                         keyBoardType: TextInputType.name,
                         errorText:
-                        snapshot.hasError ? snapshot.error.toString() : null,
+                            snapshot.hasError ? snapshot.error.toString() : null,
                         onChanged: (m) {
                           validation.sinkFirstName.add(m);
                           setState(() {});
@@ -329,7 +216,7 @@ class _ContactUsState extends State<ContactUs> {
                         isEnable: email != null ? false : true,
                         keyBoardType: TextInputType.emailAddress,
                         errorText:
-                        snapshot.hasError ? snapshot.error.toString() : null,
+                            snapshot.hasError ? snapshot.error.toString() : null,
                         onChanged: (m) {
                           validation.sinkEmail.add(m);
                           setState(() {});
@@ -357,7 +244,7 @@ class _ContactUsState extends State<ContactUs> {
                         maxLength: 300,
                         keyBoardType: TextInputType.multiline,
                         errorText:
-                        snapshot.hasError ? snapshot.error.toString() : null,
+                            snapshot.hasError ? snapshot.error.toString() : null,
                         onChanged: (m) {
                           validation.sinkAddress.add(m);
                           setState(() {});
@@ -374,8 +261,8 @@ class _ContactUsState extends State<ContactUs> {
                     return appButton(
                         context,
                         StringConstant.send,
-                        SizeConfig.screenWidth * 0.35,
-                        60,
+                        SizeConfig.screenWidth * 0.8,
+                        50,
                         LIGHT_THEME_COLOR,
                         WHITE_COLOR,
                         20,
@@ -383,18 +270,150 @@ class _ContactUsState extends State<ContactUs> {
                         snapshot.data != true ? false : true, onTap: () {
                       // snapshot.data != true ? null : " ";
                       snapshot.data != true
-                          ? ToastMessage.message(StringConstant.fillOut)
+                          ? ToastMessage.message(StringConstant.fillOut,context)
                           : saveButtonPressed(
-                          nameController?.text ?? '',
-                          emailController?.text ?? '',
-                          messageController?.text ?? '');
+                              nameController?.text ?? '',
+                              emailController?.text ?? '',
+                              messageController?.text ?? '');
                     });
                   }),
+              SizedBox(height: 80),
+             footerMobile(context)
             ],
-          ),
+        ),
+      ),
+          ) :
+      SingleChildScrollView(
+        child: Column(
+          children: [
+            Center(
+              child: Container(
+                width: SizeConfig.screenWidth * 0.4,
+                margin: EdgeInsets.only(top: 50, left: 20, right: 20),
+                child: Column(
+                  children: [
+                    SizedBox(height: 12),
+                    Container(
+                      margin: const EdgeInsets.all(20),
+                      width: SizeConfig.screenWidth,
+                      alignment: Alignment.center,
+                      child: StreamBuilder(
+                          stream: validation.firstName,
+                          builder: (context, snapshot) {
+                            return AppTextField(
+                              maxLine: 1,
+                              controller: nameController,
+                              labelText: StringConstant.fullName,
+                              textCapitalization: TextCapitalization.words,
+                              isShowCountryCode: true,
+                              isShowPassword: false,
+                              secureText: false,
+                              maxLength: 30,
+                              isEnable: name != null ? false : true,
+                              keyBoardType: TextInputType.name,
+                              errorText:
+                              snapshot.hasError ? snapshot.error.toString() : null,
+                              onChanged: (m) {
+                                validation.sinkFirstName.add(m);
+                                setState(() {});
+                              },
+                              onSubmitted: (m) {},
+                              isTick: null,
+                            );
+                          }),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(20),
+                      width: SizeConfig.screenWidth,
+                      alignment: Alignment.center,
+                      child: StreamBuilder(
+                          stream: validation.email,
+                          builder: (context, snapshot) {
+                            return AppTextField(
+                              maxLine: 1,
+                              controller: emailController,
+                              labelText: StringConstant.email,
+                              textCapitalization: TextCapitalization.words,
+                              isShowCountryCode: true,
+                              isShowPassword: false,
+                              secureText: false,
+                              maxLength: 30,
+                              isEnable: email != null ? false : true,
+                              keyBoardType: TextInputType.emailAddress,
+                              errorText:
+                              snapshot.hasError ? snapshot.error.toString() : null,
+                              onChanged: (m) {
+                                validation.sinkEmail.add(m);
+                                setState(() {});
+                              },
+                              onSubmitted: (m) {},
+                              isTick: null,
+                            );
+                          }),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.all(20),
+                      width: SizeConfig.screenWidth,
+                      alignment: Alignment.center,
+                      child: StreamBuilder(
+                          stream: validation.address,
+                          builder: (context, snapshot) {
+                            return AppTextField(
+                              maxLine: 5,
+                              controller: messageController,
+                              labelText: StringConstant.message,
+                              textCapitalization: TextCapitalization.words,
+                              isShowCountryCode: true,
+                              isShowPassword: false,
+                              secureText: false,
+                              maxLength: 300,
+                              keyBoardType: TextInputType.multiline,
+                              errorText:
+                              snapshot.hasError ? snapshot.error.toString() : null,
+                              onChanged: (m) {
+                                validation.sinkAddress.add(m);
+                                setState(() {});
+                              },
+                              onSubmitted: (m) {},
+                              isTick: null,
+                            );
+                          }),
+                    ),
+                    SizedBox(height: 12),
+                    StreamBuilder(
+                        stream: validation.validateContactUs,
+                        builder: (context, snapshot) {
+                          return appButton(
+                              context,
+                              StringConstant.send,
+                              SizeConfig.screenWidth * 0.35,
+                              60,
+                              LIGHT_THEME_COLOR,
+                              WHITE_COLOR,
+                              20,
+                              10,
+                              snapshot.data != true ? false : true, onTap: () {
+                            // snapshot.data != true ? null : " ";
+                            snapshot.data != true
+                                ? ToastMessage.message(StringConstant.fillOut,context)
+                                : saveButtonPressed(
+                                nameController?.text ?? '',
+                                emailController?.text ?? '',
+                                messageController?.text ?? '');
+                          });
+                        }),
+                   
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(height: 200),
+
+            footerDesktop ()
+          ],
         ),
       )
-    ));
+    ));}));
   }
 
   saveButtonPressed(String name, String email, String message) {

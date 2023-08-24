@@ -152,6 +152,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                   //  <- you can it to 0.0 for no space
                   suffixIcon: widget.isShowPassword == true
                       ? IconButton(
+                    padding: EdgeInsets.zero,
                     icon: Image.asset(
                       _secureText == true
                           ? AssetsConstants.icEyeFill
@@ -205,7 +206,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                       : null,
                   labelText: widget.labelText,
                   contentPadding:
-                  EdgeInsets.symmetric(vertical: 10.0, horizontal: 15),
+                  EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
                   labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
                       color: widget.isColor == true
                           ? Theme.of(context).canvasColor.withOpacity(0.6)
@@ -214,7 +215,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                   prefixText: widget.prefixText,
                   suffixStyle: CustomTextStyle.textFormFieldInterMedium
                       .copyWith(
-                      color: Theme.of(context).canvasColor, fontSize: 17),
+                      color: Theme.of(context).canvasColor, fontSize: 16),
                   prefixStyle: TextStyle(
                       color: Theme.of(context).canvasColor, fontSize: 20),
                 ),

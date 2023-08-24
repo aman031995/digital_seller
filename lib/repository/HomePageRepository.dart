@@ -46,6 +46,8 @@ class HomePageRepository {
             (result as SuccessState).value as Map<String, dynamic>;
         if (map["data"] is Map<String, dynamic>) {
           response.dataModal = BannerDataModel.fromJson(map["data"]);
+          CacheDataManager.cacheData(key: StringConstant.kBannerList, jsonData: map);
+
         }
         responseHandler(Result.success(response), isSuccess);
       } else {

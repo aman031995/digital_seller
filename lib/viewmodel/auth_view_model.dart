@@ -50,7 +50,7 @@ class AuthViewModel with ChangeNotifier {
             (result, isSuccess) {
           if (isSuccess) {
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-            ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+            ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
 
             if (_userInfoModel?.isEmailVerified == false && _userInfoModel?.isPhoneVerified == false) {
               AppIndicator.disposeIndicator();
@@ -132,8 +132,8 @@ class AuthViewModel with ChangeNotifier {
 
               ResponsiveWidget.isMediumScreen(context) ? null :
               product==true? Navigator.pop(context):context.router.push(HomePageWeb());
-              Timer(Duration(milliseconds: 1500), () {
-                reloadPage();
+              Timer(Duration(milliseconds: 800), () {
+              //  reloadPage();
               });            }
 
             notifyListeners();
@@ -142,7 +142,7 @@ class AuthViewModel with ChangeNotifier {
   }
 
   logoutButtonPressed(BuildContext context) async {
-    ToastMessage.message("Logout user successfully");
+    ToastMessage.message("Logout user successfully",context);
 
     AppDataManager.deleteSavedDetails();
     CacheDataManager.clearCachedData();
@@ -167,7 +167,7 @@ class AuthViewModel with ChangeNotifier {
     AppIndicator.loadingIndicator(context);
     _authRepo.register(phone, email, loginType, context, (result, isSuccess) {
       if (isSuccess) {
-        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
         AppIndicator.disposeIndicator();
         Navigator.pop(context);
         User();
@@ -206,7 +206,7 @@ class AuthViewModel with ChangeNotifier {
             (result, isSuccess) {
           if (isSuccess) {
             handler!(Result.success(result), isSuccess);
-            ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+            ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
 
             AppIndicator.disposeIndicator();
             print('otp verified Successfully');
@@ -225,14 +225,14 @@ class AuthViewModel with ChangeNotifier {
               Navigator.of(context, rootNavigator: true).pop();
             } else if (_userInfoModel?.isEmailVerified == true || _userInfoModel?.isPhoneVerified == true) {
               print('Login api Successfully');
-              ToastMessage.message('Login User Successfully');
+              ToastMessage.message('Login User Successfully',context);
               AppIndicator.disposeIndicator();
               AppDataManager.getInstance.updateUserDetails(_userInfoModel!);
 
 
 
               product==true?  Navigator.pop(context):context.router.push(HomePageWeb());
-              Timer(Duration(milliseconds: 1500), () {
+              Timer(Duration(milliseconds: 800), () {
                 reloadPage();
               });
 
@@ -253,12 +253,12 @@ class AuthViewModel with ChangeNotifier {
         name!, email!, phone!, password!, deviceId!, deviceToken!, context,
             (result, isSuccess) {
           if (isSuccess) {
-            ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+            ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             AppDataManager.getInstance.updateUserDetails(userInfoModel!);
             AppIndicator.disposeIndicator();
             Navigator.pop(context);
-            Timer(Duration(milliseconds: 1500), () {
+            Timer(Duration(milliseconds: 800), () {
               reloadPage();
             });
           }
@@ -276,7 +276,7 @@ class AuthViewModel with ChangeNotifier {
         if (_userInfoModel != null) {
           AppDataManager.getInstance.updateUserDetails(userInfoModel!);
         }
-        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
         notifyListeners();
       }
     });
@@ -287,7 +287,7 @@ class AuthViewModel with ChangeNotifier {
     _authRepo.forgotPassword(phone, loginType == true ? 'phone' : 'email',context, (result, isSuccess) {
       if (isSuccess) {
         print('forgot password api Successfully');
-        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
         AppIndicator.disposeIndicator();
         Navigator.pop(context);
         showDialog(
@@ -308,7 +308,7 @@ class AuthViewModel with ChangeNotifier {
             (result, isSuccess) {
           if (isSuccess) {
             print('forgot password api Successfully');
-            ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+            ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
             AppIndicator.disposeIndicator();
             Navigator.pop(context);
             notifyListeners();

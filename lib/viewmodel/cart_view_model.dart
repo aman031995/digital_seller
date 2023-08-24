@@ -88,6 +88,7 @@ class CartViewModel extends ChangeNotifier {
     if(await jsonCache.contains(StringConstant.kProductList)){
       CacheDataManager.getCachedData(key: StringConstant.kProductList).then((jsonData) {
         _productListModel = ProductListModel.fromJson(jsonData!['data']);
+        print("from cached get product list data");
         notifyListeners();
       });
     } else {
@@ -132,7 +133,7 @@ class CartViewModel extends ChangeNotifier {
             _recommendedView = items;
           }
 
-          print('From Cached UserData');
+          print('From Cached Recommended data');
           notifyListeners();
         }
       });
@@ -184,7 +185,7 @@ class CartViewModel extends ChangeNotifier {
             _categoryListModel = items;
           }
 
-          print('From Cached UserData');
+          print('From Cached productCategoryList');
           notifyListeners();
         }
       });
@@ -299,7 +300,7 @@ class CartViewModel extends ChangeNotifier {
         responseHandler(Result.success(result), isSuccess);
         updateCartCount(context, _itemCountModel?.count.toString() ?? '');
         isAddedToCart = true;
-        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
         notifyListeners();
       }
     });
@@ -331,7 +332,7 @@ class CartViewModel extends ChangeNotifier {
           notifyListeners();
         }
         if (((result as SuccessState).value as ASResponseModal).dataModal == null){
-          ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+          ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
         }
         AppIndicator.disposeIndicator();
         notifyListeners();
@@ -359,7 +360,7 @@ class CartViewModel extends ChangeNotifier {
         getCartListData(context);
         AppIndicator.disposeIndicator();
         updateCartCount(context, _itemCountModel?.count.toString() ?? '');
-        ToastMessage.message(((result).value as ASResponseModal).message);
+        ToastMessage.message(((result).value as ASResponseModal).message,context);
         notifyListeners();
       }
     });
@@ -465,7 +466,7 @@ class CartViewModel extends ChangeNotifier {
     AppIndicator.loadingIndicator(context);
     _cartRepo.deleteAddress(addressId, context, (result, isSuccess) {
       if (isSuccess) {
-        ToastMessage.message("address deleted");
+        ToastMessage.message("address deleted",context);
         getAddressList(context);
         AppIndicator.disposeIndicator();
         notifyListeners();
@@ -480,7 +481,7 @@ class CartViewModel extends ChangeNotifier {
         (result, isSuccess) {
           favouriteCallback = true;
       if (isSuccess) {
-        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
         if(favouritepage==true){
           Timer(Duration(milliseconds: 1500), () {
             reloadPage();
@@ -504,7 +505,7 @@ class CartViewModel extends ChangeNotifier {
         addressId, transactionId, orderId, payMethod, payStatus, context,
         (result, isSuccess) {
       if (isSuccess) {
-        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message);
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
         context.pushRoute(ThankYouPage());
         SessionStorageHelper.savevalue("payment","true");
         notifyListeners();

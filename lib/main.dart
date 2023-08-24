@@ -41,7 +41,7 @@ Future<void> main() async {
           measurementId: "G-RFYDXHGWCK"
   ));
   html.window.onPopState.listen((event) {
-   // html.window.location.reload();
+    html.window.location.reload();
   });
   runApp(MyApp());
 }

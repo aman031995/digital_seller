@@ -66,7 +66,7 @@ class _BuynowCartState extends State<BuynowCart> {
       cartListData?.cartList !=null? Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar:ResponsiveWidget.isMediumScreen(context)
-            ? homePageTopBar(context, _scaffoldKey,cartViewData.cartItemCount)
+            ? homePageTopBar(context, _scaffoldKey,cartViewData.cartItemCount,homeViewModel, profileViewModel,)
             : getAppBar(
             context,
             homeViewModel,

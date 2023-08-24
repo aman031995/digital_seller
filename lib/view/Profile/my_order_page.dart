@@ -13,6 +13,7 @@ import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
+import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/order_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
@@ -25,6 +26,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../AppRouter.gr.dart';
 import '../../main.dart';
 import '../../utilities/StringConstants.dart';
+import 'dart:html' as html;
 
 @RoutePage()
 class MyOrderPage extends StatefulWidget {
@@ -50,9 +52,8 @@ class _MyOrderPageState extends State<MyOrderPage> {
 
   @override
   void initState() {
-
     orderView.getOrderList(context, pageNum);
-    homeViewModel.getAppConfig(context);
+    homeViewModel.getAppConfigData(context);
     cartViewModel.getCartCount(context);
     super.initState();
   }
@@ -86,7 +87,8 @@ class _MyOrderPageState extends State<MyOrderPage> {
                   .scaffoldBackgroundColor,
               appBar: ResponsiveWidget.isMediumScreen(context)
                   ? homePageTopBar(
-                  context, _scaffoldKey, cartViewModel.cartItemCount)
+                  context, _scaffoldKey, cartViewModel.cartItemCount,homeViewModel,
+                profileViewModel,)
                   : getAppBar(
                   context,
                   homeViewModel,
@@ -205,10 +207,21 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                             }
                                             showDialog(
                                                 context: context,
+                                                barrierDismissible: true,
                                                 builder: (BuildContext context) {
                                                   return OrderDetails(
                                                       orderItem: orderView.orderData
-                                                          ?.orderList?[index]);
+                                                          ?.orderList?[index],
+                                                  callback: (v){
+                                                        if(v==true){
+                                                          setState(() { orderView.getOrderList(context, pageNum);
+                                                          });
+
+
+
+                                                        }
+
+                                                  });
                                                 });
                                           },
                                           child: orderView.orderData!.orderList!
