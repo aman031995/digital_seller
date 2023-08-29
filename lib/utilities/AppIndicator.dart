@@ -15,8 +15,8 @@ class AppIndicator {
       ..boxShadow = <BoxShadow>[]
       ..backgroundColor = Colors.transparent
       ..indicatorColor = Theme.of(context).primaryColor
-      ..textColor = Colors.black12
-      ..maskColor = Colors.white.withOpacity(0.5)
+      ..textColor = Theme.of(context).canvasColor
+      ..maskColor = Colors.transparent
       ..maskType = EasyLoadingMaskType.custom
       ..indicatorWidget = ThreeArchedCircle( size: 90.0)
       ..userInteractions = false;

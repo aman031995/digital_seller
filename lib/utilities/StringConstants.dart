@@ -11,7 +11,7 @@ class StringConstant {
   static String kRecommended='recommeded_list';
   static String kcategory='category_list';
   static String discard = 'Discard';
-
+static String noSearchProductFound='We always try to give the best\nresult on your Search';
   static String deleteAccountMessage = "This Account connot be recovered once deleted.";
   static String cancelYourOrder = "Do you really want to cancel your order.";
 // **************Login Page ***************

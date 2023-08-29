@@ -88,17 +88,17 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
     });
     return AlertDialog(
         elevation: 8,
-        buttonPadding:EdgeInsets.zero,
         actionsPadding: EdgeInsets.zero,
         contentPadding: EdgeInsets.zero,
         titlePadding: EdgeInsets.zero,
-        insetPadding: EdgeInsets.all(12),
+        insetPadding: EdgeInsets.all(18),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(2)),
         backgroundColor: Theme.of(context).cardColor.withOpacity(0.9),
         content:  Container(
           height: ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenHeight/1.2:SizeConfig.screenHeight/1.6,
           width:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth: SizeConfig.screenWidth*0.25,
+
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -109,7 +109,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                     fontSize: 16.0),
                 Container(
                   padding: EdgeInsets.only(
-                      top: 10, bottom: 10, left: 15, right: 15),
+                      top: 10, bottom: 10, left: 15, right: 25),
                   child: Column(
                     children: [
                       SizedBox(
@@ -139,7 +139,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                     fontSize: 15.0),
                 Container(
                     padding: EdgeInsets.only(
-                        top: 10, bottom: 10, left: 15, right: 15),
+                        top: 10, bottom: 10, left: 15, right: 25),
                     child: Column(children: [
                       addAddressTextField(addressFirstController, StringConstant.address1, TextInputType.streetAddress, validation.sinkAddress, 50, validation.address),
                       SizedBox(

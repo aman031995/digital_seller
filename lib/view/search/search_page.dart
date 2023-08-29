@@ -55,7 +55,18 @@ class _SearchPageState extends State<SearchPage> {
               return viewmodel.searchDataModel != null
                   ? searchListMobile(context, viewmodel, scrollController,
                       homeViewModel, searchController!)
-                  : SizedBox();
+                  : Container(
+                width: SizeConfig.screenWidth,
+                color: Theme.of(context).cardColor,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset('images/searchproduct.png',width: 250,height: 200,fit: BoxFit.fill),
+                    AppBoldFont(context, msg: StringConstant.noSearchProductFound,color: Theme.of(context).canvasColor,fontSize: 18,textAlign: TextAlign.center)
+                  ],
+                ),
+              );
             })));
   }
 
@@ -67,7 +78,15 @@ class _SearchPageState extends State<SearchPage> {
       HomeViewModel homeViewModel,
       TextEditingController searchController) {
     return  viewmodel.searchDataModel!.productList==null?
-    Container(): Stack(children: [
+    Container(
+      color: Theme.of(context).cardColor,
+      child: Column(
+        children: [
+          Image.asset('images/searchproduct.png',width: 80,height: 150,)
+
+        ],
+      ),
+    ): Stack(children: [
       viewmodel.searchDataModel!.productList!.isNotEmpty
           ? GridView.builder(
           shrinkWrap: true,
@@ -135,7 +154,7 @@ class _SearchPageState extends State<SearchPage> {
 
                           Container(
                             alignment: Alignment.topLeft,
-padding: EdgeInsets.only(left: 4),
+                            padding: EdgeInsets.only(left: 4),
                             width: SizeConfig.screenWidth/1.2,
                             child: AppMediumFont(context, msg: item?.productName ?? '', maxLines: 1),
                           ),
@@ -156,56 +175,101 @@ padding: EdgeInsets.only(left: 4),
   }
   // textfield for search
   searchTextField() {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+    return Container(
+      color:Theme.of(context).primaryColor.withOpacity(0.9),
+      child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+               GestureDetector(
+                   onTap: (){
+                     Navigator.pop(context, true);
+                   },
+                   child: Image.asset(AssetsConstants.icBackArrow,color: Theme.of(context).canvasColor)),
+            SizedBox(width: 20),
+            Container(
+            height: 50,
+            width: 300,
+            margin: EdgeInsets.only(top: 5,bottom: 5),
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              border: Border.all(color: TRANSPARENT_COLOR, width: 2.0),
+            ),
+            child: TextField(
+    textAlign: TextAlign.start,
+    controller: searchController,
+    autofocus: true,
+    style: TextStyle(color: Theme.of(context).hintColor),
+    decoration: InputDecoration(
+    contentPadding: EdgeInsets.only(top: 2,left: 12),
+    enabledBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(6.0)),
+    borderSide: BorderSide(
+    color: Theme.of(context).hintColor.withOpacity(0.4),
+    width: 2),
+    ),
+    focusedBorder: OutlineInputBorder(
+    borderRadius: BorderRadius.all(Radius.circular(6.0)),
+    borderSide: BorderSide(
+    color: Theme.of(context).hintColor.withOpacity(0.4),
+    width: 2),
+    ),
+    hintText: StringConstant.searchItems,
+    suffixIcon: Icon(Icons.search),
+    suffixIconColor: Theme.of(context).hintColor
+    ),
+    onChanged: (v) {
+    // AppIndicator.loadingIndicator(context);
+    if(v.isEmpty){
+            isSearch = false;
+          }
+          else{
+            AppIndicator.loadingIndicator(context);
+            homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
 
-        children: [
-             GestureDetector(
-                 onTap: (){
-                   Navigator.pop(context, true);
-                 },
-                 child: Image.asset(AssetsConstants.icBackArrow,color: Theme.of(context).canvasColor,)),
-          SizedBox(width: 2),
-          Container(
-          height: 50,
-          width: 300,
-          margin: EdgeInsets.only(top: 5),
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            border: Border.all(color: TRANSPARENT_COLOR, width: 2.0),
-          ),
-          child: AppTextField(
-              controller: searchController,
-              maxLine: searchController!.text.length > 2 ? 2 : 1,
-              textCapitalization: TextCapitalization.words,
-              secureText: false,
-              floatingLabelBehavior: FloatingLabelBehavior.never,
-              maxLength: null,
-              labelText: StringConstant.searchItems,
-              keyBoardType: TextInputType.text,
-              isSearch: true,
-              autoFocus: true,
-              onSubmitted: (v) {
-                AppIndicator.loadingIndicator(context);
-                homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
-                isSearch = true;
-             //   homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
-              },
-              verifySubmit: (){
-                AppIndicator.loadingIndicator(context);
-                homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
-              },
-              onChanged: (v) async{
-                if(v.isEmpty){
-                  isSearch = false;
-                }
-                else{
-                  AppIndicator.loadingIndicator(context);
-                  homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
-
-                }
-              },
-              isTick: null)),
-    ]);
+          }
+    },
+    onSubmitted: (v){
+      AppIndicator.loadingIndicator(context);
+            homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
+            isSearch = true;
+         //   homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
+    },
+    ),
+    )
+            //
+            // AppTextField(
+            //     controller: searchController,
+            //     maxLine: searchController!.text.length > 2 ? 2 : 1,
+            //     textCapitalization: TextCapitalization.words,
+            //     secureText: false,
+            //     floatingLabelBehavior: FloatingLabelBehavior.never,
+            //     maxLength: null,
+            //     labelText: StringConstant.searchItems,
+            //     keyBoardType: TextInputType.text,
+            //     isSearch: true,
+            //     autoFocus: true,
+            //     onSubmitted: (v) {
+            //       AppIndicator.loadingIndicator(context);
+            //       homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
+            //       isSearch = true;
+            //    //   homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
+            //     },
+            //     verifySubmit: (){
+            //       AppIndicator.loadingIndicator(context);
+            //       homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
+            //     },
+            //     onChanged: (v) async{
+            //       if(v.isEmpty){
+            //         isSearch = false;
+            //       }
+            //       else{
+            //         AppIndicator.loadingIndicator(context);
+            //         homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
+            //
+            //       }
+            //     },
+            //     isTick: null)),
+      ]),
+    );
   }
 }

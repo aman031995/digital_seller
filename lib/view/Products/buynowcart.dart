@@ -734,7 +734,7 @@ class _BuynowCartState extends State<BuynowCart> {
                     top: SizeConfig.screenWidth *
                         0.001,
                     right:  SizeConfig.screenWidth *
-                        0.15,
+                        0.20,
                     child: searchList(
                         context,
                         homeViewModel,

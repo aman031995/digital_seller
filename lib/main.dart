@@ -1,7 +1,9 @@
 import 'dart:ui';
 import 'package:TychoStream/AppRouter.dart';
+import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -73,6 +75,8 @@ class _MyAppState extends State<MyApp> {
         providers: [
           ChangeNotifierProvider(create: (_) => HomeViewModel()),
           ChangeNotifierProvider(create: (_) => AuthViewModel()),
+          ChangeNotifierProvider(create: (_) => CartViewModel()),
+
           ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
           ChangeNotifierProvider(create: (_) => ProfileViewModel()),
           ChangeNotifierProvider(create: (_) => SocialLoginViewModel()),
@@ -88,21 +92,28 @@ class _MyAppState extends State<MyApp> {
               final buttonTxtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.buttonTextColor?.hex;
               return MaterialApp.router(
                   theme: ThemeData(
-                      scrollbarTheme: ScrollbarThemeData(
-                        isAlwaysShown: false,
-                        showTrackOnHover: false,
-                        thickness: MaterialStateProperty.all(0.0),
-                      ),
+
                       scaffoldBackgroundColor: (bgColor)?.toColor(),
                       primaryColor: (themeColor)?.toColor(),
                       backgroundColor: (bgColor)?.toColor(),
                       cardColor: (secondaryColor)?.toColor(),
                       fontFamily: font,
                       canvasColor: (txtColor)?.toColor(),
-                      hintColor: (buttonTxtColor)?.toColor()),
+                      hintColor: (buttonTxtColor)?.toColor(),
+                    scrollbarTheme: ScrollbarThemeData(
+                      thickness: MaterialStateProperty.all(0.0),
+                      radius: Radius.circular(2),
+                      minThumbLength: 2,
+                      trackVisibility: MaterialStateProperty.all(false),
+                      thumbVisibility:  MaterialStateProperty.all(false),
+
+
+                    )
+                  ),
+
                 builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
-                  scrollBehavior: MyCustomScrollBehavior(),
+                 scrollBehavior: MyCustomScrollBehavior(),
                 routerConfig: _appRouter.config(),
               );
             })

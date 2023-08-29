@@ -150,8 +150,6 @@ class _CartDetailState extends State<CartDetail> {
               body: Scaffold(
                   extendBodyBehindAppBar: true,
               key: _scaffoldKey,
-              backgroundColor: Theme.of(context)
-                  .scaffoldBackgroundColor,
               drawer:
               ResponsiveWidget.isMediumScreen(context)
               ? AppMenu() : SizedBox(),
@@ -195,33 +193,32 @@ class _CartDetailState extends State<CartDetail> {
                                               CrossAxisAlignment.start,
                                               children: [
                                                 Container(
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                      BorderRadius.circular(5)),
-                                                  width:
-                                                  SizeConfig.screenWidth * 0.30,
-                                                  height:
-                                                  SizeConfig.screenHeight / 1.2,
-                                                  child: ListView.builder(
-                                                    itemCount: cartViewData
-                                                        .cartListData
-                                                        ?.cartList
-                                                        ?.length ??
-                                                        0,
-                                                    shrinkWrap: true,
-                                                    physics: ScrollPhysics(),
-                                                    itemBuilder: (context, index) {
-                                                      final itemInCart = cartViewData.cartListData?.cartList?[index];
-                                                      return Container(
-                                                        color: Theme.of(context)
-                                                            .cardColor,
-                                                        margin: EdgeInsets.only(
-                                                            bottom: 5),
-                                                        child:cardDeatils(context,itemInCart!,index,cartViewData)
-                                                      );
-                                                    },
-                                                  ),
-                                                ),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                    BorderRadius.circular(5)),
+                                                width:
+                                                SizeConfig.screenWidth * 0.30,
+                                                height:
+                                                SizeConfig.screenHeight / 1.2,
+                                                child: ListView.builder(
+                                                  itemCount: cartViewData
+                                                      .cartListData
+                                                      ?.cartList
+                                                      ?.length ??
+                                                      0,
+                                                  shrinkWrap: true,
+                                                  physics: ScrollPhysics(),
+                                                  itemBuilder: (context, index) {
+                                                    final itemInCart = cartViewData.cartListData?.cartList?[index];
+                                                    return Container(
+                                                      color: Theme.of(context)
+                                                          .cardColor,
+                                                      margin: EdgeInsets.only(
+                                                          bottom: 5,right: 15),
+                                                      child:cardDeatils(context,itemInCart!,index,cartViewData)
+                                                    );
+                                                  },
+                                                )),
                                                 SizedBox(width: 5),
                                                 Column(
                                                   mainAxisAlignment:
@@ -317,7 +314,7 @@ class _CartDetailState extends State<CartDetail> {
                                         .isMediumScreen(context)
                                         ? 0
                                         : SizeConfig.screenWidth *
-                                        0.15,
+                                        0.20,
                                     child: searchList(
                                         context,
                                         homeViewModel,
@@ -330,9 +327,44 @@ class _CartDetailState extends State<CartDetail> {
                               ],
                             )
 
-                            : Center(
-                                child: noDataFoundMessage(
-                                    context, StringConstant.noItemInCart))
+                            : Stack(
+                              children: [
+                                noDataFoundMessage(
+                                    context, StringConstant.noItemInCart),
+                                ResponsiveWidget
+                                    .isMediumScreen(context)
+                                    ?Container(): isLogins == true
+                                    ? Positioned(
+                                    top: 0,
+                                    right:  180,
+                                    child: profile(context,
+                                        setState, profileViewModel))
+                                    : Container(),
+                                ResponsiveWidget
+                                    .isMediumScreen(context)
+                                    ? Container():   isSearch == true
+                                    ? Positioned(
+                                    top: ResponsiveWidget
+                                        .isMediumScreen(context)
+                                        ? 0
+                                        : SizeConfig.screenWidth *
+                                        0.001,
+                                    right: ResponsiveWidget
+                                        .isMediumScreen(context)
+                                        ? 0
+                                        : SizeConfig.screenWidth *
+                                        0.15,
+                                    child: searchList(
+                                        context,
+                                        homeViewModel,
+                                        scrollController,
+                                        homeViewModel,
+                                        searchController!,
+                                        cartViewModel
+                                            .cartItemCount))
+                                    : Container()
+                              ],
+                            )
                         : Center(
                             child:
                                 Container(child: ThreeArchedCircle(size: 45.0)),

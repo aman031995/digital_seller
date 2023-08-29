@@ -1,7 +1,6 @@
 
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/session_storage.dart';
-import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -111,7 +110,42 @@ class AppRouter extends $AppRouter {
   }
   },
   )]),
-
+    AutoRoute(page: CategorySubcategoryProduct.page,path: '/CategorySubcategoryProduct/:CategoryName',guards: [
+      AutoRouteGuard.simple(
+            (resolver, scope) async {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token') != null) {
+            resolver.next();
+          } else {
+            //ToastMessage.message("Please Login User");
+            resolver.next();
+          }
+        },
+      )]),
+    AutoRoute(page: SubcategoryProductList.page,path: '/SubcategoryProductList/:SubcategoryProductName',guards: [
+      AutoRouteGuard.simple(
+            (resolver, scope) async {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token') != null) {
+            resolver.next();
+          } else {
+            //ToastMessage.message("Please Login User");
+            resolver.next();
+          }
+        },
+      )]),
+    AutoRoute(page: BannerProductDetailPage.page,path: '/BannerProductDetailPage',guards: [
+      AutoRouteGuard.simple(
+            (resolver, scope) async {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token') != null) {
+            resolver.next();
+          } else {
+            //ToastMessage.message("Please Login User");
+            resolver.next();
+          }
+        },
+      )]),
     AutoRoute(page: CartDetail.page,path: '/CartDetails/:itemCount',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {

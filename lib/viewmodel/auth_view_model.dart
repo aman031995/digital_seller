@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:TychoStream/utilities/Responsive.dart';
+import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -130,7 +131,7 @@ class AuthViewModel with ChangeNotifier {
               User();
               AppIndicator.disposeIndicator();
 
-              ResponsiveWidget.isMediumScreen(context) ? null :
+              ResponsiveWidget.isMediumScreen(context) ? context.router.push(HomePageWeb()):
               product==true? Navigator.pop(context):context.router.push(HomePageWeb());
               Timer(Duration(milliseconds: 800), () {
               //  reloadPage();
@@ -142,7 +143,7 @@ class AuthViewModel with ChangeNotifier {
   }
 
   logoutButtonPressed(BuildContext context) async {
-    ToastMessage.message("Logout user successfully",context);
+    ToastMessage.message("logout user successfully",context);
 
     AppDataManager.deleteSavedDetails();
     CacheDataManager.clearCachedData();
@@ -235,6 +236,7 @@ class AuthViewModel with ChangeNotifier {
               Timer(Duration(milliseconds: 800), () {
                 reloadPage();
               });
+              notifyListeners();
 
 
             } else {
@@ -261,6 +263,8 @@ class AuthViewModel with ChangeNotifier {
             Timer(Duration(milliseconds: 800), () {
               reloadPage();
             });
+            notifyListeners();
+
           }
         });
   }
@@ -311,6 +315,14 @@ class AuthViewModel with ChangeNotifier {
             ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
             AppIndicator.disposeIndicator();
             Navigator.pop(context);
+            showDialog(
+                context: context,
+                barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
+                builder: (BuildContext context) {
+                  return LoginUp(
+                    product: true,
+                  );
+                });
             notifyListeners();
 
           }

@@ -404,10 +404,10 @@ Widget  cardDeatils(BuildContext context,ProductList itemInCart,int index,CartVi
           Container(
             height:  ResponsiveWidget.isMediumScreen(context)
                 ? 120 : 200,
-            // width: ResponsiveWidget.isMediumScreen(context)
-            //     ? 120  :SizeConfig
-            //     .screenWidth *
-            //     0.14,
+            width: ResponsiveWidget.isMediumScreen(context)
+                ? 120  :SizeConfig
+                .screenWidth *
+                0.11,
             margin:
             EdgeInsets.only(
                 top: 12,
@@ -417,14 +417,16 @@ Widget  cardDeatils(BuildContext context,ProductList itemInCart,int index,CartVi
             child:
             Image.network(
               itemInCart.productDetails?.productImages?[0] ?? "",
-              fit: BoxFit.contain,
+              fit: BoxFit.fill,
 
             ),
           ),
           Container(
             height: 30,
-            width: ResponsiveWidget.isMediumScreen(context)
-      ? 90:150,
+  width: ResponsiveWidget.isMediumScreen(context)
+  ? 120  :SizeConfig
+      .screenWidth *
+  0.11,
             decoration: BoxDecoration(
                 border: Border.all(
                     color: Theme.of(context).canvasColor.withOpacity(0.2),
@@ -953,8 +955,8 @@ Widget CategoryList(BuildContext context,CartViewModel cartViewModel){
     child: Column(
       mainAxisAlignment:
       MainAxisAlignment.start,
-      crossAxisAlignment:
-      CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+
       children: [
         AppBoldFont(context,
             msg:
@@ -991,7 +993,19 @@ Widget CategoryList(BuildContext context,CartViewModel cartViewModel){
                     (context,
                     position) {
                   return InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      if (isLogins == true) {
+                        isLogins = false;
+
+                      }
+                      if (isSearch == true) {
+                        isSearch = false;
+
+                      }
+                      context.router.push(
+                          CategorySubcategoryProduct(CategoryName: cartViewModel.categoryListModel?[position].categoryId)
+                      );
+                      },
                     child:
                     Container(
                       margin: EdgeInsets.only(
@@ -1089,8 +1103,8 @@ Widget offerList(BuildContext context){
     child: Column(
       mainAxisAlignment:
       MainAxisAlignment.start,
-      crossAxisAlignment:
-      CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+
       children: [
         AppBoldFont(context,
             msg: StringConstant

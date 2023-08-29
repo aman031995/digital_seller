@@ -106,7 +106,7 @@ else{
         value: cartViewModel,
         child: Consumer<CartViewModel>(builder: (context, cartViewData, _) {
           cartViewModel.addressListModel?.length==0?0  : addressId=cartViewModel.addressListModel?[0].addressId;
-          return
+          return  (cartViewData.addressListModel != null && widget.buynow == false) || widget.buynow == true?
             GestureDetector(
               onTap: () {
                 if (isLogins == true) {
@@ -630,7 +630,7 @@ else{
                               top:  SizeConfig.screenWidth *
                                   0.001,
                               right:  SizeConfig.screenWidth *
-                                  0.15,
+                                  0.20,
                               child: searchList(
                                   context,
                                   homeViewModel,
@@ -646,7 +646,9 @@ else{
                       : Center(
                           child: ThreeArchedCircle(size: 45.0),
                         )),
-            ));
+            )):Center(
+            child: ThreeArchedCircle(size: 45.0),
+          );
               }));
   }
 

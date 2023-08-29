@@ -361,7 +361,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                       ? Positioned(
                       top:  0,
                       right: SizeConfig.screenWidth *
-                          0.15,
+                          0.20,
                       child: searchList(
                           context,
                           homeViewModel,

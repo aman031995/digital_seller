@@ -119,7 +119,7 @@ PreferredSize getAppBar(
                       SharedPreferences sharedPreferences =
                           await SharedPreferences.getInstance();
                       if (sharedPreferences.get('token') != null) {
-                        AppIndicator.loadingIndicator(context);
+
                         viewmodel.getSearchData(
                             context, searchController.text, pageNum);
                         isSearch = true;
@@ -129,7 +129,6 @@ PreferredSize getAppBar(
                       if (v.isEmpty) {
                         isSearch = false;
                       } else {
-                        AppIndicator.loadingIndicator(context);
                         viewmodel.getSearchData(
                             context, searchController.text, pageNum);
                         isSearch = true;
@@ -235,14 +234,35 @@ getPages(BottomNavigation navItem, BuildContext context,
     ProfileViewModel profileViewModel) {
   Uri url = Uri.parse(navItem.url ?? '');
   if (url.path == RoutesName.homepageweb) {
-    isSearch = false;
+    if (isLogins == true) {
+      isLogins = false;
+
+    }
+    if (isSearch == true) {
+      isSearch = false;
+
+    }
 
     return context.router.push(HomePageWeb());
   } else if (url.path == RoutesName.productPage) {
-    isSearch = false;
+    if (isLogins == true) {
+      isLogins = false;
+
+    }
+    if (isSearch == true) {
+      isSearch = false;
+
+    }
     return context.router.push(ProductListGallery());
   } else if (url.path == RoutesName.profilePage) {
-    isSearch = false;
+    if (isLogins == true) {
+      isLogins = false;
+
+    }
+    if (isSearch == true) {
+      isSearch = false;
+
+    }
 
     names == "null"
         ? showDialog(

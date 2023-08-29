@@ -5,6 +5,7 @@ import 'package:TychoStream/model/data/category_list_model.dart';
 import 'package:TychoStream/model/data/checkout_data_model.dart';
 import 'package:TychoStream/model/data/city_state_model.dart';
 import 'package:TychoStream/model/data/create_order_model.dart';
+import 'package:TychoStream/model/data/offer_discount_model.dart';
 import 'package:TychoStream/model/data/promocode_data_model.dart';
 import 'package:TychoStream/network/CacheDataManager.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_stripe_web/flutter_stripe_web.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
+import 'package:TychoStream/model/data/category_product_model.dart';
 import 'package:TychoStream/network/ASRequestModal.dart';
 import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
@@ -352,6 +354,59 @@ class CartDetailRepository {
     });
   }
 
+  Future<Result?> getOfferDiscount(BuildContext context, NetworkResponseHandler responseHandler) async {
+    AppNetwork appNetwork = AppNetwork();
+    Map<String, String> urlParams = {"{APP_ID}" : NetworkConstants.kAppID};
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.kDiscountOffer, RequestType.get);
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map =
+        (result as SuccessState).value as Map<String, dynamic>;
+        if (map['data'] is List<dynamic>) {
+          var dataList = map['data'] as List<dynamic>;
+          var items = <OfferDiscountModel>[];
+          dataList.forEach((element) {
+            items.add(OfferDiscountModel.fromJson(element));
+          });
+          response.dataModal = items;
+          responseHandler(Result.success(response), isSuccess);
+        }
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
+
+  Future<Result?> getOfferDiscountList(BuildContext context, String query, int pageNum, String categoryId, NetworkResponseHandler responseHandler) async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    AppNetwork appNetwork = AppNetwork();
+    Map<String, String> urlParams = {
+      "{APP_ID}": NetworkConstants.kAppID,
+      "{QUERY}": '$query',
+      "{PAGE_NUM}" : '$pageNum',
+      "{CATEGORY_ID}" : '$categoryId'
+    };
+
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.kOfferList, RequestType.get);
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map =
+        (result as SuccessState).value as Map<String, dynamic>;
+        if (map["data"] is Map<String, dynamic>) {
+          response.dataModal = ProductListModel.fromJson(map["data"]);
+        }
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
+
+
   // GetCartCount Method
   Future<Result?> getCityState(
       BuildContext context,String pincode, NetworkResponseHandler responseHandler) async {
@@ -419,6 +474,39 @@ class CartDetailRepository {
     });
   }
 
+
+  //getCategoryProductList
+  Future<Result?> getCategorySubcategoryProductList(BuildContext context,
+      String catId,
+      NetworkResponseHandler responseHandler) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var header = {
+      "Authorization": "Bearer " + sharedPreferences.get("token").toString()
+    };
+    AppNetwork appNetwork = AppNetwork();
+    Map<String, String> urlParams = {
+      "{USER_ID}": sharedPreferences.get("userId").toString(),
+      "{APP_ID}": NetworkConstants.kAppID,
+      "{CATEGORY_ID}" : catId,
+    };
+    ASRequestModal requestModal = ASRequestModal.withUrlParams(
+        urlParams, NetworkConstants.kcategoryProduct, RequestType.get,
+        headers: header);
+    appNetwork.getNetworkResponse(requestModal, context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map =
+        (result as SuccessState).value as Map<String, dynamic>;
+        if (map["data"] is Map<String, dynamic>) {
+          response.dataModal = categoryProduct.fromJson(map['data']);
+
+        }
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
   //RemoveItems Method
   Future<Result?> removeItem(String variantId, BuildContext context,
       NetworkResponseHandler responseHandler) async {

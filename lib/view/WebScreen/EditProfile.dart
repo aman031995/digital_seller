@@ -130,7 +130,6 @@ class _EditProfileState extends State<EditProfile> {
               if(isSearch==true){
                 isSearch=false;
                 setState(() {
-
                 });
               }
             },
@@ -138,7 +137,7 @@ class _EditProfileState extends State<EditProfile> {
                 appBar:  ResponsiveWidget.isMediumScreen(context)
                     ? homePageTopBar(context, _scaffoldKey,cartViewModel.cartItemCount,
                   viewmodel,
-                  profilemodel,)
+                  profilemodel)
                     : getAppBar(
                     context,
                     viewmodel,
@@ -261,7 +260,7 @@ class _EditProfileState extends State<EditProfile> {
                                 .isMediumScreen(context)
                                 ? 0
                                 : SizeConfig.screenWidth *
-                                0.15,
+                                0.20,
                             child: searchList(
                                 context,
                                 homeViewModel,

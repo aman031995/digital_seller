@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:TychoStream/model/data/cart_detail_model.dart';
+import 'package:TychoStream/model/data/category_product_model.dart';
 import 'package:TychoStream/model/data/checkout_data_model.dart';
 import 'package:TychoStream/model/data/city_state_model.dart';
 import 'package:TychoStream/model/data/create_order_model.dart';
@@ -25,10 +26,14 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_cache/json_cache.dart';
 import '../AppRouter.gr.dart';
 import '../model/data/category_list_model.dart';
+import '../model/data/offer_discount_model.dart';
 
 class CartViewModel extends ChangeNotifier {
 
   final _cartRepo = CartDetailRepository();
+
+  categoryProduct? _categoryProductModel;
+  categoryProduct? get CategoryProduct => _categoryProductModel;
 
   CartListDataModel? _cartListDataModel;
   CartListDataModel? get cartListData => _cartListDataModel;
@@ -66,6 +71,9 @@ class CartViewModel extends ChangeNotifier {
   List<CategoryListModel>? _categoryListModel;
   List<CategoryListModel>? get categoryListModel => _categoryListModel;
 
+  List<OfferDiscountModel>? _offerDiscountModel;
+  List<OfferDiscountModel>? get offerDiscountModel => _offerDiscountModel;
+
   bool activeQuantity = false;
   bool deactiveQuantity = false;
 
@@ -99,9 +107,9 @@ class CartViewModel extends ChangeNotifier {
   Future<void> getProductList(BuildContext context, int pageNum) async {
     _cartRepo.getProductList(context, pageNum, (result, isSuccess) {
       if (isSuccess) {
-        dataPagination(result);
-        isLoading = false;
+        _productListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         AppIndicator.disposeIndicator();
+
         notifyListeners();
       }
     });
@@ -158,16 +166,35 @@ class CartViewModel extends ChangeNotifier {
         AppIndicator.disposeIndicator();
         if(prodId != ""){
           _productListDetails = ((result as SuccessState).value as ASResponseModal).dataModal;
-         String productDeatils=jsonEncode(_productListDetails);
-          SessionStorageHelper.savevalue("productDeatils","${productDeatils}");
+          isAddedToCart = _productListDetails?.productDetails?.isAddToCart ?? false;
+          notifyListeners();
         } else {
-          dataPagination(result);
+          _productListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         }
+        notifyListeners();
+      }
+      notifyListeners();
+    });
+  }
+  Future<void> getOfferDiscount(BuildContext context) async{
+    _cartRepo.getOfferDiscount(context, (result, isSuccess) {
+      if(isSuccess){
+        _offerDiscountModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        AppIndicator.disposeIndicator();
         notifyListeners();
       }
     });
   }
 
+  Future<void> getOfferDiscountList(BuildContext context, String query, int pageNum, String categoryId) async{
+    _cartRepo.getOfferDiscountList(context, query, pageNum, categoryId, (result, isSuccess) {
+      if(isSuccess){
+        _productListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        isLoading = false;
+        notifyListeners();
+      }
+    });
+  }
 
   // get ProductCategoryLists
   getProductCategoryLists(BuildContext context) async {
@@ -204,7 +231,16 @@ class CartViewModel extends ChangeNotifier {
       }
     });
   }
-
+// GetProductCategoryLists By Category Method
+  Future<void> getCategorySubcategoryProductList(BuildContext context, catId) async {
+    _cartRepo.getCategorySubcategoryProductList(context,catId ,(result, isSuccess) {
+      if (isSuccess) {
+        _categoryProductModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        AppIndicator.disposeIndicator();
+        notifyListeners();
+      }
+    });
+  }
 
 
   //getFavList Method
@@ -299,7 +335,6 @@ class CartViewModel extends ChangeNotifier {
         }
         responseHandler(Result.success(result), isSuccess);
         updateCartCount(context, _itemCountModel?.count.toString() ?? '');
-        isAddedToCart = true;
         ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
         notifyListeners();
       }
@@ -482,11 +517,6 @@ class CartViewModel extends ChangeNotifier {
           favouriteCallback = true;
       if (isSuccess) {
         ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
-        if(favouritepage==true){
-          Timer(Duration(milliseconds: 1500), () {
-            reloadPage();
-          });
-        }
         notifyListeners();
       }
     });
@@ -558,7 +588,7 @@ class CartViewModel extends ChangeNotifier {
         removeProductFromCart(context, variantId, listIndex??0);
     }
   }
-  onPagination(BuildContext context, int lastPage, int nextPage, bool isLoading, String name, {String? categoryId}) {
+  onPagination(BuildContext context, int lastPage, int nextPage, bool isLoading, String name, {String? categoryId,keyword}) {
     if (isLoading) return;
     isLoading = true;
     if (nextPage <= lastPage) {
@@ -573,6 +603,11 @@ class CartViewModel extends ChangeNotifier {
         case 'productCategoryList' :
           getProductListCategory(context, "", categoryId ?? "", nextPage);
           break;
+        case 'discountOfferList':
+          getOfferDiscountList(context, '$keyword', nextPage, '$categoryId');
+          // viewmodel?.onPagination(
+          //     context, viewmodel!.lastPage, viewmodel!.nextPage, viewmodel!.isLoading, 'discountOfferList',
+          //     keyword: discountModel?.discountPercentage, categoryId: discountModel?.categoryId);
       }
     }
   } Future<void> runIndicator(BuildContext context) async {

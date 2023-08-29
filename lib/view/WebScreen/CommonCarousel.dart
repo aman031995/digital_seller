@@ -87,7 +87,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
         .map((element) =>  InkWell(
       focusNode: carouselFocus,
       onTap: () async {
-       // redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
+        redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
 
         },
       child:
@@ -112,13 +112,13 @@ class _CommonCarouselState extends State<CommonCarousel> {
 
       if(element.bannerType == 'Product'){
         if(element.productId != ""){
-          context.router.push(ProductDetailPage(
-            productName: element.productId,
-              productdata: ['${element.catId}']
+          context.router.push(BannerProductDetailPage(
+              ProductDetails: ['${element.catId}','${element.productId}']
           ));
 
         } else {
-          context.router.push(ProductListGallery(
+          context.router.push(SubcategoryProductList(
+            SubcategoryProductName: element.catId
           ));
 
         }

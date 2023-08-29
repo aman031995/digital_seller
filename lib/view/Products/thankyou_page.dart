@@ -1,4 +1,5 @@
 import 'package:TychoStream/utilities/AppColor.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -40,7 +41,8 @@ class _ThankYouPageState extends State<ThankYouPage> {
             return Column(
               children: <Widget>[
                 cartPageViewIndicator(context, 2),
-                SizedBox(height: SizeConfig.screenHeight * 0.2),
+                SizedBox(height: ResponsiveWidget.isMediumScreen(context)
+                    ?50:SizeConfig.screenHeight * 0.2),
                  Image.asset('images/ShoppingSuccess.png',height: 150,width: 150,),
                 SizedBox(height: 20),
                  _textLiquidFillAnimation()
@@ -56,18 +58,22 @@ class _ThankYouPageState extends State<ThankYouPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
 
-        AppBoldFont(context, msg: StringConstant.ThankYOU,color: GREEN,fontSize: 40),
+        AppBoldFont(context, msg: StringConstant.ThankYOU,color: GREEN,fontSize: ResponsiveWidget.isMediumScreen(context)
+            ?20: 40),
         SizedBox(height: 10),
-        AppBoldFont(context, msg: StringConstant.orderPlacedSuccess,color:Theme.of(context).canvasColor,fontSize: 22),
-        SizedBox(height: 50),
+        AppBoldFont(context, msg: StringConstant.orderPlacedSuccess,color:Theme.of(context).canvasColor,fontSize: ResponsiveWidget.isMediumScreen(context)
+            ?15: 22),
+        SizedBox(height: 40),
 
         Container(
-            height: 50,
+            height:ResponsiveWidget.isMediumScreen(context)
+                ?40: 50,
             decoration:BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.circular(4)
             ) ,
-            width: SizeConfig.screenWidth/7.6,
+            width:  ResponsiveWidget.isMediumScreen(context)
+                ?150:SizeConfig.screenWidth/7.6,
             child: InkWell(
               onTap: () {
                 context.pushRoute(HomePageWeb());

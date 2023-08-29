@@ -353,13 +353,28 @@ Widget footerMobile(BuildContext context) {
                             throw 'Could not launch $url';
                           }
                         }),
-                    SizedBox(width: SizeConfig.screenWidth * 0.05),
+                    SizedBox(width:5),
                     GestureDetector(
                         child: Image.asset("images/ic_instgram.png",
                             height: 30,
                             color: Theme.of(context).scaffoldBackgroundColor),
                         onTap: () async {
                           const url = 'https://www.instagram.com';
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
+                        }),
+                    SizedBox(width:5),
+                    InkWell(
+                        child: Image.asset("images/ic_twitter.png",
+                            height: 33,
+                            width: 30,
+                            color: Theme.of(context).scaffoldBackgroundColor),
+                        onTap: () async {
+                          const url =
+                              'https://twitter.com/i/flow/login?input_flow_data=%7B%22requested_variant%22%3A%22eyJsYW5nIjoiZW4ifQ%3D%3D%22%7D';
                           if (await canLaunch(url)) {
                             await launch(url);
                           } else {
@@ -423,6 +438,8 @@ Widget footerMobile(BuildContext context) {
                 fit: BoxFit.fill, width: 120)
                 : Image.network(StringConstant.digitalSellerLitelogo,
                 fit: BoxFit.fill, width: 120)),
+        SizedBox(height: 10),
+
       ],
     ),
   );

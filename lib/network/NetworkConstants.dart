@@ -64,7 +64,7 @@ class NetworkConstants{
   static String kGetProductList = "product-listing?userId={USER_ID}&appId={APP_ID}&pageNum={PAGE_NUM}";
   static String kGetProductById = 'product-details?userId={USER_ID}&productId={PRODUCT_ID}&appId={APP_ID}&variant=[{"color" : "{COLOR_ID}"}, {"size" : "{SIZE_NAME}"},{"material_type" : "{MATERIAL_TYPE}"}, {"style" : "{STYLE}"}, {"unit_count" : "{UNIT_COUNT}"}]';
   static String buynow='buy-now';
-  static String kGetProductByCategory = "get-banner-product?appId={APP_ID}&catId={CAT_ID}&productId={PROD_ID}";
+ static String kGetProductByCategory = "get-banner-product?appId={APP_ID}&userId={USER_ID}&catId={CAT_ID}&productId={PROD_ID}&pageNum={PAGE_NUM}";
   static String KRecentView='view-product-list?userId={USER_ID}&appId={APP_ID}';
   static String KRecommended='recommended-product?appId={APP_ID}';
  static String kCancelOrder =
@@ -74,9 +74,12 @@ class NetworkConstants{
   static String kCreateOrder = "create-order";
   static String kPaymentResponse = "payment-callback";
   static String kcityState='get-city-state?pincode={PINCODE}';
-
+ static String kDiscountOffer = "offer-list?appId={APP_ID}";
+ static String kOfferList = "offer-product-list?appId={APP_ID}&categoryId={CATEGORY_ID}&query={QUERY}&pageNum={PAGE_NUM}";
   // static String kAppID = '8b7e56d4-8d6c-4053-8991-64374d95c353';
- static String kAppID = 'c5d97fa9-a6b9-48c5-bf23-b847f1a12b09';
- // static String kAppID = '5d3f0631-40fd-4047-afa9-47138ee59fc2';
- // static String kAppID = 'f11e5fd9-a395-49fb-bbd8-7e6554dc4549';
+// static String kAppID = 'c5d97fa9-a6b9-48c5-bf23-b847f1a12b09';
+ //static String kAppID = '5d3f0631-40fd-4047-afa9-47138ee59fc2';
+  static String kAppID = 'f11e5fd9-a395-49fb-bbd8-7e6554dc4549';
+  static String kcategoryProduct="cat-product-list?appId={APP_ID}&userId={USER_ID}&categoryId={CATEGORY_ID}";
+  //https://eacademyeducation.com:8011/api/cat-product-list?appId=f11e5fd9-a395-49fb-bbd8-7e6554dc4549&userId=4c0e8b1a-3a97-43a3-90ee-c63fa02af869&categoryId=i2aV9x7jMgDPQu3DkHU8Fx
 }

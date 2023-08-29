@@ -210,7 +210,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                       context,textAlign: TextAlign.left,
                       msg: mobileOTPVerificaton == true ? StringConstant.codeVerify : StringConstant.emailVerify,
                       fontSize: 16,
-                      maxLines: 1),
+                      maxLines: 2),
                 ),
                 SizedBox(height: 30),
                 Container(

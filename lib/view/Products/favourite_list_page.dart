@@ -143,8 +143,6 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                   itemCount: '${viewmodel.cartItemCount}'));
                             }
                           }),
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-
                     body: Scaffold(
 
                       extendBodyBehindAppBar: true,
@@ -303,7 +301,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                         ? Container():   isSearch == true
                                         ? Positioned(
                                             top: 0,
-                                            right:  SizeConfig.screenWidth * 0.15,
+                                            right:  SizeConfig.screenWidth * 0.20,
                                             child: searchList(
                                                 context,
                                                 homeViewModel,
@@ -328,9 +326,44 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                         : SizedBox()
                                   ],
                                 )
-                              : Center(
-                                  child: noDataFoundMessage(
-                                      context,StringConstant.noProductFound))
+                              : Stack(
+                                children: [
+                                  noDataFoundMessage(
+                                      context,StringConstant.noProductFound),
+                                  ResponsiveWidget
+                                      .isMediumScreen(context)
+                                      ?Container(): isLogins == true
+                                      ? Positioned(
+                                      top: 0,
+                                      right:  180,
+                                      child: profile(context,
+                                          setState, profileViewModel))
+                                      : Container(),
+                                  ResponsiveWidget
+                                      .isMediumScreen(context)
+                                      ? Container():   isSearch == true
+                                      ? Positioned(
+                                      top: ResponsiveWidget
+                                          .isMediumScreen(context)
+                                          ? 0
+                                          : SizeConfig.screenWidth *
+                                          0.001,
+                                      right: ResponsiveWidget
+                                          .isMediumScreen(context)
+                                          ? 0
+                                          : SizeConfig.screenWidth *
+                                          0.15,
+                                      child: searchList(
+                                          context,
+                                          homeViewModel,
+                                          scrollController,
+                                          homeViewModel,
+                                          searchController!,
+                                          cartViewModel
+                                              .cartItemCount))
+                                      : Container()
+                                ],
+                              )
                           : Center(
                               child: ThreeArchedCircle(size: 45.0),
                             ),

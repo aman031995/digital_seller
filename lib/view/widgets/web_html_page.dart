@@ -1,4 +1,5 @@
 import 'package:TychoStream/main.dart';
+import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
@@ -45,10 +46,13 @@ HomeViewModel homeViewModel=HomeViewModel();
   ProfileViewModel profileViewModel = ProfileViewModel();
   CartViewModel cartViewModel = CartViewModel();
   TextEditingController? searchController = TextEditingController();
+  String?  checkInternet;
 
   @override
   void initState() {
     homeViewModel.getAppConfig(context);
+    profileViewModel.getProfileDetail(context);
+
     homeViewModel.openWebHtmlView(context, widget.html ?? "", title: widget.title );
     super.initState();
   }
@@ -57,15 +61,22 @@ HomeViewModel homeViewModel=HomeViewModel();
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return     ChangeNotifierProvider.value(
-        value: homeViewModel,
-        child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-          return connectivity == 'Offline'
-              ? NOInternetScreen()
-              : viewmodel.html==''? Center(child: ThreeArchedCircle(size: 45.0))    :
-
-
-         GestureDetector(
+    AppNetwork.checkInternet((isSuccess, result) {
+      setState(() {
+        checkInternet = result;
+      });
+    });
+    return connectivity == 'Offline'
+        ? NOInternetScreen()
+        : ChangeNotifierProvider.value(
+        value: profileViewModel,
+        child: Consumer<ProfileViewModel>(builder: (context, profilemodel, _) {
+          return ChangeNotifierProvider.value(
+              value: homeViewModel,
+              child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
+                return
+            viewmodel.html==''? Center(child: ThreeArchedCircle(size: 45.0)):
+            GestureDetector(
            onTap: () {
              if (isLogins == true) {
                isLogins = false;
@@ -79,11 +90,11 @@ HomeViewModel homeViewModel=HomeViewModel();
            child: Scaffold(
         appBar: ResponsiveWidget.isMediumScreen(context)
               ? homePageTopBar(context, _scaffoldKey, cartViewModel.cartItemCount,viewmodel,
-          profileViewModel,)
+          profilemodel,)
               : getAppBar(
               context,
                 viewmodel,
-              profileViewModel,
+            profilemodel,
               cartViewModel.cartItemCount,1,
               searchController, () async {
             SharedPreferences sharedPreferences =
@@ -98,6 +109,14 @@ HomeViewModel homeViewModel=HomeViewModel();
                     );
                   });
             } else {
+              if (isLogins == true) {
+                isLogins = false;
+                setState(() {});
+              }
+              if (isSearch == true) {
+                isSearch = false;
+                setState(() {});
+              }
               context.router.push(FavouriteListPage());
             }
         }, () async {
@@ -116,6 +135,14 @@ HomeViewModel homeViewModel=HomeViewModel();
                     );
                   });
             } else {
+              if (isLogins == true) {
+                isLogins = false;
+                setState(() {});
+              }
+              if (isSearch == true) {
+                isSearch = false;
+                setState(() {});
+              }
               context.router.push(CartDetail(
                   itemCount:
                   '${cartViewModel.cartItemCount}'));
@@ -133,55 +160,56 @@ HomeViewModel homeViewModel=HomeViewModel();
           ? AppMenu()
               : SizedBox(),
         body:
-        SingleChildScrollView(
-                      child: Stack(
-                        children: [
-                          Column(
-                            children: [
-                              Html(data:viewmodel.html ?? "" , style: {
-                  "body": Style(fontSize: FontSize.large,lineHeight: LineHeight.number(2),color: Theme.of(context).canvasColor,padding:HtmlPaddings.only(left: 18,right: 18))
-                }),
-                              SizedBox(height: 50),
-                              ResponsiveWidget.isMediumScreen(
-                                  context)
-                                  ? footerMobile(context)
-                                  :footerDesktop(),
-                            ],
-                          ),
-                          ResponsiveWidget
-                              .isMediumScreen(context)
-                              ?  Container():isLogins == true
-                              ? Positioned(
-                              top: 80,
-                              right: 35,
-                              child: profile(context,
-                                  setState, profileViewModel))
-                              : Container(),
-                          isSearch == true
-                              ? Positioned(
-                              top: ResponsiveWidget
-                                  .isMediumScreen(context)
-                                  ? 0
-                                  : SizeConfig.screenWidth *
-                                  0.002,
-                              right: ResponsiveWidget
-                                  .isMediumScreen(context)
-                                  ? 0
-                                  : SizeConfig.screenWidth *
-                                  0.15,
-                              child: searchList(
-                                  context,
-                                  viewmodel,
-                                  scrollController,
-                                  homeViewModel,
-                                  searchController!,
-                                  cartViewModel
-                                      .cartItemCount))
-                              : Container()
-                        ],
-                      )
+        Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Html(data:viewmodel.html ?? "" , style: {
+                    "body": Style(fontSize: FontSize.large,lineHeight: LineHeight.number(2),color: Theme.of(context).canvasColor,padding:HtmlPaddings.only(left: 18,right: 18))
+                  }),
+                  SizedBox(height: 50),
+                  ResponsiveWidget.isMediumScreen(
+                      context)
+                      ? footerMobile(context)
+                      :footerDesktop(),
+                ],
+              ),
+            ),
+            ResponsiveWidget
+                .isMediumScreen(context)
+                ?  Container():isLogins == true
+                ? Positioned(
+                top: 0,
+                right: SizeConfig.screenWidth *
+                    0.13,
+                child: profile(context,
+                    setState, profilemodel))
+                : Container(),
+            isSearch == true
+                ? Positioned(
+                top: ResponsiveWidget
+                    .isMediumScreen(context)
+                    ? 0
+                    : SizeConfig.screenWidth *
+                    0.002,
+                right: ResponsiveWidget
+                    .isMediumScreen(context)
+                    ? 0
+                    : SizeConfig.screenWidth *
+                    0.18,
+                child: searchList(
+                    context,
+                    viewmodel,
+                    scrollController,
+                    viewmodel,
+                    searchController!,
+                    cartViewModel
+                        .cartItemCount))
+                : Container()
+          ],
         )),
-           ));})
-    );
+           ));}));}
+    ));
   }
 }

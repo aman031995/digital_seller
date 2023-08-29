@@ -83,14 +83,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   }
 
   getProductDetails(){
-    if(widget.productdata?.length ==1){
-      cartView.getProductListCategory(
-          context, widget.productdata?[0] ?? "", widget.productdata?[1] ?? "", 1);
-      Map<String, dynamic> json = jsonDecode(SessionStorageHelper.getValue("productDeatils").toString());
-      productListDetails = ProductList.fromJson(json);
-    } else {
-      if (widget.productdata?[0] != null)
-         cartView.updatecolorName(context,'');
+    {
+      cartView.updatecolorName(context,'');
       cartView.updateCartCount(context, widget.productdata?[1] ?? '');
         cartView.getProductDetails(
             context,
@@ -343,7 +337,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                          ),
                              ),
                          SizedBox(height: 12),
-                         footerMobile(context)
+                         footerMobile(context),
 
 
                        ],
@@ -506,7 +500,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                  isSearch==true?
                  Positioned(
                      top: ResponsiveWidget.isMediumScreen(context) ? 0:0,
-                     right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.15,
+                     right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.20,
 
                      child: searchList(context, homeViewModel, scrollController,homeViewModel, searchController!,cartView.cartItemCount))
                      : Container()
@@ -606,7 +600,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         Theme.of(context).cardColor),
                     padding: MaterialStateProperty.all(
                         EdgeInsets.symmetric(horizontal:ResponsiveWidget.isMediumScreen(context)
-                            ?50: 40, vertical: ResponsiveWidget.isMediumScreen(context)
+                            ?40: 40, vertical: ResponsiveWidget.isMediumScreen(context)
                             ?20:20)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
@@ -617,8 +611,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     msg: (cartView.isAddedToCart == true || cartView.productListDetails?.productDetails
                         ?.isAddToCart ==
                         true)
-                        ? "Go to Cart"
-                        : "Add to Bag",color: Theme.of(context).canvasColor,
+                        ? "GO TO CART"
+                        : "ADD TO BAG",color: Theme.of(context).canvasColor,
                     fontSize: 16),
                 onPressed: ()async{ if (isLogins == true) {
                   isLogins = false;
@@ -667,7 +661,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             ?0:5.0),
                         ))),
                 child: AppBoldFont(context, color: Theme.of(context).hintColor,
-                    msg: " BUYNOW", fontSize: 16),
+                    msg: " BUY NOW", fontSize: 16),
                 onPressed: ()
                 async{ if (isLogins == true) {
                   isLogins = false;

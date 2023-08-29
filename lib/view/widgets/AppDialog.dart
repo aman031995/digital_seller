@@ -61,7 +61,7 @@ class AppDialog {
                         alignment: Alignment.topLeft,
                         child: AppBoldFont(context,
                             msg: msg, color: Theme.of(context).canvasColor,
-                            fontSize:16,
+                            fontSize:16,maxLines: 2
                            )),
                     SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?10:30),
                     Container(
@@ -141,8 +141,7 @@ class AppDialog {
               EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 15),
               actions: [
                 Container(
-                    width:  ResponsiveWidget.isMediumScreen(context)
-                        ?SizeConfig.screenWidth/1.1:SizeConfig.screenWidth /6.2,
+                    width: 400,
                     padding: EdgeInsets.all(8),
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

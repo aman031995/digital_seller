@@ -131,21 +131,21 @@ class _CustomTextFieldState extends State<AppTextField> {
                     borderSide: BorderSide(color: RED_COLOR, width: 2),
                   ),
                   enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(
-                        color: Theme.of(context).canvasColor,
+                        color: Theme.of(context).canvasColor.withOpacity(0.2),
                         width: 2),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor,
+                        color: Theme.of(context).primaryColor.withOpacity(0.4),
                         width: 2),
                   ),
                   disabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(
-                        color: Theme.of(context).canvasColor,
+                        color: Theme.of(context).canvasColor.withOpacity(0.2),
                         width: 2),
                   ),
                   isDense: true,

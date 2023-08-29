@@ -1,4 +1,5 @@
 import 'package:TychoStream/network/AppNetwork.dart';
+import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
@@ -67,6 +68,8 @@ class _HomePageWebState extends State<HomePageWeb> {
     cartViewModel.getCartCount(context);
     cartViewModel.getProductCategoryLists(context);
     cartViewModel.getRecommendedViewData(context);
+    cartViewModel.getOfferDiscount(context);
+
     super.initState();
   }
 
@@ -215,7 +218,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                               Container(
                                                 height: ResponsiveWidget
                                                         .isMediumScreen(context)
-                                                    ? 270
+                                                    ? 275
                                                     : SizeConfig.screenWidth *
                                                         0.37,
                                                 margin: EdgeInsets.zero,
@@ -245,8 +248,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                 child: Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.center,
+
                                                   children: [
                                                     Padding(
                                                       padding: EdgeInsets.only(
@@ -344,7 +347,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                 },
                                                                                 child: Card(
                                                                                   elevation: isHovered == true ? 10 : 0.1,
-                                                                                  margin: EdgeInsets.all(ResponsiveWidget.isMediumScreen(context) ? 2 : 10),
+                                                                                  margin: EdgeInsets.only(right:ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
+
                                                                                   child: Container(
                                                                                     width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
                                                                                     decoration: BoxDecoration(
@@ -352,7 +356,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                     ),
                                                                                     child: Column(
                                                                                       mainAxisSize: MainAxisSize.min,
-                                                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                      crossAxisAlignment: CrossAxisAlignment.center,
+
                                                                                       children: [
                                                                                         CachedNetworkImage(
                                                                                             imageUrl: '${cartViewModel.recommendedView?[position].productDetails?.productImages?[0]}',
@@ -365,9 +370,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                                 ),
                                                                                             placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.23, child: Center(child: CircularProgressIndicator(color: Colors.grey)))),
                                                                                         SizedBox(height: 8),
-                                                                                        AppBoldFont(maxLines: 1, context, msg: "  ${getRecommendedViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
+                                                                                        AppBoldFont(maxLines: 1, context, msg: "${getRecommendedViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
                                                                                         SizedBox(height: 2),
-                                                                                        AppBoldFont(maxLines: 1, context, msg: "  ₹" + "${cartViewModel.recommendedView?[position].productDetails?.productDiscountPrice}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
+                                                                                        AppBoldFont(maxLines: 1, context, msg: "₹" + "${cartViewModel.recommendedView?[position].productDetails?.productDiscountPrice}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
                                                                                         SizedBox(height:10),
                                                                                         InkWell(
                                                                                           onTap: () {
@@ -404,7 +409,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                               ..translate(0, 0, 0),
                                                                           ));
                                                                     })),
-                                                        Positioned(
+                                                        ResponsiveWidget.isMediumScreen(context)
+                                                            ?Container():    Positioned(
                                                             top: ResponsiveWidget
                                                                     .isMediumScreen(
                                                                         context)
@@ -450,7 +456,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                             // counter++;
                                                                           });
                                                                     })),
-                                                        Positioned(
+                                                        ResponsiveWidget.isMediumScreen(context)
+                                                            ?Container():  Positioned(
                                                             top: ResponsiveWidget
                                                                     .isMediumScreen(
                                                                         context)
@@ -543,9 +550,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
                                                                     .start,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                            crossAxisAlignment: CrossAxisAlignment.center,
+
                                                             children: [
                                                               Container(
                                                                 padding: EdgeInsets.only(
@@ -573,8 +579,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                               ),
                                                               SizedBox(
                                                                   height: SizeConfig
-                                                                          .screenWidth *
-                                                                      0.002),
+                                                                      .screenWidth *
+                                                                      0.01),
                                                               Container(
                                                                   height: ResponsiveWidget.isMediumScreen(
                                                                           context)
@@ -636,7 +642,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                   },
                                                                                   child: Card(
                                                                                     elevation: isHovered == true ? 10 : 0.1,
-                                                                                    margin: EdgeInsets.all(ResponsiveWidget.isMediumScreen(context) ? 2 : 10),
+                                                                                    margin: EdgeInsets.only(right:ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
+
                                                                                     child: Container(
                                                                                       width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
                                                                                       decoration: BoxDecoration(
@@ -644,7 +651,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                       ),
                                                                                       child: Column(
                                                                                         mainAxisSize: MainAxisSize.min,
-                                                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                        crossAxisAlignment: CrossAxisAlignment.center,
+
                                                                                         children: [
                                                                                           CachedNetworkImage(
                                                                                               imageUrl: '${cartViewModel.recentView?[position].productDetails?.productImages?[0]}',
@@ -657,7 +665,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                                   ),
                                                                                               placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenHeight / 2.1, child: Center(child: CircularProgressIndicator(color: Colors.grey)))),
                                                                                           SizedBox(height: 10),
-                                                                                          AppBoldFont(context, msg: "  ${getRecentViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18, maxLines: 1),
+                                                                                          AppBoldFont(context, msg: "${getRecentViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18, maxLines: 1),
                                                                                            SizedBox(height: 10)
                                                                                         ],
                                                                                       ),
@@ -670,7 +678,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                       }))
                                                             ],
                                                           ),
-                                                          Positioned(
+                                                          ResponsiveWidget.isMediumScreen(context)
+                                                              ?Container():  Positioned(
                                                               top: ResponsiveWidget
                                                                       .isMediumScreen(
                                                                           context)
@@ -712,7 +721,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                         setState(
                                                                             () {});
                                                                       }):Container()),
-                                                          Positioned(
+                                                          ResponsiveWidget.isMediumScreen(context)
+                                                              ?Container():   Positioned(
                                                               top: ResponsiveWidget
                                                                       .isMediumScreen(
                                                                           context)
@@ -765,6 +775,13 @@ class _HomePageWebState extends State<HomePageWeb> {
                                               // what we offer.....
 
                                               offerList(context),
+                                              SizedBox(
+                                                  height: ResponsiveWidget
+                                                      .isMediumScreen(
+                                                      context)
+                                                      ? 12
+                                                      : 24),
+                                              _discountView(cartViewModel),
 
                                               SizedBox(
                                                   height: ResponsiveWidget
@@ -934,7 +951,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                         ? 0
                                                         : SizeConfig
                                                                 .screenWidth *
-                                                            0.15,
+                                                            0.20,
                                                     child: searchList(
                                                         context,
                                                         viewmodel,
@@ -948,6 +965,113 @@ class _HomePageWebState extends State<HomePageWeb> {
                                     ))));
                   }));
             }));
+  }
+  _discountView(CartViewModel cartview) {
+    return ChangeNotifierProvider.value(value: cartViewModel,
+        child: Consumer<CartViewModel>(
+          builder: (context, homeVM, _){
+            return Container(
+              width: SizeConfig.screenWidth,
+              color: Theme.of(context).primaryColor.withOpacity(0.5),
+
+              margin: EdgeInsets.zero,
+              height: ResponsiveWidget
+                  .isMediumScreen(
+                  context)
+                  ? 300
+                  : SizeConfig
+                  .screenWidth *
+                  0.31,
+              padding: EdgeInsets.only(
+                  left: ResponsiveWidget
+                      .isMediumScreen(
+                      context)
+                      ? 8
+                      : SizeConfig
+                      .screenWidth *
+                      0.12,
+                  right: ResponsiveWidget
+                      .isMediumScreen(
+                      context)
+                      ? 8
+                      : SizeConfig
+                      .screenWidth *
+                      0.11,
+                  top: ResponsiveWidget
+                      .isMediumScreen(
+                      context)
+                      ?10: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AppBoldFont(context, msg: 'Discounts for You', fontWeight:
+                  FontWeight
+                      .w700,
+                      fontSize:
+                      ResponsiveWidget.isMediumScreen(context)
+                          ? 16
+                          : 22),
+                  SizedBox(height: 10),
+                  Container(
+                     height: ResponsiveWidget.isMediumScreen(context) ? 230 : SizeConfig.screenWidth * 0.27,
+                      width: SizeConfig
+                          .screenWidth,
+
+
+                      child: ListView.builder(
+                        reverse: false,
+                        shrinkWrap: true,
+                        padding: EdgeInsets.zero,
+                        scrollDirection: Axis.horizontal,
+                          itemCount: cartview.offerDiscountModel?.length,
+                        itemBuilder: (context, position) {
+                          return OnHover(
+                              builder: (isHovered) {
+                                return InkWell(
+                                    onTap: () {
+                                  if (isLogins == true) {
+                                    isLogins = false;
+                                    setState(() {});
+                                  }
+                                  if (isSearch == true) {
+                                    isSearch = false;
+                                    setState(() {});
+                                  }
+                                  context.router.push(ProductListGallery(
+                                    discountdata: ["${cartview.offerDiscountModel?[position].categoryId}","${cartview.offerDiscountModel?[position].discountPercentage}"]
+                                  ));
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(right:ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
+                                  width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
+                                  child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            CachedNetworkImage(
+                                                height: ResponsiveWidget.isMediumScreen(context) ? 180 : SizeConfig.screenWidth * 0.22,
+                                                width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.22,
+                                                imageUrl: '${cartview.offerDiscountModel?[position].images}',
+                                                fit: BoxFit.fill,
+                                                placeholder: (context, url) => Center(
+                                                    child: CircularProgressIndicator(color: Colors.grey))),
+                                            SizedBox(height: 8),
+                                            AppBoldFont(context, msg: "${cartview.offerDiscountModel?[position].title}", color: Theme.of(context).canvasColor,fontSize: ResponsiveWidget.isMediumScreen(context) ? 14:18),
+                                            SizedBox(height: 4),
+                                            AppRegularFont(context, msg: "Min. ${cartview.offerDiscountModel?[position].discountPercentage}% Off", color: GREEN, fontSize: ResponsiveWidget.isMediumScreen(context) ? 14:18)
+
+
+                                          ],
+                                        ),
+                                ));
+                                },hovered: Matrix4.identity()..translate(0, 0, 0),
+
+                          );})),
+                ],
+              ),
+            );
+          },
+        ));
   }
 
   Future _nextCounter() async {
