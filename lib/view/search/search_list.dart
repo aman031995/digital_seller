@@ -13,7 +13,6 @@ Widget searchList(
     BuildContext context,
     HomeViewModel viewmodel,
     ScrollController _scrollController,
-    HomeViewModel homeViewModel,
     TextEditingController searchController,String count) {
   return viewmodel.searchDataModel!=null? viewmodel.searchDataModel!.productList == null ? Container():
     Stack(

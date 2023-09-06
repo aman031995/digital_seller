@@ -1,19 +1,16 @@
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppTextField.dart';
+import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
+import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:flutter/material.dart';
 
-
-
-  TextEditingController? emailController = TextEditingController();
-   final validation = ValidationBloc();
-
-
-  Widget emailNotificationUpdatePage(BuildContext context) {
+final validation = ValidationBloc();
+Widget emailNotificationUpdatePage(BuildContext context, TextEditingController emailController, AuthViewModel authVM) {
     return Container(
       height: ResponsiveWidget.isMediumScreen(context) ?220: SizeConfig.screenWidth * 0.2,
       width: SizeConfig.screenWidth,
@@ -27,106 +24,117 @@ import 'package:flutter/material.dart';
           SizedBox(height:  ResponsiveWidget.isMediumScreen(context) ?10:30,),
           AppRegularFont(context, msg: 'Be updated on new arrivals, trends and offers. Sign up now! ', fontSize: ResponsiveWidget.isMediumScreen(context) ?16: 28, fontWeight: FontWeight.w500, color: Theme.of(context).canvasColor),
           SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?10: 30,),
-          ResponsiveWidget.isMediumScreen(context) ? getLatestUpdateRowTextFieldMobile(context):getLatestUpdateRowTextField(context),
+          ResponsiveWidget.isMediumScreen(context) ? getLatestUpdateRowTextFieldMobile(context,emailController,authVM):getLatestUpdateRowTextField(context,emailController,authVM),
         ],
       ),
     );
   }
 
-  Widget getLatestUpdateRowTextField(BuildContext context) {
+  Widget getLatestUpdateRowTextField(BuildContext context, TextEditingController emailController, AuthViewModel authVM) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        inputNormalTextField(emailController, TextInputType.emailAddress, StringConstant.enterEmail, null),
-        SizedBox(width: 40,),
-       ElevatedButton(onPressed: (){},
-           style: ElevatedButton.styleFrom(
-             primary: Theme.of(context).canvasColor,
-           ),
-           child:
-        Container(
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: Theme.of(context).canvasColor,
-          ),
+        inputNormalTextField(emailController, TextInputType.emailAddress, StringConstant.enterEmail, null,context,authVM),
+        SizedBox(width: 40),
+        ResponsiveWidget.isMediumScreen(context) ? SizedBox()  :Container(
           height: 50,
-          width: SizeConfig.screenWidth * 0.1,
-          child: AppRegularFont(context, msg: 'SUBSCRIBE', color: Theme.of(context).cardColor, fontSize: 20,),
-        ))
+          width: SizeConfig.screenWidth * 0.2,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(0)),
+          ),
+          child: StreamBuilder(
+              stream:validation.checkEmailValidate,
+              builder: (context, snapshot) {
+                return appButton(
+                    context,
+                    StringConstant.subscribe,
+                    SizeConfig.screenWidth ,
+                    50.0,
+                    Theme.of(context).primaryColor,
+                    Theme.of(context).hintColor,
+                    18,
+                    10,
+                    snapshot.data != true ? false : true,
+                    onTap: () {
+                      snapshot.data != true ? ToastMessage.message(StringConstant.worngEmail,context) : authVM.subscribedEmail(emailController.text, context);
+                      emailController.clear();
+                    });
+              }),
+        ),
       ],
     );
   }
-Widget getLatestUpdateRowTextFieldMobile(BuildContext context) {
+
+Widget getLatestUpdateRowTextFieldMobile(BuildContext context, TextEditingController emailController, AuthViewModel authVM) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      inputNormalTextField(emailController, TextInputType.emailAddress, StringConstant.enterEmail, null),
-      SizedBox(height: 5),
-      ElevatedButton(onPressed: (){},
-          style: ElevatedButton.styleFrom(
-            primary: Theme.of(context).canvasColor,
-          ),
-          child:
-          Container(
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: Theme.of(context).canvasColor,
-            ),
-            height: ResponsiveWidget.isMediumScreen(context) ?40:50,
-             width:ResponsiveWidget.isMediumScreen(context) ?200:SizeConfig.screenWidth * 0.1,
-            child: AppRegularFont(context, msg: 'SUBSCRIBE', color: Theme.of(context).cardColor, fontSize: 20,),
-          ))
+      inputNormalTextField(emailController, TextInputType.emailAddress, StringConstant.enterEmail, null,context,authVM),
+       SizedBox(height: 8),
+      Container(
+        height:40,
+        width:200,
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(0)),
+        ),
+        child: StreamBuilder(
+            stream:validation.checkEmailValidate,
+            builder: (context, snapshot) {
+              return appButton(
+                  context,
+                  StringConstant.login,
+                  SizeConfig.screenWidth ,
+                  50.0,
+                  Theme.of(context).primaryColor,
+                  Theme.of(context).hintColor,
+                  18,
+                  10,
+                  snapshot.data != true ? false : true,
+                  onTap: () {
+                    snapshot.data != true ? ToastMessage.message(StringConstant.worngEmail,context) : authVM.subscribedEmail(emailController.text, context);
+                    emailController.clear();
+                  });
+            }),
+      )
+
     ],
   );
 }
 
 
-Widget inputNormalTextField(var ctrl,var keyType, String msg, var sinkValue,) {
+Widget inputNormalTextField(var ctrl,var keyType, String msg, var sinkValue,BuildContext context,AuthViewModel authVM) {
   return
-    Padding(
-      padding: const EdgeInsets.only(left: 10, right: 10, top: 5),
+    Container(
+      height:ResponsiveWidget.isMediumScreen(context) ?60: 80,
+      width:ResponsiveWidget.isMediumScreen(context) ?300: SizeConfig.screenWidth * 0.2,
+      decoration: BoxDecoration(
+        borderRadius: const BorderRadius.all(Radius.circular(0)),
+      ),
       child: StreamBuilder(
+          stream: validation.email,
           builder: (context, snapshot) {
-            return Container(
-              height:ResponsiveWidget.isMediumScreen(context) ?40: 50,
-              width:ResponsiveWidget.isMediumScreen(context) ?250: SizeConfig.screenWidth * 0.2,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(0)),
-              ),
-              child: TextField(
-                  cursorColor:  Theme.of(context).canvasColor,
-                  controller: ctrl,
-                  obscureText: false,
-                  keyboardType: keyType,
-                  maxLength: 50,
-                  style: TextStyle(color:Theme.of(context).canvasColor),
-                  decoration: InputDecoration(
-                    hintText: msg,
-                    counterText: "",
-                    hintStyle: TextStyle(color: Theme.of(context).canvasColor.withOpacity(0.4)),
-                    // labelText: msg,
-                    // labelStyle: TextStyle(color: Colors.grey),
-                    // labelStyle: TextStyle(color: AppColors.buttonColor ),
+            return AppTextField(
+                maxLine: null,
+                prefixText: '',
+                controller: ctrl,
+                labelText: StringConstant.email,
+                isShowCountryCode: true,
+                isShowPassword: false,
+                secureText: false,
+                isColor: false,
+                isTick: false,
+                maxLength: 40,
+                errorText: snapshot.hasError
+                    ? snapshot.error.toString()
+                    : null,
+                onChanged: (m) {
+                  validation.sinkEmail.add(m);
 
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(width: 3,color:Theme.of(context).canvasColor),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:  BorderSide(width: 3, color: Theme.of(context).canvasColor),
-                    ),
-                    errorText: snapshot.hasError
-                        ? snapshot.error.toString()
-                        : null,
-                  ),
-                  onChanged: (m) {
-                    sinkValue.add(m);
-                  },
-                  onSubmitted: (value) {
-                    sinkValue.add(value);
-                  }),
-            );
+                },
+                keyBoardType: TextInputType.emailAddress,
+                onSubmitted: (m) {});
           }),
     );
 }

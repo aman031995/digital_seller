@@ -3,6 +3,7 @@ import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/session_storage.dart';
+import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
@@ -11,18 +12,17 @@ import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
 import 'package:TychoStream/view/search/search_list.dart';
-import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
-import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../model/data/product_list_model.dart';
 import '../../utilities/SizeConfig.dart';
 
 @RoutePage()
@@ -39,22 +39,18 @@ class CartDetail extends StatefulWidget {
 class _CartDetailState extends State<CartDetail> {
   CartViewModel cartViewData = CartViewModel();
   final validation = ValidationBloc();
-  TextEditingController applyPromoCode = TextEditingController();
   String? checkInternet;
-  int activeStep = 0;
   HomeViewModel homeViewModel=HomeViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   ScrollController scrollController = ScrollController();
   ProfileViewModel profileViewModel = ProfileViewModel();
-  CartViewModel cartViewModel = CartViewModel();
   TextEditingController? searchController = TextEditingController();
 
   @override
   void initState() {
-    homeViewModel.getAppConfigData(context);
+    homeViewModel.getAppConfig(context);
     SessionStorageHelper.removeValue('token');
     SessionStorageHelper.removeValue('payment');
-
     cartViewData.getCartCount(context);
     cartViewData.updateCartCount(context, widget.itemCount ?? '');
     cartViewData.getCartListData(context);
@@ -71,9 +67,7 @@ class _CartDetailState extends State<CartDetail> {
     });
     return checkInternet == "Offline"
         ? NOInternetScreen()
-        :
-
-    ChangeNotifierProvider.value(
+        : ChangeNotifierProvider.value(
             value: cartViewData,
             child: Consumer<CartViewModel>(builder: (context, cartViewData, _) {
               return GestureDetector(
@@ -180,8 +174,8 @@ class _CartDetailState extends State<CartDetail> {
                                                       .cartListData?.cartList?[index];
                                                   return Container(
                                                     color: Theme.of(context).cardColor,
+                                                      margin: EdgeInsets.only(bottom: 5,left: ResponsiveWidget.isSmallScreen(context) ? 10:16,right: ResponsiveWidget.isSmallScreen(context) ? 10:16),
                                                     child:cardDeatils(context,itemInCart!,index,cartViewData)
-
                                                   );
                                                 },
                                               ),
@@ -211,10 +205,8 @@ class _CartDetailState extends State<CartDetail> {
                                                   itemBuilder: (context, index) {
                                                     final itemInCart = cartViewData.cartListData?.cartList?[index];
                                                     return Container(
-                                                      color: Theme.of(context)
-                                                          .cardColor,
-                                                      margin: EdgeInsets.only(
-                                                          bottom: 5,right: 15),
+                                                      color: Theme.of(context).cardColor,
+                                                      margin: EdgeInsets.only(bottom: 5,right: 15),
                                                       child:cardDeatils(context,itemInCart!,index,cartViewData)
                                                     );
                                                   },
@@ -240,9 +232,16 @@ class _CartDetailState extends State<CartDetail> {
                                                         isSearch = false;
                                                         setState(() {});
                                                       }
-                                                        context.router.push(
+                                                      if(hasOutOfStockItems(cartViewData.cartListData!.cartList!)){
+                                                          ToastMessage.message(StringConstant.removeOutofStock,context);
+                                                      } else {
+                                                        if(hasOutOfQuantityLeft(cartViewData.cartListData!.cartList!)){
+                                                          ToastMessage.message(StringConstant.removeOutofStock,context);
+                                                        }
+                                                        else{ context.router.push(
                                                             AddressListPage(
-                                                                buynow: false));
+                                                                buynow: false)) ;}
+                                                        }
                                                       }),
                                                     )
                                                   ],
@@ -257,12 +256,15 @@ class _CartDetailState extends State<CartDetail> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 SizedBox(height: 5),
-                                                pricedetails(context,cartViewData),
+                                                Container(
+                                                    margin: EdgeInsets.only(
+                                                        left: ResponsiveWidget.isSmallScreen(context) ? 10:16, right: ResponsiveWidget.isSmallScreen(context) ? 10:16),
+                                                    child: pricedetails(context,cartViewData)),
                                                 SizedBox(height: 10),
                                                  Container(
                                                     height: 50,
                                                     margin: EdgeInsets.only(
-                                                        left: 10, right: 10),
+                                                        left: ResponsiveWidget.isSmallScreen(context) ? 20:26, right: ResponsiveWidget.isSmallScreen(context) ? 20:26),
                                                     width: SizeConfig
                                                         .screenWidth,
                                                     child: checkoutButton(
@@ -277,18 +279,27 @@ class _CartDetailState extends State<CartDetail> {
                                                       isSearch = false;
                                                       setState(() {});
                                                     }
-                                                      context.router.push(
-                                                          AddressListPage(
-                                                              buynow: false));
+                                                    if(hasOutOfStockItems(cartViewData.cartListData!.cartList!)){
+
+                                                        ToastMessage.message(StringConstant.removeOutofStock,context);
+
+                                                    } else {
+                                                      if(hasOutOfQuantityLeft(cartViewData.cartListData!.cartList!)){
+                                                        ToastMessage.message(StringConstant.removeOutofStock,context);
+                                                      }
+                                                      else{
+                                                        context.router.push(
+                                                            AddressListPage(
+                                                                buynow: false)) ;
+                                                      }
+                                                       }
                                                     }),
-
                                                 )
-
                                               ],
                                             ):SizedBox(height: 20),
                                             SizedBox(height: 30),
                                             ResponsiveWidget.isMediumScreen(context)
-                                                ?  footerMobile(context):footerDesktop()
+                                                ?  footerMobile(context,homeViewModel):footerDesktop()
                                           ],
                                         ),
                                       ),
@@ -305,23 +316,16 @@ class _CartDetailState extends State<CartDetail> {
                                     .isMediumScreen(context)
                                     ? Container():   isSearch == true
                                     ? Positioned(
-                                    top: ResponsiveWidget
-                                        .isMediumScreen(context)
-                                        ? 0
-                                        : SizeConfig.screenWidth *
+                                    top: SizeConfig.screenWidth *
                                         0.001,
-                                    right: ResponsiveWidget
-                                        .isMediumScreen(context)
-                                        ? 0
-                                        : SizeConfig.screenWidth *
+                                    right: SizeConfig.screenWidth *
                                         0.20,
                                     child: searchList(
                                         context,
                                         homeViewModel,
                                         scrollController,
-                                        homeViewModel,
                                         searchController!,
-                                        cartViewModel
+                                        cartViewData
                                             .cartItemCount))
                                     : Container()
                               ],
@@ -330,7 +334,7 @@ class _CartDetailState extends State<CartDetail> {
                             : Stack(
                               children: [
                                 noDataFoundMessage(
-                                    context, StringConstant.noItemInCart),
+                                    context, StringConstant.noItemInCart,homeViewModel),
                                 ResponsiveWidget
                                     .isMediumScreen(context)
                                     ?Container(): isLogins == true
@@ -358,9 +362,8 @@ class _CartDetailState extends State<CartDetail> {
                                         context,
                                         homeViewModel,
                                         scrollController,
-                                        homeViewModel,
                                         searchController!,
-                                        cartViewModel
+                                        cartViewData
                                             .cartItemCount))
                                     : Container()
                               ],
@@ -374,4 +377,22 @@ class _CartDetailState extends State<CartDetail> {
             })
     );
   }
+  bool hasOutOfStockItems(List<ProductList> cartList) {
+    for (var item in cartList) {
+      if (!item.productDetails!.inStock!) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
+
+bool hasOutOfQuantityLeft(List<ProductList> cartList) {
+  for (var item in cartList) {
+    if ((item.productDetails!.quantityLeft ?? 0) < 1) {
+      return true;
+    }
+  }
+  return false;
+}
+

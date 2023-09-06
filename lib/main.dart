@@ -3,11 +3,13 @@ import 'package:TychoStream/AppRouter.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/repository/subscription_provider.dart';
@@ -24,23 +26,23 @@ bool isLogins = false;
 bool isSearch = false;
 bool isProfile=false;
 
-FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+final _firebase=FirebaseMessaging.instance;
 
 Future<void> main() async {
-
-  //Stripe.publishableKey = "pk_live_51NXhtjSJK48GkIWFY3NeBL1mw7CATawc8xbjlwBi5wrTr61UbS9sHQWjnEr5kb9tSytKgZGWsbMkYish4xs2ILIC00OZVlrRNY";
-
+  Stripe.publishableKey = "pk_test_51NXhtjSJK48GkIWFjJzBm88uzgrwb7i4aIyls9YoPHT5IvYAV9rMnlEW0U8AUY1VpIJB3ZOBFTFdSFuMYnxM0fkK00KqwNEEeH";
   setPathUrlStrategy();
+
   await WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       options: FirebaseOptions(
-          apiKey: "AIzaSyCYNNyloGMREO0_7qajgvRTdvobmyZnBT8",
-          authDomain: "flutter-web-29d92.firebaseapp.com",
-          projectId: "flutter-web-29d92",
-          storageBucket: "flutter-web-29d92.appspot.com",
-          messagingSenderId: "1039297047623",
-          appId: "1:1039297047623:web:c2e9205493d33a2f6f1562",
-          measurementId: "G-RFYDXHGWCK"
+          apiKey: "AIzaSyBaAbG2eNrQR2e1JmJcLj0N4QoKSv59Sb0",
+            authDomain: "tychostreams.firebaseapp.com",
+            projectId: "tychostreams",
+            storageBucket: "tychostreams.appspot.com",
+            messagingSenderId: "746850038788",
+            appId: "1:746850038788:web:0e231dc5e9ead255407151",
+            measurementId: "G-2Q4LD5W403"
+
   ));
   html.window.onPopState.listen((event) {
     html.window.location.reload();
@@ -60,6 +62,7 @@ class _MyAppState extends State<MyApp> {
 
   void initState() {
     User();
+    getFCMToken();
     homeViewModel.getAppConfig(context);
     super.initState();
   }
@@ -68,7 +71,14 @@ class _MyAppState extends State<MyApp> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     names = sharedPreferences.get('name').toString();
   }
-
+  Future<void> getFCMToken() async {
+    try {
+     final fcmToken = await FirebaseMessaging.instance.getToken();
+      print('FCM Token: $fcmToken');
+    } catch (e) {
+      print('Error getting FCM token: $e');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -76,7 +86,6 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider(create: (_) => HomeViewModel()),
           ChangeNotifierProvider(create: (_) => AuthViewModel()),
           ChangeNotifierProvider(create: (_) => CartViewModel()),
-
           ChangeNotifierProvider(create: (_) => SubscriptionProvider()),
           ChangeNotifierProvider(create: (_) => ProfileViewModel()),
           ChangeNotifierProvider(create: (_) => SocialLoginViewModel()),
@@ -92,7 +101,6 @@ class _MyAppState extends State<MyApp> {
               final buttonTxtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.buttonTextColor?.hex;
               return MaterialApp.router(
                   theme: ThemeData(
-
                       scaffoldBackgroundColor: (bgColor)?.toColor(),
                       primaryColor: (themeColor)?.toColor(),
                       backgroundColor: (bgColor)?.toColor(),
@@ -106,11 +114,8 @@ class _MyAppState extends State<MyApp> {
                       minThumbLength: 2,
                       trackVisibility: MaterialStateProperty.all(false),
                       thumbVisibility:  MaterialStateProperty.all(false),
-
-
                     )
                   ),
-
                 builder: EasyLoading.init(),
                   debugShowCheckedModeBanner: false,
                  scrollBehavior: MyCustomScrollBehavior(),
@@ -144,3 +149,5 @@ extension ColorExtension on String {
     }
   }
 }
+
+

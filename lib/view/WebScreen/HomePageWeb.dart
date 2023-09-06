@@ -9,6 +9,7 @@ import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
+import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
@@ -44,6 +45,8 @@ class _HomePageWebState extends State<HomePageWeb> {
   CartViewModel cartViewModel = CartViewModel();
   TextEditingController? searchController = TextEditingController();
   AutoScrollController controller1 = AutoScrollController();
+  TextEditingController emailController = TextEditingController();
+
   int counter1 = 4;
   late AutoScrollController controller;
   int counter = 4;
@@ -64,12 +67,11 @@ class _HomePageWebState extends State<HomePageWeb> {
             Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
         axis: Axis.horizontal);
     User();
-    homeViewModel.getAppConfigData(context);
+    homeViewModel.getAppConfig(context);
     cartViewModel.getCartCount(context);
     cartViewModel.getProductCategoryLists(context);
     cartViewModel.getRecommendedViewData(context);
     cartViewModel.getOfferDiscount(context);
-
     super.initState();
   }
 
@@ -85,6 +87,8 @@ class _HomePageWebState extends State<HomePageWeb> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+    final authVM = Provider.of<AuthViewModel>(context);
+
     AppNetwork.checkInternet((isSuccess, result) {
       setState(() {
         checkInternet = result;
@@ -203,8 +207,12 @@ class _HomePageWebState extends State<HomePageWeb> {
 
                                               ///category product list............
 
-                                              CategoryList(
-                                                  context, cartViewModel),
+                                              (cartViewModel.categoryListModel
+                                                  ?.length ??
+                                                  0) >
+                                                  0
+                                                  ?CategoryList(
+                                                  context, cartViewModel):SizedBox(),
 
                                               SizedBox(
                                                   height: ResponsiveWidget
@@ -215,7 +223,11 @@ class _HomePageWebState extends State<HomePageWeb> {
 
                                               //Recommend product .................
 
-                                              Container(
+                                              (cartViewModel.recommendedView
+                                                  ?.length ??
+                                                  0) >
+                                                  0
+                                                  ?   Container(
                                                 height: ResponsiveWidget
                                                         .isMediumScreen(context)
                                                     ? 275
@@ -263,17 +275,20 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                           right: SizeConfig
                                                                   .screenWidth *
                                                               0.01),
-                                                      child: AppBoldFont(
-                                                          context,
-                                                          msg: StringConstant
-                                                              .Recommended,
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          fontSize: ResponsiveWidget
-                                                                  .isMediumScreen(
-                                                                      context)
-                                                              ? 14
-                                                              : 18),
+                                                      child: Container(
+                                                        alignment: Alignment.topLeft,
+                                                        child: AppBoldFont(
+                                                            context,textAlign: TextAlign.left,
+                                                            msg: StringConstant
+                                                                .Recommended,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            fontSize: ResponsiveWidget
+                                                                    .isMediumScreen(
+                                                                        context)
+                                                                ? 14
+                                                                : 18),
+                                                      ),
                                                     ),
                                                     SizedBox(
                                                         height: SizeConfig
@@ -342,6 +357,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                       '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.style?.name}',
                                                                                       '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.unitCount?.name}',
                                                                                       '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.materialType?.name}',
+
                                                                                     ],
                                                                                   ));
                                                                                 },
@@ -370,7 +386,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                                 ),
                                                                                             placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.23, child: Center(child: CircularProgressIndicator(color: Colors.grey)))),
                                                                                         SizedBox(height: 8),
-                                                                                        AppBoldFont(maxLines: 1, context, msg: "${getRecommendedViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
+                                                                                        AppBoldFont(maxLines: 1, context, msg: " "+"${getRecommendedViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
                                                                                         SizedBox(height: 2),
                                                                                         AppBoldFont(maxLines: 1, context, msg: "₹" + "${cartViewModel.recommendedView?[position].productDetails?.productDiscountPrice}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
                                                                                         SizedBox(height:10),
@@ -501,7 +517,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                     ),
                                                   ],
                                                 ),
-                                              ),
+                                              ):SizedBox(),
 
                                               SizedBox(
                                                   height: ResponsiveWidget
@@ -565,17 +581,21 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                         ? 4
                                                                         : SizeConfig.screenWidth *
                                                                             0.01),
-                                                                child: AppBoldFont(
-                                                                    context,
-                                                                    msg: StringConstant
-                                                                        .RecentView,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w700,
-                                                                    fontSize:
-                                                                        ResponsiveWidget.isMediumScreen(context)
-                                                                            ? 14
-                                                                            : 18),
+                                                                child: Container(
+                                                                  alignment: Alignment.topLeft,
+                                                                  child: AppBoldFont(
+                                                                      context,
+                                                                      textAlign: TextAlign.left,
+                                                                      msg: StringConstant
+                                                                          .RecentView,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w700,
+                                                                      fontSize:
+                                                                          ResponsiveWidget.isMediumScreen(context)
+                                                                              ? 14
+                                                                              : 18),
+                                                                ),
                                                               ),
                                                               SizedBox(
                                                                   height: SizeConfig
@@ -665,7 +685,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                                   ),
                                                                                               placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenHeight / 2.1, child: Center(child: CircularProgressIndicator(color: Colors.grey)))),
                                                                                           SizedBox(height: 10),
-                                                                                          AppBoldFont(context, msg: "${getRecentViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18, maxLines: 1),
+                                                                                          AppBoldFont(context, msg:" "+ "${getRecentViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18, maxLines: 1),
                                                                                            SizedBox(height: 10)
                                                                                         ],
                                                                                       ),
@@ -781,7 +801,11 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                       context)
                                                       ? 12
                                                       : 24),
-                                              _discountView(cartViewModel),
+                                              (cartViewModel.offerDiscountModel
+                                                  ?.length ??
+                                                  0) >
+                                                  0
+                                                  ?   _discountView(cartViewModel):SizedBox(),
 
                                               SizedBox(
                                                   height: ResponsiveWidget
@@ -915,11 +939,11 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                       : 24),
 
                                               emailNotificationUpdatePage(
-                                                  context),
+                                                  context,emailController,authVM),
 
                                               ResponsiveWidget.isMediumScreen(
                                                       context)
-                                                  ? footerMobile(context)
+                                                  ? footerMobile(context,homeViewModel)
                                                   : footerDesktop(),
                                             ],
                                           ),
@@ -938,25 +962,16 @@ class _HomePageWebState extends State<HomePageWeb> {
                                             ? Container()
                                             : isSearch == true
                                                 ? Positioned(
-                                                    top: ResponsiveWidget
-                                                            .isMediumScreen(
-                                                                context)
-                                                        ? 0
-                                                        : SizeConfig
+                                                    top:  SizeConfig
                                                                 .screenWidth *
                                                             0.041,
-                                                    right: ResponsiveWidget
-                                                            .isMediumScreen(
-                                                                context)
-                                                        ? 0
-                                                        : SizeConfig
+                                                    right:  SizeConfig
                                                                 .screenWidth *
                                                             0.20,
                                                     child: searchList(
                                                         context,
                                                         viewmodel,
                                                         scrollController,
-                                                        homeViewModel,
                                                         searchController!,
                                                         cartViewModel
                                                             .cartItemCount))
@@ -966,6 +981,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                   }));
             }));
   }
+
   _discountView(CartViewModel cartview) {
     return ChangeNotifierProvider.value(value: cartViewModel,
         child: Consumer<CartViewModel>(
@@ -1005,13 +1021,16 @@ class _HomePageWebState extends State<HomePageWeb> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  AppBoldFont(context, msg: 'Discounts for You', fontWeight:
-                  FontWeight
-                      .w700,
-                      fontSize:
-                      ResponsiveWidget.isMediumScreen(context)
-                          ? 16
-                          : 22),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: AppBoldFont(context, msg: 'Discounts for You', fontWeight:
+                    FontWeight
+                        .w700,textAlign: TextAlign.left,
+                        fontSize:
+                        ResponsiveWidget.isMediumScreen(context)
+                            ? 16
+                            : 22),
+                  ),
                   SizedBox(height: 10),
                   Container(
                      height: ResponsiveWidget.isMediumScreen(context) ? 230 : SizeConfig.screenWidth * 0.27,

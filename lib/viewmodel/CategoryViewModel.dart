@@ -19,10 +19,10 @@ class CategoryViewModel with ChangeNotifier{
   HomePageDataModel? get newHomePageDataModel => _newHomePageDataModel;
 
   List<VideoList>? getPreviousPageList;
-  int lastPage = 2, nextPage = 1 ,homeNextPage = 2;
+  int lastPage = 2, nextPage = 1 ;
   bool isLoading = false;
 
-
+//get Category List data
   Future<void> getCategoryListData(BuildContext context, int pageNum) async {
     _categoryPageRepo.getCategoryList(pageNum, context, (result, isSuccess) {
       if (isSuccess) {
@@ -32,16 +32,7 @@ class CategoryViewModel with ChangeNotifier{
     });
   }
 
-
-  Future<void> runIndicator(BuildContext context)async {
-    isLoading = true;
-    notifyListeners();
-  }
-  Future<void> stopIndicator(BuildContext context)async {
-    isLoading = false;
-    notifyListeners();
-  }
-
+  //get category details
   Future<void> getCategoryDetails(BuildContext context, String categoryId, int pageNum) async {
     AppIndicator.loadingIndicator(context);
     _categoryPageRepo.getCategoryWiseDetails(categoryId, pageNum, context, (result, isSuccess) {
@@ -61,4 +52,13 @@ class CategoryViewModel with ChangeNotifier{
     });
   }
 
+  Future<void> runIndicator(BuildContext context)async {
+    isLoading = true;
+    notifyListeners();
+  }
+
+  Future<void> stopIndicator(BuildContext context)async {
+    isLoading = false;
+    notifyListeners();
+  }
 }

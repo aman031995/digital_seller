@@ -9,10 +9,7 @@ import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/view/widgets/PinEntryTextFiled.dart';
 import 'package:url_launcher/url_launcher.dart';
 var alert;
-
-
 class AppDialog {
-
 
   static verifyOtp(BuildContext context, {String? msg, VoidCallback? onTap,VoidCallback? resendOtp}) {
     showDialog(
@@ -121,6 +118,7 @@ class AppDialog {
       },
     );
   }
+
   static cancelOrder(BuildContext context, {VoidCallback? onTap}) {
     Stack(
         children: [

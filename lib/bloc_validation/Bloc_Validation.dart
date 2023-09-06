@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
-import 'Regex.dart';
+import 'regex.dart';
 
 class ValidationBloc {
   final _phoneNumber = BehaviorSubject<String>.seeded('');
@@ -16,6 +16,7 @@ class ValidationBloc {
   final _emailAndPhone = BehaviorSubject<String>.seeded('');
   final _address = BehaviorSubject<String>.seeded('');
   final _addressOne = BehaviorSubject<String>.seeded('');
+  final _landmark = BehaviorSubject<String>.seeded('');
   final _pincode = BehaviorSubject<String>.seeded('');
   final _state = BehaviorSubject<String>.seeded('');
   final _country = BehaviorSubject<String>.seeded('');
@@ -40,6 +41,9 @@ class ValidationBloc {
 
   Stream<String> get addressOne => _addressOne.stream.transform(validateEntry);
   Sink<String> get sinkAddressOne => _addressOne.sink;
+
+  Stream<String> get landMark => _landmark.stream.transform(validateEntry);
+  Sink<String> get sinkLandmark => _landmark.sink;
 
   Stream<String> get pincode => _pincode.stream.transform(validatePincode);
   Sink<String> get sinkPincode => _pincode.sink;
@@ -80,7 +84,9 @@ class ValidationBloc {
   Stream<bool> get submitValid => Rx.combineLatest2(emailAndMobile, password, (e, p) => true);
   Stream<bool> get validateUserEditProfile => Rx.combineLatest2(firstName, phoneNo, (a, b) => true);
   Stream<bool> get validateContactUs => Rx.combineLatest3(firstName, email, address, (a, b, c) => true);
-  Stream<bool> get validateAddAddress => Rx.combineLatest9(firstName,lastName, phoneNo,email,address,addressOne,pincode,cityName,state, (a,b,c,d,e,f,g,h,i) => true);
+  Stream<bool> get validateAddAddress => CombineLatestStream([firstName, lastName, phoneNo, email, address, addressOne, _landmark, pincode, cityName, state], (list) => true);
+
+
 
   final validateFullName =
   StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
@@ -132,19 +138,19 @@ class ValidationBloc {
     return regExp.hasMatch(phoneNo);
   }
 
-  final validateEntry =
-  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+  final validateEntry = StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if(value.length > 0){
       value.length > 2 ? sink.add(value) : sink.addError("Please enter Detail Address");
     }
   });
-  final ValidateCity= StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+
+  final ValidateCity = StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if(value.length > 0){
       value.length > 2 ? sink.add(value) : sink.addError("Please Enter City");
     }
   });
-  final validateState =
-  StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
+
+  final validateState = StreamTransformer<String, String>.fromHandlers(handleData: (value, sink) {
     if(value.length > 0){
       value.length > 1 ? sink.add(value) : sink.addError("Please Enter State");
     }
@@ -246,4 +252,3 @@ class ValidationBloc {
     _oldPassword.close();
   }
 }
-

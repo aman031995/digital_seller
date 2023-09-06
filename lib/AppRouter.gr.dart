@@ -48,11 +48,15 @@ abstract class $AppRouter extends _i17.RootStackRouter {
       );
     },
     BuynowCart.name: (routeData) {
+      final queryParams = routeData.queryParams;
       final args = routeData.argsAs<BuynowCartArgs>(
-          orElse: () => const BuynowCartArgs());
+          orElse: () => BuynowCartArgs(buynow: queryParams.get('buynow')));
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i2.BuynowCart(key: args.key),
+        child: _i2.BuynowCart(
+          buynow: args.buynow,
+          key: args.key,
+        ),
       );
     },
     CartDetail.name: (routeData) {
@@ -86,10 +90,7 @@ abstract class $AppRouter extends _i17.RootStackRouter {
           orElse: () => const FavouriteListPageArgs());
       return _i17.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i5.FavouriteListPage(
-          key: args.key,
-          callback: args.callback,
-        ),
+        child: _i5.FavouriteListPage(key: args.key),
       );
     },
     ProductListGallery.name: (routeData) {
@@ -248,11 +249,16 @@ class AddressListPageArgs {
 /// [_i2.BuynowCart]
 class BuynowCart extends _i17.PageRouteInfo<BuynowCartArgs> {
   BuynowCart({
+    List<String>? buynow,
     _i18.Key? key,
     List<_i17.PageRouteInfo>? children,
   }) : super(
           BuynowCart.name,
-          args: BuynowCartArgs(key: key),
+          args: BuynowCartArgs(
+            buynow: buynow,
+            key: key,
+          ),
+          rawQueryParams: {'buynow': buynow},
           initialChildren: children,
         );
 
@@ -263,13 +269,18 @@ class BuynowCart extends _i17.PageRouteInfo<BuynowCartArgs> {
 }
 
 class BuynowCartArgs {
-  const BuynowCartArgs({this.key});
+  const BuynowCartArgs({
+    this.buynow,
+    this.key,
+  });
+
+  final List<String>? buynow;
 
   final _i18.Key? key;
 
   @override
   String toString() {
-    return 'BuynowCartArgs{key: $key}';
+    return 'BuynowCartArgs{buynow: $buynow, key: $key}';
   }
 }
 
@@ -357,14 +368,10 @@ class CategorySubcategoryProductArgs {
 class FavouriteListPage extends _i17.PageRouteInfo<FavouriteListPageArgs> {
   FavouriteListPage({
     _i18.Key? key,
-    Function? callback,
     List<_i17.PageRouteInfo>? children,
   }) : super(
           FavouriteListPage.name,
-          args: FavouriteListPageArgs(
-            key: key,
-            callback: callback,
-          ),
+          args: FavouriteListPageArgs(key: key),
           initialChildren: children,
         );
 
@@ -375,18 +382,13 @@ class FavouriteListPage extends _i17.PageRouteInfo<FavouriteListPageArgs> {
 }
 
 class FavouriteListPageArgs {
-  const FavouriteListPageArgs({
-    this.key,
-    this.callback,
-  });
+  const FavouriteListPageArgs({this.key});
 
   final _i18.Key? key;
 
-  final Function? callback;
-
   @override
   String toString() {
-    return 'FavouriteListPageArgs{key: $key, callback: $callback}';
+    return 'FavouriteListPageArgs{key: $key}';
   }
 }
 

@@ -255,4 +255,27 @@ class AuthRepository {
       }
     });
   }
+
+
+
+  // forgot password request api
+  Future<Result?> subscribedEmail(String email,
+      BuildContext context, NetworkResponseHandler responseHandler) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
+    AppNetwork appNetwork = AppNetwork();
+    var inputParams = {"email": email,"appId": NetworkConstants.kAppID,};
+    ASRequestModal requestModal = ASRequestModal.withInputParams(
+        inputParams, NetworkConstants.kSubscribe, RequestType.post,
+        context: context, modalClass: "ABC");
+    appNetwork.getNetworkResponse(requestModal,context, (result, isSuccess) {
+      if (isSuccess) {
+        var response = ASResponseModal.fromResult(result);
+        Map<String, dynamic> map = (result as SuccessState).value as Map<String, dynamic>;
+        responseHandler(Result.success(response), isSuccess);
+      } else {
+        responseHandler(result, isSuccess);
+      }
+    });
+  }
 }

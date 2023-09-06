@@ -1,11 +1,6 @@
-import 'dart:convert';
-import 'dart:html';
-
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
-import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
-import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
@@ -31,18 +26,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../AppRouter.gr.dart';
-import 'dart:html' as html;
 
 @RoutePage()
 class BannerProductDetailPage extends StatefulWidget {
   final List<String>? ProductDetails;
-
-
-
   BannerProductDetailPage(
-      {
-
-        @QueryParam() this.ProductDetails,
+      {@QueryParam() this.ProductDetails,
         Key? key, }) : super(key: key);
 
   @override
@@ -53,17 +42,14 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
   int currentIndex = 0;
   CartViewModel cartView = CartViewModel();
   String? checkInternet;
-  bool isfab = false;
-  String? token;
   ScrollController scrollController = ScrollController();
   HomeViewModel homeViewModel = HomeViewModel();
   ProfileViewModel profileViewModel = ProfileViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   TextEditingController? searchController = TextEditingController();
 
-
   void initState() {
-    homeViewModel.getAppConfigData(context);
+    homeViewModel.getAppConfig(context);
     cartView.getCartCount(context);
     cartView.getProductListCategory(context, widget.ProductDetails?[1] ?? "", widget.ProductDetails?[0] ?? "", 1);
     super.initState();
@@ -77,9 +63,7 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
         checkInternet = result;
       });
     });
-
-    return
-      checkInternet == "Offline"
+    return checkInternet == "Offline"
           ? NOInternetScreen()
           : ChangeNotifierProvider.value(
           value: cartView,
@@ -88,13 +72,11 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                 onTap: (){
                   if (isLogins == true) {
                     isLogins = false;
-                    setState(() {});
+                    setState((){});
                   }
                   if(isSearch==true){
                     isSearch=false;
-                    setState(() {
-
-                    });
+                    setState((){});
                   }
                 },
                 child: Scaffold(
@@ -102,7 +84,6 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                       ? homePageTopBar(context,_scaffoldKey, viewmodel.cartItemCount,homeViewModel, profileViewModel,):getAppBar(context,homeViewModel,profileViewModel,viewmodel.cartItemCount,1,searchController, () async {
                     SharedPreferences sharedPreferences =
                     await SharedPreferences.getInstance();
-
                     if (sharedPreferences.getString('token')== null) {
                       showDialog(
                           context: context,
@@ -150,20 +131,13 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                               itemCount: '${viewmodel.cartItemCount}'
                           ));
                         }}),
-
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-
                   body: Scaffold(
-
                       extendBodyBehindAppBar: true,
                       key: _scaffoldKey,
-                      backgroundColor: Theme.of(context)
-                          .scaffoldBackgroundColor,
-                      drawer:
-                      ResponsiveWidget.isMediumScreen(context)
+                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                      drawer: ResponsiveWidget.isMediumScreen(context)
                           ? AppMenu()
                           : SizedBox(),
-
                       body: viewmodel.productListDetails != null ?
                       SingleChildScrollView(child:
                       ResponsiveWidget.isMediumScreen(context)
@@ -234,7 +208,7 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                                             child:IconButton(
                                                 iconSize: 45,
                                                 icon: Image.asset(
-                                                  cartView.productListDetails
+                                                  viewmodel.productListDetails
                                                       ?.productDetails?.isFavorite ==
                                                       true
                                                       ? AssetsConstants.ic_wishlistSelect
@@ -278,13 +252,13 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                                             Container(
                                               child: ProductSkuView(
                                                   selected: true,
-                                                  skuDetails: cartView.productListDetails?.productSkuDetails,
-                                                  cartView: cartView,
-                                                  productList: cartView.productListDetails?.productDetails?.defaultVariationSku),
+                                                  skuDetails: viewmodel.productListDetails?.productSkuDetails,
+                                                  cartView: viewmodel,
+                                                  productList: viewmodel.productListDetails?.productDetails?.defaultVariationSku),
                                             ),
                                           ])),
                                   SizedBox(height: 12),
-                                  cartView.productListDetails?.productDetails?.isAvailable == true
+                                  viewmodel.productListDetails?.productDetails?.inStock == true
                                       ?   bottomNavigationButton(): Center(
                                     child: Container(
                                       height: 50,width: 180,
@@ -305,9 +279,7 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                                     ),
                                   ),
                                   SizedBox(height: 12),
-                                  footerMobile(context),
-
-
+                                  footerMobile(context,homeViewModel),
                                 ],
                               ),
                             ),
@@ -378,7 +350,7 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                                           child:IconButton(
                                               iconSize: 45,
                                               icon: Image.asset(
-                                                cartView.productListDetails
+                                                viewmodel.productListDetails
                                                     ?.productDetails?.isFavorite ==
                                                     true
                                                     ? AssetsConstants.ic_wishlistSelect
@@ -423,12 +395,12 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                                             Container(
                                               child: ProductSkuView(
                                                   selected: true,
-                                                  skuDetails: cartView.productListDetails?.productSkuDetails,
-                                                  cartView: cartView,
-                                                  productList: cartView.productListDetails?.productDetails?.defaultVariationSku),
+                                                  skuDetails: viewmodel.productListDetails?.productSkuDetails,
+                                                  cartView: viewmodel,
+                                                  productList: viewmodel.productListDetails?.productDetails?.defaultVariationSku),
                                             ),
                                             SizedBox(height: 50),
-                                            cartView.productListDetails?.productDetails?.isAvailable == true
+                                            viewmodel.productListDetails?.productDetails?.inStock == true
                                                 ? bottomNavigationButton():
 
                                             Container(
@@ -457,7 +429,6 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                             ],
                           ),
 
-
                           isLogins == true
                               ? Positioned(
                               top: 0,
@@ -467,15 +438,15 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                               : Container(),
                           isSearch==true?
                           Positioned(
-                              top: ResponsiveWidget.isMediumScreen(context) ? 0:0,
-                              right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.20,
+                              top: 1,
+                              right:SizeConfig.screenWidth*0.20,
 
-                              child: searchList(context, homeViewModel, scrollController,homeViewModel, searchController!,cartView.cartItemCount))
+                              child: searchList(context, homeViewModel, scrollController, searchController!,viewmodel.cartItemCount))
                               : Container()
                         ],)
                       )
                           : Center(child: ThreeArchedCircle(size: 45.0))),
-                )): Center(child: ThreeArchedCircle(size: 45.0));
+                )): Center(child:CircularProgressIndicator());
           })
       );
   }
@@ -578,8 +549,8 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                     child: AppBoldFont(context,
                         msg: (cartView.isAddedToCart == true || cartView.productListDetails?.productDetails?.isAddToCart ==
                             true)
-                            ? "GO TO CART"
-                            : "ADD TO BAG",color: Theme.of(context).canvasColor,
+                            ? StringConstant.goToCart
+                            : StringConstant.addToBag,color: Theme.of(context).canvasColor,
                         fontSize: 16),
                     onPressed: ()async{ if (isLogins == true) {
                       isLogins = false;
@@ -627,7 +598,7 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                                 ?0:5.0),
                             ))),
                     child: AppBoldFont(context, color: Theme.of(context).hintColor,
-                        msg: " BUY NOW", fontSize: 16),
+                        msg: StringConstant.buynow, fontSize: 16),
                     onPressed: ()
                     async{ if (isLogins == true) {
                       isLogins = false;

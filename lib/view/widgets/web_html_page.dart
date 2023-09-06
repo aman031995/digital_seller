@@ -75,7 +75,11 @@ HomeViewModel homeViewModel=HomeViewModel();
               value: homeViewModel,
               child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
                 return
-            viewmodel.html==''? Center(child: ThreeArchedCircle(size: 45.0)):
+            viewmodel.html==''? Container(
+                width: SizeConfig.screenWidth,
+                height: SizeConfig.screenHeight,
+                color:Theme.of(context).scaffoldBackgroundColor,
+                child: Center(child: ThreeArchedCircle(size: 45.0))):
             GestureDetector(
            onTap: () {
              if (isLogins == true) {
@@ -168,10 +172,10 @@ HomeViewModel homeViewModel=HomeViewModel();
                   Html(data:viewmodel.html ?? "" , style: {
                     "body": Style(fontSize: FontSize.large,lineHeight: LineHeight.number(2),color: Theme.of(context).canvasColor,padding:HtmlPaddings.only(left: 18,right: 18))
                   }),
-                  SizedBox(height: 50),
+                  SizedBox(height: 160),
                   ResponsiveWidget.isMediumScreen(
                       context)
-                      ? footerMobile(context)
+                      ? footerMobile(context,homeViewModel)
                       :footerDesktop(),
                 ],
               ),
@@ -197,12 +201,11 @@ HomeViewModel homeViewModel=HomeViewModel();
                     .isMediumScreen(context)
                     ? 0
                     : SizeConfig.screenWidth *
-                    0.18,
+                    0.20,
                 child: searchList(
                     context,
                     viewmodel,
                     scrollController,
-                    viewmodel,
                     searchController!,
                     cartViewModel
                         .cartItemCount))

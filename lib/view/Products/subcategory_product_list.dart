@@ -1,12 +1,10 @@
 import 'package:TychoStream/main.dart';
-import 'package:TychoStream/model/data/category_product_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
-import 'package:TychoStream/services/global_variable.dart';
+import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
-import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/Products/CategoryFilterWidget.dart';
@@ -18,11 +16,9 @@ import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
-import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:number_paginator/number_paginator.dart';
 import 'package:provider/provider.dart';
@@ -31,8 +27,8 @@ import '../../AppRouter.gr.dart';
 
 @RoutePage()
 class SubcategoryProductList extends StatefulWidget {
-
   final String? SubcategoryProductName;
+
   SubcategoryProductList({
     @PathParam('SubcategoryProductName') this.SubcategoryProductName,
     Key? key,
@@ -44,43 +40,25 @@ class SubcategoryProductList extends StatefulWidget {
 
 class _SubcategoryProductListState extends State<SubcategoryProductList> {
   CartViewModel cartViewModel = CartViewModel();
-  ScrollController _scrollController = ScrollController();
   String? checkInternet;
   int pageNum = 1;
-  categoryProduct? categoryProductListData;
   HomeViewModel homeViewModel = HomeViewModel();
   ProfileViewModel profileViewModel = ProfileViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   TextEditingController? searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
-  List<String> sortDropDownList = [
-    "Recommended",
-    "What's New",
-    "Popularity",
-    "Better Discount",
-    "Price: High to Low",
-    "Price: Low to High",
-    "Customers Rating"
-  ];
-  int current = 0;
-
-// instantiate the controller in your state
-  final NumberPaginatorController _controller = NumberPaginatorController();
 
   void initState() {
-    homeViewModel.getAppConfigData(context);
+
+    homeViewModel.getAppConfig(context);
     getProduct();
     cartViewModel.getCartCount(context);
     super.initState();
   }
-
   getProduct() {
-
-      cartViewModel.getProductListCategory(
-          context, "", widget.SubcategoryProductName ?? "", pageNum);
-      //cartViewModel.getCategorySubcategoryProductList(context, widget.discountdata?[0] ?? "");
+    cartViewModel.getProductListCategory(
+          context, "", widget.SubcategoryProductName ?? "",  SessionStorageHelper.getValue("pageNum").toString()=="null"?1:int.parse(SessionStorageHelper.getValue("pageNum").toString()));
   }
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -89,7 +67,6 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
         checkInternet = result;
       });
     });
-
     return checkInternet == "Offline"
         ? NOInternetScreen()
         : ChangeNotifierProvider.value(
@@ -173,7 +150,6 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                         itemCount: '${cartViewModel.cartItemCount}'));
                   }
                 }),
-                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                 body: Scaffold(
                   extendBodyBehindAppBar: true,
                   key: _scaffoldKey,
@@ -183,9 +159,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                       ? AppMenu()
                       : SizedBox(),
                   body: viewmodel.productListModel?.productList != null
-                      ? (viewmodel.productListModel?.productList?.length ??
-                      0) >
-                      0
+                      ? (viewmodel.productListModel?.productList?.length ?? 0) > 0
                       ? Stack(
                     children: [
                       SingleChildScrollView(
@@ -199,17 +173,15 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                         right: 12,
                                         left: 12,
                                         top: 12),
-                                    width:
-                                    SizeConfig.screenWidth,
+                                    width: SizeConfig.screenWidth,
                                     child: GridView.builder(
                                       shrinkWrap: true,
-                                      //controller: _scrollController,
                                       physics:
                                       NeverScrollableScrollPhysics(),
                                       gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
-                                        childAspectRatio: 0.6,
+                                        childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.6:0.90,mainAxisSpacing: 3,crossAxisSpacing: 3
                                       ),
                                       itemCount: viewmodel
                                           .productListModel
@@ -217,7 +189,6 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                           ?.length,
                                       itemBuilder:
                                           (context, index) {
-
                                         final productListData =
                                         viewmodel
                                             .productListModel
@@ -230,65 +201,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                       },
                                     ),
                                   ),
-                                  viewmodel.productListModel!.pagination!.lastPage==1?Container():   Container(
-                                    height: 40,
-                                    margin: EdgeInsets.only(
-                                        right: 12,
-                                        left: 12,
-                                        top: 20),
-                                    width: SizeConfig.screenWidth,
-                                    child: NumberPaginator(
-                                      numberPages: viewmodel
-                                          .productListModel!
-                                          .pagination!
-                                          .lastPage!,
-                                      config:
-                                      NumberPaginatorUIConfig(
-                                        mode: ContentDisplayMode
-                                            .numbers,
-                                        height: 40,
-                                        contentPadding:
-                                        EdgeInsets.zero,
-                                        buttonShape:
-                                        RoundedRectangleBorder(
-                                          borderRadius:
-                                          BorderRadius
-                                              .circular(4),
-                                        ),
-                                        buttonSelectedForegroundColor:
-                                        Theme.of(context)
-                                            .canvasColor,
-                                        buttonUnselectedForegroundColor:
-                                        Theme.of(context)
-                                            .canvasColor
-                                            .withOpacity(
-                                            0.8),
-                                        buttonUnselectedBackgroundColor:
-                                        Theme.of(context)
-                                            .cardColor
-                                            .withOpacity(
-                                            0.8),
-                                        buttonSelectedBackgroundColor:
-                                        Theme.of(context)
-                                            .primaryColor
-                                            .withOpacity(
-                                            0.8),
-                                      ),
-                                      initialPage: current,
-                                      onPageChange:
-                                          (int index) {
-                                        setState(() {
-                                          current = index + 1;
-                                          AppIndicator
-                                              .loadingIndicator(
-                                              context);
-                                          cartViewModel.getProductListCategory(
-                                              context, "", widget.SubcategoryProductName ?? "", index + 1);
-                                          // _currentPage = index;
-                                        });
-                                      },
-                                    ),
-                                  ),
+                                  onPagination(viewmodel),
                                 ],
                               )
                                   : Row(
@@ -318,7 +231,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                               .screenWidth /
                                               1.75,
                                           child:
-                                          catrgoryTopSortWidget()),
+                                          catrgoryTopSortWidget(context)),
                                       Container(
                                           width: SizeConfig
                                               .screenWidth /
@@ -336,9 +249,9 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                                 mainAxisSpacing:
                                                 15,
                                                 mainAxisExtent:
-                                                470,
+                                                500,
                                                 maxCrossAxisExtent:
-                                                350),
+                                                400),
                                             itemCount: viewmodel
                                                 .productListModel
                                                 ?.productList
@@ -346,7 +259,6 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                             itemBuilder:
                                                 (context,
                                                 index) {
-
                                               final productListData =
                                               viewmodel
                                                   .productListModel
@@ -358,69 +270,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                                   viewmodel);
                                             },
                                           )),
-                                      viewmodel.productListModel!.pagination!.lastPage==1?Container():  Container(
-                                        height: 50,
-                                        margin: EdgeInsets.only(
-                                            top: 20),
-                                        alignment:
-                                        Alignment.center,
-                                        width:  SizeConfig.screenWidth / 5.5,
-                                        child: NumberPaginator(
-                                          // by default, the paginator shows numbers as center content
-                                          numberPages: viewmodel
-                                              .productListModel!
-                                              .pagination!
-                                              .lastPage!,
-                                          config:
-                                          NumberPaginatorUIConfig(
-                                            mode:
-                                            ContentDisplayMode
-                                                .numbers,
-                                            height: 100,
-                                            buttonShape:
-                                            RoundedRectangleBorder(
-                                              borderRadius:
-                                              BorderRadius
-                                                  .circular(
-                                                  4),
-                                            ),
-                                            buttonSelectedForegroundColor:
-                                            Theme.of(
-                                                context)
-                                                .canvasColor,
-                                            buttonUnselectedForegroundColor:
-                                            Theme.of(
-                                                context)
-                                                .canvasColor
-                                                .withOpacity(
-                                                0.8),
-                                            buttonUnselectedBackgroundColor:
-                                            Theme.of(
-                                                context)
-                                                .cardColor
-                                                .withOpacity(
-                                                0.8),
-                                            buttonSelectedBackgroundColor:
-                                            Theme.of(
-                                                context)
-                                                .primaryColor
-                                                .withOpacity(
-                                                0.8),
-                                          ),
-                                          initialPage: 0,
-                                          onPageChange:
-                                              (int index) {
-                                            setState(() {
-                                              AppIndicator
-                                                  .loadingIndicator(
-                                                  context);
-                                              cartViewModel.getProductListCategory(
-                                                  context, "", widget.SubcategoryProductName ?? "", index+1);
-
-                                            });
-                                          },
-                                        ),
-                                      ),
+                                      onPagination(viewmodel),
                                     ],
                                   ),
                                 ],
@@ -429,7 +279,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                   ? SizedBox(height: 50)
                                   : SizedBox(height: 100),
                               ResponsiveWidget.isMediumScreen(context)
-                                  ? footerMobile(context)
+                                  ? footerMobile(context,homeViewModel)
                                   : footerDesktop()
                             ],
                           )),
@@ -447,29 +297,50 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                           ? Container()
                           : isSearch == true
                           ? Positioned(
-                          top: ResponsiveWidget
-                              .isMediumScreen(context)
-                              ? 0
-                              : 0,
-                          right: ResponsiveWidget
-                              .isMediumScreen(context)
-                              ? 0
-                              : SizeConfig.screenWidth *
-                              0.15,
+                          top: 1,
+                          right: SizeConfig.screenWidth *
+                              0.20,
                           child: searchList(
                               context,
                               homeViewModel,
                               scrollController,
-                              homeViewModel,
                               searchController!,
                               cartViewModel
                                   .cartItemCount))
                           : Container()
                     ],
                   )
-                      : Center(
-                      child: noDataFoundMessage(
-                          context, StringConstant.noItemInCart))
+                      :  Stack(
+                    children: [
+                      noDataFoundMessage(
+                          context,StringConstant.noProductAdded,homeViewModel),
+                      ResponsiveWidget
+                          .isMediumScreen(context)
+                          ?Container(): isLogins == true
+                          ? Positioned(
+                          top: 0,
+                          right:  180,
+                          child: profile(context,
+                              setState, profileViewModel))
+                          : Container(),
+                      ResponsiveWidget
+                          .isMediumScreen(context)
+                          ? Container():   isSearch == true
+                          ? Positioned(
+                          top:  SizeConfig.screenWidth *
+                              0.001,
+                          right:  SizeConfig.screenWidth *
+                              0.20,
+                          child: searchList(
+                              context,
+                              homeViewModel,
+                              scrollController,
+                              searchController!,
+                              cartViewModel
+                                  .cartItemCount))
+                          : Container()
+                    ],
+                  )
                       : Center(
                     child: ThreeArchedCircle(size: 45.0),
                   ),
@@ -478,98 +349,61 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
         }));
   }
 
-
-
-  Widget catrgoryTopSortWidget() {
-    return Container(
-      height: 50,
-      color: Theme.of(context).cardColor,
-      child: Row(
-        children: [
-          Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: AppRegularFont(context,
-                msg: "1240 Item found", color: Theme.of(context).canvasColor),
+  onPagination( CartViewModel viewmodel){
+    return  viewmodel.productListModel!.pagination!.lastPage==1?Container():   Container(
+      height: 40,
+      margin: EdgeInsets.only(
+          right: 12,
+          left: 12,
+          top: 20),
+      width:ResponsiveWidget.isMediumScreen(context)
+          ? SizeConfig.screenWidth:SizeConfig.screenWidth/4,
+      child: NumberPaginator(
+        numberPages: viewmodel
+            .productListModel!
+            .pagination!
+            .lastPage!,
+        config:
+        NumberPaginatorUIConfig(
+          mode: ContentDisplayMode
+              .numbers,
+          height: 40,
+          contentPadding:
+          EdgeInsets.zero,
+          buttonShape:
+          RoundedRectangleBorder(
+            borderRadius:
+            BorderRadius
+                .circular(4),
           ),
-          Expanded(
-              child: SizedBox(
-                width: SizeConfig.screenWidth / 8,
-              )),
-          Container(child: dropdown(sortDropDownList, context))
-        ],
+          buttonSelectedForegroundColor:
+          Theme.of(context)
+              .canvasColor,
+          buttonUnselectedForegroundColor:
+          Theme.of(context)
+              .canvasColor
+              .withOpacity(
+              0.8),
+          buttonUnselectedBackgroundColor:
+          Theme.of(context)
+              .cardColor
+              .withOpacity(
+              0.8),
+          buttonSelectedBackgroundColor:
+          Theme.of(context)
+              .primaryColor
+              .withOpacity(
+              0.8),
+        ),
+        initialPage: viewmodel.productListModel!.pagination!.current!-1,
+        onPageChange: (int index) {
+          setState(() {
+            AppIndicator.loadingIndicator(context);
+            cartViewModel.getProductListCategory(
+                context, "", widget.SubcategoryProductName ?? "", index + 1);
+          });
+        },
       ),
-    );
-  }
-
-  Widget dropdown(List<String> txt, BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          padding: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: AppRegularFont(context,
-              msg: "Sort By",
-              color: Theme.of(context).canvasColor,
-              fontWeight: FontWeight.w500),
-        ),
-        SizedBox(
-          width: 15,
-        ),
-        Container(
-          height: SizeConfig.screenHeight * .04,
-          color: Theme.of(context).cardColor.withOpacity(0.8),
-          width: ResponsiveWidget.isMediumScreen(context) ? 150 : 200,
-          margin: EdgeInsets.only(left: 10, right: 10),
-          child: DropdownButtonFormField2(
-            dropdownStyleData: DropdownStyleData(
-              decoration: BoxDecoration(
-                color: Theme.of(context).cardColor,
-              ),
-            ),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: Theme.of(context).cardColor,
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
-                    width: 1,
-                    color: Theme.of(context).primaryColor.withOpacity(0.2)),
-              ),
-              contentPadding: EdgeInsets.only(bottom: 15),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-              ),
-            ),
-            //isExpanded: true,
-            hint: Text(
-              txt[0],
-              style: TextStyle(
-                fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 14,
-                color: Theme.of(context).canvasColor.withOpacity(0.4),
-              ),
-            ),
-            isExpanded: true,
-            items: txt
-                .map((item) => DropdownMenuItem<String>(
-              value: item,
-              child: Text(
-                item,
-                style: TextStyle(
-                    fontSize: ResponsiveWidget.isMediumScreen(context)
-                        ? 12
-                        : 14,
-                    color: Theme.of(context).canvasColor),
-              ),
-            ))
-                .toList(),
-            onChanged: (String? value) {},
-          ),
-        ),
-      ],
     );
   }
 }

@@ -230,8 +230,6 @@ class AuthViewModel with ChangeNotifier {
               AppIndicator.disposeIndicator();
               AppDataManager.getInstance.updateUserDetails(_userInfoModel!);
 
-
-
               product==true?  Navigator.pop(context):context.router.push(HomePageWeb());
               Timer(Duration(milliseconds: 800), () {
                 reloadPage();
@@ -327,5 +325,16 @@ class AuthViewModel with ChangeNotifier {
 
           }
         });
+  }
+
+  Future<void> subscribedEmail(String email, BuildContext context) async {
+    AppIndicator.loadingIndicator(context);
+    _authRepo.subscribedEmail(email,context, (result, isSuccess) {
+      if (isSuccess) {
+        ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
+        AppIndicator.disposeIndicator();
+        notifyListeners();
+      }
+    });
   }
 }

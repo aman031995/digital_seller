@@ -164,7 +164,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
         .map((element) => InkWell(
         focusNode: carouselFocus,
         onTap: () async {
-          //redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
+          redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
 
           },
         child:  Container(

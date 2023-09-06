@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:js' as js;
 import 'package:TychoStream/model/data/cart_detail_model.dart';
 import 'package:TychoStream/model/data/category_list_model.dart';
 import 'package:TychoStream/model/data/checkout_data_model.dart';
@@ -12,6 +12,7 @@ import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/view/WebScreen/stripepayment.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_stripe_web/flutter_stripe_web.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
@@ -157,66 +158,34 @@ class CartDetailRepository {
 
         //Payment Sheet
         if (paymentIntent != null) {
-          final stripe =Stripe("pk_test_51NXhtjSJK48GkIWFjJzBm88uzgrwb7i4aIyls9YoPHT5IvYAV9rMnlEW0U8AUY1VpIJB3ZOBFTFdSFuMYnxM0fkK00KqwNEEeH");
-          stripe.redirectToCheckout(CheckoutOptions(
-            lineItems: [
-              LineItem(
-                  price:paymentIntent["id"],
-                  quantity:1
-              )
 
-            ],
-            mode: 'payment',
-            successUrl: 'http://localhost:8088/#/success',
-          ));
+         final paymentMethodParams = PaymentMethodParams.card(
+           paymentMethodData: PaymentMethodData());
 
-            //Stripe.publishableKey = "pk_live_51NXhtjSJK48GkIWFY3NeBL1mw7CATawc8xbjlwBi5wrTr61UbS9sHQWjnEr5kb9tSytKgZGWsbMkYish4xs2ILIC00OZVlrRNY";
+        await WebStripe.instance.createPaymentMethod(paymentMethodParams);
 
-     //
-     // await WebStripe.instance.platformPayCreatePaymentMethod(params: params)
-       
-         // SetupPaymentSheetParameters(
-         //          paymentIntentClientSecret: paymentIntent!['client_secret'],
-         //          style: ThemeMode.dark,
-         //          merchantDisplayName: 'merchant name',
-         //          customerId: '1234',
-         //          customerEphemeralKeySecret: '1234',
-         //          appearance: PaymentSheetAppearance(
-         //            colors: PaymentSheetAppearanceColors(
-         //              background: Colors.lightBlue,
-         //              primary: Colors.blue,
-         //              componentBorder: Colors.red,
-         //            ),
-         //            shapes: PaymentSheetShape(
-         //              borderWidth: 4,
-         //              shadow: PaymentSheetShadowParams(color: Colors.red),
-         //            ),
-         //            primaryButton: PaymentSheetPrimaryButtonAppearance(
-         //              shapes: PaymentSheetPrimaryButtonShape(blurRadius: 8),
-         //              colors: PaymentSheetPrimaryButtonTheme(
-         //                light: PaymentSheetPrimaryButtonThemeColors(
-         //                  background: Color.fromARGB(255, 231, 235, 30),
-         //                  text: Color.fromARGB(255, 235, 92, 30),
-         //                  border: Color.fromARGB(255, 235, 92, 30),
-         //                ),
-         //              ),
-         //            ),
-         //          ),
-         //          billingDetails: BillingDetails(  name: 'Flutter Stripe',
-         //            email: 'email@stripe.com',
-         //            phone: '+48888000888',
-         //            address: Address(
-         //              city: 'Houston',
-         //              country: 'US',
-         //              line1: '1459  Circle Drive',
-         //              line2: '',
-         //              state: 'Texas',
-         //              postalCode: '77063',
-         //            ),)));
+         //  await WebStripe.instance.initPaymentSheet( SetupPaymentSheetParameters(
+         //      paymentIntentClientSecret: paymentIntent!['client_secret'],
+         //             style: ThemeMode.dark,
+         //             merchantDisplayName: 'merchant name',
+         //             customerId: '1234',
+         //             customerEphemeralKeySecret: '1234',
+         //             //If the store the customer the billing details
+         //             billingDetails:BillingDetails(  name: 'Flutter Stripe',
+         //                            email: 'email@stripe.com',
+         //                            phone: '+48888000888',
+         //                            address: Address(
+         //                              city: 'Houston',
+         //                              country: 'US',
+         //                              line1: '1459  Circle Drive',
+         //                              line2: '',
+         //                              state: 'Texas',
+         //                              postalCode: '77063',
+         //                            ))
+         //  ));
+         // js.context.callMethod('initStripeAndHandlePayment', []);
           responseHandler(paymentIntent);
-    // await Stripe.instance.presentPaymentSheet();
 
-          //displayPaymentSheet(paymentIntent, context, createOrderModel, addressId, productId, variantId, quantity);
         }
       } catch (e, s) {
         ToastMessage.message(e.toString(),context);
@@ -575,9 +544,10 @@ class CartDetailRepository {
       String email,
       String mobile_number,
       String first_address,
-      String second_address,
+      String second_address,String landmark,
       int pin_code,
       String city_name,
+
       String state,
       BuildContext context,
       NetworkResponseHandler responseHandler) async {
@@ -593,6 +563,7 @@ class CartDetailRepository {
       "firstAddress": first_address,
       "secondAddress": second_address,
       "pincode": '$pin_code',
+      "landmark": landmark,
       "cityName": city_name,
       "state": state,
       "country": "INDIA"
@@ -623,7 +594,7 @@ class CartDetailRepository {
       String email,
       String mobile_number,
       String first_address,
-      String second_address,
+      String second_address,String landmark,
       String pin_code,
       String city_name,
       String state,
@@ -639,7 +610,7 @@ class CartDetailRepository {
       "email": email,
       "mobileNumber": mobile_number,
       "firstAddress": first_address,
-      "secondAddress": second_address,
+      "secondAddress": second_address,"landmark": landmark,
       "pincode": pin_code,
       "cityName": city_name,
       "state": state,

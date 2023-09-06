@@ -22,7 +22,6 @@ import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
-
 import '../../AppRouter.gr.dart';
 import 'getAppBar.dart';
 
@@ -49,7 +48,6 @@ class _ContactUsState extends State<ContactUs> {
   @override
   void initState() {
     profileViewModel.getProfileDetail(context);
-
     homeViewModel.getAppConfig(context);
     messageController = TextEditingController();
     nameController = TextEditingController();
@@ -63,7 +61,6 @@ class _ContactUsState extends State<ContactUs> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     name = sharedPreferences.getString('name');
     email = sharedPreferences.getString('email');
-    setState(() {});
     nameController?.text = name ?? '';
     emailController?.text = email ?? '';
     validateEditDetails();
@@ -286,8 +283,8 @@ class _ContactUsState extends State<ContactUs> {
                                                 StringConstant.send,
                                                 SizeConfig.screenWidth * 0.8,
                                                 50,
-                                                LIGHT_THEME_COLOR,
-                                                WHITE_COLOR,
+                                                Theme.of(context).primaryColor,
+                                                Theme.of(context).hintColor,
                                                 20,
                                                 10,
                                                 snapshot.data != true ? false : true,
@@ -302,8 +299,8 @@ class _ContactUsState extends State<ContactUs> {
                                                       messageController?.text ?? '');
                                                 });
                                           }),
-                                      SizedBox(height: 80),
-                                      footerMobile(context)
+                                      SizedBox(height: ResponsiveWidget.isSmallScreen(context)? 100:SizeConfig.screenHeight/4.5),
+                                      footerMobile(context,homeViewModel)
                                     ],
                                   ),
                                 ),
@@ -441,15 +438,14 @@ class _ContactUsState extends State<ContactUs> {
                                                       StringConstant.send,
                                                       SizeConfig.screenWidth *
                                                           0.35,
-                                                      60,
-                                                      LIGHT_THEME_COLOR,
-                                                      WHITE_COLOR,
+                                                      50,
+                                                      Theme.of(context).primaryColor,
+                                                      Theme.of(context).hintColor,
                                                       20,
                                                       10,
                                                       snapshot.data != true
                                                           ? false
                                                           : true, onTap: () {
-                                                    // snapshot.data != true ? null : " ";
                                                     snapshot.data != true
                                                         ? ToastMessage.message(
                                                             StringConstant
@@ -471,7 +467,7 @@ class _ContactUsState extends State<ContactUs> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(height: 200),
+                                    SizedBox(height:200),
                                     footerDesktop()
                                   ],
                                 ),
@@ -489,16 +485,12 @@ class _ContactUsState extends State<ContactUs> {
                                   ? Container()
                                   : isSearch == true
                                       ? Positioned(
-                                          top: 0,
-                                          right: ResponsiveWidget.isMediumScreen(
-                                                  context)
-                                              ? 0
-                                              : SizeConfig.screenWidth * 0.20,
+                                          top: 1,
+                                          right: SizeConfig.screenWidth * 0.20,
                                           child: searchList(
                                               context,
                                               viewmodel,
                                               scrollController,
-                                              homeViewModel,
                                               searchController!,
                                               cartViewModel.cartItemCount))
                                       : Container()

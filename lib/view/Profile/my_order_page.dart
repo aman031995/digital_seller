@@ -13,7 +13,6 @@ import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
-import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/order_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
@@ -21,29 +20,23 @@ import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../AppRouter.gr.dart';
 import '../../main.dart';
 import '../../utilities/StringConstants.dart';
-import 'dart:html' as html;
 
 @RoutePage()
 class MyOrderPage extends StatefulWidget {
   const MyOrderPage({Key? key}) : super(key: key);
-
   @override
   State<MyOrderPage> createState() => _MyOrderPageState();
 }
-
 class _MyOrderPageState extends State<MyOrderPage> {
 
   final OrderViewModel orderView = OrderViewModel();
   int pageNum = 1;
   String? checkInternet;
   ScrollController scrollController = ScrollController();
-
-// ScrollController scrollController = new ScrollController();
   HomeViewModel homeViewModel = HomeViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   ProfileViewModel profileViewModel = ProfileViewModel();
@@ -53,11 +46,10 @@ class _MyOrderPageState extends State<MyOrderPage> {
   @override
   void initState() {
     orderView.getOrderList(context, pageNum);
-    homeViewModel.getAppConfigData(context);
+    homeViewModel.getAppConfig(context);
     cartViewModel.getCartCount(context);
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -167,9 +159,6 @@ class _MyOrderPageState extends State<MyOrderPage> {
                       children: [
                         Center(
                           child: Container(
-
-                              // height: 140.0*orderview.orderData!.orderList
-                              //     !.length,
                               height:  ResponsiveWidget.isMediumScreen(context)
                                   ?SizeConfig.screenHeight/1.2:SizeConfig.screenHeight*1.2,
                               width: ResponsiveWidget.isMediumScreen(context)
@@ -194,8 +183,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                         );
                                       }
                                     });
-                                    return
-                                      InkWell(
+                                    return InkWell(
                                           onTap: () {
                                             if (isLogins == true) {
                                               isLogins = false;
@@ -216,11 +204,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                                         if(v==true){
                                                           setState(() { orderView.getOrderList(context, pageNum);
                                                           });
-
-
-
                                                         }
-
                                                   });
                                                 });
                                           },
@@ -230,7 +214,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                           Center(
                                               child:
                                               noDataFoundMessage(context,
-                                                  StringConstant.noOrderAvailable))
+                                                  StringConstant.noOrderAvailable,homeViewModel))
                                               :
                                           Container(
                                             decoration: BoxDecoration(
@@ -341,7 +325,7 @@ class _MyOrderPageState extends State<MyOrderPage> {
                         ),
                         SizedBox(height: 40),
                         ResponsiveWidget.isMediumScreen(context)
-                            ? footerMobile(context) : footerDesktop()
+                            ? footerMobile(context,homeViewModel) : footerDesktop()
                       ],
                     ),
                   ),
@@ -359,14 +343,13 @@ class _MyOrderPageState extends State<MyOrderPage> {
                       ? Container():
                   isSearch == true
                       ? Positioned(
-                      top:  0,
+                      top:  1,
                       right: SizeConfig.screenWidth *
                           0.20,
                       child: searchList(
                           context,
                           homeViewModel,
                           scrollController,
-                          homeViewModel,
                           searchController!,
                           cartViewModel
                               .cartItemCount))
@@ -381,7 +364,37 @@ class _MyOrderPageState extends State<MyOrderPage> {
                       : SizedBox()
                 ],
               ):
-                  Center(child: noDataFoundMessage(context, StringConstant.noOrderAvailable)) : Center(child: ThreeArchedCircle(size: 45.0))),
+                  Stack(
+                    children: [
+                      noDataFoundMessage(
+                          context,StringConstant.noOrderAvailable,homeViewModel),
+                      ResponsiveWidget
+                          .isMediumScreen(context)
+                          ?Container(): isLogins == true
+                          ? Positioned(
+                          top: 0,
+                          right:  180,
+                          child: profile(context,
+                              setState, profileViewModel))
+                          : Container(),
+                      ResponsiveWidget
+                          .isMediumScreen(context)
+                          ? Container():   isSearch == true
+                          ? Positioned(
+                          top:  SizeConfig.screenWidth *
+                              0.001,
+                          right:  SizeConfig.screenWidth *
+                              0.20,
+                          child: searchList(
+                              context,
+                              homeViewModel,
+                              scrollController,
+                              searchController!,
+                              cartViewModel
+                                  .cartItemCount))
+                          : Container()
+                    ],
+                  ) : Center(child: ThreeArchedCircle(size: 45.0))),
         ));
       },
       ),

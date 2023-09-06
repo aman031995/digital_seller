@@ -58,14 +58,11 @@ class _EditProfileState extends State<EditProfile> {
   TextEditingController? searchController = TextEditingController();
   CartViewModel cartViewModel = CartViewModel();
 
-
-
-
   @override
   void initState() {
     cartViewModel.getCartCount(context);
 
-    homeViewModel.getAppConfigData(context);
+    homeViewModel.getAppConfig(context);
     profileViewModel.getProfileDetail(context);
     getUser();
     addressController = TextEditingController();
@@ -233,9 +230,9 @@ class _EditProfileState extends State<EditProfile> {
                                         });
                                       }),
                                   SizedBox(height:ResponsiveWidget.isMediumScreen(context)
-                                      ?100: 220),
+                                      ?ResponsiveWidget.isSmallScreen(context)?100:200: 220),
                                   ResponsiveWidget.isMediumScreen(context)
-                                      ?  footerMobile(context) : footerDesktop(),
+                                      ?  footerMobile(context,homeViewModel) : footerDesktop(),
 
                             ])),
                         ResponsiveWidget.isMediumScreen(context)
@@ -251,21 +248,14 @@ class _EditProfileState extends State<EditProfile> {
                             .isMediumScreen(context)
                             ? Container():    isSearch == true
                             ? Positioned(
-                            top: ResponsiveWidget
-                                .isMediumScreen(context)
-                                ? 0
-                                : SizeConfig.screenWidth *
+                            top:  SizeConfig.screenWidth *
                                 0.001,
-                            right: ResponsiveWidget
-                                .isMediumScreen(context)
-                                ? 0
-                                : SizeConfig.screenWidth *
+                            right: SizeConfig.screenWidth *
                                 0.20,
                             child: searchList(
                                 context,
-                                homeViewModel,
+                                viewmodel,
                                 scrollController,
-                                homeViewModel,
                                 searchController!,
                                 cartViewModel
                                     .cartItemCount))

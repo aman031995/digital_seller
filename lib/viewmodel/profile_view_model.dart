@@ -19,8 +19,6 @@ import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 
-
-
 class ProfileViewModel with ChangeNotifier {
   final _profileRepo = ProfileRepository();
 

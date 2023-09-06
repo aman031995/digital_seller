@@ -2,10 +2,11 @@ import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
+import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:flutter/material.dart';
 
 
-Widget noDataFoundMessage(BuildContext context, String message){
+Widget noDataFoundMessage(BuildContext context, String message,HomeViewModel homeViewModel){
   return SingleChildScrollView(
     child: Column(
       children: [
@@ -39,7 +40,7 @@ Widget noDataFoundMessage(BuildContext context, String message){
         SizedBox(height: 150),
         ResponsiveWidget.isMediumScreen(
             context)
-            ? footerMobile(context)
+            ? footerMobile(context,homeViewModel)
             : footerDesktop(),
       ],
     ),

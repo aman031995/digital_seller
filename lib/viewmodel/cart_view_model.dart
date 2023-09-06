@@ -21,6 +21,7 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_stripe_web/flutter_stripe_web.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_cache/json_cache.dart';
@@ -29,7 +30,6 @@ import '../model/data/category_list_model.dart';
 import '../model/data/offer_discount_model.dart';
 
 class CartViewModel extends ChangeNotifier {
-
   final _cartRepo = CartDetailRepository();
 
   categoryProduct? _categoryProductModel;
@@ -89,27 +89,14 @@ class CartViewModel extends ChangeNotifier {
   bool isSelect = false;
   bool iswishlist = false;
 
-  // get GetProductList from cache api data
-  getProductListData(BuildContext context, int pageNum) async{
-    final box = await Hive.openBox<String>('appBox');
-    final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
-    if(await jsonCache.contains(StringConstant.kProductList)){
-      CacheDataManager.getCachedData(key: StringConstant.kProductList).then((jsonData) {
-        _productListModel = ProductListModel.fromJson(jsonData!['data']);
-        print("from cached get product list data");
-        notifyListeners();
-      });
-    } else {
-      getProductList(context, pageNum);
-    }
-  }
+
 // GetProductList Method
   Future<void> getProductList(BuildContext context, int pageNum) async {
     _cartRepo.getProductList(context, pageNum, (result, isSuccess) {
       if (isSuccess) {
         _productListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        SessionStorageHelper.savevalue("pageList","${pageNum}");
         AppIndicator.disposeIndicator();
-
         notifyListeners();
       }
     });
@@ -140,7 +127,6 @@ class CartViewModel extends ChangeNotifier {
             });
             _recommendedView = items;
           }
-
           print('From Cached Recommended data');
           notifyListeners();
         }
@@ -171,11 +157,15 @@ class CartViewModel extends ChangeNotifier {
         } else {
           _productListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         }
+        SessionStorageHelper.savevalue("pageNum","${pageNum}");
         notifyListeners();
       }
       notifyListeners();
     });
   }
+
+
+  //get offerDiscount
   Future<void> getOfferDiscount(BuildContext context) async{
     _cartRepo.getOfferDiscount(context, (result, isSuccess) {
       if(isSuccess){
@@ -186,11 +176,11 @@ class CartViewModel extends ChangeNotifier {
     });
   }
 
+  //get offerDiscountProducts List
   Future<void> getOfferDiscountList(BuildContext context, String query, int pageNum, String categoryId) async{
     _cartRepo.getOfferDiscountList(context, query, pageNum, categoryId, (result, isSuccess) {
       if(isSuccess){
         _productListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-        isLoading = false;
         notifyListeners();
       }
     });
@@ -211,7 +201,6 @@ class CartViewModel extends ChangeNotifier {
             });
             _categoryListModel = items;
           }
-
           print('From Cached productCategoryList');
           notifyListeners();
         }
@@ -231,6 +220,7 @@ class CartViewModel extends ChangeNotifier {
       }
     });
   }
+
 // GetProductCategoryLists By Category Method
   Future<void> getCategorySubcategoryProductList(BuildContext context, catId) async {
     _cartRepo.getCategorySubcategoryProductList(context,catId ,(result, isSuccess) {
@@ -247,28 +237,14 @@ class CartViewModel extends ChangeNotifier {
   Future<void> getFavList(BuildContext context, int pageNum) async {
     _cartRepo.getFavoriteList(context, pageNum, (result, isSuccess) {
       if (isSuccess) {
-        dataPagination(result);
-        isLoading = false;
+        _productListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         AppIndicator.disposeIndicator();
         notifyListeners();
       }
     });
   }
 
-  dataPagination(Result result){
-    _newProductListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-    if(_newProductListModel?.pagination?.current == 1){
-      lastPage = _newProductListModel?.pagination?.lastPage ?? 1;
-      nextPage = _newProductListModel?.pagination?.next ?? 1;
-      _productListModel = _newProductListModel;
-    } else {
-      lastPage = _newProductListModel?.pagination?.lastPage ?? 1;
-      nextPage = _newProductListModel?.pagination?.next ?? 1;
-      _productListModel?.productList?.addAll(_newProductListModel!.productList!);
-    }
-  }
-
-  // GetCityState Method
+  //get cityState
   Future<void> getCityState(BuildContext context, String pincode, NetworkResponseHandler responseHandler) async {
     _cartRepo.getCityState(context, pincode, (result, isSuccess) {
       if (isSuccess) {
@@ -295,20 +271,20 @@ class CartViewModel extends ChangeNotifier {
           if (isSuccess) {
             _cartListDataModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             buynow=jsonEncode(_cartListDataModel);
-            SessionStorageHelper.savevalue("token","${buynow}");
+            SessionStorageHelper.savevalue("buynow","${buynow}");
+            SessionStorageHelper.savevalue("itemCount","${_cartListDataModel?.checkoutDetails?.elementAt(0).value}");
+            AppIndicator.disposeIndicator();
             updateCartCount(context, _itemCountModel?.count.toString() ?? '');
-
-            cartDetail==false?reloadPage() :context.router.push(BuynowCart());
             notifyListeners();
           }
         });
   }
 
+  //get cart count
   Future<void> getCartCount(BuildContext context) async {
     _cartRepo.getCartCount(context, (result, isSuccess) {
       if (isSuccess) {
-        _itemCountModel =
-            ((result as SuccessState).value as ASResponseModal).dataModal;
+        _itemCountModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         cartItemCount = _itemCountModel?.count.toString() ?? '';
         notifyListeners();
       }
@@ -401,19 +377,8 @@ class CartViewModel extends ChangeNotifier {
     });
   }
 
-  Future<void> updateCartCount(BuildContext context, String count) async {
-    cartItemCount = count;
-    notifyListeners();
-  }
 
-  Future<void> getCheckOutInfo(
-      BuildContext context, CartListDataModel? checkOutData) async {
-    _cartListDataModel = checkOutData;
-    notifyListeners();
-  }
-
-
-
+  // get address List
   Future<void> getAddressList(BuildContext context) async {
     _cartRepo.addressList(context, (result, isSuccess) {
       if (isSuccess) {
@@ -424,21 +389,20 @@ class CartViewModel extends ChangeNotifier {
     });
     notifyListeners();
   }
-
-  //AddNewAddress Method
   Future<void> addNewAddress(
-    BuildContext context,
-    String first_name,
-    String last_name,
-    String email,
-    String mobile_number,
-    String first_address,
-    String second_address,
-    int pin_code,
-    String city_name,
-    String state,
-  ) async {
-    // AppIndicator.loadingIndicator(context);
+      BuildContext context,
+      String first_name,
+      String last_name,
+      String email,
+      String mobile_number,
+      String first_address,
+      String second_address,
+      String landmark,
+      int pin_code,
+      String city_name,
+      String state,
+      ) async {
+    AppIndicator.loadingIndicator(context);
     _cartRepo.addAddress(
         first_name,
         last_name,
@@ -446,35 +410,38 @@ class CartViewModel extends ChangeNotifier {
         mobile_number,
         first_address,
         second_address,
+        landmark,
         pin_code,
         city_name,
         state,
         context, (result, isSuccess) {
       if (isSuccess) {
-        // AppIndicator.disposeIndicator();
+        AppIndicator.disposeIndicator();
         Navigator.pop(context);
-        reloadPage();
         notifyListeners();
+        reloadPage();
       }
     });
   }
 
-  // UpdateExistingAddress Method
+
+// UpdateExistingAddress Method
   Future<void> updateExistingAddress(
-    BuildContext context,
-    String addressId,
-    String first_name,
-    String last_name,
-    String email,
-    String mobile_number,
-    String first_address,
-    String second_address,
-    String pin_code,
-    String city_name,
-    String state,
-    String country,
-  ) async {
-    // AppIndicator.loadingIndicator(context);
+      BuildContext context,
+      String addressId,
+      String first_name,
+      String last_name,
+      String email,
+      String mobile_number,
+      String first_address,
+      String second_address,
+      String landmark,
+      String pin_code,
+      String city_name,
+      String state,
+      String country,
+      ) async {
+    AppIndicator.loadingIndicator(context);
     _cartRepo.updateAddress(
         addressId,
         first_name,
@@ -483,19 +450,19 @@ class CartViewModel extends ChangeNotifier {
         mobile_number,
         first_address,
         second_address,
+        landmark,
         pin_code,
         city_name,
         state,
         context, (result, isSuccess) {
       if (isSuccess) {
-        // AppIndicator.disposeIndicator();
+        AppIndicator.disposeIndicator();
         Navigator.pop(context);
-        reloadPage();
         notifyListeners();
+      reloadPage();
       }
     });
   }
-
   // DeleteAddress Method
   Future<void> deleteAddress(BuildContext context, String addressId) async {
     AppIndicator.loadingIndicator(context);
@@ -529,6 +496,8 @@ class CartViewModel extends ChangeNotifier {
     });
   }
 
+
+  //Place Order Method
   Future<void> placeOrder(BuildContext context, String addressId, transactionId,
       orderId, payMethod, productId,variantId,quantity,payStatus) async {
     _cartRepo.placeYourOrder(productId,variantId,quantity,
@@ -543,18 +512,6 @@ class CartViewModel extends ChangeNotifier {
     });
   }
 
-
-  Future<void> getPromocodeList(BuildContext context) async {
-    _cartRepo.getPromoCode(context, (result, isSuccess) {
-      if (isSuccess) {
-        _promoCodeDataModel =
-            ((result as SuccessState).value as ASResponseModal).dataModal;
-        notifyListeners();
-      }
-    });
-  }
-
-
   Future<void> paymentResponse(BuildContext context, String receiptId, orderId,
       transactionId, paymentStatus, failedResponse, String addressId) async {
     _cartRepo.paymentResponse(context, receiptId, orderId, transactionId,
@@ -565,55 +522,6 @@ class CartViewModel extends ChangeNotifier {
     });
   }
 
-  updatecolorName(BuildContext context,String name) {
-    selectedcolorName = name;
-    notifyListeners();
-  }
-
-  getPageName(BuildContext context, String name, Result result, String variantId, int? listIndex) {
-    switch (name) {
-      case 'productList':
-        getProductList(context, 1);
-        break;
-      case 'productDetail':
-        _productListDetails = ((result as SuccessState).value as ASResponseModal).dataModal;
-        break;
-      case 'favouriteList':
-        getFavList(context, 1);
-        break;
-      case 'favouriteDetail':
-        _productListDetails = ((result as SuccessState).value as ASResponseModal).dataModal;
-        break;
-      case 'cartDetail':
-        removeProductFromCart(context, variantId, listIndex??0);
-    }
-  }
-  onPagination(BuildContext context, int lastPage, int nextPage, bool isLoading, String name, {String? categoryId,keyword}) {
-    if (isLoading) return;
-    isLoading = true;
-    if (nextPage <= lastPage) {
-      runIndicator(context);
-      switch(name){
-        case 'productList' :
-          getProductList(context, nextPage);
-          break;
-        case 'favouriteList' :
-          getFavList(context, nextPage);
-          break;
-        case 'productCategoryList' :
-          getProductListCategory(context, "", categoryId ?? "", nextPage);
-          break;
-        case 'discountOfferList':
-          getOfferDiscountList(context, '$keyword', nextPage, '$categoryId');
-          // viewmodel?.onPagination(
-          //     context, viewmodel!.lastPage, viewmodel!.nextPage, viewmodel!.isLoading, 'discountOfferList',
-          //     keyword: discountModel?.discountPercentage, categoryId: discountModel?.categoryId);
-      }
-    }
-  } Future<void> runIndicator(BuildContext context) async {
-    isLoading = true;
-    notifyListeners();
-  }
   createPaymentIntent(BuildContext context, CreateOrderModel? createOrderModel, String? addressId, String productId, String variantId, quantity,{String? gatewayName}) async {
     AppIndicator.loadingIndicator(context);
     Map<String, dynamic> paymentIntent;
@@ -621,20 +529,21 @@ class CartViewModel extends ChangeNotifier {
       if(response != null) {
         paymentIntent = response;
         displayPaymentSheet(paymentIntent, context, createOrderModel, addressId, productId, variantId, quantity);
-        // notifyListeners();
       }
     });
-
-
   }
-  void displayPaymentSheet(Map<String, dynamic>? paymentIntent, BuildContext context, CreateOrderModel? _createOrderModel, String? addressId, String productId, String variantId, quantity) async {
+
+  void displayPaymentSheet(
+      Map<String, dynamic>? paymentIntent,
+      BuildContext context,
+      CreateOrderModel? _createOrderModel,
+      String? addressId,
+      String productId,
+      String variantId, quantity) async {
     try {
       AppIndicator.disposeIndicator();
       WebStripe.instance.presentPaymentSheet().then((value) {
         WebStripe.instance.confirmPaymentSheetPayment();
-      // });
-      // await Stripe.instance.presentPaymentSheet().then((e) {
-      //   Stripe.instance.confirmPaymentSheetPayment();
        paymentResponse(
             context,
             createOrderModel?.receipt ?? '',
@@ -654,5 +563,16 @@ class CartViewModel extends ChangeNotifier {
           productId, variantId, quantity, 'Failed');
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Payment Failed.')));
     }
+  }
+
+  Future<void> updateCartCount(BuildContext context, String count) async {
+    cartItemCount = count;
+    notifyListeners();
+  }
+
+  Future<void> getCheckOutInfo(
+      BuildContext context, CartListDataModel? checkOutData) async {
+    _cartListDataModel = checkOutData;
+    notifyListeners();
   }
 }

@@ -3,7 +3,6 @@ import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
-import 'package:TychoStream/utilities/AppTextField.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -29,17 +28,7 @@ class _SearchPageState extends State<SearchPage> {
   HomeViewModel homeViewModel = HomeViewModel();
   ScrollController scrollController = ScrollController();
   CartViewModel cartViewModel = CartViewModel();
-
   int pageNum = 1;
-
-  // @override
-  // void dispose() {
-  //   cartViewModel.getCartCount(context);
-  //
-  //   searchController?.dispose();
-  //   scrollController.dispose();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +43,7 @@ class _SearchPageState extends State<SearchPage> {
             child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
               return viewmodel.searchDataModel != null
                   ? searchListMobile(context, viewmodel, scrollController,
-                      homeViewModel, searchController!)
+                      searchController!)
                   : Container(
                 width: SizeConfig.screenWidth,
                 color: Theme.of(context).cardColor,
@@ -62,7 +51,7 @@ class _SearchPageState extends State<SearchPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Image.asset('images/searchproduct.png',width: 250,height: 200,fit: BoxFit.fill),
+                    Image.asset(AssetsConstants.ic_noSearch,width: 250,height: 200,fit: BoxFit.fill),
                     AppBoldFont(context, msg: StringConstant.noSearchProductFound,color: Theme.of(context).canvasColor,fontSize: 18,textAlign: TextAlign.center)
                   ],
                 ),
@@ -75,14 +64,13 @@ class _SearchPageState extends State<SearchPage> {
       BuildContext context,
       HomeViewModel viewmodel,
       ScrollController _scrollController,
-      HomeViewModel homeViewModel,
       TextEditingController searchController) {
     return  viewmodel.searchDataModel!.productList==null?
     Container(
       color: Theme.of(context).cardColor,
       child: Column(
         children: [
-          Image.asset('images/searchproduct.png',width: 80,height: 150,)
+          Image.asset(AssetsConstants.ic_noSearch,width: 80,height: 150,)
 
         ],
       ),
@@ -184,7 +172,7 @@ class _SearchPageState extends State<SearchPage> {
                    onTap: (){
                      Navigator.pop(context, true);
                    },
-                   child: Image.asset(AssetsConstants.icBackArrow,color: Theme.of(context).canvasColor)),
+                   child: Image.asset(AssetsConstants.icBackArrow,color: Theme.of(context).hintColor)),
             SizedBox(width: 20),
             Container(
             height: 50,

@@ -1,16 +1,12 @@
-import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
-import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
+import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
-import 'package:TychoStream/view/Products/ProductList.dart';
-import 'package:TychoStream/view/Products/image_slider.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/OnHover.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
 import 'package:TychoStream/view/search/search_list.dart';
@@ -18,20 +14,18 @@ import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
-import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:number_paginator/number_paginator.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../AppRouter.gr.dart';
 
 @RoutePage()
 class FavouriteListPage extends StatefulWidget {
-  Function? callback;
-
-  FavouriteListPage({Key? key, this.callback}) : super(key: key);
+  FavouriteListPage({Key? key}) : super(key: key);
 
   @override
   State<FavouriteListPage> createState() => _FavouriteListPageState();
@@ -39,7 +33,6 @@ class FavouriteListPage extends StatefulWidget {
 
 class _FavouriteListPageState extends State<FavouriteListPage> {
   CartViewModel cartViewModel = CartViewModel();
-  ScrollController _scrollController = ScrollController();
   ScrollController scrollController = ScrollController();
   String? checkInternet;
   int pageNum = 1;
@@ -51,12 +44,10 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
   @override
   void initState() {
     homeViewModel.getAppConfig(context);
-    // profileViewModel.getUserDetails(context);
     cartViewModel.getCartCount(context);
     cartViewModel.getFavList(context, pageNum);
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -113,8 +104,6 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                 isSearch = false;
                                 setState(() {});
                               }
-
-
                             }
                           }, () async {
                             SharedPreferences sharedPreferences =
@@ -144,11 +133,9 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                             }
                           }),
                     body: Scaffold(
-
                       extendBodyBehindAppBar: true,
                       key: _scaffoldKey,
-                      backgroundColor: Theme.of(context)
-                          .scaffoldBackgroundColor,
+                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                       drawer:
                       ResponsiveWidget.isMediumScreen(context)
                           ? AppMenu()
@@ -163,21 +150,13 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                           ResponsiveWidget.isMediumScreen(
                                                   context)
                                               ? Container(
-                                                  height:
-                                                      SizeConfig.screenHeight /
-                                                          1.1,
                                             margin: EdgeInsets.only(right: 12,left: 12,top: 12),
-
                                             child: GridView.builder(
                                                     shrinkWrap: true,
-                                                    controller:
-                                                        _scrollController,
-                                                    physics:
-                                                        BouncingScrollPhysics(),
-                                                    gridDelegate:
-                                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                                    physics: NeverScrollableScrollPhysics(),
+                                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                                       crossAxisCount: 2,
-                                                      childAspectRatio: 0.65,
+                                                      childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.65:0.90,mainAxisSpacing: 3,crossAxisSpacing: 3
                                                     ),
                                                     itemCount: viewmodel
                                                         .productListModel
@@ -185,25 +164,6 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                         ?.length,
                                                     itemBuilder:
                                                         (context, index) {
-                                                      _scrollController
-                                                          .addListener(() {
-                                                        if (_scrollController
-                                                                .position
-                                                                .pixels ==
-                                                            _scrollController
-                                                                .position
-                                                                .maxScrollExtent) {
-                                                          viewmodel.onPagination(
-                                                              context,
-                                                              viewmodel
-                                                                  .lastPage,
-                                                              viewmodel
-                                                                  .nextPage,
-                                                              viewmodel
-                                                                  .isLoading,
-                                                              'productList');
-                                                        }
-                                                      });
                                                       final productListData =
                                                           viewmodel
                                                               .productListModel
@@ -227,43 +187,19 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                           0.13),
                                                   child: GridView.builder(
                                                     shrinkWrap: true,
-                                                    controller:
-                                                        _scrollController,
-                                                    physics:
-                                                        BouncingScrollPhysics(),
-                                                    padding: EdgeInsets.only(
-                                                        top: 30),
-                                                    gridDelegate:
-                                                        SliverGridDelegateWithMaxCrossAxisExtent(
+                                                    physics: NeverScrollableScrollPhysics(),
+                                                    padding: EdgeInsets.only(top: 30),
+                                                    gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                                                             mainAxisSpacing: 15,
-                                                            mainAxisExtent: 470,
+                                                            mainAxisExtent: 500,
                                                             maxCrossAxisExtent:
-                                                                350),
+                                                                400),
                                                     itemCount: viewmodel
                                                         .productListModel
                                                         ?.productList
                                                         ?.length,
                                                     itemBuilder:
                                                         (context, index) {
-                                                      _scrollController
-                                                          .addListener(() {
-                                                        if (_scrollController
-                                                                .position
-                                                                .pixels ==
-                                                            _scrollController
-                                                                .position
-                                                                .maxScrollExtent) {
-                                                          viewmodel.onPagination(
-                                                              context,
-                                                              viewmodel
-                                                                  .lastPage,
-                                                              viewmodel
-                                                                  .nextPage,
-                                                              viewmodel
-                                                                  .isLoading,
-                                                              'productList');
-                                                        }
-                                                      });
                                                       final productListData =
                                                           cartViewModel
                                                               .productListModel
@@ -276,13 +212,15 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                     },
                                                   ),
                                                 ),
+
+                                          onPagination(viewmodel),
                                           ResponsiveWidget.isMediumScreen(
                                                   context)
                                               ? SizedBox(height: 50)
                                               : SizedBox(height: 200),
                                           ResponsiveWidget.isMediumScreen(
                                                   context)
-                                              ? footerMobile(context)
+                                              ? footerMobile(context,homeViewModel)
                                               : footerDesktop(),
                                         ],
                                       ),
@@ -300,36 +238,21 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                         .isMediumScreen(context)
                                         ? Container():   isSearch == true
                                         ? Positioned(
-                                            top: 0,
+                                            top: SizeConfig.screenWidth * 0.001,
                                             right:  SizeConfig.screenWidth * 0.20,
                                             child: searchList(
                                                 context,
                                                 homeViewModel,
                                                 scrollController,
-                                                homeViewModel,
                                                 searchController!,
                                                 cartViewModel.cartItemCount))
                                         : Container(),
-                                    viewmodel.isLoading == true
-                                        ? Container(
-                                            margin: EdgeInsets.only(
-                                                top: ResponsiveWidget
-                                                        .isMediumScreen(context)
-                                                    ? 50
-                                                    : SizeConfig.screenHeight /
-                                                        1.3),
-                                            alignment: Alignment.bottomCenter,
-                                            child: CircularProgressIndicator(
-                                              color: Theme.of(context)
-                                                  .primaryColor,
-                                            ))
-                                        : SizedBox()
                                   ],
                                 )
                               : Stack(
                                 children: [
                                   noDataFoundMessage(
-                                      context,StringConstant.noProductFound),
+                                      context,StringConstant.noProductFound,homeViewModel),
                                   ResponsiveWidget
                                       .isMediumScreen(context)
                                       ?Container(): isLogins == true
@@ -343,21 +266,14 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                       .isMediumScreen(context)
                                       ? Container():   isSearch == true
                                       ? Positioned(
-                                      top: ResponsiveWidget
-                                          .isMediumScreen(context)
-                                          ? 0
-                                          : SizeConfig.screenWidth *
+                                      top:  SizeConfig.screenWidth *
                                           0.001,
-                                      right: ResponsiveWidget
-                                          .isMediumScreen(context)
-                                          ? 0
-                                          : SizeConfig.screenWidth *
-                                          0.15,
+                                      right:  SizeConfig.screenWidth *
+                                          0.20,
                                       child: searchList(
                                           context,
                                           homeViewModel,
                                           scrollController,
-                                          homeViewModel,
                                           searchController!,
                                           cartViewModel
                                               .cartItemCount))
@@ -370,5 +286,62 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                     )),
               );
             }));
+  }
+  onPagination( CartViewModel viewmodel){
+    return  viewmodel.productListModel!.pagination!.lastPage==1?Container():   Container(
+      height: 40,
+      margin: EdgeInsets.only(
+          right: 12,
+          left: 12,
+          top: 20),
+      width:ResponsiveWidget.isMediumScreen(context)
+          ? SizeConfig.screenWidth:SizeConfig.screenWidth/4,
+      child: NumberPaginator(
+        numberPages: viewmodel
+            .productListModel!
+            .pagination!
+            .lastPage!,
+        config:
+        NumberPaginatorUIConfig(
+          mode: ContentDisplayMode
+              .numbers,
+          height: 40,
+          contentPadding:
+          EdgeInsets.zero,
+          buttonShape:
+          RoundedRectangleBorder(
+            borderRadius:
+            BorderRadius
+                .circular(4),
+          ),
+          buttonSelectedForegroundColor:
+          Theme.of(context)
+              .canvasColor,
+          buttonUnselectedForegroundColor:
+          Theme.of(context)
+              .canvasColor
+              .withOpacity(
+              0.8),
+          buttonUnselectedBackgroundColor:
+          Theme.of(context)
+              .cardColor
+              .withOpacity(
+              0.8),
+          buttonSelectedBackgroundColor:
+          Theme.of(context)
+              .primaryColor
+              .withOpacity(
+              0.8),
+        ),
+        initialPage: 0,
+        onPageChange:
+            (int index) {
+          setState(() {
+            AppIndicator.loadingIndicator(context);
+            cartViewModel.getFavList(context, index + 1);
+          });
+        },
+      ),
+    );
   }
 }

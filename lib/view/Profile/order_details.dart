@@ -11,7 +11,6 @@ import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/Profile/bottom_nav_button.dart';
 import 'package:TychoStream/view/widgets/AppDialog.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
-
 import 'package:TychoStream/viewmodel/order_view_model.dart';
 import 'package:another_stepper/another_stepper.dart';
 import 'package:auto_route/auto_route.dart';
@@ -78,7 +77,7 @@ bool? isCancel;
 
 
                       itemView(order),
-                       shippingDetails(),
+                       shippingDetails(order),
                        priceDetails(order.orderDetailModel),
                       order.orderDetailModel?.orderStatus == "Failed" ?
                       Container() :  Container(
@@ -385,7 +384,7 @@ bool? isCancel;
 
 
   //Shipping Details Method
-  shippingDetails() {
+  shippingDetails(OrderViewModel order) {
     return Container(
         decoration: BoxDecoration(
             color: Theme
@@ -411,17 +410,17 @@ bool? isCancel;
             Container(
               padding: EdgeInsets.only(left: 20, right: 20),
               child: AppMediumFont(context,
-                  msg: '${widget.orderItem?.shippingAddress?.firstName}' +' ${widget.orderItem?.shippingAddress?.lastName}'
+                  msg: '${order.orderDetailModel?.shippingAddress?.firstName}' +' ${order.orderDetailModel?.shippingAddress?.lastName}'
                       "\n" +
-                      '${widget.orderItem?.shippingAddress?.firstAddress},' +
+                      '${order.orderDetailModel?.shippingAddress?.firstAddress},' +
                       "\n" +
-                      '${widget.orderItem?.shippingAddress?.secondAddress},'+
+                      '${order.orderDetailModel?.shippingAddress?.secondAddress},'+'${order.orderDetailModel?.shippingAddress?.landmark},'
                       "\n" +
-                      '${widget.orderItem?.shippingAddress?.cityName},' +'${widget.orderItem?.shippingAddress?.state},'
+                      '${order.orderDetailModel?.shippingAddress?.cityName}, ' +'${order.orderDetailModel?.shippingAddress?.state},'+
                       "\n" +
-                      '${widget.orderItem?.shippingAddress?.pinCode},'
+                      '${order.orderDetailModel?.shippingAddress?.pinCode},'
                       "\n" +
-                      "Phone: ${widget.orderItem?.shippingAddress?.mobileNumber}"),
+                      "Phone:- ${order.orderDetailModel?.shippingAddress?.mobileNumber}"),
             ),
             SizedBox(height: 10),
           ],

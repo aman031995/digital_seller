@@ -1,6 +1,7 @@
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/AssetsConstants.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
@@ -43,11 +44,19 @@ class _LoginUpState extends State<LoginUp> {
 
   @override
   void initState() {
+    getFCMToken();
     homeViewModel.getAppConfig(context);
     super.initState();
   }
 
-
+  Future<void> getFCMToken() async {
+    try {
+       fcmToken = await FirebaseMessaging.instance.getToken();
+      print('FCM Token: $fcmToken');
+    } catch (e) {
+      print('Error getting FCM token: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -461,10 +470,9 @@ class _LoginUpState extends State<LoginUp> {
                   },
                   child: Center(
                     child: Container(
-                        width: SizeConfig.screenWidth * 0.08,
                         child: GlobalVariable.isLightTheme == true ?
-                        Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 50) :
-                        Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 50)),
+                        Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width:SizeConfig.screenWidth*0.12,height: SizeConfig.screenWidth*0.03) :
+                        Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: SizeConfig.screenWidth*0.12,height:SizeConfig.screenWidth*0.03)),
                   ),
                 ),
                 SizedBox(height: 10),

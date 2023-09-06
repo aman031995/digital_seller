@@ -27,6 +27,7 @@ static String noSearchProductFound='We always try to give the best\nresult on yo
   static String dontHaveAccount = "Don't have an account?";
   static String didntGetCode = "Didn't get code? ";
   static String COD='COD (Cash On Delivery)';
+  static String subscribe='SUBSCRIBE';
 
   //  *********** Registration Page *************
   static String name = "Name";
@@ -37,6 +38,7 @@ static String noSearchProductFound='We always try to give the best\nresult on yo
   static String fullName = "Full Name";
   static String message = "Enter a message";
   static String editProfile = 'Edit Profile';
+  static String worngEmail="Please enter correct email";
 
   //  ************ Forgot Password *************
   static String enterOtpText = "Please check your phone number we will send you a verification code.";
@@ -114,6 +116,7 @@ static String noSearchProductFound='We always try to give the best\nresult on yo
   static String mobileNo = 'Mobile No.';
   static String pincode = 'Pin Code';
   static String state = 'State';
+  static String landmark='Landmark';
   static String cityName = 'City Name';
   static String countryName = 'Country Name';
   static String paymentInfo = "Payment Info";
@@ -126,6 +129,7 @@ static String noSearchProductFound='We always try to give the best\nresult on yo
   static String couponsForYou = "Coupons For You";
   static String checkDelivery = 'Check Delivery ';
   static String enterPinCode = 'Enter Pincode';
+  static String pinCodeNotfound="Pincode Not Found";
   static String color = "Color : ";
 
   static String wishlist = " Wishlist ";
@@ -169,6 +173,7 @@ static String noSearchProductFound='We always try to give the best\nresult on yo
   static String selectPaymentOption = "Please Select Any Payment Option.";
   static String acceptReturnPolicy = "Accept the Return Policy and Terms of Use";
   static String returnPolicy="Return Policy";
+  static String pleaseAddaddress="Please Add Address";
 
   static String paymentSuccessful = 'Payment Successful';
   static String enterValidEmail = 'Enter a valid email address';
@@ -193,6 +198,7 @@ static String noSearchProductFound='We always try to give the best\nresult on yo
   static String shippingDetails='    Shipping Details';
   static String priceDetails='Price details';
   static String noProductFound='No Items in Wishlist';
+  static String noProductAdded="No product Found";
   static String noMoreMovies='No Movies';
   static String fetchPlane='Fetching Plan';
   static String deliverytime=   'Expected Delivery Time: 3-5 Days';
@@ -204,6 +210,7 @@ static String noSearchProductFound='We always try to give the best\nresult on yo
   static String payment = "Payment";
   static String orderPlaced = 'Order Placed';
   static String Recommended="Recommended for You ";
+  static String similarProducts='Similar Products';
   static String RecentView="Recently Viewed";
   static String WhatWeoffer="What We Offer !";
   static String myAccount="My Account";
@@ -229,6 +236,8 @@ static String getLatestupdate = 'Get Latest Update by Subscribe Our News later';
 static String digitalSellerLitelogo="https://eacademyeducation.com:8011/logo/lite_logo.png";
 static String digitalSellerDarklogo="https://eacademyeducation.com:8011/logo/dark_logo.png";
 static String Loremtext= "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante";
-static String ThankYOU='Thank You For Shopping!';
+static String ThankYOU='Thank You For Shopping';
 static String orderPlacedSuccess= 'Hope you enjoy shopping with us.';
+static String removeOutofStock="Please remove Out of Stock items from your cart to continue shopping.";
+static String continueShopping="Continue Shopping";
 }

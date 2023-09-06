@@ -1,9 +1,5 @@
-import 'dart:convert';
-import 'dart:html';
-
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
-import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
@@ -31,14 +27,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../AppRouter.gr.dart';
-import 'dart:html' as html;
 
 @RoutePage()
 class ProductDetailPage extends StatefulWidget {
   final List<String>? productdata;
   final String? productName;
-
-
   ProductDetailPage(
       {
         @PathParam('productName') this.productName ,
@@ -53,29 +46,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   int currentIndex = 0;
   CartViewModel cartView = CartViewModel();
   String? checkInternet;
-  int? selectedSizeIndex;
-  int? selectedMaterialIndex;
-  int? selectedStyleIndex;
-  int? selectedUnitIndex;
-  String? chosenSize;
-  String prodId = '';
-  String variantId = '';
-  String colorName='';
-  String sizeName = '';
-  bool isfab = false;
-  String? token;
-  List<Widget> cardWidgets = [];
-  var proDetails;
   ScrollController scrollController = ScrollController();
   HomeViewModel homeViewModel = HomeViewModel();
   ProfileViewModel profileViewModel = ProfileViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   TextEditingController? searchController = TextEditingController();
-   ProductList? productListDetails;
+  CartViewModel cartViewModel = CartViewModel();
+
 
   void initState() {
-    homeViewModel.getAppConfigData(context);
-
+    homeViewModel.getAppConfig(context);
     SessionStorageHelper.removeValue('payment');
     cartView.getCartCount(context);
     getProductDetails();
@@ -84,7 +64,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
 
   getProductDetails(){
     {
-      cartView.updatecolorName(context,'');
       cartView.updateCartCount(context, widget.productdata?[1] ?? '');
         cartView.getProductDetails(
             context,
@@ -106,9 +85,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         checkInternet = result;
       });
     });
-
-    return
-      checkInternet == "Offline"
+    return checkInternet == "Offline"
           ? NOInternetScreen()
           : ChangeNotifierProvider.value(
         value: cartView,
@@ -122,7 +99,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               if(isSearch==true){
                 isSearch=false;
                 setState(() {
-
                 });
               }
             },
@@ -131,7 +107,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ? homePageTopBar(context,_scaffoldKey, viewmodel.cartItemCount,homeViewModel, profileViewModel,):getAppBar(context,homeViewModel,profileViewModel,viewmodel.cartItemCount,1,searchController, () async {
                   SharedPreferences sharedPreferences =
                   await SharedPreferences.getInstance();
-
                   if (sharedPreferences.getString('token')== null) {
                     showDialog(
                         context: context,
@@ -153,8 +128,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     }
                     context.router.push(FavouriteListPage());
                   }
-                },
-                        ()async{
+                }, ()async{
                       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                       if (sharedPreferences.getString('token')== null){
                         showDialog(
@@ -179,24 +153,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                             itemCount: '${viewmodel.cartItemCount}'
                         ));
                       }}),
-
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-
-                body: Scaffold(
-
+              body: Scaffold(
                     extendBodyBehindAppBar: true,
                     key: _scaffoldKey,
-                    backgroundColor: Theme.of(context)
-                        .scaffoldBackgroundColor,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     drawer:
                     ResponsiveWidget.isMediumScreen(context)
                         ? AppMenu()
                         : SizedBox(),
 
-             body:
-
-
-             viewmodel.productListDetails != null ?
+             body: viewmodel.productListDetails != null ?
              SingleChildScrollView(child:
              ResponsiveWidget.isMediumScreen(context)
                  ?
@@ -216,7 +182,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                child: Stack(children: [
                                  CarouselSlider(
                                      options: CarouselOptions(
-                                         height: SizeConfig.screenHeight /2.2,
+                                         height: ResponsiveWidget.isSmallScreen(context) ?  SizeConfig.screenHeight / 2.4: SizeConfig.screenHeight/1.8,
                                          enableInfiniteScroll: viewmodel.productListDetails?.productDetails?.productImages?.length==1?false:true,
                                          reverse: false,
                                          viewportFraction: 1,
@@ -293,9 +259,9 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                isFav!,
                                                'productList');
                                          }
-                                       }),
+                                       })
                                  )
-                               ])),
+                               ]))
                          ),
                          Container(
                              width: SizeConfig.screenWidth,
@@ -316,8 +282,22 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                    ),
                                  ])),
                          SizedBox(height: 12),
-                         cartView.productListDetails?.productDetails?.isAvailable == true
-                             ?   bottomNavigationButton(): Center(
+                         cartView.productListDetails?.productDetails?.inStock == true
+                             ?   (cartView.productListDetails?.productDetails?.quantityLeft ?? 0) > 0?bottomNavigationButton():Center(
+                             child: Container(
+                                 height: 50,width: 180,
+                                 decoration: BoxDecoration(
+                                     borderRadius: BorderRadius.circular(4),
+                                     color: Theme.of(context).primaryColor
+                                 ),
+                                 child: Row(
+                                     children: [
+                                       SizedBox(width: 10),
+                                       Image.asset(AssetsConstants.ic_outOfStock,width: 20,height: 20,color: Theme.of(context).hintColor,),
+                                       SizedBox(width: 10),
+                                       AppBoldFont(context, color: Theme.of(context).hintColor, msg: StringConstant.OutofStock, fontSize: 18,fontWeight: FontWeight.w500),
+                                     ]))):
+                         Center(
                                child: Container(
                            height: 50,width: 180,
                            decoration: BoxDecoration(
@@ -329,17 +309,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                  SizedBox(width: 10),
                                  Image.asset(AssetsConstants.ic_outOfStock,width: 20,height: 20,color: Theme.of(context).hintColor,),
                                  SizedBox(width: 10),
-
-                                 AppBoldFont(context, color: Theme.of(context).hintColor,
-                                     msg: StringConstant.OutofStock, fontSize: 18,fontWeight: FontWeight.w500),
-                               ],
-                           ),
-                         ),
-                             ),
+                                 AppBoldFont(context, color: Theme.of(context).hintColor, msg: StringConstant.OutofStock, fontSize: 18,fontWeight: FontWeight.w500),
+                               ]))),
                          SizedBox(height: 12),
-                         footerMobile(context),
 
 
+                         footerMobile(context,homeViewModel),
                        ],
                      ),
                    ),
@@ -460,10 +435,27 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                      productList: cartView.productListDetails?.productDetails?.defaultVariationSku),
                                ),
                                SizedBox(height: 50),
-                               cartView.productListDetails?.productDetails?.isAvailable == true
-                              ? bottomNavigationButton():
+                               cartView.productListDetails?.productDetails?.inStock == true
+                              ?(cartView.productListDetails?.productDetails?.quantityLeft ?? 0) > 0 ?
+                               bottomNavigationButton():
+                               Container(
+                                 height: 50,width: 180,
+                                 decoration: BoxDecoration(
+                                     borderRadius: BorderRadius.circular(4),
+                                     color: Theme.of(context).primaryColor
+                                 ),
+                                 child: Row(
+                                   children: [
+                                     SizedBox(width: 10),
+                                     Image.asset(AssetsConstants.ic_outOfStock,width: 20,height: 20,color: Theme.of(context).hintColor,),
+                                     SizedBox(width: 10),
 
-                               Container( 
+                                     AppBoldFont(context, color: Theme.of(context).hintColor,
+                                         msg: StringConstant.OutofStock, fontSize: 18,fontWeight: FontWeight.w500),
+                                   ],
+                                 ),
+                               ):
+                               Container(
                                  height: 50,width: 180,
                                  decoration: BoxDecoration(
                                    borderRadius: BorderRadius.circular(4),
@@ -485,6 +477,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
          ],
        ),
                      SizedBox(height: 150),
+                     SizedBox(height: 40),
                       footerDesktop(),
                    ],
                  ),
@@ -499,10 +492,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                      : Container(),
                  isSearch==true?
                  Positioned(
-                     top: ResponsiveWidget.isMediumScreen(context) ? 0:0,
-                     right: ResponsiveWidget.isMediumScreen(context) ? 0:SizeConfig.screenWidth*0.20,
+                     top:1,
+                     right:SizeConfig.screenWidth*0.20,
 
-                     child: searchList(context, homeViewModel, scrollController,homeViewModel, searchController!,cartView.cartItemCount))
+                     child: searchList(context, homeViewModel, scrollController, searchController!,cartView.cartItemCount))
                      : Container()
                ],)
              )
@@ -592,104 +585,97 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(
-                flex: 50,
-                child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Theme.of(context).cardColor),
-                    padding: MaterialStateProperty.all(
-                        EdgeInsets.symmetric(horizontal:ResponsiveWidget.isMediumScreen(context)
-                            ?40: 40, vertical: ResponsiveWidget.isMediumScreen(context)
-                            ?20:20)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(ResponsiveWidget.isMediumScreen(context)
-                              ?0:5.0),
-                        ))),
-                child: AppBoldFont(context,
-                    msg: (cartView.isAddedToCart == true || cartView.productListDetails?.productDetails
-                        ?.isAddToCart ==
-                        true)
-                        ? "GO TO CART"
-                        : "ADD TO BAG",color: Theme.of(context).canvasColor,
-                    fontSize: 16),
-                onPressed: ()async{ if (isLogins == true) {
-                  isLogins = false;
-                  setState(() {});
+              ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                      Theme.of(context).cardColor),
+                  padding: MaterialStateProperty.all(
+                      EdgeInsets.symmetric(horizontal:ResponsiveWidget.isMediumScreen(context)
+                          ?40: 40, vertical: ResponsiveWidget.isMediumScreen(context)
+                          ?20:20)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(ResponsiveWidget.isMediumScreen(context)
+                            ?0:5.0),
+                      ))),
+              child: AppBoldFont(context,
+                  msg: (cartView.isAddedToCart == true || cartView.productListDetails?.productDetails
+                      ?.isAddToCart ==
+                      true)
+                      ? StringConstant.goToCart
+                      : StringConstant.addToBag,color: Theme.of(context).canvasColor,
+                  fontSize: 16),
+              onPressed: ()async{ if (isLogins == true) {
+                isLogins = false;
+                setState(() {});
+              }
+              if (isSearch == true) {
+                isSearch = false;
+                setState(() {});
+              }
+                SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                if (sharedPreferences.getString('token') == null){
+                  showDialog(
+                      context: context,
+                      builder:
+                          (BuildContext context) {
+                        return  LoginUp(
+                          product: true,
+                        );
+                      });
+                  // _backBtnHandling(prodId);
                 }
-                if (isSearch == true) {
-                  isSearch = false;
-                  setState(() {});
-                }
-                  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                  token = sharedPreferences.getString('token').toString();
-                  if (token == 'null'){
-                    showDialog(
-                        context: context,
-                        builder:
-                            (BuildContext context) {
-                          return  LoginUp(
-                            product: true,
-                          );
-                        });
-                    // _backBtnHandling(prodId);
-                  }
-                  else if(cartView.productListDetails?.productDetails?.isAvailable == true) {
-                    (cartView.isAddedToCart == true || cartView.productListDetails?.productDetails?.isAddToCart == true)
-                        ?
-                    context.router.push(CartDetail(
-                      itemCount: '${cartView.cartItemCount}'
-                    ))
+                else if(cartView.productListDetails?.productDetails?.isAvailable == true) {
+                  (cartView.isAddedToCart == true || cartView.productListDetails?.productDetails?.isAddToCart == true)
+                      ?
+                  context.router.push(CartDetail(
+                    itemCount: '${cartView.cartItemCount}'
+                  ))
 
-                        : addToBagButtonPressed();
-                  }
-                }),
-              ),
+                      : addToBagButtonPressed();
+                }
+              }),
               SizedBox(width:ResponsiveWidget.isMediumScreen(context)
                   ?0: 20),
-              Expanded(
-                flex: 50,
-                child: ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
-                    padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal:ResponsiveWidget.isMediumScreen(context)
-                        ?50: 40, vertical: ResponsiveWidget.isMediumScreen(context)
-                        ?20:20)),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(ResponsiveWidget.isMediumScreen(context)
-                            ?0:5.0),
-                        ))),
-                child: AppBoldFont(context, color: Theme.of(context).hintColor,
-                    msg: " BUY NOW", fontSize: 16),
-                onPressed: ()
-                async{ if (isLogins == true) {
-                  isLogins = false;
-                  setState(() {});
+              ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor),
+                  padding: MaterialStateProperty.all(EdgeInsets.symmetric(horizontal:ResponsiveWidget.isMediumScreen(context)
+                      ?50: 40, vertical: ResponsiveWidget.isMediumScreen(context)
+                      ?20:20)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(borderRadius: BorderRadius.circular(ResponsiveWidget.isMediumScreen(context)
+                          ?0:5.0),
+                      ))),
+              child: AppBoldFont(context, color: Theme.of(context).hintColor,
+                  msg: StringConstant.buynow, fontSize: 16),
+              onPressed: ()
+              async{ if (isLogins == true) {
+                isLogins = false;
+                setState(() {});
+              }
+              if (isSearch == true) {
+                isSearch = false;
+                setState(() {});
+              }
+                SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                if (sharedPreferences.getString('token') == null){
+                  showDialog(
+                      context: context,
+                      builder:
+                          (BuildContext context) {
+                        return  LoginUp(
+                          product: true,
+                        );
+                      });
                 }
-                if (isSearch == true) {
-                  isSearch = false;
-                  setState(() {});
+                else if (cartView.productListDetails?.productDetails?.isAvailable == true) {
+                  SessionStorageHelper.removeValue("itemCount");
+                  context.router.push(BuynowCart(
+                    buynow: ['${cartView.productListDetails?.productId}','${cartView.productListDetails?.productDetails?.variantId}']
+                  ));
                 }
-                  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                  if (sharedPreferences.getString('token') == null){
-                    showDialog(
-                        context: context,
-                        builder:
-                            (BuildContext context) {
-                          return  LoginUp(
-                            product: true,
-                          );
-                        });
-                  }
-                  else if (cartView.productListDetails?.productDetails?.isAvailable == true) {
-                    cartView.buyNow(
-                        cartView.productListDetails?.productId ?? '',
-                        "1", cartView.productListDetails?.productDetails?.variantId,
-                        true, context);  //context.router.push(FavouriteListPage());
-                  }
-                }),
-              )
+              })
         ]));
   }
 

@@ -55,5 +55,7 @@ static String icbanner='images/banner.webp';
   static String ic_wishlistUnselect = "images/ic_wishlistDeselect.png";
   static String ic_myOrder='images/ic_MyOrders.png';
   static String ic_outOfStock = "images/outofstock.png";
+  static String ic_noSearch='images/searchproduct.png';
+  static String ic_shoppingSuccess='images/ShoppingSuccess.png';
 
 }

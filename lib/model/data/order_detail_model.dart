@@ -1,4 +1,6 @@
 
+import 'package:TychoStream/model/data/checkout_data_model.dart';
+
 class OrderDetailModel {
   String? appId;
   String? userId;
@@ -16,7 +18,7 @@ class OrderDetailModel {
   String? orderDate;
   String? orderStatus;
   int? orderStatusId;
-  ShippingAddress? shippingAddress;
+  AddressListModel? shippingAddress;
   String? deliveryDate;
   List<FinalCheckOut>? checkoutDetails;
   OrderTracking? orderTracking;
@@ -63,7 +65,7 @@ class OrderDetailModel {
     orderStatus = json['orderStatus'];
     orderStatusId = json['orderStatusId'];
     shippingAddress = json['shippingAddress'] != null
-        ? new ShippingAddress.fromJson(json['shippingAddress'])
+        ? new AddressListModel.fromJson(json['shippingAddress'])
         : null;
     deliveryDate = json['deliveryDate'];
     if (json['checkoutDetails'] != null) {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -56,7 +57,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
   UserInfoModel? userModel;
   bool isVerifyOtpMobile = false;
   bool isVerifyOtpEmail = false;
-  String? fcmToken;String deviceName ='';
+  String? fcmToken;
   bool? mobileOTPVerificaton;
   HomeViewModel homeViewModel = HomeViewModel();
   AuthViewModel newAuthVm = AuthViewModel();
@@ -65,9 +66,17 @@ class _VerifyOtpState extends State<VerifyOtp> {
     mobileOTPVerificaton = widget.viewmodel!.appConfigModel!.androidConfig!.loginWithPhone!;
     homeViewModel.getLoginType(context, widget.viewmodel?.appConfigModel?.androidConfig?.loginWithPhone ?? false);
     super.initState();
+    getFCMToken();
     startTimer();
   }
-
+  Future<void> getFCMToken() async {
+    try {
+      fcmToken = await FirebaseMessaging.instance.getToken();
+      print('FCM Token: $fcmToken');
+    } catch (e) {
+      print('Error getting FCM token: $e');
+    }
+  }
   void dispose() {
     timer?.cancel();
     otpValue = '';
@@ -238,12 +247,10 @@ class _VerifyOtpState extends State<VerifyOtp> {
                       throw 'Could not launch $url';
                     }
                   },
-                  child: Container(
-                    // margin: EdgeInsets.only(left: 120, right: 120, bottom: 5),
-                      width: SizeConfig.screenWidth * 0.08,
+                  child: Center(
                       child: GlobalVariable.isLightTheme == true ?
-                      Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 50) :
-                      Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 50)),
+                      Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width:SizeConfig.screenWidth*0.12,height: SizeConfig.screenWidth*0.03) :
+                      Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: SizeConfig.screenWidth*0.12,height:SizeConfig.screenWidth*0.03)),
                 ),
                 SizedBox(height:10),
               ],
@@ -372,7 +379,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
     } else {
       isPinError = false;
       verificationButtonPressed(authVM, otpValue!,
-          '',  '', mobileOTPVerificaton);
+          '', fcmToken ?? "", mobileOTPVerificaton);
     }
     setState(() {});
   }

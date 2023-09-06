@@ -6,6 +6,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../AppRouter.gr.dart';
@@ -23,8 +24,17 @@ class _footerDesktopState extends State<footerDesktop> {
   HomeViewModel homeViewModel = HomeViewModel();
 
   @override
+  void initState() {
+    homeViewModel.getAppConfig(context);
+    super.initState();
+  }
+  @override
   Widget build(BuildContext context) {
-    return Container(
+    return  ChangeNotifierProvider.value(
+        value: homeViewModel,
+        child: Consumer<HomeViewModel>(builder: (context, viewmodel, _){
+          final followUs = viewmodel.appConfigModel?.androidConfig?.socialMedia;
+          return Container(
       color: Theme.of(context).canvasColor,
       height: 210,
       width: MediaQuery.of(context).size.width,
@@ -43,7 +53,7 @@ class _footerDesktopState extends State<footerDesktop> {
               SizedBox(
                 width: 150,
               ),
-              footerMiddleWidgetContent(context),
+              footerMiddleWidgetContent(context,homeViewModel),
               SizedBox(
                 width: 20,
               ),
@@ -56,12 +66,12 @@ class _footerDesktopState extends State<footerDesktop> {
               alignment: Alignment.bottomRight,
               child: GlobalVariable.isLightTheme == true
                   ? Image.network(StringConstant.digitalSellerDarklogo,
-                      fit: BoxFit.fill, width: SizeConfig.screenWidth * 0.1)
+                      fit: BoxFit.fill,width: SizeConfig.screenWidth*0.12,height: 50)
                   : Image.network(StringConstant.digitalSellerLitelogo,
-                      fit: BoxFit.fill, width: SizeConfig.screenWidth * 0.1)),
+                      fit: BoxFit.fill,width: SizeConfig.screenWidth*0.12,height: 50)),
         ],
       ),
-    );
+    );}));
   }
 
   Widget footerRightWidgetContent(BuildContext context) {
@@ -101,7 +111,7 @@ class _footerDesktopState extends State<footerDesktop> {
             InkWell(
               onTap: () async {
                 const url =
-                    'https://play.google.com/store/apps/details?id=com.tycho.scanamaze';
+                    'https://play.google.com/store/apps/details?id=com.tycho.digitalfashionseller';
                 if (await canLaunch(url)) {
                   await launch(url);
                 } else {
@@ -117,7 +127,7 @@ class _footerDesktopState extends State<footerDesktop> {
     );
   }
 
-  Widget footerMiddleWidgetContent(BuildContext context) {
+  Widget footerMiddleWidgetContent(BuildContext context, HomeViewModel homeViewModel) {
     return Column(
       children: [
         Container(
@@ -143,7 +153,7 @@ class _footerDesktopState extends State<footerDesktop> {
                       width: 30,
                       color: Theme.of(context).scaffoldBackgroundColor),
                   onTap: () async {
-                    const url = 'https://www.facebook.com';
+                  String url = homeViewModel.appConfigModel?.androidConfig?.socialMedia?.facebook?.url ?? "";
                     if (await canLaunch(url)) {
                       await launch(url);
                     } else {
@@ -157,7 +167,7 @@ class _footerDesktopState extends State<footerDesktop> {
                       width: 30,
                       color: Theme.of(context).scaffoldBackgroundColor),
                   onTap: () async {
-                    const url = 'https://www.instagram.com';
+                    String url = homeViewModel.appConfigModel?.androidConfig?.socialMedia?.instagram?.url ?? "";
                     if (await canLaunch(url)) {
                       await launch(url);
                     } else {
@@ -171,8 +181,8 @@ class _footerDesktopState extends State<footerDesktop> {
                       width: 30,
                       color: Theme.of(context).scaffoldBackgroundColor),
                   onTap: () async {
-                    const url =
-                        'https://twitter.com/i/flow/login?input_flow_data=%7B%22requested_variant%22%3A%22eyJsYW5nIjoiZW4ifQ%3D%3D%22%7D';
+                    String url = homeViewModel.appConfigModel?.androidConfig?.socialMedia?.twitter?.url ?? "";
+
                     if (await canLaunch(url)) {
                       await launch(url);
                     } else {
@@ -244,7 +254,7 @@ class _footerDesktopState extends State<footerDesktop> {
   }
 }
 
-Widget footerMobile(BuildContext context) {
+Widget footerMobile(BuildContext context,HomeViewModel homeViewModel) {
   return Container(
     color: Theme.of(context).canvasColor,
     width: MediaQuery.of(context).size.width,
@@ -346,7 +356,7 @@ Widget footerMobile(BuildContext context) {
                             height: 30,
                             color: Theme.of(context).scaffoldBackgroundColor),
                         onTap: () async {
-                          const url = 'https://www.facebook.com';
+                          String url = homeViewModel.appConfigModel?.androidConfig?.socialMedia?.facebook?.url ?? "";
                           if (await canLaunch(url)) {
                             await launch(url);
                           } else {
@@ -359,7 +369,7 @@ Widget footerMobile(BuildContext context) {
                             height: 30,
                             color: Theme.of(context).scaffoldBackgroundColor),
                         onTap: () async {
-                          const url = 'https://www.instagram.com';
+                          String url = homeViewModel.appConfigModel?.androidConfig?.socialMedia?.instagram?.url ?? "";
                           if (await canLaunch(url)) {
                             await launch(url);
                           } else {
@@ -373,8 +383,7 @@ Widget footerMobile(BuildContext context) {
                             width: 30,
                             color: Theme.of(context).scaffoldBackgroundColor),
                         onTap: () async {
-                          const url =
-                              'https://twitter.com/i/flow/login?input_flow_data=%7B%22requested_variant%22%3A%22eyJsYW5nIjoiZW4ifQ%3D%3D%22%7D';
+                          String url = homeViewModel.appConfigModel?.androidConfig?.socialMedia?.twitter?.url ?? "";
                           if (await canLaunch(url)) {
                             await launch(url);
                           } else {
@@ -412,7 +421,7 @@ Widget footerMobile(BuildContext context) {
                     GestureDetector(
                         onTap: () async {
                           const url =
-                              'https://play.google.com/store/apps/details?id=com.tycho.scanamaze';
+                              'https://play.google.com/store/apps/details?id=com.tycho.digitalfashionseller';
                           if (await canLaunch(url)) {
                             await launch(url);
                           } else {

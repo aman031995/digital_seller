@@ -9,7 +9,6 @@ import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/sociallogin_provider.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
-import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 
 class SocialLoginViewModel with ChangeNotifier {
@@ -70,7 +69,6 @@ class SocialLoginViewModel with ChangeNotifier {
             AppDataManager.setFirstTimeValue();
             ToastMessage.message(
                 ((result as SuccessState).value as ASResponseModal).message,context);
-
             notifyListeners();
             AppIndicator.disposeIndicator();
           }

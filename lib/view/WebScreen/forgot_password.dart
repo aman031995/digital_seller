@@ -309,12 +309,11 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                   throw 'Could not launch $url';
                 }
               },
-              child: Container(
-                // margin: EdgeInsets.only(left: 120, right: 120, bottom: 5),
-                  width: SizeConfig.screenWidth * 0.08,
-                  child: GlobalVariable.isLightTheme == true ?
-                  Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 50) :
-                  Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 50)),
+              child: Center(
+                child: GlobalVariable.isLightTheme == true ?
+                Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width:SizeConfig.screenWidth*0.12,height: SizeConfig.screenWidth*0.03) :
+                Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: SizeConfig.screenWidth*0.12,height:SizeConfig.screenWidth*0.03),
+              ),
             ),
             SizedBox(height:10),
           ],

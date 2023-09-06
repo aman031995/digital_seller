@@ -3,7 +3,6 @@ import 'package:TychoStream/model/data/homepage_data_model.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/model/data/tray_data_model.dart';
 import 'package:TychoStream/services/global_variable.dart';
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:json_cache/json_cache.dart';
@@ -19,8 +18,6 @@ import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/HomePageRepository.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
-import '../AppRouter.gr.dart';
-
 
 
 class HomeViewModel with ChangeNotifier {
@@ -94,6 +91,7 @@ class HomeViewModel with ChangeNotifier {
       getBannerLists(context);
     }
   }
+
   Future<void> getBannerLists(BuildContext context) async {
     _homePageRepo.getBannerData(context, (result, isSuccess) {
       if (isSuccess) {
@@ -103,46 +101,7 @@ class HomeViewModel with ChangeNotifier {
     });
   }
 
-  Future<void> getNotificationCountText(BuildContext context) async {
-    _homePageRepo.getNotificationCount(context, (result, isSuccess) {
-      if (isSuccess) {
-        _itemCountModel =
-            ((result as SuccessState).value as ASResponseModal).dataModal;
-        notificationItem = _itemCountModel?.count.toString() ?? '';
-        notifyListeners();
-      }
-    });
-  }
-
-
-  Future<void> checkConnectivity(BuildContext context) async{
-    AppNetwork.checkInternet((isSuccess, result) {
-      if(isSuccess){
-        _isNetworkAvailable = result;
-        notifyListeners();
-      }
-    });
-  }
-
-  getAppConfigData(BuildContext context) async{
-    final box = await Hive.openBox<String>('appBox');
-    final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
-    if(await jsonCache.contains(StringConstant.kAppConfig)){
-      CacheDataManager.getCachedData(key: StringConstant.kAppConfig).then((jsonData) {
-        _appConfigModel = AppConfigModel.fromJson(jsonData!['data']);
-        GlobalVariable.cod=_appConfigModel?.androidConfig?.cod;
-        loginWithPhone = _appConfigModel?.androidConfig?.loginWithPhone ?? false;
-        GlobalVariable.cod = _appConfigModel?.androidConfig?.cod;
-        GlobalVariable.isLightTheme = _appConfigModel?.androidConfig?.themeType;
-        print('From Cached AppConfig Data');
-        notifyListeners();
-      });
-    }
-    else{
-      getAppConfig(context);
-    }
-  }
-
+//get AppConfiguration
   Future getAppConfig(BuildContext context) async{
     _homePageRepo.getAppConfiguration(context, (result, isSuccess) {
       if(isSuccess) {
@@ -151,14 +110,14 @@ class HomeViewModel with ChangeNotifier {
         GlobalVariable.cod = _appConfigModel?.androidConfig?.cod;
         GlobalVariable.isLightTheme = _appConfigModel?.androidConfig?.themeType;
         GlobalVariable.payGatewayName = _appConfigModel?.androidConfig?.paymentGateway;
-
+        GlobalVariable.cod=_appConfigModel?.androidConfig?.cod;
         loginWithPhone = _appConfigModel?.androidConfig?.loginWithPhone ?? false;
         notifyListeners();
       }
     });
   }
 
-
+// get search Data
   Future<void> getSearchData(BuildContext context, String searchKeyword, int pageNum) async{
     _homePageRepo.getSearchApiData(searchKeyword, pageNum, context, (result, isSuccess) {
       if(isSuccess){
@@ -183,25 +142,7 @@ class HomeViewModel with ChangeNotifier {
     });
   }
 
-  void getNotification(BuildContext context, int pageNum){
-    _homePageRepo.getNotification(pageNum,context, (result, isSuccess) {
-      if(isSuccess){
-        _newNotificationModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-        if (_newNotificationModel?.pagination?.current == 1) {
-          lastPage = _newNotificationModel?.pagination?.lastPage ?? 1;
-          nextPage = _newNotificationModel?.pagination?.next ?? 1;
-          _notificationModel = _newNotificationModel;
-        } else {
-          lastPage = _newNotificationModel?.pagination?.lastPage ?? 1;
-          nextPage = _newNotificationModel?.pagination?.next ?? 1;
-          _notificationModel?.notificationList?.addAll(_newNotificationModel!.notificationList!);
-        }
-        isLoading = false;
-        notifyListeners();
-      }
-    });
-  }
-
+//get AppMenu data
   getAppMenuData(BuildContext context) async{
     final box = await Hive.openBox<String>('appBox');
     final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
@@ -238,20 +179,11 @@ class HomeViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateNotificationCount(BuildContext context, String count) async {
-    notificationItem = count;
-    notifyListeners();
-  }
-
   // method for open html content from api
   openWebHtmlView(BuildContext context, String query, {String? title}){
-  //  AppIndicator.loadingIndicator(context);
     _homePageRepo.openHtmlWebUrl(context, query, (response) {
       if (response != null) {
-       // AppIndicator.disposeIndicator();
         _html = response;
-     //   print(response);
-      //  context.pushRoute(WebHtmlPage(html: _html, title: title));
         notifyListeners();
       }
     });

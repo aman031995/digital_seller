@@ -73,9 +73,10 @@ class ProductSkuView extends StatelessWidget {
                                             margin: EdgeInsets.only(right: 15),
                                             alignment: Alignment.center,
                                             decoration: BoxDecoration(
+                                                color: _color(e, context, itemName, selectedProduct, index),
                                                 borderRadius: BorderRadius.horizontal(left: Radius.circular(10), right: Radius.circular(10)),
                                                 shape: BoxShape.rectangle,
-                                                border: Border.all(color:_color(e, context, itemName, selectedProduct, index), width: 2)),
+                                                border: Border.all(color: Theme.of(context).canvasColor.withOpacity(0.5), width: 1.5)),
                                             child: AppBoldFont(
                                               context,
                                               msg: "${itemName}",
@@ -201,28 +202,31 @@ class ProductSkuView extends StatelessWidget {
   }
 
 
+  // color handling
   _color(ProductSkuDetails e, BuildContext context, String? itemName, List<SkuData>? selectedProduct, int index) {
     if (e.variationKey == 'unit_count') {
-      return productList?.unitCount?.name == itemName ? Theme.of(context).primaryColor.withOpacity(0.8) : Theme.of(context).canvasColor.withOpacity(0.3);
+      return productList?.unitCount?.name == itemName ? Theme.of(context).primaryColor.withOpacity(0.8) : Theme.of(context).cardColor;
     } else if (e.variationKey == 'size') {
-      return productList?.size?.name == itemName ? Theme.of(context).primaryColor.withOpacity(0.8) : Theme.of(context).canvasColor.withOpacity(0.3);
+      return productList?.size?.name == itemName ? Theme.of(context).primaryColor.withOpacity(0.8) : Theme.of(context).cardColor;
     } else if (e.variationKey == 'material_type') {
-      return productList?.materialType?.name == itemName ? Theme.of(context).primaryColor.withOpacity(0.8) : Theme.of(context).canvasColor.withOpacity(0.3);
+      return productList?.materialType?.name == itemName ? Theme.of(context).primaryColor.withOpacity(0.8) : Theme.of(context).cardColor;
     } else if (e.variationKey == 'style') {
-      return productList?.style?.name == itemName ? Theme.of(context).primaryColor.withOpacity(0.8) : Theme.of(context).canvasColor.withOpacity(0.3);
+      return productList?.style?.name == itemName ? Theme.of(context).primaryColor.withOpacity(0.8) : Theme.of(context).cardColor;
     } else {
       return TRANSPARENT_COLOR;
     }
   }
+
+// text color handling
   _textcolor(ProductSkuDetails e, BuildContext context, String? itemName, List<SkuData>? selectedProduct, int index) {
     if (e.variationKey == 'unit_count') {
-      return productList?.unitCount?.name == itemName ?  Theme.of(context).canvasColor : Theme.of(context).canvasColor.withOpacity(0.3);
+      return productList?.unitCount?.name == itemName ? WHITE_COLOR : Theme.of(context).canvasColor;
     } else if (e.variationKey == 'size') {
-      return productList?.size?.name == itemName ?  Theme.of(context).canvasColor : Theme.of(context).canvasColor.withOpacity(0.3);
+      return productList?.size?.name == itemName ? WHITE_COLOR : Theme.of(context).canvasColor;
     } else if (e.variationKey == 'material_type') {
-      return productList?.materialType?.name == itemName ?  Theme.of(context).canvasColor: Theme.of(context).canvasColor.withOpacity(0.3);
+      return productList?.materialType?.name == itemName ? WHITE_COLOR : Theme.of(context).canvasColor;
     } else if (e.variationKey == 'style') {
-      return productList?.style?.name == itemName ? Theme.of(context).canvasColor : Theme.of(context).canvasColor.withOpacity(0.3);
+      return productList?.style?.name == itemName ? WHITE_COLOR : Theme.of(context).canvasColor;
     } else {
       return TRANSPARENT_COLOR;
     }

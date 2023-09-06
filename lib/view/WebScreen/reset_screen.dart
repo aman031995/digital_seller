@@ -273,11 +273,10 @@ class _ResetPasswordState extends State<ResetPassword> {
                     throw 'Could not launch $url';
                   }
                 },
-                child: Container(
-                    width: SizeConfig.screenWidth * 0.08,
+                child: Center(
                     child: GlobalVariable.isLightTheme == true ?
-                    Image.network(StringConstant.digitalSellerLitelogo,  fit: BoxFit.fill, width: 50) :
-                    Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 50)),
+                    Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width:SizeConfig.screenWidth*0.12,height: SizeConfig.screenWidth*0.03) :
+                    Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: SizeConfig.screenWidth*0.12,height:SizeConfig.screenWidth*0.03)),
               ),
               SizedBox(height:10),
             ],
