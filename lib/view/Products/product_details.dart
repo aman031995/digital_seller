@@ -8,17 +8,20 @@ import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/build_indicator.dart';
+import 'package:TychoStream/utilities/full_image_view.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/Products/productSkuDetailView.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
+import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -52,13 +55,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   TextEditingController? searchController = TextEditingController();
   CartViewModel cartViewModel = CartViewModel();
+  NotificationViewModel notificationViewModel = NotificationViewModel();
+  ScrollController _scrollController = ScrollController();
 
 
   void initState() {
     homeViewModel.getAppConfig(context);
     SessionStorageHelper.removeValue('payment');
     cartView.getCartCount(context);
-    getProductDetails();
+    getProductDetails();    notificationViewModel.getNotificationCountText(context);
+
     super.initState();
   }
 
@@ -90,7 +96,10 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           : ChangeNotifierProvider.value(
         value: cartView,
         child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
-          return GestureDetector(
+          return ChangeNotifierProvider.value(
+              value: notificationViewModel,
+              child: Consumer<NotificationViewModel>(
+                  builder: (context, model, _) {return GestureDetector(
             onTap: (){
               if (isLogins == true) {
                 isLogins = false;
@@ -101,10 +110,16 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 setState(() {
                 });
               }
+              if(isnotification==true){
+                isnotification=false;
+                setState(() {
+
+                });
+              }
             },
             child: Scaffold(
                 appBar:ResponsiveWidget.isMediumScreen(context)
-                    ? homePageTopBar(context,_scaffoldKey, viewmodel.cartItemCount,homeViewModel, profileViewModel,):getAppBar(context,homeViewModel,profileViewModel,viewmodel.cartItemCount,1,searchController, () async {
+                    ? homePageTopBar(context,_scaffoldKey, viewmodel.cartItemCount,homeViewModel, profileViewModel,model):getAppBar(context,model,homeViewModel,profileViewModel,viewmodel.cartItemCount,1,searchController, () async {
                   SharedPreferences sharedPreferences =
                   await SharedPreferences.getInstance();
                   if (sharedPreferences.getString('token')== null) {
@@ -125,6 +140,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     if (isSearch == true) {
                       isSearch = false;
                       setState(() {});
+                    }
+                    if(isnotification==true){
+                      isnotification=false;
+                      setState(() {
+
+                      });
                     }
                     context.router.push(FavouriteListPage());
                   }
@@ -148,6 +169,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                         if (isSearch == true) {
                           isSearch = false;
                           setState(() {});
+                        }
+                        if(isnotification==true){
+                          isnotification=false;
+                          setState(() {
+
+                          });
                         }
                         context.router.push(CartDetail(
                             itemCount: '${viewmodel.cartItemCount}'
@@ -178,11 +205,11 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                        children: [
                          Center(
                            child: Container(
-                               width: SizeConfig.screenWidth/1.1,
+                               width: SizeConfig.screenWidth,
                                child: Stack(children: [
                                  CarouselSlider(
                                      options: CarouselOptions(
-                                         height: ResponsiveWidget.isSmallScreen(context) ?  SizeConfig.screenHeight / 2.4: SizeConfig.screenHeight/1.8,
+                                         height: SizeConfig.screenHeight / 1.8,
                                          enableInfiniteScroll: viewmodel.productListDetails?.productDetails?.productImages?.length==1?false:true,
                                          reverse: false,
                                          viewportFraction: 1,
@@ -202,8 +229,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                fit: BoxFit.fill,
                                                placeholder: (context, url) => Center(
                                                    child: CircularProgressIndicator(
-                                                       color:
-                                                       Theme.of(context).primaryColor))),
+                                                       color:Colors.grey,strokeWidth: 2))),
                                          );
                                        });
                                      }).toList()),
@@ -335,7 +361,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                          child: Stack(children: [
                            CarouselSlider(
                                options: CarouselOptions(
-                                   height: SizeConfig.screenHeight / 1.35,
+                                   height: SizeConfig.screenWidth / 2.4,
                                    enableInfiniteScroll: viewmodel.productListDetails?.productDetails?.productImages?.length==1?false:true,
                                    reverse: false,
                                    viewportFraction: 1,
@@ -348,15 +374,24 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                    .productListDetails?.productDetails?.productImages
                                    ?.map((i) {
                                  return Builder(builder: (BuildContext context) {
-                                   return Container(
-                                     width: SizeConfig.screenWidth/1.2,
-                                     child: CachedNetworkImage(
-                                         imageUrl: '${i}',
-                                         fit: BoxFit.fill,
-                                         placeholder: (context, url) => Center(
-                                             child: CircularProgressIndicator(
-                                                 color:
-                                                 Theme.of(context).primaryColor))),
+                                   return GestureDetector(
+                                     onTap: (){
+                                       showDialog(
+                                           context: context,
+                                           barrierColor: Colors.transparent,
+                                           builder: (BuildContext context) {
+                                             return FullImage(imageUrl: i );
+                                           });
+                                     },
+                                     child: Container(
+                                       width: SizeConfig.screenWidth/1.2,
+                                       child: CachedNetworkImage(
+                                           imageUrl: '${i}',
+                                           fit: BoxFit.fill,
+                                           placeholder: (context, url) => Center(
+                                               child: CircularProgressIndicator(
+                                                   color: Colors.grey,strokeWidth: 2))),
+                                     ),
                                    );
                                  });
                                }).toList()),
@@ -434,7 +469,6 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                      cartView: cartView,
                                      productList: cartView.productListDetails?.productDetails?.defaultVariationSku),
                                ),
-                               SizedBox(height: 50),
                                cartView.productListDetails?.productDetails?.inStock == true
                               ?(cartView.productListDetails?.productDetails?.quantityLeft ?? 0) > 0 ?
                                bottomNavigationButton():
@@ -482,17 +516,29 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                    ],
                  ),
 
-
-                 isLogins == true
+                 ResponsiveWidget.isMediumScreen(context)
+                     ? Container()
+                     : isnotification == true
+                     ?    Positioned(
+                     top:  0,
+                     right:  SizeConfig
+                         .screenWidth *
+                         0.20,
+                     child: notification(notificationViewModel,context,_scrollController)):Container(),
+                 ResponsiveWidget.isMediumScreen(context)
+                     ? Container()
+                     : isLogins == true
                      ? Positioned(
                      top: 0,
                      right: 180,
                      child: profile(context, setState,
                          profileViewModel))
                      : Container(),
-                 isSearch==true?
+                 ResponsiveWidget.isMediumScreen(context)
+                     ? Container()
+                     :  isSearch==true?
                  Positioned(
-                     top:1,
+                     top:0,
                      right:SizeConfig.screenWidth*0.20,
 
                      child: searchList(context, homeViewModel, scrollController, searchController!,cartView.cartItemCount))
@@ -503,7 +549,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           ));
         })
       );
-  }
+  } ));}
 
   // product Description
   productDescription(CartViewModel cartView) {
@@ -605,13 +651,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       ? StringConstant.goToCart
                       : StringConstant.addToBag,color: Theme.of(context).canvasColor,
                   fontSize: 16),
-              onPressed: ()async{ if (isLogins == true) {
+              onPressed: ()async{    if (isLogins == true) {
                 isLogins = false;
-                setState(() {});
               }
               if (isSearch == true) {
                 isSearch = false;
-                setState(() {});
+
+              }  if(isnotification==true){
+                isnotification=false;
+
               }
                 SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                 if (sharedPreferences.getString('token') == null){
@@ -623,9 +671,17 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                           product: true,
                         );
                       });
-                  // _backBtnHandling(prodId);
                 }
                 else if(cartView.productListDetails?.productDetails?.isAvailable == true) {
+                  if (isLogins == true) {
+                    isLogins = false;
+                  }
+                  if (isSearch == true) {
+                    isSearch = false;
+                  }  if(isnotification==true){
+                    isnotification=false;
+
+                  }
                   (cartView.isAddedToCart == true || cartView.productListDetails?.productDetails?.isAddToCart == true)
                       ?
                   context.router.push(CartDetail(
@@ -650,13 +706,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               child: AppBoldFont(context, color: Theme.of(context).hintColor,
                   msg: StringConstant.buynow, fontSize: 16),
               onPressed: ()
-              async{ if (isLogins == true) {
+              async{   if (isLogins == true) {
                 isLogins = false;
-                setState(() {});
               }
               if (isSearch == true) {
                 isSearch = false;
-                setState(() {});
+              }  if(isnotification==true){
+                isnotification=false;
+
               }
                 SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                 if (sharedPreferences.getString('token') == null){

@@ -232,7 +232,7 @@ class _ThreeArchedCircleState extends State<ThreeArchedCircle>
             ),
           ),
           SizedBox(height: 10,),
-          Text("  Processing...", style: TextStyle(color: Colors.black),),
+          Text("  Processing...", style: TextStyle(color: Theme.of(context).canvasColor)),
 
         ],
       ),

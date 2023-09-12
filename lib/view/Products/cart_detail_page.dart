@@ -11,12 +11,14 @@ import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
+import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -45,13 +47,17 @@ class _CartDetailState extends State<CartDetail> {
   ScrollController scrollController = ScrollController();
   ProfileViewModel profileViewModel = ProfileViewModel();
   TextEditingController? searchController = TextEditingController();
+  NotificationViewModel notificationViewModel = NotificationViewModel();
+  ScrollController _scrollController = ScrollController();
+
 
   @override
   void initState() {
     homeViewModel.getAppConfig(context);
     SessionStorageHelper.removeValue('token');
     SessionStorageHelper.removeValue('payment');
-    cartViewData.getCartCount(context);
+    cartViewData.getCartCount(context);    notificationViewModel.getNotificationCountText(context);
+
     cartViewData.updateCartCount(context, widget.itemCount ?? '');
     cartViewData.getCartListData(context);
     super.initState();
@@ -70,7 +76,11 @@ class _CartDetailState extends State<CartDetail> {
         : ChangeNotifierProvider.value(
             value: cartViewData,
             child: Consumer<CartViewModel>(builder: (context, cartViewData, _) {
-              return GestureDetector(
+              return ChangeNotifierProvider.value(
+                  value: notificationViewModel,
+                  child: Consumer<NotificationViewModel>(
+                      builder: (context, model, _) {
+                        return  GestureDetector(
                 onTap: () {
                   if (isLogins == true) {
                     isLogins = false;
@@ -80,13 +90,19 @@ class _CartDetailState extends State<CartDetail> {
                     isSearch = false;
                     setState(() {});
                   }
+                  if(isnotification==true){
+                    isnotification=false;
+                    setState(() {
+
+                    });
+                  }
                 },
                 child: Scaffold(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     appBar:  ResponsiveWidget.isMediumScreen(context)
-                        ? homePageTopBar(context, _scaffoldKey, cartViewData.cartItemCount,homeViewModel, profileViewModel,)
+                        ? homePageTopBar(context, _scaffoldKey, cartViewData.cartItemCount,homeViewModel, profileViewModel,model)
                         : getAppBar(
-                        context,
+                        context,model,
                         homeViewModel,
                         profileViewModel,
                         cartViewData.cartItemCount,1,
@@ -110,6 +126,12 @@ class _CartDetailState extends State<CartDetail> {
                         if (isSearch == true) {
                           isSearch = false;
                           setState(() {});
+                        }
+                        if(isnotification==true){
+                          isnotification=false;
+                          setState(() {
+
+                          });
                         }
                         context.router.push(FavouriteListPage());
                       }
@@ -137,7 +159,12 @@ class _CartDetailState extends State<CartDetail> {
                           isSearch = false;
                           setState(() {});
                         }
+                        if(isnotification==true){
+                          isnotification=false;
+                          setState(() {
 
+                          });
+                        }
                       }
                     }),
 
@@ -232,6 +259,12 @@ class _CartDetailState extends State<CartDetail> {
                                                         isSearch = false;
                                                         setState(() {});
                                                       }
+                                                      if(isnotification==true){
+                                                        isnotification=false;
+                                                        setState(() {
+
+                                                        });
+                                                      }
                                                       if(hasOutOfStockItems(cartViewData.cartListData!.cartList!)){
                                                           ToastMessage.message(StringConstant.removeOutofStock,context);
                                                       } else {
@@ -239,8 +272,7 @@ class _CartDetailState extends State<CartDetail> {
                                                           ToastMessage.message(StringConstant.removeOutofStock,context);
                                                         }
                                                         else{ context.router.push(
-                                                            AddressListPage(
-                                                                buynow: false)) ;}
+                                                            AddressListPage()) ;}
                                                         }
                                                       }),
                                                     )
@@ -289,8 +321,7 @@ class _CartDetailState extends State<CartDetail> {
                                                       }
                                                       else{
                                                         context.router.push(
-                                                            AddressListPage(
-                                                                buynow: false)) ;
+                                                            AddressListPage()) ;
                                                       }
                                                        }
                                                     }),
@@ -303,6 +334,15 @@ class _CartDetailState extends State<CartDetail> {
                                           ],
                                         ),
                                       ),
+                                ResponsiveWidget.isMediumScreen(context)
+                                    ? Container()
+                                    : isnotification == true
+                                    ?    Positioned(
+                                    top:  0,
+                                    right:  SizeConfig
+                                        .screenWidth *
+                                        0.20,
+                                    child: notification(notificationViewModel,context,_scrollController)):Container(),
                                 ResponsiveWidget
                                     .isMediumScreen(context)
                                     ?Container(): isLogins == true
@@ -365,7 +405,16 @@ class _CartDetailState extends State<CartDetail> {
                                         searchController!,
                                         cartViewData
                                             .cartItemCount))
-                                    : Container()
+                                    : Container(),
+                                ResponsiveWidget.isMediumScreen(context)
+                                    ? Container()
+                                    : isnotification == true
+                                    ?    Positioned(
+                                    top:  0,
+                                    right:  SizeConfig
+                                        .screenWidth *
+                                        0.20,
+                                    child: notification(notificationViewModel,context,_scrollController)):Container(),
                               ],
                             )
                         : Center(
@@ -376,6 +425,7 @@ class _CartDetailState extends State<CartDetail> {
               ));
             })
     );
+            }));
   }
   bool hasOutOfStockItems(List<ProductList> cartList) {
     for (var item in cartList) {

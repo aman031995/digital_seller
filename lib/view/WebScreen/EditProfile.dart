@@ -25,6 +25,7 @@ import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
@@ -34,6 +35,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../AppRouter.gr.dart';
+import 'NotificationScreen.dart';
 
 @RoutePage()
 class EditProfile extends StatefulWidget {
@@ -57,6 +59,9 @@ class _EditProfileState extends State<EditProfile> {
   ScrollController scrollController = ScrollController();
   TextEditingController? searchController = TextEditingController();
   CartViewModel cartViewModel = CartViewModel();
+  NotificationViewModel notificationViewModel = NotificationViewModel();
+
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -69,6 +74,8 @@ class _EditProfileState extends State<EditProfile> {
     nameController = TextEditingController();
     phoneController = TextEditingController();
     emailController = TextEditingController();
+    notificationViewModel.getNotificationCountText(context);
+
     fetchCurrentUserDetails();
     super.initState();
   }
@@ -118,7 +125,10 @@ class _EditProfileState extends State<EditProfile> {
           return ChangeNotifierProvider.value(
               value: homeViewModel,
               child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-                return GestureDetector(
+                return ChangeNotifierProvider.value(
+                    value: notificationViewModel,
+                    child: Consumer<NotificationViewModel>(
+                        builder: (context, model, _) {return GestureDetector(
             onTap: () {
               if (isLogins == true) {
                 isLogins = false;
@@ -129,14 +139,20 @@ class _EditProfileState extends State<EditProfile> {
                 setState(() {
                 });
               }
+              if(isnotification==true){
+                isnotification=false;
+                setState(() {
+                });
+              }
             },
             child: Scaffold(
                 appBar:  ResponsiveWidget.isMediumScreen(context)
                     ? homePageTopBar(context, _scaffoldKey,cartViewModel.cartItemCount,
                   viewmodel,
-                  profilemodel)
+                  profilemodel,notificationViewModel)
                     : getAppBar(
                     context,
+                    model,
                     viewmodel,
                     profilemodel,
                     cartViewModel.cartItemCount,1,
@@ -160,6 +176,12 @@ class _EditProfileState extends State<EditProfile> {
                     if (isSearch == true) {
                       isSearch = false;
                       setState(() {});
+                    }
+                    if(isnotification==true){
+                      isnotification=false;
+                      setState(() {
+
+                      });
                     }
                     context.router.push(FavouriteListPage());
                   }
@@ -186,6 +208,12 @@ class _EditProfileState extends State<EditProfile> {
                     if (isSearch == true) {
                       isSearch = false;
                       setState(() {});
+                    }
+                    if(isnotification==true){
+                      isnotification=false;
+                      setState(() {
+
+                      });
                     }
                     context.router.push(CartDetail(
                         itemCount:
@@ -237,6 +265,15 @@ class _EditProfileState extends State<EditProfile> {
                             ])),
                         ResponsiveWidget.isMediumScreen(context)
                             ? Container()
+                            : isnotification == true
+                            ?    Positioned(
+                            top:  0,
+                            right:  SizeConfig
+                                .screenWidth *
+                                0.20,
+                            child: notification(notificationViewModel,context,_scrollController)):Container(),
+                        ResponsiveWidget.isMediumScreen(context)
+                            ? Container()
                             : isLogins == true
                             ? Positioned(
                             top: 0,
@@ -263,6 +300,7 @@ class _EditProfileState extends State<EditProfile> {
                       ],
                     ))),
           );}));
+              }));
         }));
   }
 
@@ -431,7 +469,7 @@ class _EditProfileState extends State<EditProfile> {
                       image: imageProvider, fit: BoxFit.cover),
                 ),
               ),
-              placeholder: (context, url) => CircularProgressIndicator(),
+              placeholder: (context, url) => CircularProgressIndicator(color: Colors.grey,strokeWidth: 2),
             ),
           ),
           Positioned(

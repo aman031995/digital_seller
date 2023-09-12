@@ -10,11 +10,13 @@ import 'package:TychoStream/view/Products/CategoryFilterWidget.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
+import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -45,10 +47,14 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   TextEditingController? searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
+  NotificationViewModel notificationViewModel = NotificationViewModel();
+  ScrollController _scrollController = ScrollController();
 
   void initState() {
     homeViewModel.getAppConfig(context);
     getProduct();
+    notificationViewModel.getNotificationCountText(context);
+
     cartViewModel.getCartCount(context);
     super.initState();
   }
@@ -71,7 +77,10 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
         : ChangeNotifierProvider.value(
             value: cartViewModel,
             child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
-              return  GestureDetector(
+              return ChangeNotifierProvider.value(
+                  value: notificationViewModel,
+                  child: Consumer<NotificationViewModel>(
+                      builder: (context, model, _) { return GestureDetector(
                       onTap: () {
                         if (isLogins == true) {
                           isLogins = false;
@@ -81,6 +90,12 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                           isSearch = false;
                           setState(() {});
                         }
+                        if(isnotification==true){
+                          isnotification=false;
+                          setState(() {
+
+                          });
+                        }
                       },
                       child: Scaffold(
                           appBar: ResponsiveWidget.isMediumScreen(context)
@@ -89,10 +104,10 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                   _scaffoldKey,
                                   cartViewModel.cartItemCount,
                                   homeViewModel,
-                                  profileViewModel,
+                                  profileViewModel,model
                                 )
                               : getAppBar(
-                                  context,
+                                  context,model,
                                   homeViewModel,
                                   profileViewModel,
                                   cartViewModel.cartItemCount,
@@ -121,6 +136,12 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                       isSearch = false;
                                       setState(() {});
                                     }
+                                    if(isnotification==true){
+                                      isnotification=false;
+                                      setState(() {
+
+                                      });
+                                    }
                                     context.router.push(FavouriteListPage());
                                   }
                                 }, () async {
@@ -146,6 +167,12 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                     if (isSearch == true) {
                                       isSearch = false;
                                       setState(() {});
+                                    }
+                                    if(isnotification==true){
+                                      isnotification=false;
+                                      setState(() {
+
+                                      });
                                     }
                                     context.router.push(CartDetail(
                                         itemCount:
@@ -196,6 +223,12 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                                     if (isSearch == true) {
                                                       isSearch = false;
                                                     }
+                                                    if(isnotification==true){
+                                                      isnotification=false;
+                                                      setState(() {
+
+                                                      });
+                                                    }
                                                     SessionStorageHelper.clearAll();
                                                     context.router.push(SubcategoryProductList(
                                                       SubcategoryProductName:  viewmodel.CategoryProduct?.subCategoryList?[position].catId
@@ -226,7 +259,7 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                                                   ),
                                                                 ),
                                                               ),
-                                                              placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
+                                                              placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2))),
                                                         ),
                                                         AppBoldFont(
                                                             maxLines:
@@ -354,6 +387,15 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                   )),
                                   ResponsiveWidget.isMediumScreen(context)
                                       ? Container()
+                                      : isnotification == true
+                                      ?    Positioned(
+                                      top:  0,
+                                      right:  SizeConfig
+                                          .screenWidth *
+                                          0.20,
+                                      child: notification(notificationViewModel,context,_scrollController)):Container(),
+                                  ResponsiveWidget.isMediumScreen(context)
+                                      ? Container()
                                       : isLogins == true
                                           ? Positioned(
                                               top: 0,
@@ -378,5 +420,6 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                 ]) :Center(
                                 child: ThreeArchedCircle(size: 45.0),
                               ))));}));
+            }));
   }
 }

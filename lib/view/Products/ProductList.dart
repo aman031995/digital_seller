@@ -11,12 +11,14 @@ import 'package:TychoStream/view/Products/CategoryFilterWidget.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
+import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -46,17 +48,22 @@ class _ProductListGalleryState extends State<ProductListGallery> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   TextEditingController? searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
+  NotificationViewModel notificationViewModel = NotificationViewModel();
+  ScrollController _scrollController = ScrollController();
+  ScrollController scrollController1 = ScrollController();
+
 
 
   void initState() {
     homeViewModel.getAppConfig(context);
     getProduct();
+    notificationViewModel.getNotificationCountText(context);
     cartViewModel.getCartCount(context);
     super.initState();
   }
   getProduct() {
     widget.discountdata?.length == null
-          ? cartViewModel.getProductList(context,  SessionStorageHelper.getValue("pageList").toString()=="null"?1:int.parse(SessionStorageHelper.getValue("pageList").toString()))
+          ? cartViewModel.getProductList(context,  SessionStorageHelper.getValue("pageList").toString()=="null"?1:int.parse(SessionStorageHelper.getValue("pageList").toString()),(result, isSuccess){})
           : cartViewModel.getOfferDiscountList(
               context,
               widget.discountdata?[1] ?? "",
@@ -77,15 +84,23 @@ class _ProductListGalleryState extends State<ProductListGallery> {
         : ChangeNotifierProvider.value(
             value: cartViewModel,
             child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
-              return GestureDetector(
+              return ChangeNotifierProvider.value(
+                  value: notificationViewModel,
+                  child: Consumer<NotificationViewModel>(
+                      builder: (context, model, _) {
+                        return
+                          viewmodel.productListModel?.productList != null
+                              ?   GestureDetector(
                 onTap: () {
                   if (isLogins == true) {
                     isLogins = false;
-                    setState(() {});
                   }
                   if (isSearch == true) {
                     isSearch = false;
-                    setState(() {});
+                  }
+                  if(isnotification==true){
+                    isnotification=false;
+
                   }
                 },
                 child: Scaffold(
@@ -96,9 +111,10 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                             cartViewModel.cartItemCount,
                             homeViewModel,
                             profileViewModel,
+                        model
                           )
                         : getAppBar(
-                            context,
+                            context,model,
                             homeViewModel,
                             profileViewModel,
                             cartViewModel.cartItemCount,
@@ -120,11 +136,13 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                             } else {
                               if (isLogins == true) {
                                 isLogins = false;
-                                setState(() {});
                               }
                               if (isSearch == true) {
                                 isSearch = false;
-                                setState(() {});
+                              }
+                              if(isnotification==true){
+                                isnotification=false;
+
                               }
                               context.router.push(FavouriteListPage());
                             }
@@ -145,11 +163,13 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                             } else {
                               if (isLogins == true) {
                                 isLogins = false;
-                                setState(() {});
                               }
                               if (isSearch == true) {
                                 isSearch = false;
-                                setState(() {});
+                              }
+                              if(isnotification==true){
+                                isnotification=false;
+
                               }
                               context.router.push(CartDetail(
                                   itemCount: '${cartViewModel.cartItemCount}'));
@@ -167,6 +187,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                               ? Stack(
                                   children: [
                                     SingleChildScrollView(
+                                      controller: scrollController1,
                                         child: Column(
                                       children: [
                                         ResponsiveWidget.isMediumScreen(context)
@@ -279,6 +300,15 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                     )),
                                     ResponsiveWidget.isMediumScreen(context)
                                         ? Container()
+                                        : isnotification == true
+                                        ?    Positioned(
+                                        top:  0,
+                                        right:  SizeConfig
+                                            .screenWidth *
+                                            0.20,
+                                        child: notification(notificationViewModel,context,_scrollController)):Container(),
+                                    ResponsiveWidget.isMediumScreen(context)
+                                        ? Container()
                                         : isLogins == true
                                             ? Positioned(
                                                 top: 0,
@@ -309,6 +339,15 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                         children: [
                           noDataFoundMessage(
                               context,StringConstant.noProductAdded,homeViewModel),
+                          ResponsiveWidget.isMediumScreen(context)
+                              ? Container()
+                              : isnotification == true
+                              ?    Positioned(
+                              top:  0,
+                              right:  SizeConfig
+                                  .screenWidth *
+                                  0.20,
+                              child: notification(notificationViewModel,context,_scrollController)):Container(),
                           ResponsiveWidget
                               .isMediumScreen(context)
                               ?Container(): isLogins == true
@@ -340,7 +379,15 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                               child: ThreeArchedCircle(size: 45.0),
                             ),
                     )),
-              );
+              ): Container(
+                            width: SizeConfig.screenWidth,
+                            height: SizeConfig.screenHeight,
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            child: Center(
+                              child: ThreeArchedCircle(size: 45.0),
+                            ),
+                          );
+                      }));
             }));
   }
  onPagination(CartViewModel viewmodel){
@@ -400,13 +447,21 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                 context);
 
               widget.discountdata?.length == null
-                  ? cartViewModel.getProductList(context, index + 1)
+                  ? cartViewModel.getProductList(context, index + 1,(result, isSuccess){
+                    if(isSuccess){
+                      scrollController1.jumpTo(0);}
+
+
+              })
+
                   : cartViewModel.getOfferDiscountList(
                   context,
                   widget.discountdata?[1] ?? "",
                   index +
                       1,
                   widget.discountdata?[0] ?? "");
+
+
             // _currentPage = index;
           });
         },

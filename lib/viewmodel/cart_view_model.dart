@@ -91,12 +91,12 @@ class CartViewModel extends ChangeNotifier {
 
 
 // GetProductList Method
-  Future<void> getProductList(BuildContext context, int pageNum) async {
+  Future<void> getProductList(BuildContext context, int pageNum,NetworkResponseHandler responseHandler) async {
     _cartRepo.getProductList(context, pageNum, (result, isSuccess) {
       if (isSuccess) {
         _productListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         SessionStorageHelper.savevalue("pageList","${pageNum}");
-        AppIndicator.disposeIndicator();
+        responseHandler(result, isSuccess);
         notifyListeners();
       }
     });
@@ -146,7 +146,7 @@ class CartViewModel extends ChangeNotifier {
   }
 
   // GetProductList By Category Method
-  Future<void> getProductListCategory(BuildContext context, String prodId, String categoryId, int pageNum) async {
+  Future<void> getProductListCategory(BuildContext context, String prodId, String categoryId, int pageNum,NetworkResponseHandler responseHandler) async {
     _cartRepo.getProductByCategory(context, prodId, categoryId, pageNum, (result, isSuccess) {
       if (isSuccess) {
         AppIndicator.disposeIndicator();
@@ -158,6 +158,8 @@ class CartViewModel extends ChangeNotifier {
           _productListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         }
         SessionStorageHelper.savevalue("pageNum","${pageNum}");
+        responseHandler(result, isSuccess);
+
         notifyListeners();
       }
       notifyListeners();
@@ -234,11 +236,13 @@ class CartViewModel extends ChangeNotifier {
 
 
   //getFavList Method
-  Future<void> getFavList(BuildContext context, int pageNum) async {
+  Future<void> getFavList(BuildContext context, int pageNum,NetworkResponseHandler responseHandler) async {
     _cartRepo.getFavoriteList(context, pageNum, (result, isSuccess) {
       if (isSuccess) {
         _productListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         AppIndicator.disposeIndicator();
+        responseHandler(result, isSuccess);
+
         notifyListeners();
       }
     });

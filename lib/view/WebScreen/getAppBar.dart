@@ -5,6 +5,7 @@ import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppTextField.dart';
+import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -18,9 +19,11 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../AppRouter.gr.dart';
+import '../../viewmodel/notification_view_model.dart';
 
 PreferredSize getAppBar(
     BuildContext context,
+NotificationViewModel notificationViewModel,
     HomeViewModel viewmodel,
     ProfileViewModel profileViewModel,
     String? itemCount,
@@ -126,6 +129,9 @@ PreferredSize getAppBar(
                       } else {}
                     },
                     onChanged: (v) async {
+                      if (isnotification == true) {
+                        isnotification = false;
+                      }
                       if (v.isEmpty) {
                         isSearch = false;
                       } else {
@@ -152,7 +158,7 @@ PreferredSize getAppBar(
                   itemCount != '0'
                       ? Positioned(
                           right: 1,
-                          top: 0,
+                          top: -2,
                           child: Container(
                             padding: EdgeInsets.all(4),
                             decoration: BoxDecoration(
@@ -161,9 +167,61 @@ PreferredSize getAppBar(
                             ),
                             child: Text(
                               itemCount ?? '',
-                              style: TextStyle(color: WHITE_COLOR),
+                              style: TextStyle(color: Theme.of(context).hintColor, fontSize: 12),
                             ),
                           ))
+                      : SizedBox()
+                ],
+              ),
+              Stack(
+                children: [
+                  InkWell(
+                      onTap: () async {
+                        if (isLogins == true) {
+                          isLogins = false;
+                        }
+                        if (isSearch == true) {
+                          isSearch = false;
+                        }
+                        SharedPreferences sharedPreferences =
+                            await SharedPreferences.getInstance();
+                        if (sharedPreferences.get('token') != null) {
+                          notificationViewModel.getNotification(context, pageNum);
+                          isnotification=!isnotification;
+                        } else {
+                          showDialog(
+                              context: context,
+                              barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
+                              builder: (BuildContext context) {
+                                return LoginUp(
+                                  product: true,
+                                );
+                              });
+                        }
+                      },
+                      child: Image.asset(
+                        notificationViewModel.notificationItem != '0'
+                            ? AssetsConstants.icNotificationOn
+                            : AssetsConstants.icNotification,
+                        height: 65,
+                        color: Theme.of(context).canvasColor,
+                        width: 65,
+                      )),
+                  notificationViewModel.notificationItem != '0'
+                      ? Positioned(
+                      right: 15,
+                      top: 8,
+                      child: Container(
+                        padding: EdgeInsets.all(4),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.red,
+                        ),
+                        child: Text(
+                          notificationViewModel.notificationItem ?? '',
+                          style: TextStyle(color: Theme.of(context).hintColor, fontSize: 12),
+                        ),
+                      ))
                       : SizedBox()
                 ],
               ),
@@ -236,10 +294,12 @@ getPages(BottomNavigation navItem, BuildContext context,
   if (url.path == RoutesName.homepageweb) {
     if (isLogins == true) {
       isLogins = false;
-
     }
     if (isSearch == true) {
       isSearch = false;
+    }
+    if(isnotification==true){
+      isnotification=false;
 
     }
 
@@ -247,20 +307,22 @@ getPages(BottomNavigation navItem, BuildContext context,
   } else if (url.path == RoutesName.productPage) {
     if (isLogins == true) {
       isLogins = false;
-
     }
     if (isSearch == true) {
       isSearch = false;
+    }  if(isnotification==true){
+      isnotification=false;
 
     }
     return context.router.push(ProductListGallery());
   } else if (url.path == RoutesName.profilePage) {
     if (isLogins == true) {
       isLogins = false;
-
     }
     if (isSearch == true) {
       isSearch = false;
+    }  if(isnotification==true){
+      isnotification=false;
 
     }
 
@@ -279,9 +341,9 @@ getPages(BottomNavigation navItem, BuildContext context,
 
 PreferredSize homePageTopBar(BuildContext context,
     GlobalKey<ScaffoldState> _scaffoldKey, String itemCount, HomeViewModel viewmodel,
-    ProfileViewModel profileViewModel) {
+    ProfileViewModel profileViewModel,notificationViewModel) {
   return PreferredSize(
-      preferredSize: Size.fromHeight(90),
+      preferredSize: Size.fromHeight(80),
       child: Card(
         elevation: 0.8,
         margin: EdgeInsets.zero,
@@ -293,7 +355,6 @@ PreferredSize homePageTopBar(BuildContext context,
               SizedBox(height: 10),
               Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
                 SizedBox(width: 5),
-
                 GestureDetector(
 
                     onTap: () async {
@@ -308,38 +369,12 @@ PreferredSize homePageTopBar(BuildContext context,
                     child: Icon(Icons.menu_outlined,
                         color: Theme.of(context).canvasColor,size: 30,)),
                 SizedBox(width: 5),
-                // OutlinedButton(
-                //     onPressed: () {
-                //       if (isSearch == true) {
-                //         isSearch = false;
-                //       }
-                //       if (isLogins == true) {
-                //         isLogins = false;
-                //       }
-                //       context.pushRoute(ProductListGallery());
-                //     },
-                //     style: ButtonStyle(
-                //         overlayColor: MaterialStateColor.resolveWith(
-                //                 (states) => Theme.of(context)
-                //                 .primaryColor
-                //                 .withOpacity(0.4)),
-                //         fixedSize:
-                //         MaterialStateProperty.all(Size.fromHeight(20)),
-                //         side: MaterialStateProperty.all(
-                //           BorderSide(
-                //               color: Theme.of(context).canvasColor,
-                //               width: 1,
-                //               style: BorderStyle.solid),
-                //         )),
-                //     child: appTextButton(context, StringConstant.category,
-                //         Alignment.center, Theme.of(context).canvasColor, 12, true)),
                 InkWell(
                     onTap: () {
                       context.pushRoute(SearchPage());
-                      // GoRouter.of(context).pushNamed(RoutesName.SearchPage);
                     },
                     child:Container(
-                        height: 40,
+                        height: 35,
                         padding: EdgeInsets.only(left: 5),
                         width: SizeConfig.screenWidth * 0.55,
                         alignment: Alignment.center,
@@ -417,7 +452,7 @@ PreferredSize homePageTopBar(BuildContext context,
                           ),
                           child: Text(
                             itemCount ?? '',
-                            style: TextStyle(color: WHITE_COLOR, fontSize: 10),
+                            style: TextStyle(color: Theme.of(context).hintColor, fontSize: 10),
                           ),
                         ))
                         : SizedBox()
@@ -425,11 +460,59 @@ PreferredSize homePageTopBar(BuildContext context,
                 ),
                 SizedBox(width: 5),
 
+                Stack(
+                  children: [
+                    InkWell(
+                        onTap: () async {
+                          SharedPreferences sharedPreferences =
+                          await SharedPreferences.getInstance();
+                          if (sharedPreferences.get('token') == null) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return LoginUp(
+                                    product: true,
+                                  );
+                                });
+                          }
+                          else {
+                            context.pushRoute(NotificationRoute());
+                          }
+                        },
+                        child: Image.asset(
+                          notificationViewModel.notificationItem != '0'
+                              ? AssetsConstants.icNotificationOn
+                              : AssetsConstants.icNotification,
+                          height: 22,
+                          color: Theme.of(context).canvasColor,
+                          width: 20,fit: BoxFit.fill,
+                        )),
+                    notificationViewModel.notificationItem != '0'
+                        ? Positioned(
+                        right: 0,
+                        top: -4,
+                        child: Container(
+                          padding: EdgeInsets.all(3),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.red,
+                          ),
+                          child: Text(
+                            notificationViewModel.notificationItem ?? '',
+                            style: TextStyle(color: Theme.of(context).hintColor, fontSize: 10),
+                          ),
+                        ))
+                        : SizedBox()
+                  ],
+                ),
+
+                SizedBox(width: 5),
+
               ]),
               SizedBox(width: 5),
               viewmodel.appConfigModel != null
                   ? Container(
-                padding: EdgeInsets.only(top: 10),
+                padding: EdgeInsets.only(top: 4),
                 width: SizeConfig.screenWidth,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,

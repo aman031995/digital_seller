@@ -60,7 +60,7 @@ class _MenuListState extends State<MenuList> {
                             title: Transform(
                                 transform: Matrix4.translationValues(-20, 0.0, 0.0),
                                 child: AppRegularFont(context, msg: StringConstant.SignIn, fontSize: 15,color: Theme.of(context).canvasColor)),
-                            leading: Image.asset(AssetsConstants.icProfile?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.6)),
+                            leading: Image.asset(AssetsConstants.icProfile?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.9)),
                             onTap: () =>  showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -70,7 +70,7 @@ class _MenuListState extends State<MenuList> {
                         title: Transform(
                             transform: Matrix4.translationValues(-20, 0.0, 0.0),
                             child: AppRegularFont(context, msg:StringConstant.profile, fontSize: 15,color: Theme.of(context).canvasColor)),
-                        leading: Image.asset(AssetsConstants.icProfile?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.6)),
+                        leading: Image.asset(AssetsConstants.icProfile?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.9)),
                         onTap: () {
                           if (isSearch == true) {
                             isSearch = false;
@@ -81,7 +81,7 @@ class _MenuListState extends State<MenuList> {
                         title: Transform(
                             transform: Matrix4.translationValues(-20, 0.0, 0.0),
                             child: AppRegularFont(context, msg:StringConstant.myOrder, fontSize: 15,color: Theme.of(context).canvasColor)),
-                        leading: Image.asset(AssetsConstants.ic_myOrder?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.6)),
+                        leading: Image.asset(AssetsConstants.ic_myOrder?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.9)),
                         onTap: () {
                           names == "null"?
                           showDialog(
@@ -109,7 +109,7 @@ class _MenuListState extends State<MenuList> {
                       }))
                   ])),
          ])
-            : Center(child: CircularProgressIndicator(color: Theme.of(context).primaryColor)));
+            : Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2)));
   }
 
   // method that returns menu
@@ -129,7 +129,7 @@ class _MenuListState extends State<MenuList> {
             title: Transform(
                 transform: Matrix4.translationValues(-20, 0.0, 0.0),
                 child: AppRegularFont(context, msg: menu.title, fontSize: 15)),
-            leading: Image.network(menu.icon ?? '', height: 20, width: 20),
+            leading: Image.network(menu.icon ?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.6)),
             children: buildMenuList(menu.childNodes, homeViewModel));
       }
     }).toList();

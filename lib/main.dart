@@ -24,12 +24,13 @@ String? token='false';
 bool isLogin = false;
 bool isLogins = false;
 bool isSearch = false;
+bool isnotification=false;
 bool isProfile=false;
 
 final _firebase=FirebaseMessaging.instance;
 
 Future<void> main() async {
-  Stripe.publishableKey = "pk_test_51NXhtjSJK48GkIWFjJzBm88uzgrwb7i4aIyls9YoPHT5IvYAV9rMnlEW0U8AUY1VpIJB3ZOBFTFdSFuMYnxM0fkK00KqwNEEeH";
+ // Stripe.publishableKey = "pk_test_51NXhtjSJK48GkIWFjJzBm88uzgrwb7i4aIyls9YoPHT5IvYAV9rMnlEW0U8AUY1VpIJB3ZOBFTFdSFuMYnxM0fkK00KqwNEEeH";
   setPathUrlStrategy();
 
   await WidgetsFlutterBinding.ensureInitialized();

@@ -7,12 +7,14 @@ import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
+import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
@@ -47,11 +49,14 @@ HomeViewModel homeViewModel=HomeViewModel();
   CartViewModel cartViewModel = CartViewModel();
   TextEditingController? searchController = TextEditingController();
   String?  checkInternet;
+  NotificationViewModel notificationViewModel = NotificationViewModel();
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     homeViewModel.getAppConfig(context);
     profileViewModel.getProfileDetail(context);
+    notificationViewModel.getNotificationCountText(context);
 
     homeViewModel.openWebHtmlView(context, widget.html ?? "", title: widget.title );
     super.initState();
@@ -74,8 +79,11 @@ HomeViewModel homeViewModel=HomeViewModel();
           return ChangeNotifierProvider.value(
               value: homeViewModel,
               child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-                return
-            viewmodel.html==''? Container(
+                return ChangeNotifierProvider.value(
+                    value: notificationViewModel,
+                    child: Consumer<NotificationViewModel>(
+                        builder: (context, model, _) {
+        return    viewmodel.html==''? Container(
                 width: SizeConfig.screenWidth,
                 height: SizeConfig.screenHeight,
                 color:Theme.of(context).scaffoldBackgroundColor,
@@ -90,13 +98,19 @@ HomeViewModel homeViewModel=HomeViewModel();
                isSearch = false;
                setState(() {});
              }
+             if(isnotification==true){
+               isnotification=false;
+               setState(() {
+
+               });
+             }
            },
            child: Scaffold(
         appBar: ResponsiveWidget.isMediumScreen(context)
               ? homePageTopBar(context, _scaffoldKey, cartViewModel.cartItemCount,viewmodel,
-          profilemodel,)
+          profilemodel,model)
               : getAppBar(
-              context,
+              context,model,
                 viewmodel,
             profilemodel,
               cartViewModel.cartItemCount,1,
@@ -115,6 +129,10 @@ HomeViewModel homeViewModel=HomeViewModel();
             } else {
               if (isLogins == true) {
                 isLogins = false;
+                setState(() {});
+              }
+              if (isSearch == true) {
+                isSearch = false;
                 setState(() {});
               }
               if (isSearch == true) {
@@ -146,6 +164,12 @@ HomeViewModel homeViewModel=HomeViewModel();
               if (isSearch == true) {
                 isSearch = false;
                 setState(() {});
+              }
+              if(isnotification==true){
+                isnotification=false;
+                setState(() {
+
+                });
               }
               context.router.push(CartDetail(
                   itemCount:
@@ -180,6 +204,15 @@ HomeViewModel homeViewModel=HomeViewModel();
                 ],
               ),
             ),
+            ResponsiveWidget.isMediumScreen(context)
+                ? Container()
+                : isnotification == true
+                ?    Positioned(
+                top:  0,
+                right:  SizeConfig
+                    .screenWidth *
+                    0.20,
+                child: notification(notificationViewModel,context,_scrollController)):Container(),
             ResponsiveWidget
                 .isMediumScreen(context)
                 ?  Container():isLogins == true
@@ -213,6 +246,6 @@ HomeViewModel homeViewModel=HomeViewModel();
           ],
         )),
            ));}));}
-    ));
+    ));}));
   }
 }

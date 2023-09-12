@@ -20,12 +20,14 @@ import 'package:TychoStream/view/Products/shipping_address_page.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
+import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
@@ -35,13 +37,14 @@ import 'package:provider/provider.dart';
 import 'package:razorpay_web/razorpay_web.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../AppRouter.gr.dart';
+import '../../network/NetworkApiServices.dart';
+import '../../network/NetworkApiServices.dart';
 import '../../utilities/StringConstants.dart';
 
 @RoutePage()
 class AddressListPage extends StatefulWidget {
-  bool? buynow;
 
-  AddressListPage({Key? key, @PathParam('buynow') this.buynow})
+  AddressListPage({Key? key})
       : super(key: key);
 
   @override
@@ -59,33 +62,27 @@ class _AddressListPageState extends State<AddressListPage> {
   String? addressId;
   CartListDataModel? cartListData;
   final _cartRepo = CartDetailRepository();
-
+  NotificationViewModel notificationViewModel = NotificationViewModel();
   CreateOrderModel? _createOrderModel;
-
   CreateOrderModel? get createOrderModel => _createOrderModel;
   HomeViewModel homeViewModel = HomeViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   ScrollController scrollController = ScrollController();
   ProfileViewModel profileViewModel = ProfileViewModel();
   TextEditingController? searchController = TextEditingController();
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     _razorpay = Razorpay();
+    notificationViewModel.getNotificationCountText(context);
+    cartViewModel.getAddressList(context);
     cartViewModel.getCartCount(context);
     homeViewModel.getAppConfig(context);
     _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
     _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-    cartViewModel.getAddressList(context);
-    if (widget.buynow == true) {
-      Map<String, dynamic> json =
-          jsonDecode(SessionStorageHelper.getValue("buynow").toString());
-      cartListData = CartListDataModel.fromJson(json);
-    } else {
-      cartViewModel.getCartListData(context);
-    }
-
+    cartViewModel.getCartListData(context);
     super.initState();
   }
 
@@ -101,20 +98,20 @@ class _AddressListPageState extends State<AddressListPage> {
         ? NOInternetScreen()
         : ChangeNotifierProvider.value(
             value: cartViewModel,
-            child: Consumer<CartViewModel>(builder: (context, cartViewData, _) {
+            child:  Consumer<CartViewModel>(builder: (context, cartViewData, _) {
               cartViewModel.addressListModel?.length == 0 ? 0 : addressId = cartViewModel.addressListModel?[0].addressId;
-              return (cartViewData.addressListModel != null &&
-                          cartViewData.cartListData != null) ||
-                      widget.buynow == true
+              return (cartViewData.addressListModel != null && cartViewData.cartListData != null)
                   ? GestureDetector(
                       onTap: () {
                         if (isLogins == true) {
                           isLogins = false;
-                          setState(() {});
                         }
                         if (isSearch == true) {
                           isSearch = false;
-                          setState(() {});
+                        }
+                        if(isnotification==true){
+                          isnotification=false;
+
                         }
                       },
                       child: Scaffold(
@@ -126,10 +123,10 @@ class _AddressListPageState extends State<AddressListPage> {
                                 _scaffoldKey,
                                 cartViewData.cartItemCount,
                                 homeViewModel,
-                                profileViewModel,
+                                profileViewModel,notificationViewModel
                               )
                             : getAppBar(
-                                context,
+                                context,notificationViewModel,
                                 homeViewModel,
                                 profileViewModel,
                                 cartViewData.cartItemCount,
@@ -148,12 +145,14 @@ class _AddressListPageState extends State<AddressListPage> {
                                 } else {
                                   if (isLogins == true) {
                                     isLogins = false;
-                                    setState(() {});
                                   }
                                   if (isSearch == true) {
                                     isSearch = false;
-                                    setState(() {});
                                   }
+                                 if(isnotification==true){
+                          isnotification=false;
+
+                          }
                                   context.router.push(FavouriteListPage());
                                 }
                               }, () async {
@@ -174,11 +173,13 @@ class _AddressListPageState extends State<AddressListPage> {
                                 } else {
                                   if (isLogins == true) {
                                     isLogins = false;
-                                    setState(() {});
                                   }
                                   if (isSearch == true) {
                                     isSearch = false;
-                                    setState(() {});
+                                  }
+                                  if(isnotification==true){
+                                    isnotification=false;
+
                                   }
                                   context.router.push(CartDetail(
                                       itemCount:
@@ -193,11 +194,7 @@ class _AddressListPageState extends State<AddressListPage> {
                             drawer: ResponsiveWidget.isMediumScreen(context)
                                 ? AppMenu()
                                 : SizedBox(),
-                            body:
-                                (cartViewData.addressListModel != null &&
-                                            widget.buynow == false) ||
-                                        widget.buynow == true
-                                    ? Stack(
+                            body: Stack(
                                         children: [
                                           SingleChildScrollView(
                                             child:
@@ -209,6 +206,15 @@ class _AddressListPageState extends State<AddressListPage> {
                                                               context, 1),
                                                           AddressButton(context,
                                                               () {
+                                                                if (isLogins == true) {
+                                                                  isLogins = false;
+                                                                }
+                                                                if (isSearch == true) {
+                                                                  isSearch = false;
+                                                                }  if(isnotification==true){
+                                                                  isnotification=false;
+
+                                                                }
                                                             showDialog(
                                                                 context:
                                                                     context,
@@ -228,188 +234,8 @@ class _AddressListPageState extends State<AddressListPage> {
                                                                   context,
                                                                   addressId,
                                                                   cartViewData),
-                                                          Container(
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .cardColor,
-                                                            child: Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .min,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .end,
-                                                              children: <Widget>[
-                                                                Container(
-                                                                    padding: EdgeInsets.only(
-                                                                        left:
-                                                                            20,
-                                                                        top: 8,
-                                                                        bottom:
-                                                                            10),
-                                                                    child: AppBoldFont(
-                                                                        context,
-                                                                        msg: StringConstant
-                                                                            .selectPayment)),
-                                                                Divider(
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .canvasColor,
-                                                                  thickness:
-                                                                      0.2,
-                                                                  height: 1,
-                                                                ),
-                                                                Theme(
-                                                                  data:
-                                                                      ThemeData(
-                                                                    unselectedWidgetColor:
-                                                                        Theme.of(context)
-                                                                            .canvasColor,
-                                                                  ),
-                                                                  child:
-                                                                      RadioListTile(
-                                                                    tileColor: Theme.of(
-                                                                            context)
-                                                                        .canvasColor,
-                                                                    value: 1,
-                                                                    dense: true,
-                                                                    groupValue:
-                                                                        selectedRadioTile,
-                                                                    materialTapTargetSize:
-                                                                        MaterialTapTargetSize
-                                                                            .padded,
-                                                                    visualDensity:
-                                                                        VisualDensity
-                                                                            .compact,
-                                                                    contentPadding:
-                                                                        EdgeInsets.only(
-                                                                            left:
-                                                                                8),
-                                                                    title: AppBoldFont(
-                                                                        context,
-                                                                        msg: StringConstant
-                                                                            .cardWalletsText,
-                                                                        fontSize:
-                                                                            14.0),
-                                                                    onChanged:
-                                                                        (val) {
-                                                                      print(
-                                                                          "Radio Tile pressed $val");
-                                                                      if (val ==
-                                                                          1) {
-                                                                        setSelectedRadioTile(
-                                                                            1);
-                                                                      }
-                                                                      setState(
-                                                                          () {
-                                                                        google_pay =
-                                                                            true;
-                                                                        cod =
-                                                                            false;
-                                                                      });
-                                                                    },
-                                                                    activeColor:
-                                                                        Theme.of(context)
-                                                                            .primaryColor,
-                                                                    selected:
-                                                                        google_pay,
-                                                                  ),
-                                                                ),
-                                                                Divider(
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .canvasColor,
-                                                                  thickness:
-                                                                      0.2,
-                                                                  height: 1,
-                                                                ),
-                                                                GlobalVariable
-                                                                            .cod ==
-                                                                        true
-                                                                    ? Theme(
-                                                                        data:
-                                                                            ThemeData(
-                                                                          unselectedWidgetColor:
-                                                                              Theme.of(context).canvasColor,
-                                                                        ),
-                                                                        child:
-                                                                            RadioListTile(
-                                                                          visualDensity:
-                                                                              VisualDensity.compact,
-                                                                          tileColor:
-                                                                              Theme.of(context).canvasColor,
-                                                                          materialTapTargetSize:
-                                                                              MaterialTapTargetSize.padded,
-                                                                          dense:
-                                                                              true,
-                                                                          value:
-                                                                              2,
-                                                                          groupValue:
-                                                                              selectedRadioTile,
-                                                                          contentPadding:
-                                                                              EdgeInsets.only(left: 8),
-                                                                          title: AppBoldFont(
-                                                                              context,
-                                                                              msg: StringConstant.COD,
-                                                                              fontSize: 14.0),
-                                                                          onChanged:
-                                                                              (val) {
-                                                                            print("Radio Tile pressed $val");
-                                                                            if (val ==
-                                                                                2) {
-                                                                              setSelectedRadioTile(2);
-                                                                            }
-                                                                            setState(() {
-                                                                              cod = true;
-                                                                              google_pay = false;
-                                                                            });
-                                                                          },
-                                                                          activeColor:
-                                                                              Theme.of(context).primaryColor,
-                                                                          selected:
-                                                                              cod,
-                                                                        ),
-                                                                      )
-                                                                    : SizedBox(),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          SizedBox(height: 10),
-                                                          widget.buynow == true
-                                                              ? Column(
-                                                                  children: cartListData!
-                                                                      .checkoutDetails!
-                                                                      .map((e) {
-                                                                  return Container(
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .cardColor,
-                                                                    width: SizeConfig
-                                                                        .screenWidth,
-                                                                    child:
-                                                                        Column(
-                                                                      children: [
-                                                                        SizedBox(
-                                                                            height:
-                                                                                8),
-                                                                        e.name ==
-                                                                                'Total items'
-                                                                            ? priceDetailWidget(
-                                                                                context,
-                                                                                e.name ?? "",
-                                                                                "1")
-                                                                            : priceDetailWidget(context, e.name ?? "", e.value ?? ""),
-                                                                        SizedBox(
-                                                                            height:
-                                                                                8)
-                                                                      ],
-                                                                    ),
-                                                                  );
-                                                                }).toList())
-                                                              : Container(
+
+                                                             Container(
                                                                   color: Theme.of(
                                                                           context)
                                                                       .cardColor,
@@ -417,181 +243,10 @@ class _AddressListPageState extends State<AddressListPage> {
                                                                       context,
                                                                       cartViewData)),
                                                           SizedBox(height: 10),
-                                                          Row(
-                                                            children: [
-                                                              Material(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .scaffoldBackgroundColor,
-                                                                child: Checkbox(
-                                                                  checkColor: Theme.of(
-                                                                          context)
-                                                                      .primaryColor,
-                                                                  activeColor: Theme.of(
-                                                                          context)
-                                                                      .canvasColor
-                                                                      .withOpacity(
-                                                                          0.8),
-                                                                  side: MaterialStateBorderSide
-                                                                      .resolveWith(
-                                                                    (states) => BorderSide(
-                                                                        width:
-                                                                            1.0,
-                                                                        color: Theme.of(context)
-                                                                            .canvasColor
-                                                                            .withOpacity(0.8)),
-                                                                  ),
-                                                                  value: agree,
-                                                                  onChanged:
-                                                                      (value) {
-                                                                    setState(
-                                                                        () {
-                                                                      agree =
-                                                                          value!;
-                                                                    });
-                                                                  },
-                                                                ),
-                                                              ),
-                                                              AppMediumFont(
-                                                                  context,
-                                                                  msg: StringConstant
-                                                                      .Accept,
-                                                                  fontSize:
-                                                                      16.0),
-                                                              InkWell(
-                                                                  onTap: () {
-                                                                    context.router.push(WebHtmlPage(
-                                                                        title:
-                                                                            'ReturnPolicy',
-                                                                        html:
-                                                                            'return_policy'));
-                                                                  },
-                                                                  child: AppMediumFont(
-                                                                      context,
-                                                                      msg: StringConstant
-                                                                          .returnPolicy,
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .primaryColor,
-                                                                      fontSize:
-                                                                          16.0)),
-                                                              AppRegularFont(
-                                                                  context,
-                                                                  msg: " and ",
-                                                                  fontSize:
-                                                                      16.0),
-                                                              InkWell(
-                                                                  onTap: () {
-                                                                    context.router.push(WebHtmlPage(
-                                                                        title:
-                                                                            'TermsAndCondition',
-                                                                        html:
-                                                                            'terms_condition'));
-                                                                  },
-                                                                  child: AppMediumFont(
-                                                                      context,
-                                                                      msg: StringConstant
-                                                                          .TermsOfuse,
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .primaryColor,
-                                                                      fontSize:
-                                                                          16.0)),
-                                                            ],
-                                                          ),
+                                                          checkbox(),
+                                                          returnpolicy(),
                                                           SizedBox(height: 20),
-                                                          ElevatedButton(
-                                                              onPressed: () {
-                                                                if (agree !=
-                                                                    true) {
-                                                                  ToastMessage.message(
-                                                                      StringConstant
-                                                                          .acceptReturnPolicy,
-                                                                      context);
-                                                                }else if( cartViewModel.addressListModel?.length == 0){
-                                                                  ToastMessage.message(StringConstant.pleaseAddaddress, context);
-                                                                } else if ((google_pay ==
-                                                                        true) &&
-                                                                    (agree ==
-                                                                        true)) {
-                                                                  widget.buynow ==
-                                                                          true
-                                                                      ? createOrder(
-                                                                          "online",
-                                                                          cartListData?.cartList?[0].productId ??
-                                                                              "",
-                                                                          cartListData?.cartList?[0].productDetails?.variantId ??
-                                                                              '',
-                                                                          cartListData?.checkoutDetails?.elementAt(0).value ??
-                                                                              "",
-                                                                          context,
-                                                                          addressId:
-                                                                              addressId,
-                                                                          gateway:
-                                                                              GlobalVariable.payGatewayName,
-                                                                        )
-                                                                      : createOrder(
-                                                                          "online",
-                                                                          '',
-                                                                          '',
-                                                                          '',
-                                                                          context,
-                                                                          addressId:
-                                                                              addressId,
-                                                                          gateway:
-                                                                              GlobalVariable.payGatewayName,
-                                                                        );
-                                                                } else if ((cod ==
-                                                                        true) &&
-                                                                    (agree ==
-                                                                        true)) {
-                                                                  widget.buynow ==
-                                                                          true
-                                                                      ? createOrder(
-                                                                          "cod",
-                                                                          cartListData?.cartList?[0].productId ??
-                                                                              "",
-                                                                          cartListData?.cartList?[0].productDetails?.variantId ??
-                                                                              '',
-                                                                          cartListData?.checkoutDetails?.elementAt(0).value ??
-                                                                              "",
-                                                                          context,
-                                                                          addressId:
-                                                                              addressId)
-                                                                      : createOrder(
-                                                                          "cod",
-                                                                          '',
-                                                                          '',
-                                                                          '',
-                                                                          context,
-                                                                          addressId:
-                                                                              addressId);
-                                                                } else {
-                                                                  ToastMessage.message(
-                                                                      StringConstant
-                                                                          .selectPaymentOption,
-                                                                      context);
-                                                                }
-                                                              },
-                                                              style: ElevatedButton.styleFrom(
-                                                                  padding: EdgeInsets.symmetric(
-                                                                      horizontal:
-                                                                          50,
-                                                                      vertical:
-                                                                          20),
-                                                                  backgroundColor:
-                                                                      Theme.of(
-                                                                              context)
-                                                                          .primaryColor),
-                                                              child: Text(
-                                                                  StringConstant
-                                                                      .checkout,
-                                                                  style: TextStyle(
-                                                                      fontSize:
-                                                                          18,
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .hintColor))),
+                                                          checkoutbutton(),
                                                           SizedBox(height: 20),
                                                           footerMobile(context,
                                                               homeViewModel)
@@ -647,27 +302,7 @@ class _AddressListPageState extends State<AddressListPage> {
                                                                   SizedBox(
                                                                       height:
                                                                           5),
-                                                                  widget.buynow ==
-                                                                          true
-                                                                      ? Column(
-                                                                          children: cartListData!.checkoutDetails!.map(
-                                                                              (e) {
-                                                                          return Container(
-                                                                            color:
-                                                                                Theme.of(context).cardColor,
-                                                                            width:
-                                                                                SizeConfig.screenWidth / 3.22,
-                                                                            child:
-                                                                                Column(
-                                                                              children: [
-                                                                                SizedBox(height: 8),
-                                                                                e.name == 'Total items' ? priceDetailWidget(context, e.name ?? "", "1") : priceDetailWidget(context, e.name ?? "", e.value ?? ""),
-                                                                                SizedBox(height: 8)
-                                                                              ],
-                                                                            ),
-                                                                          );
-                                                                        }).toList())
-                                                                      : Container(
+                                                              Container(
                                                                           color: Theme.of(context)
                                                                               .cardColor,
                                                                           child: pricedetails(
@@ -676,269 +311,33 @@ class _AddressListPageState extends State<AddressListPage> {
                                                                   SizedBox(
                                                                       height:
                                                                           5),
-                                                                  Container(
-                                                                    width: SizeConfig
-                                                                            .screenWidth /
-                                                                        3.22,
-                                                                    color: Theme.of(
-                                                                            context)
-                                                                        .cardColor,
-                                                                    child:
-                                                                        Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
-                                                                      mainAxisSize:
-                                                                          MainAxisSize
-                                                                              .min,
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .end,
-                                                                      children: <Widget>[
-                                                                        Container(
-                                                                            padding: EdgeInsets.only(
-                                                                                left: 20,
-                                                                                top: 8,
-                                                                                bottom: 10),
-                                                                            child: AppBoldFont(context, msg: StringConstant.selectPayment)),
-                                                                        Divider(
-                                                                          color:
-                                                                              Theme.of(context).canvasColor,
-                                                                          thickness:
-                                                                              0.2,
-                                                                          height:
-                                                                              1,
-                                                                        ),
-                                                                        Theme(
-                                                                          data:
-                                                                              ThemeData(
-                                                                            unselectedWidgetColor:
-                                                                                Theme.of(context).canvasColor,
-                                                                          ),
-                                                                          child:
-                                                                              RadioListTile(
-                                                                            tileColor:
-                                                                                Theme.of(context).canvasColor,
-                                                                            value:
-                                                                                1,
-                                                                            dense:
-                                                                                true,
-                                                                            groupValue:
-                                                                                selectedRadioTile,
-                                                                            materialTapTargetSize:
-                                                                                MaterialTapTargetSize.padded,
-                                                                            visualDensity:
-                                                                                VisualDensity.compact,
-                                                                            contentPadding:
-                                                                                EdgeInsets.only(left: 8),
-                                                                            title: AppBoldFont(context,
-                                                                                msg: StringConstant.cardWalletsText,
-                                                                                fontSize: 14.0),
-                                                                            onChanged:
-                                                                                (val) {
-                                                                              print("Radio Tile pressed $val");
-                                                                              if (val == 1) {
-                                                                                setSelectedRadioTile(1);
-                                                                              }
-                                                                              setState(() {
-                                                                                google_pay = true;
-                                                                                cod = false;
-                                                                              });
-                                                                            },
-                                                                            activeColor:
-                                                                                Theme.of(context).primaryColor,
-                                                                            selected:
-                                                                                google_pay,
-                                                                          ),
-                                                                        ),
-                                                                        Divider(
-                                                                          color:
-                                                                              Theme.of(context).canvasColor,
-                                                                          thickness:
-                                                                              0.2,
-                                                                          height:
-                                                                              1,
-                                                                        ),
-                                                                        GlobalVariable.cod ==
-                                                                                true
-                                                                            ? Theme(
-                                                                                data: ThemeData(
-                                                                                  unselectedWidgetColor: Theme.of(context).canvasColor,
-                                                                                ),
-                                                                                child: RadioListTile(
-                                                                                  visualDensity: VisualDensity.compact,
-                                                                                  tileColor: Theme.of(context).canvasColor,
-                                                                                  materialTapTargetSize: MaterialTapTargetSize.padded,
-                                                                                  dense: true,
-                                                                                  value: 2,
-                                                                                  groupValue: selectedRadioTile,
-                                                                                  contentPadding: EdgeInsets.only(left: 8),
-                                                                                  title: AppBoldFont(context, msg: StringConstant.COD, fontSize: 14.0),
-                                                                                  onChanged: (val) {
-                                                                                    print("Radio Tile pressed $val");
-                                                                                    if (val == 2) {
-                                                                                      setSelectedRadioTile(2);
-                                                                                    }
-                                                                                    setState(() {
-                                                                                      cod = true;
-                                                                                      google_pay = false;
-                                                                                    });
-                                                                                  },
-                                                                                  activeColor: Theme.of(context).primaryColor,
-                                                                                  selected: cod,
-                                                                                ),
-                                                                              )
-                                                                            : SizedBox()
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                  Row(
-                                                                    children: [
-                                                                      Material(
-                                                                        color: Theme.of(context)
-                                                                            .scaffoldBackgroundColor,
-                                                                        child:
-                                                                            Checkbox(
-                                                                          checkColor:
-                                                                              Theme.of(context).primaryColor,
-                                                                          activeColor: Theme.of(context)
-                                                                              .canvasColor
-                                                                              .withOpacity(0.8),
-                                                                          side:
-                                                                              MaterialStateBorderSide.resolveWith(
-                                                                            (states) =>
-                                                                                BorderSide(width: 1.0, color: Theme.of(context).canvasColor.withOpacity(0.8)),
-                                                                          ),
-                                                                          value:
-                                                                              agree,
-                                                                          onChanged:
-                                                                              (value) {
-                                                                            setState(() {
-                                                                              agree = value!;
-                                                                            });
-                                                                          },
-                                                                        ),
-                                                                      ),
-                                                                      AppMediumFont(
-                                                                          context,
-                                                                          msg: StringConstant
-                                                                              .Accept,
-                                                                          fontSize:
-                                                                              16.0),
-                                                                      InkWell(
-                                                                          onTap:
-                                                                              () {
-                                                                            context.router.push(WebHtmlPage(
-                                                                                title: 'ReturnPolicy',
-                                                                                html: 'return_policy'));
-                                                                          },
-                                                                          child: AppMediumFont(
-                                                                              context,
-                                                                              msg: StringConstant.returnPolicy,
-                                                                              color: Theme.of(context).primaryColor,
-                                                                              fontSize: 16.0)),
-                                                                      AppRegularFont(
-                                                                          context,
-                                                                          msg:
-                                                                              " and ",
-                                                                          fontSize:
-                                                                              16.0),
-                                                                      InkWell(
-                                                                          onTap:
-                                                                              () {
-                                                                            context.router.push(WebHtmlPage(
-                                                                                title: 'TermsAndCondition',
-                                                                                html: 'terms_condition'));
-                                                                          },
-                                                                          child: AppMediumFont(
-                                                                              context,
-                                                                              msg: StringConstant.TermsOfuse,
-                                                                              color: Theme.of(context).primaryColor,
-                                                                              fontSize: 16.0)),
-                                                                    ],
-                                                                  ),
+                                                                  checkbox(),
+
+                                                                  returnpolicy(),
                                                                   SizedBox(
                                                                       height:
                                                                           5),
-                                                                  ElevatedButton(
-                                                                      onPressed:
-                                                                          () {
-                                                                        if (agree != true) {
-                                                                          ToastMessage.message(StringConstant.acceptReturnPolicy, context);
-                                                                        } else if( cartViewModel.addressListModel?.length == 0){
-                                                                          ToastMessage.message(StringConstant.pleaseAddaddress, context);
-                                                                        }
-                                                                        else if ((google_pay == true) &&
-                                                                            (agree ==
-                                                                                true)) {
-                                                                          widget.buynow == true
-                                                                              ? createOrder(
-                                                                                  "online",
-                                                                                  cartListData?.cartList?[0].productId ?? "",
-                                                                                  cartListData?.cartList?[0].productDetails?.variantId ?? '',
-                                                                                  cartListData?.checkoutDetails?.elementAt(0).value ?? "",
-                                                                                  context,
-                                                                                  addressId: addressId,
-                                                                                  gateway: GlobalVariable.payGatewayName,
-                                                                                )
-                                                                              : createOrder(
-                                                                                  "online",
-                                                                                  '',
-                                                                                  '',
-                                                                                  '',
-                                                                                  context,
-                                                                                  addressId: addressId,
-                                                                                  gateway: GlobalVariable.payGatewayName,
-                                                                                );
-                                                                        } else if ((cod ==
-                                                                                true) &&
-                                                                            (agree ==
-                                                                                true)) {
-                                                                          widget.buynow == true
-                                                                              ? createOrder("cod", cartListData?.cartList?[0].productId ?? "", cartListData?.cartList?[0].productDetails?.variantId ?? '', cartListData?.checkoutDetails?.elementAt(0).value ?? "", context, addressId: addressId)
-                                                                              : createOrder("cod", '', '', '', context, addressId: addressId);
-                                                                        } else {
-                                                                          ToastMessage.message(
-                                                                              StringConstant.selectPaymentOption,
-                                                                              context);
-                                                                        }
-                                                                      },
-                                                                      style:
-                                                                          ButtonStyle(
-                                                                              backgroundColor: MaterialStateProperty.all(Theme.of(context)
-                                                                                  .primaryColor),
-                                                                              padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                                                                                  horizontal:
-                                                                                      80,
-                                                                                  vertical:
-                                                                                      20)),
-                                                                              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                                                                                  RoundedRectangleBorder(
-                                                                                borderRadius: BorderRadius.circular(ResponsiveWidget.isMediumScreen(context) ? 0 : 5.0),
-                                                                              ))),
-                                                                      child: AppBoldFont(
-                                                                          context,
-                                                                          msg: StringConstant
-                                                                              .checkout,
-                                                                          color: Theme.of(context)
-                                                                              .hintColor,
-                                                                          fontSize:
-                                                                              18))
+                                                                  checkoutbutton()
+
                                                                 ],
                                                               )
                                                             ],
                                                           ),
-                                                          ResponsiveWidget
-                                                                  .isMediumScreen(
-                                                                      context)
-                                                              ? SizedBox(
-                                                                  height: 50)
-                                                              : SizedBox(
+                                                           SizedBox(
                                                                   height: 300),
                                                           footerDesktop()
                                                         ],
                                                       ),
                                           ),
+                                          ResponsiveWidget.isMediumScreen(context)
+                                              ? Container()
+                                              : isnotification == true
+                                              ?    Positioned(
+                                              top:  0,
+                                              right:  SizeConfig
+                                                  .screenWidth *
+                                                  0.20,
+                                              child: notification(notificationViewModel,context,_scrollController)):Container(),
                                           ResponsiveWidget.isMediumScreen(
                                                   context)
                                               ? Container()
@@ -956,9 +355,7 @@ class _AddressListPageState extends State<AddressListPage> {
                                               ? Container()
                                               : isSearch == true
                                                   ? Positioned(
-                                                      top: SizeConfig
-                                                              .screenWidth *
-                                                          0.001,
+                                                      top: 0,
                                                       right: SizeConfig
                                                               .screenWidth *
                                                           0.20,
@@ -972,10 +369,8 @@ class _AddressListPageState extends State<AddressListPage> {
                                                   : Container()
                                         ],
                                       )
-                                    : Center(
-                                        child: ThreeArchedCircle(size: 45.0),
-                                      )),
-                      ))
+
+                      )))
                   : Container(
                       width: SizeConfig.screenWidth,
                       height: SizeConfig.screenHeight,
@@ -985,8 +380,270 @@ class _AddressListPageState extends State<AddressListPage> {
                       ),
                     );
             }));
+
+  }
+  checkbox(){
+    return    Container(
+      width:ResponsiveWidget.isMediumScreen(
+          context)
+          ?SizeConfig.screenWidth: SizeConfig
+          .screenWidth /
+          3.22,
+      color: Theme.of(
+          context)
+          .cardColor,
+      child:
+      Column(
+        crossAxisAlignment:
+        CrossAxisAlignment
+            .start,
+        mainAxisSize:
+        MainAxisSize
+            .min,
+        mainAxisAlignment:
+        MainAxisAlignment
+            .end,
+        children: <Widget>[
+          Container(
+              padding: EdgeInsets.only(
+                  left: 20,
+                  top: 8,
+                  bottom: 10),
+              child: AppBoldFont(context, msg: StringConstant.selectPayment)),
+          Divider(
+            color:
+            Theme.of(context).canvasColor,
+            thickness:
+            0.2,
+            height:
+            1,
+          ),
+          Theme(
+            data:
+            ThemeData(
+              unselectedWidgetColor:
+              Theme.of(context).canvasColor,
+            ),
+            child:
+            RadioListTile(
+              tileColor:
+              Theme.of(context).canvasColor,
+              value:
+              1,
+              dense:
+              true,
+              groupValue:
+              selectedRadioTile,
+              materialTapTargetSize:
+              MaterialTapTargetSize.padded,
+              visualDensity:
+              VisualDensity.compact,
+              contentPadding:
+              EdgeInsets.only(left: 8),
+              title: AppBoldFont(context,
+                  msg: StringConstant.cardWalletsText,
+                  fontSize: 14.0),
+              onChanged:
+                  (val) {
+                print("Radio Tile pressed $val");
+                if (val == 1) {
+                  setSelectedRadioTile(1);
+                }
+                setState(() {
+                  google_pay = true;
+                  cod = false;
+                });
+              },
+              activeColor:
+              Theme.of(context).primaryColor,
+              selected:
+              google_pay,
+            ),
+          ),
+          Divider(
+            color:
+            Theme.of(context).canvasColor,
+            thickness:
+            0.2,
+            height:
+            1,
+          ),
+          GlobalVariable.cod ==
+              true
+              ? Theme(
+            data: ThemeData(
+              unselectedWidgetColor: Theme.of(context).canvasColor,
+            ),
+            child: RadioListTile(
+              visualDensity: VisualDensity.compact,
+              tileColor: Theme.of(context).canvasColor,
+              materialTapTargetSize: MaterialTapTargetSize.padded,
+              dense: true,
+              value: 2,
+              groupValue: selectedRadioTile,
+              contentPadding: EdgeInsets.only(left: 8),
+              title: AppBoldFont(context, msg: StringConstant.COD, fontSize: 14.0),
+              onChanged: (val) {
+                print("Radio Tile pressed $val");
+                if (val == 2) {
+                  setSelectedRadioTile(2);
+                }
+                setState(() {
+                  cod = true;
+                  google_pay = false;
+                });
+              },
+              activeColor: Theme.of(context).primaryColor,
+              selected: cod,
+            ),
+          )
+              : SizedBox()
+        ],
+      ),
+    );
   }
 
+  returnpolicy(){
+    return    Row(
+      children: [
+        Material(
+          color: Theme.of(
+              context)
+              .scaffoldBackgroundColor,
+          child: Checkbox(
+            checkColor: Theme.of(
+                context)
+                .primaryColor,
+            activeColor: Theme.of(
+                context)
+                .canvasColor
+                .withOpacity(
+                0.8),
+            side: MaterialStateBorderSide
+                .resolveWith(
+                  (states) => BorderSide(
+                  width:
+                  1.0,
+                  color: Theme.of(context)
+                      .canvasColor
+                      .withOpacity(0.8)),
+            ),
+            value: agree,
+            onChanged:
+                (value) {
+              setState(
+                      () {
+                    agree =
+                    value!;
+                  });
+            },
+          ),
+        ),
+        AppMediumFont(
+            context,
+            msg: StringConstant
+                .Accept,
+            fontSize:
+            16.0),
+        InkWell(
+            onTap: () {
+              context.router.push(WebHtmlPage(
+                  title:
+                  'ReturnPolicy',
+                  html:
+                  'return_policy'));
+            },
+            child: AppMediumFont(
+                context,
+                msg: StringConstant
+                    .returnPolicy,
+                color: Theme.of(
+                    context)
+                    .primaryColor,
+                fontSize:
+                16.0)),
+        AppRegularFont(
+            context,
+            msg: " and ",
+            fontSize:
+            16.0),
+        InkWell(
+            onTap: () {
+              context.router.push(WebHtmlPage(
+                  title:
+                  'TermsAndCondition',
+                  html:
+                  'terms_condition'));
+            },
+            child: AppMediumFont(
+                context,
+                msg: StringConstant
+                    .TermsOfuse,
+                color: Theme.of(
+                    context)
+                    .primaryColor,
+                fontSize:
+                16.0)),
+      ],
+    );
+  }
+
+ checkoutbutton(){
+    return  ElevatedButton(
+        onPressed:
+            () {
+          if (agree != true) {
+            ToastMessage.message(StringConstant.acceptReturnPolicy, context);
+          } else if( cartViewModel.addressListModel?.length == 0){
+            ToastMessage.message(StringConstant.pleaseAddaddress, context);
+          }
+          else if ((google_pay == true) &&
+              (agree ==
+                  true)) {
+            createOrder(
+              "online",
+              '',
+              '',
+              '',
+              context,
+              addressId: addressId,
+              gateway: GlobalVariable.payGatewayName,
+            );
+          } else if ((cod ==
+              true) &&
+              (agree ==
+                  true)) {
+            createOrder("cod", '', '', '', context, addressId: addressId);
+          } else {
+            ToastMessage.message(
+                StringConstant.selectPaymentOption,
+                context);
+          }
+        },
+        style:
+        ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Theme.of(context)
+                .primaryColor),
+            padding: MaterialStateProperty.all(EdgeInsets.symmetric(
+                horizontal:
+                ResponsiveWidget.isMediumScreen(
+                    context)
+                    ?50:80,
+                vertical:
+                20)),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(ResponsiveWidget.isMediumScreen(context) ? 0 : 5.0),
+                ))),
+        child: AppBoldFont(
+            context,
+            msg: StringConstant
+                .checkout,
+            color: Theme.of(context)
+                .hintColor,
+            fontSize:
+            18));
+ }
   // payment selection
   setSelectedRadioTile(int val) {
     selectedRadioTile = val;
@@ -1017,15 +674,9 @@ class _AddressListPageState extends State<AddressListPage> {
               '',
               "",
               paymentMethod,
-              widget.buynow == true
-                  ? cartListData?.cartList![0].productId ?? ""
-                  : '',
-              widget.buynow == true
-                  ? cartListData?.cartList![0].productDetails?.variantId ?? ""
-                  : '',
-              widget.buynow == true
-                  ? cartListData?.checkoutDetails!.elementAt(0).value ?? ""
-                  : '',
+             '',
+          '',
+             '',
               'Success');
         }
       }
@@ -1073,13 +724,9 @@ class _AddressListPageState extends State<AddressListPage> {
         response.paymentId,
         response.orderId,
         'Online',
-        widget.buynow == true ? cartListData?.cartList![0].productId ?? "" : '',
-        widget.buynow == true
-            ? cartListData?.cartList![0].productDetails?.variantId ?? ""
-            : '',
-        widget.buynow == true
-            ? cartListData?.checkoutDetails!.elementAt(0).value ?? ""
-            : '',
+      '',
+         '',
+        '',
         'Success');
   }
 

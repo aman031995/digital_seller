@@ -15,6 +15,7 @@ import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ import 'package:number_paginator/number_paginator.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../AppRouter.gr.dart';
+import '../WebScreen/NotificationScreen.dart';
 
 @RoutePage()
 class FavouriteListPage extends StatefulWidget {
@@ -40,12 +42,19 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
   HomeViewModel homeViewModel = HomeViewModel();
   ProfileViewModel profileViewModel = ProfileViewModel();
   TextEditingController? searchController = TextEditingController();
+  NotificationViewModel notificationViewModel = NotificationViewModel();
+  ScrollController _scrollController = ScrollController();
+  ScrollController scrollController1 = ScrollController();
+
+
 
   @override
   void initState() {
     homeViewModel.getAppConfig(context);
     cartViewModel.getCartCount(context);
-    cartViewModel.getFavList(context, pageNum);
+    cartViewModel.getFavList(context, pageNum,(result, isSuccess){});
+    notificationViewModel.getNotificationCountText(context);
+
     super.initState();
   }
   @override
@@ -62,7 +71,10 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
         : ChangeNotifierProvider.value(
             value: cartViewModel,
             child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
-              return GestureDetector(
+              return ChangeNotifierProvider.value(
+                  value: notificationViewModel,
+                  child: Consumer<NotificationViewModel>(
+                      builder: (context, model, _) {return GestureDetector(
                 onTap: () {
                   if (isLogins == true) {
                     isLogins = false;
@@ -72,12 +84,18 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                     isSearch = false;
                     setState(() {});
                   }
+                  if(isnotification==true){
+                    isnotification=false;
+                    setState(() {
+
+                    });
+                  }
                 },
                 child: Scaffold(
                     appBar: ResponsiveWidget.isMediumScreen(context)
-                        ? homePageTopBar(context, _scaffoldKey, viewmodel.cartItemCount,homeViewModel, profileViewModel,)
+                        ? homePageTopBar(context, _scaffoldKey, viewmodel.cartItemCount,homeViewModel, profileViewModel,model)
                         : getAppBar(
-                            context,
+                            context,model,
                             homeViewModel,
                             profileViewModel,
                             viewmodel.cartItemCount,1,
@@ -104,6 +122,12 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                 isSearch = false;
                                 setState(() {});
                               }
+                              if(isnotification==true){
+                                isnotification=false;
+                                setState(() {
+
+                                });
+                              }
                             }
                           }, () async {
                             SharedPreferences sharedPreferences =
@@ -128,6 +152,12 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                 isSearch = false;
                                 setState(() {});
                               }
+                              if(isnotification==true){
+                                isnotification=false;
+                                setState(() {
+
+                                });
+                              }
                               context.router.push(CartDetail(
                                   itemCount: '${viewmodel.cartItemCount}'));
                             }
@@ -145,6 +175,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                               ? Stack(
                                   children: [
                                     SingleChildScrollView(
+                                      controller: scrollController1,
                                       child: Column(
                                         children: [
                                           ResponsiveWidget.isMediumScreen(
@@ -225,6 +256,15 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                         ],
                                       ),
                                     ),
+                                    ResponsiveWidget.isMediumScreen(context)
+                                        ? Container()
+                                        : isnotification == true
+                                        ?    Positioned(
+                                        top:  0,
+                                        right:  SizeConfig
+                                            .screenWidth *
+                                            0.20,
+                                        child: notification(notificationViewModel,context,_scrollController)):Container(),
                                     ResponsiveWidget
                                         .isMediumScreen(context)
                                         ?Container():    isLogins == true
@@ -234,6 +274,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                             child: profile(context, setState,
                                                 profileViewModel))
                                         : Container(),
+
                                     ResponsiveWidget
                                         .isMediumScreen(context)
                                         ? Container():   isSearch == true
@@ -277,7 +318,16 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                           searchController!,
                                           cartViewModel
                                               .cartItemCount))
-                                      : Container()
+                                      : Container(),
+                                  ResponsiveWidget.isMediumScreen(context)
+                                      ? Container()
+                                      : isnotification == true
+                                      ?    Positioned(
+                                      top:  0,
+                                      right:  SizeConfig
+                                          .screenWidth *
+                                          0.20,
+                                      child: notification(notificationViewModel,context,_scrollController)):Container()
                                 ],
                               )
                           : Center(
@@ -286,6 +336,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                     )),
               );
             }));
+  }));
   }
   onPagination( CartViewModel viewmodel){
     return  viewmodel.productListModel!.pagination!.lastPage==1?Container():   Container(
@@ -338,7 +389,12 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
             (int index) {
           setState(() {
             AppIndicator.loadingIndicator(context);
-            cartViewModel.getFavList(context, index + 1);
+            cartViewModel.getFavList(context, index + 1,(result, isSuccess){
+              if(isSuccess){
+                scrollController1.jumpTo(0);}
+
+
+            });
           });
         },
       ),

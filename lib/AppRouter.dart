@@ -28,7 +28,10 @@ class AppRouter extends $AppRouter {
         },
       )]),
 
+    AutoRoute(page: NotificationRoute.page,path: '/NotificationScreen'),
     AutoRoute(page: ProductListGallery.page,path: '/ProductListGallery'),
+    AutoRoute(page: BuynowAddress.page,path: '/BuynowAddress'),
+
 
     AutoRoute(page: FavouriteListPage.page,path: '/FavouriteListPage',guards: [AutoRouteGuard.simple(
             (resolver, scope) async {

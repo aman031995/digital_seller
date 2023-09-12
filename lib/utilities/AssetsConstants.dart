@@ -32,7 +32,9 @@ static String icbanner='images/banner.webp';
   static String icAddImage = "images/ic_icAdd.png";
 
   // Added B Aman Singh -------------------------
-  static String icNotification = "images/ic_notificationIcon.png";
+  static String icNotification = "images/ic_notification.png";
+  static String icNotificationOn = "images/ic_notification_on.png";
+  static String ic_no_notification = "images/no_notification.png";
   static String icRomance = "assets/images/ic_RomanceHeart.png";
   static String icFamily = "assets/images/ic_Family.png";
   static String icTalkShow = "assets/images/feAudioPlayer2.png";

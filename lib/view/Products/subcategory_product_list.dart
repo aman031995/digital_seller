@@ -17,6 +17,7 @@ import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ import 'package:number_paginator/number_paginator.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../AppRouter.gr.dart';
+import '../WebScreen/NotificationScreen.dart';
 
 @RoutePage()
 class SubcategoryProductList extends StatefulWidget {
@@ -47,8 +49,15 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   TextEditingController? searchController = TextEditingController();
   ScrollController scrollController = ScrollController();
+  NotificationViewModel notificationViewModel = NotificationViewModel();
+  ScrollController _scrollController = ScrollController();
+  ScrollController scrollController1 = ScrollController();
+
+
+
 
   void initState() {
+    notificationViewModel.getNotificationCountText(context);
 
     homeViewModel.getAppConfig(context);
     getProduct();
@@ -57,7 +66,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
   }
   getProduct() {
     cartViewModel.getProductListCategory(
-          context, "", widget.SubcategoryProductName ?? "",  SessionStorageHelper.getValue("pageNum").toString()=="null"?1:int.parse(SessionStorageHelper.getValue("pageNum").toString()));
+          context, "", widget.SubcategoryProductName ?? "",  SessionStorageHelper.getValue("pageNum").toString()=="null"?1:int.parse(SessionStorageHelper.getValue("pageNum").toString()),(result, isSuccess){});
   }
   @override
   Widget build(BuildContext context) {
@@ -72,7 +81,10 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
         : ChangeNotifierProvider.value(
         value: cartViewModel,
         child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
-          return GestureDetector(
+          return ChangeNotifierProvider.value(
+              value: notificationViewModel,
+              child: Consumer<NotificationViewModel>(
+                  builder: (context, model, _) {return GestureDetector(
             onTap: () {
               if (isLogins == true) {
                 isLogins = false;
@@ -82,6 +94,12 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                 isSearch = false;
                 setState(() {});
               }
+              if(isnotification==true){
+                isnotification=false;
+                setState(() {
+
+                });
+              }
             },
             child: Scaffold(
                 appBar: ResponsiveWidget.isMediumScreen(context)
@@ -90,10 +108,10 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                   _scaffoldKey,
                   cartViewModel.cartItemCount,
                   homeViewModel,
-                  profileViewModel,
+                  profileViewModel,model
                 )
                     : getAppBar(
-                    context,
+                    context,model,
                     homeViewModel,
                     profileViewModel,
                     cartViewModel.cartItemCount,
@@ -121,6 +139,12 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                       isSearch = false;
                       setState(() {});
                     }
+                    if(isnotification==true){
+                      isnotification=false;
+                      setState(() {
+
+                      });
+                    }
                     context.router.push(FavouriteListPage());
                   }
                 }, () async {
@@ -146,6 +170,12 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                       isSearch = false;
                       setState(() {});
                     }
+                    if(isnotification==true){
+                      isnotification=false;
+                      setState(() {
+
+                      });
+                    }
                     context.router.push(CartDetail(
                         itemCount: '${cartViewModel.cartItemCount}'));
                   }
@@ -163,6 +193,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                       ? Stack(
                     children: [
                       SingleChildScrollView(
+                        controller: scrollController1,
                           child: Column(
                             children: [
                               ResponsiveWidget.isMediumScreen(context)
@@ -283,7 +314,17 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                   : footerDesktop()
                             ],
                           )),
-
+                      ResponsiveWidget.isMediumScreen(context)
+                          ? Container()
+                          : isnotification == true
+                          ?    Positioned(
+                          top:  SizeConfig
+                              .screenWidth *
+                              0.041,
+                          right:  SizeConfig
+                              .screenWidth *
+                              0.20,
+                          child: notification(notificationViewModel,context,_scrollController)):Container(),
                       ResponsiveWidget.isMediumScreen(context)
                           ? Container()
                           : isLogins == true
@@ -314,6 +355,17 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                     children: [
                       noDataFoundMessage(
                           context,StringConstant.noProductAdded,homeViewModel),
+                      ResponsiveWidget.isMediumScreen(context)
+                          ? Container()
+                          : isnotification == true
+                          ?    Positioned(
+                          top:  SizeConfig
+                              .screenWidth *
+                              0.001,
+                          right:  SizeConfig
+                              .screenWidth *
+                              0.20,
+                          child: notification(notificationViewModel,context,_scrollController)):Container(),
                       ResponsiveWidget
                           .isMediumScreen(context)
                           ?Container(): isLogins == true
@@ -346,6 +398,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                   ),
                 )),
           );
+        }));
         }));
   }
 
@@ -400,7 +453,12 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
           setState(() {
             AppIndicator.loadingIndicator(context);
             cartViewModel.getProductListCategory(
-                context, "", widget.SubcategoryProductName ?? "", index + 1);
+                context, "", widget.SubcategoryProductName ?? "", index + 1,(result, isSuccess){
+              if(isSuccess){
+                scrollController1.jumpTo(0);}
+
+
+            });
           });
         },
       ),

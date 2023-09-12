@@ -8,12 +8,14 @@ import 'package:TychoStream/view/Profile/order_details.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
+import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/order_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/annotations.dart';
@@ -42,12 +44,16 @@ class _MyOrderPageState extends State<MyOrderPage> {
   ProfileViewModel profileViewModel = ProfileViewModel();
   CartViewModel cartViewModel = CartViewModel();
   TextEditingController? searchController = TextEditingController();
+  NotificationViewModel notificationViewModel = NotificationViewModel();
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     orderView.getOrderList(context, pageNum);
     homeViewModel.getAppConfig(context);
     cartViewModel.getCartCount(context);
+    notificationViewModel.getNotificationCountText(context);
+
     super.initState();
   }
 
@@ -62,7 +68,10 @@ class _MyOrderPageState extends State<MyOrderPage> {
     return ChangeNotifierProvider.value(
       value: orderView,
       child: Consumer<OrderViewModel>(builder: (context, orderview, _) {
-        return GestureDetector(
+        return ChangeNotifierProvider.value(
+          value: notificationViewModel,
+          child: Consumer<NotificationViewModel>(
+            builder: (context, model, _) { return GestureDetector(
           onTap: () {
             if (isLogins == true) {
               isLogins = false;
@@ -72,6 +81,12 @@ class _MyOrderPageState extends State<MyOrderPage> {
               isSearch = false;
               setState(() {});
             }
+            if(isnotification==true){
+              isnotification=false;
+              setState(() {
+
+              });
+            }
           },
           child: Scaffold(
               backgroundColor: Theme
@@ -80,9 +95,9 @@ class _MyOrderPageState extends State<MyOrderPage> {
               appBar: ResponsiveWidget.isMediumScreen(context)
                   ? homePageTopBar(
                   context, _scaffoldKey, cartViewModel.cartItemCount,homeViewModel,
-                profileViewModel,)
+                profileViewModel,model)
                   : getAppBar(
-                  context,
+                  context,model,
                   homeViewModel,
                   profileViewModel,
                   cartViewModel.cartItemCount,
@@ -107,6 +122,12 @@ class _MyOrderPageState extends State<MyOrderPage> {
                   if (isSearch == true) {
                     isSearch = false;
                     setState(() {});
+                  }
+                  if(isnotification==true){
+                    isnotification=false;
+                    setState(() {
+
+                    });
                   }
                   context.router.push(FavouriteListPage());
                 }
@@ -134,6 +155,12 @@ class _MyOrderPageState extends State<MyOrderPage> {
                   if (isSearch == true) {
                     isSearch = false;
                     setState(() {});
+                  }
+                  if(isnotification==true){
+                    isnotification=false;
+                    setState(() {
+
+                    });
                   }
                   context.router.push(CartDetail(
                       itemCount:
@@ -192,6 +219,11 @@ class _MyOrderPageState extends State<MyOrderPage> {
                                             if (isSearch == true) {
                                               isSearch = false;
                                               setState(() {});
+                                            }  if(isnotification==true){
+                                              isnotification=false;
+                                              setState(() {
+
+                                              });
                                             }
                                             showDialog(
                                                 context: context,
@@ -358,16 +390,34 @@ class _MyOrderPageState extends State<MyOrderPage> {
                       margin: EdgeInsets.only(bottom: 10),
                       alignment: Alignment.bottomCenter,
                       child: CircularProgressIndicator(
-                          color: Theme
-                              .of(context)
-                              .primaryColor))
-                      : SizedBox()
+                          color: Colors.grey,strokeWidth: 2))
+                      : SizedBox(),
+            ResponsiveWidget.isMediumScreen(context)
+            ? Container()
+                : isnotification == true
+            ?    Positioned(
+            top:  0,
+            right:  SizeConfig
+                .screenWidth *
+            0.20,
+            child: notification(notificationViewModel,context,_scrollController)):Container()
                 ],
               ):
                   Stack(
                     children: [
                       noDataFoundMessage(
                           context,StringConstant.noOrderAvailable,homeViewModel),
+                      ResponsiveWidget.isMediumScreen(context)
+                          ? Container()
+                          : isnotification == true
+                          ?    Positioned(
+                          top:  SizeConfig
+                              .screenWidth *
+                              0.041,
+                          right:  SizeConfig
+                              .screenWidth *
+                              0.20,
+                          child: notification(notificationViewModel,context,_scrollController)):Container(),
                       ResponsiveWidget
                           .isMediumScreen(context)
                           ?Container(): isLogins == true
@@ -396,6 +446,9 @@ class _MyOrderPageState extends State<MyOrderPage> {
                     ],
                   ) : Center(child: ThreeArchedCircle(size: 45.0))),
         ));
+      },
+      ),
+    );
       },
       ),
     );

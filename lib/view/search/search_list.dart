@@ -110,7 +110,7 @@ margin: EdgeInsets.only(bottom: 6),
             ? Container(
             margin: EdgeInsets.only(bottom: 10),
             alignment: Alignment.bottomCenter,
-            child: CircularProgressIndicator(color: Theme.of(context).primaryColor)) : SizedBox()
+            child: CircularProgressIndicator(color: Theme.of(context).primaryColor,strokeWidth: 2)) : SizedBox()
       ],
     )
   : Center(child: ThreeArchedCircle(size: 45.0));

@@ -101,7 +101,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
                   image: imageProvider, fit: BoxFit.fill),
             ),
           ),
-          placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey))),
+          placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2))),
     )
     )
         .toList();
@@ -135,12 +135,12 @@ class _CommonCarouselState extends State<CommonCarousel> {
   Widget carouselImageMobile() {
     var imageSliders = generateImageTileMobile(context);
     return Container(
-      margin: EdgeInsets.only(left: 20.0,right: 20,top: 8),
+     // margin: EdgeInsets.only(left: 20.0,right: 20,top: 8),
       width: SizeConfig.screenWidth,
       child: CarouselSlider(
         items: imageSliders,
         options: CarouselOptions(
-            height: SizeConfig.screenHeight*0.45,
+            height: SizeConfig.screenHeight*0.4,
             scrollDirection: Axis.horizontal,
             scrollPhysics: PageScrollPhysics(),
             viewportFraction: 1,
@@ -161,21 +161,26 @@ class _CommonCarouselState extends State<CommonCarousel> {
   }
   List<Widget> generateImageTileMobile(BuildContext context) {
     return homeViewModel.bannerDataModal!.bannerList!
-        .map((element) => InkWell(
-        focusNode: carouselFocus,
-        onTap: () async {
-          redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
+        .map((element) =>  InkWell(
+      focusNode: carouselFocus,
+      onTap: () async {
+        redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
 
-          },
-        child:  Container(
-          child: CachedNetworkImage(
-              imageUrl:element.bannerUrl ?? "",
-              fit: BoxFit.fill,
-              placeholder: (context, url) => Center(
-                  child: CircularProgressIndicator(
-                      color:
-                      Theme.of(context).canvasColor.withOpacity(0.5)))),
-        )))
+      },
+      child:
+      CachedNetworkImage(
+          imageUrl:element.bannerUrl ?? "",
+          imageBuilder: (context, imageProvider) => Container(
+            height: SizeConfig.screenWidth*0.4,
+            width: SizeConfig.screenWidth,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: imageProvider, fit: BoxFit.fill),
+            ),
+          ),
+          placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2,))),
+    )
+    )
         .toList();
   }
 

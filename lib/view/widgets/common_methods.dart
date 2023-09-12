@@ -290,6 +290,9 @@ Widget productListItems(BuildContext context, ProductList? productListData,
             if (isSearch == true) {
               isSearch = false;
             }
+            if(isnotification==true){
+              isnotification=false;
+            }
             context.router.push(
               ProductDetailPage(
                 productName:
@@ -451,7 +454,7 @@ Widget cardDeatils(BuildContext context, ProductList itemInCart, int index,
                     itemInCart.productDetails?.productImages?[0] ?? "",
                     fit: BoxFit.fill)),
           ),
-          Container(
+          itemInCart.productDetails?.inStock == true ?  Container(
             height: 30,
             width: ResponsiveWidget.isMediumScreen(context)
                 ?  ResponsiveWidget.isSmallScreen(context) ? 120:150
@@ -543,7 +546,7 @@ Widget cardDeatils(BuildContext context, ProductList itemInCart, int index,
                 ),
               ),
             ]),
-          ),
+          ):Container(),
           SizedBox(height: 10)
         ],
       ),
@@ -683,12 +686,8 @@ Widget addressDetails(
     BuildContext context, String? addressId, CartViewModel cartViewData) {
   return Container(
     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+    margin: EdgeInsets.only(bottom: 8),
     width: ResponsiveWidget.isMediumScreen(context) ? SizeConfig.screenWidth : SizeConfig.screenWidth * 0.30,
-    // height: ResponsiveWidget.isMediumScreen(context)
-    //     ? ResponsiveWidget.isSmallScreen(context)
-    //         ? SizeConfig.screenHeight - 500
-    //         : SizeConfig.screenHeight - SizeConfig.screenHeight / 2.5
-    //     : SizeConfig.screenHeight - 300,
     child: ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
@@ -900,6 +899,9 @@ Widget CategoryList(BuildContext context, CartViewModel cartViewModel) {
                       if (isSearch == true) {
                         isSearch = false;
                       }
+                      if (isnotification == true) {
+                        isnotification = false;
+                      }
                       cartViewModel.categoryListModel?[position].subcategories
                                   ?.length ==
                               0
@@ -942,7 +944,7 @@ Widget CategoryList(BuildContext context, CartViewModel cartViewModel) {
                                     ),
                                 placeholder: (context, url) => Center(
                                     child: CircularProgressIndicator(
-                                        color: Colors.grey))),
+                                        color: Colors.grey,strokeWidth: 2))),
                           ),
                           SizedBox(
                               height: ResponsiveWidget.isMediumScreen(context)

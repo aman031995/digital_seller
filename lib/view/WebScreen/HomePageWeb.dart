@@ -11,6 +11,7 @@ import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -27,6 +28,7 @@ import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import '../../AppRouter.gr.dart';
 import '../../main.dart';
 import 'getAppBar.dart';
+import 'NotificationScreen.dart';
 
 @RoutePage()
 class HomePageWeb extends StatefulWidget {
@@ -45,10 +47,13 @@ class _HomePageWebState extends State<HomePageWeb> {
   CartViewModel cartViewModel = CartViewModel();
   TextEditingController? searchController = TextEditingController();
   AutoScrollController controller1 = AutoScrollController();
+  AutoScrollController controller = AutoScrollController();
+
   TextEditingController emailController = TextEditingController();
+  NotificationViewModel notificationViewModel = NotificationViewModel();
+  ScrollController _scrollController = ScrollController();
 
   int counter1 = 4;
-  late AutoScrollController controller;
   int counter = 4;
   List<String> images = [
     'images/Frame1.webp',
@@ -66,12 +71,18 @@ class _HomePageWebState extends State<HomePageWeb> {
         viewportBoundaryGetter: () =>
             Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
         axis: Axis.horizontal);
+    controller1 = AutoScrollController(
+        viewportBoundaryGetter: () =>
+            Rect.fromLTRB(0, 0, 0, MediaQuery.of(context).padding.bottom),
+        axis: Axis.horizontal);
     User();
     homeViewModel.getAppConfig(context);
     cartViewModel.getCartCount(context);
     cartViewModel.getProductCategoryLists(context);
     cartViewModel.getRecommendedViewData(context);
     cartViewModel.getOfferDiscount(context);
+    notificationViewModel.getNotificationCountText(context);
+
     super.initState();
   }
 
@@ -102,7 +113,10 @@ class _HomePageWebState extends State<HomePageWeb> {
               return ChangeNotifierProvider.value(
                   value: homeViewModel,
                   child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-                    return GestureDetector(
+                   return ChangeNotifierProvider.value(
+                        value: notificationViewModel,
+                        child: Consumer<NotificationViewModel>(
+                            builder: (context, model, _) {  return GestureDetector(
                         onTap: () {
                           if (isLogins == true) {
                             isLogins = false;
@@ -110,6 +124,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                           }
                           if (isSearch == true) {
                             isSearch = false;
+                            setState(() {});
+                          }
+                          if (isnotification == true) {
+                            isnotification = false;
                             setState(() {});
                           }
                         },
@@ -120,9 +138,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                                 ? homePageTopBar(context, _scaffoldKey,
                                     cartViewModel.cartItemCount,
                               viewmodel,
-                              profilemodel,)
+                              profilemodel,notificationViewModel)
                                 : getAppBar(
                                     context,
+                                    model,
                                     viewmodel,
                                     profilemodel,
                                     cartViewModel.cartItemCount,
@@ -146,6 +165,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                                       }
                                       if (isSearch == true) {
                                         isSearch = false;
+                                        setState(() {});
+                                      }
+                                      if (isnotification == true) {
+                                        isnotification = false;
                                         setState(() {});
                                       }
                                       context.router.push(FavouriteListPage());
@@ -172,6 +195,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                                       }
                                       if (isSearch == true) {
                                         isSearch = false;
+                                        setState(() {});
+                                      }
+                                      if (isnotification == true) {
+                                        isnotification = false;
                                         setState(() {});
                                       }
                                       context.router.push(CartDetail(
@@ -315,15 +342,13 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                 .builder(
                                                                     reverse:
                                                                         false,
-                                                                    controller:
-                                                                        controller,
+                                                                    controller: controller,
                                                                     padding:
                                                                         EdgeInsets
                                                                             .zero,
                                                                     shrinkWrap:
                                                                         true,
-                                                                    scrollDirection:
-                                                                        Axis.horizontal,
+                                                                    scrollDirection: Axis.horizontal,
                                                                     itemCount: cartViewModel.recommendedView?.length,
                                                                     itemBuilder: (context, position) {
                                                                       return AutoScrollTag(
@@ -345,6 +370,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                   }
                                                                                   if (isSearch == true) {
                                                                                     isSearch = false;
+                                                                                    setState(() {});
+                                                                                  }
+                                                                                  if (isnotification == true) {
+                                                                                    isnotification = false;
                                                                                     setState(() {});
                                                                                   }
                                                                                   context.router.push(ProductDetailPage(
@@ -384,7 +413,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                                     image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                                                                                                   ),
                                                                                                 ),
-                                                                                            placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.23, child: Center(child: CircularProgressIndicator(color: Colors.grey)))),
+                                                                                            placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.23, child: Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2)))),
                                                                                         SizedBox(height: 8),
                                                                                         AppBoldFont(maxLines: 1, context, msg: " "+"${getRecommendedViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
                                                                                         SizedBox(height: 2),
@@ -508,10 +537,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                     ),
                                                                     onTap: () {
                                                                       _prev();
-                                                                      if(counter != 0)
                                                                       setState(
-                                                                          () {
-                                                                      });
+                                                                              () {
+
+                                                                          });
                                                                     }))
                                                       ],
                                                     ),
@@ -647,6 +676,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                       isSearch = false;
                                                                                       setState(() {});
                                                                                     }
+                                                                                    if (isnotification == true) {
+                                                                                      isnotification = false;
+                                                                                      setState(() {});
+                                                                                    }
                                                                                     context.router.push(ProductDetailPage(
                                                                                       productName: '${cartViewModel.recentView?[position].productName}',
                                                                                       productdata: [
@@ -683,7 +716,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                                                       image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
                                                                                                     ),
                                                                                                   ),
-                                                                                              placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenHeight / 2.1, child: Center(child: CircularProgressIndicator(color: Colors.grey)))),
+                                                                                              placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenHeight / 2.1, child: Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2)))),
                                                                                           SizedBox(height: 10),
                                                                                           AppBoldFont(context, msg:" "+ "${getRecentViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18, maxLines: 1),
                                                                                            SizedBox(height: 10)
@@ -738,8 +771,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                       onTap:
                                                                           () {
                                                                         _nextCounter1();
-                                                                        setState(
-                                                                            () {});
+
                                                                       }):Container()),
                                                           ResponsiveWidget.isMediumScreen(context)
                                                               ?Container():   Positioned(
@@ -750,7 +782,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                   : SizeConfig
                                                                           .screenWidth *
                                                                       0.10,
-                                                              child: counter1 == 4
+                                                              child: counter1==4
                                                                   ? Container()
                                                                   : InkWell(
                                                                       child:
@@ -775,10 +807,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                       onTap:
                                                                           () {
                                                                         _prev1();
-                                                                        if(counter != 0)
-                                                                          setState(
-                                                                                  () {
-                                                                              });
+
                                                                       }))
                                                         ],
                                                       ),
@@ -878,6 +907,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                               isSearch = false;
                                                               setState(() {});
                                                             }
+                                                            if (isnotification == true) {
+                                                              isnotification = false;
+                                                              setState(() {});
+                                                            }
                                                             context.router.push(
                                                                 ProductListGallery());
                                                           },
@@ -975,9 +1008,23 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                         searchController!,
                                                         cartViewModel
                                                             .cartItemCount))
-                                                : Container()
+                                                : Container(),
+
+
+                                        ResponsiveWidget.isMediumScreen(context)
+                                            ? Container()
+                                            : isnotification == true
+                                            ?    Positioned(
+                                            top:  SizeConfig
+                                                .screenWidth *
+                                                0.041,
+                                            right:  SizeConfig
+                                                .screenWidth *
+                                                0.20,
+                                            child: notification(notificationViewModel,context,_scrollController)):Container()
                                       ],
                                     ))));
+                  }));
                   }));
             }));
   }
@@ -1057,6 +1104,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                                     isSearch = false;
                                     setState(() {});
                                   }
+                                  if (isnotification == true) {
+                                    isnotification = false;
+                                    setState(() {});
+                                  }
                                   context.router.push(ProductListGallery(
                                     discountdata: ["${cartview.offerDiscountModel?[position].categoryId}","${cartview.offerDiscountModel?[position].discountPercentage}"]
                                   ));
@@ -1073,11 +1124,11 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                 imageUrl: '${cartview.offerDiscountModel?[position].images}',
                                                 fit: BoxFit.fill,
                                                 placeholder: (context, url) => Center(
-                                                    child: CircularProgressIndicator(color: Colors.grey))),
+                                                    child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2))),
                                             SizedBox(height: 8),
                                             AppBoldFont(context, msg: "${cartview.offerDiscountModel?[position].title}", color: Theme.of(context).canvasColor,fontSize: ResponsiveWidget.isMediumScreen(context) ? 14:18),
                                             SizedBox(height: 4),
-                                            AppRegularFont(context, msg: "Min. ${cartview.offerDiscountModel?[position].discountPercentage}% Off", color: GREEN, fontSize: ResponsiveWidget.isMediumScreen(context) ? 14:18)
+                                            AppRegularFont(context, msg: "Up To. ${cartview.offerDiscountModel?[position].discountPercentage}% Off", color: GREEN, fontSize: ResponsiveWidget.isMediumScreen(context) ? 14:18)
 
 
                                           ],
@@ -1095,29 +1146,33 @@ class _HomePageWebState extends State<HomePageWeb> {
 
   Future _nextCounter() async {
     setState(() => counter = (counter + 1));
-    await controller.scrollToIndex(counter,
+    await controller.scrollToIndex(counter-1,
         preferPosition: AutoScrollPosition.end);
     controller.highlight(counter);
   }
 
   Future _prev() async {
-    setState(() => counter = (counter - 1));
-    await controller.scrollToIndex(counter,
-        preferPosition: AutoScrollPosition.end);
+    setState(() {
+      counter =counter-1;
+    });
+    await controller.scrollToIndex(counter-4,
+        preferPosition: AutoScrollPosition.begin);
     controller.highlight(counter);
   }
 
   Future _nextCounter1() async {
     setState(() => counter1 = (counter1 + 1));
-    await controller1.scrollToIndex(counter1,
+    await controller1.scrollToIndex(counter1-1,
         preferPosition: AutoScrollPosition.end);
     controller1.highlight(counter1);
   }
 
   Future _prev1() async {
-    setState(() => counter1 = (counter1 - 1));
+    setState(() {
+      counter1 =counter1-1;
+    });
 
-    await controller1.scrollToIndex(counter1,
+    await controller1.scrollToIndex(counter1-4,
         preferPosition: AutoScrollPosition.begin);
     controller1.highlight(counter1);
   }

@@ -138,7 +138,7 @@ class _SearchPageState extends State<SearchPage> {
                                           image: imageProvider, fit: BoxFit.fill),
                                     ),
                                   ),
-                                  placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey)))),
+                                  placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2)))),
 
                           Container(
                             alignment: Alignment.topLeft,
@@ -157,7 +157,7 @@ class _SearchPageState extends State<SearchPage> {
           margin: EdgeInsets.only(bottom: 10),
           alignment: Alignment.bottomCenter,
           child: CircularProgressIndicator(
-              color: Theme.of(context).primaryColor))
+              color: Theme.of(context).primaryColor,strokeWidth: 2))
           : SizedBox()
     ]);
   }

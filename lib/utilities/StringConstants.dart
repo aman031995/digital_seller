@@ -165,6 +165,8 @@ static String noSearchProductFound='We always try to give the best\nresult on yo
   static String discountedPrice = 'Total Discount';
   static String amountPayable = 'Amount Payable';
   static String total = 'Total  ';
+  static String noNotification = 'No Notification Yet!';
+
   static String checkService = "Check Service";
   static String pleaseEnterPincode = 'Please enter 6 digit pincode';
   static String serviceAvailableWithThis = "Service available with this ";
@@ -235,8 +237,9 @@ static String offerSupport = '24/7 Support';
 static String getLatestupdate = 'Get Latest Update by Subscribe Our News later';
 static String digitalSellerLitelogo="https://eacademyeducation.com:8011/logo/lite_logo.png";
 static String digitalSellerDarklogo="https://eacademyeducation.com:8011/logo/dark_logo.png";
-static String Loremtext= "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer egestas dapibus ante";
+static String Loremtext= "Elevate your business with our comprehensive online store solution. With our powerful e-commerce platform, you'll effortlessly build, customize, and manage your digital storefront. Maximize sales and customer engagement with intuitive tools and dedicated support, tailored for your success.Sellers can design their online stores using customizable templates, branding elements, and layout options to create a unique and appealing digital presence.";
 static String ThankYOU='Thank You For Shopping';
+
 static String orderPlacedSuccess= 'Hope you enjoy shopping with us.';
 static String removeOutofStock="Please remove Out of Stock items from your cart to continue shopping.";
 static String continueShopping="Continue Shopping";

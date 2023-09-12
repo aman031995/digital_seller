@@ -13,11 +13,13 @@ import 'package:TychoStream/view/Products/productSkuDetailView.dart';
 import 'package:TychoStream/view/WebScreen/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
+import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
+import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -47,11 +49,17 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
   ProfileViewModel profileViewModel = ProfileViewModel();
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
   TextEditingController? searchController = TextEditingController();
+  NotificationViewModel notificationViewModel = NotificationViewModel();
+  ScrollController _scrollController = ScrollController();
+
+
 
   void initState() {
     homeViewModel.getAppConfig(context);
     cartView.getCartCount(context);
-    cartView.getProductListCategory(context, widget.ProductDetails?[1] ?? "", widget.ProductDetails?[0] ?? "", 1);
+    notificationViewModel.getNotificationCountText(context);
+
+    cartView.getProductListCategory(context, widget.ProductDetails?[1] ?? "", widget.ProductDetails?[0] ?? "", 1,(result, isSuccess){});
     super.initState();
   }
 
@@ -68,7 +76,10 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
           : ChangeNotifierProvider.value(
           value: cartView,
           child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
-            return viewmodel.productListDetails!= null ? GestureDetector(
+            return ChangeNotifierProvider.value(
+                value: notificationViewModel,
+                child: Consumer<NotificationViewModel>(
+                    builder: (context, model, _) { return viewmodel.productListDetails!= null ? GestureDetector(
                 onTap: (){
                   if (isLogins == true) {
                     isLogins = false;
@@ -78,10 +89,16 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                     isSearch=false;
                     setState((){});
                   }
+                  if(isnotification==true){
+                    isnotification=false;
+                    setState(() {
+
+                    });
+                  }
                 },
                 child: Scaffold(
                   appBar:ResponsiveWidget.isMediumScreen(context)
-                      ? homePageTopBar(context,_scaffoldKey, viewmodel.cartItemCount,homeViewModel, profileViewModel,):getAppBar(context,homeViewModel,profileViewModel,viewmodel.cartItemCount,1,searchController, () async {
+                      ? homePageTopBar(context,_scaffoldKey, viewmodel.cartItemCount,homeViewModel, profileViewModel,model):getAppBar(context,model,homeViewModel,profileViewModel,viewmodel.cartItemCount,1,searchController, () async {
                     SharedPreferences sharedPreferences =
                     await SharedPreferences.getInstance();
                     if (sharedPreferences.getString('token')== null) {
@@ -102,6 +119,12 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                       if (isSearch == true) {
                         isSearch = false;
                         setState(() {});
+                      }
+                      if(isnotification==true){
+                        isnotification=false;
+                        setState(() {
+
+                        });
                       }
                       context.router.push(FavouriteListPage());
                     }
@@ -126,6 +149,12 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                           if (isSearch == true) {
                             isSearch = false;
                             setState(() {});
+                          }
+                          if(isnotification==true){
+                            isnotification=false;
+                            setState(() {
+
+                            });
                           }
                           context.router.push(CartDetail(
                               itemCount: '${viewmodel.cartItemCount}'
@@ -178,8 +207,7 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                                                         fit: BoxFit.fill,
                                                         placeholder: (context, url) => Center(
                                                             child: CircularProgressIndicator(
-                                                                color:
-                                                                Theme.of(context).primaryColor))),
+                                                                color:Colors.grey,strokeWidth: 2))),
                                                   );
                                                 });
                                               }).toList()),
@@ -320,8 +348,7 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                                                       fit: BoxFit.fill,
                                                       placeholder: (context, url) => Center(
                                                           child: CircularProgressIndicator(
-                                                              color:
-                                                              Theme.of(context).primaryColor))),
+                                                              color:Colors.grey,strokeWidth: 2))),
                                                 );
                                               });
                                             }).toList()),
@@ -428,15 +455,27 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                               footerDesktop(),
                             ],
                           ),
-
-                          isLogins == true
+                          ResponsiveWidget.isMediumScreen(context)
+                              ? Container()
+                              : isnotification == true
+                              ?    Positioned(
+                              top:  0,
+                              right:  SizeConfig
+                                  .screenWidth *
+                                  0.20,
+                              child: notification(notificationViewModel,context,_scrollController)):Container(),
+                          ResponsiveWidget.isMediumScreen(context)
+                              ? Container()
+                              : isLogins == true
                               ? Positioned(
                               top: 0,
                               right: 180,
                               child: profile(context, setState,
                                   profileViewModel))
                               : Container(),
-                          isSearch==true?
+                          ResponsiveWidget.isMediumScreen(context)
+                              ? Container()
+                              :  isSearch==true?
                           Positioned(
                               top: 1,
                               right:SizeConfig.screenWidth*0.20,
@@ -446,9 +485,10 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                         ],)
                       )
                           : Center(child: ThreeArchedCircle(size: 45.0))),
-                )): Center(child:CircularProgressIndicator());
+                )): Center(child:CircularProgressIndicator(color: Colors.grey,strokeWidth: 2));
           })
       );
+          }));
   }
 
   // product Description
@@ -552,13 +592,19 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                             ? StringConstant.goToCart
                             : StringConstant.addToBag,color: Theme.of(context).canvasColor,
                         fontSize: 16),
-                    onPressed: ()async{ if (isLogins == true) {
+                    onPressed: ()async{
+                      if (isLogins == true) {
                       isLogins = false;
                       setState(() {});
                     }
                     if (isSearch == true) {
                       isSearch = false;
                       setState(() {});
+                    }  if(isnotification==true){
+                      isnotification=false;
+                      setState(() {
+
+                      });
                     }
                     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                     token = sharedPreferences.getString('token').toString();
@@ -574,6 +620,19 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                       // _backBtnHandling(prodId);
                     }
                     else if(cartView.productListDetails?.productDetails?.isAvailable == true) {
+                      if (isLogins == true) {
+                        isLogins = false;
+                        setState(() {});
+                      }
+                      if (isSearch == true) {
+                        isSearch = false;
+                        setState(() {});
+                      }  if(isnotification==true){
+                        isnotification=false;
+                        setState(() {
+
+                        });
+                      }
                       (cartView.isAddedToCart == true || cartView.productListDetails?.productDetails?.isAddToCart == true)
                           ? context.router.push(CartDetail(
                           itemCount: '${cartView.cartItemCount}'
@@ -608,6 +667,12 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                       isSearch = false;
                       setState(() {});
                     }
+                    if(isnotification==true){
+                      isnotification=false;
+                      setState(() {
+
+                      });
+                    }
                     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                     if (sharedPreferences.getString('token') == null){
                       showDialog(
@@ -620,6 +685,19 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                           });
                     }
                     else if (cartView.productListDetails?.productDetails?.isAvailable == true) {
+                      if (isLogins == true) {
+                        isLogins = false;
+                        setState(() {});
+                      }
+                      if (isSearch == true) {
+                        isSearch = false;
+                        setState(() {});
+                      }  if(isnotification==true){
+                        isnotification=false;
+                        setState(() {
+
+                        });
+                      }
                       cartView.buyNow(
                           cartView.productListDetails?.productId ?? '',
                           "1", cartView.productListDetails?.productDetails?.variantId,

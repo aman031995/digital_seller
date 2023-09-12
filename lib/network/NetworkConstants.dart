@@ -24,9 +24,10 @@ class NetworkConstants{
   static String kGetMoreLikeThis = 'getMoreLikesVideoList?videoId={VIDEO_ID}&appId={APP_ID}';
   static String kGetVideoById = 'homepageVideoDetails?userId={USER_ID}&appId={APP_ID}&videoId={VIDEO_ID}';
 
-  // notification api section
-  static String kGetNotification = 'get-all-notification?appId={APP_ID}&userId={USER_ID}&pageNum={PAGE_NUM}';
-  static String kGetNotificationCount = 'notification-count?appId={APP_ID}&userId={USER_ID}';
+ // notification api section
+ static String kGetNotification = 'get-all-notification?appId={APP_ID}&userId={USER_ID}&pageNum={PAGE_NUM}';
+ static String kGetNotificationCount = 'notification-count?appId={APP_ID}&userId={USER_ID}';
+ static String kReadNotification = 'read-notification?appId={APP_ID}&userId={USER_ID}';
 
   // user api section
   static String kLogin = "user-login";
