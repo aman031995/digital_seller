@@ -170,7 +170,7 @@ class _SearchPageState extends State<SearchPage> {
           children: [
                GestureDetector(
                    onTap: (){
-                     Navigator.pop(context, true);
+                     context.router.push(HomePageWeb());
                    },
                    child: Image.asset(AssetsConstants.icBackArrow,color: Theme.of(context).hintColor)),
             SizedBox(width: 20),

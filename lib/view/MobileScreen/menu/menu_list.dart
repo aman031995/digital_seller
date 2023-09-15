@@ -12,7 +12,6 @@ import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
 import '../../../model/data/app_menu_model.dart';
 
 class MenuList extends StatefulWidget {
@@ -41,7 +40,7 @@ class _MenuListState extends State<MenuList> {
         backgroundColor: Theme.of(context).cardColor,
         child: widget.menuItem != null
             ? Column(children: [
-          Expanded(
+                       Expanded(
               flex: 90,
               child: ListView(
                   physics: BouncingScrollPhysics(),
@@ -49,39 +48,29 @@ class _MenuListState extends State<MenuList> {
                   children: [
                     SizedBox(height: 10),
                     Image.asset(
-                      "images/webLogo.webp",
+                      AssetsConstants.webLogo,
                       width: 70,
                       height: 70,
 
                     ),
                     Column(children: buildMenuList(widget.menuItem?.appMenu, homeViewModel)),
-                    names == "null"
-                        ? ListTile(
-                            title: Transform(
-                                transform: Matrix4.translationValues(-20, 0.0, 0.0),
-                                child: AppRegularFont(context, msg: StringConstant.SignIn, fontSize: 15,color: Theme.of(context).canvasColor)),
-                            leading: Image.asset(AssetsConstants.icProfile?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.9)),
-                            onTap: () =>  showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return LoginUp();
-                                }))
-                        : ListTile(
+                    ListTile(
                         title: Transform(
                             transform: Matrix4.translationValues(-20, 0.0, 0.0),
-                            child: AppRegularFont(context, msg:StringConstant.profile, fontSize: 15,color: Theme.of(context).canvasColor)),
-                        leading: Image.asset(AssetsConstants.icProfile?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.9)),
+                            child: AppRegularFont(context, msg:StringConstant.productList, fontSize: 15,color: Theme.of(context).canvasColor)),
+                        leading: Image.network("https://eacademyeducation.com:8011/icon/product.png", height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.4)),
                         onTap: () {
+                          context.router.push(ProductListGallery());
                           if (isSearch == true) {
                             isSearch = false;
                           }
-                          context.router.push(EditProfile());
                         }),
+
                     ListTile(
                         title: Transform(
                             transform: Matrix4.translationValues(-20, 0.0, 0.0),
                             child: AppRegularFont(context, msg:StringConstant.myOrder, fontSize: 15,color: Theme.of(context).canvasColor)),
-                        leading: Image.asset(AssetsConstants.ic_myOrder?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.9)),
+                        leading: Image.asset(AssetsConstants.ic_myOrder?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.8)),
                         onTap: () {
                           names == "null"?
                           showDialog(
@@ -94,6 +83,29 @@ class _MenuListState extends State<MenuList> {
 
                           }
                         }),
+
+                    names == "null"
+                        ? ListTile(
+                        title: Transform(
+                            transform: Matrix4.translationValues(-20, 0.0, 0.0),
+                            child: AppRegularFont(context, msg: StringConstant.SignIn, fontSize: 15,color: Theme.of(context).canvasColor)),
+                        leading: Image.asset(AssetsConstants.icProfile?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.9)),
+                        onTap: () =>  showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return LoginUp();
+                            }))
+                        : ListTile(
+                        title: Transform(
+                            transform: Matrix4.translationValues(-20, 0.0, 0.0),
+                            child: AppRegularFont(context, msg:StringConstant.profile, fontSize: 15,color: Theme.of(context).canvasColor)),
+                        leading: Image.asset(AssetsConstants.icProfile?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.9)),
+                        onTap: () {
+                          if (isSearch == true) {
+                            isSearch = false;
+                          }
+                          context.router.push(EditProfile());
+                        }),
                     ChangeNotifierProvider.value(
                         value: homeViewModel,
                       child: Consumer<HomeViewModel>(builder: (context, viewmodel, _){
@@ -104,7 +116,7 @@ class _MenuListState extends State<MenuList> {
                             title: Transform(
                                 transform: Matrix4.translationValues(-20, 0.0, 0.0),
                                 child: AppRegularFont(context, msg: 'Follow Us', fontSize: 15)),
-                            leading: Icon(Icons.library_add_check)
+                            leading: Icon(Icons.library_add_check,color: Theme.of(context).canvasColor.withOpacity(0.4))
                         ) : SizedBox();
                       }))
                   ])),
@@ -159,7 +171,7 @@ class _MenuListState extends State<MenuList> {
         } else if (url.path == RoutesName.ContactUs){
         }
        else if (appMenu.title!.contains('Share') == true){
-          Share.share(appMenu.url ?? '');
+         /// Share.share(appMenu.url ?? '');
          }
        else if (appMenu.title!.contains('Home') == true){
          context.router.push(HomePageWeb());

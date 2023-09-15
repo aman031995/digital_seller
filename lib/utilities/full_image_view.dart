@@ -31,6 +31,7 @@ class _FullImageState extends State<FullImage> {
 
     return AlertDialog(
         elevation: 0,
+        insetPadding: EdgeInsets.zero,
         titlePadding: EdgeInsets.zero,
         backgroundColor: Colors.transparent,
         contentPadding: EdgeInsets.zero,
@@ -64,7 +65,8 @@ class _FullImageState extends State<FullImage> {
 
   Widget getImageView() {
     return Container(
-      width: SizeConfig.screenWidth/2,
+      width: SizeConfig.screenWidth,
+        height: SizeConfig.screenHeight,
         child: PhotoViewGallery.builder(
           scrollPhysics: BouncingScrollPhysics(),
           builder: (BuildContext context, int indexss) {

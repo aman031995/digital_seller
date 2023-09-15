@@ -25,14 +25,14 @@ class NOInternetScreen extends StatelessWidget {
             children: [
               Image.asset(
                 "images/ic_error.png",
-                height: 150,
+                height: 250,
                 width: 200,
               ),
               SizedBox(height: 25),
               AppMediumFont(
                   context,
                   msg: StringConstant.noInternet,
-                  fontSize: 18,color: Theme.of(context).canvasColor,
+                  fontSize: 18,color:Colors.red,
                   textAlign: TextAlign.center,
                   maxLines: 3)
             ],

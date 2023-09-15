@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:js' as js;
 import 'package:TychoStream/model/data/cart_detail_model.dart';
 import 'package:TychoStream/model/data/category_list_model.dart';
 import 'package:TychoStream/model/data/checkout_data_model.dart';
@@ -10,10 +9,7 @@ import 'package:TychoStream/model/data/promocode_data_model.dart';
 import 'package:TychoStream/network/CacheDataManager.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
-import 'package:TychoStream/view/WebScreen/stripepayment.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:flutter_stripe_web/flutter_stripe_web.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/model/data/category_product_model.dart';
@@ -159,10 +155,10 @@ class CartDetailRepository {
         //Payment Sheet
         if (paymentIntent != null) {
 
-         final paymentMethodParams = PaymentMethodParams.card(
-           paymentMethodData: PaymentMethodData());
-
-        await WebStripe.instance.createPaymentMethod(paymentMethodParams);
+        //  final paymentMethodParams = PaymentMethodParams.card(
+        //    paymentMethodData: PaymentMethodData());
+        //
+        // await WebStripe.instance.createPaymentMethod(paymentMethodParams);
 
          //  await WebStripe.instance.initPaymentSheet( SetupPaymentSheetParameters(
          //      paymentIntentClientSecret: paymentIntent!['client_secret'],
@@ -355,7 +351,9 @@ class CartDetailRepository {
       "{APP_ID}": NetworkConstants.kAppID,
       "{QUERY}": '$query',
       "{PAGE_NUM}" : '$pageNum',
-      "{CATEGORY_ID}" : '$categoryId'
+      "{CATEGORY_ID}" : '$categoryId',
+    "{USER_ID}": sharedPreferences.get("userId").toString(),
+
     };
 
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
@@ -544,7 +542,8 @@ class CartDetailRepository {
       String email,
       String mobile_number,
       String first_address,
-      String second_address,String landmark,
+      String second_address,
+      String landmark,
       int pin_code,
       String city_name,
 

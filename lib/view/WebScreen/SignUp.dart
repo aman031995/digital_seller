@@ -57,140 +57,35 @@ class _SignUpState extends State<SignUp> {
                   elevation: 10,
                   titlePadding: EdgeInsets.zero,
                 insetPadding: EdgeInsets.all(10),
-                     actionsPadding: EdgeInsets.zero,
-                  contentPadding: EdgeInsets.zero,              backgroundColor:Theme.of(context).cardColor,
-
-                content:  ResponsiveWidget.isMediumScreen(context)
-                      ?Container(
-                      color: Theme.of(context).cardColor.withOpacity(0.8),
-                      padding: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Stack(
-                              children: [
-                                Positioned(
-                                  child: GestureDetector(
-                                    onTap: (){
-                                      Navigator.pop(context);
-                                    },
-                                    child: Container(
-                                        alignment: Alignment.topRight,
-                                        child:Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor,width: 20,height: 20)),
-                                  ),
-
-                                )
-                              ],
-                            ),
-                            AppBoldFont(context, msg: StringConstant.register, fontSize: 22),
-                            SizedBox(height: 10),
-                            AppRegularFont(context, msg: StringConstant.letsRegister, fontSize: 16),
-                            SizedBox(height: 15),
-                            registerForms(viewmodel),
-                            SizedBox(height: 10),
-                            StreamBuilder(
-                                stream:  viewmodel.appConfigModel?.androidConfig?.loginWithPhone  == false
-                                    ? validation.registerWithoutNumberUser
-                                    : validation.registerUser,
-                                builder: (context, snapshot) {
-                                  return appButton(
-                                      context,
-                                      StringConstant.createAccount,
-                                      SizeConfig.screenWidth,
-                                      50.0,
-                                      Theme.of(context).primaryColor,
-                                      Theme.of(context).hintColor,
-                                      18,
-                                      10,
-                                      snapshot.data != true ? false : true,
-                                      onTap: () {
-                                        snapshot.data != true
-                                            ? ToastMessage.message(StringConstant.fillOut,context)
-                                            : registerButtonPressed(
-                                            authVM,
-                                            nameController.text,
-                                            emailController.text,
-                                            phoneController.text ?? '',
-                                            passwordController.text,
-                                            viewmodel.appConfigModel?.androidConfig?.loginWithPhone == true? 'phone':'email', viewmodel);
-                                      });
-                                }),
-                            SizedBox(height: 5),
-                            viewmodel.appConfigModel?.androidConfig
-                                        ?.socialLogin !=
-                                    null
-                                ? socialLoginView(socialVM, viewmodel)
-                                : Container(),
-                            SizedBox(height: 5),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                AppRegularFont(context,
-                                    msg: StringConstant.alreadyAccount,
-                                    fontSize: 14),
-                                appTextButton(
-                                    context,
-                                    StringConstant.login,
-                                    Alignment.bottomRight,
-                                    Theme.of(context).primaryColor,
-                                    16,
-                                    true, onPressed: () {
-                                  Navigator.pop(context);
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return LoginUp();
-                                      });
-                                }),
-                              ],
-                            ),
-                            SizedBox(height:20),
-                            GestureDetector(
-                              onTap: () async{
-                                const url = 'http://digitalseller.in/';
-                                if (await canLaunch(url)) {
-                                  await launch(url, forceWebView: false, enableJavaScript: true);
-                                } else {
-                                  throw 'Could not launch $url';
-                                }
-                              },
-                              child: Center(
-                                child: GlobalVariable.isLightTheme == true ?
-                                Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 100) :
-                                Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 100),
-                              ),
-                            ),
-                            SizedBox(height: 5),
-
-                          ],
-                        ),
-                      ))
-              :  Container(
-                    margin: EdgeInsets.only(left: 50, right: 50,top: 20),
-                    height: SizeConfig.screenHeight / 1.45,
-                    width: SizeConfig.screenWidth * 0.25,
+                actionsPadding: EdgeInsets.zero,
+                contentPadding: EdgeInsets.zero,
+                backgroundColor:Theme.of(context).cardColor,
+                content: Container(
+                    margin: EdgeInsets.only(left:ResponsiveWidget.isMediumScreen(context)?15: 50, right:ResponsiveWidget.isMediumScreen(context)?15: 50,top:ResponsiveWidget.isMediumScreen(context)?10: 20),
+                  //  height: SizeConfig.screenHeight / 1.45,
+                    width: ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth:SizeConfig.screenWidth * 0.25,
                     child: SingleChildScrollView(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Stack(
-                            children: [
-                              Positioned(
-                                child: Container(
-                                  alignment: Alignment.topRight,
-                                  child: IconButton(
-                                      onPressed: (){
+                              children: [
+                                Positioned(
+                                    child: GestureDetector(
+                                      onTap: (){
                                         Navigator.pop(context);
-                                      }, icon: Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor)),
-                                ),
-                              )
-                            ],
-                          ),
-                          AppBoldFont(context, msg: StringConstant.register, fontSize: 30),
+                                      },
+                                      child: Container(
+                                          alignment: Alignment.topRight,
+                                          child:Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor,width:ResponsiveWidget.isMediumScreen(context)?20: 25,height:ResponsiveWidget.isMediumScreen(context)?20: 25)),
+                                    ))]),
+                          SizedBox(height:ResponsiveWidget.isMediumScreen(context)?5: 10),
+
+                          SizedBox(height:ResponsiveWidget.isMediumScreen(context)?5: 15),
+                          AppBoldFont(context, msg: StringConstant.register, fontSize:ResponsiveWidget.isMediumScreen(context)?22: 30),
                           SizedBox(height: 10),
                           AppMediumFont(context, msg:StringConstant.letsRegister, fontSize: 16),
-                          SizedBox(height: 20),
+                          SizedBox(height: ResponsiveWidget.isMediumScreen(context)?15:20),
                           registerForms(viewmodel),
                           SizedBox(height: 10),
                           StreamBuilder(
@@ -220,10 +115,10 @@ class _SignUpState extends State<SignUp> {
                                           viewmodel.appConfigModel?.androidConfig?.loginWithPhone == true? 'phone':'email', viewmodel);
                                     });
                               }),
-                          SizedBox(height: 10),
+                          SizedBox(height:ResponsiveWidget.isMediumScreen(context)?5: 10),
                           viewmodel.appConfigModel?.androidConfig?.socialLogin != null ? socialLoginView(socialVM, viewmodel) : Container(),
                           SizedBox(
-                              height: 10),
+                              height:ResponsiveWidget.isMediumScreen(context)?5: 10),
                           Row(
                             mainAxisAlignment:
                                 MainAxisAlignment.center,
@@ -237,7 +132,7 @@ class _SignUpState extends State<SignUp> {
                                   StringConstant.login,
                                   Alignment.bottomRight,
                                   Theme.of(context).primaryColor,
-                                  16,
+                                  ResponsiveWidget.isMediumScreen(context)?14:16,
                                   true, onPressed: () {
                                 Navigator.pop(context);
                                 showDialog(
@@ -248,23 +143,22 @@ class _SignUpState extends State<SignUp> {
                               }),
                             ],
                           ),
-                          SizedBox(height: 30),
-                          Center(
-                            child: GestureDetector(
-                              onTap: () async{
-                                const url = 'http://digitalseller.in/';
-                                if (await canLaunch(url)) {
-                                  await launch(url, forceWebView: false, enableJavaScript: true);
-                                } else {
-                                  throw 'Could not launch $url';
-                                }
-                              },
-                              child: Center(
+                          SizedBox(height: ResponsiveWidget.isMediumScreen(context)?20:30),
+                          GestureDetector(
+                            onTap: () async{
+                              const url = 'http://digitalseller.in/';
+                              if (await canLaunch(url)) {
+                                await launch(url, forceWebView: false, enableJavaScript: true);
+                              } else {
+                                throw 'Could not launch $url';
+                              }
+                            },
+                            child: Center(
+                              child: Container(
                                   child: GlobalVariable.isLightTheme == true ?
-                                  Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width:SizeConfig.screenWidth*0.12,height: SizeConfig.screenWidth*0.03) :
-                                  Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: SizeConfig.screenWidth*0.12,height:SizeConfig.screenWidth*0.03)),
-                            ),
-                          ),
+                                  Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width:ResponsiveWidget.isMediumScreen(context)?150:SizeConfig.screenWidth*0.12,height:ResponsiveWidget.isMediumScreen(context)?50: SizeConfig.screenWidth*0.03) :
+                                  Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width:ResponsiveWidget.isMediumScreen(context)?150: SizeConfig.screenWidth*0.12,height:ResponsiveWidget.isMediumScreen(context)?50:SizeConfig.screenWidth*0.03)),
+                            )   ),
                           SizedBox(
                               height: 10),
                         ],

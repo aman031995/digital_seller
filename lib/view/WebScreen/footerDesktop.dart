@@ -36,7 +36,7 @@ class _footerDesktopState extends State<footerDesktop> {
           final followUs = viewmodel.appConfigModel?.androidConfig?.socialMedia;
           return Container(
       color: Theme.of(context).canvasColor,
-      height: 210,
+      height: 240,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(
           bottom: 10,
@@ -61,7 +61,7 @@ class _footerDesktopState extends State<footerDesktop> {
 
             ],
           ),
-          SizedBox(height: 10),
+          SizedBox(height: 15),
           Container(
               alignment: Alignment.bottomRight,
               child: GlobalVariable.isLightTheme == true
@@ -94,19 +94,19 @@ class _footerDesktopState extends State<footerDesktop> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            InkWell(
-                onTap: () async {
-                  const url =
-                      'https://apps.apple.com/tt/app/scanamaze/id1613520722';
-                  if (await canLaunch(url)) {
-                    await launch(url);
-                    print('object');
-                  } else {
-                    throw 'Could not launch $url';
-                  }
-                },
-                child: Image.asset(AssetsConstants.icApple,
-                    height: 35)),
+            // InkWell(
+            //     onTap: () async {
+            //       const url =
+            //           'https://apps.apple.com/tt/app/scanamaze/id1613520722';
+            //       if (await canLaunch(url)) {
+            //         await launch(url);
+            //         print('object');
+            //       } else {
+            //         throw 'Could not launch $url';
+            //       }
+            //     },
+            //     child: Image.asset(AssetsConstants.icApple,
+            //         height: 35)),
             SizedBox(width: 5),
             InkWell(
               onTap: () async {
@@ -118,7 +118,7 @@ class _footerDesktopState extends State<footerDesktop> {
                   throw 'Could not launch $url';
                 }
               },
-              child: Image.asset(AssetsConstants.icGoogle,
+              child: Image.asset(AssetsConstants.icGoogle,  color: Theme.of(context).scaffoldBackgroundColor,
                   height: 35),
             ),
           ],
@@ -175,20 +175,20 @@ class _footerDesktopState extends State<footerDesktop> {
                     }
                   }),
               SizedBox(width: MediaQuery.of(context).size.width * .01),
-              InkWell(
-                  child: Image.asset("images/ic_twitter.png",
-                      height: 33,
-                      width: 30,
-                      color: Theme.of(context).scaffoldBackgroundColor),
-                  onTap: () async {
-                    String url = homeViewModel.appConfigModel?.androidConfig?.socialMedia?.twitter?.url ?? "";
-
-                    if (await canLaunch(url)) {
-                      await launch(url);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  }),
+              // InkWell(
+              //     child: Image.asset("images/ic_twitter.png",
+              //         height: 33,
+              //         width: 30,
+              //         color: Theme.of(context).scaffoldBackgroundColor),
+              //     onTap: () async {
+              //       String url = homeViewModel.appConfigModel?.androidConfig?.socialMedia?.twitter?.url ?? "";
+              //
+              //       if (await canLaunch(url)) {
+              //         await launch(url);
+              //       } else {
+              //         throw 'Could not launch $url';
+              //       }
+              //     }),
             ],
           ),
         ),
@@ -350,7 +350,9 @@ Widget footerMobile(BuildContext context,HomeViewModel homeViewModel) {
                     fontSize: 16),
                 SizedBox(height: 8),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    SizedBox(width:5),
                     GestureDetector(
                         child: Image.asset(AssetsConstants.icFacebook,
                             height: 30,
@@ -377,19 +379,19 @@ Widget footerMobile(BuildContext context,HomeViewModel homeViewModel) {
                           }
                         }),
                     SizedBox(width:5),
-                    InkWell(
-                        child: Image.asset("images/ic_twitter.png",
-                            height: 33,
-                            width: 30,
-                            color: Theme.of(context).scaffoldBackgroundColor),
-                        onTap: () async {
-                          String url = homeViewModel.appConfigModel?.androidConfig?.socialMedia?.twitter?.url ?? "";
-                          if (await canLaunch(url)) {
-                            await launch(url);
-                          } else {
-                            throw 'Could not launch $url';
-                          }
-                        }),
+                    // InkWell(
+                    //     child: Image.asset("images/ic_twitter.png",
+                    //         height: 33,
+                    //         width: 30,
+                    //         color: Theme.of(context).scaffoldBackgroundColor),
+                    //     onTap: () async {
+                    //       String url = homeViewModel.appConfigModel?.androidConfig?.socialMedia?.twitter?.url ?? "";
+                    //       if (await canLaunch(url)) {
+                    //         await launch(url);
+                    //       } else {
+                    //         throw 'Could not launch $url';
+                    //       }
+                    //     }),
                   ],
                 ),
               ],
@@ -404,19 +406,19 @@ Widget footerMobile(BuildContext context,HomeViewModel homeViewModel) {
                 SizedBox(height: 8),
                 Row(
                   children: [
-                    GestureDetector(
-                        onTap: () async {
-                          const url =
-                              'https://apps.apple.com/tt/app/scanamaze/id1613520722';
-                          if (await canLaunch(url)) {
-                            await launch(url);
-                            print('object');
-                          } else {
-                            throw 'Could not launch $url';
-                          }
-                        },
-                        child:
-                            Image.asset(AssetsConstants.icApple, height: 30)),
+                    // GestureDetector(
+                    //     onTap: () async {
+                    //       const url =
+                    //           'https://apps.apple.com/tt/app/scanamaze/id1613520722';
+                    //       if (await canLaunch(url)) {
+                    //         await launch(url);
+                    //         print('object');
+                    //       } else {
+                    //         throw 'Could not launch $url';
+                    //       }
+                    //     },
+                    //     child:
+                    //         Image.asset(AssetsConstants.icApple, height: 30)),
                     SizedBox(width: SizeConfig.screenWidth * 0.01),
                     GestureDetector(
                         onTap: () async {
@@ -429,7 +431,7 @@ Widget footerMobile(BuildContext context,HomeViewModel homeViewModel) {
                           }
                         },
                         child:
-                            Image.asset(AssetsConstants.icGoogle, height: 30)),
+                            Image.asset(AssetsConstants.icGoogle,   color: Theme.of(context).scaffoldBackgroundColor,height: 30)),
                   ],
                 )
               ],
@@ -444,9 +446,9 @@ Widget footerMobile(BuildContext context,HomeViewModel homeViewModel) {
             alignment: Alignment.bottomRight,
             child: GlobalVariable.isLightTheme == true
                 ? Image.network(StringConstant.digitalSellerDarklogo,
-                fit: BoxFit.fill, width: 120)
+                fit: BoxFit.fill, width: 150)
                 : Image.network(StringConstant.digitalSellerLitelogo,
-                fit: BoxFit.fill, width: 120)),
+                fit: BoxFit.fill, width: 150)),
         SizedBox(height: 10),
 
       ],

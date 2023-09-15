@@ -20,7 +20,7 @@ class _AppMenuState extends State<AppMenu> {
 
   @override
   void initState() {
-    homeViewModel.getAppMenuData(context);
+    homeViewModel.getAppMenu(context);
     super.initState();
   }
 

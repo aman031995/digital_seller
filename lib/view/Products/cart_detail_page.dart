@@ -174,11 +174,11 @@ class _CartDetailState extends State<CartDetail> {
               drawer:
               ResponsiveWidget.isMediumScreen(context)
               ? AppMenu() : SizedBox(),
-                    body: cartViewData.cartListData != null
-                        ? cartViewData.cartListData!.cartList!.length > 0
-                            ? Stack(
+                    body: Stack(
                               children: [
-                                SingleChildScrollView(
+                                cartViewData.cartListData != null
+                                    ? cartViewData.cartListData!.cartList!.length > 0
+                                    ?   SingleChildScrollView(
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           crossAxisAlignment:
@@ -333,7 +333,11 @@ class _CartDetailState extends State<CartDetail> {
                                                 ?  footerMobile(context,homeViewModel):footerDesktop()
                                           ],
                                         ),
-                                      ),
+                                      ):noDataFoundMessage(
+                                    context, StringConstant.noItemInCart,homeViewModel): Center(
+                                  child:
+                                  ThreeArchedCircle(size: 45.0),
+                                ),
                                 ResponsiveWidget.isMediumScreen(context)
                                     ? Container()
                                     : isnotification == true
@@ -371,56 +375,7 @@ class _CartDetailState extends State<CartDetail> {
                               ],
                             )
 
-                            : Stack(
-                              children: [
-                                noDataFoundMessage(
-                                    context, StringConstant.noItemInCart,homeViewModel),
-                                ResponsiveWidget
-                                    .isMediumScreen(context)
-                                    ?Container(): isLogins == true
-                                    ? Positioned(
-                                    top: 0,
-                                    right:  180,
-                                    child: profile(context,
-                                        setState, profileViewModel))
-                                    : Container(),
-                                ResponsiveWidget
-                                    .isMediumScreen(context)
-                                    ? Container():   isSearch == true
-                                    ? Positioned(
-                                    top: ResponsiveWidget
-                                        .isMediumScreen(context)
-                                        ? 0
-                                        : SizeConfig.screenWidth *
-                                        0.001,
-                                    right: ResponsiveWidget
-                                        .isMediumScreen(context)
-                                        ? 0
-                                        : SizeConfig.screenWidth *
-                                        0.15,
-                                    child: searchList(
-                                        context,
-                                        homeViewModel,
-                                        scrollController,
-                                        searchController!,
-                                        cartViewData
-                                            .cartItemCount))
-                                    : Container(),
-                                ResponsiveWidget.isMediumScreen(context)
-                                    ? Container()
-                                    : isnotification == true
-                                    ?    Positioned(
-                                    top:  0,
-                                    right:  SizeConfig
-                                        .screenWidth *
-                                        0.20,
-                                    child: notification(notificationViewModel,context,_scrollController)):Container(),
-                              ],
-                            )
-                        : Center(
-                            child:
-                                Container(child: ThreeArchedCircle(size: 45.0)),
-                          )
+
                 ),
               ));
             })

@@ -1,10 +1,6 @@
 import 'package:TychoStream/network/AppNetwork.dart';
-import 'package:TychoStream/utilities/AppColor.dart';
-import 'package:TychoStream/utilities/StringConstants.dart';
-import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/EmailNotificationPage.dart';
-import 'package:TychoStream/view/WebScreen/OnHover.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/search/search_list.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
@@ -14,7 +10,6 @@ import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
@@ -45,14 +40,12 @@ class _HomePageWebState extends State<HomePageWeb> {
   ProfileViewModel profileViewModel = ProfileViewModel();
   String? checkInternet;
   CartViewModel cartViewModel = CartViewModel();
-  TextEditingController? searchController = TextEditingController();
+  TextEditingController searchController = TextEditingController();
   AutoScrollController controller1 = AutoScrollController();
   AutoScrollController controller = AutoScrollController();
-
   TextEditingController emailController = TextEditingController();
   NotificationViewModel notificationViewModel = NotificationViewModel();
   ScrollController _scrollController = ScrollController();
-
   int counter1 = 4;
   int counter = 4;
   List<String> images = [
@@ -99,7 +92,6 @@ class _HomePageWebState extends State<HomePageWeb> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     final authVM = Provider.of<AuthViewModel>(context);
-
     AppNetwork.checkInternet((isSuccess, result) {
       setState(() {
         checkInternet = result;
@@ -120,20 +112,16 @@ class _HomePageWebState extends State<HomePageWeb> {
                         onTap: () {
                           if (isLogins == true) {
                             isLogins = false;
-                            setState(() {});
                           }
                           if (isSearch == true) {
                             isSearch = false;
-                            setState(() {});
                           }
                           if (isnotification == true) {
                             isnotification = false;
-                            setState(() {});
                           }
                         },
                         child: Scaffold(
-                            extendBodyBehindAppBar:  ResponsiveWidget.isMediumScreen(context)
-                                ? false:true,
+                            extendBodyBehindAppBar:false,
                             appBar: ResponsiveWidget.isMediumScreen(context)
                                 ? homePageTopBar(context, _scaffoldKey,
                                     cartViewModel.cartItemCount,
@@ -161,15 +149,12 @@ class _HomePageWebState extends State<HomePageWeb> {
                                     } else {
                                       if (isLogins == true) {
                                         isLogins = false;
-                                        setState(() {});
                                       }
                                       if (isSearch == true) {
                                         isSearch = false;
-                                        setState(() {});
                                       }
                                       if (isnotification == true) {
                                         isnotification = false;
-                                        setState(() {});
                                       }
                                       context.router.push(FavouriteListPage());
                                     }
@@ -191,15 +176,12 @@ class _HomePageWebState extends State<HomePageWeb> {
                                     } else {
                                       if (isLogins == true) {
                                         isLogins = false;
-                                        setState(() {});
                                       }
                                       if (isSearch == true) {
                                         isSearch = false;
-                                        setState(() {});
                                       }
                                       if (isnotification == true) {
                                         isnotification = false;
-                                        setState(() {});
                                       }
                                       context.router.push(CartDetail(
                                           itemCount:
@@ -209,577 +191,112 @@ class _HomePageWebState extends State<HomePageWeb> {
                             body: Scaffold(
                                     extendBodyBehindAppBar: true,
                                     key: _scaffoldKey,
-                                    backgroundColor: Theme.of(context)
-                                        .scaffoldBackgroundColor,
-                                    drawer:
-                                        ResponsiveWidget.isMediumScreen(context)
-                                            ? AppMenu()
-                                            : SizedBox(),
+                                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                    drawer: ResponsiveWidget.isMediumScreen(context) ? AppMenu() : SizedBox(),
                                     body: Stack(
                                       children: [
                                         SingleChildScrollView(
                                           child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               CommonCarousel(),
-                                              SizedBox(
-                                                  height: ResponsiveWidget
-                                                          .isMediumScreen(
-                                                              context)
-                                                      ? 12
-                                                      : 24),
-
+                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
                                               ///category product list............
-
-                                              (cartViewModel.categoryListModel
-                                                  ?.length ??
-                                                  0) >
-                                                  0
-                                                  ?CategoryList(
-                                                  context, cartViewModel):SizedBox(),
-
-                                              SizedBox(
-                                                  height: ResponsiveWidget
-                                                          .isMediumScreen(
-                                                              context)
-                                                      ? 12
-                                                      : 24),
-
+                                              (cartViewModel.categoryListModel?.length ?? 0) > 0 ?CategoryList(context, cartViewModel):SizedBox(),
+                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
                                               //Recommend product .................
-
-                                              (cartViewModel.recommendedView
-                                                  ?.length ??
-                                                  0) >
-                                                  0
+                                              (cartViewModel.recommendedView?.length ?? 0) > 0
                                                   ?   Container(
-                                                height: ResponsiveWidget
-                                                        .isMediumScreen(context)
-                                                    ? 275
-                                                    : SizeConfig.screenWidth *
-                                                        0.37,
+                                                height: ResponsiveWidget.isMediumScreen(context) ? 275 : SizeConfig.screenWidth * 0.37,
                                                 margin: EdgeInsets.zero,
                                                 padding: EdgeInsets.only(
-                                                    left: ResponsiveWidget
-                                                            .isMediumScreen(
-                                                                context)
-                                                        ? 8
-                                                        : SizeConfig
-                                                                .screenWidth *
-                                                            0.11,
-                                                    right: ResponsiveWidget
-                                                            .isMediumScreen(
-                                                                context)
-                                                        ? 8
-                                                        : SizeConfig
-                                                                .screenWidth *
-                                                            0.11,
-                                                    top: ResponsiveWidget
-                                                            .isMediumScreen(
-                                                                context)
-                                                        ? 8
-                                                        : 20),
-                                                color: Theme.of(context)
-                                                    .cardColor
-                                                    .withOpacity(0.6),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-
+                                                    left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11,
+                                                    right: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11,
+                                                    top: ResponsiveWidget.isMediumScreen(context) ? 8 : 20),
+                                                color: Theme.of(context).cardColor.withOpacity(0.6),
+                                                child: Stack(
                                                   children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: ResponsiveWidget
-                                                                  .isMediumScreen(
-                                                                      context)
-                                                              ? 8
-                                                              : SizeConfig
-                                                                      .screenWidth *
-                                                                  0.01,
-                                                          right: SizeConfig
-                                                                  .screenWidth *
-                                                              0.01),
-                                                      child: Container(
-                                                        alignment: Alignment.topLeft,
-                                                        child: AppBoldFont(
-                                                            context,textAlign: TextAlign.left,
-                                                            msg: StringConstant
-                                                                .Recommended,
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                            fontSize: ResponsiveWidget
-                                                                    .isMediumScreen(
-                                                                        context)
-                                                                ? 14
-                                                                : 18),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                        height: SizeConfig
-                                                                .screenWidth *
-                                                            0.01),
-                                                    Stack(
-                                                      children: [
-                                                        Container(
-                                                            padding: EdgeInsets.only(
-                                                                left: ResponsiveWidget.isMediumScreen(context)
-                                                                    ? 8
-                                                                    : SizeConfig.screenWidth *
-                                                                        0.01,
-                                                                right: ResponsiveWidget.isMediumScreen(context)
-                                                                    ? 8
-                                                                    : SizeConfig.screenWidth *
-                                                                        0.01),
-                                                            height: ResponsiveWidget.isMediumScreen(context)
-                                                                ? 235
-                                                                : SizeConfig
-                                                                        .screenWidth *
-                                                                    0.32,
-                                                            child: ListView
-                                                                .builder(
-                                                                    reverse:
-                                                                        false,
-                                                                    controller: controller,
-                                                                    padding:
-                                                                        EdgeInsets
-                                                                            .zero,
-                                                                    shrinkWrap:
-                                                                        true,
-                                                                    scrollDirection: Axis.horizontal,
-                                                                    itemCount: cartViewModel.recommendedView?.length,
-                                                                    itemBuilder: (context, position) {
-                                                                      return AutoScrollTag(
-                                                                          key: ValueKey(
-                                                                              position),
-                                                                          controller:
-                                                                              controller,
-                                                                          index:
-                                                                              position,
-                                                                          child:
-                                                                              OnHover(
-                                                                            builder:
-                                                                                (isHovered) {
-                                                                              return InkWell(
-                                                                                onTap: () {
-                                                                                  if (isLogins == true) {
-                                                                                    isLogins = false;
-                                                                                    setState(() {});
-                                                                                  }
-                                                                                  if (isSearch == true) {
-                                                                                    isSearch = false;
-                                                                                    setState(() {});
-                                                                                  }
-                                                                                  if (isnotification == true) {
-                                                                                    isnotification = false;
-                                                                                    setState(() {});
-                                                                                  }
-                                                                                  context.router.push(ProductDetailPage(
-                                                                                    productName: '${cartViewModel.recommendedView?[position].productName?.replaceAll(' ', '')}',
-                                                                                    productdata: [
-                                                                                      '${cartViewModel.recommendedView?[position].productId}',
-                                                                                      '${cartViewModel.cartItemCount}',
-                                                                                      '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.size?.name}',
-                                                                                      '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.color?.name}',
-                                                                                      '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.style?.name}',
-                                                                                      '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.unitCount?.name}',
-                                                                                      '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.materialType?.name}',
-
-                                                                                    ],
-                                                                                  ));
-                                                                                },
-                                                                                child: Card(
-                                                                                  elevation: isHovered == true ? 10 : 0.1,
-                                                                                  margin: EdgeInsets.only(right:ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
-
-                                                                                  child: Container(
-                                                                                    width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
-                                                                                    decoration: BoxDecoration(
-                                                                                      color: Theme.of(context).cardColor,
-                                                                                    ),
-                                                                                    child: Column(
-                                                                                      mainAxisSize: MainAxisSize.min,
-                                                                                      crossAxisAlignment: CrossAxisAlignment.center,
-
-                                                                                      children: [
-                                                                                        CachedNetworkImage(
-                                                                                            imageUrl: '${cartViewModel.recommendedView?[position].productDetails?.productImages?[0]}',
-                                                                                            fit: BoxFit.cover,
-                                                                                            height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.228,
-                                                                                            imageBuilder: (context, imageProvider) => Container(
-                                                                                                  decoration: BoxDecoration(
-                                                                                                    image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-                                                                                                  ),
-                                                                                                ),
-                                                                                            placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.23, child: Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2)))),
-                                                                                        SizedBox(height: 8),
-                                                                                        AppBoldFont(maxLines: 1, context, msg: " "+"${getRecommendedViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
-                                                                                        SizedBox(height: 2),
-                                                                                        AppBoldFont(maxLines: 1, context, msg: "₹" + "${cartViewModel.recommendedView?[position].productDetails?.productDiscountPrice}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
-                                                                                        SizedBox(height:10),
-                                                                                        InkWell(
-                                                                                          onTap: () {
-                                                                                            context.router.push(ProductDetailPage(
-                                                                                              productName: '${cartViewModel.recommendedView?[position].productName?.replaceAll(' ', '')}',
-                                                                                              productdata: [
-                                                                                                '${cartViewModel.recommendedView?[position].productId}',
-                                                                                                '${cartViewModel.cartItemCount}',
-                                                                                                '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.size?.name}',
-                                                                                                '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.color?.name}',
-                                                                                                '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.style?.name}',
-                                                                                                '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.unitCount?.name}',
-                                                                                                '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.materialType?.name}',
-                                                                                              ],
-                                                                                            ));
-                                                                                          },
-                                                                                          child: Container(
-                                                                                            width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
-                                                                                            height: ResponsiveWidget.isMediumScreen(context) ? 30 : SizeConfig.screenWidth * 0.027,
-                                                                                            alignment: Alignment.center,
-                                                                                            margin: EdgeInsets.only(left: 16,right: 16),
-                                                                                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(1.5), border: Border.all(width: 1, color: Theme.of(context).canvasColor)),
-                                                                                            child: AppBoldFont(context, msg: StringConstant.buynow, fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 16, fontWeight: FontWeight.w700),
-                                                                                          ),
-                                                                                        ),
-                                                                                        SizedBox(height: 10),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              );
-                                                                            },
-                                                                            hovered: Matrix4.identity()
-                                                                              ..translate(0, 0, 0),
-                                                                          ));
-                                                                    })),
-                                                        ResponsiveWidget.isMediumScreen(context)
-                                                            ?Container():    Positioned(
-                                                            top: ResponsiveWidget
-                                                                    .isMediumScreen(
-                                                                        context)
-                                                                ? 50
-                                                                : SizeConfig
-                                                                        .screenWidth *
-                                                                    0.10,
-                                                            right: 1,
-                                                            child: counter ==
-                                                                    cartViewModel
-                                                                        .recommendedView
-                                                                        ?.length
-                                                                ? Container()
-                                                                : InkWell(
-                                                                    child:
-                                                                        Container(
-                                                                      width: ResponsiveWidget.isMediumScreen(
-                                                                              context)
-                                                                          ? 25
-                                                                          : 40,
-                                                                      height: ResponsiveWidget.isMediumScreen(
-                                                                              context)
-                                                                          ? 20
-                                                                          : 35,
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .cardColor
-                                                                          .withOpacity(
-                                                                              0.8),
-                                                                      child: Icon(
-                                                                          Icons
-                                                                              .arrow_forward_ios_rounded,
-                                                                          size: ResponsiveWidget.isMediumScreen(context)
-                                                                              ? 18
-                                                                              : 25,
-                                                                          color:
-                                                                              Theme.of(context).canvasColor),
-                                                                    ),
-                                                                    onTap: () {
-                                                                      _nextCounter();
-                                                                      setState(
-                                                                          () {
-                                                                            // counter++;
-                                                                          });
-                                                                    })),
-                                                        ResponsiveWidget.isMediumScreen(context)
-                                                            ?Container():  Positioned(
-                                                            top: ResponsiveWidget
-                                                                    .isMediumScreen(
-                                                                        context)
-                                                                ? 50
-                                                                : SizeConfig
-                                                                        .screenWidth *
-                                                                    0.10,
-                                                            child: counter == 4
-                                                                ? Container()
-                                                                : InkWell(
-                                                                    child:
-                                                                        Container(
-                                                                      width: ResponsiveWidget.isMediumScreen(
-                                                                              context)
-                                                                          ? 25
-                                                                          : 40,
-                                                                      height: ResponsiveWidget.isMediumScreen(
-                                                                              context)
-                                                                          ? 20
-                                                                          : 35,
-                                                                      color: Theme.of(
-                                                                              context)
-                                                                          .cardColor
-                                                                          .withOpacity(
-                                                                              0.8),
-                                                                      child: Icon(
-                                                                          Icons
-                                                                              .arrow_back_ios_new_outlined,
-                                                                          size: ResponsiveWidget.isMediumScreen(context)
-                                                                              ? 18
-                                                                              : 25, color: Theme.of(context).canvasColor),
-                                                                    ),
-                                                                    onTap: () {
-                                                                      _prev();
-                                                                      setState(
-                                                                              () {
-
-                                                                          });
-                                                                    }))
-                                                      ],
-                                                    ),
+                                                    recommeded(context,controller,cartViewModel),
+                                                    ResponsiveWidget.isMediumScreen(context)
+                                                        ?Container():    Positioned(
+                                                        top:  SizeConfig.screenWidth * 0.15,
+                                                        right: 1,
+                                                        child: counter == cartViewModel.recommendedView?.length
+                                                            ? Container()
+                                                            : InkWell(child: Container(
+                                                          width: 40,
+                                                          height: 35,
+                                                          color: Theme.of(context).cardColor.withOpacity(0.8),
+                                                          child: Icon(
+                                                              Icons.arrow_forward_ios_rounded,
+                                                              size:  25,
+                                                              color: Theme.of(context).canvasColor),
+                                                        ),
+                                                            onTap: () {
+                                                              _nextCounter();
+                                                              setState(() {});
+                                                            })),
+                                                    ResponsiveWidget.isMediumScreen(context)
+                                                        ?Container():  Positioned(
+                                                        top: SizeConfig.screenWidth * 0.15,
+                                                        child: counter == 4 ? Container()
+                                                            : InkWell(
+                                                            child: Container(
+                                                              width: 40,
+                                                              height: 35,
+                                                              color: Theme.of(context).cardColor.withOpacity(0.8),
+                                                              child: Icon(
+                                                                  Icons.arrow_back_ios_new_outlined,
+                                                                  size: 25, color: Theme.of(context).canvasColor),
+                                                            ),
+                                                            onTap: () {
+                                                              _prev();
+                                                              setState(() {});
+                                                            }))
                                                   ],
                                                 ),
                                               ):SizedBox(),
 
-                                              SizedBox(
-                                                  height: ResponsiveWidget
-                                                          .isMediumScreen(
-                                                              context)
-                                                      ? 12
-                                                      : 24),
+                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
 
                                               //recent view images .......
 
-                                              (cartViewModel.recentView
-                                                              ?.length ??
-                                                          0) >
-                                                      0
-                                                  ? Container(
-                                                      margin: EdgeInsets.zero,
-                                                      color: Theme.of(context)
-                                                          .cardColor
-                                                          .withOpacity(0.6),
-                                                      height: ResponsiveWidget
-                                                              .isMediumScreen(
-                                                                  context)
-                                                          ? 260
-                                                          : SizeConfig
-                                                                  .screenWidth *
-                                                              0.32,
-                                                      padding: EdgeInsets.only(
-                                                          left: ResponsiveWidget
-                                                                  .isMediumScreen(
-                                                                      context)
-                                                              ? 8
-                                                              : SizeConfig
-                                                                      .screenWidth *
-                                                                  0.11,
-                                                          right: ResponsiveWidget
-                                                                  .isMediumScreen(
-                                                                      context)
-                                                              ? 8
-                                                              : SizeConfig
-                                                                      .screenWidth *
-                                                                  0.11,
-                                                          top: 20),
+                                              (cartViewModel.recentView?.length ?? 0) > 0
+                                                  ? Container(margin: EdgeInsets.zero,
+                                                      color: Theme.of(context).cardColor.withOpacity(0.6),
+                                                      height: ResponsiveWidget.isMediumScreen(context) ? 260 : SizeConfig.screenWidth * 0.32,
+                                                      padding: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11,
+                                                          right: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11, top:ResponsiveWidget.isMediumScreen(context) ? 8 : 20),
                                                       child: Stack(
                                                         children: [
-                                                          Column(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .start,
-                                                            crossAxisAlignment: CrossAxisAlignment.center,
-
-                                                            children: [
-                                                              Container(
-                                                                padding: EdgeInsets.only(
-                                                                    left: ResponsiveWidget.isMediumScreen(
-                                                                            context)
-                                                                        ? 8
-                                                                        : SizeConfig.screenWidth *
-                                                                            0.01,
-                                                                    right: ResponsiveWidget.isMediumScreen(
-                                                                            context)
-                                                                        ? 4
-                                                                        : SizeConfig.screenWidth *
-                                                                            0.01),
-                                                                child: Container(
-                                                                  alignment: Alignment.topLeft,
-                                                                  child: AppBoldFont(
-                                                                      context,
-                                                                      textAlign: TextAlign.left,
-                                                                      msg: StringConstant
-                                                                          .RecentView,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w700,
-                                                                      fontSize:
-                                                                          ResponsiveWidget.isMediumScreen(context)
-                                                                              ? 14
-                                                                              : 18),
-                                                                ),
-                                                              ),
-                                                              SizedBox(
-                                                                  height: SizeConfig
-                                                                      .screenWidth *
-                                                                      0.01),
-                                                              Container(
-                                                                  height: ResponsiveWidget.isMediumScreen(
-                                                                          context)
-                                                                      ? 200
-                                                                      : SizeConfig
-                                                                              .screenWidth *
-                                                                          0.27,
-                                                                  width: SizeConfig
-                                                                      .screenWidth,
-                                                                  padding: EdgeInsets.only(
-                                                                      left: ResponsiveWidget.isMediumScreen(context)
-                                                                          ? 8
-                                                                          : SizeConfig.screenWidth *
-                                                                              0.01,
-                                                                      right: ResponsiveWidget.isMediumScreen(
-                                                                              context)
-                                                                          ? 8
-                                                                          : SizeConfig.screenWidth *
-                                                                              0.01),
-                                                                  child: ListView.builder(
-                                                                      reverse: false,
-                                                                      controller: controller1,
-                                                                      padding: EdgeInsets.zero,
-                                                                      scrollDirection: Axis.horizontal,
-                                                                      itemCount: cartViewModel.recentView?.length,
-                                                                      itemBuilder: (context, position) {
-                                                                        return AutoScrollTag(
-                                                                            key: ValueKey(
-                                                                                position),
-                                                                            controller:
-                                                                                controller1,
-                                                                            index:
-                                                                                position,
-                                                                            child:
-                                                                                OnHover(
-                                                                              builder: (isHovered) {
-                                                                                return InkWell(
-                                                                                  onTap: () {
-                                                                                    if (isLogins == true) {
-                                                                                      isLogins = false;
-                                                                                      setState(() {});
-                                                                                    }
-                                                                                    if (isSearch == true) {
-                                                                                      isSearch = false;
-                                                                                      setState(() {});
-                                                                                    }
-                                                                                    if (isnotification == true) {
-                                                                                      isnotification = false;
-                                                                                      setState(() {});
-                                                                                    }
-                                                                                    context.router.push(ProductDetailPage(
-                                                                                      productName: '${cartViewModel.recentView?[position].productName}',
-                                                                                      productdata: [
-                                                                                        '${cartViewModel.recentView?[position].productId}',
-                                                                                        '${cartViewModel.cartItemCount}',
-                                                                                        '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.size?.name}',
-                                                                                        '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.color?.name}',
-                                                                                        '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.style?.name}',
-                                                                                        '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.unitCount?.name}',
-                                                                                        '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.materialType?.name}',
-                                                                                      ],
-                                                                                    ));
-                                                                                  },
-                                                                                  child: Card(
-                                                                                    elevation: isHovered == true ? 10 : 0.1,
-                                                                                    margin: EdgeInsets.only(right:ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
-
-                                                                                    child: Container(
-                                                                                      width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
-                                                                                      decoration: BoxDecoration(
-                                                                                        color: Theme.of(context).cardColor,
-                                                                                      ),
-                                                                                      child: Column(
-                                                                                        mainAxisSize: MainAxisSize.min,
-                                                                                        crossAxisAlignment: CrossAxisAlignment.center,
-
-                                                                                        children: [
-                                                                                          CachedNetworkImage(
-                                                                                              imageUrl: '${cartViewModel.recentView?[position].productDetails?.productImages?[0]}',
-                                                                                              fit: BoxFit.fill,
-                                                                                              height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.228,
-                                                                                              imageBuilder: (context, imageProvider) => Container(
-                                                                                                    decoration: BoxDecoration(
-                                                                                                      image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                              placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenHeight / 2.1, child: Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2)))),
-                                                                                          SizedBox(height: 10),
-                                                                                          AppBoldFont(context, msg:" "+ "${getRecentViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18, maxLines: 1),
-                                                                                           SizedBox(height: 10)
-                                                                                        ],
-                                                                                      ),
-                                                                                    ),
-                                                                                  ),
-                                                                                );
-                                                                              },
-                                                                              hovered: Matrix4.identity()..translate(0, 0, 0),
-                                                                            ));
-                                                                      }))
-                                                            ],
-                                                          ),
+                                                          recentView(context,controller1,cartViewModel),
                                                           ResponsiveWidget.isMediumScreen(context)
-                                                              ?Container():  Positioned(
-                                                              top: ResponsiveWidget
-                                                                      .isMediumScreen(
-                                                                          context)
-                                                                  ? 70
-                                                                  : SizeConfig
+                                                              ?Container():
+                                                          Positioned(
+                                                              top:  SizeConfig
                                                                           .screenWidth *
                                                                       0.10,
                                                               right: 0.5,
-                                                              child: cartViewModel
-                                                                  .recentView
-                                                                  !.length>4?counter1 ==
-                                                                      cartViewModel
-                                                                          .recentView
-                                                                          ?.length
-                                                                  ? Container()
-                                                                  : InkWell(
+                                                              child: cartViewModel.recentView!.length>4 ? counter1 == cartViewModel.recentView?.length ? Container() : InkWell(
                                                                       child:
                                                                           Container(
-                                                                        width: ResponsiveWidget.isMediumScreen(context)
-                                                                            ? 25
-                                                                            : 40,
-                                                                        height: ResponsiveWidget.isMediumScreen(context)
-                                                                            ? 20
-                                                                            : 35,
-                                                                        color: Theme.of(context)
-                                                                            .cardColor
-                                                                            .withOpacity(0.8),
+                                                                        width: 40,
+                                                                        height:  35,
+                                                                        color: Theme.of(context).cardColor.withOpacity(0.8),
                                                                         child: Icon(
                                                                             Icons
                                                                                 .arrow_forward_ios_rounded,
-                                                                            size: ResponsiveWidget.isMediumScreen(context)
-                                                                                ? 18
-                                                                                : 25, color:
+                                                                            size:  25, color:
                                                                         Theme.of(context).canvasColor)
                                                                       ),
-                                                                      onTap:
-                                                                          () {
+                                                                      onTap: () {
                                                                         _nextCounter1();
-
-                                                                      }):Container()),
+                                                                      }):
+                                                              Container()),
                                                           ResponsiveWidget.isMediumScreen(context)
                                                               ?Container():   Positioned(
-                                                              top: ResponsiveWidget
-                                                                      .isMediumScreen(
-                                                                          context)
-                                                                  ? 70
-                                                                  : SizeConfig
+                                                              top: SizeConfig
                                                                           .screenWidth *
                                                                       0.10,
                                                               child: counter1==4
@@ -787,197 +304,44 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                   : InkWell(
                                                                       child:
                                                                           Container(
-                                                                        width: ResponsiveWidget.isMediumScreen(context)
-                                                                            ? 25
-                                                                            : 40,
-                                                                        height: ResponsiveWidget.isMediumScreen(context)
-                                                                            ? 20
-                                                                            : 35,
+                                                                        width: 40,
+                                                                        height: 35,
                                                                         color: Theme.of(context)
                                                                             .cardColor
                                                                             .withOpacity(0.8),
                                                                         child: Icon(
                                                                             Icons
                                                                                 .arrow_back_ios_new_outlined,
-                                                                            size: ResponsiveWidget.isMediumScreen(context)
-                                                                                ? 18
-                                                                                : 25, color:
+                                                                            size:  25, color:
                                                                         Theme.of(context).canvasColor)
                                                                       ),
                                                                       onTap:
                                                                           () {
                                                                         _prev1();
-
                                                                       }))
                                                         ],
                                                       ),
                                                     )
                                                   : SizedBox(),
-
-                                              SizedBox(
-                                                  height: ResponsiveWidget
-                                                          .isMediumScreen(
-                                                              context)
-                                                      ? 12
-                                                      : 24),
-
+                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
                                               // what we offer.....
-
                                               offerList(context),
-                                              SizedBox(
-                                                  height: ResponsiveWidget
-                                                      .isMediumScreen(
-                                                      context)
-                                                      ? 12
-                                                      : 24),
-                                              (cartViewModel.offerDiscountModel
-                                                  ?.length ??
-                                                  0) >
-                                                  0
-                                                  ?   _discountView(cartViewModel):SizedBox(),
+                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
+                                              (cartViewModel.offerDiscountModel?.length ?? 0) > 0 ?   discountView(cartViewModel):SizedBox(),
 
-                                              SizedBox(
-                                                  height: ResponsiveWidget
-                                                          .isMediumScreen(
-                                                              context)
-                                                      ? 12
-                                                      : 24),
+                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
 
-                                              Image.asset(
-                                                AssetsConstants.icbanner,
-                                                width: SizeConfig.screenWidth,
-                                                height: SizeConfig.screenWidth *
-                                                    0.28,
-                                                fit: BoxFit.fill,
-                                              ),
+                                              Image.asset(AssetsConstants.icbanner, width: SizeConfig.screenWidth, height: SizeConfig.screenWidth * 0.28, fit: BoxFit.fill),
 
-                                              SizedBox(
-                                                  height: ResponsiveWidget
-                                                          .isMediumScreen(
-                                                              context)
-                                                      ? 12
-                                                      : 24),
+                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
 
-                                              Center(
-                                                child: Container(
-                                                  width: SizeConfig.screenWidth,
-                                                  margin: EdgeInsets.zero,
-                                                  color: Theme.of(context)
-                                                      .cardColor
-                                                      .withOpacity(0.6),
-                                                  padding: EdgeInsets.only(
-                                                      left: ResponsiveWidget
-                                                              .isMediumScreen(
-                                                                  context)
-                                                          ? 8
-                                                          : SizeConfig
-                                                                  .screenWidth *
-                                                              0.01,
-                                                      right: ResponsiveWidget
-                                                              .isMediumScreen(
-                                                                  context)
-                                                          ? 0
-                                                          : SizeConfig
-                                                                  .screenWidth *
-                                                              0.01,
-                                                      top: 20,
-                                                      bottom: 20),
-                                                  child: GridView.builder(
-                                                    shrinkWrap: true,
-                                                    padding: EdgeInsets.zero,
-                                                    physics:
-                                                        BouncingScrollPhysics(),
-                                                    gridDelegate:
-                                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                                      crossAxisCount: 4,
-                                                      childAspectRatio: 0.78,
-                                                    ),
-                                                    itemCount: images.length,
-                                                    itemBuilder:
-                                                        (context, index) {
-                                                      return InkWell(
-                                                          onTap: () {
-                                                            if (isLogins ==
-                                                                true) {
-                                                              isLogins = false;
-                                                              setState(() {});
-                                                            }
-                                                            if (isSearch ==
-                                                                true) {
-                                                              isSearch = false;
-                                                              setState(() {});
-                                                            }
-                                                            if (isnotification == true) {
-                                                              isnotification = false;
-                                                              setState(() {});
-                                                            }
-                                                            context.router.push(
-                                                                ProductListGallery());
-                                                          },
-                                                          child: OnHover(
-                                                            builder:
-                                                                (isHovered) {
-                                                              return Card(
-                                                                  shape:
-                                                                      RoundedRectangleBorder(
-                                                                    borderRadius:
-                                                                        BorderRadius.circular(
-                                                                            20),
-                                                                  ),
-                                                                  elevation:
-                                                                      isHovered == true
-                                                                          ? 20
-                                                                          : 0,
-                                                                  margin: EdgeInsets.only(
-                                                                      right: ResponsiveWidget.isMediumScreen(
-                                                                              context)
-                                                                          ? 8
-                                                                          : 16,
-                                                                      bottom: ResponsiveWidget.isMediumScreen(
-                                                                              context)
-                                                                          ? 8
-                                                                          : 16),
-                                                                  child: Image
-                                                                      .asset(
-                                                                    images[
-                                                                        index],
-                                                                    fit: BoxFit
-                                                                        .fill,
-                                                                  ));
-                                                            },
-                                                            hovered: Matrix4
-                                                                .identity()
-                                                              ..translate(
-                                                                  0, 0, 0),
-                                                          ));
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
+                                              gallery(context,images),
 
-                                              SizedBox(
-                                                  height: ResponsiveWidget
-                                                          .isMediumScreen(
-                                                              context)
-                                                      ? 12
-                                                      : 24),
+                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
 
-                                              // getLatestUpdate(context),
+                                              emailNotificationUpdatePage(context,emailController,authVM),
 
-                                              SizedBox(
-                                                  height: ResponsiveWidget
-                                                          .isMediumScreen(
-                                                              context)
-                                                      ? 12
-                                                      : 24),
-
-                                              emailNotificationUpdatePage(
-                                                  context,emailController,authVM),
-
-                                              ResponsiveWidget.isMediumScreen(
-                                                      context)
-                                                  ? footerMobile(context,homeViewModel)
-                                                  : footerDesktop(),
+                                              ResponsiveWidget.isMediumScreen(context) ? footerMobile(context,homeViewModel) : footerDesktop(),
                                             ],
                                           ),
                                         ),
@@ -986,7 +350,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                             ? Container()
                                             : isLogins == true
                                                 ? Positioned(
-                                                    top: 70,
+                                                    top: 1,
                                                     right: 180,
                                                     child: profile(context,
                                                         setState, profilemodel))
@@ -995,9 +359,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                             ? Container()
                                             : isSearch == true
                                                 ? Positioned(
-                                                    top:  SizeConfig
-                                                                .screenWidth *
-                                                            0.041,
+                                                    top: 1,
                                                     right:  SizeConfig
                                                                 .screenWidth *
                                                             0.20,
@@ -1005,19 +367,16 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                         context,
                                                         viewmodel,
                                                         scrollController,
-                                                        searchController!,
+                                                        searchController,
                                                         cartViewModel
                                                             .cartItemCount))
                                                 : Container(),
-
 
                                         ResponsiveWidget.isMediumScreen(context)
                                             ? Container()
                                             : isnotification == true
                                             ?    Positioned(
-                                            top:  SizeConfig
-                                                .screenWidth *
-                                                0.041,
+                                            top:  1,
                                             right:  SizeConfig
                                                 .screenWidth *
                                                 0.20,
@@ -1027,121 +386,6 @@ class _HomePageWebState extends State<HomePageWeb> {
                   }));
                   }));
             }));
-  }
-
-  _discountView(CartViewModel cartview) {
-    return ChangeNotifierProvider.value(value: cartViewModel,
-        child: Consumer<CartViewModel>(
-          builder: (context, homeVM, _){
-            return Container(
-              width: SizeConfig.screenWidth,
-              color: Theme.of(context).primaryColor.withOpacity(0.5),
-
-              margin: EdgeInsets.zero,
-              height: ResponsiveWidget
-                  .isMediumScreen(
-                  context)
-                  ? 300
-                  : SizeConfig
-                  .screenWidth *
-                  0.31,
-              padding: EdgeInsets.only(
-                  left: ResponsiveWidget
-                      .isMediumScreen(
-                      context)
-                      ? 8
-                      : SizeConfig
-                      .screenWidth *
-                      0.12,
-                  right: ResponsiveWidget
-                      .isMediumScreen(
-                      context)
-                      ? 8
-                      : SizeConfig
-                      .screenWidth *
-                      0.11,
-                  top: ResponsiveWidget
-                      .isMediumScreen(
-                      context)
-                      ?10: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    alignment: Alignment.topLeft,
-                    child: AppBoldFont(context, msg: 'Discounts for You', fontWeight:
-                    FontWeight
-                        .w700,textAlign: TextAlign.left,
-                        fontSize:
-                        ResponsiveWidget.isMediumScreen(context)
-                            ? 16
-                            : 22),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                     height: ResponsiveWidget.isMediumScreen(context) ? 230 : SizeConfig.screenWidth * 0.27,
-                      width: SizeConfig
-                          .screenWidth,
-
-
-                      child: ListView.builder(
-                        reverse: false,
-                        shrinkWrap: true,
-                        padding: EdgeInsets.zero,
-                        scrollDirection: Axis.horizontal,
-                          itemCount: cartview.offerDiscountModel?.length,
-                        itemBuilder: (context, position) {
-                          return OnHover(
-                              builder: (isHovered) {
-                                return InkWell(
-                                    onTap: () {
-                                  if (isLogins == true) {
-                                    isLogins = false;
-                                    setState(() {});
-                                  }
-                                  if (isSearch == true) {
-                                    isSearch = false;
-                                    setState(() {});
-                                  }
-                                  if (isnotification == true) {
-                                    isnotification = false;
-                                    setState(() {});
-                                  }
-                                  context.router.push(ProductListGallery(
-                                    discountdata: ["${cartview.offerDiscountModel?[position].categoryId}","${cartview.offerDiscountModel?[position].discountPercentage}"]
-                                  ));
-                                },
-                                child: Container(
-                                  margin: EdgeInsets.only(right:ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
-                                  width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
-                                  child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: [
-                                            CachedNetworkImage(
-                                                height: ResponsiveWidget.isMediumScreen(context) ? 180 : SizeConfig.screenWidth * 0.22,
-                                                width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.22,
-                                                imageUrl: '${cartview.offerDiscountModel?[position].images}',
-                                                fit: BoxFit.fill,
-                                                placeholder: (context, url) => Center(
-                                                    child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2))),
-                                            SizedBox(height: 8),
-                                            AppBoldFont(context, msg: "${cartview.offerDiscountModel?[position].title}", color: Theme.of(context).canvasColor,fontSize: ResponsiveWidget.isMediumScreen(context) ? 14:18),
-                                            SizedBox(height: 4),
-                                            AppRegularFont(context, msg: "Up To. ${cartview.offerDiscountModel?[position].discountPercentage}% Off", color: GREEN, fontSize: ResponsiveWidget.isMediumScreen(context) ? 14:18)
-
-
-                                          ],
-                                        ),
-                                ));
-                                },hovered: Matrix4.identity()..translate(0, 0, 0),
-
-                          );})),
-                ],
-              ),
-            );
-          },
-        ));
   }
 
   Future _nextCounter() async {
@@ -1177,3 +421,4 @@ class _HomePageWebState extends State<HomePageWeb> {
     controller1.highlight(counter1);
   }
 }
+

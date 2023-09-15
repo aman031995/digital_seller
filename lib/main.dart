@@ -8,8 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/repository/subscription_provider.dart';
@@ -32,17 +30,16 @@ final _firebase=FirebaseMessaging.instance;
 Future<void> main() async {
  // Stripe.publishableKey = "pk_test_51NXhtjSJK48GkIWFjJzBm88uzgrwb7i4aIyls9YoPHT5IvYAV9rMnlEW0U8AUY1VpIJB3ZOBFTFdSFuMYnxM0fkK00KqwNEEeH";
   setPathUrlStrategy();
-
   await WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
       options: FirebaseOptions(
-          apiKey: "AIzaSyBaAbG2eNrQR2e1JmJcLj0N4QoKSv59Sb0",
-            authDomain: "tychostreams.firebaseapp.com",
-            projectId: "tychostreams",
-            storageBucket: "tychostreams.appspot.com",
-            messagingSenderId: "746850038788",
-            appId: "1:746850038788:web:0e231dc5e9ead255407151",
-            measurementId: "G-2Q4LD5W403"
+          apiKey: "AIzaSyCJld8j8yV8TC-PeC1XpqvThaVTYvI6bbw",
+          authDomain: "digital-fashion-seller.firebaseapp.com",
+          projectId: "digital-fashion-seller",
+          storageBucket: "digital-fashion-seller.appspot.com",
+          messagingSenderId: "986127637622",
+          appId: "1:986127637622:web:0ac78b2a3626755edfd357",
+          measurementId: "G-B37TDNX53B"
 
   ));
   html.window.onPopState.listen((event) {
@@ -72,6 +69,7 @@ class _MyAppState extends State<MyApp> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     names = sharedPreferences.get('name').toString();
   }
+
   Future<void> getFCMToken() async {
     try {
      final fcmToken = await FirebaseMessaging.instance.getToken();
@@ -101,6 +99,7 @@ class _MyAppState extends State<MyApp> {
               final txtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.textColor?.hex;
               final buttonTxtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.buttonTextColor?.hex;
               return MaterialApp.router(
+                title: "Digital Fashion Street",
                   theme: ThemeData(
                       scaffoldBackgroundColor: (bgColor)?.toColor(),
                       primaryColor: (themeColor)?.toColor(),

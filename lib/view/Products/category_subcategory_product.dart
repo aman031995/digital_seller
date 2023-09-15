@@ -199,10 +199,7 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                       Container(
                                           height: ResponsiveWidget.isMediumScreen(
                                               context) ? 140 : SizeConfig.screenWidth * 0.16,
-                                          width: ResponsiveWidget.isMediumScreen(
-                                              context) ?SizeConfig
-                                              .screenWidth/1.08:SizeConfig
-                                              .screenWidth/1.38,
+                                          width: ResponsiveWidget.isMediumScreen(context) ?SizeConfig.screenWidth/1.08:SizeConfig.screenWidth/1.38,
                                           margin: EdgeInsets.zero,
                                           padding: EdgeInsets.zero,
                                           child: ListView.builder(
@@ -236,6 +233,8 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                                   },
                                                   child:
                                                   Container(
+                                                    color: Theme.of(context).cardColor,
+                                                    padding: EdgeInsets.all(15),
                                                     margin: EdgeInsets.only(
                                                         right: ResponsiveWidget.isMediumScreen(
                                                             context)
@@ -246,7 +245,7 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                                       crossAxisAlignment: CrossAxisAlignment.center,
                                                       children: [
                                                         CircleAvatar(
-                                                          radius: ResponsiveWidget.isMediumScreen(context) ? 50 : SizeConfig.screenWidth * 0.068,
+                                                          radius: ResponsiveWidget.isMediumScreen(context) ? 50 : SizeConfig.screenWidth * 0.055,
                                                           child: CachedNetworkImage(
                                                               imageUrl: viewmodel.CategoryProduct?.subCategoryList?[position].imageUrl ?? "",
                                                               fit: BoxFit.fill,
@@ -261,6 +260,7 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                                               ),
                                                               placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2))),
                                                         ),
+                                                        SizedBox(height: SizeConfig.screenWidth*0.01),
                                                         AppBoldFont(
                                                             maxLines:
                                                             1,
@@ -316,32 +316,56 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                CategoryFilterScreen(
-                                                  items: [],
-                                                ),
-                                                Column(
+                                                // CategoryFilterScreen(
+                                                //   items: [],
+                                                // ),
+                                               Column(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.start,
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
                                                   children: [
-                                                    Container(
-                                                        alignment:
-                                                            Alignment.topLeft,
-                                                        padding:
-                                                            EdgeInsets.only(
-                                                                top: 30,
-                                                                right: 20),
-                                                        width: SizeConfig
-                                                                .screenWidth /
-                                                            1.75,
-                                                        child:
-                                                            catrgoryTopSortWidget(context)),
+                                                    // Container(
+                                                    //     alignment:
+                                                    //         Alignment.topLeft,
+                                                    //     padding:
+                                                    //         EdgeInsets.only(
+                                                    //             top: 30,
+                                                    //             right: 20),
+                                                    //     width: SizeConfig
+                                                    //             .screenWidth /
+                                                    //         1.75,
+                                                    //     child:
+                                                    //         catrgoryTopSortWidget(context)),
                                                     SizedBox(height: 15),
-                                                    Container(
-                                                        width: SizeConfig
-                                                                .screenWidth /
-                                                            1.75,
+                                                    viewmodel.CategoryProduct!.productList?.length==0?  Container(
+                                                      height: SizeConfig.screenHeight * 0.4,
+                                                      padding: EdgeInsets.only(top: 50),
+                                                      width: SizeConfig.screenWidth / 1.38,
+                                                      decoration: BoxDecoration(boxShadow: [
+                                                        BoxShadow(
+                                                          color: Theme.of(context).scaffoldBackgroundColor,
+                                                        )
+                                                      ]),
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          Padding(
+                                                            padding: const EdgeInsets.all(10),
+                                                            child: Image.asset(
+                                                              'images/ic_NotFoundLogo.png',
+                                                              height: SizeConfig.screenHeight * 0.2,
+                                                              width: 300,
+                                                            ),
+                                                          ),
+                                                          AppBoldFont(
+                                                              context,msg: "No data found",
+                                                              fontSize: 16,
+                                                              color: Theme.of(context).canvasColor,textAlign: TextAlign.center),
+                                                        ],
+                                                      ),
+                                                    ) : Container(
+                                                        width:SizeConfig.screenWidth/1.38,
                                                         child: GridView.builder(
                                                           shrinkWrap: true,
                                                           physics:
@@ -358,15 +382,10 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                                                   500,
                                                                   maxCrossAxisExtent:
                                                                   400),
-                                                          itemCount: viewmodel
-                                                              .CategoryProduct!
-                                                              .productList
-                                                              ?.length,
+                                                          itemCount: viewmodel.CategoryProduct!.productList?.length,
                                                           itemBuilder:
                                                               (context, index) {
-                                                            final productListData =
-                                                                viewmodel
-                                                                    .CategoryProduct!
+                                                            final productListData = viewmodel.CategoryProduct!
                                                                     .productList?[index];
                                                             return productListItems(
                                                                 context,

@@ -173,6 +173,8 @@ NotificationViewModel notificationViewModel,
                       : SizedBox()
                 ],
               ),
+              SizedBox(width: SizeConfig.screenWidth * .01),
+
               Stack(
                 children: [
                   InkWell(
@@ -203,14 +205,15 @@ NotificationViewModel notificationViewModel,
                         notificationViewModel.notificationItem != '0'
                             ? AssetsConstants.icNotificationOn
                             : AssetsConstants.icNotification,
-                        height: 65,
+                        height: 25,
                         color: Theme.of(context).canvasColor,
-                        width: 65,
+                        width: 25,
+                        fit: BoxFit.fill,
                       )),
                   notificationViewModel.notificationItem != '0'
                       ? Positioned(
-                      right: 15,
-                      top: 8,
+                      right: 1,
+                      top: -4,
                       child: Container(
                         padding: EdgeInsets.all(4),
                         decoration: BoxDecoration(
@@ -343,7 +346,7 @@ PreferredSize homePageTopBar(BuildContext context,
     GlobalKey<ScaffoldState> _scaffoldKey, String itemCount, HomeViewModel viewmodel,
     ProfileViewModel profileViewModel,notificationViewModel) {
   return PreferredSize(
-      preferredSize: Size.fromHeight(80),
+      preferredSize: Size.fromHeight(60),
       child: Card(
         elevation: 0.8,
         margin: EdgeInsets.zero,
@@ -351,9 +354,11 @@ PreferredSize homePageTopBar(BuildContext context,
           color: Theme.of(context).cardColor,
 
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 10),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
+              Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
                 SizedBox(width: 5),
                 GestureDetector(
 
@@ -476,21 +481,21 @@ PreferredSize homePageTopBar(BuildContext context,
                                 });
                           }
                           else {
-                            context.pushRoute(NotificationRoute());
+                            context.router.push(NotificationRoute());
                           }
                         },
                         child: Image.asset(
                           notificationViewModel.notificationItem != '0'
                               ? AssetsConstants.icNotificationOn
                               : AssetsConstants.icNotification,
-                          height: 22,
+                          height: 24,
                           color: Theme.of(context).canvasColor,
                           width: 20,fit: BoxFit.fill,
                         )),
                     notificationViewModel.notificationItem != '0'
                         ? Positioned(
                         right: 0,
-                        top: -4,
+                        top: -3,
                         child: Container(
                           padding: EdgeInsets.all(3),
                           decoration: BoxDecoration(
@@ -506,61 +511,62 @@ PreferredSize homePageTopBar(BuildContext context,
                   ],
                 ),
 
-                SizedBox(width: 5),
+                SizedBox(width: 10),
 
               ]),
-              SizedBox(width: 5),
-              viewmodel.appConfigModel != null
-                  ? Container(
-                padding: EdgeInsets.only(top: 4),
-                width: SizeConfig.screenWidth,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: viewmodel
-                      .appConfigModel!.androidConfig!.bottomNavigation!
-                      .map((e) {
-                    return InkWell(
-                        onTap: () {
-                          print(e.title);
-                          getPages(e, context, profileViewModel);
 
-                        },
-                        child: OnHover(
-                          builder: (isHovered) {
-                            return AppBoldFont(context,
-                                msg: e.title ?? "",
-                                fontSize: isHovered == true ? 18 : 16,
-                                fontWeight: isHovered == true
-                                    ? FontWeight.w700
-                                    : FontWeight.w500);
-                          },
-                          hovered: Matrix4.identity()..translate(0, 0, 0),
-                        ));
-                  }).toList(),
-                ),
-              )
-                  : Center(
-                child: Container(
-                  height: 30,
-                  width: SizeConfig.screenWidth,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return Shimmer.fromColors(
-                            period: Duration(milliseconds: 1000),
-                            baseColor: Colors.black38.withOpacity(0.4),
-                            highlightColor:
-                            Colors.black38.withOpacity(0.1),
-                            child: Container(
-                              margin: EdgeInsets.all(8),
-                              width: 80,
-                              height: 30,
-                              color: Colors.grey,
-                            ));
-                      }),
-                ),
-              )
+              // viewmodel.appConfigModel != null
+              //     ? Container(
+              //   padding: EdgeInsets.only(top: 10),
+              //   width: SizeConfig.screenWidth,
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //     children: viewmodel
+              //         .appConfigModel!.androidConfig!.bottomNavigation!
+              //         .map((e) {
+              //       return InkWell(
+              //           onTap: () {
+              //             print(e.title);
+              //             getPages(e, context, profileViewModel);
+              //
+              //           },
+              //           child: Container(
+              //             padding: EdgeInsets.all(4),
+              //             decoration: BoxDecoration(
+              //               borderRadius: BorderRadius.circular(8),
+              //               border: Border.all(width: 1.2,color: Theme.of(context).primaryColor.withOpacity(0.8))
+              //             ),
+              //             child: AppMediumFont(context,
+              //                 msg: e.title ?? "",
+              //                 fontSize:  16,
+              //                 fontWeight: FontWeight.w300,
+              //             color: Theme.of(context).canvasColor.withOpacity(0.8)),
+              //           ));
+              //     }).toList(),
+              //   ),
+              // )
+              //     : Center(
+              //   child: Container(
+              //     height: 30,
+              //     width: SizeConfig.screenWidth,
+              //     child: ListView.builder(
+              //         scrollDirection: Axis.horizontal,
+              //         itemCount: 3,
+              //         itemBuilder: (context, index) {
+              //           return Shimmer.fromColors(
+              //               period: Duration(milliseconds: 1000),
+              //               baseColor: Colors.black38.withOpacity(0.4),
+              //               highlightColor:
+              //               Colors.black38.withOpacity(0.1),
+              //               child: Container(
+              //                 margin: EdgeInsets.all(8),
+              //                 width: 80,
+              //                 height: 30,
+              //                 color: Colors.grey,
+              //               ));
+              //         }),
+              //   ),
+              // )
             ],
           ),
         ),

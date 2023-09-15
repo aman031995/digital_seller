@@ -48,7 +48,7 @@ class _ThankYouPageState extends State<ThankYouPage> {
                   children: <Widget>[
                      Center(child: Image.asset(AssetsConstants.ic_shoppingSuccess,height:ResponsiveWidget.isMediumScreen(context) ?SizeConfig.screenWidth/3 :SizeConfig.screenWidth/8,width:ResponsiveWidget.isMediumScreen(context) ?SizeConfig.screenWidth/2 :  SizeConfig.screenWidth/6,fit: BoxFit.fill,)),
                     SizedBox(height: 20),
-                     Center(child: _textLiquidFillAnimation()),
+                     Center(child: _textLiquidFillAnimation(context)),
                     SizedBox(height: 20),
 
                   ],
@@ -59,12 +59,11 @@ class _ThankYouPageState extends State<ThankYouPage> {
     );
   }
 
-  Widget _textLiquidFillAnimation(){
+  Widget _textLiquidFillAnimation(BuildContext context){
     return  Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-
         AppBoldFont(context, msg: StringConstant.ThankYOU,color: GREEN,fontSize: ResponsiveWidget.isMediumScreen(context) ?20: 40),
         SizedBox(height: 10),
         AppBoldFont(context, msg: StringConstant.orderPlacedSuccess,color:Theme.of(context).canvasColor,fontSize: ResponsiveWidget.isMediumScreen(context) ?15: 22),
@@ -80,7 +79,7 @@ class _ThankYouPageState extends State<ThankYouPage> {
                 ?150:SizeConfig.screenWidth/7.6,
             child: InkWell(
               onTap: () {
-                context.pushRoute(HomePageWeb());
+                context.router.push(HomePageWeb());
               },
               child: Center(
                   child: AppMediumFont(context,

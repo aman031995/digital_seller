@@ -28,6 +28,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:readmore/readmore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../AppRouter.gr.dart';
 
@@ -103,18 +104,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             onTap: (){
               if (isLogins == true) {
                 isLogins = false;
-                setState(() {});
               }
               if(isSearch==true){
                 isSearch=false;
-                setState(() {
-                });
+
               }
               if(isnotification==true){
                 isnotification=false;
-                setState(() {
-
-                });
               }
             },
             child: Scaffold(
@@ -135,17 +131,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   } else {
                     if (isLogins == true) {
                       isLogins = false;
-                      setState(() {});
                     }
                     if (isSearch == true) {
                       isSearch = false;
-                      setState(() {});
                     }
                     if(isnotification==true){
                       isnotification=false;
-                      setState(() {
-
-                      });
                     }
                     context.router.push(FavouriteListPage());
                   }
@@ -164,17 +155,12 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                       } else{
                         if (isLogins == true) {
                           isLogins = false;
-                          setState(() {});
                         }
                         if (isSearch == true) {
                           isSearch = false;
-                          setState(() {});
                         }
                         if(isnotification==true){
                           isnotification=false;
-                          setState(() {
-
-                          });
                         }
                         context.router.push(CartDetail(
                             itemCount: '${viewmodel.cartItemCount}'
@@ -245,48 +231,15 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                                  ?.productImages,
                                              currentIndex,
                                              context))),
-                                 Positioned(top: 5,right: 5,
-                                     child: IconButton(
-                                         iconSize: 45,
-                                         icon: Image.asset(
-                                           AssetsConstants.ic_ShareIcon,
-                                         ),
-                                         onPressed: () {})),
-                                 Positioned(
-                                   right: 5,
-                                   top: 45,
-                                   child:IconButton(
-                                       iconSize: 45,
-                                       icon: Image.asset(
-                                         cartView.productListDetails
-                                             ?.productDetails?.isFavorite ==
-                                             true
-                                             ? AssetsConstants.ic_wishlistSelect
-                                             : AssetsConstants.ic_wishlistUnselect,
-                                       ),
-                                       onPressed: ()async{
-                                         SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                         if (sharedPreferences.getString('token')== null){
-                                           showDialog(
-                                               context: context,
-                                               builder:
-                                                   (BuildContext context) {
-                                                 return  LoginUp(
-                                                   product: true,
-                                                 );
-                                               });
-                                         } else {
-                                           final isFav =
-                                           viewmodel.productListDetails?.productDetails!.isFavorite = !viewmodel.productListDetails!.productDetails!.isFavorite!;
-                                           viewmodel.addToFavourite(
-                                               context,
-                                               "${viewmodel.productListDetails?.productId}",
-                                               "${viewmodel.productListDetails?.productDetails?.variantId}",
-                                               isFav!,
-                                               'productList');
-                                         }
-                                       })
-                                 )
+                                 // Positioned(top: 5,right:- 5,
+                                 //     child: IconButton(
+                                 //         iconSize: 45,
+                                 //         icon: Image.asset(
+                                 //           AssetsConstants.ic_ShareIcon,
+                                 //         ),
+                                 //         onPressed: () {})),
+                                 favoritebutton(context,viewmodel,top: 2)
+
                                ]))
                          ),
                          Container(
@@ -299,69 +252,40 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                  children: [
                                    productDescription(viewmodel),
                                    SizedBox(height: 8),
-                                   Container(
-                                     child: ProductSkuView(
-                                         selected: true,
-                                         skuDetails: cartView.productListDetails?.productSkuDetails,
-                                         cartView: cartView,
-                                         productList: cartView.productListDetails?.productDetails?.defaultVariationSku),
-                                   ),
+                                   ProductSkuView(
+                                       selected: true,
+                                       skuDetails: cartView.productListDetails?.productSkuDetails,
+                                       cartView: cartView,
+                                       productList: cartView.productListDetails?.productDetails?.defaultVariationSku),
                                  ])),
                          SizedBox(height: 12),
-                         cartView.productListDetails?.productDetails?.inStock == true
-                             ?   (cartView.productListDetails?.productDetails?.quantityLeft ?? 0) > 0?bottomNavigationButton():Center(
-                             child: Container(
-                                 height: 50,width: 180,
-                                 decoration: BoxDecoration(
-                                     borderRadius: BorderRadius.circular(4),
-                                     color: Theme.of(context).primaryColor
-                                 ),
-                                 child: Row(
-                                     children: [
-                                       SizedBox(width: 10),
-                                       Image.asset(AssetsConstants.ic_outOfStock,width: 20,height: 20,color: Theme.of(context).hintColor,),
-                                       SizedBox(width: 10),
-                                       AppBoldFont(context, color: Theme.of(context).hintColor, msg: StringConstant.OutofStock, fontSize: 18,fontWeight: FontWeight.w500),
-                                     ]))):
-                         Center(
-                               child: Container(
-                           height: 50,width: 180,
-                           decoration: BoxDecoration(
-                                 borderRadius: BorderRadius.circular(4),
-                                 color: Theme.of(context).primaryColor
-                           ),
-                           child: Row(
-                               children: [
-                                 SizedBox(width: 10),
-                                 Image.asset(AssetsConstants.ic_outOfStock,width: 20,height: 20,color: Theme.of(context).hintColor,),
-                                 SizedBox(width: 10),
-                                 AppBoldFont(context, color: Theme.of(context).hintColor, msg: StringConstant.OutofStock, fontSize: 18,fontWeight: FontWeight.w500),
-                               ]))),
+                         cartView.productListDetails?.productDetails?.inStock == true ?
+                         (cartView.productListDetails?.productDetails?.quantityLeft ?? 0) > 0?
+                        bottomNavigationButton():
+                         Center(child: OutofStock(context)):
+                         Center(child: OutofStock(context)),
                          SizedBox(height: 12),
-
-
                          footerMobile(context,homeViewModel),
-                       ],
-                     ),
-                   ),
-
-                 ],
-               ),
+                       ]
+                     )
+                   )
+                 ]
+               )
              ):
              Stack(
                children: [
                  Column(
                    children: [
                      Row(
-         mainAxisAlignment: MainAxisAlignment.center,
-         crossAxisAlignment: CrossAxisAlignment.start,
-         children: [
+                      mainAxisAlignment: MainAxisAlignment.center,
+                       crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                      Container(margin: EdgeInsets.only(top: SizeConfig.screenHeight*0.02),
                          width: SizeConfig.screenWidth/3.5,
                          child: Stack(children: [
                            CarouselSlider(
                                options: CarouselOptions(
-                                   height: SizeConfig.screenWidth / 2.4,
+                                   height: SizeConfig.screenWidth / 2.8,
                                    enableInfiniteScroll: viewmodel.productListDetails?.productDetails?.productImages?.length==1?false:true,
                                    reverse: false,
                                    viewportFraction: 1,
@@ -407,111 +331,40 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                                            ?.productImages,
                                        currentIndex,
                                        context))),
-                           Positioned(top: 2,right: -5,
-                               child: IconButton(
-                                   iconSize: 45,
-                                   icon: Image.asset(
-                                     AssetsConstants.ic_ShareIcon,
-                                   ),
-                                   onPressed: () {})),
-                           Positioned(
-                             right: -5,
-                               top: 40,
-                               child:IconButton(
-                                   iconSize: 45,
-                                   icon: Image.asset(
-                                     cartView.productListDetails
-                                         ?.productDetails?.isFavorite ==
-                                         true
-                                         ? AssetsConstants.ic_wishlistSelect
-                                         : AssetsConstants.ic_wishlistUnselect,
-                                   ),
-                                   onPressed: ()async{
-                                     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                     if (sharedPreferences.getString('token')== null){
-                                       showDialog(
-                                           context: context,
-                                           builder:
-                                               (BuildContext context) {
-                                             return  LoginUp(
-                                               product: true,
-                                             );
-                                           });
-                                     } else {
-                                       final isFav =
-                                       viewmodel.productListDetails?.productDetails!.isFavorite = !viewmodel.productListDetails!.productDetails!.isFavorite!;
-                                       viewmodel.addToFavourite(
-                                           context,
-                                           "${viewmodel.productListDetails?.productId}",
-                                           "${viewmodel.productListDetails?.productDetails?.variantId}",
-                                           isFav!,
-                                           'productList');
-                                     }
-                                   }),
-
-
-                           )
+                           // Positioned(top: 2,right: -5,
+                           //     child: IconButton(
+                           //         iconSize: 45,
+                           //         icon: Image.asset(
+                           //           AssetsConstants.ic_ShareIcon,
+                           //         ),
+                           //         onPressed: () {})),
+                           favoritebutton(context,viewmodel,top: 2)
                          ])),
                      Container(
                          width: SizeConfig.screenWidth/3,
                          margin: EdgeInsets.only(left: 20,top: SizeConfig.screenHeight*0.02),
-                         padding: EdgeInsets.only(left: 10.0, top: 5,),
+                         padding: EdgeInsets.only(left: 10.0, top: 5),
                          child: Column(
                              mainAxisAlignment: MainAxisAlignment.start,
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
                                productDescription(viewmodel),
                                SizedBox(height: 8),
-                               Container(
-                                 child: ProductSkuView(
-                                     selected: true,
-                                     skuDetails: cartView.productListDetails?.productSkuDetails,
-                                     cartView: cartView,
-                                     productList: cartView.productListDetails?.productDetails?.defaultVariationSku),
-                               ),
+                               ProductSkuView(
+                                   selected: true,
+                                   skuDetails: cartView.productListDetails?.productSkuDetails,
+                                   cartView: cartView,
+                                   productList: cartView.productListDetails?.productDetails?.defaultVariationSku),
                                cartView.productListDetails?.productDetails?.inStock == true
                               ?(cartView.productListDetails?.productDetails?.quantityLeft ?? 0) > 0 ?
                                bottomNavigationButton():
-                               Container(
-                                 height: 50,width: 180,
-                                 decoration: BoxDecoration(
-                                     borderRadius: BorderRadius.circular(4),
-                                     color: Theme.of(context).primaryColor
-                                 ),
-                                 child: Row(
-                                   children: [
-                                     SizedBox(width: 10),
-                                     Image.asset(AssetsConstants.ic_outOfStock,width: 20,height: 20,color: Theme.of(context).hintColor,),
-                                     SizedBox(width: 10),
-
-                                     AppBoldFont(context, color: Theme.of(context).hintColor,
-                                         msg: StringConstant.OutofStock, fontSize: 18,fontWeight: FontWeight.w500),
-                                   ],
-                                 ),
-                               ):
-                               Container(
-                                 height: 50,width: 180,
-                                 decoration: BoxDecoration(
-                                   borderRadius: BorderRadius.circular(4),
-                                   color: Theme.of(context).primaryColor
-                                 ),
-                                 child: Row(
-                                   children: [
-                                     SizedBox(width: 10), 
-                                     Image.asset(AssetsConstants.ic_outOfStock,width: 20,height: 20,color: Theme.of(context).hintColor,),
-                                     SizedBox(width: 10),
-
-                                     AppBoldFont(context, color: Theme.of(context).hintColor,
-                                         msg: StringConstant.OutofStock, fontSize: 18,fontWeight: FontWeight.w500),
-                                   ],
-                                 ),
-                               )
+                               OutofStock(context):
+                               OutofStock(context)
 
                              ]))
          ],
        ),
                      SizedBox(height: 150),
-                     SizedBox(height: 40),
                       footerDesktop(),
                    ],
                  ),
@@ -601,11 +454,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
             AppBoldFont(context,color:Theme.of(context).canvasColor,
                 msg: StringConstant.descriptionText, fontSize: 16),
             SizedBox(height: 8),
-            AppMediumFont(
-              context,
-              color: Theme.of(context).canvasColor.withOpacity(0.8),
-              msg: "${cartView.productListDetails?.productLongDesc ?? ''}",
-              fontSize: 14.0,
+            ReadMoreText(
+              '${cartView.productListDetails?.productLongDesc}',
+              trimLines: 4,
+              style: TextStyle(color: Theme.of(context).canvasColor.withOpacity(0.8)),
+              colorClickableText: Theme.of(context).primaryColor,
+              trimMode: TrimMode.Line,
+              trimCollapsedText: '...Read more',
+              trimExpandedText: ' Less',
             ),
             SizedBox(height: 6),
           ]),
@@ -628,7 +484,8 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         width:ResponsiveWidget.isMediumScreen(context)
             ?SizeConfig.screenWidth: SizeConfig.screenWidth/4,
         child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment:  ResponsiveWidget.isMediumScreen(context)
+                ?MainAxisAlignment.center:MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ElevatedButton(
@@ -736,4 +593,20 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
         ]));
   }
 
+}
+
+Widget OutofStock(BuildContext context){
+  return  Container(
+      height: 50,width: 180,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(4),
+          color: Theme.of(context).primaryColor
+      ),
+      child: Row(
+          children: [
+            SizedBox(width: 10),
+            Image.asset(AssetsConstants.ic_outOfStock,width: 20,height: 20,color: Theme.of(context).hintColor,),
+            SizedBox(width: 10),
+            AppBoldFont(context, color: Theme.of(context).hintColor, msg: StringConstant.OutofStock, fontSize: 18,fontWeight: FontWeight.w500),
+          ]));
 }

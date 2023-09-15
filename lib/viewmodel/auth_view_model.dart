@@ -231,7 +231,7 @@ class AuthViewModel with ChangeNotifier {
               AppDataManager.getInstance.updateUserDetails(_userInfoModel!);
 
               product==true?  Navigator.pop(context):context.router.push(HomePageWeb());
-              Timer(Duration(milliseconds: 800), () {
+              Timer(Duration(milliseconds: 200), () {
                 reloadPage();
               });
               notifyListeners();
@@ -258,7 +258,7 @@ class AuthViewModel with ChangeNotifier {
             AppDataManager.getInstance.updateUserDetails(userInfoModel!);
             AppIndicator.disposeIndicator();
             Navigator.pop(context);
-            Timer(Duration(milliseconds: 800), () {
+            Timer(Duration(milliseconds: 200), () {
               reloadPage();
             });
             notifyListeners();

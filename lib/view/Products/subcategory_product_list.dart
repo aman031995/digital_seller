@@ -53,21 +53,18 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
   ScrollController _scrollController = ScrollController();
   ScrollController scrollController1 = ScrollController();
 
-
-
-
   void initState() {
     notificationViewModel.getNotificationCountText(context);
-
     homeViewModel.getAppConfig(context);
     getProduct();
     cartViewModel.getCartCount(context);
     super.initState();
   }
+
   getProduct() {
-    cartViewModel.getProductListCategory(
-          context, "", widget.SubcategoryProductName ?? "",  SessionStorageHelper.getValue("pageNum").toString()=="null"?1:int.parse(SessionStorageHelper.getValue("pageNum").toString()),(result, isSuccess){});
+    cartViewModel.getProductListCategory(context, "", widget.SubcategoryProductName ?? "",  SessionStorageHelper.getValue("pageNum").toString()=="null"?1:int.parse(SessionStorageHelper.getValue("pageNum").toString()),(result, isSuccess){});
   }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -83,22 +80,17 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
         child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
           return ChangeNotifierProvider.value(
               value: notificationViewModel,
-              child: Consumer<NotificationViewModel>(
-                  builder: (context, model, _) {return GestureDetector(
+              child: Consumer<NotificationViewModel>(builder: (context, model, _) {
+                return GestureDetector(
             onTap: () {
               if (isLogins == true) {
                 isLogins = false;
-                setState(() {});
               }
               if (isSearch == true) {
                 isSearch = false;
-                setState(() {});
               }
               if(isnotification==true){
                 isnotification=false;
-                setState(() {
-
-                });
               }
             },
             child: Scaffold(
@@ -133,17 +125,13 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                   } else {
                     if (isLogins == true) {
                       isLogins = false;
-                      setState(() {});
                     }
                     if (isSearch == true) {
                       isSearch = false;
-                      setState(() {});
                     }
                     if(isnotification==true){
                       isnotification=false;
-                      setState(() {
 
-                      });
                     }
                     context.router.push(FavouriteListPage());
                   }
@@ -164,17 +152,13 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                   } else {
                     if (isLogins == true) {
                       isLogins = false;
-                      setState(() {});
                     }
                     if (isSearch == true) {
                       isSearch = false;
-                      setState(() {});
                     }
                     if(isnotification==true){
                       isnotification=false;
-                      setState(() {
 
-                      });
                     }
                     context.router.push(CartDetail(
                         itemCount: '${cartViewModel.cartItemCount}'));
@@ -188,11 +172,11 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                   drawer: ResponsiveWidget.isMediumScreen(context)
                       ? AppMenu()
                       : SizedBox(),
-                  body: viewmodel.productListModel?.productList != null
-                      ? (viewmodel.productListModel?.productList?.length ?? 0) > 0
-                      ? Stack(
+                  body:  Stack(
                     children: [
-                      SingleChildScrollView(
+                      viewmodel.productListModel?.productList != null
+                          ? (viewmodel.productListModel?.productList?.length ?? 0) > 0
+                          ? SingleChildScrollView(
                         controller: scrollController1,
                           child: Column(
                             children: [
@@ -200,30 +184,18 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                   ? Column(
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(
-                                        right: 12,
-                                        left: 12,
-                                        top: 12),
+                                    margin: EdgeInsets.only(right: 12, left: 12, top: 12),
                                     width: SizeConfig.screenWidth,
                                     child: GridView.builder(
                                       shrinkWrap: true,
-                                      physics:
-                                      NeverScrollableScrollPhysics(),
-                                      gridDelegate:
-                                      SliverGridDelegateWithFixedCrossAxisCount(
+                                      physics: NeverScrollableScrollPhysics(),
+                                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 2,
                                         childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.6:0.90,mainAxisSpacing: 3,crossAxisSpacing: 3
                                       ),
-                                      itemCount: viewmodel
-                                          .productListModel
-                                          ?.productList
-                                          ?.length,
-                                      itemBuilder:
-                                          (context, index) {
-                                        final productListData =
-                                        viewmodel
-                                            .productListModel
-                                            ?.productList?[index];
+                                      itemCount: viewmodel.productListModel?.productList?.length,
+                                      itemBuilder: (context, index) {
+                                        final productListData = viewmodel.productListModel?.productList?[index];
                                         return productListItems(
                                             context,
                                             productListData,
@@ -241,9 +213,9 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                 crossAxisAlignment:
                                 CrossAxisAlignment.start,
                                 children: [
-                                  CategoryFilterScreen(
-                                    items: [],
-                                  ),
+                                  // CategoryFilterScreen(
+                                  //   items: [],
+                                  // ),
                                   Column(
                                     mainAxisAlignment:
                                     MainAxisAlignment.start,
@@ -251,24 +223,21 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                     CrossAxisAlignment
                                         .center,
                                     children: [
+                                      // Container(
+                                      //     alignment:
+                                      //     Alignment.topLeft,
+                                      //     padding:
+                                      //     EdgeInsets.only(
+                                      //         top: 30,
+                                      //         right: 20),
+                                      //     width: SizeConfig
+                                      //         .screenWidth /
+                                      //         1.75,
+                                      //     child:
+                                      //     catrgoryTopSortWidget(context)),
                                       Container(
-                                          alignment:
-                                          Alignment.topLeft,
-                                          padding:
-                                          EdgeInsets.only(
-                                              top: 30,
-                                              right: 20),
-                                          width: SizeConfig
-                                              .screenWidth /
-                                              1.75,
-                                          child:
-                                          catrgoryTopSortWidget(context)),
-                                      Container(
-                                          width: SizeConfig
-                                              .screenWidth /
-                                              1.75,
-                                          child:
-                                          GridView.builder(
+                                          width: ResponsiveWidget.isMediumScreen(context) ?SizeConfig.screenWidth/1.08:SizeConfig.screenWidth/1.38,
+                                          child: GridView.builder(
                                             shrinkWrap: true,
                                             physics:
                                             NeverScrollableScrollPhysics(),
@@ -313,14 +282,16 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                   ? footerMobile(context,homeViewModel)
                                   : footerDesktop()
                             ],
-                          )),
+                          )):
+                             noDataFoundMessage(context,StringConstant.noProductAdded,homeViewModel):
+                      Center(
+                        child: ThreeArchedCircle(size: 45.0),
+                      ),
                       ResponsiveWidget.isMediumScreen(context)
                           ? Container()
                           : isnotification == true
                           ?    Positioned(
-                          top:  SizeConfig
-                              .screenWidth *
-                              0.041,
+                          top:  1,
                           right:  SizeConfig
                               .screenWidth *
                               0.20,
@@ -351,51 +322,6 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                           : Container()
                     ],
                   )
-                      :  Stack(
-                    children: [
-                      noDataFoundMessage(
-                          context,StringConstant.noProductAdded,homeViewModel),
-                      ResponsiveWidget.isMediumScreen(context)
-                          ? Container()
-                          : isnotification == true
-                          ?    Positioned(
-                          top:  SizeConfig
-                              .screenWidth *
-                              0.001,
-                          right:  SizeConfig
-                              .screenWidth *
-                              0.20,
-                          child: notification(notificationViewModel,context,_scrollController)):Container(),
-                      ResponsiveWidget
-                          .isMediumScreen(context)
-                          ?Container(): isLogins == true
-                          ? Positioned(
-                          top: 0,
-                          right:  180,
-                          child: profile(context,
-                              setState, profileViewModel))
-                          : Container(),
-                      ResponsiveWidget
-                          .isMediumScreen(context)
-                          ? Container():   isSearch == true
-                          ? Positioned(
-                          top:  SizeConfig.screenWidth *
-                              0.001,
-                          right:  SizeConfig.screenWidth *
-                              0.20,
-                          child: searchList(
-                              context,
-                              homeViewModel,
-                              scrollController,
-                              searchController!,
-                              cartViewModel
-                                  .cartItemCount))
-                          : Container()
-                    ],
-                  )
-                      : Center(
-                    child: ThreeArchedCircle(size: 45.0),
-                  ),
                 )),
           );
         }));
@@ -410,7 +336,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
           left: 12,
           top: 20),
       width:ResponsiveWidget.isMediumScreen(context)
-          ? SizeConfig.screenWidth:SizeConfig.screenWidth/4,
+          ? viewmodel.productListModel!.pagination!.lastPage! < 4?SizeConfig.screenWidth/1.6  :SizeConfig.screenWidth:SizeConfig.screenWidth/4,
       child: NumberPaginator(
         numberPages: viewmodel
             .productListModel!

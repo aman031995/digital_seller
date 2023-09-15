@@ -41,7 +41,7 @@ static String noSearchProductFound='We always try to give the best\nresult on yo
   static String worngEmail="Please enter correct email";
 
   //  ************ Forgot Password *************
-  static String enterOtpText = "Please check your phone number we will send you a verification code.";
+  static String enterOtpText = "Please check your email or phone number we will send you a verification code.";
   static String enterEmailOtpText = "Please check your email we will send you a verification code.";
   static String send = "Send";
   static String resend = "Resend";
@@ -237,6 +237,7 @@ static String offerSupport = '24/7 Support';
 static String getLatestupdate = 'Get Latest Update by Subscribe Our News later';
 static String digitalSellerLitelogo="https://eacademyeducation.com:8011/logo/lite_logo.png";
 static String digitalSellerDarklogo="https://eacademyeducation.com:8011/logo/dark_logo.png";
+//static String Loremtext='Chikankari embroidery is a traditional and intricate style of embroidery that originates from the city of Lucknow in the northern Indian state of Uttar Pradesh. It is one of the most renowned and treasured forms of hand embroidery in India and is highly valued for its elegance, craftsmanship, and delicacy';
 static String Loremtext= "Elevate your business with our comprehensive online store solution. With our powerful e-commerce platform, you'll effortlessly build, customize, and manage your digital storefront. Maximize sales and customer engagement with intuitive tools and dedicated support, tailored for your success.Sellers can design their online stores using customizable templates, branding elements, and layout options to create a unique and appealing digital presence.";
 static String ThankYOU='Thank You For Shopping';
 

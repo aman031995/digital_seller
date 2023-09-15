@@ -20,9 +20,9 @@ Widget emailNotificationUpdatePage(BuildContext context, TextEditingController e
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          AppMediumFont(context, msg: "SIGN UP AND SAVE UP TO 20%", fontSize:  ResponsiveWidget.isMediumScreen(context) ?20:32, fontWeight: FontWeight.w600, color: Theme.of(context).canvasColor),
+          AppMediumFont(context, msg: "SIGN UP AND SAVE UP TO 20%", fontSize:  ResponsiveWidget.isMediumScreen(context) ?16:32, fontWeight: FontWeight.w600, color: Theme.of(context).canvasColor),
           SizedBox(height:  ResponsiveWidget.isMediumScreen(context) ?10:30,),
-          AppRegularFont(context, msg: 'Be updated on new arrivals, trends and offers. Sign up now! ', fontSize: ResponsiveWidget.isMediumScreen(context) ?16: 28, fontWeight: FontWeight.w500, color: Theme.of(context).canvasColor),
+          AppRegularFont(context, msg: 'Be updated on new arrivals, trends and offers. Sign up now! ', fontSize: ResponsiveWidget.isMediumScreen(context) ?14: 28, fontWeight: FontWeight.w500, color: Theme.of(context).canvasColor),
           SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?10: 30,),
           ResponsiveWidget.isMediumScreen(context) ? getLatestUpdateRowTextFieldMobile(context,emailController,authVM):getLatestUpdateRowTextField(context,emailController,authVM),
         ],
@@ -74,7 +74,7 @@ Widget getLatestUpdateRowTextFieldMobile(BuildContext context, TextEditingContro
       inputNormalTextField(emailController, TextInputType.emailAddress, StringConstant.enterEmail, null,context,authVM),
        SizedBox(height: 8),
       Container(
-        height:40,
+        height:50,
         width:200,
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(0)),
@@ -84,7 +84,7 @@ Widget getLatestUpdateRowTextFieldMobile(BuildContext context, TextEditingContro
             builder: (context, snapshot) {
               return appButton(
                   context,
-                  StringConstant.login,
+                  StringConstant.subscribe,
                   SizeConfig.screenWidth ,
                   50.0,
                   Theme.of(context).primaryColor,
@@ -107,7 +107,7 @@ Widget getLatestUpdateRowTextFieldMobile(BuildContext context, TextEditingContro
 Widget inputNormalTextField(var ctrl,var keyType, String msg, var sinkValue,BuildContext context,AuthViewModel authVM) {
   return
     Container(
-      height:ResponsiveWidget.isMediumScreen(context) ?60: 80,
+      height:ResponsiveWidget.isMediumScreen(context) ?80: 80,
       width:ResponsiveWidget.isMediumScreen(context) ?300: SizeConfig.screenWidth * 0.2,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(0)),

@@ -42,37 +42,37 @@ class _ResetPasswordState extends State<ResetPassword> {
     SizeConfig().init(context);
     final authVM = Provider.of<AuthViewModel>(context);
     return AlertDialog(
-      elevation: 8,
+      elevation: 10,
       titlePadding: EdgeInsets.zero,
       backgroundColor: Theme.of(context).cardColor,
       contentPadding: EdgeInsets.zero,
       insetPadding: EdgeInsets.all(10),
-      content: ResponsiveWidget.isMediumScreen(context)? Container(
-        padding: EdgeInsets.only(left: 15,right: 15,top: 10,bottom: 15),
+      content: Container(
+        margin:  EdgeInsets.only(left:ResponsiveWidget.isMediumScreen(context)?15: 50, right:ResponsiveWidget.isMediumScreen(context)?15: 50,top:ResponsiveWidget.isMediumScreen(context)?10: 20),
+        width:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth :SizeConfig.screenWidth * 0.25,
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
-                children: [
-                  Positioned(
-                    child: Container(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                          onPressed: (){
+                  children: [
+                    Positioned(
+                        child: GestureDetector(
+                          onTap: (){
                             Navigator.pop(context);
-                          }, icon: Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor)),
-                    ),
-                  )
-                ],
-              ),
-              AppBoldFont(
-                  textAlign: TextAlign.center,
-                  context,msg: StringConstant.reset, fontSize: 22),
+                          },
+                          child: Container(
+                              alignment: Alignment.topRight,
+                              child:Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor,width:ResponsiveWidget.isMediumScreen(context)?20: 25,height:ResponsiveWidget.isMediumScreen(context)?20: 25)),
+                        ))]),
+              SizedBox(height:ResponsiveWidget.isMediumScreen(context)?5: 25),
+              AppBoldFont(context,msg:StringConstant.reset, fontSize:ResponsiveWidget.isMediumScreen(context)?22: 30),
+              SizedBox(height:ResponsiveWidget.isMediumScreen(context)?10: 15),
               AppRegularFont(
                   context,msg: StringConstant.enterNewPassword,
                   fontSize:16),
-              SizedBox(height: 25),
+              SizedBox(height: ResponsiveWidget.isMediumScreen(context)?10:20),
+
               StreamBuilder(
                   stream: validation.password,
                   builder: (context, snapshot) {
@@ -94,14 +94,14 @@ class _ResetPasswordState extends State<ResetPassword> {
                         },
                         onSubmitted: (m) {});
                   }),
-              SizedBox(height: 10),
+              SizedBox(height:ResponsiveWidget.isMediumScreen(context)?10: 20),
               StreamBuilder(
                   stream: validation.confirmPassword,
                   builder: (context, snapshot) {
                     return AppTextField(
                         maxLine: 1,
                         controller: confirmPasswordController,
-                        labelText: StringConstant.confirmPassword,
+                        labelText:  StringConstant.confirmPassword,
                         prefixText: '',
                         isShowPassword: true,
                         isTick: true,
@@ -116,15 +116,15 @@ class _ResetPasswordState extends State<ResetPassword> {
                         },
                         onSubmitted: (m) {});
                   }),
-              SizedBox(height: 20),
+              SizedBox(height: ResponsiveWidget.isMediumScreen(context)?10:20),
               StreamBuilder(
                   stream: validation.checkResetPasswordValidate,
                   builder: (context, snapshot) {
                     return appButton(
                         context,
                         StringConstant.reset,
-                        SizeConfig.screenWidth,
-                        50.0,
+                          SizeConfig.screenWidth,
+                         50.0,
                         Theme.of(context).primaryColor,
                         Theme.of(context).hintColor,
                         18,
@@ -136,7 +136,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                           confirmPasswordController.text,widget.loginType);
                     });
                   }),
-              SizedBox(height: 20),
+              SizedBox(height:ResponsiveWidget.isMediumScreen(context)?10:30),
               GestureDetector(
                 onTap: () async{
                   const url = 'http://digitalseller.in/';
@@ -147,138 +147,13 @@ class _ResetPasswordState extends State<ResetPassword> {
                   }
                 },
                 child: Center(
-                  child: GlobalVariable.isLightTheme == true ?
-                  Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 100) :
-                  Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 100),
+                  child: Container(
+                      child: GlobalVariable.isLightTheme == true ?
+                      Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width:ResponsiveWidget.isMediumScreen(context)?150:SizeConfig.screenWidth*0.12,height:ResponsiveWidget.isMediumScreen(context)?50: SizeConfig.screenWidth*0.03) :
+                      Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width:ResponsiveWidget.isMediumScreen(context)?150: SizeConfig.screenWidth*0.12,height:ResponsiveWidget.isMediumScreen(context)?50:SizeConfig.screenWidth*0.03)),
                 ),
               ),
-              SizedBox(height: 5),
-            ],
-          ),
-        ),
-      ) :
-      Container(
-        height: SizeConfig.screenHeight / 1.8,
-        margin:  EdgeInsets.only(left: 50, right: 50,top: 20),
-        width: SizeConfig.screenWidth * 0.25,
-        child: SingleChildScrollView(
-          child: Column(
-
-            children: [
-              Stack(
-                children: [
-                  Positioned(
-                    child: Container(
-                      alignment: Alignment.topRight,
-                      child: IconButton(
-                          onPressed: (){
-                            Navigator.pop(context);
-                          }, icon: Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor)),
-                    ),
-                  )
-                ],
-              ),
-              Container(
-                alignment: Alignment.topLeft,
-                child: AppBoldFont(
-                    context,msg:StringConstant.reset, fontSize: 30),
-              ),
-              SizedBox(height: 15,),
-              Container(
-                alignment: Alignment.topLeft,
-                child: AppRegularFont(
-                    context,msg: StringConstant.enterNewPassword,
-                    fontSize:16),
-              ),
-              SizedBox(height: 30),
-              Container(
-                width: 400,
-                child: StreamBuilder(
-                    stream: validation.password,
-                    builder: (context, snapshot) {
-                      return AppTextField(
-                          maxLine: 1,
-                          controller: newPasswordController,
-                          labelText: StringConstant.newPassword,
-                          prefixText: '',
-                          isShowPassword: true,
-                          isTick: true,
-                          isColor: isPassword,
-                          keyBoardType: TextInputType.visiblePassword,
-                          errorText:
-                          snapshot.hasError ? snapshot.error.toString() : null,
-                          onChanged: (m) {
-                            validation.sinkPassword.add(m);
-                            isPassword = true;
-                            setState(() {});
-                          },
-                          onSubmitted: (m) {});
-                    }),
-              ),
-              SizedBox(height: 15),
-              Container(
-                width: 400,
-                child: StreamBuilder(
-                    stream: validation.confirmPassword,
-                    builder: (context, snapshot) {
-                      return AppTextField(
-                          maxLine: 1,
-                          controller: confirmPasswordController,
-                          labelText:  StringConstant.confirmPassword,
-                          prefixText: '',
-                          isShowPassword: true,
-                          isTick: true,
-                          isColor: isPassword2,
-                          keyBoardType: TextInputType.visiblePassword,
-                          errorText:
-                          snapshot.hasError ? snapshot.error.toString() : null,
-                          onChanged: (m) {
-                            validation.sinkConfirmPassword.add(m);
-                            isPassword2 = true;
-                            setState(() {});
-                          },
-                          onSubmitted: (m) {});
-                    }),
-              ),
-              SizedBox(height: 20),
-              Container(
-                width: 400,
-                child: StreamBuilder(
-                    stream: validation.checkResetPasswordValidate,
-                    builder: (context, snapshot) {
-                      return appButton(
-                          context,
-                          StringConstant.reset,
-                            SizeConfig.screenWidth,
-                           50.0,
-                          Theme.of(context).primaryColor,
-                          Theme.of(context).hintColor,
-                          18,
-                          10,
-                          snapshot.data != true ? false : true, onTap: () {
-                        snapshot.data != true
-                            ? ToastMessage.message(StringConstant.fillOut,context)
-                            : resetBtnPressed(authVM, newPasswordController.text,
-                            confirmPasswordController.text,widget.loginType);
-                      });
-                    }),
-              ),
-              SizedBox(height:30),
-              GestureDetector(
-                onTap: () async{
-                  const url = 'http://digitalseller.in/';
-                  if (await canLaunch(url)) {
-                    await launch(url, forceWebView: false, enableJavaScript: true);
-                  } else {
-                    throw 'Could not launch $url';
-                  }
-                },
-                child: Center(
-                    child: GlobalVariable.isLightTheme == true ?
-                    Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width:SizeConfig.screenWidth*0.12,height: SizeConfig.screenWidth*0.03) :
-                    Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: SizeConfig.screenWidth*0.12,height:SizeConfig.screenWidth*0.03)),
-              ),
-              SizedBox(height:10),
+              SizedBox(height:ResponsiveWidget.isMediumScreen(context)?15:40),
             ],
           ),
         ),

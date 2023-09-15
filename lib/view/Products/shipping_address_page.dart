@@ -293,12 +293,11 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                             firstNameController.text,
                                             lastNameController.text,
                                             emailController.text,
-                                            mobileNumberController
-                                                .text,
+                                            mobileNumberController.text,
                                             addressFirstController.text,
                                             addressSecondController.text,
                                            landmarkController.text,
-                                pinCodeController.text,
+                                           pinCodeController.text,
                                             cityController.text,
                                             stateController.text,
                                            ''

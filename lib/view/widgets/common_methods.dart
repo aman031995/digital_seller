@@ -21,6 +21,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CommonMethods {
@@ -357,7 +358,7 @@ Widget productListItems(BuildContext context, ProductList? productListData,
                     productGalleryTitleSection(context, productListData, true)
                   ],
                 ),
-                Positioned(
+               Positioned(
                     top: 1,
                     right: -5,
                     child: IconButton(
@@ -385,18 +386,16 @@ Widget productListItems(BuildContext context, ProductList? productListData,
                                   );
                                 });
                           } else {
-                            final isFav = productListData!
-                                    .productDetails!.isFavorite =
-                                !productListData.productDetails!.isFavorite!;
-                            viewmodel.addToFavourite(
+                              final isFav = productListData!.productDetails!.isFavorite = !productListData.productDetails!.isFavorite!;
+                              viewmodel.addToFavourite(
                                 context,
                                 "${productListData.productId}",
                                 "${productListData.productDetails?.variantId}",
                                 isFav,
-                                'productList',
-                                favouritepage: favouritepage);
+                                '');
                           }
                         }))
+
               ],
             ),
           ));
@@ -685,6 +684,7 @@ Widget pricedetails(BuildContext context, CartViewModel cartViewData) {
 Widget addressDetails(
     BuildContext context, String? addressId, CartViewModel cartViewData) {
   return Container(
+    height: SizeConfig.screenHeight-290,
     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
     margin: EdgeInsets.only(bottom: 8),
     width: ResponsiveWidget.isMediumScreen(context) ? SizeConfig.screenWidth : SizeConfig.screenWidth * 0.30,
@@ -1165,6 +1165,478 @@ Widget dropdown(List<String> txt, BuildContext context) {
         ),
       ),
     ],
+  );
+}
+
+//homepage methods
+Widget  discountView(CartViewModel cartview) {
+  return  Consumer<CartViewModel>(
+    builder: (context, homeVM, _){
+      return Container(
+        width: SizeConfig.screenWidth,
+        color: Theme.of(context).primaryColor.withOpacity(0.5),
+
+        margin: EdgeInsets.zero,
+        height: ResponsiveWidget
+            .isMediumScreen(
+            context)
+            ? 300
+            : SizeConfig
+            .screenWidth *
+            0.31,
+        padding: EdgeInsets.only(
+            left: ResponsiveWidget
+                .isMediumScreen(
+                context)
+                ? 8
+                : SizeConfig
+                .screenWidth *
+                0.12,
+            right: ResponsiveWidget
+                .isMediumScreen(
+                context)
+                ? 8
+                : SizeConfig
+                .screenWidth *
+                0.11,
+            top: ResponsiveWidget
+                .isMediumScreen(
+                context)
+                ?10: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              alignment: Alignment.topLeft,
+              child: AppBoldFont(context, msg: 'Discounts for You', fontWeight:
+              FontWeight
+                  .w700,textAlign: TextAlign.left,
+                  fontSize:
+                  ResponsiveWidget.isMediumScreen(context)
+                      ? 16
+                      : 22),
+            ),
+            SizedBox(height: 10),
+            Container(
+                height: ResponsiveWidget.isMediumScreen(context) ? 230 : SizeConfig.screenWidth * 0.27,
+                width: SizeConfig
+                    .screenWidth,
+
+
+                child: ListView.builder(
+                    reverse: false,
+                    shrinkWrap: true,
+                    padding: EdgeInsets.zero,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: cartview.offerDiscountModel?.length,
+                    itemBuilder: (context, position) {
+                      return OnHover(
+                        builder: (isHovered) {
+                          return InkWell(
+                              onTap: () {
+                                if (isLogins == true) {
+                                  isLogins = false;
+                                }
+                                if (isSearch == true) {
+                                  isSearch = false;
+                                }
+                                if (isnotification == true) {
+                                  isnotification = false;
+                                }
+                                context.router.push(ProductListGallery(
+                                    discountdata: ["${cartview.offerDiscountModel?[position].categoryId}","${cartview.offerDiscountModel?[position].discountPercentage}"]
+                                ));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(right:ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
+                                width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    CachedNetworkImage(
+                                        height: ResponsiveWidget.isMediumScreen(context) ? 180 : SizeConfig.screenWidth * 0.22,
+                                        width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.22,
+                                        imageUrl: '${cartview.offerDiscountModel?[position].images}',
+                                        fit: BoxFit.fill,
+                                        placeholder: (context, url) => Center(
+                                            child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2))),
+                                    SizedBox(height: 8),
+                                    AppBoldFont(context, msg: "${cartview.offerDiscountModel?[position].title}", color: Theme.of(context).canvasColor,fontSize: ResponsiveWidget.isMediumScreen(context) ? 14:18),
+                                    SizedBox(height: 4),
+                                    AppRegularFont(context, msg: "Up To. ${cartview.offerDiscountModel?[position].discountPercentage}% Off", color: GREEN, fontSize: ResponsiveWidget.isMediumScreen(context) ? 14:18)
+
+
+                                  ],
+                                ),
+                              ));
+                        },hovered: Matrix4.identity()..translate(0, 0, 0),
+
+                      );})),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+Widget gallery(BuildContext context,List images){
+  return  Center(
+    child: Container(
+      width: SizeConfig.screenWidth,
+      margin: EdgeInsets.zero,
+      color: Theme.of(context)
+          .cardColor
+          .withOpacity(0.6),
+      padding: EdgeInsets.only(
+          left: ResponsiveWidget
+              .isMediumScreen(
+              context)
+              ? 8
+              : SizeConfig
+              .screenWidth *
+              0.01,
+          right: ResponsiveWidget
+              .isMediumScreen(
+              context)
+              ? 0
+              : SizeConfig
+              .screenWidth *
+              0.01,
+          top: 20,
+          bottom: 20),
+      child: GridView.builder(
+        shrinkWrap: true,
+        padding: EdgeInsets.zero,
+        physics:
+        BouncingScrollPhysics(),
+        gridDelegate:
+        SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          childAspectRatio: 0.78,
+        ),
+        itemCount: images.length,
+        itemBuilder:
+            (context, index) {
+          return InkWell(
+              onTap: () {
+                if (isLogins ==
+                    true) {
+                  isLogins = false;
+                }
+                if (isSearch ==
+                    true) {
+                  isSearch = false;
+                }
+                if (isnotification == true) {
+                  isnotification = false;
+                }
+                context.router.push(
+                    ProductListGallery());
+              },
+              child: OnHover(
+                builder:
+                    (isHovered) {
+                  return Card(
+                      shape:
+                      RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.circular(
+                            20),
+                      ),
+                      elevation:
+                      isHovered == true
+                          ? 20
+                          : 0,
+                      margin: EdgeInsets.only(
+                          right: ResponsiveWidget.isMediumScreen(
+                              context)
+                              ? 8
+                              : 16,
+                          bottom: ResponsiveWidget.isMediumScreen(
+                              context)
+                              ? 8
+                              : 16),
+                      child: Image
+                          .asset(
+                        images[
+                        index],
+                        fit: BoxFit
+                            .fill,
+                      ));
+                },
+                hovered: Matrix4
+                    .identity()
+                  ..translate(
+                      0, 0, 0),
+              ));
+        },
+      ),
+    ),
+  );
+}
+
+Widget recommeded(BuildContext context,controller,cartViewModel){
+  return     Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Container(
+        padding: EdgeInsets.only(
+            left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.01,
+            right: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.01),
+        alignment: Alignment.topLeft,
+        child: AppBoldFont(
+            context,textAlign: TextAlign.left,
+            msg: StringConstant.Recommended,
+            fontWeight: FontWeight.w700,
+            fontSize: ResponsiveWidget.isMediumScreen(context)? 14 : 18),
+      ),
+      SizedBox(
+          height: SizeConfig.screenWidth * 0.01),
+      Container(
+          padding: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.01,
+              right: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.01),
+          height: ResponsiveWidget.isMediumScreen(context) ? 235 : SizeConfig.screenWidth * 0.32,
+          child: ListView.builder(
+              reverse: false,
+              controller: controller,
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: cartViewModel.recommendedView?.length,
+              itemBuilder: (context, position) {
+                return AutoScrollTag(
+                    key: ValueKey(position),
+                    controller: controller,
+                    index: position,
+                    child: OnHover(
+                      builder: (isHovered) {
+                        return InkWell(
+                          onTap: () {
+                            if (isLogins == true) {
+                              isLogins = false;
+
+                            }
+                            if (isSearch == true) {
+                              isSearch = false;
+
+                            }
+                            if (isnotification == true) {
+                              isnotification = false;
+
+                            }
+                            context.router.push(ProductDetailPage(
+                              productName: '${cartViewModel.recommendedView?[position].productName?.replaceAll(' ', '')}',
+                              productdata: [
+                                '${cartViewModel.recommendedView?[position].productId}',
+                                '${cartViewModel.cartItemCount}',
+                                '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.size?.name}',
+                                '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.color?.name}',
+                                '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.style?.name}',
+                                '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.unitCount?.name}',
+                                '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.materialType?.name}',
+
+                              ],
+                            ));
+                          },
+                          child: Card(
+                            elevation: isHovered == true ? 10 : 0.0,
+                            margin: EdgeInsets.only(right:ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
+                            child: Container(
+                              width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
+                              decoration: BoxDecoration(color: Theme.of(context).cardColor),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  CachedNetworkImage(
+                                      imageUrl: '${cartViewModel.recommendedView?[position].productDetails?.productImages?[0]}',
+                                      fit: BoxFit.cover,
+                                      height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.228,
+                                      imageBuilder: (context, imageProvider) => Container(decoration: BoxDecoration(image: DecorationImage(image: imageProvider, fit: BoxFit.cover))),
+                                      placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.23, child: Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2)))),
+                                  SizedBox(height: 8),
+                                  AppBoldFont(maxLines: 1, context, msg: " "+"${getRecommendedViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
+                                  SizedBox(height: 2),
+                                  AppBoldFont(maxLines: 1, context, msg: "₹" + "${cartViewModel.recommendedView?[position].productDetails?.productDiscountPrice}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18),
+                                  SizedBox(height:10),
+                                  InkWell(
+                                    onTap: () {
+                                      context.router.push(ProductDetailPage(
+                                        productName: '${cartViewModel.recommendedView?[position].productName?.replaceAll(' ', '')}',
+                                        productdata: [
+                                          '${cartViewModel.recommendedView?[position].productId}',
+                                          '${cartViewModel.cartItemCount}',
+                                          '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.size?.name}',
+                                          '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.color?.name}',
+                                          '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.style?.name}',
+                                          '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.unitCount?.name}',
+                                          '${cartViewModel.recommendedView?[position].productDetails?.defaultVariationSku?.materialType?.name}',
+                                        ],
+                                      ));
+                                    },
+                                    child: Container(
+                                      width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
+                                      height: ResponsiveWidget.isMediumScreen(context) ? 30 : SizeConfig.screenWidth * 0.027,
+                                      alignment: Alignment.center,
+                                      margin: EdgeInsets.only(left: 16,right: 16),
+                                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(1.2), border: Border.all(width: 1, color: Theme.of(context).canvasColor)),
+                                      child: AppBoldFont(context, msg: StringConstant.buynow, fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 16, fontWeight: FontWeight.w700),
+                                    ),
+                                  ),
+                                  SizedBox(height: 10),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      hovered: Matrix4.identity()
+                        ..translate(0, 0, 0),
+                    ));
+              })),
+    ],
+  );
+}
+
+Widget recentView(BuildContext context,controller1,cartViewModel){
+  return  Column(mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Container(
+          padding: EdgeInsets.only(
+              left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.01,
+              right: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.01),
+          alignment: Alignment.topLeft,
+          child: AppBoldFont(
+              context, textAlign: TextAlign.left,
+              msg: StringConstant.RecentView,
+              fontWeight: FontWeight.w700,
+              fontSize: ResponsiveWidget.isMediumScreen(context) ? 14 : 18)
+      ),
+      SizedBox(height: SizeConfig.screenWidth * 0.01),
+      Container(
+          height: ResponsiveWidget.isMediumScreen(context) ? 200
+              : SizeConfig.screenWidth * 0.27,
+          width: SizeConfig.screenWidth,
+          padding: EdgeInsets.only(
+              left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.01,
+              right: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.01),
+          child: ListView.builder(
+              reverse: false,
+              controller: controller1,
+              padding: EdgeInsets.zero,
+              scrollDirection: Axis.horizontal,
+              itemCount: cartViewModel.recentView?.length,
+              itemBuilder: (context, position) {
+                return AutoScrollTag(
+                    key: ValueKey(position),
+                    controller: controller1,
+                    index: position,
+                    child: OnHover(
+                      builder: (isHovered) {
+                        return InkWell(
+                          onTap: () {
+                            if (isLogins == true) {
+                              isLogins = false;
+                            }
+                            if (isSearch == true) {
+                              isSearch = false;
+                            }
+                            if (isnotification == true) {
+                              isnotification = false;
+                            }
+                            context.router.push(ProductDetailPage(
+                              productName: '${cartViewModel.recentView?[position].productName}',
+                              productdata: [
+                                '${cartViewModel.recentView?[position].productId}',
+                                '${cartViewModel.cartItemCount}',
+                                '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.size?.name}',
+                                '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.color?.name}',
+                                '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.style?.name}',
+                                '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.unitCount?.name}',
+                                '${cartViewModel.recentView?[position].productDetails?.defaultVariationSku?.materialType?.name}',
+                              ],
+                            ));
+                          },
+                          child: Card(
+                            elevation: isHovered == true ? 10 : 0.0,
+                            margin: EdgeInsets.only(right:ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
+                            child: Container(
+                              width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).cardColor,
+                              ),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  CachedNetworkImage(
+                                      imageUrl: '${cartViewModel.recentView?[position].productDetails?.productImages?[0]}',
+                                      fit: BoxFit.fill,
+                                      height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.228,
+                                      imageBuilder: (context, imageProvider) => Container(
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                                        ),
+                                      ),
+                                      placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenHeight / 2.1, child: Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2)))),
+                                  SizedBox(height: 10),
+                                  AppBoldFont(context, msg:" "+ "${getRecentViewTitle(position, cartViewModel)}", fontSize: ResponsiveWidget.isMediumScreen(context) ? 12 : 18, maxLines: 1),
+                                  SizedBox(height: 10)
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                      hovered: Matrix4.identity()..translate(0, 0, 0),
+                    ));
+              }))
+    ],
+  );
+}
+
+//Product deatils
+
+Widget favoritebutton(BuildContext context,CartViewModel viewmodel,{double? top}){
+  return Positioned(
+    right: -5,
+    top: top,
+    child:IconButton(
+        iconSize: 45,
+        icon: Image.asset(
+          viewmodel.productListDetails
+              ?.productDetails?.isFavorite ==
+              true
+              ? AssetsConstants.ic_wishlistSelect
+              : AssetsConstants.ic_wishlistUnselect,
+        ),
+        onPressed: ()async{
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if (sharedPreferences.getString('token')== null){
+            showDialog(
+                context: context,
+                builder:
+                    (BuildContext context) {
+                  return  LoginUp(
+                    product: true,
+                  );
+                });
+          } else {
+            final isFav =
+            viewmodel.productListDetails?.productDetails!.isFavorite = !viewmodel.productListDetails!.productDetails!.isFavorite!;
+            viewmodel.addToFavourite(
+                context,
+                "${viewmodel.productListDetails?.productId}",
+                "${viewmodel.productListDetails?.productDetails?.variantId}",
+                isFav!,
+                'productList');
+          }
+        }),
+
+
   );
 }
 

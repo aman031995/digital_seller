@@ -22,7 +22,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class LoginUp extends StatefulWidget {
 bool? product;
-  LoginUp({Key? key,this.product}) : super(key: key);
+LoginUp({Key? key,this.product}) : super(key: key);
 
   @override
   State<LoginUp> createState() => _LoginUpState();
@@ -66,244 +66,34 @@ class _LoginUpState extends State<LoginUp> {
     return ChangeNotifierProvider.value(
         value: homeViewModel,
         child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
-          return  viewmodel.appConfigModel?.androidConfig!=null?ResponsiveWidget.isMediumScreen(context)?
-          AlertDialog(
-        elevation: 10,
-        backgroundColor:Theme.of(context).cardColor.withOpacity(0.8),
-        buttonPadding:EdgeInsets.zero,
-        actionsPadding: EdgeInsets.zero,
-        contentPadding: EdgeInsets.zero,
-        titlePadding: EdgeInsets.zero,
-              insetPadding: EdgeInsets.all(10),
-        content: Container(
-            color: Theme.of(context).cardColor.withOpacity(0.8),
-            padding: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
-                    children: [
-                      Positioned(
-                        child: GestureDetector(
-                          onTap: (){
-                            Navigator.pop(context);
-                          },
-                          child: Container(
-                              alignment: Alignment.topRight,
-                              child:Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor,width: 20,height: 20)),
-                        ),
+          return  viewmodel.appConfigModel?.androidConfig!=null?
 
-                      )
-                    ],
-                  ),
-                  AppBoldFont(context, msg: StringConstant.login, fontSize: 22),
-                  SizedBox(height: 10),
-                  AppMediumFont(context, msg:StringConstant.enterCredentials, fontSize: 16),
-                  SizedBox(height: 15),
-                  viewmodel.appConfigModel?.androidConfig?.loginWithPhone== true
-                      ? StreamBuilder(
-                          stream: validation.emailAndMobile,
-                          builder: (context, snapshot) {
-                            return AppTextField(
-                              maxLine: 1,
-                              controller: emailController,
-                              labelText: StringConstant.emailAndPhone,
-                              textCapitalization: TextCapitalization.words,
-                              isShowCountryCode: true,
-                              isShowPassword: false,
-                              secureText: false,
-                              maxLength: 40,
-                              keyBoardType: TextInputType.emailAddress,
-                              errorText: snapshot.hasError
-                                  ? snapshot.error.toString()
-                                  : null,
-                              onChanged: (m) {
-                                validation.sinkEmailAndPhone.add(m);
-                                isPhoneCheck(m) == true
-                                    ? isCheckCredentialPhoneOrEmail = true
-                                    : isCheckCredentialPhoneOrEmail = false;
-                                setState(() {});
-                              },
-                              onSubmitted: (m) {},
-                              isTick: null,
-                            );
-                          })   :
-                  StreamBuilder(
-                      stream: validation.email,
-                      builder: (context, snapshot) {
-                        return AppTextField(
-                            maxLine: null,
-                            prefixText: '',
-                            controller: emailController,
-                            labelText: StringConstant.email,
-                            isShowCountryCode: true,
-                            isShowPassword: false,
-                            secureText: false,
-                            isColor: false,
-                            isTick: false,
-                            maxLength: 40,
-                            errorText: snapshot.hasError
-                                ? snapshot.error.toString()
-                                : null,
-                            onChanged: (m) {
-                              validation.sinkEmail.add(m);
-                              isPhone = true;
-                              setState(() {});
-                            },
-                            keyBoardType: TextInputType.emailAddress,
-                            onSubmitted: (m) {});
-                      }),
-                  SizedBox(height: 10),
-                  isCheckCredentialPhoneOrEmail == true
-                      ? SizedBox()
-                      : StreamBuilder(
-                          stream: validation.password,
-                          builder: (context, snapshot) {
-                            return AppTextField(
-                                maxLine: 1,
-                                controller: passwordController,
-                                labelText: StringConstant.password,
-                                prefixText: '',
-                                isShowPassword: true,
-                                isTick: true,
-                                isColor: isPassword,
-                                keyBoardType: TextInputType.visiblePassword,
-                                errorText: snapshot.hasError
-                                    ? snapshot.error.toString()
-                                    : null,
-                                onChanged: (m) {
-                                  validation.sinkPassword.add(m);
-                                  isPassword = true;
-                                  setState(() {});
-                                },
-                                onSubmitted: (m) {});
-                          }),
-                  SizedBox(height: 5),
-                  appTextButton(
-                      context,
-                      StringConstant.forgotPass,
-                      Alignment.centerRight,
-                      Theme.of(context).canvasColor, 14,
-                      true, onPressed: () {
-                    Navigator.pop(context);
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return  ForgotPassword(viewModel: viewmodel,);
-                        });
-                  }),
-                  SizedBox(height: 10),
-                  StreamBuilder(
-                      stream:  viewmodel.appConfigModel?.androidConfig?.loginWithPhone == false
-                          ? validation.checkUserEmailLogin
-                          : isCheckCredentialPhoneOrEmail == true
-                          ? validation.checkEmailAndPhoneValidate
-                          : validation.submitValid,
-                      builder: (context, snapshot) {
-                        return appButton(
-                            context,
-                            StringConstant.login,
-                            SizeConfig.screenWidth ,
-                            50.0,
-                            Theme.of(context).primaryColor,
-                            Theme.of(context).hintColor,
-                            18,
-                            10,
-                            snapshot.data != true ? false : true,
-                            onTap: () {
-                              snapshot.data != true
-                                  ? ToastMessage.message(StringConstant.fillOut,context)
-                                  : emailController.text.length > 10 &&
-                                  isCheckCredentialPhoneOrEmail == true
-                                  ? ToastMessage.message(StringConstant.mobileNumberLimit,context)
-                                  : loginButtonPressed(
-                                  authVM,
-                                  emailController.text,
-                                  passwordController.text,
-                                  fcmToken ?? '',
-                                  '',
-                                  viewmodel.appConfigModel?.androidConfig?.loginWithPhone == true &&
-                                      isCheckCredentialPhoneOrEmail == true
-                                      ? 'phone'
-                                      : 'email',
-                                  viewmodel,
-                                  isCheckCredentialPhoneOrEmail);
-                            });
-                      }),
-                  SizedBox(height: 5),
-                  viewmodel.appConfigModel?.androidConfig?.socialLogin != null
-                      ? socialLoginView(socialVM,viewmodel) : Container(),
-                  SizedBox(height: 5),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      AppRegularFont(
-                          context, msg: StringConstant.dontHaveAccount,
-                          fontSize: 16),
-                      appTextButton(context, StringConstant.create,
-                          Alignment.bottomRight,
-                          Theme.of(context).primaryColor, 14, true, onPressed: () {
-                            Navigator.pop(context);
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const SignUp();
-                                });
-                          }),
-                    ],
-                  ),
-                  SizedBox(height:20),
-                  GestureDetector(
-                    onTap: () async{
-                      const url = 'http://digitalseller.in/';
-                      if (await canLaunch(url)) {
-                        await launch(url, forceWebView: false, enableJavaScript: true);
-                      } else {
-                        throw 'Could not launch $url';
-                      }
-                    },
-                    child: Center(
-                      child: GlobalVariable.isLightTheme == true ?
-                      Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 100) :
-                      Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 100),
-                    ),
-                  ),
-                  SizedBox(height: 5),
-                ],
-              ),
-            ))):
-
-          AlertDialog(
+         AlertDialog(
         elevation: 10,
         actionsPadding: EdgeInsets.zero,
         contentPadding: EdgeInsets.zero,
-              backgroundColor:Theme.of(context).cardColor,
+             insetPadding:EdgeInsets.all(10),
+             backgroundColor:Theme.of(context).cardColor,
         content: Container(
-          margin:  EdgeInsets.only(left: 50, right: 50,top: 20),
-          height: SizeConfig.screenHeight / 1.45,
-          width: SizeConfig.screenWidth * 0.25,
+          margin:  EdgeInsets.only(left:ResponsiveWidget.isMediumScreen(context)?15: 50, right:ResponsiveWidget.isMediumScreen(context)?15: 50,top:ResponsiveWidget.isMediumScreen(context)?10: 20),
+          width:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth :SizeConfig.screenWidth * 0.25,
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Stack(
-                  children: [
-                    Positioned(
-                      child: GestureDetector(
-                        onTap: (){
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          alignment: Alignment.topRight,
-                          child:Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor,width: 25,height: 25,)),
-                      ),
-
-                    )
-                  ],
-                ),
-                AppBoldFont(context, msg: StringConstant.login, fontSize: 30),
+                    children: [
+                      Positioned(
+                          child: GestureDetector(
+                            onTap: (){
+                              Navigator.pop(context);
+                            },
+                            child: Container(
+                                alignment: Alignment.topRight,
+                                child:Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor,width:ResponsiveWidget.isMediumScreen(context)?20: 25,height:ResponsiveWidget.isMediumScreen(context)?20: 25)),
+                          ))]),
+                SizedBox(height:ResponsiveWidget.isMediumScreen(context)?5: 25),
+                AppBoldFont(context, msg: StringConstant.login, fontSize:ResponsiveWidget.isMediumScreen(context)?22: 30),
                 SizedBox(height: 10),
                 AppMediumFont(context, msg:StringConstant.enterCredentials, fontSize: 16),
                 SizedBox(height: 20),
@@ -359,7 +149,7 @@ class _LoginUpState extends State<LoginUp> {
                               keyBoardType: TextInputType.emailAddress,
                               onSubmitted: (m) {});
                         }),
-                SizedBox(height: 15),
+                SizedBox(height:ResponsiveWidget.isMediumScreen(context)?10: 15),
                 isCheckCredentialPhoneOrEmail == true
                     ? SizedBox()
                     : StreamBuilder(
@@ -438,17 +228,17 @@ class _LoginUpState extends State<LoginUp> {
                                 isCheckCredentialPhoneOrEmail);
                           });
                     }),
-                SizedBox(height: 10),
+                SizedBox(height:ResponsiveWidget.isMediumScreen(context)?5: 10),
                 viewmodel.appConfigModel?.androidConfig?.socialLogin != null
                     ? socialLoginView(socialVM,viewmodel) : Container(),
-                SizedBox(height: 10),
+                SizedBox(height:ResponsiveWidget.isMediumScreen(context)?5: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     AppRegularFont(context, msg: StringConstant.dontHaveAccount),
                     appTextButton(
                         context, StringConstant.create, Alignment.bottomRight,
-                        Theme.of(context).primaryColor, 16, true, onPressed: () {
+                        Theme.of(context).primaryColor, ResponsiveWidget.isMediumScreen(context)?14:16, true, onPressed: () {
                       Navigator.pop(context);
                       showDialog(
                           context: context,
@@ -458,7 +248,7 @@ class _LoginUpState extends State<LoginUp> {
                     }),
                   ],
                 ),
-                SizedBox(height: 30),
+                SizedBox(height:ResponsiveWidget.isMediumScreen(context)?20: 30),
                 GestureDetector(
                   onTap: () async{
                     const url = 'http://digitalseller.in/';
@@ -471,11 +261,11 @@ class _LoginUpState extends State<LoginUp> {
                   child: Center(
                     child: Container(
                         child: GlobalVariable.isLightTheme == true ?
-                        Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width:SizeConfig.screenWidth*0.12,height: SizeConfig.screenWidth*0.03) :
-                        Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: SizeConfig.screenWidth*0.12,height:SizeConfig.screenWidth*0.03)),
+                        Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width:ResponsiveWidget.isMediumScreen(context)?150:SizeConfig.screenWidth*0.12,height:ResponsiveWidget.isMediumScreen(context)?50: SizeConfig.screenWidth*0.03) :
+                        Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width:ResponsiveWidget.isMediumScreen(context)?150: SizeConfig.screenWidth*0.12,height:ResponsiveWidget.isMediumScreen(context)?50:SizeConfig.screenWidth*0.03)),
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height:ResponsiveWidget.isMediumScreen(context)?5: 20),
               ],
             ),
           ),

@@ -5,9 +5,8 @@ typedef void InternetResponseHandler(bool isSuccess, dynamic result);
 typedef void NotificationHandler(dynamic response);
 typedef void ApiCallback(dynamic response);
 class NetworkConstants{
-
-  //static String kAppBaseUrl = 'https://api.digitalseller.in:8011/api/';
- static String kAppBaseUrl = 'https://eacademyeducation.com:8011/api/';
+  static String kAppBaseUrl = 'https://api.digitalseller.in:8011/api/';
+//static String kAppBaseUrl = 'https://eacademyeducation.com:8011/api/';
   static String kGetAppConfig = 'getAppConfigurations?appId={APP_ID}';
   static String kContactUs = "add-contactUs";
   static String kOpenWebViewUrl = "web-view?appId={APP_ID}&query={QUERY}";
@@ -77,15 +76,22 @@ class NetworkConstants{
   static String kPaymentResponse = "payment-callback";
   static String kcityState='get-city-state?pincode={PINCODE}';
  static String kDiscountOffer = "offer-list?appId={APP_ID}";
- static String kOfferList = "offer-product-list?appId={APP_ID}&categoryId={CATEGORY_ID}&query={QUERY}&pageNum={PAGE_NUM}";
+static String kOfferList = "offer-product-list?appId={APP_ID}&categoryId={CATEGORY_ID}&userId={USER_ID}&query={QUERY}&pageNum={PAGE_NUM}";
 
 
 
 
-
+//Chikankari
 //static String kAppID='e43d41d1-bcaf-4efa-a326-a5287a7ee4c9';
+  //digial SEller Production
+ static String kAppID = '5d3f0631-40fd-4047-afa9-47138ee59fc2';
+
   //static String kAppID = '8b7e56d4-8d6c-4053-8991-64374d95c353';
-static String kAppID = 'c5d97fa9-a6b9-48c5-bf23-b847f1a12b09';
-// static String kAppID = '5d3f0631-40fd-4047-afa9-47138ee59fc2';
- // static String kAppID = 'f11e5fd9-a395-49fb-bbd8-7e6554dc4549';
+
+//static String kAppID = 'c5d97fa9-a6b9-48c5-bf23-b847f1a12b09';
+//ishu
+  //static String kAppID = 'f11e5fd9-a395-49fb-bbd8-7e6554dc4549';
+//Grocery
+// static String kAppID = '36feccb4-5260-40ce-8eab-67537db14b7b';
+
 }

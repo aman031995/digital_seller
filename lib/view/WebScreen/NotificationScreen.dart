@@ -64,7 +64,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
             appBar: AppBar(
               elevation: 0,
               leading: InkWell(
-                onTap: (){                     Navigator.pop(context, true);
+                onTap: (){
+                  context.router.push(HomePageWeb());
                 },
                 child: Container(
                   width: 500,

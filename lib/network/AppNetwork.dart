@@ -27,7 +27,7 @@ class AppNetwork {
       });
     } else {
       AppIndicator.disposeIndicator();
-      handleErrorResponse("internet is not available",context);
+    //  handleErrorResponse("internet is not available",context);
     }
   }
 

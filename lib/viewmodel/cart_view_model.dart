@@ -21,8 +21,6 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:flutter_stripe_web/flutter_stripe_web.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:json_cache/json_cache.dart';
 import '../AppRouter.gr.dart';
@@ -179,10 +177,12 @@ class CartViewModel extends ChangeNotifier {
   }
 
   //get offerDiscountProducts List
-  Future<void> getOfferDiscountList(BuildContext context, String query, int pageNum, String categoryId) async{
+  Future<void> getOfferDiscountList(BuildContext context, String query, int pageNum, String categoryId,NetworkResponseHandler responseHandler) async{
     _cartRepo.getOfferDiscountList(context, query, pageNum, categoryId, (result, isSuccess) {
       if(isSuccess){
         _productListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+        responseHandler(result, isSuccess);
+
         notifyListeners();
       }
     });
@@ -386,8 +386,7 @@ class CartViewModel extends ChangeNotifier {
   Future<void> getAddressList(BuildContext context) async {
     _cartRepo.addressList(context, (result, isSuccess) {
       if (isSuccess) {
-        _addressListModel =
-            ((result as SuccessState).value as ASResponseModal).dataModal;
+        _addressListModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         notifyListeners();
       }
     });
@@ -482,7 +481,7 @@ class CartViewModel extends ChangeNotifier {
 
   // ADDToFavourite Method
   Future<void> addToFavourite(BuildContext context, String productId,
-      String variantId, bool fav, String pageName,{int? listIndex,bool? favouritepage}) async {
+      String variantId, bool fav, String pageName,{int? listIndex}) async {
     _cartRepo.addToFavourite(productId, variantId, fav, context,
         (result, isSuccess) {
           favouriteCallback = true;
@@ -546,20 +545,20 @@ class CartViewModel extends ChangeNotifier {
       String variantId, quantity) async {
     try {
       AppIndicator.disposeIndicator();
-      WebStripe.instance.presentPaymentSheet().then((value) {
-        WebStripe.instance.confirmPaymentSheetPayment();
-       paymentResponse(
-            context,
-            createOrderModel?.receipt ?? '',
-            createOrderModel?.paymentOrderId ?? '',
-            paymentIntent?['id'] ?? '',
-            'Success',
-            '',
-            '${addressId}');
-      placeOrder(context, '${addressId}', paymentIntent?['id'] ?? '', createOrderModel?.paymentOrderId ?? '', 'Online',
-            productId, variantId, quantity, 'Success');
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(StringConstant.paymentSuccessful)));
-      });
+      // WebStripe.instance.presentPaymentSheet().then((value) {
+      //   WebStripe.instance.confirmPaymentSheetPayment();
+      //  paymentResponse(
+      //       context,
+      //       createOrderModel?.receipt ?? '',
+      //       createOrderModel?.paymentOrderId ?? '',
+      //       paymentIntent?['id'] ?? '',
+      //       'Success',
+      //       '',
+      //       '${addressId}');
+      // placeOrder(context, '${addressId}', paymentIntent?['id'] ?? '', createOrderModel?.paymentOrderId ?? '', 'Online',
+      //       productId, variantId, quantity, 'Success');
+      //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(StringConstant.paymentSuccessful)));
+      // });
       print("Transaction ID: ${paymentIntent?['id']}");
     } catch (e) {
       print("Failed");

@@ -1,7 +1,8 @@
 class AssetsConstants {
   static String icLogo = "images/app_logo.png";
   static String icSignup="images/signup.png";
-  static String webLogo='images/webLogo.webp';
+  //static String webLogo='images/webLogo.webp';
+  static String webLogo='images/digitalfashionstreetweb.png';
 
 
   static String icEyeFill = "images/ic_eyeFill.png";

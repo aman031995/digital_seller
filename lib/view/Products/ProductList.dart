@@ -52,8 +52,6 @@ class _ProductListGalleryState extends State<ProductListGallery> {
   ScrollController _scrollController = ScrollController();
   ScrollController scrollController1 = ScrollController();
 
-
-
   void initState() {
     homeViewModel.getAppConfig(context);
     getProduct();
@@ -61,6 +59,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
     cartViewModel.getCartCount(context);
     super.initState();
   }
+
   getProduct() {
     widget.discountdata?.length == null
           ? cartViewModel.getProductList(context,  SessionStorageHelper.getValue("pageList").toString()=="null"?1:int.parse(SessionStorageHelper.getValue("pageList").toString()),(result, isSuccess){})
@@ -68,7 +67,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
               context,
               widget.discountdata?[1] ?? "",
               pageNum,
-              widget.discountdata?[0] ?? "");
+              widget.discountdata?[0] ?? "",(result, isSuccess){});
   }
 
   @override
@@ -88,10 +87,9 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                   value: notificationViewModel,
                   child: Consumer<NotificationViewModel>(
                       builder: (context, model, _) {
-                        return
-                          viewmodel.productListModel?.productList != null
+                        return viewmodel.productListModel?.productList != null
                               ?   GestureDetector(
-                onTap: () {
+                                onTap: () {
                   if (isLogins == true) {
                     isLogins = false;
                   }
@@ -100,19 +98,16 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                   }
                   if(isnotification==true){
                     isnotification=false;
-
                   }
                 },
-                child: Scaffold(
-                    appBar: ResponsiveWidget.isMediumScreen(context)
+                           child: Scaffold(
+                          appBar: ResponsiveWidget.isMediumScreen(context)
                         ? homePageTopBar(
                             context,
                             _scaffoldKey,
                             cartViewModel.cartItemCount,
                             homeViewModel,
-                            profileViewModel,
-                        model
-                          )
+                            profileViewModel, model )
                         : getAppBar(
                             context,model,
                             homeViewModel,
@@ -182,11 +177,11 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                       drawer: ResponsiveWidget.isMediumScreen(context)
                           ? AppMenu()
                           : SizedBox(),
-                      body: viewmodel.productListModel?.productList != null
-                          ? (viewmodel.productListModel?.productList?.length ?? 0) > 0
-                              ? Stack(
+                      body:  Stack(
                                   children: [
-                                    SingleChildScrollView(
+                                    viewmodel.productListModel?.productList != null
+                                        ? (viewmodel.productListModel?.productList?.length ?? 0) > 0
+                                        ?  SingleChildScrollView(
                                       controller: scrollController1,
                                         child: Column(
                                       children: [
@@ -237,7 +232,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: [
-                                                  CategoryFilterScreen(items: [],),
+                                                  // CategoryFilterScreen(items: []),
                                                   Column(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
@@ -245,20 +240,18 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                                         CrossAxisAlignment
                                                             .center,
                                                     children: [
+                                                      // Container(
+                                                      //     alignment: Alignment.topLeft,
+                                                      //     padding: EdgeInsets.only(top: 30, right: 20),
+                                                      //     width: SizeConfig.screenWidth /1.75,
+                                                      //     child: catrgoryTopSortWidget(context)),
                                                       Container(
-                                                          alignment: Alignment.topLeft,
-                                                          padding: EdgeInsets.only(top: 30, right: 20),
-                                                          width: SizeConfig.screenWidth /1.75,
-                                                          child: catrgoryTopSortWidget(context)),
-                                                      Container(
-                                                          width: SizeConfig.screenWidth / 1.75,
+                                                          width: SizeConfig.screenWidth/1.38,
+
                                                           child: GridView.builder(
                                                             shrinkWrap: true,
                                                             physics: NeverScrollableScrollPhysics(),
-                                                            padding:
-                                                                EdgeInsets.only(
-                                                                    top: 30,
-                                                                    right: 5),
+                                                            padding: EdgeInsets.only(top: 10),
                                                             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                                                                 mainAxisSpacing:
                                                                     15,
@@ -297,7 +290,9 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                             ? footerMobile(context,homeViewModel)
                                             : footerDesktop()
                                       ],
-                                    )),
+                                    )):
+                                    noDataFoundMessage(context,StringConstant.noProductAdded,homeViewModel) :
+                                    Center(child: ThreeArchedCircle(size: 45.0)),
                                     ResponsiveWidget.isMediumScreen(context)
                                         ? Container()
                                         : isnotification == true
@@ -335,51 +330,9 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                             : Container()
                                   ],
                                 )
-                              : Stack(
-                        children: [
-                          noDataFoundMessage(
-                              context,StringConstant.noProductAdded,homeViewModel),
-                          ResponsiveWidget.isMediumScreen(context)
-                              ? Container()
-                              : isnotification == true
-                              ?    Positioned(
-                              top:  0,
-                              right:  SizeConfig
-                                  .screenWidth *
-                                  0.20,
-                              child: notification(notificationViewModel,context,_scrollController)):Container(),
-                          ResponsiveWidget
-                              .isMediumScreen(context)
-                              ?Container(): isLogins == true
-                              ? Positioned(
-                              top: 0,
-                              right:  180,
-                              child: profile(context,
-                                  setState, profileViewModel))
-                              : Container(),
-                          ResponsiveWidget
-                              .isMediumScreen(context)
-                              ? Container():   isSearch == true
-                              ? Positioned(
-                              top:  SizeConfig.screenWidth *
-                                  0.001,
-                              right:  SizeConfig.screenWidth *
-                                  0.20,
-                              child: searchList(
-                                  context,
-                                  homeViewModel,
-                                  scrollController,
-                                  searchController!,
-                                  cartViewModel
-                                      .cartItemCount))
-                              : Container()
-                        ],
-                      )
-                          : Center(
-                              child: ThreeArchedCircle(size: 45.0),
-                            ),
-                    )),
-              ): Container(
+                    ))
+                        )
+                            : Container(
                             width: SizeConfig.screenWidth,
                             height: SizeConfig.screenHeight,
                             color: Theme.of(context).scaffoldBackgroundColor,
@@ -390,6 +343,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                       }));
             }));
   }
+
  onPagination(CartViewModel viewmodel){
     return viewmodel.productListModel!.pagination!.lastPage==1?Container():   Container(
       height: 40,
@@ -397,18 +351,12 @@ class _ProductListGalleryState extends State<ProductListGallery> {
           right: 12,
           left: 12,
           top: 20),
-      width:  ResponsiveWidget
-          .isMediumScreen(context)
-          ?SizeConfig.screenWidth:SizeConfig.screenWidth/4,
+      width:  ResponsiveWidget.isMediumScreen(context) ?viewmodel.productListModel!.pagination!.lastPage! < 4?SizeConfig.screenWidth/1.6  :SizeConfig.screenWidth:SizeConfig.screenWidth/4,
       child: NumberPaginator(
-        numberPages: viewmodel
-            .productListModel!
-            .pagination!
-            .lastPage!,
+        numberPages: viewmodel.productListModel!.pagination!.lastPage!,
         config:
         NumberPaginatorUIConfig(
-          mode: ContentDisplayMode
-              .numbers,
+          mode: ContentDisplayMode.numbers,
           height: 40,
           contentPadding:
           EdgeInsets.zero,
@@ -441,28 +389,21 @@ class _ProductListGalleryState extends State<ProductListGallery> {
         onPageChange:
             (int index) {
           setState(() {
-
-            AppIndicator
-                .loadingIndicator(
-                context);
-
-              widget.discountdata?.length == null
+            AppIndicator.loadingIndicator(context);
+            widget.discountdata?.length == null
                   ? cartViewModel.getProductList(context, index + 1,(result, isSuccess){
-                    if(isSuccess){
-                      scrollController1.jumpTo(0);}
-
-
-              })
+                    if(isSuccess){scrollController1.jumpTo(0);}})
 
                   : cartViewModel.getOfferDiscountList(
                   context,
                   widget.discountdata?[1] ?? "",
                   index +
                       1,
-                  widget.discountdata?[0] ?? "");
-
-
-            // _currentPage = index;
+                  widget.discountdata?[0] ?? "",(result, isSuccess){
+                    if(isSuccess){
+                      scrollController1.jumpTo(0);
+                    }
+              });
           });
         },
       ),

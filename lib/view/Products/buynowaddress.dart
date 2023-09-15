@@ -22,7 +22,6 @@ import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
 import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/search/search_list.dart';
-import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
@@ -37,8 +36,6 @@ import 'package:provider/provider.dart';
 import 'package:razorpay_web/razorpay_web.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../AppRouter.gr.dart';
-import '../../network/NetworkApiServices.dart';
-import '../../network/NetworkApiServices.dart';
 import '../../utilities/StringConstants.dart';
 
 @RoutePage()

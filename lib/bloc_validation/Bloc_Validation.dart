@@ -84,7 +84,7 @@ class ValidationBloc {
   Stream<bool> get submitValid => Rx.combineLatest2(emailAndMobile, password, (e, p) => true);
   Stream<bool> get validateUserEditProfile => Rx.combineLatest2(firstName, phoneNo, (a, b) => true);
   Stream<bool> get validateContactUs => Rx.combineLatest3(firstName, email, address, (a, b, c) => true);
-  Stream<bool> get validateAddAddress => CombineLatestStream([firstName, lastName, phoneNo, email, address, addressOne, _landmark, pincode, cityName, state], (list) => true);
+  Stream<bool> get validateAddAddress => CombineLatestStream([firstName, lastName, phoneNo, email, address, addressOne, landMark, pincode, cityName, state], (list) => true);
 
 
 

@@ -27,8 +27,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   String errorPhoneNumber = "";
   final validation = ValidationBloc();
   bool isPhone = false, isPhoneType = false, isValidate = false;
-  int? type;
-
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
@@ -52,174 +50,32 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   }
 
   Widget forgotPasswordSection(AuthViewModel authVM) {
-    return
-      ResponsiveWidget.isMediumScreen(context)?
-      Container(
-          padding: EdgeInsets.only(left: 15,right: 15,top: 15,bottom: 15),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Stack(
+    return Container(
+      margin:  EdgeInsets.only(left:ResponsiveWidget.isMediumScreen(context)?15: 50, right:ResponsiveWidget.isMediumScreen(context)?15: 50,top:ResponsiveWidget.isMediumScreen(context)?10: 20),
+        width: ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth:SizeConfig.screenWidth * 0.25,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+
+            children: [
+              Stack(
                   children: [
                     Positioned(
-                      child: Container(
-                        alignment: Alignment.topRight,
-                        child: IconButton(
-                            onPressed: (){
-                              Navigator.pop(context);
-                            }, icon: Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor)),
-                      ),
-                    )
-                  ],
-                ),
-                AppBoldFont(
-                  textAlign: TextAlign.start,
-                  context,msg: StringConstant.forgotPassword,
-                  fontSize: 22 ,
-                ),
-                SizedBox(height: 20),
-                AppMediumFont(
-                    context, msg: widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false
-                    ? StringConstant.enterEmailOtpText
-                    : StringConstant.enterOtpText,
-                    fontSize: 16 ,
-                    textAlign: TextAlign.left),
-                SizedBox(height: 30),
-                Container(
-                  width: SizeConfig.screenWidth,
-                  child: widget.viewModel?.appConfigModel?.androidConfig
-                      ?.loginWithPhone == false
-                      ? StreamBuilder(
-                      stream: validation.email,
-                      builder: (context, snapshot) {
-                        return AppTextField(
-                          maxLine: 1,
-                          controller: emailController,
-                          labelText: StringConstant.email,
-                          textCapitalization: TextCapitalization.words,
-                          isShowCountryCode: true,
-                          isShowPassword: false,
-                          secureText: false,
-                          maxLength: 30,
-                          keyBoardType: TextInputType.emailAddress,
-                          errorText: snapshot.hasError
-                              ? snapshot.error.toString()
-                              : null,
-                          onChanged: (m) {
-                            validation.sinkEmail.add(m);
-                            setState(() {});
+                        child: GestureDetector(
+                          onTap: (){
+                            Navigator.pop(context);
                           },
-                          onSubmitted: (m) {},
-                          isTick: null,
-                        );
-                      })
-                      : StreamBuilder(
-                      stream: validation.emailAndMobile,
-                      builder: (context, snapshot) {
-                        return AppTextField(
-                            maxLine: null,
-                            prefixText: '',
-                            controller: phoneController,
-                            labelText: StringConstant.emailAndPhone,
-                            isShowCountryCode: true,
-                            isShowPassword: false,
-                            secureText: false,
-                            isColor: isPhone,
-                            isTick: false,
-                            maxLength: 40,
-                            errorText: snapshot.hasError
-                                ? snapshot.error.toString()
-                                : null,
-                            onChanged: (m) {
-                              validation.sinkEmailAndPhone.add(m);
-                              isPhone = true;
-                              setState(() {});
-                            },
-                            keyBoardType: TextInputType.emailAddress,
-                            onSubmitted: (m) {});
-                      }),
-                ),
-                 SizedBox(height: 20),
-                StreamBuilder(
-                    stream: widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false
-                        ? validation.checkEmailValidate
-                        : validation.checkEmailAndPhoneValidate,
-                    builder: (context, snapshot) {
-                      return appButton(
-                          context,
-                          StringConstant.send,
-                          SizeConfig.screenWidth,
-                          50,
-                          Theme.of(context).primaryColor,
-                          Theme.of(context).hintColor,
-                          16,
-                          10,
-                          snapshot.data != true ? false : true, onTap: () {
-                        snapshot.data != true
-                            ? ToastMessage.message(StringConstant.fillOut,context)
-                            : sendButtonPressed(
-                            authVM,
-                            widget.viewModel?.appConfigModel?.androidConfig
-                                ?.loginWithPhone == false
-                                ? emailController.text
-                                : phoneController.text,
-                            widget.viewModel!);
-                      });
-                    }),
-                SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () async{
-                    const url = 'http://digitalseller.in/';
-                    if (await canLaunch(url)) {
-                      await launch(url, forceWebView: false, enableJavaScript: true);
-                    } else {
-                      throw 'Could not launch $url';
-                    }
-                  },
-                  child: Center(
-                    child: GlobalVariable.isLightTheme == true ?
-                    Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width: 100) :
-                    Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: 100),
-                  ),
-                ),
-                SizedBox(height: 5),
-              ],
-            ),
-          )) :
-      Container(
-        height: SizeConfig.screenHeight / 1.8,
-        margin:  EdgeInsets.only(left: 50, right: 50,top: 20),
-        width: SizeConfig.screenWidth * 0.25,
-        child: Column(
-          children: [
-            Stack(
-              children: [
-                Positioned(
-                  child: Container(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                        onPressed: (){
-                          Navigator.pop(context);
-                        }, icon: Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor)),
-                  ),
-                )
-              ],
-            ),
-            Container(
-                margin:  EdgeInsets.only(left: 20, right: 20,bottom: 10),
-                alignment: Alignment.topLeft,
-                child: AppBoldFont(context, msg: StringConstant.forgotPassword,
-                    fontSize:  30)),
-            Container(
-                margin:  EdgeInsets.only(left: 20, right: 20,bottom: 20),
-                alignment: Alignment.topLeft,
-                child: AppMediumFont(context, msg: widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false ? StringConstant.enterEmailOtpText: StringConstant.enterOtpText, fontSize: 16)),
-            Container(
-              margin:  EdgeInsets.only(left: 20, right: 20,bottom: 30),
-              alignment: Alignment.center,
-              child: widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false
+                          child: Container(
+                              alignment: Alignment.topRight,
+                              child:Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor,width:ResponsiveWidget.isMediumScreen(context)?20: 25,height:ResponsiveWidget.isMediumScreen(context)?20: 25)),
+                        ))]),
+              SizedBox(height:ResponsiveWidget.isMediumScreen(context)?5: 25),
+
+              AppBoldFont(context, msg: StringConstant.forgotPassword, fontSize: ResponsiveWidget.isMediumScreen(context)?22: 30),
+              SizedBox(height: ResponsiveWidget.isMediumScreen(context)?5:10),
+              AppMediumFont(context, msg: widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false ? StringConstant.enterEmailOtpText: StringConstant.enterOtpText, fontSize: 16),
+            SizedBox(height: ResponsiveWidget.isMediumScreen(context)?10:20),
+              widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false
                   ? StreamBuilder(
                    stream: validation.email,
                                   builder: (context, snapshot) {
@@ -244,7 +100,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                       isTick: null,
                                     );
                                   })
-                                  : StreamBuilder(
+                  : StreamBuilder(
                                   stream: validation.emailAndMobile,
                                   builder: (context, snapshot) {
                                     return AppTextField(
@@ -269,54 +125,43 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                         keyBoardType: TextInputType.emailAddress,
                                         onSubmitted: (m) {});
                                   }),
-                            ),
-            Container(
-                              margin:  EdgeInsets.only(left: 20, right: 20,bottom: 30),
-                              child: StreamBuilder(
-                                  stream: widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false
-                                      ? validation.checkEmailValidate
-                                      : validation.checkEmailAndPhoneValidate,
-                                  builder: (context, snapshot) {
-                                    return appButton(
-                                        context,
-                                        StringConstant.send,
-                                        SizeConfig.screenWidth,
-                                        50,
-                                        Theme.of(context).primaryColor,
-                                        Theme.of(context).hintColor,
-                                        16,
-                                        10,
-                                        snapshot.data != true ? false : true, onTap: () {
-                                      snapshot.data != true
-                                          ? ToastMessage.message(StringConstant.fillOut,context)
-                                          : sendButtonPressed(
-                                          authVM,
-                                          widget.viewModel?.appConfigModel?.androidConfig
-                                              ?.loginWithPhone == false
-                                              ? emailController.text
-                                              : phoneController.text,
-                                          widget.viewModel!);
-                                    });
-                                  }),
-                            ),
-            SizedBox(height:30),
-            GestureDetector(
-              onTap: () async{
-                const url = 'http://digitalseller.in/';
-                if (await canLaunch(url)) {
-                  await launch(url, forceWebView: false, enableJavaScript: true);
-                } else {
-                  throw 'Could not launch $url';
-                }
-              },
-              child: Center(
-                child: GlobalVariable.isLightTheme == true ?
-                Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width:SizeConfig.screenWidth*0.12,height: SizeConfig.screenWidth*0.03) :
-                Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width: SizeConfig.screenWidth*0.12,height:SizeConfig.screenWidth*0.03),
+              SizedBox(height: ResponsiveWidget.isMediumScreen(context)?15:25),
+              StreamBuilder(
+                  stream: widget.viewModel?.appConfigModel?.androidConfig?.loginWithPhone == false
+                      ? validation.checkEmailValidate
+                      : validation.checkEmailAndPhoneValidate,
+                  builder: (context, snapshot) {
+                    return appButton(
+                        context,
+                        StringConstant.send,
+                        SizeConfig.screenWidth,
+                        50,
+                        Theme.of(context).primaryColor,
+                        Theme.of(context).hintColor,
+                        16,
+                        10,
+                        snapshot.data != true ? false : true, onTap: () {
+                      snapshot.data != true
+                          ? ToastMessage.message(StringConstant.fillOut,context)
+                          : sendButtonPressed(
+                          authVM,
+                          widget.viewModel?.appConfigModel?.androidConfig
+                              ?.loginWithPhone == false
+                              ? emailController.text
+                              : phoneController.text,
+                          widget.viewModel!);
+                    });
+                  }),
+              SizedBox(height: ResponsiveWidget.isMediumScreen(context)?20:35),
+              Center(
+                child: Container(
+                    child: GlobalVariable.isLightTheme == true ?
+                    Image.network(StringConstant.digitalSellerLitelogo, fit: BoxFit.fill, width:ResponsiveWidget.isMediumScreen(context)?150:SizeConfig.screenWidth*0.12,height:ResponsiveWidget.isMediumScreen(context)?50: SizeConfig.screenWidth*0.03) :
+                    Image.network(StringConstant.digitalSellerDarklogo, fit: BoxFit.fill, width:ResponsiveWidget.isMediumScreen(context)?150: SizeConfig.screenWidth*0.12,height:ResponsiveWidget.isMediumScreen(context)?50:SizeConfig.screenWidth*0.03)),
               ),
-            ),
-            SizedBox(height:10),
-          ],
+              SizedBox(height:ResponsiveWidget.isMediumScreen(context)?15:35),
+            ],
+          ),
         ),
       );
   }

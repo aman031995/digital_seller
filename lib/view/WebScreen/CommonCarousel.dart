@@ -1,4 +1,5 @@
 import 'package:TychoStream/AppRouter.gr.dart';
+import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/BannerDataModel.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -56,7 +57,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
     return Stack(
       children: [
         Container(
-          margin: EdgeInsets.only(top: 60),
+         // margin: EdgeInsets.only(top: 60),
           height: SizeConfig.screenWidth/3,
           width: SizeConfig.screenWidth,
           child: CarouselSlider(
@@ -87,6 +88,15 @@ class _CommonCarouselState extends State<CommonCarousel> {
         .map((element) =>  InkWell(
       focusNode: carouselFocus,
       onTap: () async {
+        if (isLogins == true) {
+          isLogins = false;
+        }
+        if (isSearch == true) {
+          isSearch = false;
+        }
+        if (isnotification == true) {
+          isnotification = false;
+        }
         redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
 
         },
@@ -164,6 +174,15 @@ class _CommonCarouselState extends State<CommonCarousel> {
         .map((element) =>  InkWell(
       focusNode: carouselFocus,
       onTap: () async {
+        if (isLogins == true) {
+          isLogins = false;
+        }
+        if (isSearch == true) {
+          isSearch = false;
+        }
+        if (isnotification == true) {
+          isnotification = false;
+        }
         redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
 
       },
