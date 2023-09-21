@@ -140,7 +140,7 @@ Widget notification( NotificationViewModel viewmodel,BuildContext context,Scroll
     Container(
       color: Theme.of(context).cardColor,
       height: 400,
-      width: SizeConfig.screenWidth*0.20,
+      width:500,
       child: viewmodel.notificationModel!.notificationList!.isNotEmpty ?
       ListView.builder(
           shrinkWrap: true,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pinput/pinput.dart';
-import 'package:TychoStream/view/screens/verify_otp_screen.dart';
+import 'package:TychoStream/view/WebScreen/authentication/verify_otp_screen.dart';
 
 
 class PinEntryTextFiledView extends StatelessWidget {
@@ -36,8 +36,10 @@ class PinPutViewState extends State<PinPutView> {
   Widget build(BuildContext context) {
     return Stack(
       fit: StackFit.passthrough,
+      alignment: Alignment.topCenter,
       children: <Widget>[
         AnimatedContainer(
+          alignment: Alignment.center,
           duration: const Duration(milliseconds: 200),
           child: PageView(
             scrollDirection: Axis.vertical,
@@ -60,6 +62,7 @@ class PinPutViewState extends State<PinPutView> {
   // BoxedPinPutMethod
   Widget boxedPinPutWithPreFilledSymbol(BuildContext context) {
     return Container(
+      alignment: Alignment.center,
       padding: EdgeInsets.only(left: 20.0, right: 20.0),
       child: Pinput(
         showCursor: true,

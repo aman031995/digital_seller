@@ -8,6 +8,8 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/view/widgets/PinEntryTextFiled.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../model/data/AppConfigModel.dart';
 var alert;
 class AppDialog {
 
@@ -159,8 +161,84 @@ class AppDialog {
     );
   }
 
-}
+  static followSocialDialog(
+      BuildContext context, String description, SocialMedia followUs) {
+    Stack(children: [
+      alert = AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          title: Column(
+            children: [
+              AppBoldFont(context,
+                  msg: description,
+                  fontSize: 15,
+                  textAlign: TextAlign.center,
+                  color: Theme.of(context).canvasColor),
+              Divider(color: Theme.of(context).canvasColor.withOpacity(0.1)),
+            ],
+          ),
+          actions: [
+            Container(
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                alignment: Alignment.center,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      followUs.facebook != null
+                          ? GestureDetector(
+                          onTap: () async {
 
+
+                          String url = followUs.facebook?.url ?? "";
+                          if (await canLaunch(url)) {
+                          await launch(url);
+                          } else {
+    throw 'Could not launch $url';
+    }
+    },
+                          child: socialMediaImage(AssetsConstants.icFacebook,context))
+                          : SizedBox(),
+                      const SizedBox(width: 8),
+                      followUs.instagram != null
+                          ? GestureDetector(
+                        onTap: () => launch(
+                            followUs.instagram?.url ?? '', forceSafariVC: false),
+                        child: socialMediaImage(AssetsConstants.ic_instagram,context),
+                      )
+                          : Container(),
+                      const SizedBox(width: 8),
+                      followUs.youtube?.url != ""
+                          ? GestureDetector(
+                        onTap: () => launch(followUs.youtube?.url ?? '', forceSafariVC: false),
+                        child: socialMediaImage(AssetsConstants.ic_youtube,context),
+                      )
+                          : SizedBox(),
+                      const SizedBox(width: 8),
+                      followUs.youtube?.url != ""
+                          ? GestureDetector(
+                        onTap: () => launch(followUs.twitter?.url ?? '', forceSafariVC: false),
+                        child: socialMediaImage(AssetsConstants.ic_twitter,context),
+                      )
+                          : SizedBox(),
+                    ])
+            ),
+            const SizedBox(height: 30),
+            Container(height: 30)
+          ])
+    ]);
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
+  }
+
+}
+// social media image
+socialMediaImage(String imgIcon,BuildContext context) {
+  return Container(height: 55, width: 55, child: Image.asset(imgIcon, fit: BoxFit.fill,color: Theme.of(context).canvasColor,));
+}
 //CancelButton Method
 cancelButton(BuildContext context, double height, double width, String msg,
     VoidCallback callback) {

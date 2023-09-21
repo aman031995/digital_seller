@@ -14,9 +14,6 @@ class ResponsiveWidget {
         .width < 1300;
   }
   static bool isSmallScreen(BuildContext context) {
-    return MediaQuery
-        .of(context)
-        .size
-        .width < 520;
+    return MediaQuery.of(context).size.width < 520;
   }
 }

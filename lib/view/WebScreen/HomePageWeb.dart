@@ -1,8 +1,8 @@
 import 'package:TychoStream/network/AppNetwork.dart';
-import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/EmailNotificationPage.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-import 'package:TychoStream/view/search/search_list.dart';
+import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
+import 'package:TychoStream/view/WebScreen/search/search_list.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
@@ -18,7 +18,7 @@ import 'package:TychoStream/utilities/AssetsConstants.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/view/WebScreen/CommonCarousel.dart';
-import 'package:TychoStream/view/WebScreen/LoginUp.dart';
+import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import '../../AppRouter.gr.dart';
 import '../../main.dart';
@@ -208,7 +208,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                               //Recommend product .................
                                               (cartViewModel.recommendedView?.length ?? 0) > 0
                                                   ?   Container(
-                                                height: ResponsiveWidget.isMediumScreen(context) ? 275 : SizeConfig.screenWidth * 0.37,
+                                                height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context)
+                                                    ?275 :SizeConfig.screenHeight/3.9 : SizeConfig.screenWidth * 0.37,
                                                 margin: EdgeInsets.zero,
                                                 padding: EdgeInsets.only(
                                                     left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11,
@@ -261,11 +262,10 @@ class _HomePageWebState extends State<HomePageWeb> {
                                               SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
 
                                               //recent view images .......
-
                                               (cartViewModel.recentView?.length ?? 0) > 0
                                                   ? Container(margin: EdgeInsets.zero,
                                                       color: Theme.of(context).cardColor.withOpacity(0.6),
-                                                      height: ResponsiveWidget.isMediumScreen(context) ? 260 : SizeConfig.screenWidth * 0.32,
+                                                      height: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context) ?260: SizeConfig.screenHeight/5  : SizeConfig.screenWidth * 0.32,
                                                       padding: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11,
                                                           right: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11, top:ResponsiveWidget.isMediumScreen(context) ? 8 : 20),
                                                       child: Stack(
@@ -324,22 +324,27 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                     )
                                                   : SizedBox(),
                                               SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
+
                                               // what we offer.....
                                               offerList(context),
-                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
+                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? ResponsiveWidget.isSmallScreen(context)
+                                                  ?12:16 : 24),
+                                              //Discount product List .......
                                               (cartViewModel.offerDiscountModel?.length ?? 0) > 0 ?   discountView(cartViewModel):SizedBox(),
 
                                               SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
 
-                                              Image.asset(AssetsConstants.icbanner, width: SizeConfig.screenWidth, height: SizeConfig.screenWidth * 0.28, fit: BoxFit.fill),
+                                              Image.asset(AssetsConstants.icbanner, width: SizeConfig.screenWidth, height: SizeConfig.screenWidth * 0.25, fit: BoxFit.fill),
 
                                               SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
-
+                                                   // gallery view .........
                                               gallery(context,images),
 
                                               SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
 
+                                               //emailNotification method ......
                                               emailNotificationUpdatePage(context,emailController,authVM),
+                                              //footer method.......
 
                                               ResponsiveWidget.isMediumScreen(context) ? footerMobile(context,homeViewModel) : footerDesktop(),
                                             ],

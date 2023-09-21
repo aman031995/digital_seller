@@ -95,6 +95,7 @@ class _CustomTextFieldState extends State<AppTextField> {
         child: FocusScope(
             node: FocusScopeNode(),
             child: TextField(
+              scrollPadding: EdgeInsets.all(10),
                 readOnly: widget.isRead ?? false,
                 autofocus: widget.autoFocus ?? false,
                 maxLines: widget.maxLine,
@@ -123,11 +124,11 @@ class _CustomTextFieldState extends State<AppTextField> {
                       .copyWith(color: RED_COLOR, fontSize: 12),
                   errorMaxLines: 3,
                   focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(color: RED_COLOR, width: 2),
                   ),
                   errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
                     borderSide: BorderSide(color: RED_COLOR, width: 2),
                   ),
                   enabledBorder: OutlineInputBorder(
@@ -206,7 +207,7 @@ class _CustomTextFieldState extends State<AppTextField> {
                       : null,
                   labelText: widget.labelText,
                   contentPadding:
-                  EdgeInsets.symmetric(vertical: 15.0, horizontal: 15),
+                  EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
                   labelStyle: CustomTextStyle.textFormFieldInterMedium.copyWith(
                       color: widget.isColor == true
                           ? Theme.of(context).canvasColor.withOpacity(0.6)

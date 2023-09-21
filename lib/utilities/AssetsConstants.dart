@@ -8,12 +8,17 @@ class AssetsConstants {
   static String icEyeFill = "images/ic_eyeFill.png";
   static String ic_passwordHide = "images/ic_passwordHide.png";
   static String icError = "images/ic_error.png";
-
-  static String icGoogle = "images/ic_google.png";
+ static String icGoogle="images/google.png";
+  static String icPlaystore = "images/ic_playstore.png";
   static String icFacebook = "images/ic_fb.png";
   static String icApple = "images/ic_apple.png";
 static String icbanner='images/banner.webp';
   static String icSearch = "images/ic_search.png";
+
+  static String ic_fb = "images/ic_fb.png";
+  static String ic_youtube = "images/ic_youtube.png";
+  static String ic_twitter = "images/ic_twitter.png";
+  static String ic_instagram = "images/ic_instgram.png";
 
   static String icHome = "images/ic_home.png";
   static String icSelectHome = "images/ic_select_home.png";
@@ -60,5 +65,7 @@ static String icbanner='images/banner.webp';
   static String ic_outOfStock = "images/outofstock.png";
   static String ic_noSearch='images/searchproduct.png';
   static String ic_shoppingSuccess='images/ShoppingSuccess.png';
+  static String ic_noProductFound='images/ic_NotFoundLogo.png';
+  static String ic_noInternet="images/ic_error.png";
 
 }

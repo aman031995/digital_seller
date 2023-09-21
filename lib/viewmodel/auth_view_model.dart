@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:TychoStream/utilities/Responsive.dart';
-import 'package:TychoStream/view/WebScreen/LoginUp.dart';
+import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +16,8 @@ import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/auth_repository.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
-import 'package:TychoStream/view/WebScreen/reset_screen.dart';
-import 'package:TychoStream/view/screens/verify_otp_screen.dart';
+import 'package:TychoStream/view/WebScreen/authentication/reset_screen.dart';
+import 'package:TychoStream/view/WebScreen/authentication/verify_otp_screen.dart';
 import 'dart:html' as html;
 import '../AppRouter.gr.dart';
 

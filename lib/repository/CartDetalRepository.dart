@@ -418,6 +418,8 @@ class CartDetailRepository {
       "{APP_ID}": NetworkConstants.kAppID,
       "{CAT_ID}" : catId,
       "{PAGE_NUM}" : '$pageNum',
+      "{USER_ID}": sharedPreferences.get("userId").toString(),
+
     };
     ASRequestModal requestModal = ASRequestModal.withUrlParams(
         urlParams, NetworkConstants.kGetProductByCategory, RequestType.get,

@@ -10,24 +10,33 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i19;
 import 'package:flutter/material.dart' as _i20;
-import 'package:TychoStream/view/Products/address_list_page.dart' as _i1;
-import 'package:TychoStream/view/Products/banner_product_details.dart' as _i2;
-import 'package:TychoStream/view/Products/buynowaddress.dart' as _i18;
-import 'package:TychoStream/view/Products/buynowcart.dart' as _i3;
-import 'package:TychoStream/view/Products/cart_detail_page.dart' as _i4;
-import 'package:TychoStream/view/Products/category_subcategory_product.dart'
+import 'package:TychoStream/view/WebScreen/authentication/contact_us.dart'
+    as _i18;
+import 'package:TychoStream/view/WebScreen/authentication/EditProfile.dart'
+    as _i17;
+import 'package:TychoStream/view/WebScreen/HomePageWeb.dart' as _i1;
+import 'package:TychoStream/view/WebScreen/NotificationScreen.dart' as _i2;
+import 'package:TychoStream/view/WebScreen/order_history/my_order_page.dart'
+    as _i3;
+import 'package:TychoStream/view/WebScreen/product/address_list_page.dart'
+    as _i4;
+import 'package:TychoStream/view/WebScreen/product/banner_product_details.dart'
     as _i5;
-import 'package:TychoStream/view/Products/favourite_list_page.dart' as _i6;
-import 'package:TychoStream/view/Products/product_details.dart' as _i8;
-import 'package:TychoStream/view/Products/ProductList.dart' as _i7;
-import 'package:TychoStream/view/Products/subcategory_product_list.dart' as _i9;
-import 'package:TychoStream/view/Products/thankyou_page.dart' as _i10;
-import 'package:TychoStream/view/Profile/my_order_page.dart' as _i11;
-import 'package:TychoStream/view/search/search_page.dart' as _i12;
-import 'package:TychoStream/view/WebScreen/contact_us.dart' as _i13;
-import 'package:TychoStream/view/WebScreen/EditProfile.dart' as _i14;
-import 'package:TychoStream/view/WebScreen/HomePageWeb.dart' as _i15;
-import 'package:TychoStream/view/WebScreen/NotificationScreen.dart' as _i17;
+import 'package:TychoStream/view/WebScreen/product/buynowaddress.dart' as _i6;
+import 'package:TychoStream/view/WebScreen/product/buynowcart.dart' as _i7;
+import 'package:TychoStream/view/WebScreen/product/cart_detail_page.dart'
+    as _i8;
+import 'package:TychoStream/view/WebScreen/product/category_subcategory_product.dart'
+    as _i9;
+import 'package:TychoStream/view/WebScreen/product/favourite_list_page.dart'
+    as _i10;
+import 'package:TychoStream/view/WebScreen/product/product_details.dart'
+    as _i12;
+import 'package:TychoStream/view/WebScreen/product/ProductList.dart' as _i11;
+import 'package:TychoStream/view/WebScreen/product/subcategory_product_list.dart'
+    as _i13;
+import 'package:TychoStream/view/WebScreen/product/thankyou_page.dart' as _i14;
+import 'package:TychoStream/view/WebScreen/search/search_page.dart' as _i15;
 import 'package:TychoStream/view/widgets/web_html_page.dart' as _i16;
 
 abstract class $AppRouter extends _i19.RootStackRouter {
@@ -35,12 +44,30 @@ abstract class $AppRouter extends _i19.RootStackRouter {
 
   @override
   final Map<String, _i19.PageFactory> pagesMap = {
+    HomePageWeb.name: (routeData) {
+      return _i19.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i1.HomePageWeb(),
+      );
+    },
+    NotificationRoute.name: (routeData) {
+      return _i19.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i2.NotificationScreen(),
+      );
+    },
+    MyOrderPage.name: (routeData) {
+      return _i19.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i3.MyOrderPage(),
+      );
+    },
     AddressListPage.name: (routeData) {
       final args = routeData.argsAs<AddressListPageArgs>(
           orElse: () => const AddressListPageArgs());
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i1.AddressListPage(key: args.key),
+        child: _i4.AddressListPage(key: args.key),
       );
     },
     BannerProductDetailPage.name: (routeData) {
@@ -50,10 +77,18 @@ abstract class $AppRouter extends _i19.RootStackRouter {
               ProductDetails: queryParams.get('ProductDetails')));
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i2.BannerProductDetailPage(
+        child: _i5.BannerProductDetailPage(
           ProductDetails: args.ProductDetails,
           key: args.key,
         ),
+      );
+    },
+    BuynowAddress.name: (routeData) {
+      final args = routeData.argsAs<BuynowAddressArgs>(
+          orElse: () => const BuynowAddressArgs());
+      return _i19.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i6.BuynowAddress(key: args.key),
       );
     },
     BuynowCart.name: (routeData) {
@@ -62,7 +97,7 @@ abstract class $AppRouter extends _i19.RootStackRouter {
           orElse: () => BuynowCartArgs(buynow: queryParams.get('buynow')));
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i3.BuynowCart(
+        child: _i7.BuynowCart(
           buynow: args.buynow,
           key: args.key,
         ),
@@ -75,7 +110,7 @@ abstract class $AppRouter extends _i19.RootStackRouter {
               CartDetailArgs(itemCount: pathParams.optString('itemCount')));
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i4.CartDetail(
+        child: _i8.CartDetail(
           key: args.key,
           itemCount: args.itemCount,
         ),
@@ -88,7 +123,7 @@ abstract class $AppRouter extends _i19.RootStackRouter {
               CategoryName: pathParams.optString('CategoryName')));
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i5.CategorySubcategoryProduct(
+        child: _i9.CategorySubcategoryProduct(
           CategoryName: args.CategoryName,
           key: args.key,
         ),
@@ -99,7 +134,7 @@ abstract class $AppRouter extends _i19.RootStackRouter {
           orElse: () => const FavouriteListPageArgs());
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i6.FavouriteListPage(key: args.key),
+        child: _i10.FavouriteListPage(key: args.key),
       );
     },
     ProductListGallery.name: (routeData) {
@@ -109,7 +144,7 @@ abstract class $AppRouter extends _i19.RootStackRouter {
               discountdata: queryParams.get('discountdata')));
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i7.ProductListGallery(
+        child: _i11.ProductListGallery(
           discountdata: args.discountdata,
           key: args.key,
         ),
@@ -125,7 +160,7 @@ abstract class $AppRouter extends _i19.RootStackRouter {
               ));
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i8.ProductDetailPage(
+        child: _i12.ProductDetailPage(
           productName: args.productName,
           productdata: args.productdata,
           key: args.key,
@@ -140,7 +175,7 @@ abstract class $AppRouter extends _i19.RootStackRouter {
                   pathParams.optString('SubcategoryProductName')));
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i9.SubcategoryProductList(
+        child: _i13.SubcategoryProductList(
           SubcategoryProductName: args.SubcategoryProductName,
           key: args.key,
         ),
@@ -149,37 +184,13 @@ abstract class $AppRouter extends _i19.RootStackRouter {
     ThankYouPage.name: (routeData) {
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i10.ThankYouPage(),
-      );
-    },
-    MyOrderPage.name: (routeData) {
-      return _i19.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i11.MyOrderPage(),
+        child: const _i14.ThankYouPage(),
       );
     },
     SearchPage.name: (routeData) {
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i12.SearchPage(),
-      );
-    },
-    ContactUs.name: (routeData) {
-      return _i19.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i13.ContactUs(),
-      );
-    },
-    EditProfile.name: (routeData) {
-      return _i19.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i14.EditProfile(),
-      );
-    },
-    HomePageWeb.name: (routeData) {
-      return _i19.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i15.HomePageWeb(),
+        child: const _i15.SearchPage(),
       );
     },
     WebHtmlPage.name: (routeData) {
@@ -199,25 +210,65 @@ abstract class $AppRouter extends _i19.RootStackRouter {
         ),
       );
     },
-    NotificationRoute.name: (routeData) {
+    EditProfile.name: (routeData) {
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i17.NotificationScreen(),
+        child: const _i17.EditProfile(),
       );
     },
-    BuynowAddress.name: (routeData) {
-      final args = routeData.argsAs<BuynowAddressArgs>(
-          orElse: () => const BuynowAddressArgs());
+    ContactUs.name: (routeData) {
       return _i19.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i18.BuynowAddress(key: args.key),
+        child: const _i18.ContactUs(),
       );
     },
   };
 }
 
 /// generated route for
-/// [_i1.AddressListPage]
+/// [_i1.HomePageWeb]
+class HomePageWeb extends _i19.PageRouteInfo<void> {
+  const HomePageWeb({List<_i19.PageRouteInfo>? children})
+      : super(
+          HomePageWeb.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HomePageWeb';
+
+  static const _i19.PageInfo<void> page = _i19.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i2.NotificationScreen]
+class NotificationRoute extends _i19.PageRouteInfo<void> {
+  const NotificationRoute({List<_i19.PageRouteInfo>? children})
+      : super(
+          NotificationRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'NotificationRoute';
+
+  static const _i19.PageInfo<void> page = _i19.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i3.MyOrderPage]
+class MyOrderPage extends _i19.PageRouteInfo<void> {
+  const MyOrderPage({List<_i19.PageRouteInfo>? children})
+      : super(
+          MyOrderPage.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'MyOrderPage';
+
+  static const _i19.PageInfo<void> page = _i19.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i4.AddressListPage]
 class AddressListPage extends _i19.PageRouteInfo<AddressListPageArgs> {
   AddressListPage({
     _i20.Key? key,
@@ -246,7 +297,7 @@ class AddressListPageArgs {
 }
 
 /// generated route for
-/// [_i2.BannerProductDetailPage]
+/// [_i5.BannerProductDetailPage]
 class BannerProductDetailPage
     extends _i19.PageRouteInfo<BannerProductDetailPageArgs> {
   BannerProductDetailPage({
@@ -286,7 +337,36 @@ class BannerProductDetailPageArgs {
 }
 
 /// generated route for
-/// [_i3.BuynowCart]
+/// [_i6.BuynowAddress]
+class BuynowAddress extends _i19.PageRouteInfo<BuynowAddressArgs> {
+  BuynowAddress({
+    _i20.Key? key,
+    List<_i19.PageRouteInfo>? children,
+  }) : super(
+          BuynowAddress.name,
+          args: BuynowAddressArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'BuynowAddress';
+
+  static const _i19.PageInfo<BuynowAddressArgs> page =
+      _i19.PageInfo<BuynowAddressArgs>(name);
+}
+
+class BuynowAddressArgs {
+  const BuynowAddressArgs({this.key});
+
+  final _i20.Key? key;
+
+  @override
+  String toString() {
+    return 'BuynowAddressArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [_i7.BuynowCart]
 class BuynowCart extends _i19.PageRouteInfo<BuynowCartArgs> {
   BuynowCart({
     List<String>? buynow,
@@ -325,7 +405,7 @@ class BuynowCartArgs {
 }
 
 /// generated route for
-/// [_i4.CartDetail]
+/// [_i8.CartDetail]
 class CartDetail extends _i19.PageRouteInfo<CartDetailArgs> {
   CartDetail({
     _i20.Key? key,
@@ -364,7 +444,7 @@ class CartDetailArgs {
 }
 
 /// generated route for
-/// [_i5.CategorySubcategoryProduct]
+/// [_i9.CategorySubcategoryProduct]
 class CategorySubcategoryProduct
     extends _i19.PageRouteInfo<CategorySubcategoryProductArgs> {
   CategorySubcategoryProduct({
@@ -404,7 +484,7 @@ class CategorySubcategoryProductArgs {
 }
 
 /// generated route for
-/// [_i6.FavouriteListPage]
+/// [_i10.FavouriteListPage]
 class FavouriteListPage extends _i19.PageRouteInfo<FavouriteListPageArgs> {
   FavouriteListPage({
     _i20.Key? key,
@@ -433,7 +513,7 @@ class FavouriteListPageArgs {
 }
 
 /// generated route for
-/// [_i7.ProductListGallery]
+/// [_i11.ProductListGallery]
 class ProductListGallery extends _i19.PageRouteInfo<ProductListGalleryArgs> {
   ProductListGallery({
     List<String>? discountdata,
@@ -472,7 +552,7 @@ class ProductListGalleryArgs {
 }
 
 /// generated route for
-/// [_i8.ProductDetailPage]
+/// [_i12.ProductDetailPage]
 class ProductDetailPage extends _i19.PageRouteInfo<ProductDetailPageArgs> {
   ProductDetailPage({
     String? productName,
@@ -517,7 +597,7 @@ class ProductDetailPageArgs {
 }
 
 /// generated route for
-/// [_i9.SubcategoryProductList]
+/// [_i13.SubcategoryProductList]
 class SubcategoryProductList
     extends _i19.PageRouteInfo<SubcategoryProductListArgs> {
   SubcategoryProductList({
@@ -557,7 +637,7 @@ class SubcategoryProductListArgs {
 }
 
 /// generated route for
-/// [_i10.ThankYouPage]
+/// [_i14.ThankYouPage]
 class ThankYouPage extends _i19.PageRouteInfo<void> {
   const ThankYouPage({List<_i19.PageRouteInfo>? children})
       : super(
@@ -571,21 +651,7 @@ class ThankYouPage extends _i19.PageRouteInfo<void> {
 }
 
 /// generated route for
-/// [_i11.MyOrderPage]
-class MyOrderPage extends _i19.PageRouteInfo<void> {
-  const MyOrderPage({List<_i19.PageRouteInfo>? children})
-      : super(
-          MyOrderPage.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'MyOrderPage';
-
-  static const _i19.PageInfo<void> page = _i19.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i12.SearchPage]
+/// [_i15.SearchPage]
 class SearchPage extends _i19.PageRouteInfo<void> {
   const SearchPage({List<_i19.PageRouteInfo>? children})
       : super(
@@ -594,48 +660,6 @@ class SearchPage extends _i19.PageRouteInfo<void> {
         );
 
   static const String name = 'SearchPage';
-
-  static const _i19.PageInfo<void> page = _i19.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i13.ContactUs]
-class ContactUs extends _i19.PageRouteInfo<void> {
-  const ContactUs({List<_i19.PageRouteInfo>? children})
-      : super(
-          ContactUs.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'ContactUs';
-
-  static const _i19.PageInfo<void> page = _i19.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i14.EditProfile]
-class EditProfile extends _i19.PageRouteInfo<void> {
-  const EditProfile({List<_i19.PageRouteInfo>? children})
-      : super(
-          EditProfile.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'EditProfile';
-
-  static const _i19.PageInfo<void> page = _i19.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i15.HomePageWeb]
-class HomePageWeb extends _i19.PageRouteInfo<void> {
-  const HomePageWeb({List<_i19.PageRouteInfo>? children})
-      : super(
-          HomePageWeb.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'HomePageWeb';
 
   static const _i19.PageInfo<void> page = _i19.PageInfo<void>(name);
 }
@@ -686,44 +710,29 @@ class WebHtmlPageArgs {
 }
 
 /// generated route for
-/// [_i17.NotificationScreen]
-class NotificationRoute extends _i19.PageRouteInfo<void> {
-  const NotificationRoute({List<_i19.PageRouteInfo>? children})
+/// [_i17.EditProfile]
+class EditProfile extends _i19.PageRouteInfo<void> {
+  const EditProfile({List<_i19.PageRouteInfo>? children})
       : super(
-          NotificationRoute.name,
+          EditProfile.name,
           initialChildren: children,
         );
 
-  static const String name = 'NotificationRoute';
+  static const String name = 'EditProfile';
 
   static const _i19.PageInfo<void> page = _i19.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i18.BuynowAddress]
-class BuynowAddress extends _i19.PageRouteInfo<BuynowAddressArgs> {
-  BuynowAddress({
-    _i20.Key? key,
-    List<_i19.PageRouteInfo>? children,
-  }) : super(
-          BuynowAddress.name,
-          args: BuynowAddressArgs(key: key),
+/// [_i18.ContactUs]
+class ContactUs extends _i19.PageRouteInfo<void> {
+  const ContactUs({List<_i19.PageRouteInfo>? children})
+      : super(
+          ContactUs.name,
           initialChildren: children,
         );
 
-  static const String name = 'BuynowAddress';
+  static const String name = 'ContactUs';
 
-  static const _i19.PageInfo<BuynowAddressArgs> page =
-      _i19.PageInfo<BuynowAddressArgs>(name);
-}
-
-class BuynowAddressArgs {
-  const BuynowAddressArgs({this.key});
-
-  final _i20.Key? key;
-
-  @override
-  String toString() {
-    return 'BuynowAddressArgs{key: $key}';
-  }
+  static const _i19.PageInfo<void> page = _i19.PageInfo<void>(name);
 }

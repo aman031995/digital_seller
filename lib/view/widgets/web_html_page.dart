@@ -3,13 +3,12 @@ import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
-import 'package:TychoStream/view/MobileScreen/menu/app_menu.dart';
-import 'package:TychoStream/view/WebScreen/LoginUp.dart';
+import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
 import 'package:TychoStream/view/WebScreen/getAppBar.dart';
 import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
-import 'package:TychoStream/view/search/search_list.dart';
-import 'package:TychoStream/view/widgets/AppNavigationBar.dart';
+import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
+import 'package:TychoStream/view/WebScreen/search/search_list.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
@@ -57,6 +56,7 @@ HomeViewModel homeViewModel=HomeViewModel();
     homeViewModel.getAppConfig(context);
     profileViewModel.getProfileDetail(context);
     notificationViewModel.getNotificationCountText(context);
+    cartViewModel.getCartCount(context);
 
     homeViewModel.openWebHtmlView(context, widget.html ?? "", title: widget.title );
     super.initState();
@@ -129,15 +129,12 @@ HomeViewModel homeViewModel=HomeViewModel();
             } else {
               if (isLogins == true) {
                 isLogins = false;
-                setState(() {});
               }
               if (isSearch == true) {
                 isSearch = false;
-                setState(() {});
               }
               if (isSearch == true) {
                 isSearch = false;
-                setState(() {});
               }
               context.router.push(FavouriteListPage());
             }
@@ -159,17 +156,13 @@ HomeViewModel homeViewModel=HomeViewModel();
             } else {
               if (isLogins == true) {
                 isLogins = false;
-                setState(() {});
               }
               if (isSearch == true) {
                 isSearch = false;
-                setState(() {});
               }
               if(isnotification==true){
                 isnotification=false;
-                setState(() {
 
-                });
               }
               context.router.push(CartDetail(
                   itemCount:
@@ -194,9 +187,15 @@ HomeViewModel homeViewModel=HomeViewModel();
               child: Column(
                 children: [
                   Html(data:viewmodel.html ?? "" , style: {
-                    "body": Style(fontSize: FontSize.large,lineHeight: LineHeight.number(2),color: Theme.of(context).canvasColor,padding:HtmlPaddings.only(left: 18,right: 18))
+                    "body": Style(fontSize:ResponsiveWidget.isMediumScreen(
+                        context)
+                        ?FontSize.medium: FontSize.large,lineHeight: LineHeight.number(ResponsiveWidget.isMediumScreen(
+                        context)
+                        ?1:2),color: Theme.of(context).canvasColor,padding:HtmlPaddings.only(left: 18,right: 18))
                   }),
-                  SizedBox(height: 160),
+                  SizedBox(height: ResponsiveWidget.isMediumScreen(
+                      context)
+                      ?50:160),
                   ResponsiveWidget.isMediumScreen(
                       context)
                       ? footerMobile(context,homeViewModel)

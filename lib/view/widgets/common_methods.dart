@@ -9,10 +9,10 @@ import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
-import 'package:TychoStream/view/Products/image_slider.dart';
-import 'package:TychoStream/view/Products/shipping_address_page.dart';
-import 'package:TychoStream/view/WebScreen/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/OnHover.dart';
+import 'package:TychoStream/view/WebScreen/product/image_slider.dart';
+import 'package:TychoStream/view/WebScreen/product/shipping_address_page.dart';
+import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
+import 'package:TychoStream/view/WebScreen/effect/OnHover.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
@@ -344,8 +344,7 @@ Widget productListItems(BuildContext context, ProductList? productListData,
                 : BoxDecoration(
                     color: Theme.of(context).cardColor,
                   ),
-            margin: EdgeInsets.only(
-                right: ResponsiveWidget.isMediumScreen(context) ? 0 : 16),
+            // margin: EdgeInsets.only(right: ResponsiveWidget.isMediumScreen(context) ? 0 : 16),
             child: Stack(
               children: [
                 Column(
@@ -684,12 +683,14 @@ Widget pricedetails(BuildContext context, CartViewModel cartViewData) {
 Widget addressDetails(
     BuildContext context, String? addressId, CartViewModel cartViewData) {
   return Container(
-    height: SizeConfig.screenHeight-290,
+    // height: ResponsiveWidget.isMediumScreen(context)
+    //     ?ResponsiveWidget.isSmallScreen(context) ?SizeConfig.screenHeight-290:SizeConfig.screenHeight/7.8:SizeConfig.screenHeight/2,
     decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
     margin: EdgeInsets.only(bottom: 8),
     width: ResponsiveWidget.isMediumScreen(context) ? SizeConfig.screenWidth : SizeConfig.screenWidth * 0.30,
     child: ListView.builder(
         scrollDirection: Axis.vertical,
+        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: cartViewData.addressListModel?.length,
         itemBuilder: (context, index) {
@@ -866,7 +867,8 @@ Widget CategoryList(BuildContext context, CartViewModel cartViewModel) {
         right: ResponsiveWidget.isMediumScreen(context)
             ? 4
             : SizeConfig.screenWidth * 0.12,
-        top: ResponsiveWidget.isMediumScreen(context) ? 4 : 20),
+        top: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context)
+            ? 4:8 : 20),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -875,14 +877,15 @@ Widget CategoryList(BuildContext context, CartViewModel cartViewModel) {
           alignment: Alignment.topLeft,
           child: AppBoldFont(context,
               textAlign: TextAlign.left,
-              msg: "What are you looking for?",
+              msg: StringConstant.categoryList,
               fontWeight: FontWeight.w700,
               fontSize: ResponsiveWidget.isMediumScreen(context) ? 14 : 18),
         ),
         SizedBox(height: SizeConfig.screenHeight * 0.01),
         Container(
             height: ResponsiveWidget.isMediumScreen(context)
-                ? 140
+                ?ResponsiveWidget.isSmallScreen(context)
+                ?  150:SizeConfig.screenHeight*0.22
                 : SizeConfig.screenWidth * 0.22,
             child: ListView.builder(
                 physics: BouncingScrollPhysics(),
@@ -913,19 +916,15 @@ Widget CategoryList(BuildContext context, CartViewModel cartViewModel) {
                                   .categoryListModel?[position].categoryId));
                     },
                     child: Container(
-                      margin: EdgeInsets.only(
-                        right: ResponsiveWidget.isMediumScreen(context)
-                            ? 8
-                            : SizeConfig.screenWidth * 0.02,
-                      ),
+                      padding: EdgeInsets.all(ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context)
+                          ?4:8:10),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           CircleAvatar(
                             backgroundColor: Theme.of(context).cardColor,
-                            radius: ResponsiveWidget.isMediumScreen(context)
-                                ? 50
-                                : SizeConfig.screenWidth * 0.085,
+                            radius: ResponsiveWidget.isMediumScreen(context) ? ResponsiveWidget.isSmallScreen(context) ? 50:SizeConfig.screenHeight*0.085
+                                : ResponsiveWidget.isSmallScreen(context) ?SizeConfig.screenWidth * 0.080:SizeConfig.screenWidth * 0.075,
                             child: CachedNetworkImage(
                                 imageUrl: cartViewModel
                                         .categoryListModel?[position]
@@ -961,9 +960,7 @@ Widget CategoryList(BuildContext context, CartViewModel cartViewModel) {
                             child: AppBoldFont(
                                 maxLines: 1,
                                 context,
-                                msg: cartViewModel.categoryListModel?[position]
-                                        .categoryTitle ??
-                                    "",
+                                msg:ResponsiveWidget.isMediumScreen(context) ?getCategoryViewTitleMobile(position, cartViewModel) :getCategoryViewTitle(position,cartViewModel) ?? "",
                                 fontSize:
                                     ResponsiveWidget.isMediumScreen(context)
                                         ? 14
@@ -1019,14 +1016,14 @@ Widget offerList(BuildContext context) {
                     context,
                     AssetsConstants.icSupport,
                     StringConstant.offerOnTimeDelivery,
-                    StringConstant.offerContent),
+                    StringConstant.offerDelivery),
                 whatWeOfferWidget(
                     context,
                     AssetsConstants.icCreditCard,
                     StringConstant.offerSecurePayment,
-                    StringConstant.offerContent),
+                    StringConstant.offerSecure),
                 whatWeOfferWidget(context, AssetsConstants.icTimer,
-                    StringConstant.offerSupport, StringConstant.offerContent),
+                    StringConstant.offerSupport, StringConstant.offerSupporText),
               ],
             ),
           ),
@@ -1042,9 +1039,11 @@ Widget whatWeOfferWidget(
     padding: EdgeInsets.all(ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
     margin: EdgeInsets.only(
         right: ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
-    height: ResponsiveWidget.isMediumScreen(context) ? 130 : 250,
+    height: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context)
+        ?130:160 : 250,
     width: ResponsiveWidget.isMediumScreen(context)
-        ? 200
+        ?  ResponsiveWidget.isSmallScreen(context)
+        ?200: SizeConfig.screenHeight/4.2
         : SizeConfig.screenWidth * 0.244,
     color: Theme.of(context).cardColor,
     child: Column(
@@ -1175,20 +1174,15 @@ Widget  discountView(CartViewModel cartview) {
       return Container(
         width: SizeConfig.screenWidth,
         color: Theme.of(context).primaryColor.withOpacity(0.5),
-
         margin: EdgeInsets.zero,
-        height: ResponsiveWidget
-            .isMediumScreen(
-            context)
-            ? 300
-            : SizeConfig
-            .screenWidth *
-            0.31,
+        height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context)
+            ?300:SizeConfig.screenHeight/4: SizeConfig.screenWidth * 0.29,
         padding: EdgeInsets.only(
             left: ResponsiveWidget
                 .isMediumScreen(
                 context)
-                ? 8
+                ? ResponsiveWidget.isSmallScreen(context)
+                ?8:12
                 : SizeConfig
                 .screenWidth *
                 0.12,
@@ -1209,7 +1203,7 @@ Widget  discountView(CartViewModel cartview) {
           children: [
             Container(
               alignment: Alignment.topLeft,
-              child: AppBoldFont(context, msg: 'Discounts for You', fontWeight:
+              child: AppBoldFont(context, msg:StringConstant.discout , fontWeight:
               FontWeight
                   .w700,textAlign: TextAlign.left,
                   fontSize:
@@ -1219,7 +1213,7 @@ Widget  discountView(CartViewModel cartview) {
             ),
             SizedBox(height: 10),
             Container(
-                height: ResponsiveWidget.isMediumScreen(context) ? 230 : SizeConfig.screenWidth * 0.27,
+                height: ResponsiveWidget.isMediumScreen(context) ? ResponsiveWidget.isSmallScreen(context) ?230: SizeConfig.screenHeight/5  : SizeConfig.screenWidth * 0.25,
                 width: SizeConfig
                     .screenWidth,
 
@@ -1231,48 +1225,46 @@ Widget  discountView(CartViewModel cartview) {
                     scrollDirection: Axis.horizontal,
                     itemCount: cartview.offerDiscountModel?.length,
                     itemBuilder: (context, position) {
-                      return OnHover(
-                        builder: (isHovered) {
-                          return InkWell(
-                              onTap: () {
-                                if (isLogins == true) {
-                                  isLogins = false;
-                                }
-                                if (isSearch == true) {
-                                  isSearch = false;
-                                }
-                                if (isnotification == true) {
-                                  isnotification = false;
-                                }
-                                context.router.push(ProductListGallery(
-                                    discountdata: ["${cartview.offerDiscountModel?[position].categoryId}","${cartview.offerDiscountModel?[position].discountPercentage}"]
-                                ));
-                              },
-                              child: Container(
-                                margin: EdgeInsets.only(right:ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
-                                width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    CachedNetworkImage(
-                                        height: ResponsiveWidget.isMediumScreen(context) ? 180 : SizeConfig.screenWidth * 0.22,
-                                        width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.22,
-                                        imageUrl: '${cartview.offerDiscountModel?[position].images}',
-                                        fit: BoxFit.fill,
-                                        placeholder: (context, url) => Center(
-                                            child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2))),
-                                    SizedBox(height: 8),
-                                    AppBoldFont(context, msg: "${cartview.offerDiscountModel?[position].title}", color: Theme.of(context).canvasColor,fontSize: ResponsiveWidget.isMediumScreen(context) ? 14:18),
-                                    SizedBox(height: 4),
-                                    AppRegularFont(context, msg: "Up To. ${cartview.offerDiscountModel?[position].discountPercentage}% Off", color: GREEN, fontSize: ResponsiveWidget.isMediumScreen(context) ? 14:18)
+                      return InkWell(
+                          onTap: () {
+                            if (isLogins == true) {
+                              isLogins = false;
+                            }
+                            if (isSearch == true) {
+                              isSearch = false;
+                            }
+                            if (isnotification == true) {
+                              isnotification = false;
+                            }
+                            context.router.push(ProductListGallery(
+                                discountdata: ["${cartview.offerDiscountModel?[position].categoryId}","${cartview.offerDiscountModel?[position].discountPercentage}"]
+                            ));
+                          },
+                          child: Container(
+                            margin: EdgeInsets.only(right:ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
+                            width: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context)
+                                ?140:SizeConfig.screenHeight/5.8 : SizeConfig.screenWidth * 0.18,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                CachedNetworkImage(
+                                    height: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context)
+                                        ?180:SizeConfig.screenHeight/6: SizeConfig.screenWidth * 0.20,
+                                    width: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context)
+                                        ?140:SizeConfig.screenHeight/5.8: SizeConfig.screenWidth * 0.20,
+                                    imageUrl: '${cartview.offerDiscountModel?[position].images}',
+                                    fit: BoxFit.fill,
+                                    placeholder: (context, url) => Center(
+                                        child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2))),
+                                SizedBox(height: 8),
+                                AppBoldFont(context, msg: "${cartview.offerDiscountModel?[position].title}", color: Theme.of(context).canvasColor,fontSize: ResponsiveWidget.isMediumScreen(context) ? 14:18),
+                                SizedBox(height: 4),
+                                AppRegularFont(context, msg: "Up To. ${cartview.offerDiscountModel?[position].discountPercentage}% Off", color: GREEN, fontSize: ResponsiveWidget.isMediumScreen(context) ? 14:18)
 
 
-                                  ],
-                                ),
-                              ));
-                        },hovered: Matrix4.identity()..translate(0, 0, 0),
-
-                      );})),
+                              ],
+                            ),
+                          ));})),
           ],
         ),
       );
@@ -1397,7 +1389,8 @@ Widget recommeded(BuildContext context,controller,cartViewModel){
       Container(
           padding: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.01,
               right: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.01),
-          height: ResponsiveWidget.isMediumScreen(context) ? 235 : SizeConfig.screenWidth * 0.32,
+          height: ResponsiveWidget.isMediumScreen(context) ? ResponsiveWidget.isSmallScreen(context)
+              ?235 :SizeConfig.screenHeight/4.5: SizeConfig.screenWidth * 0.32,
           child: ListView.builder(
               reverse: false,
               controller: controller,
@@ -1444,7 +1437,8 @@ Widget recommeded(BuildContext context,controller,cartViewModel){
                             elevation: isHovered == true ? 10 : 0.0,
                             margin: EdgeInsets.only(right:ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
                             child: Container(
-                              width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
+                              width: ResponsiveWidget.isMediumScreen(context) ? ResponsiveWidget.isSmallScreen(context)
+                                  ?140:SizeConfig.screenHeight/6 : SizeConfig.screenWidth * 0.18,
                               decoration: BoxDecoration(color: Theme.of(context).cardColor),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
@@ -1453,7 +1447,8 @@ Widget recommeded(BuildContext context,controller,cartViewModel){
                                   CachedNetworkImage(
                                       imageUrl: '${cartViewModel.recommendedView?[position].productDetails?.productImages?[0]}',
                                       fit: BoxFit.cover,
-                                      height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.228,
+                                      height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context)
+                                          ?140: SizeConfig.screenHeight/6.5 : SizeConfig.screenWidth * 0.228,
                                       imageBuilder: (context, imageProvider) => Container(decoration: BoxDecoration(image: DecorationImage(image: imageProvider, fit: BoxFit.cover))),
                                       placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.23, child: Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2)))),
                                   SizedBox(height: 8),
@@ -1517,7 +1512,7 @@ Widget recentView(BuildContext context,controller1,cartViewModel){
       ),
       SizedBox(height: SizeConfig.screenWidth * 0.01),
       Container(
-          height: ResponsiveWidget.isMediumScreen(context) ? 200
+          height: ResponsiveWidget.isMediumScreen(context) ? ResponsiveWidget.isSmallScreen(context) ?200: SizeConfig.screenHeight/6.2
               : SizeConfig.screenWidth * 0.27,
           width: SizeConfig.screenWidth,
           padding: EdgeInsets.only(
@@ -1564,7 +1559,7 @@ Widget recentView(BuildContext context,controller1,cartViewModel){
                             elevation: isHovered == true ? 10 : 0.0,
                             margin: EdgeInsets.only(right:ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
                             child: Container(
-                              width: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.18,
+                              width: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context) ?140: SizeConfig.screenHeight/6.5 : SizeConfig.screenWidth * 0.18,
                               decoration: BoxDecoration(
                                 color: Theme.of(context).cardColor,
                               ),
@@ -1574,11 +1569,11 @@ Widget recentView(BuildContext context,controller1,cartViewModel){
                                 children: [
                                   CachedNetworkImage(
                                       imageUrl: '${cartViewModel.recentView?[position].productDetails?.productImages?[0]}',
-                                      fit: BoxFit.fill,
-                                      height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.228,
+                                      fit: BoxFit.contain,
+                                      height: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context) ?140: SizeConfig.screenHeight/7.5 : SizeConfig.screenWidth * 0.228,
                                       imageBuilder: (context, imageProvider) => Container(
                                         decoration: BoxDecoration(
-                                          image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+                                          image: DecorationImage(image: imageProvider, fit: BoxFit.contain),
                                         ),
                                       ),
                                       placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenHeight / 2.1, child: Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2)))),
@@ -1687,6 +1682,33 @@ String? getRecentViewTitle(int position, CartViewModel cartview) {
             '...');
   } else {
     return cartview.recentView?[position].productDetails?.productVariantTitle ??
+        "";
+  }
+}
+
+String? getCategoryViewTitle(int position, CartViewModel cartview) {
+  if ((cartview.categoryListModel?[position].categoryTitle?.length ?? 0) > 35) {
+    return cartview.categoryListModel?[position].categoryTitle
+        ?.replaceRange(
+        35,
+        cartview.categoryListModel?[position].categoryTitle
+            ?.length,
+        '...');
+  } else {
+    return cartview.categoryListModel?[position].categoryTitle ??
+        "";
+  }
+}
+String? getCategoryViewTitleMobile(int position, CartViewModel cartview) {
+  if ((cartview.categoryListModel?[position].categoryTitle?.length ?? 0) > 12) {
+    return cartview.categoryListModel?[position].categoryTitle
+        ?.replaceRange(
+        12,
+        cartview.categoryListModel?[position].categoryTitle
+            ?.length,
+        '...');
+  } else {
+    return cartview.categoryListModel?[position].categoryTitle ??
         "";
   }
 }

@@ -131,7 +131,6 @@ class ProfileViewModel with ChangeNotifier {
     AppIndicator.loadingIndicator(context);
     _profileRepo.uploadProfile(context, reader, file, (response) {
       if(response != null){
-
         _userInfoModel = UserInfoModel.fromJson(response);
         AppDataManager.getInstance.updateUserDetails(userInfoModel!);
         print('Image uploaded successfully!');

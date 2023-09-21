@@ -1,3 +1,4 @@
+import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -25,7 +26,7 @@ Widget noDataFoundMessage(BuildContext context, String message,HomeViewModel hom
               Padding(
                 padding: const EdgeInsets.all(10),
                 child: Image.asset(
-                  'images/ic_NotFoundLogo.png',
+                  AssetsConstants.ic_noProductFound,
                   height: SizeConfig.screenHeight * 0.2,
                   width: 300,
                 ),

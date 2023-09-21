@@ -23,7 +23,7 @@ Widget emailNotificationUpdatePage(BuildContext context, TextEditingController e
           AppMediumFont(context, msg: "SIGN UP AND SAVE UP TO 20%", fontSize:  ResponsiveWidget.isMediumScreen(context) ?16:32, fontWeight: FontWeight.w600, color: Theme.of(context).canvasColor),
           SizedBox(height:  ResponsiveWidget.isMediumScreen(context) ?10:30,),
           AppRegularFont(context, msg: 'Be updated on new arrivals, trends and offers. Sign up now! ', fontSize: ResponsiveWidget.isMediumScreen(context) ?14: 28, fontWeight: FontWeight.w500, color: Theme.of(context).canvasColor),
-          SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?10: 30,),
+          SizedBox(height: ResponsiveWidget.isMediumScreen(context) ?10: 30),
           ResponsiveWidget.isMediumScreen(context) ? getLatestUpdateRowTextFieldMobile(context,emailController,authVM):getLatestUpdateRowTextField(context,emailController,authVM),
         ],
       ),
@@ -72,7 +72,6 @@ Widget getLatestUpdateRowTextFieldMobile(BuildContext context, TextEditingContro
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       inputNormalTextField(emailController, TextInputType.emailAddress, StringConstant.enterEmail, null,context,authVM),
-       SizedBox(height: 8),
       Container(
         height:50,
         width:200,

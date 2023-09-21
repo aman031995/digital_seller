@@ -35,19 +35,11 @@ class _SocialLoginViewState extends State<SocialLoginView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             socialLogin?.google != null
-                ? socialNetworkButton("images/google.png", () {
+                ? socialNetworkButton(AssetsConstants.icGoogle, () {
               widget.socialLoginViewModel?.isGoogle = true;
               widget.socialLoginViewModel?.signInWithGoogle(context);
               Navigator.pop(context);   },context)
                 : Container(),
-            // SizedBox(width: 10),
-            // socialLogin?.facebook != null
-            //     ? socialNetworkButton(AssetsConstants.icFacebook, () {
-            //   widget.socialLoginViewModel?.loginWithFB(context);
-            //   widget.socialLoginViewModel?.isGoogle = false;
-            // },context)
-            //     : Container(),
-
 
           ],
         );

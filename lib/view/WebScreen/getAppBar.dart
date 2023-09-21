@@ -10,8 +10,8 @@ import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
-import 'package:TychoStream/view/WebScreen/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/OnHover.dart';
+import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
+import 'package:TychoStream/view/WebScreen/effect/OnHover.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
@@ -23,7 +23,7 @@ import '../../viewmodel/notification_view_model.dart';
 
 PreferredSize getAppBar(
     BuildContext context,
-NotificationViewModel notificationViewModel,
+    NotificationViewModel notificationViewModel,
     HomeViewModel viewmodel,
     ProfileViewModel profileViewModel,
     String? itemCount,
@@ -105,7 +105,7 @@ NotificationViewModel notificationViewModel,
                 child: SizedBox(width: SizeConfig.screenWidth * .04),
               ),
               Container(
-                height: 40,
+                height: 45,
                 width: SizeConfig.screenWidth / 4.2,
                 alignment: Alignment.topCenter,
                 child: AppTextField(
@@ -202,9 +202,7 @@ NotificationViewModel notificationViewModel,
                         }
                       },
                       child: Image.asset(
-                        notificationViewModel.notificationItem != '0'
-                            ? AssetsConstants.icNotificationOn
-                            : AssetsConstants.icNotification,
+                        AssetsConstants.icNotification,
                         height: 25,
                         color: Theme.of(context).canvasColor,
                         width: 25,
@@ -255,10 +253,7 @@ NotificationViewModel notificationViewModel,
                           )),
                       child: Row(
                         children: [
-                          Image.asset(AssetsConstants.icProfile,
-                              width: 20,
-                              height: 20,
-                              color: Theme.of(context).canvasColor),
+                          Icon(Icons.person,color: Theme.of(context).canvasColor,size: 25),
                           appTextButton(context, StringConstant.SignIn, Alignment.center,
                               Theme.of(context).canvasColor, 16, true),
                         ],
@@ -276,11 +271,12 @@ NotificationViewModel notificationViewModel,
                   isLogins = !isLogins;
                   isSearch = false;
                 },
-                    child: Image.asset(
-                        AssetsConstants.icProfile,
-                        height: 30,
-                        color: Theme.of(context).canvasColor,
-                      ),
+                    child:Icon(Icons.person,color: Theme.of(context).canvasColor,size: 30)
+                    // Image.asset(
+                    //     AssetsConstants.icProfile,
+                    //     height: 30,
+                    //     color: Theme.of(context).canvasColor.withOpacity(0.8),
+                    //   ),
                   ),
               Expanded(
                 child: SizedBox(width: SizeConfig.screenWidth * .05),
@@ -485,9 +481,7 @@ PreferredSize homePageTopBar(BuildContext context,
                           }
                         },
                         child: Image.asset(
-                          notificationViewModel.notificationItem != '0'
-                              ? AssetsConstants.icNotificationOn
-                              : AssetsConstants.icNotification,
+                           AssetsConstants.icNotification,
                           height: 24,
                           color: Theme.of(context).canvasColor,
                           width: 20,fit: BoxFit.fill,

@@ -1,6 +1,7 @@
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/services/global_variable.dart';
-import 'package:TychoStream/view/WebScreen/LoginUp.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
+import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,8 @@ class _footerDesktopState extends State<footerDesktop> {
           final followUs = viewmodel.appConfigModel?.androidConfig?.socialMedia;
           return Container(
       color: Theme.of(context).canvasColor,
-      height: 240,
+      height: ResponsiveWidget.isSmallScreen(context)
+          ?240:250,
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.only(
           bottom: 10,
@@ -118,7 +120,7 @@ class _footerDesktopState extends State<footerDesktop> {
                   throw 'Could not launch $url';
                 }
               },
-              child: Image.asset(AssetsConstants.icGoogle,  color: Theme.of(context).scaffoldBackgroundColor,
+              child: Image.asset(AssetsConstants.icPlaystore,  color: Theme.of(context).scaffoldBackgroundColor,
                   height: 35),
             ),
           ],
@@ -162,7 +164,7 @@ class _footerDesktopState extends State<footerDesktop> {
                   }),
               SizedBox(width: MediaQuery.of(context).size.width * .01),
               InkWell(
-                  child: Image.asset("images/ic_instgram.png",
+                  child: Image.asset(AssetsConstants.ic_instagram,
                       height: 33,
                       width: 30,
                       color: Theme.of(context).scaffoldBackgroundColor),
@@ -367,7 +369,7 @@ Widget footerMobile(BuildContext context,HomeViewModel homeViewModel) {
                         }),
                     SizedBox(width:5),
                     GestureDetector(
-                        child: Image.asset("images/ic_instgram.png",
+                        child: Image.asset(AssetsConstants.ic_instagram,
                             height: 30,
                             color: Theme.of(context).scaffoldBackgroundColor),
                         onTap: () async {
@@ -431,7 +433,7 @@ Widget footerMobile(BuildContext context,HomeViewModel homeViewModel) {
                           }
                         },
                         child:
-                            Image.asset(AssetsConstants.icGoogle,   color: Theme.of(context).scaffoldBackgroundColor,height: 30)),
+                            Image.asset(AssetsConstants.icPlaystore,   color: Theme.of(context).scaffoldBackgroundColor,height: 30)),
                   ],
                 )
               ],

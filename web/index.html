@@ -9,6 +9,7 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="iosurl">
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="ic_launcher-web.png" />
@@ -25,17 +26,21 @@
         align-items: center;
       }
       .indicator{
-         width: 20vw;
+         width: 20vh;
         height: 20vh;
-       color: red;
+
+
       }
 </style>
 </head>
 
 <body style="overflow: hidden">
 <div id="loading_indicator" class="container">
-  <img class="indicator" src="images/Indict.gif"/>
+  <img class="indicator" src="images/Loader.gif"/>
 </div>
+<script type="text/javascript">
+    window.flutterWebRenderer = "html";
+</script>
 <script>
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-app.js";
     import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.1/firebase-analytics.js";
@@ -56,7 +61,7 @@
           if (loadingIndicator) {
             loadingIndicator.remove();
           }
-        }, 500);
+        }, 1000);
 };
 </script>
 
