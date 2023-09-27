@@ -30,19 +30,10 @@ class ProfileViewModel with ChangeNotifier {
   List<TermsPrivacyModel>? _termsPrivacyModel;
   List<TermsPrivacyModel>? get termsPrivacyModel => _termsPrivacyModel;
 
-  Future getTermsPrivacy(BuildContext context) async {
-    AppIndicator.loadingIndicator(context);
-    _profileRepo.getTermsPrivacy(context, (result, isSuccess) {
-      if (isSuccess) {
-        _termsPrivacyModel =
-            ((result as SuccessState).value as ASResponseModal).dataModal;
-        print('Terms Privacy api Successfully');
-        notifyListeners();
-        AppIndicator.disposeIndicator();
-      }
-    });
-  }
 
+
+
+// method for get profile details from cache
   getProfileDetails(BuildContext context) async {
     final box = await Hive.openBox<String>('appBox');
     final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
@@ -65,6 +56,7 @@ class ProfileViewModel with ChangeNotifier {
     notifyListeners();
   }
 
+  // Method for get Profile details
   Future<void> getProfileDetail(BuildContext context) async {
     _profileRepo.getUserProfileDetails(context, (result, isSuccess) {
       if (isSuccess) {
@@ -78,6 +70,7 @@ class ProfileViewModel with ChangeNotifier {
     });
   }
 
+  // Method for Update Profile
   Future<void> updateProfile(BuildContext context, String? name, String? phone,
       String? address, String? email) async {
     AppIndicator.loadingIndicator(context);
@@ -95,6 +88,7 @@ class ProfileViewModel with ChangeNotifier {
         });
   }
 
+  // Method for Upload Profile image
   Future<dynamic> uploadProfile(BuildContext context, FileReader reader, File file, ApiCallback responseData) async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var url = '${NetworkConstants.kAppBaseUrl + NetworkConstants.kUploadProfilePic}';
@@ -140,6 +134,7 @@ class ProfileViewModel with ChangeNotifier {
     });
   }
 
+  //Method for contact Us
   Future<void> contactUs(BuildContext context, String name, String email, String query) async{
     AppIndicator.loadingIndicator(context);
     _profileRepo.contactUsApi(context, name, email, query, (result, isSuccess) {

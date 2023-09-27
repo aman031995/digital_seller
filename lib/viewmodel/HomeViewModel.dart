@@ -75,7 +75,7 @@ class HomeViewModel with ChangeNotifier {
     notifyListeners();
   }
 
-  // get BannerList
+  // method for get BannerList from cache
   getBannerList(BuildContext context) async {
     final box = await Hive.openBox<String>('appBox');
     final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
@@ -91,7 +91,7 @@ class HomeViewModel with ChangeNotifier {
       getBannerLists(context);
     }
   }
-
+  // method for get BannerList
   Future<void> getBannerLists(BuildContext context) async {
     _homePageRepo.getBannerData(context, (result, isSuccess) {
       if (isSuccess) {
@@ -101,11 +101,10 @@ class HomeViewModel with ChangeNotifier {
     });
   }
 
-//get AppConfiguration
+//method for get AppConfiguration
   Future getAppConfig(BuildContext context) async{
     _homePageRepo.getAppConfiguration(context, (result, isSuccess) {
       if(isSuccess) {
-
         _appConfigModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         GlobalVariable.cod = _appConfigModel?.androidConfig?.cod;
         GlobalVariable.isLightTheme = _appConfigModel?.androidConfig?.themeType;
@@ -117,7 +116,7 @@ class HomeViewModel with ChangeNotifier {
     });
   }
 
-// get search Data
+// method for get search Data
   Future<void> getSearchData(BuildContext context, String searchKeyword, int pageNum) async{
     _homePageRepo.getSearchApiData(searchKeyword, pageNum, context, (result, isSuccess) {
       if(isSuccess){
@@ -142,7 +141,7 @@ class HomeViewModel with ChangeNotifier {
     });
   }
 
-//get AppMenu data
+//method for get AppMenu data from cache
   getAppMenuData(BuildContext context) async{
     final box = await Hive.openBox<String>('appBox');
     final JsonCache jsonCache = JsonCacheMem(JsonCacheHive(box));
@@ -157,6 +156,7 @@ class HomeViewModel with ChangeNotifier {
     }
   }
 
+  //method for getAppMenu data
   Future getAppMenu(BuildContext context) async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     _homePageRepo.getAppMenu(context, (result, isSuccess) {

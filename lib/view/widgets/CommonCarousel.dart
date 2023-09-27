@@ -1,6 +1,8 @@
 import 'package:TychoStream/AppRouter.gr.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/BannerDataModel.dart';
+import 'package:TychoStream/services/global_variable.dart';
+import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -88,15 +90,8 @@ class _CommonCarouselState extends State<CommonCarousel> {
         .map((element) =>  InkWell(
       focusNode: carouselFocus,
       onTap: () async {
-        if (isLogins == true) {
-          isLogins = false;
-        }
-        if (isSearch == true) {
-          isSearch = false;
-        }
-        if (isnotification == true) {
-          isnotification = false;
-        }
+        closeAppbarProperty();
+
         redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
 
         },
@@ -174,15 +169,8 @@ class _CommonCarouselState extends State<CommonCarousel> {
         .map((element) =>  InkWell(
       focusNode: carouselFocus,
       onTap: () async {
-        if (isLogins == true) {
-          isLogins = false;
-        }
-        if (isSearch == true) {
-          isSearch = false;
-        }
-        if (isnotification == true) {
-          isnotification = false;
-        }
+        closeAppbarProperty();
+
         redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
 
       },

@@ -27,7 +27,7 @@ class NotificationViewModel with ChangeNotifier{
   String notificationItem = '0';
   String logFilePath = '';
 
-  // notification method
+  //method for get notification method
   void getNotification(BuildContext context, int pageNum){
     _notificationRepo.getNotification(pageNum,context, (result, isSuccess) {
       if(isSuccess){
@@ -49,7 +49,7 @@ class NotificationViewModel with ChangeNotifier{
     });
   }
 
-  // get notification count method
+  // method for get notification count method
   Future<void> getNotificationCountText(BuildContext context) async {
     _notificationRepo.getNotificationCount(context, (result, isSuccess) {
       if (isSuccess) {

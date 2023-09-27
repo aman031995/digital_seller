@@ -2,6 +2,7 @@ import 'package:TychoStream/AppRouter.gr.dart';
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
@@ -42,6 +43,7 @@ List<String> sortDropDownList = [
   "Customers Rating"
 ];
 
+// cartPageViewIndicator .....
 Widget cartPageViewIndicator(BuildContext context, int activeStep) {
   return Container(
       margin: EdgeInsets.only(
@@ -77,6 +79,7 @@ Widget cartPageViewIndicator(BuildContext context, int activeStep) {
       ));
 }
 
+//stepviewer......
 Widget stepView(BuildContext context, String title, int activeStep, int index) {
   return AppBoldFont(context,
       msg: title,
@@ -87,7 +90,7 @@ Widget stepView(BuildContext context, String title, int activeStep, int index) {
       fontSize: ResponsiveWidget.isMediumScreen(context) ? 14 : 16);
 }
 
-//PriceDetailWidget Method
+//PriceDetailWidget Method....
 Widget priceDetailWidget(BuildContext context, String str1, String val) {
   return Container(
     padding: EdgeInsets.only(left: 20, right: 20),
@@ -119,7 +122,7 @@ Widget priceDetailWidget(BuildContext context, String str1, String val) {
   );
 }
 
-//CheckOut button
+//CheckOut button....
 Widget checkoutButton(
   BuildContext context,
   String msg,
@@ -142,6 +145,7 @@ Widget checkoutButton(
   );
 }
 
+// get Profile  view ......
 Widget profile(
     BuildContext context, setState, ProfileViewModel profileViewModel) {
   final authVM = Provider.of<AuthViewModel>(context);
@@ -153,10 +157,10 @@ Widget profile(
         SizedBox(height: 5),
         appTextButton(context, StringConstant.myAccount, Alignment.centerLeft,
             Theme.of(context).canvasColor, 18, false, onPressed: () {
-          isProfile = true;
-          if (isProfile == true) {
+              GlobalVariable.isProfile = true;
+          if (GlobalVariable.isProfile == true) {
             context.pushRoute(EditProfile());
-            isLogins = false;
+            GlobalVariable.isLogins = false;
           }
         }),
         SizedBox(height: 5),
@@ -166,10 +170,10 @@ Widget profile(
         ),
         appTextButton(context, StringConstant.myOrder, Alignment.centerLeft,
             Theme.of(context).canvasColor, 18, false, onPressed: () {
-          isProfile = true;
-          if (isProfile == true) {
+              GlobalVariable.isProfile = true;
+          if (GlobalVariable.isProfile == true) {
             context.pushRoute(MyOrderPage());
-            isLogins = false;
+            GlobalVariable.isLogins = false;
           }
         }),
         SizedBox(height: 5),
@@ -185,9 +189,9 @@ Widget profile(
             context.router.stack.clear();
             context.router.dispose();
 
-            isLogins = false;
-            if (isSearch == true) {
-              isSearch = false;
+            GlobalVariable.isLogins = false;
+            if (GlobalVariable.isSearch == true) {
+              GlobalVariable.isSearch = false;
               setState(() {});
             }
           });
@@ -198,7 +202,7 @@ Widget profile(
     // height: 20,width: 20,
   );
 }
-
+//get fav Product name......
 String? getFavTitle(ProductList? productListData) {
   if (productListData!.productDetails!.productVariantTitle!.length > 40) {
     return productListData.productDetails?.productVariantTitle?.replaceRange(
@@ -207,7 +211,7 @@ String? getFavTitle(ProductList? productListData) {
     return productListData.productDetails?.productVariantTitle ?? "";
   }
 }
-
+//getProduct name.....
 String? getNameTitle(ProductList? productListData) {
   if (productListData!.productName!.length > 40) {
     return productListData.productName
@@ -216,14 +220,14 @@ String? getNameTitle(ProductList? productListData) {
     return productListData.productName;
   }
 }
-
+//ProductGalleryTitle Section
 Widget productGalleryTitleSection(
     BuildContext context, ProductList? productListData, bool favbourite) {
   return Container(
     height: 60,
     padding: const EdgeInsets.only(
       left: 8.0,
-      top: 8,
+      top: 7,
       right: 8.0,
     ),
     child: Column(
@@ -277,7 +281,7 @@ Widget productGalleryTitleSection(
   );
 }
 
-//ProductListItems
+//ProductListItems ......
 Widget productListItems(BuildContext context, ProductList? productListData,
     int index, CartViewModel viewmodel,
     {bool? favouritepage}) {
@@ -285,15 +289,8 @@ Widget productListItems(BuildContext context, ProductList? productListData,
     builder: (isHovered) {
       return InkWell(
           onTap: () {
-            if (isLogins == true) {
-              isLogins = false;
-            }
-            if (isSearch == true) {
-              isSearch = false;
-            }
-            if(isnotification==true){
-              isnotification=false;
-            }
+            closeAppbarProperty();
+
             context.router.push(
               ProductDetailPage(
                 productName:
@@ -368,12 +365,8 @@ Widget productListItems(BuildContext context, ProductList? productListData,
                               : AssetsConstants.ic_wishlistUnselect,
                         ),
                         onPressed: () async {
-                          if (isLogins == true) {
-                            isLogins = false;
-                          }
-                          if (isSearch == true) {
-                            isSearch = false;
-                          }
+                          closeAppbarProperty();
+
                           SharedPreferences sharedPreferences =
                               await SharedPreferences.getInstance();
                           if (sharedPreferences.getString('token') == null) {
@@ -402,8 +395,8 @@ Widget productListItems(BuildContext context, ProductList? productListData,
     hovered: Matrix4.identity()..translate(0, 0, 0),
   );
 }
-
-Widget cardDeatils(BuildContext context, ProductList itemInCart, int index,
+// ProductcardDeatils ......
+Widget ProductcardDeatils(BuildContext context, ProductList itemInCart, int index,
     CartViewModel cartViewData) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.start,
@@ -659,7 +652,7 @@ Widget cardDeatils(BuildContext context, ProductList itemInCart, int index,
     ],
   );
 }
-
+// price details card view .......
 Widget pricedetails(BuildContext context, CartViewModel cartViewData) {
   return Column(
       children: cartViewData.cartListData!.checkoutDetails!.map((e) {
@@ -679,7 +672,7 @@ Widget pricedetails(BuildContext context, CartViewModel cartViewData) {
     );
   }).toList());
 }
-
+// address detail view......
 Widget addressDetails(
     BuildContext context, String? addressId, CartViewModel cartViewData) {
   return Container(
@@ -839,6 +832,7 @@ Widget addressDetails(
   );
 }
 
+//selection button ......
 radioTileButton(BuildContext context, int? selectedAddressIndex, int index) {
   return CircleAvatar(
     radius: 12,
@@ -856,6 +850,7 @@ radioTileButton(BuildContext context, int? selectedAddressIndex, int index) {
   );
 }
 
+// category Product List........
 Widget CategoryList(BuildContext context, CartViewModel cartViewModel) {
   return Container(
     margin: EdgeInsets.zero,
@@ -896,15 +891,7 @@ Widget CategoryList(BuildContext context, CartViewModel cartViewModel) {
                 itemBuilder: (context, position) {
                   return InkWell(
                     onTap: () {
-                      if (isLogins == true) {
-                        isLogins = false;
-                      }
-                      if (isSearch == true) {
-                        isSearch = false;
-                      }
-                      if (isnotification == true) {
-                        isnotification = false;
-                      }
+                      closeAppbarProperty();
                       cartViewModel.categoryListModel?[position].subcategories
                                   ?.length ==
                               0
@@ -923,7 +910,7 @@ Widget CategoryList(BuildContext context, CartViewModel cartViewModel) {
                         children: [
                           CircleAvatar(
                             backgroundColor: Theme.of(context).cardColor,
-                            radius: ResponsiveWidget.isMediumScreen(context) ? ResponsiveWidget.isSmallScreen(context) ? 50:SizeConfig.screenHeight*0.085
+                            radius: ResponsiveWidget.isMediumScreen(context) ? ResponsiveWidget.isSmallScreen(context) ? 50:SizeConfig.screenHeight*0.07
                                 : ResponsiveWidget.isSmallScreen(context) ?SizeConfig.screenWidth * 0.080:SizeConfig.screenWidth * 0.075,
                             child: CachedNetworkImage(
                                 imageUrl: cartViewModel
@@ -981,6 +968,7 @@ Widget CategoryList(BuildContext context, CartViewModel cartViewModel) {
   );
 }
 
+//OfferList.......
 Widget offerList(BuildContext context) {
   return Container(
     padding: EdgeInsets.only(
@@ -1033,6 +1021,7 @@ Widget offerList(BuildContext context) {
   );
 }
 
+// what we offer widget .....
 Widget whatWeOfferWidget(
     BuildContext context, String img, String heading, String msg) {
   return Container(
@@ -1040,10 +1029,10 @@ Widget whatWeOfferWidget(
     margin: EdgeInsets.only(
         right: ResponsiveWidget.isMediumScreen(context) ? 10 : 20),
     height: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context)
-        ?130:160 : 250,
+        ?140:160 : 250,
     width: ResponsiveWidget.isMediumScreen(context)
         ?  ResponsiveWidget.isSmallScreen(context)
-        ?200: SizeConfig.screenHeight/4.2
+        ?220: SizeConfig.screenHeight/4
         : SizeConfig.screenWidth * 0.244,
     color: Theme.of(context).cardColor,
     child: Column(
@@ -1167,7 +1156,8 @@ Widget dropdown(List<String> txt, BuildContext context) {
   );
 }
 
-//homepage methods
+
+//Discount product List
 Widget  discountView(CartViewModel cartview) {
   return  Consumer<CartViewModel>(
     builder: (context, homeVM, _){
@@ -1176,13 +1166,13 @@ Widget  discountView(CartViewModel cartview) {
         color: Theme.of(context).primaryColor.withOpacity(0.5),
         margin: EdgeInsets.zero,
         height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context)
-            ?300:SizeConfig.screenHeight/4: SizeConfig.screenWidth * 0.29,
+            ?300:SizeConfig.screenHeight/3.5: SizeConfig.screenWidth * 0.29,
         padding: EdgeInsets.only(
             left: ResponsiveWidget
                 .isMediumScreen(
                 context)
                 ? ResponsiveWidget.isSmallScreen(context)
-                ?8:12
+                ?16:12
                 : SizeConfig
                 .screenWidth *
                 0.12,
@@ -1227,16 +1217,9 @@ Widget  discountView(CartViewModel cartview) {
                     itemBuilder: (context, position) {
                       return InkWell(
                           onTap: () {
-                            if (isLogins == true) {
-                              isLogins = false;
-                            }
-                            if (isSearch == true) {
-                              isSearch = false;
-                            }
-                            if (isnotification == true) {
-                              isnotification = false;
-                            }
-                            context.router.push(ProductListGallery(
+                            closeAppbarProperty();
+
+                            context.router.push(ProductListRestaurantGallery(
                                 discountdata: ["${cartview.offerDiscountModel?[position].categoryId}","${cartview.offerDiscountModel?[position].discountPercentage}"]
                             ));
                           },
@@ -1249,7 +1232,7 @@ Widget  discountView(CartViewModel cartview) {
                               children: [
                                 CachedNetworkImage(
                                     height: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context)
-                                        ?180:SizeConfig.screenHeight/6: SizeConfig.screenWidth * 0.20,
+                                        ?180:SizeConfig.screenHeight/7: SizeConfig.screenWidth * 0.20,
                                     width: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context)
                                         ?140:SizeConfig.screenHeight/5.8: SizeConfig.screenWidth * 0.20,
                                     imageUrl: '${cartview.offerDiscountModel?[position].images}',
@@ -1312,17 +1295,8 @@ Widget gallery(BuildContext context,List images){
             (context, index) {
           return InkWell(
               onTap: () {
-                if (isLogins ==
-                    true) {
-                  isLogins = false;
-                }
-                if (isSearch ==
-                    true) {
-                  isSearch = false;
-                }
-                if (isnotification == true) {
-                  isnotification = false;
-                }
+                closeAppbarProperty();
+
                 context.router.push(
                     ProductListGallery());
               },
@@ -1368,7 +1342,8 @@ Widget gallery(BuildContext context,List images){
   );
 }
 
-Widget recommeded(BuildContext context,controller,cartViewModel){
+//Recommeded View List....
+Widget recommended(BuildContext context,controller,cartViewModel){
   return     Column(
     mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -1390,7 +1365,7 @@ Widget recommeded(BuildContext context,controller,cartViewModel){
           padding: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.01,
               right: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.01),
           height: ResponsiveWidget.isMediumScreen(context) ? ResponsiveWidget.isSmallScreen(context)
-              ?235 :SizeConfig.screenHeight/4.5: SizeConfig.screenWidth * 0.32,
+              ?235 :SizeConfig.screenHeight/3.7: SizeConfig.screenWidth * 0.32,
           child: ListView.builder(
               reverse: false,
               controller: controller,
@@ -1407,18 +1382,8 @@ Widget recommeded(BuildContext context,controller,cartViewModel){
                       builder: (isHovered) {
                         return InkWell(
                           onTap: () {
-                            if (isLogins == true) {
-                              isLogins = false;
+                            closeAppbarProperty();
 
-                            }
-                            if (isSearch == true) {
-                              isSearch = false;
-
-                            }
-                            if (isnotification == true) {
-                              isnotification = false;
-
-                            }
                             context.router.push(ProductDetailPage(
                               productName: '${cartViewModel.recommendedView?[position].productName?.replaceAll(' ', '')}',
                               productdata: [
@@ -1448,7 +1413,7 @@ Widget recommeded(BuildContext context,controller,cartViewModel){
                                       imageUrl: '${cartViewModel.recommendedView?[position].productDetails?.productImages?[0]}',
                                       fit: BoxFit.cover,
                                       height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context)
-                                          ?140: SizeConfig.screenHeight/6.5 : SizeConfig.screenWidth * 0.228,
+                                          ?140: SizeConfig.screenHeight/6.4 : SizeConfig.screenWidth * 0.228,
                                       imageBuilder: (context, imageProvider) => Container(decoration: BoxDecoration(image: DecorationImage(image: imageProvider, fit: BoxFit.cover))),
                                       placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.23, child: Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2)))),
                                   SizedBox(height: 8),
@@ -1495,6 +1460,7 @@ Widget recommeded(BuildContext context,controller,cartViewModel){
   );
 }
 
+//Recent View List....
 Widget recentView(BuildContext context,controller1,cartViewModel){
   return  Column(mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.center,
@@ -1512,7 +1478,7 @@ Widget recentView(BuildContext context,controller1,cartViewModel){
       ),
       SizedBox(height: SizeConfig.screenWidth * 0.01),
       Container(
-          height: ResponsiveWidget.isMediumScreen(context) ? ResponsiveWidget.isSmallScreen(context) ?200: SizeConfig.screenHeight/6.2
+          height: ResponsiveWidget.isMediumScreen(context) ? ResponsiveWidget.isSmallScreen(context) ?200: SizeConfig.screenHeight/6
               : SizeConfig.screenWidth * 0.27,
           width: SizeConfig.screenWidth,
           padding: EdgeInsets.only(
@@ -1533,15 +1499,8 @@ Widget recentView(BuildContext context,controller1,cartViewModel){
                       builder: (isHovered) {
                         return InkWell(
                           onTap: () {
-                            if (isLogins == true) {
-                              isLogins = false;
-                            }
-                            if (isSearch == true) {
-                              isSearch = false;
-                            }
-                            if (isnotification == true) {
-                              isnotification = false;
-                            }
+                            closeAppbarProperty();
+
                             context.router.push(ProductDetailPage(
                               productName: '${cartViewModel.recentView?[position].productName}',
                               productdata: [
@@ -1593,8 +1552,7 @@ Widget recentView(BuildContext context,controller1,cartViewModel){
   );
 }
 
-//Product deatils
-
+//Favourite button ...
 Widget favoritebutton(BuildContext context,CartViewModel viewmodel,{double? top}){
   return Positioned(
     right: -5,
@@ -1635,6 +1593,7 @@ Widget favoritebutton(BuildContext context,CartViewModel viewmodel,{double? top}
   );
 }
 
+//getRecommended Title name......
 String? getRecommendedViewTitle(int position, CartViewModel cartview) {
   if ((cartview.recommendedView?[position].productDetails?.productVariantTitle
               ?.length ??
@@ -1653,22 +1612,25 @@ String? getRecommendedViewTitle(int position, CartViewModel cartview) {
         "";
   }
 }
-String? getSimilarTitle(int position, CartViewModel cartview) {
-  if ((cartview.productListModel?.productList?[position].productDetails?.productVariantTitle
-      ?.length ??
-      0) >
-      35) {
-    return cartview.productListModel?.productList?[position].productDetails?.productVariantTitle
-        ?.replaceRange(
-        35,
-        cartview.productListModel?.productList?[position].productDetails
-            ?.productVariantTitle?.length,
-        '...');
-  } else {
-    return cartview.productListModel?.productList?[position].productDetails?.productVariantTitle ??
-        "";
-  }
-}
+
+// String? getSimilarTitle(int position, CartViewModel cartview) {
+//   if ((cartview.productListModel?.productList?[position].productDetails?.productVariantTitle
+//       ?.length ??
+//       0) >
+//       35) {
+//     return cartview.productListModel?.productList?[position].productDetails?.productVariantTitle
+//         ?.replaceRange(
+//         35,
+//         cartview.productListModel?.productList?[position].productDetails
+//             ?.productVariantTitle?.length,
+//         '...');
+//   } else {
+//     return cartview.productListModel?.productList?[position].productDetails?.productVariantTitle ??
+//         "";
+//   }
+// }
+
+// get recent view name title.......
 String? getRecentViewTitle(int position, CartViewModel cartview) {
   if ((cartview.recentView?[position].productDetails?.productVariantTitle
               ?.length ??
@@ -1686,6 +1648,8 @@ String? getRecentViewTitle(int position, CartViewModel cartview) {
   }
 }
 
+
+//get category view title......
 String? getCategoryViewTitle(int position, CartViewModel cartview) {
   if ((cartview.categoryListModel?[position].categoryTitle?.length ?? 0) > 35) {
     return cartview.categoryListModel?[position].categoryTitle
@@ -1699,6 +1663,8 @@ String? getCategoryViewTitle(int position, CartViewModel cartview) {
         "";
   }
 }
+
+//get categoryname title for mobile .....
 String? getCategoryViewTitleMobile(int position, CartViewModel cartview) {
   if ((cartview.categoryListModel?[position].categoryTitle?.length ?? 0) > 12) {
     return cartview.categoryListModel?[position].categoryTitle
@@ -1710,5 +1676,18 @@ String? getCategoryViewTitleMobile(int position, CartViewModel cartview) {
   } else {
     return cartview.categoryListModel?[position].categoryTitle ??
         "";
+  }
+}
+
+// method for close appbar properties......
+ closeAppbarProperty(){
+  if (GlobalVariable.isLogins == true) {
+    GlobalVariable.isLogins = false;
+  }
+  if (GlobalVariable.isSearch == true) {
+    GlobalVariable.isSearch = false;
+  }
+  if(GlobalVariable.isnotification==true){
+    GlobalVariable.isnotification=false;
   }
 }

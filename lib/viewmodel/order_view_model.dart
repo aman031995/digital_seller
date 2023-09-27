@@ -18,7 +18,7 @@ class OrderViewModel extends ChangeNotifier {
   bool isLoading = false;
   int lastPage = 1, nextPage = 1;
 
-  //GetOrderList Method
+  //method for GetOrderList Method
   Future<void> getOrderList(BuildContext context,int pageNum) async {
     _orderRepo.getOrderList(context,pageNum, (result, isSuccess) {
       if (isSuccess) {
@@ -29,7 +29,7 @@ class OrderViewModel extends ChangeNotifier {
     });
   }
 
-  //getOrderDetails
+  //method for getOrderDetails
   Future<void> getOrderDetails(BuildContext context, String orderItemId) async{
     _orderRepo.getOrderListDetail(orderItemId, context, (result, isSuccess) {
       if(isSuccess){
@@ -39,7 +39,7 @@ class OrderViewModel extends ChangeNotifier {
     });
   }
 
-  // cancel order method
+  // method for cancel order method
   Future<void> cancelOrder(BuildContext context, String orderId, String itemId) async{
     AppIndicator.loadingIndicator(context);
     _orderRepo.cancelOrder(context,orderId, itemId, (result, isSuccess) {
@@ -79,7 +79,7 @@ class OrderViewModel extends ChangeNotifier {
     }
   }
 
-  //GetOrderDetail Method
+  //method for GetOrderDetail Method
   Future<void> getOrderDetail(BuildContext context, String orderId) async {
     _orderRepo.getOrderListDetail(orderId, context, (result, isSuccess) {
       if (isSuccess) {

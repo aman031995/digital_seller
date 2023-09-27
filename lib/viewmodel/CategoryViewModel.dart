@@ -22,7 +22,7 @@ class CategoryViewModel with ChangeNotifier{
   int lastPage = 2, nextPage = 1 ;
   bool isLoading = false;
 
-//get Category List data
+//method for get Category List data
   Future<void> getCategoryListData(BuildContext context, int pageNum) async {
     _categoryPageRepo.getCategoryList(pageNum, context, (result, isSuccess) {
       if (isSuccess) {
@@ -32,7 +32,7 @@ class CategoryViewModel with ChangeNotifier{
     });
   }
 
-  //get category details
+  //method for get category details
   Future<void> getCategoryDetails(BuildContext context, String categoryId, int pageNum) async {
     AppIndicator.loadingIndicator(context);
     _categoryPageRepo.getCategoryWiseDetails(categoryId, pageNum, context, (result, isSuccess) {

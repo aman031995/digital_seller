@@ -1,6 +1,7 @@
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/AppConfigModel.dart';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
@@ -12,6 +13,7 @@ import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/route_service/routes_name.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/effect/OnHover.dart';
+import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
 import 'package:auto_route/auto_route.dart';
@@ -125,19 +127,19 @@ PreferredSize getAppBar(
 
                         viewmodel.getSearchData(
                             context, searchController.text, pageNum);
-                        isSearch = true;
+                        GlobalVariable.isSearch = true;
                       } else {}
                     },
                     onChanged: (v) async {
-                      if (isnotification == true) {
-                        isnotification = false;
+                      if (GlobalVariable.isnotification == true) {
+                        GlobalVariable.isnotification = false;
                       }
                       if (v.isEmpty) {
-                        isSearch = false;
+                        GlobalVariable.isSearch = false;
                       } else {
                         viewmodel.getSearchData(
                             context, searchController.text, pageNum);
-                        isSearch = true;
+                        GlobalVariable.isSearch = true;
                       }
                     },
                     isTick: null),
@@ -179,17 +181,18 @@ PreferredSize getAppBar(
                 children: [
                   InkWell(
                       onTap: () async {
-                        if (isLogins == true) {
-                          isLogins = false;
+                        if (GlobalVariable.isLogins == true) {
+                          GlobalVariable.isLogins = false;
                         }
-                        if (isSearch == true) {
-                          isSearch = false;
+                        if (GlobalVariable.isSearch == true) {
+                          GlobalVariable.isSearch = false;
                         }
                         SharedPreferences sharedPreferences =
                             await SharedPreferences.getInstance();
                         if (sharedPreferences.get('token') != null) {
                           notificationViewModel.getNotification(context, pageNum);
-                          isnotification=!isnotification;
+                          notificationViewModel.getNotificationCountText(context);
+                          GlobalVariable.isnotification=!GlobalVariable.isnotification;
                         } else {
                           showDialog(
                               context: context,
@@ -227,7 +230,7 @@ PreferredSize getAppBar(
                 ],
               ),
               SizedBox(width: SizeConfig.screenWidth * .01),
-              names == "null"
+              GlobalVariable.names == "null"
                   ? OutlinedButton(
                       onPressed: () {
                         showDialog(
@@ -258,18 +261,30 @@ PreferredSize getAppBar(
                               Theme.of(context).canvasColor, 16, true),
                         ],
                       ))
-                  : appTextButton(context, names!, Alignment.center,
+                  : appTextButton(context, GlobalVariable.names!, Alignment.center,
                       Theme.of(context).canvasColor, 18, true, onPressed: () {
-                      isLogins = !isLogins;
-                      isSearch = false;
+                    if (GlobalVariable.isnotification == true) {
+                      GlobalVariable.isnotification = false;
+                    }
+                    if (GlobalVariable.isSearch == true) {
+                      GlobalVariable.isSearch = false;
+                    }
+                    GlobalVariable.isLogins = !GlobalVariable.isLogins;
+                    GlobalVariable.isSearch = false;
 
                   }),
-              names == "null"
+              GlobalVariable. names == "null"
                   ? Container()
                   : GestureDetector(
                 onTap: (){
-                  isLogins = !isLogins;
-                  isSearch = false;
+                  if (GlobalVariable.isnotification == true) {
+                    GlobalVariable.isnotification = false;
+                  }
+                  if (GlobalVariable.isSearch == true) {
+                    GlobalVariable.isSearch = false;
+                  }
+                  GlobalVariable.isLogins = !GlobalVariable.isLogins;
+                  GlobalVariable.isSearch = false;
                 },
                     child:Icon(Icons.person,color: Theme.of(context).canvasColor,size: 30)
                     // Image.asset(
@@ -291,41 +306,18 @@ getPages(BottomNavigation navItem, BuildContext context,
     ProfileViewModel profileViewModel) {
   Uri url = Uri.parse(navItem.url ?? '');
   if (url.path == RoutesName.homepageweb) {
-    if (isLogins == true) {
-      isLogins = false;
-    }
-    if (isSearch == true) {
-      isSearch = false;
-    }
-    if(isnotification==true){
-      isnotification=false;
+    closeAppbarProperty();
 
-    }
 
-    return context.router.push(HomePageWeb());
+    return context.router.push(HomePageRestaurant());
   } else if (url.path == RoutesName.productPage) {
-    if (isLogins == true) {
-      isLogins = false;
-    }
-    if (isSearch == true) {
-      isSearch = false;
-    }  if(isnotification==true){
-      isnotification=false;
+    closeAppbarProperty();
 
-    }
-    return context.router.push(ProductListGallery());
-  } else if (url.path == RoutesName.profilePage) {
-    if (isLogins == true) {
-      isLogins = false;
-    }
-    if (isSearch == true) {
-      isSearch = false;
-    }  if(isnotification==true){
-      isnotification=false;
+    return context.router.push(ProductListRestaurantGallery());
+  } else if (url.path == RoutesName.profilePage) {                      closeAppbarProperty();
 
-    }
 
-    names == "null"
+  GlobalVariable.names == "null"
         ? showDialog(
             context: context,
             barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),

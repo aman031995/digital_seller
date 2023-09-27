@@ -1,4 +1,6 @@
+import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
+import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/services/session_storage.dart';
@@ -8,8 +10,11 @@ import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
+import 'package:TychoStream/view/WebScreen/effect/OnHover.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
+import 'package:TychoStream/view/restaurant/food_deatil.dart';
+import 'package:TychoStream/view/restaurant/restaurant_image_slider.dart';
 import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/footerDesktop.dart';
@@ -28,18 +33,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../AppRouter.gr.dart';
 
 @RoutePage()
-class ProductListGallery extends StatefulWidget {
+class ProductListRestaurantGallery extends StatefulWidget {
   final List<String>? discountdata;
-  ProductListGallery({
+  ProductListRestaurantGallery({
     @QueryParam() this.discountdata,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<ProductListGallery> createState() => _ProductListGalleryState();
+  State<ProductListRestaurantGallery> createState() => _ProductListRestaurantGalleryState();
 }
 
-class _ProductListGalleryState extends State<ProductListGallery> {
+class _ProductListRestaurantGalleryState extends State<ProductListRestaurantGallery> {
   CartViewModel cartViewModel = CartViewModel();
   String? checkInternet;
   int pageNum = 1;
@@ -179,7 +184,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                                       gridDelegate:
                                                           SliverGridDelegateWithFixedCrossAxisCount(
                                                         crossAxisCount:ResponsiveWidget.isSmallScreen(context) ? 2:3,
-                                                        childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.6:0.80,mainAxisSpacing: 5,crossAxisSpacing: 5
+                                                        childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.85:0.80,mainAxisSpacing: 5,crossAxisSpacing: 5
                                                       ),
                                                       itemCount: viewmodel
                                                           .productListModel
@@ -192,7 +197,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                                             viewmodel
                                                                 .productListModel
                                                                 ?.productList?[index];
-                                                        return productListItems(
+                                                        return productListRestaurantItems(
                                                             context,
                                                             productListData,
                                                             index,
@@ -232,7 +237,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                                                 mainAxisSpacing:
                                                                 10,crossAxisSpacing: 10,
                                                                 mainAxisExtent:
-                                                                    500,
+                                                                    300,
                                                                 maxCrossAxisExtent:
                                                                     400),
                                                             itemCount: viewmodel
@@ -247,7 +252,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                                                   viewmodel
                                                                       .productListModel
                                                                       ?.productList?[index];
-                                                              return productListItems(
+                                                              return productListRestaurantItems(
                                                                   context,
                                                                   productListData,
                                                                   index,
@@ -388,4 +393,140 @@ class _ProductListGalleryState extends State<ProductListGallery> {
       ),
     );
  }
+}
+//ProductListItems ......
+Widget productListRestaurantItems(BuildContext context, ProductList? productListData,
+    int index, CartViewModel viewmodel,
+    {bool? favouritepage}) {
+  return OnHover(
+    builder: (isHovered) {
+      return InkWell(
+          onTap: () {
+            closeAppbarProperty();
+            if (productListData?.productDetails?.isAvailable == true) {
+              // SessionStorageHelper.removeValue("itemCount");
+              // context.router.push(BuynowCart(
+              //     buynow: ['${cartViewModel.recommendedView?[position].productId}','${cartViewModel.recommendedView?[position].productDetails?.variantId}']
+              // ));
+
+              showDialog(
+                  context: context,
+                  barrierColor: Theme.of(context)
+                      .canvasColor
+                      .withOpacity(0.6),
+                  builder: (BuildContext context) {
+                    return foodDetail(
+                        items:productListData ,
+                        callback: (v){
+                          if(v==true){
+                            viewmodel.getCartCount(context);
+                          }
+                        } );
+                  });
+            }
+            // context.router.push(
+            //   ProductDetailPage(
+            //     productName:
+            //     '${productListData?.productName?.replaceAll(' ', '')}',
+            //     productdata: [
+            //       '${productListData?.productId}',
+            //       '${viewmodel.cartItemCount}',
+            //       '${productListData?.productDetails?.defaultVariationSku?.size?.name}',
+            //       '${productListData?.productDetails?.defaultVariationSku?.color?.name}',
+            //       '${productListData?.productDetails?.defaultVariationSku?.style?.name}',
+            //       '${productListData?.productDetails?.defaultVariationSku?.unitCount?.name}',
+            //       '${productListData?.productDetails?.defaultVariationSku?.materialType?.name}',
+            //     ],
+            //   ),
+            // );
+          },
+          child: Container(
+            decoration: isHovered == true
+                ? BoxDecoration(
+              color: Theme.of(context).cardColor,              borderRadius: BorderRadius.circular(10),
+
+                boxShadow: [
+                BoxShadow(
+                  color: Theme.of(context).canvasColor.withOpacity(0.15),
+                  blurRadius: 10.0,
+                  spreadRadius: 7,
+                  offset: Offset(2, 2),
+                ),
+                BoxShadow(
+                  color: Theme.of(context).canvasColor.withOpacity(0.12),
+                  blurRadius: 7.0,
+                  spreadRadius: 5,
+                  offset: Offset(2, 2),
+                ),
+                BoxShadow(
+                  color: Theme.of(context).canvasColor.withOpacity(0.10),
+                  blurRadius: 4.0,
+                  spreadRadius: 3,
+                  offset: Offset(2, 2),
+                ),
+                BoxShadow(
+                  color: Theme.of(context).canvasColor.withOpacity(0.09),
+                  blurRadius: 1.0,
+                  spreadRadius: 1.0,
+                  offset: Offset(2, 2),
+                ),
+              ],
+            )
+                : BoxDecoration(
+              color: Theme.of(context).cardColor,
+              borderRadius: BorderRadius.circular(10)
+            ),
+            // margin: EdgeInsets.only(right: ResponsiveWidget.isMediumScreen(context) ? 0 : 16),
+            child: Stack(
+              children: [
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    ImageSlider(
+                      images: productListData?.productDetails?.productImages,
+                    ),
+                    productGalleryTitleSection(context, productListData, true)
+                  ],
+                ),
+                Positioned(
+                    top: 1,
+                    right: -5,
+                    child: IconButton(
+                        iconSize: 40,
+                        icon: Image.asset(
+                          productListData?.productDetails?.isFavorite == true
+                              ? AssetsConstants.ic_wishlistSelect
+                              : AssetsConstants.ic_wishlistUnselect,
+                        ),
+                        onPressed: () async {
+                          closeAppbarProperty();
+
+                          SharedPreferences sharedPreferences =
+                          await SharedPreferences.getInstance();
+                          if (sharedPreferences.getString('token') == null) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return LoginUp(
+                                    product: true,
+                                  );
+                                });
+                          } else {
+                            final isFav = productListData!.productDetails!.isFavorite = !productListData.productDetails!.isFavorite!;
+                            viewmodel.addToFavourite(
+                                context,
+                                "${productListData.productId}",
+                                "${productListData.productDetails?.variantId}",
+                                isFav,
+                                '');
+                          }
+                        }))
+
+              ],
+            ),
+          ));
+    },
+    hovered: Matrix4.identity()..translate(0, 0, 0),
+  );
 }

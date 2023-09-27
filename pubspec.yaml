@@ -35,6 +35,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   provider: ^6.0.5
+  overlay_tooltip:
+
   number_paginator: ^0.3.2
   pagination_flutter: ^0.0.8
   flick_video_player: ^0.5.0

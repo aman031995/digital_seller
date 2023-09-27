@@ -2,18 +2,19 @@ import 'package:TychoStream/AppRouter.gr.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
-import 'package:TychoStream/session_storage.dart';
+import 'package:TychoStream/services/global_variable.dart';
+import 'package:TychoStream/services/session_storage.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-import 'package:TychoStream/view/WebScreen/getAppBar.dart';
-import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
+import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
+import 'package:TychoStream/view/widgets/footerDesktop.dart';
+import 'package:TychoStream/view/widgets/getAppBar.dart';
 import 'package:TychoStream/view/widgets/no_data_found_page.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
@@ -85,20 +86,8 @@ class _CartDetailState extends State<CartDetail> {
                             child: Consumer<HomeViewModel>(builder: (context, s, _) {
                               return GestureDetector(
                 onTap: () {
-                  if (isLogins == true) {
-                    isLogins = false;
-                    setState(() {});
-                  }
-                  if (isSearch == true) {
-                    isSearch = false;
-                    setState(() {});
-                  }
-                  if(isnotification==true){
-                    isnotification=false;
-                    setState(() {
+                  closeAppbarProperty();
 
-                    });
-                  }
                 },
                 child: Scaffold(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -122,20 +111,8 @@ class _CartDetailState extends State<CartDetail> {
                               );
                             });
                       } else {
-                        if (isLogins == true) {
-                          isLogins = false;
-                          setState(() {});
-                        }
-                        if (isSearch == true) {
-                          isSearch = false;
-                          setState(() {});
-                        }
-                        if(isnotification==true){
-                          isnotification=false;
-                          setState(() {
+                        closeAppbarProperty();
 
-                          });
-                        }
                         context.router.push(FavouriteListPage());
                       }
                     }, () async {
@@ -154,20 +131,8 @@ class _CartDetailState extends State<CartDetail> {
                               );
                             });
                       } else {
-                        if (isLogins == true) {
-                          isLogins = false;
-                          setState(() {});
-                        }
-                        if (isSearch == true) {
-                          isSearch = false;
-                          setState(() {});
-                        }
-                        if(isnotification==true){
-                          isnotification=false;
-                          setState(() {
+                        closeAppbarProperty();
 
-                          });
-                        }
                       }
                     }),
 
@@ -205,7 +170,7 @@ class _CartDetailState extends State<CartDetail> {
                                                   return Container(
                                                     color: Theme.of(context).cardColor,
                                                       margin: EdgeInsets.only(bottom: 5,left: ResponsiveWidget.isSmallScreen(context) ? 10:16,right: ResponsiveWidget.isSmallScreen(context) ? 10:16),
-                                                    child:cardDeatils(context,itemInCart!,index,cartViewData)
+                                                    child:ProductcardDeatils(context,itemInCart!,index,cartViewData)
                                                   );
                                                 },
                                               ),
@@ -237,7 +202,7 @@ class _CartDetailState extends State<CartDetail> {
                                                     return Container(
                                                       color: Theme.of(context).cardColor,
                                                       margin: EdgeInsets.only(bottom: 5,right: 15),
-                                                      child:cardDeatils(context,itemInCart!,index,cartViewData)
+                                                      child:ProductcardDeatils(context,itemInCart!,index,cartViewData)
                                                     );
                                                   },
                                                 )),
@@ -254,20 +219,8 @@ class _CartDetailState extends State<CartDetail> {
                                                       child: checkoutButton(
                                                           context,
                                                           StringConstant.continueText,
-                                                          cartViewData, () { if (isLogins == true) {
-                                                        isLogins = false;
-                                                        setState(() {});
-                                                      }
-                                                      if (isSearch == true) {
-                                                        isSearch = false;
-                                                        setState(() {});
-                                                      }
-                                                      if(isnotification==true){
-                                                        isnotification=false;
-                                                        setState(() {
+                                                          cartViewData, () {                       closeAppbarProperty();
 
-                                                        });
-                                                      }
                                                       if(hasOutOfStockItems(cartViewData.cartListData!.cartList!)){
                                                           ToastMessage.message(StringConstant.removeOutofStock,context);
                                                       } else {
@@ -306,15 +259,10 @@ class _CartDetailState extends State<CartDetail> {
                                                         context,
                                                         StringConstant
                                                             .continueText,
-                                                        cartViewData, () { if (isLogins == true) {
-                                                      isLogins = false;
-                                                      setState(() {});
-                                                    }
-                                                    if (isSearch == true) {
-                                                      isSearch = false;
-                                                      setState(() {});
-                                                    }
-                                                    if(hasOutOfStockItems(cartViewData.cartListData!.cartList!)){
+                                                        cartViewData, () {
+                                                      closeAppbarProperty();
+
+                                                      if(hasOutOfStockItems(cartViewData.cartListData!.cartList!)){
 
                                                         ToastMessage.message(StringConstant.removeOutofStock,context);
 
@@ -332,7 +280,7 @@ class _CartDetailState extends State<CartDetail> {
                                               ],
                                             ):SizedBox(height: 20),
                                             SizedBox(height:ResponsiveWidget.isSmallScreen(context)
-                                                ? 30:80),
+                                                ? 200:300),
                                             ResponsiveWidget.isMediumScreen(context)
                                                 ?  footerMobile(context,homeViewModel):footerDesktop()
                                           ],
@@ -344,7 +292,7 @@ class _CartDetailState extends State<CartDetail> {
                                 ),
                                 ResponsiveWidget.isMediumScreen(context)
                                     ? Container()
-                                    : isnotification == true
+                                    : GlobalVariable.isnotification == true
                                     ?    Positioned(
                                     top:  0,
                                     right:  SizeConfig
@@ -353,7 +301,7 @@ class _CartDetailState extends State<CartDetail> {
                                     child: notification(notificationViewModel,context,_scrollController)):Container(),
                                 ResponsiveWidget
                                     .isMediumScreen(context)
-                                    ?Container(): isLogins == true
+                                    ?Container(): GlobalVariable.isLogins == true
                                     ? Positioned(
                                     top: 0,
                                     right:  180,
@@ -362,7 +310,7 @@ class _CartDetailState extends State<CartDetail> {
                                     : Container(),
                                 ResponsiveWidget
                                     .isMediumScreen(context)
-                                    ? Container():   isSearch == true
+                                    ? Container():   GlobalVariable.isSearch == true
                                     ? Positioned(
                                     top: SizeConfig.screenWidth *
                                         0.001,

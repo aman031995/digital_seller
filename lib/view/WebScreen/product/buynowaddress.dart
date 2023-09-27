@@ -8,7 +8,7 @@ import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/CartDetalRepository.dart';
 import 'package:TychoStream/services/global_variable.dart';
-import 'package:TychoStream/session_storage.dart';
+import 'package:TychoStream/services/session_storage.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
@@ -19,11 +19,11 @@ import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/product/shipping_address_page.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-import 'package:TychoStream/view/WebScreen/getAppBar.dart';
-import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
+import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
+import 'package:TychoStream/view/widgets/footerDesktop.dart';
+import 'package:TychoStream/view/widgets/getAppBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
@@ -108,16 +108,9 @@ class _BuynowAddressState extends State<BuynowAddress> {
                       return (cartViewModel.addressListModel != null)
               ? GestureDetector(
               onTap: () {
-                if (isLogins == true) {
-                  isLogins = false;
-                }
-                if (isSearch == true) {
-                  isSearch = false;
-                }
-                if(isnotification==true){
-                  isnotification=false;
 
-                }
+                closeAppbarProperty();
+
               },
               child: Scaffold(
                   backgroundColor:
@@ -148,16 +141,8 @@ class _BuynowAddressState extends State<BuynowAddress> {
                             );
                           });
                     } else {
-                      if (isLogins == true) {
-                        isLogins = false;
-                      }
-                      if (isSearch == true) {
-                        isSearch = false;
-                      }
-                      if(isnotification==true){
-                        isnotification=false;
+                      closeAppbarProperty();
 
-                      }
                       context.router.push(FavouriteListPage());
                     }
                   }, () async {
@@ -176,16 +161,8 @@ class _BuynowAddressState extends State<BuynowAddress> {
                             );
                           });
                     } else {
-                      if (isLogins == true) {
-                        isLogins = false;
-                      }
-                      if (isSearch == true) {
-                        isSearch = false;
-                      }
-                      if(isnotification==true){
-                        isnotification=false;
+                      closeAppbarProperty();
 
-                      }
                       context.router.push(CartDetail(
                           itemCount:
                           '${cartViewModel.cartItemCount}'));
@@ -265,7 +242,7 @@ class _BuynowAddressState extends State<BuynowAddress> {
 
                           ResponsiveWidget.isMediumScreen(context)
                               ? Container()
-                              : isnotification == true
+                              : GlobalVariable.isnotification == true
                               ?    Positioned(
                               top:  0,
                               right:  SizeConfig
@@ -275,7 +252,7 @@ class _BuynowAddressState extends State<BuynowAddress> {
                           ResponsiveWidget.isMediumScreen(
                               context)
                               ? Container()
-                              : isLogins == true
+                              : GlobalVariable.isLogins == true
                               ? Positioned(
                               top: 0,
                               right: 180,
@@ -287,7 +264,7 @@ class _BuynowAddressState extends State<BuynowAddress> {
                           ResponsiveWidget.isMediumScreen(
                               context)
                               ? Container()
-                              : isSearch == true
+                              : GlobalVariable.isSearch == true
                               ? Positioned(
                               top: SizeConfig
                                   .screenWidth *
@@ -399,18 +376,11 @@ class _BuynowAddressState extends State<BuynowAddress> {
   checkout(){
     return   ElevatedButton(
         onPressed: () {
-          if (agree !=
-              true) {
-            ToastMessage.message(
-                StringConstant
-                    .acceptReturnPolicy,
-                context);
+          if (agree != true) {
+            ToastMessage.message(StringConstant.acceptReturnPolicy, context);
           }else if( cartViewModel.addressListModel?.length == 0){
             ToastMessage.message(StringConstant.pleaseAddaddress, context);
-          } else if ((google_pay ==
-              true) &&
-              (agree ==
-                  true)) {
+          } else if ((google_pay == true) && (agree == true)) {
             createOrder(
               "online",
               cartListData?.cartList?[0].productId ??
@@ -425,23 +395,13 @@ class _BuynowAddressState extends State<BuynowAddress> {
               gateway:
               GlobalVariable.payGatewayName,
             );
-
-          } else if ((cod ==
-              true) &&
-              (agree ==
-                  true)) {
-            createOrder(
-                "cod",
-                cartListData?.cartList?[0].productId ??
-                    "",
-                cartListData?.cartList?[0].productDetails?.variantId ??
-                    '',
-                cartListData?.checkoutDetails?.elementAt(0).value ??
-                    "",
+          } else if ((cod == true) && (agree == true)) {
+            createOrder("cod", cartListData?.cartList?[0].productId ?? "",
+                cartListData?.cartList?[0].productDetails?.variantId ?? '',
+                cartListData?.checkoutDetails?.elementAt(0).value ?? "",
                 context,
                 addressId:
                 addressId);
-
           } else {
             ToastMessage.message(
                 StringConstant

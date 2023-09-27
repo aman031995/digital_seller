@@ -1,4 +1,5 @@
 
+
 class NotificationModel {
   Pagination? pagination;
   List<NotificationList>? notificationList;
@@ -75,43 +76,48 @@ class NotificationList {
   int? id;
   String? userId;
   String? notification;
+  NotificationText? notificationText;
   String? title;
   String? log;
   bool? read;
-  String? createdAt;
-  String? updatedAt;
   String? clickAction;
   String? productId;
   String? videoId;
   String? clickType;
+  String? createdAt;
+  String? updatedAt;
 
   NotificationList(
       {this.id,
         this.userId,
         this.notification,
+        this.notificationText,
         this.title,
         this.log,
         this.read,
-        this.createdAt,
-        this.updatedAt,
         this.clickAction,
         this.productId,
         this.videoId,
-        this.clickType});
+        this.clickType,
+        this.createdAt,
+        this.updatedAt});
 
   NotificationList.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     userId = json['userId'];
     notification = json['notification'];
+    notificationText = json['notificationText'] != null
+        ? new NotificationText.fromJson(json['notificationText'])
+        : null;
     title = json['title'];
     log = json['log'];
     read = json['read'];
-    createdAt = json['createdAt'];
-    updatedAt = json['updatedAt'];
     clickAction = json['clickAction'];
     productId = json['productId'];
     videoId = json['videoId'];
     clickType = json['clickType'];
+    createdAt = json['createdAt'];
+    updatedAt = json['updatedAt'];
   }
 
   Map<String, dynamic> toJson() {
@@ -119,14 +125,46 @@ class NotificationList {
     data['id'] = this.id;
     data['userId'] = this.userId;
     data['notification'] = this.notification;
+    if (this.notificationText != null) {
+      data['notificationText'] = this.notificationText!.toJson();
+    }
     data['title'] = this.title;
     data['log'] = this.log;
     data['read'] = this.read;
-    data['createdAt'] = this.createdAt;
-    data['updatedAt'] = this.updatedAt;
     data['clickAction'] = this.clickAction;
     data['productId'] = this.productId;
     data['videoId'] = this.videoId;
+    data['clickType'] = this.clickType;
+    data['createdAt'] = this.createdAt;
+    data['updatedAt'] = this.updatedAt;
+    return data;
+  }
+}
+
+class NotificationText {
+  String? appId;
+  String? userId;
+  String? orderId;
+  String? action;
+  String? clickType;
+
+  NotificationText(
+      {this.appId, this.userId, this.orderId, this.action, this.clickType});
+
+  NotificationText.fromJson(Map<String, dynamic> json) {
+    appId = json['app_id'];
+    userId = json['user_id'];
+    orderId = json['orderId'];
+    action = json['action'];
+    clickType = json['clickType'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['app_id'] = this.appId;
+    data['user_id'] = this.userId;
+    data['orderId'] = this.orderId;
+    data['action'] = this.action;
     data['clickType'] = this.clickType;
     return data;
   }

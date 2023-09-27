@@ -1,5 +1,7 @@
 class StringConstant {
   // **************Cached Model Keys ***************
+
+  static String kappName= "Digital Fashion Street";
   static String kBannerList = "banner_list";
   static String kCategoryList = "category_list";
   static String kPrivacyTerms = "privacy_terms";
@@ -11,6 +13,7 @@ class StringConstant {
   static String kRecommended='recommeded_list';
   static String kcategory='category_list';
   static String discard = 'Discard';
+
 static String noSearchProductFound='We always try to give the best\nresult on your Search';
   static String deleteAccountMessage = "This Account connot be recovered once deleted.";
   static String cancelYourOrder = "Do you really want to cancel your order.";
@@ -48,8 +51,8 @@ static String noSearchProductFound='We always try to give the best\nresult on yo
   static String resendOtp = "Resend OTP";
   static String verify = "Verify";
   static String codeVerify = 'Please check your phone we have sent you a 4-digit code to verify.';
-  static String numberVerify = 'Please check your phone we have sent you a 4-digit code to verify.';
-  static String emailVerify = 'Please check your email we have sent you a 4-digit code to verify.';
+  static String numberVerify = 'Please check your  email or phone we have sent you a 4-digit code to verify.';
+  static String emailVerify = 'Please check your email or phone we have sent you a 4-digit code to verify.';
   static String newPassword = "New Password";
   static String confirmPassword = "Confirm Password";
   static String enterNewPassword = 'Enter your new password to login again.';
@@ -252,4 +255,9 @@ static String followus='Follow Us';
 static String orderPlacedSuccess= 'Hope you enjoy shopping with us.';
 static String removeOutofStock="Please remove Out of Stock items from your cart to continue shopping.";
 static String continueShopping="Continue Shopping";
+static String playestoreurl= 'https://play.google.com/store/apps/details?id=com.tycho.digitalfashionseller';
+
+
+//restaurant
+static String Ordernow="Order Now";
 }

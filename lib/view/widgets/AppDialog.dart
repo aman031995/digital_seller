@@ -208,17 +208,17 @@ class AppDialog {
                       )
                           : Container(),
                       const SizedBox(width: 8),
-                      followUs.youtube?.url != ""
+                      followUs.youtube?.url != null
                           ? GestureDetector(
                         onTap: () => launch(followUs.youtube?.url ?? '', forceSafariVC: false),
                         child: socialMediaImage(AssetsConstants.ic_youtube,context),
                       )
                           : SizedBox(),
                       const SizedBox(width: 8),
-                      followUs.youtube?.url != ""
+                      followUs.twitter?.url != null
                           ? GestureDetector(
                         onTap: () => launch(followUs.twitter?.url ?? '', forceSafariVC: false),
-                        child: socialMediaImage(AssetsConstants.ic_twitter,context),
+                        child: socialMediaImage(AssetsConstants.ic_twitter,context)
                       )
                           : SizedBox(),
                     ])

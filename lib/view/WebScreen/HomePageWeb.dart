@@ -1,9 +1,12 @@
 import 'package:TychoStream/network/AppNetwork.dart';
-import 'package:TychoStream/view/WebScreen/EmailNotificationPage.dart';
-import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
+import 'package:TychoStream/view/widgets/EmailNotificationPage.dart';
+import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
+import 'package:TychoStream/view/widgets/footerDesktop.dart';
+import 'package:TychoStream/view/widgets/getAppBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
@@ -17,13 +20,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/utilities/AssetsConstants.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
-import 'package:TychoStream/view/WebScreen/CommonCarousel.dart';
+import 'package:TychoStream/view/widgets/CommonCarousel.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import '../../AppRouter.gr.dart';
-import '../../main.dart';
-import 'getAppBar.dart';
-import 'NotificationScreen.dart';
+
 
 @RoutePage()
 class HomePageWeb extends StatefulWidget {
@@ -71,17 +72,16 @@ class _HomePageWebState extends State<HomePageWeb> {
     User();
     homeViewModel.getAppConfig(context);
     cartViewModel.getCartCount(context);
-    cartViewModel.getProductCategoryLists(context);
+    cartViewModel.getProductCategoryList(context,1);
     cartViewModel.getRecommendedViewData(context);
     cartViewModel.getOfferDiscount(context);
     notificationViewModel.getNotificationCountText(context);
-
     super.initState();
   }
 
   User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    names = sharedPreferences.get('name').toString();
+    GlobalVariable.names = sharedPreferences.get('name').toString();
     if (sharedPreferences.get('token') != null) {
       cartViewModel.getRecentView(context);
       profileViewModel.getProfileDetails(context);
@@ -110,15 +110,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                         child: Consumer<NotificationViewModel>(
                             builder: (context, model, _) {  return GestureDetector(
                         onTap: () {
-                          if (isLogins == true) {
-                            isLogins = false;
-                          }
-                          if (isSearch == true) {
-                            isSearch = false;
-                          }
-                          if (isnotification == true) {
-                            isnotification = false;
-                          }
+                          closeAppbarProperty();
+
                         },
                         child: Scaffold(
                             extendBodyBehindAppBar:false,
@@ -147,15 +140,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                             );
                                           });
                                     } else {
-                                      if (isLogins == true) {
-                                        isLogins = false;
-                                      }
-                                      if (isSearch == true) {
-                                        isSearch = false;
-                                      }
-                                      if (isnotification == true) {
-                                        isnotification = false;
-                                      }
+                                      closeAppbarProperty();
+
                                       context.router.push(FavouriteListPage());
                                     }
                                   }, () async {
@@ -174,15 +160,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                             );
                                           });
                                     } else {
-                                      if (isLogins == true) {
-                                        isLogins = false;
-                                      }
-                                      if (isSearch == true) {
-                                        isSearch = false;
-                                      }
-                                      if (isnotification == true) {
-                                        isnotification = false;
-                                      }
+                                      closeAppbarProperty();
                                       context.router.push(CartDetail(
                                           itemCount:
                                               '${cartViewModel.cartItemCount}'));
@@ -209,7 +187,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                               (cartViewModel.recommendedView?.length ?? 0) > 0
                                                   ?   Container(
                                                 height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context)
-                                                    ?275 :SizeConfig.screenHeight/3.9 : SizeConfig.screenWidth * 0.37,
+                                                    ?275 :SizeConfig.screenHeight/3 : SizeConfig.screenWidth * 0.37,
                                                 margin: EdgeInsets.zero,
                                                 padding: EdgeInsets.only(
                                                     left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11,
@@ -218,7 +196,8 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                 color: Theme.of(context).cardColor.withOpacity(0.6),
                                                 child: Stack(
                                                   children: [
-                                                    recommeded(context,controller,cartViewModel),
+                                                    recommended(context,controller,cartViewModel),
+
                                                     ResponsiveWidget.isMediumScreen(context)
                                                         ?Container():    Positioned(
                                                         top:  SizeConfig.screenWidth * 0.15,
@@ -258,14 +237,12 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                   ],
                                                 ),
                                               ):SizedBox(),
-
                                               SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
-
                                               //recent view images .......
                                               (cartViewModel.recentView?.length ?? 0) > 0
                                                   ? Container(margin: EdgeInsets.zero,
                                                       color: Theme.of(context).cardColor.withOpacity(0.6),
-                                                      height: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context) ?260: SizeConfig.screenHeight/5  : SizeConfig.screenWidth * 0.32,
+                                                      height: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context) ?260: SizeConfig.screenHeight/4.8  : SizeConfig.screenWidth * 0.32,
                                                       padding: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11,
                                                           right: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11, top:ResponsiveWidget.isMediumScreen(context) ? 8 : 20),
                                                       child: Stack(
@@ -337,7 +314,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                               Image.asset(AssetsConstants.icbanner, width: SizeConfig.screenWidth, height: SizeConfig.screenWidth * 0.25, fit: BoxFit.fill),
 
                                               SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
-                                                   // gallery view .........
+                                                   // product-gallery view .........
                                               gallery(context,images),
 
                                               SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
@@ -353,7 +330,7 @@ class _HomePageWebState extends State<HomePageWeb> {
 
                                         ResponsiveWidget.isMediumScreen(context)
                                             ? Container()
-                                            : isLogins == true
+                                            : GlobalVariable.isLogins == true
                                                 ? Positioned(
                                                     top: 1,
                                                     right: 180,
@@ -362,7 +339,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                 : Container(),
                                         ResponsiveWidget.isMediumScreen(context)
                                             ? Container()
-                                            : isSearch == true
+                                            : GlobalVariable.isSearch == true
                                                 ? Positioned(
                                                     top: 1,
                                                     right:  SizeConfig
@@ -379,7 +356,7 @@ class _HomePageWebState extends State<HomePageWeb> {
 
                                         ResponsiveWidget.isMediumScreen(context)
                                             ? Container()
-                                            : isnotification == true
+                                            : GlobalVariable.isnotification == true
                                             ?    Positioned(
                                             top:  1,
                                             right:  SizeConfig

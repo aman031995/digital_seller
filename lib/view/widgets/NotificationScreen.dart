@@ -1,5 +1,6 @@
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -162,8 +163,8 @@ Widget notification( NotificationViewModel viewmodel,BuildContext context,Scroll
                 child: ListTile(
                   onTap: (){
                     context.pushRoute(MyOrderPage());
-                      isLogins = false;
-                    isnotification=false;
+                    GlobalVariable.isLogins = false;
+                    GlobalVariable.isnotification=false;
                     // handleNotificationClick(apiData: viewmodel.notificationModel?.notificationList?[index]);
                   }, title: Padding(
                   padding: const EdgeInsets.only(bottom: 15),

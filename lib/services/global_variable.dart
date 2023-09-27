@@ -14,4 +14,12 @@ class GlobalVariable {
   static String SECRET_KEY =
       "sk_test_51NXhtjSJK48GkIWFaWaMUY1amdUDTtvYdzwmbi8rXmsIFuz7sB2HraObpFPJZWtyrD5NVtJplj3E6d853NIjx7ko00MmnjVc2K";
 
+  static String? names;
+  static String? token = 'false';
+  static bool isLogin = false;
+  static bool isLogins = false;
+  static bool isSearch = false;
+  static bool isnotification=false;
+  static bool isProfile=false;
+
 }

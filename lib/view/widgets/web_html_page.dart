@@ -1,15 +1,16 @@
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-import 'package:TychoStream/view/WebScreen/getAppBar.dart';
-import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
+import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
+import 'package:TychoStream/view/widgets/footerDesktop.dart';
+import 'package:TychoStream/view/widgets/getAppBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
@@ -53,6 +54,8 @@ HomeViewModel homeViewModel=HomeViewModel();
 
   @override
   void initState() {
+    cartViewModel.getCartCount(context);
+
     homeViewModel.getAppConfig(context);
     profileViewModel.getProfileDetail(context);
     notificationViewModel.getNotificationCountText(context);
@@ -90,16 +93,15 @@ HomeViewModel homeViewModel=HomeViewModel();
                 child: Center(child: ThreeArchedCircle(size: 45.0))):
             GestureDetector(
            onTap: () {
-             if (isLogins == true) {
-               isLogins = false;
-               setState(() {});
+             if (GlobalVariable.isLogins == true) {
+               GlobalVariable.isLogins = false;
+
              }
-             if (isSearch == true) {
-               isSearch = false;
-               setState(() {});
+             if (GlobalVariable.isSearch == true) {
+               GlobalVariable.isSearch = false;
              }
-             if(isnotification==true){
-               isnotification=false;
+             if(GlobalVariable.isnotification==true){
+               GlobalVariable.isnotification=false;
                setState(() {
 
                });
@@ -127,14 +129,14 @@ HomeViewModel homeViewModel=HomeViewModel();
                     );
                   });
             } else {
-              if (isLogins == true) {
-                isLogins = false;
+              if (GlobalVariable.isLogins == true) {
+                GlobalVariable.isLogins = false;
               }
-              if (isSearch == true) {
-                isSearch = false;
+              if (GlobalVariable.isSearch == true) {
+                GlobalVariable.isSearch = false;
               }
-              if (isSearch == true) {
-                isSearch = false;
+              if (GlobalVariable.isSearch == true) {
+                GlobalVariable.isSearch = false;
               }
               context.router.push(FavouriteListPage());
             }
@@ -154,14 +156,14 @@ HomeViewModel homeViewModel=HomeViewModel();
                     );
                   });
             } else {
-              if (isLogins == true) {
-                isLogins = false;
+              if (GlobalVariable.isLogins == true) {
+                GlobalVariable.isLogins = false;
               }
-              if (isSearch == true) {
-                isSearch = false;
+              if (GlobalVariable.isSearch == true) {
+                GlobalVariable.isSearch = false;
               }
-              if(isnotification==true){
-                isnotification=false;
+              if(GlobalVariable.isnotification==true){
+                GlobalVariable.isnotification=false;
 
               }
               context.router.push(CartDetail(
@@ -205,7 +207,7 @@ HomeViewModel homeViewModel=HomeViewModel();
             ),
             ResponsiveWidget.isMediumScreen(context)
                 ? Container()
-                : isnotification == true
+                : GlobalVariable.isnotification == true
                 ?    Positioned(
                 top:  0,
                 right:  SizeConfig
@@ -214,7 +216,7 @@ HomeViewModel homeViewModel=HomeViewModel();
                 child: notification(notificationViewModel,context,_scrollController)):Container(),
             ResponsiveWidget
                 .isMediumScreen(context)
-                ?  Container():isLogins == true
+                ?  Container():GlobalVariable.isLogins == true
                 ? Positioned(
                 top: 0,
                 right: SizeConfig.screenWidth *
@@ -222,7 +224,7 @@ HomeViewModel homeViewModel=HomeViewModel();
                 child: profile(context,
                     setState, profilemodel))
                 : Container(),
-            isSearch == true
+            GlobalVariable.isSearch == true
                 ? Positioned(
                 top: ResponsiveWidget
                     .isMediumScreen(context)

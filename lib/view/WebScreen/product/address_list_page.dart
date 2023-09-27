@@ -8,7 +8,6 @@ import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/CartDetalRepository.dart';
 import 'package:TychoStream/services/global_variable.dart';
-import 'package:TychoStream/session_storage.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
@@ -19,11 +18,11 @@ import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/product/shipping_address_page.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-import 'package:TychoStream/view/WebScreen/getAppBar.dart';
-import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
+import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
+import 'package:TychoStream/view/widgets/footerDesktop.dart';
+import 'package:TychoStream/view/widgets/getAppBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
@@ -107,17 +106,8 @@ class _AddressListPageState extends State<AddressListPage> {
                         child: Consumer<NotificationViewModel>(builder: (context, model, _) {
                           return (cartViewData.addressListModel != null && cartViewData.cartListData != null)
                   ? GestureDetector(
-                      onTap: () {
-                        if (isLogins == true) {
-                          isLogins = false;
-                        }
-                        if (isSearch == true) {
-                          isSearch = false;
-                        }
-                        if(isnotification==true){
-                          isnotification=false;
+                      onTap: () {                      closeAppbarProperty();
 
-                        }
                       },
                       child: Scaffold(
                         backgroundColor:
@@ -148,16 +138,8 @@ class _AddressListPageState extends State<AddressListPage> {
                                         );
                                       });
                                 } else {
-                                  if (isLogins == true) {
-                                    isLogins = false;
-                                  }
-                                  if (isSearch == true) {
-                                    isSearch = false;
-                                  }
-                                 if(isnotification==true){
-                          isnotification=false;
+                                  closeAppbarProperty();
 
-                          }
                                   context.router.push(FavouriteListPage());
                                 }
                               }, () async {
@@ -176,16 +158,8 @@ class _AddressListPageState extends State<AddressListPage> {
                                         );
                                       });
                                 } else {
-                                  if (isLogins == true) {
-                                    isLogins = false;
-                                  }
-                                  if (isSearch == true) {
-                                    isSearch = false;
-                                  }
-                                  if(isnotification==true){
-                                    isnotification=false;
+                                  closeAppbarProperty();
 
-                                  }
                                   context.router.push(CartDetail(
                                       itemCount:
                                           '${cartViewModel.cartItemCount}'));
@@ -209,15 +183,9 @@ class _AddressListPageState extends State<AddressListPage> {
                                                       cartPageViewIndicator(context, 1),
                                                       AddressButton(context,
                                                           () {
-                                                            if (isLogins == true) {
-                                                              isLogins = false;
-                                                            }
-                                                            if (isSearch == true) {
-                                                              isSearch = false;
-                                                            }  if(isnotification==true){
-                                                              isnotification=false;
-                                                            }
-                                                        showDialog(
+                                                            closeAppbarProperty();
+
+                                                            showDialog(
                                                             context:
                                                                 context,
                                                             builder:
@@ -252,17 +220,11 @@ class _AddressListPageState extends State<AddressListPage> {
                                                       )
                                                           : addressDetails(context, addressId, cartViewData),
 
-                                                         Container(
-                                                              color: Theme.of(
-                                                                      context)
-                                                                  .cardColor,
-                                                              child: pricedetails(
-                                                                  context,
-                                                                  cartViewData)),
+                                                         pricedetails(context, cartViewData),
+
                                                       SizedBox(height: 10),
                                                       checkbox(),
                                                       SizedBox(height:ResponsiveWidget.isSmallScreen(context) ? 10:20),
-
                                                       returnpolicy(),
                                                       SizedBox(height:ResponsiveWidget.isSmallScreen(context) ? 20:50),
                                                       checkoutbutton(),
@@ -273,20 +235,18 @@ class _AddressListPageState extends State<AddressListPage> {
                                                   )
                                                 : Column(
                                                     children: [
-                                                      cartPageViewIndicator(
-                                                          context, 1),
+                                                      cartPageViewIndicator(context, 1),
                                                       Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
+                                                        mainAxisAlignment: MainAxisAlignment
                                                                 .center,
                                                         crossAxisAlignment:
                                                             CrossAxisAlignment
                                                                 .start,
                                                         children: [
-                                                          cartViewData.addressListModel !=
-                                                                  null
+                                                          cartViewData.addressListModel != null
                                                               ? Column(
                                                                   children: [
+
                                                                     AddressButton(
                                                                         context,
                                                                         () {
@@ -296,6 +256,7 @@ class _AddressListPageState extends State<AddressListPage> {
                                                                             return ShippingAddressPage(isAlreadyAdded: false);
                                                                           });
                                                                     }),
+
                                                                     cartViewData.addressListModel?.length ==
                                                                             0
                                                                         ?  Container(
@@ -337,26 +298,18 @@ class _AddressListPageState extends State<AddressListPage> {
                                                                       size:
                                                                           45.0),
                                                                 ),
+
                                                           Column(
                                                             children: [
-                                                              SizedBox(
-                                                                  height:
-                                                                      5),
-                                                          Container(
-                                                                      color: Theme.of(context)
-                                                                          .cardColor,
-                                                                      child: pricedetails(
-                                                                          context,
-                                                                          cartViewData)),
-                                                              SizedBox(
-                                                                  height:
-                                                                      5),
-                                                              checkbox(),
+                                                              SizedBox(height: 5),
 
+                                                          pricedetails(context, cartViewData),
+                                                              SizedBox(height: 5),
+
+                                                              checkbox(),
+                                                              SizedBox(height: 5),
                                                               returnpolicy(),
-                                                              SizedBox(
-                                                                  height:
-                                                                      5),
+                                                              SizedBox(height: 5),
                                                               checkoutbutton()
 
                                                             ],
@@ -369,17 +322,18 @@ class _AddressListPageState extends State<AddressListPage> {
                                                   ),
                                             ResponsiveWidget.isMediumScreen(context)
                                                 ? Container()
-                                                : isnotification == true
+                                                : GlobalVariable.isnotification == true
                                                 ?    Positioned(
                                                 top:  0,
                                                 right:  SizeConfig
                                                     .screenWidth *
                                                     0.20,
                                                 child: notification(notificationViewModel,context,_scrollController)):Container(),
+
                                             ResponsiveWidget.isMediumScreen(
                                                     context)
                                                 ? Container()
-                                                : isLogins == true
+                                                : GlobalVariable.isLogins == true
                                                     ? Positioned(
                                                         top: 0,
                                                         right: 180,
@@ -388,10 +342,11 @@ class _AddressListPageState extends State<AddressListPage> {
                                                             setState,
                                                             profileViewModel))
                                                     : Container(),
+
                                             ResponsiveWidget.isMediumScreen(
                                                     context)
                                                 ? Container()
-                                                : isSearch == true
+                                                : GlobalVariable.isSearch == true
                                                     ? Positioned(
                                                         top: 0,
                                                         right: SizeConfig
@@ -421,8 +376,9 @@ class _AddressListPageState extends State<AddressListPage> {
             })); }));
             }));
   }
+
   checkbox(){
-    return    Container(
+    return Container(
       width:ResponsiveWidget.isMediumScreen(
           context)
           ?SizeConfig.screenWidth: SizeConfig
@@ -507,9 +463,7 @@ class _AddressListPageState extends State<AddressListPage> {
             height:
             1,
           ),
-          GlobalVariable.cod ==
-              true
-              ? Theme(
+          GlobalVariable.cod == true ? Theme(
             data: ThemeData(
               unselectedWidgetColor: Theme.of(context).canvasColor,
             ),
@@ -683,6 +637,7 @@ class _AddressListPageState extends State<AddressListPage> {
             fontSize:
             18));
  }
+
   // payment selection
   setSelectedRadioTile(int val) {
     selectedRadioTile = val;

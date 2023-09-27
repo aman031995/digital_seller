@@ -1,6 +1,7 @@
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
-import 'package:TychoStream/session_storage.dart';
+import 'package:TychoStream/services/global_variable.dart';
+import 'package:TychoStream/services/session_storage.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
@@ -10,12 +11,12 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-import 'package:TychoStream/view/WebScreen/getAppBar.dart';
-import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
+import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
+import 'package:TychoStream/view/widgets/footerDesktop.dart';
+import 'package:TychoStream/view/widgets/getAppBar.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/notification_view_model.dart';
@@ -76,16 +77,8 @@ class _BuynowCartState extends State<BuynowCart> {
                       return  viewmodel.cartListData != null?
                 GestureDetector(
                   onTap: (){
-                    if (isLogins == true) {
-                      isLogins = false;
-                    }
-                    if (isSearch == true) {
-                      isSearch = false;
-                    }
-                    if(isnotification==true){
-                      isnotification=false;
+                    closeAppbarProperty();
 
-                    }
                   },
                   child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -109,16 +102,8 @@ class _BuynowCartState extends State<BuynowCart> {
                     );
                   });
           } else {
-            if (isLogins == true) {
-              isLogins = false;
-            }
-            if (isSearch == true) {
-              isSearch = false;
-            }
-            if(isnotification==true){
-              isnotification=false;
+            closeAppbarProperty();
 
-            }
             context.router.push(FavouriteListPage());
           }
         }, () async {
@@ -136,16 +121,8 @@ class _BuynowCartState extends State<BuynowCart> {
                     );
                   });
           } else {
-            if (isLogins == true) {
-              isLogins = false;
-            }
-            if (isSearch == true) {
-              isSearch = false;
-            }
-            if(isnotification==true){
-              isnotification=false;
+            closeAppbarProperty();
 
-            }
             context.router.push(CartDetail(
                   itemCount:
                   '${cartViewData.cartItemCount}'));
@@ -448,16 +425,8 @@ class _BuynowCartState extends State<BuynowCart> {
                                     ?SizeConfig.screenWidth/1.2: SizeConfig.screenWidth/5.2,
                                 child: InkWell(
                                   onTap: () {
-                                    if (isLogins == true) {
-                                    isLogins = false;
-                                  }
-                                  if (isSearch == true) {
-                                    isSearch = false;
-                                  }
-                                  if(isnotification==true){
-                                    isnotification=false;
+                                    closeAppbarProperty();
 
-                                  }
                                     context.router.push(BuynowAddress()
                                     );
                                   },
@@ -478,7 +447,7 @@ class _BuynowCartState extends State<BuynowCart> {
                   ),
                   ResponsiveWidget.isMediumScreen(context)
                       ? Container()
-                      : isnotification == true
+                      : GlobalVariable.isnotification == true
                       ?    Positioned(
                       top:  0,
                       right:  SizeConfig
@@ -487,7 +456,7 @@ class _BuynowCartState extends State<BuynowCart> {
                       child: notification(notificationViewModel,context,_scrollController)):Container(),
                   ResponsiveWidget
                       .isMediumScreen(context)
-                      ?Container(): isLogins == true
+                      ?Container(): GlobalVariable.isLogins == true
                       ? Positioned(
                       top: 0,
                       right:  180,
@@ -496,7 +465,7 @@ class _BuynowCartState extends State<BuynowCart> {
                       : Container(),
                   ResponsiveWidget
                       .isMediumScreen(context)
-                      ? Container():isSearch == true
+                      ? Container():GlobalVariable.isSearch == true
                       ? Positioned(
                       top: SizeConfig.screenWidth *
                           0.001,

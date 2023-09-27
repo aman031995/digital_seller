@@ -9,7 +9,6 @@ import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
-import 'package:TychoStream/view/restaurant/product_list_restaurant.dart';
 import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/footerDesktop.dart';
@@ -29,14 +28,14 @@ import '../../../AppRouter.gr.dart';
 
 
 @RoutePage()
-class FavouriteListPage extends StatefulWidget {
-  FavouriteListPage({Key? key}) : super(key: key);
+class RestaurantFavouriteListPage extends StatefulWidget {
+  RestaurantFavouriteListPage({Key? key}) : super(key: key);
 
   @override
-  State<FavouriteListPage> createState() => _FavouriteListPageState();
+  State<RestaurantFavouriteListPage> createState() => _RestaurantFavouriteListPageState();
 }
 
-class _FavouriteListPageState extends State<FavouriteListPage> {
+class _RestaurantFavouriteListPageState extends State<RestaurantFavouriteListPage> {
   CartViewModel cartViewModel = CartViewModel();
   ScrollController scrollController = ScrollController();
   String? checkInternet;
@@ -154,7 +153,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                     physics: NeverScrollableScrollPhysics(),
                                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                                       crossAxisCount:ResponsiveWidget.isSmallScreen(context) ? 2:3,
-                                                      childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.85:0.80,mainAxisSpacing: 5,crossAxisSpacing: 5
+                                                      childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.65:0.80,mainAxisSpacing: 5,crossAxisSpacing: 5
                                                     ),
                                                     itemCount: viewmodel
                                                         .productListModel
@@ -166,7 +165,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                           viewmodel
                                                               .productListModel
                                                               ?.productList?[index];
-                                                      return productListRestaurantItems(
+                                                      return productListItems(
                                                           context,
                                                           productListData,
                                                           index,
@@ -190,7 +189,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                                                         mainAxisSpacing:
                                                         10,crossAxisSpacing: 10,
-                                                            mainAxisExtent: 300,
+                                                            mainAxisExtent: 500,
                                                             maxCrossAxisExtent:
                                                                 400),
                                                     itemCount: viewmodel
@@ -203,7 +202,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                           cartViewModel
                                                               .productListModel
                                                               ?.productList?[index];
-                                                      return productListRestaurantItems(
+                                                      return productListItems(
                                                           context,
                                                           productListData,
                                                           index,

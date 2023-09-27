@@ -5,6 +5,7 @@ import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/auth_repository.dart';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
@@ -14,13 +15,14 @@ import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-import 'package:TychoStream/view/WebScreen/getAppBar.dart';
 import 'package:TychoStream/view/WebScreen/authentication/verify_otp_screen.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
 import 'package:TychoStream/view/widgets/AppDialog.dart';
+import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
+import 'package:TychoStream/view/widgets/footerDesktop.dart';
+import 'package:TychoStream/view/widgets/getAppBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/auth_view_model.dart';
@@ -35,7 +37,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../AppRouter.gr.dart';
-import '../NotificationScreen.dart';
 
 @RoutePage()
 class EditProfile extends StatefulWidget {
@@ -130,17 +131,17 @@ class _EditProfileState extends State<EditProfile> {
                     child: Consumer<NotificationViewModel>(
                         builder: (context, model, _) {return GestureDetector(
             onTap: () {
-              if (isLogins == true) {
-                isLogins = false;
+              if (GlobalVariable.isLogins == true) {
+                GlobalVariable.isLogins = false;
                 setState(() {});
               }
-              if(isSearch==true){
-                isSearch=false;
+              if(GlobalVariable.isSearch==true){
+                GlobalVariable.isSearch=false;
                 setState(() {
                 });
               }
-              if(isnotification==true){
-                isnotification=false;
+              if(GlobalVariable.isnotification==true){
+                GlobalVariable.isnotification=false;
                 setState(() {
                 });
               }
@@ -169,16 +170,16 @@ class _EditProfileState extends State<EditProfile> {
                           );
                         });
                   } else {
-                    if (isLogins == true) {
-                      isLogins = false;
+                    if (GlobalVariable.isLogins == true) {
+                      GlobalVariable.isLogins = false;
                       setState(() {});
                     }
-                    if (isSearch == true) {
-                      isSearch = false;
+                    if (GlobalVariable.isSearch == true) {
+                      GlobalVariable.isSearch = false;
                       setState(() {});
                     }
-                    if(isnotification==true){
-                      isnotification=false;
+                    if(GlobalVariable.isnotification==true){
+                      GlobalVariable.isnotification=false;
                       setState(() {
 
                       });
@@ -201,16 +202,16 @@ class _EditProfileState extends State<EditProfile> {
                           );
                         });
                   } else {
-                    if (isLogins == true) {
-                      isLogins = false;
+                    if (GlobalVariable.isLogins == true) {
+                      GlobalVariable.isLogins = false;
                       setState(() {});
                     }
-                    if (isSearch == true) {
-                      isSearch = false;
+                    if (GlobalVariable.isSearch == true) {
+                      GlobalVariable.isSearch = false;
                       setState(() {});
                     }
-                    if(isnotification==true){
-                      isnotification=false;
+                    if(GlobalVariable.isnotification==true){
+                      GlobalVariable. isnotification=false;
                       setState(() {
 
                       });
@@ -266,7 +267,7 @@ class _EditProfileState extends State<EditProfile> {
                             ])),
                         ResponsiveWidget.isMediumScreen(context)
                             ? Container()
-                            : isnotification == true
+                            : GlobalVariable.isnotification == true
                             ?    Positioned(
                             top:  0,
                             right:  SizeConfig
@@ -275,7 +276,7 @@ class _EditProfileState extends State<EditProfile> {
                             child: notification(notificationViewModel,context,_scrollController)):Container(),
                         ResponsiveWidget.isMediumScreen(context)
                             ? Container()
-                            : isLogins == true
+                            : GlobalVariable.isLogins == true
                             ? Positioned(
                             top: 0,
                             right: 180,
@@ -284,7 +285,8 @@ class _EditProfileState extends State<EditProfile> {
                             : Container(),
                         ResponsiveWidget
                             .isMediumScreen(context)
-                            ? Container():    isSearch == true
+                            ? Container():
+                        GlobalVariable.isSearch == true
                             ? Positioned(
                             top:  SizeConfig.screenWidth *
                                 0.001,

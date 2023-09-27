@@ -1,7 +1,7 @@
 class AssetsConstants {
   static String icLogo = "images/app_logo.png";
   static String icSignup="images/signup.png";
-  //static String webLogo='images/webLogo.webp';
+  //static String webLogo='images/webLogo.jpg';
   static String webLogo='images/digitalfashionstreetweb.png';
 
 
@@ -16,8 +16,8 @@ static String icbanner='images/banner.webp';
   static String icSearch = "images/ic_search.png";
 
   static String ic_fb = "images/ic_fb.png";
-  static String ic_youtube = "images/ic_youtube.png";
-  static String ic_twitter = "images/ic_twitter.png";
+  static String ic_youtube = "images/yt-white'.png";
+  static String ic_twitter = "images/twiter-white.png";
   static String ic_instagram = "images/ic_instgram.png";
 
   static String icHome = "images/ic_home.png";

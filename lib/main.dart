@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:TychoStream/AppRouter.dart';
+import 'package:TychoStream/services/global_variable.dart';
+import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
@@ -7,7 +9,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/repository/subscription_provider.dart';
@@ -17,19 +21,15 @@ import 'package:TychoStream/viewmodel/sociallogin_view_model.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'dart:html' as html;
 
-String? names;
-String? token='false';
-bool isLogin = false;
-bool isLogins = false;
-bool isSearch = false;
-bool isnotification=false;
-bool isProfile=false;
-
 
 Future<void> main() async {
  // Stripe.publishableKey = "pk_test_51NXhtjSJK48GkIWFjJzBm88uzgrwb7i4aIyls9YoPHT5IvYAV9rMnlEW0U8AUY1VpIJB3ZOBFTFdSFuMYnxM0fkK00KqwNEEeH";
   setPathUrlStrategy();
   await WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey = "pk_test_51NXhtjSJK48GkIWFjJzBm88uzgrwb7i4aIyls9YoPHT5IvYAV9rMnlEW0U8AUY1VpIJB3ZOBFTFdSFuMYnxM0fkK00KqwNEEeH";
+  Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  Stripe.urlScheme = 'flutterstripe';
+  await Stripe.instance.applySettings();
   await Firebase.initializeApp(
       options: FirebaseOptions(
           apiKey: "AIzaSyCJld8j8yV8TC-PeC1XpqvThaVTYvI6bbw",
@@ -44,7 +44,11 @@ Future<void> main() async {
   html.window.onPopState.listen((event) {
     html.window.location.reload();
   });
-  runApp(MyApp());
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((value) => runApp(MyApp()));
+  //runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -66,7 +70,7 @@ class _MyAppState extends State<MyApp> {
 
   User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    names = sharedPreferences.get('name').toString();
+    GlobalVariable.names = sharedPreferences.get('name').toString();
   }
 
   Future<void> getFCMToken() async {
@@ -98,7 +102,7 @@ class _MyAppState extends State<MyApp> {
               final txtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.textColor?.hex;
               final buttonTxtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.buttonTextColor?.hex;
               return MaterialApp.router(
-                title: "Digital Fashion Street",
+                title:StringConstant.kappName,
                   theme: ThemeData(
                       scaffoldBackgroundColor: (bgColor)?.toColor(),
                       primaryColor: (themeColor)?.toColor(),

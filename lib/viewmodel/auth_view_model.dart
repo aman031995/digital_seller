@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
@@ -33,9 +34,10 @@ class AuthViewModel with ChangeNotifier {
 
   User() async{
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    names=sharedPreferences.get('name').toString();
+    GlobalVariable.names=sharedPreferences.get('name').toString();
   }
 
+  // method for login
   Future<void> login(
       String phone,
       String password,
@@ -52,11 +54,10 @@ class AuthViewModel with ChangeNotifier {
           if (isSuccess) {
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
             ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
-
             if (_userInfoModel?.isEmailVerified == false && _userInfoModel?.isPhoneVerified == false) {
               AppIndicator.disposeIndicator();
               Navigator.pop(context);
-              isLogin=true;
+              GlobalVariable.isLogin=true;
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -64,7 +65,8 @@ class AuthViewModel with ChangeNotifier {
                       mobileNo: phone,
                       name: '',
                       email: phone,
-                      password: password,product:product,
+                      password: password,
+                      product:product,
                       isForgotPassword: false,
                       loginPage: true,
                       isNotVerified: true,
@@ -73,7 +75,7 @@ class AuthViewModel with ChangeNotifier {
             else if (checkPhoneEmailValid == true && loginType == 'phone') {
               AppIndicator.disposeIndicator();
               Navigator.pop(context);
-              isLogin=true;
+              GlobalVariable.isLogin=true;
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -83,7 +85,8 @@ class AuthViewModel with ChangeNotifier {
                       email: phone,
                       password: password,
                       isForgotPassword: false,
-                      loginPage: false,product:product,
+                      loginPage: false,
+                      product:product,
                       isNotVerified: true,
                       viewmodel: viewmodel,
                     );});
@@ -91,7 +94,7 @@ class AuthViewModel with ChangeNotifier {
             else if ((_userInfoModel?.isEmailVerified == false && _userInfoModel?.isPhoneVerified == true) && loginType == 'phone') {
               AppIndicator.disposeIndicator();
               Navigator.pop(context);
-              isLogin=true;
+              GlobalVariable.isLogin=true;
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -109,7 +112,7 @@ class AuthViewModel with ChangeNotifier {
             else if (_userInfoModel?.isEmailVerified == false && checkPhoneEmailValid == false) {
               AppIndicator.disposeIndicator();
               Navigator.pop(context);
-              isLogin=true;
+              GlobalVariable.isLogin=true;
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -131,11 +134,12 @@ class AuthViewModel with ChangeNotifier {
               User();
               AppIndicator.disposeIndicator();
 
-              ResponsiveWidget.isMediumScreen(context) ? context.router.push(HomePageWeb()):
-              product==true? Navigator.pop(context):context.router.push(HomePageWeb());
-              Timer(Duration(milliseconds: 800), () {
-              //  reloadPage();
-              });            }
+              product==true? Navigator.pop(context):context.router.push(HomePageRestaurant());
+              if(product==true)
+              reloadPage();
+
+            }
+
 
             notifyListeners();
           }
@@ -147,13 +151,9 @@ class AuthViewModel with ChangeNotifier {
 
     AppDataManager.deleteSavedDetails();
     CacheDataManager.clearCachedData();
-    isLogins = false;
-    isLogin=false;
-    context.router.push(HomePageWeb());
-    // Timer(Duration(milliseconds: 1500), () {
-    //   reloadPage();
-    //
-    // });
+    GlobalVariable.isLogins = false;
+    GlobalVariable.isLogin=false;
+    context.router.push(HomePageRestaurant());
   }
 
 // method for user register from api
@@ -190,6 +190,7 @@ class AuthViewModel with ChangeNotifier {
     });
   }
 
+  // method for  verify otp
   Future<void> verifyOTP(BuildContext context, String phone, String otp,
       {bool? isForgotPW,bool?product,
         String? name,
@@ -208,7 +209,6 @@ class AuthViewModel with ChangeNotifier {
           if (isSuccess) {
             handler!(Result.success(result), isSuccess);
             ToastMessage.message(((result as SuccessState).value as ASResponseModal).message,context);
-
             AppIndicator.disposeIndicator();
             print('otp verified Successfully');
             _userInfoModel = ((result as SuccessState).value as ASResponseModal).dataModal;
@@ -220,7 +220,8 @@ class AuthViewModel with ChangeNotifier {
                   builder: (BuildContext context) {
                     return ResetPassword(
                       product: product,
-                      phone: phone,loginType: loginType,);});
+                      phone: phone,
+                      loginType: loginType,);});
             } else if (verifyNumber == true) {
               otpValue = '';
               Navigator.of(context, rootNavigator: true).pop();
@@ -230,10 +231,9 @@ class AuthViewModel with ChangeNotifier {
               AppIndicator.disposeIndicator();
               AppDataManager.getInstance.updateUserDetails(_userInfoModel!);
 
-              product==true?  Navigator.pop(context):context.router.push(HomePageWeb());
-              Timer(Duration(milliseconds: 200), () {
+              product==true?  Navigator.pop(context):context.router.push(HomePageRestaurant());
+              if(product==true)
                 reloadPage();
-              });
               notifyListeners();
 
 
@@ -246,6 +246,7 @@ class AuthViewModel with ChangeNotifier {
         });
   }
 
+  // method for registerUser
   registerUser(BuildContext context, String? name, String? phone,
       String? password, String? email, String? deviceId, String? deviceToken) {
     AppIndicator.loadingIndicator(context);
@@ -258,7 +259,7 @@ class AuthViewModel with ChangeNotifier {
             AppDataManager.getInstance.updateUserDetails(userInfoModel!);
             AppIndicator.disposeIndicator();
             Navigator.pop(context);
-            Timer(Duration(milliseconds: 200), () {
+            Timer(Duration(milliseconds: 50), () {
               reloadPage();
             });
             notifyListeners();
@@ -267,6 +268,7 @@ class AuthViewModel with ChangeNotifier {
         });
   }
 
+  // Method for resend Otp
   Future<void> resendOtp(
       String? phone, BuildContext context, NetworkResponseHandler handler,
       {String? verifyDetailType}) async {
@@ -284,6 +286,7 @@ class AuthViewModel with ChangeNotifier {
     });
   }
 
+  //Method for forgot Password
   Future<void> forgotPassword(String phone,bool loginType,bool? product, BuildContext context, HomeViewModel viewModel) async {
     AppIndicator.loadingIndicator(context);
     _authRepo.forgotPassword(phone, loginType == true ? 'phone' : 'email',context, (result, isSuccess) {
@@ -303,6 +306,7 @@ class AuthViewModel with ChangeNotifier {
     });
   }
 
+  // Method for reset Password
   Future<void> resetPassword(String email, String newPassword,
       String confirmPassword,String loginType, BuildContext context) async {
     AppIndicator.loadingIndicator(context);
@@ -327,6 +331,7 @@ class AuthViewModel with ChangeNotifier {
         });
   }
 
+  // Method for subscribeEmail
   Future<void> subscribedEmail(String email, BuildContext context) async {
     AppIndicator.loadingIndicator(context);
     _authRepo.subscribedEmail(email,context, (result, isSuccess) {

@@ -10,6 +10,7 @@ import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
+import 'package:TychoStream/view/restaurant/product_list_restaurant.dart';
 import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/footerDesktop.dart';
@@ -28,19 +29,19 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../AppRouter.gr.dart';
 
 @RoutePage()
-class SubcategoryProductList extends StatefulWidget {
+class RestaurantSubcategoryProductList extends StatefulWidget {
   final String? SubcategoryProductName;
 
-  SubcategoryProductList({
+  RestaurantSubcategoryProductList({
     @PathParam('SubcategoryProductName') this.SubcategoryProductName,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<SubcategoryProductList> createState() => _SubcategoryProductListState();
+  State<RestaurantSubcategoryProductList> createState() => _RestaurantSubcategoryProductListState();
 }
 
-class _SubcategoryProductListState extends State<SubcategoryProductList> {
+class _RestaurantSubcategoryProductListState extends State<RestaurantSubcategoryProductList> {
   CartViewModel cartViewModel = CartViewModel();
   String? checkInternet;
   int pageNum = 1;
@@ -171,12 +172,12 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                       physics: NeverScrollableScrollPhysics(),
                                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount:ResponsiveWidget.isSmallScreen(context) ? 2:3,
-                                        childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.6:0.80,mainAxisSpacing: 5,crossAxisSpacing: 5
+                                        childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.85:0.80,mainAxisSpacing: 5,crossAxisSpacing: 5
                                       ),
                                       itemCount: viewmodel.productListModel?.productList?.length,
                                       itemBuilder: (context, index) {
                                         final productListData = viewmodel.productListModel?.productList?[index];
-                                        return productListItems(
+                                        return productListRestaurantItems(
                                             context,
                                             productListData,
                                             index,
@@ -229,7 +230,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                                 mainAxisSpacing:
                                                 10,crossAxisSpacing: 10,
                                                 mainAxisExtent:
-                                                500,
+                                                300,
                                                 maxCrossAxisExtent:
                                                 400),
                                             itemCount: viewmodel
@@ -243,7 +244,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                               viewmodel
                                                   .productListModel
                                                   ?.productList?[index];
-                                              return productListItems(
+                                              return productListRestaurantItems(
                                                   context,
                                                   productListData,
                                                   index,

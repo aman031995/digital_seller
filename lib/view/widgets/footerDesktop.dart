@@ -46,10 +46,12 @@ class _footerDesktopState extends State<footerDesktop> {
           right: SizeConfig.screenWidth * 0.04,
           top: 30),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               footerLeftWidgetContent(context),
               SizedBox(
@@ -112,13 +114,12 @@ class _footerDesktopState extends State<footerDesktop> {
             SizedBox(width: 5),
             InkWell(
               onTap: () async {
-                const url =
-                    'https://play.google.com/store/apps/details?id=com.tycho.digitalfashionseller';
-                if (await canLaunch(url)) {
-                  await launch(url);
-                } else {
-                  throw 'Could not launch $url';
-                }
+                // var url = StringConstant.playestoreurl;
+                // if (await canLaunch(url)) {
+                //   await launch(url);
+                // } else {
+                //   throw 'Could not launch $url';
+                // }
               },
               child: Image.asset(AssetsConstants.icPlaystore,  color: Theme.of(context).scaffoldBackgroundColor,
                   height: 35),
@@ -131,9 +132,11 @@ class _footerDesktopState extends State<footerDesktop> {
 
   Widget footerMiddleWidgetContent(BuildContext context, HomeViewModel homeViewModel) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 150,
+          width: 160,
           child: appTextButton(
               context,
               StringConstant.connectus,
@@ -148,7 +151,10 @@ class _footerDesktopState extends State<footerDesktop> {
         Container(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(width: MediaQuery.of(context).size.width * .013),
+
               InkWell(
                   child: Image.asset(AssetsConstants.icFacebook,
                       height: 33,
@@ -424,13 +430,13 @@ Widget footerMobile(BuildContext context,HomeViewModel homeViewModel) {
                     SizedBox(width: SizeConfig.screenWidth * 0.01),
                     GestureDetector(
                         onTap: () async {
-                          const url =
-                              'https://play.google.com/store/apps/details?id=com.tycho.digitalfashionseller';
-                          if (await canLaunch(url)) {
-                            await launch(url);
-                          } else {
-                            throw 'Could not launch $url';
-                          }
+                          // var url = StringConstant.playestoreurl;
+                          //
+                          // if (await canLaunch(url)) {
+                          //   await launch(url);
+                          // } else {
+                          //   throw 'Could not launch $url';
+                          // }
                         },
                         child:
                             Image.asset(AssetsConstants.icPlaystore,   color: Theme.of(context).scaffoldBackgroundColor,height: 30)),

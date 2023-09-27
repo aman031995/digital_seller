@@ -2,7 +2,7 @@ import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
-import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
+import 'package:TychoStream/view/widgets/footerDesktop.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:flutter/material.dart';
 

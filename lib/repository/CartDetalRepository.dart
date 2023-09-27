@@ -10,6 +10,7 @@ import 'package:TychoStream/network/CacheDataManager.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/model/data/category_product_model.dart';
@@ -142,7 +143,6 @@ class CartDetailRepository {
 
       var response = await http.post(
           Uri.parse('https://api.stripe.com/v1/payment_intents'),
-          //https://api.stripe.com/v1/checkout/sessions
           body: body,
           headers: {
             'Authorization': 'Bearer $secretKey',
@@ -154,8 +154,61 @@ class CartDetailRepository {
 
         //Payment Sheet
         if (paymentIntent != null) {
+          // await Stripe.instance.initPaymentSheet(
+          //     paymentSheetParameters: SetupPaymentSheetParameters(
+          //         paymentIntentClientSecret: paymentIntent!['client_secret'],
+          //         style: ThemeMode.dark,
+          //         merchantDisplayName: 'merchant name',
+          //         customerId: '1234',
+          //         customerEphemeralKeySecret: '1234',
+          //         //If the store the customer the billing details
+          //         billingDetails: BillingDetails()));
+          // await Stripe.instance.dangerouslyUpdateCardDetails(CardDetails(
+          //   number: '4242424242424242',
+          //   cvc: '424',
+          //   expirationMonth: 04,
+          //   expirationYear: 2025,
+          // ));
+           await Stripe.instance.createPaymentMethod(
+              params:
+              PaymentMethodParams.card(
+                paymentMethodData: PaymentMethodData(
+                  billingDetails:BillingDetails(  name: 'Flutter Stripe',
+                                               email: 'email@stripe.com',
+                                               phone: '+48888000888',
+                                               address: Address(
+                                                 city: 'Houston',
+                                                 country: 'US',
+                                                 line1: '1459  Circle Drive',
+                                                 line2: '',
+                                                 state: 'Texas',
+                                                 postalCode: '77063',
+                                               )),
+                  shippingDetails: ShippingDetails(
+                    name: "sadafa",
+                    carrier: "sasaf",
+                    phone: "9898989898",
+                    trackingNumber: "12121",
+                      address: Address(
+                        city: 'Houston',
+                        country: 'US',
+                        line1: '1459  Circle Drive',
+                        line2: '',
+                        state: 'Texas',
+                        postalCode: '77063',
+                      )
 
-        //  final paymentMethodParams = PaymentMethodParams.card(
+                  )
+                ),
+              ),
+             options: PaymentMethodOptions(
+               setupFutureUsage: PaymentIntentsFutureUsage.OffSession,
+             ),
+           );
+           responseHandler(paymentIntent);
+
+
+           //  final paymentMethodParams = PaymentMethodParams.card(
         //    paymentMethodData: PaymentMethodData());
         //
         // await WebStripe.instance.createPaymentMethod(paymentMethodParams);
@@ -180,7 +233,7 @@ class CartDetailRepository {
          //                            ))
          //  ));
          // js.context.callMethod('initStripeAndHandlePayment', []);
-          responseHandler(paymentIntent);
+         // responseHandler(paymentIntent);
 
         }
       } catch (e, s) {

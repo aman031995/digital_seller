@@ -1,6 +1,7 @@
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
@@ -11,11 +12,11 @@ import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/product/productSkuDetailView.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-import 'package:TychoStream/view/WebScreen/getAppBar.dart';
-import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
+import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
+import 'package:TychoStream/view/widgets/footerDesktop.dart';
+import 'package:TychoStream/view/widgets/getAppBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
@@ -58,7 +59,6 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
     homeViewModel.getAppConfig(context);
     cartView.getCartCount(context);
     notificationViewModel.getNotificationCountText(context);
-
     cartView.getProductListCategory(context, widget.ProductDetails?[1] ?? "", widget.ProductDetails?[0] ?? "", 1,(result, isSuccess){});
     super.initState();
   }
@@ -84,18 +84,10 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                           value: homeViewModel,
                           child: Consumer<HomeViewModel>(builder: (context, s, _) {
                             return
-                      viewmodel.productListDetails!= null ? GestureDetector(
+                              viewmodel.productListDetails!= null ? GestureDetector(
                 onTap: (){
-                  if (isLogins == true) {
-                    isLogins = false;
-                  }
-                  if(isSearch==true){
-                    isSearch=false;
-                  }
-                  if(isnotification==true){
-                    isnotification=false;
+                  closeAppbarProperty();
 
-                  }
                 },
                 child: Scaffold(
                   appBar:ResponsiveWidget.isMediumScreen(context)
@@ -113,16 +105,8 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                             );
                           });
                     } else {
-                      if (isLogins == true) {
-                        isLogins = false;
-                      }
-                      if (isSearch == true) {
-                        isSearch = false;
-                      }
-                      if(isnotification==true){
-                        isnotification=false;
+                      closeAppbarProperty();
 
-                      }
                       context.router.push(FavouriteListPage());
                     }
                   },
@@ -139,16 +123,8 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                                 );
                               });
                         } else{
-                          if (isLogins == true) {
-                            isLogins = false;
-                          }
-                          if (isSearch == true) {
-                            isSearch = false;
-                          }
-                          if(isnotification==true){
-                            isnotification=false;
+                          closeAppbarProperty();
 
-                          }
                           context.router.push(CartDetail(
                               itemCount: '${viewmodel.cartItemCount}'
                           ));
@@ -451,7 +427,7 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                           ),
                           ResponsiveWidget.isMediumScreen(context)
                               ? Container()
-                              : isnotification == true
+                              : GlobalVariable.isnotification == true
                               ?    Positioned(
                               top:  0,
                               right:  SizeConfig
@@ -460,7 +436,7 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                               child: notification(notificationViewModel,context,_scrollController)):Container(),
                           ResponsiveWidget.isMediumScreen(context)
                               ? Container()
-                              : isLogins == true
+                              : GlobalVariable.isLogins == true
                               ? Positioned(
                               top: 0,
                               right: 180,
@@ -469,7 +445,7 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                               : Container(),
                           ResponsiveWidget.isMediumScreen(context)
                               ? Container()
-                              :  isSearch==true?
+                              :  GlobalVariable.isSearch==true?
                           Positioned(
                               top: 1,
                               right:SizeConfig.screenWidth*0.20,
@@ -587,22 +563,11 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                             : StringConstant.addToBag,color: Theme.of(context).canvasColor,
                         fontSize: 16),
                     onPressed: ()async{
-                      if (isLogins == true) {
-                      isLogins = false;
-                      setState(() {});
-                    }
-                    if (isSearch == true) {
-                      isSearch = false;
-                      setState(() {});
-                    }  if(isnotification==true){
-                      isnotification=false;
-                      setState(() {
+                      closeAppbarProperty();
 
-                      });
-                    }
-                    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                    token = sharedPreferences.getString('token').toString();
-                    if (token == 'null'){
+                      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                      GlobalVariable.token = sharedPreferences.getString('token').toString();
+                    if (GlobalVariable.token == 'null'){
                       showDialog(
                           context: context,
                           builder:
@@ -614,19 +579,8 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                       // _backBtnHandling(prodId);
                     }
                     else if(cartView.productListDetails?.productDetails?.isAvailable == true) {
-                      if (isLogins == true) {
-                        isLogins = false;
-                        setState(() {});
-                      }
-                      if (isSearch == true) {
-                        isSearch = false;
-                        setState(() {});
-                      }  if(isnotification==true){
-                        isnotification=false;
-                        setState(() {
+                      closeAppbarProperty();
 
-                        });
-                      }
                       (cartView.isAddedToCart == true || cartView.productListDetails?.productDetails?.isAddToCart == true)
                           ? context.router.push(CartDetail(
                           itemCount: '${cartView.cartItemCount}'
@@ -653,20 +607,8 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                     child: AppBoldFont(context, color: Theme.of(context).hintColor,
                         msg: StringConstant.buynow, fontSize: 16),
                     onPressed: ()
-                    async{ if (isLogins == true) {
-                      isLogins = false;
-                      setState(() {});
-                    }
-                    if (isSearch == true) {
-                      isSearch = false;
-                      setState(() {});
-                    }
-                    if(isnotification==true){
-                      isnotification=false;
-                      setState(() {
-
-                      });
-                    }
+                    async{
+                      closeAppbarProperty();
                     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                     if (sharedPreferences.getString('token') == null){
                       showDialog(
@@ -679,25 +621,15 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                           });
                     }
                     else if (cartView.productListDetails?.productDetails?.isAvailable == true) {
-                      if (isLogins == true) {
-                        isLogins = false;
-                        setState(() {});
-                      }
-                      if (isSearch == true) {
-                        isSearch = false;
-                        setState(() {});
-                      }  if(isnotification==true){
-                        isnotification=false;
-                        setState(() {
+    closeAppbarProperty();
 
-                        });
                       }
                       cartView.buyNow(
                           cartView.productListDetails?.productId ?? '',
                           "1", cartView.productListDetails?.productDetails?.variantId,
                           true, context);  //context.router.push(FavouriteListPage());
                     }
-                    }),
+                    ),
               )
             ]));
   }

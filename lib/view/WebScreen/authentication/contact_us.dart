@@ -1,11 +1,13 @@
 import 'package:TychoStream/network/AppNetwork.dart';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
-import 'package:TychoStream/view/WebScreen/footerDesktop.dart';
-import 'package:TychoStream/view/WebScreen/NotificationScreen.dart';
-import 'package:TychoStream/view/WebScreen/getAppBar.dart';
+
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
+import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
+import 'package:TychoStream/view/widgets/footerDesktop.dart';
+import 'package:TychoStream/view/widgets/getAppBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
@@ -100,21 +102,16 @@ class _ContactUsState extends State<ContactUs> {
               child: Consumer<NotificationViewModel>(
                   builder: (context, model, _) { return GestureDetector(
             onTap: () {
-              if (isLogins == true) {
-                isLogins = false;
-                setState(() {});
+              if (GlobalVariable.isLogins == true) {
+                GlobalVariable.isLogins = false;
               }
-              if(isSearch==true){
-                isSearch=false;
-                setState(() {
+              if(GlobalVariable.isSearch==true){
+                GlobalVariable.isSearch=false;
 
-                });
               }
-              if(isnotification==true){
-                isnotification=false;
-                setState(() {
+              if(GlobalVariable.isnotification==true){
+                GlobalVariable. isnotification=false;
 
-                });
               }
             },
             child: Scaffold(
@@ -144,19 +141,16 @@ class _ContactUsState extends State<ContactUs> {
                                 );
                               });
                         } else {
-                          if (isLogins == true) {
-                            isLogins = false;
-                            setState(() {});
-                          }
-                          if (isSearch == true) {
-                            isSearch = false;
-                            setState(() {});
-                          }
-                          if(isnotification==true){
-                            isnotification=false;
-                            setState(() {
+                          if (GlobalVariable.isLogins == true) {
+                            GlobalVariable.isLogins = false;
 
-                            });
+                          }
+                          if (GlobalVariable.isSearch == true) {
+                            GlobalVariable.isSearch = false;
+                          }
+                          if(GlobalVariable.isnotification==true){
+                            GlobalVariable.isnotification=false;
+
                           }
                           context.router.push(FavouriteListPage());
                         }
@@ -174,16 +168,16 @@ class _ContactUsState extends State<ContactUs> {
                                 );
                               });
                         } else {
-                          if (isLogins == true) {
-                            isLogins = false;
+                          if (GlobalVariable.isLogins == true) {
+                            GlobalVariable.isLogins = false;
                             setState(() {});
                           }
-                          if (isSearch == true) {
-                            isSearch = false;
+                          if (GlobalVariable.isSearch == true) {
+                            GlobalVariable.isSearch = false;
                             setState(() {});
                           }
-                          if(isnotification==true){
-                            isnotification=false;
+                          if(GlobalVariable.isnotification==true){
+                            GlobalVariable.isnotification=false;
                             setState(() {
 
                             });
@@ -502,7 +496,7 @@ class _ContactUsState extends State<ContactUs> {
                               ),
                               ResponsiveWidget.isMediumScreen(context)
                                   ? Container()
-                                  : isLogins == true
+                                  : GlobalVariable.isLogins == true
                                       ? Positioned(
                                           top: 0,
                                           right: 180,
@@ -511,7 +505,7 @@ class _ContactUsState extends State<ContactUs> {
                                       : Container(),
                               ResponsiveWidget.isMediumScreen(context)
                                   ? Container()
-                                  : isSearch == true
+                                  : GlobalVariable.isSearch == true
                                       ? Positioned(
                                           top: 1,
                                           right: SizeConfig.screenWidth * 0.20,
@@ -524,7 +518,7 @@ class _ContactUsState extends State<ContactUs> {
                                       : Container(),
                               ResponsiveWidget.isMediumScreen(context)
                                   ? Container()
-                                  : isnotification == true
+                                  : GlobalVariable.isnotification == true
                                   ?    Positioned(
                                   top:  0,
                                   right:  SizeConfig

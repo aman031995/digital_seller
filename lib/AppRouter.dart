@@ -1,6 +1,7 @@
 
 import 'package:TychoStream/main.dart';
-import 'package:TychoStream/session_storage.dart';
+import 'package:TychoStream/services/global_variable.dart';
+import 'package:TychoStream/services/session_storage.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,7 +13,21 @@ class AppRouter extends $AppRouter {
 
   @override
   List<AutoRoute> routes = [
-     AutoRoute(page: HomePageWeb.page, path: '/',initial: true),
+    // AutoRoute(page: HomePageWeb.page, path: '/',initial: true),
+   AutoRoute(page: HomePageRestaurant.page,path: '/',initial: true),
+    AutoRoute(page: ProductListRestaurantGallery.page,path: "/ProductListRestaurantGallery"),
+    AutoRoute(page: RestaurantSubcategoryProductList.page,path: '/RestaurantSubcategoryProductList/:SubcategoryProductName'),
+    AutoRoute(page: RestaurantFavouriteListPage.page,path: '/RestaurantFavouriteListPage',guards: [AutoRouteGuard.simple(
+          (resolver, scope) async {
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        if (sharedPreferences.get('token') != null) {
+          resolver.next();
+        } else {
+          resolver.redirect(HomePageRestaurant());
+        }
+      },
+    )]),
+
 
     AutoRoute(page: SearchPage.page,path: '/SearchPage'),
 
@@ -46,11 +61,11 @@ class AppRouter extends $AppRouter {
 
     AutoRoute(page: AddressListPage.page,path: '/AddressListPage/:buynow',guards: [
       AutoRouteGuard.simple((resolver, scope) async {
-              token= SessionStorageHelper.getValue("payment");
-          if(token==null){
+        GlobalVariable.token= SessionStorageHelper.getValue("payment");
+          if(GlobalVariable.token==null){
             resolver.next();
           }
-          else if (token=='false') {
+          else if (GlobalVariable.token=='false') {
             resolver.next();
           } else {
             resolver.redirect(HomePageWeb());
@@ -108,11 +123,11 @@ class AppRouter extends $AppRouter {
     AutoRoute(page: ThankYouPage.page,path: '/ThankYouPage',keepHistory: false,guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
-          token= SessionStorageHelper.getValue("payment");
-          if(token==null){
+              GlobalVariable.token= SessionStorageHelper.getValue("payment");
+          if(GlobalVariable.token==null){
             resolver.next();
           }
-          else if (token=='false') {
+          else if (GlobalVariable.token=='false') {
             resolver.next();
           } else {
             resolver.redirect(HomePageWeb());

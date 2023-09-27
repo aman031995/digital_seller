@@ -1,6 +1,7 @@
 import 'package:TychoStream/AppRouter.gr.dart';
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/main.dart';
+import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
@@ -217,7 +218,7 @@ class _SearchPageState extends State<SearchPage> {
     onChanged: (v) {
     // AppIndicator.loadingIndicator(context);
     if(v.isEmpty){
-            isSearch = false;
+      GlobalVariable.isSearch = false;
           }
           else{
             AppIndicator.loadingIndicator(context);
@@ -228,7 +229,7 @@ class _SearchPageState extends State<SearchPage> {
     onSubmitted: (v){
       AppIndicator.loadingIndicator(context);
             homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
-            isSearch = true;
+      GlobalVariable.isSearch = true;
          //   homeViewModel.getSearchData(context, searchController?.text ?? '', pageNum);
     },
     ),
