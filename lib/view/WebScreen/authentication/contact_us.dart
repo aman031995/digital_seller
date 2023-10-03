@@ -1,7 +1,6 @@
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
-
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
 import 'package:TychoStream/view/widgets/NotificationScreen.dart';
@@ -12,13 +11,11 @@ import 'package:TychoStream/view/widgets/no_internet.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/notification_view_model.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppTextField.dart';
 import 'package:TychoStream/utilities/AppToast.dart';

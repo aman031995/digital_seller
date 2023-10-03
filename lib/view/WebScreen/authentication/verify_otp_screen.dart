@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TychoStream/bloc_validation/Regex.dart';
@@ -64,13 +63,13 @@ class _VerifyOtpState extends State<VerifyOtp> {
     mobileOTPVerificaton = widget.viewmodel!.appConfigModel!.androidConfig!.loginWithPhone!;
     homeViewModel.getLoginType(context, widget.viewmodel?.appConfigModel?.androidConfig?.loginWithPhone ?? false);
     super.initState();
-    getFCMToken();
+   // getFCMToken();
     startTimer();
   }
   Future<void> getFCMToken() async {
     try {
-      fcmToken = await FirebaseMessaging.instance.getToken();
-      print('FCM Token: $fcmToken');
+      // fcmToken = await FirebaseMessaging.instance.getToken();
+      // print('FCM Token: $fcmToken');
     } catch (e) {
       print('Error getting FCM token: $e');
     }

@@ -1,3 +1,4 @@
+import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
 import 'package:TychoStream/model/data/checkout_data_model.dart';
 import 'package:TychoStream/model/data/city_state_model.dart';
@@ -94,223 +95,230 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
         actionsPadding: EdgeInsets.zero,
         contentPadding: EdgeInsets.zero,
         titlePadding: EdgeInsets.zero,
-        insetPadding: EdgeInsets.all(ResponsiveWidget.isSmallScreen(context) ?18:100),
+        insetPadding: EdgeInsets.all(10),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(2)),
         backgroundColor: Theme.of(context).cardColor.withOpacity(0.9),
         content:  Container(
-          height: ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenHeight/1.2:ResponsiveWidget.isSmallScreen(context) ?SizeConfig.screenHeight/1.6:SizeConfig.screenHeight/1.4,
-          width:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth:ResponsiveWidget.isSmallScreen(context) ? SizeConfig.screenWidth*0.25:SizeConfig.screenWidth*0.40,
+        //  height: ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenHeight/1.2:ResponsiveWidget.isSmallScreen(context) ?SizeConfig.screenHeight/1.6:SizeConfig.screenHeight/1.4,
+          width:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth:ResponsiveWidget.isSmallScreen(context) ? SizeConfig.screenWidth*0.35:SizeConfig.screenWidth*0.40,
 
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 10),
-                AppBoldFont(context,
-                    msg: StringConstant.contactDetails,
-                    fontSize: 16.0),
-                Column(
+          child: Stack(
+            children: [
+
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    SizedBox(
+                      height: 2.0,
+                    ),
+                    AppBoldFont(context, msg: StringConstant.contactDetails, fontSize: 18.0,fontWeight: FontWeight.w500),
                     SizedBox(
                       height: 5.0,
                     ),
                     addAddressTextField(firstNameController, StringConstant.firstName, TextInputType.text, validation.sinkFirstName, 50, validation.firstName,StringConstant.firstName),
                     SizedBox(
-                      height: 15.0,
+                      height: 5.0,
                     ),
                     addAddressTextField(lastNameController, StringConstant.lastName, TextInputType.text, validation.sinkLastName, 50, validation.lastName,StringConstant.lastName),
                     SizedBox(
-                      height: 15.0,
+                      height: 5.0,
                     ),
                     addAddressTextField(mobileNumberController, StringConstant.mobileNo, TextInputType.phone, validation.sinkPhoneNo, 10, validation.phoneNo,StringConstant.mobileNo),
                     SizedBox(
-                      height: 15.0,
+                      height: 5.0,
                     ),
                     addAddressTextField(emailController, StringConstant.email, TextInputType.emailAddress, validation.sinkEmail, 50, validation.email, StringConstant.email),
                     SizedBox(
-                      height: 10.0,
+                      height: 5.0,
                     ),
+                    addAddressTextField(addressFirstController, StringConstant.address1, TextInputType.streetAddress, validation.sinkAddress, 20, validation.address, StringConstant.address1),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    addAddressTextField(addressSecondController, StringConstant.address2, TextInputType.streetAddress, validation.sinkAddressOne, 500, validation.addressOne, StringConstant.address2),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    addAddressTextField(landmarkController, StringConstant.landmark, TextInputType.streetAddress, validation.sinkLandmark, 60, validation.landMark, StringConstant.landmark),
+                    SizedBox(
+                      height: 5.0,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20,bottom: 4),
+                      alignment: Alignment.topLeft,
+                      width: SizeConfig.screenWidth,
+                      child: AppMediumFont(context, msg: StringConstant.pincode),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20,bottom: 4,right: 20),
+                      child: StreamBuilder(
+                          stream: validation.pincode,
+                          builder: (context, snapshot) {
+                            return AppTextField(
+                                maxLine: null,
+                                prefixText: '',
+                                controller: pinCodeController,
+                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                                isShowCountryCode: true,
+                                isShowPassword: false,
+                                secureText: false,
+                                isColor: false,
+                                isTick: false,
+                                maxLength: 6,
+                                errorText: snapshot.hasError
+                                    ? snapshot.error.toString()
+                                    : null,
+                                onChanged: (m) {
+                                  validation.sinkPincode.add(m);
+                                  if(m.length==6){
+                                    cityController.clear();
+                                    stateController.clear();
+                                    AppIndicator.loadingIndicator(context);
+                                    cartViewData.getCityState(context, m, (result, isSuccess) {
+                                      if(isSuccess){
+                                        setState(() {
+                                          _cityStateModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+                                          if(_cityStateModel.state==null || _cityStateModel.city==null ){
+                                            ToastMessage.message(StringConstant.pinCodeNotfound,context);
+                                          }
+                                          else{
+                                            cityController.text = _cityStateModel.city ?? "";
+                                            stateController.text = _cityStateModel.state ?? "";
+                                            validation.sinkState.add(stateController.text);
+                                            validation.sinkCityName.add(cityController.text);
+                                          }
+                                        });
+                                      }
+                                      else{
+
+                                      }
+
+                                    });
+
+                                  }},
+                                keyBoardType: TextInputType.number,
+                               );
+                          }),
+                    ),
+                    SizedBox(height: 5.0),
+                    Container(
+                      margin: EdgeInsets.only(left: 20,bottom: 4),
+                      alignment: Alignment.topLeft,
+                      width: SizeConfig.screenWidth,
+                      child: AppMediumFont(context, msg:StringConstant.cityName),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20,bottom: 4,right: 20),
+
+                      child: StreamBuilder(
+                          stream: validation.cityName,
+                          builder: (context, snapshot) {
+                            return AppTextField(
+                                maxLine: null,
+                                prefixText: '',isRead: true,
+                                controller: cityController,
+                              floatingLabelBehavior: FloatingLabelBehavior.never,
+                                isShowCountryCode: true,
+                                isShowPassword: false,
+                                secureText: false,
+                                isColor: false,
+                                isTick: false,
+                                maxLength: 30,
+                                errorText: snapshot.hasError
+                                    ? snapshot.error.toString()
+                                    : null,
+                                keyBoardType: TextInputType.streetAddress,
+                            );
+                          }),
+                    ),
+                    SizedBox(height: 5.0),
+                    Container(
+                      margin: EdgeInsets.only(left: 20,bottom: 4),
+                      alignment: Alignment.topLeft,
+                      width: SizeConfig.screenWidth,
+                      child: AppMediumFont(context, msg:StringConstant.state),
+                    ),
+                    Container(          margin: EdgeInsets.only(left: 20,bottom: 4,right: 20),
+
+                      child: StreamBuilder(
+                          stream: validation.state,
+                          builder: (context, snapshot) {
+                            return AppTextField(
+                                maxLine: null,isRead: true,
+                                prefixText: '',
+                                controller: stateController,
+                                floatingLabelBehavior: FloatingLabelBehavior.never,
+                                isShowCountryCode: true,
+                                isShowPassword: false,
+                                secureText: false,
+                                isColor: false,
+                                isTick: false,
+                                maxLength: 20,
+                                errorText: snapshot.hasError
+                                    ? snapshot.error.toString()
+                                    : null,
+                                keyBoardType: TextInputType.streetAddress);
+                          }),
+                    ),
+                    SizedBox(height: 5.0),
+                    Container(                    margin: EdgeInsets.only(left: 30,bottom: 4,right: 30),
+
+                      child: StreamBuilder(
+                          stream: validation.validateAddAddress,
+                          builder: (context, snapshot) {
+                            return appButton(
+                                context,
+                                StringConstant.Save,
+                                SizeConfig.screenWidth,
+                                50.0,
+                                Theme.of(context).primaryColor,
+                                Theme.of(context).hintColor.withOpacity(0.8),
+                                18,
+                                10,
+                                snapshot.data != true ? false : true,
+                                onTap: () {
+                              snapshot.data != true
+                                  ? ToastMessage.message(
+                                      StringConstant.fillOut,context)
+                                  : widget.isAlreadyAdded == true
+                                      ? cartViewData
+                                          .updateExistingAddress(
+                                              context,
+                                              widget.addressId ?? '',
+                                              firstNameController.text,
+                                              lastNameController.text,
+                                              emailController.text,
+                                              mobileNumberController.text,
+                                              addressFirstController.text,
+                                              addressSecondController.text,
+                                             landmarkController.text,
+                                             pinCodeController.text,
+                                              cityController.text,
+                                              stateController.text,
+                                             ''
+
+                              )
+                                      : addNewAddress();
+                            });
+                          }),
+                    ),
+                    SizedBox(height: 10.0),
                   ],
                 ),
-                AppBoldFont(context,
-                    msg: StringConstant.address,
-                    fontSize: 15.0),
-                Column(children: [
-                  addAddressTextField(addressFirstController, StringConstant.address1, TextInputType.streetAddress, validation.sinkAddress, 20, validation.address, StringConstant.address1),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  addAddressTextField(addressSecondController, StringConstant.address2, TextInputType.streetAddress, validation.sinkAddressOne, 500, validation.addressOne, StringConstant.address2),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  addAddressTextField(landmarkController, StringConstant.landmark, TextInputType.streetAddress, validation.sinkLandmark, 60, validation.landMark, StringConstant.landmark),
-                  SizedBox(
-                    height: 15.0,
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20,bottom: 4),
-                    alignment: Alignment.topLeft,
-                    width: SizeConfig.screenWidth,
-                    child: AppMediumFont(context, msg: StringConstant.pincode),
-                  ),
-                  Container(      margin: EdgeInsets.only(left: 20,bottom: 4,right: 20),
-
-                    child: StreamBuilder(
-                        stream: validation.pincode,
-                        builder: (context, snapshot) {
-                          return AppTextField(
-                              maxLine: null,
-                              prefixText: '',
-                              controller: pinCodeController,
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                              isShowCountryCode: true,
-                              isShowPassword: false,
-                              secureText: false,
-                              isColor: false,
-                              isTick: false,
-                              maxLength: 6,
-                              errorText: snapshot.hasError
-                                  ? snapshot.error.toString()
-                                  : null,
-                              onChanged: (m) {
-                                validation.sinkPincode.add(m);
-                                if(m.length==6){
-                                  cityController.clear();
-                                  stateController.clear();
-                                  AppIndicator.loadingIndicator(context);
-                                  cartViewData.getCityState(context, m, (result, isSuccess) {
-                                    if(isSuccess){
-                                      setState(() {
-                                        _cityStateModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-                                        if(_cityStateModel.state==null || _cityStateModel.city==null ){
-                                          ToastMessage.message(StringConstant.pinCodeNotfound,context);
-                                        }
-                                        else{
-                                          cityController.text = _cityStateModel.city ?? "";
-                                          stateController.text = _cityStateModel.state ?? "";
-                                          validation.sinkState.add(stateController.text);
-                                          validation.sinkCityName.add(cityController.text);
-                                        }
-                                      });
-                                    }
-                                    else{
-
-                                    }
-
-                                  });
-
-                                }},
-                              keyBoardType: TextInputType.number,
-                             );
-                        }),
-                  ),
-                  SizedBox(height: 15.0),
-                  Container(
-                    margin: EdgeInsets.only(left: 20,bottom: 4),
-                    alignment: Alignment.topLeft,
-                    width: SizeConfig.screenWidth,
-                    child: AppMediumFont(context, msg:StringConstant.cityName),
-                  ),
-                  Container(          margin: EdgeInsets.only(left: 20,bottom: 4,right: 20),
-
-                    child: StreamBuilder(
-                        stream: validation.cityName,
-                        builder: (context, snapshot) {
-                          return AppTextField(
-                              maxLine: null,
-                              prefixText: '',isRead: true,
-                              controller: cityController,
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                              isShowCountryCode: true,
-                              isShowPassword: false,
-                              secureText: false,
-                              isColor: false,
-                              isTick: false,
-                              maxLength: 30,
-                              errorText: snapshot.hasError
-                                  ? snapshot.error.toString()
-                                  : null,
-                              keyBoardType: TextInputType.streetAddress,
-                          );
-                        }),
-                  ),
-                  SizedBox(height: 15.0),
-                  Container(
-                    margin: EdgeInsets.only(left: 20,bottom: 4),
-                    alignment: Alignment.topLeft,
-                    width: SizeConfig.screenWidth,
-                    child: AppMediumFont(context, msg:StringConstant.state),
-                  ),
-                  Container(          margin: EdgeInsets.only(left: 20,bottom: 4,right: 20),
-
-                    child: StreamBuilder(
-                        stream: validation.state,
-                        builder: (context, snapshot) {
-                          return AppTextField(
-                              maxLine: null,isRead: true,
-                              prefixText: '',
-                              controller: stateController,
-                              floatingLabelBehavior: FloatingLabelBehavior.never,
-                              isShowCountryCode: true,
-                              isShowPassword: false,
-                              secureText: false,
-                              isColor: false,
-                              isTick: false,
-                              maxLength: 20,
-                              errorText: snapshot.hasError
-                                  ? snapshot.error.toString()
-                                  : null,
-                              keyBoardType: TextInputType.streetAddress);
-                        }),
-                  ),
-                  SizedBox(height: 15.0,),
-                  Container(                    margin: EdgeInsets.only(left: 30,bottom: 4,right: 30),
-
-                    child: StreamBuilder(
-                        stream: validation.validateAddAddress,
-                        builder: (context, snapshot) {
-                          return appButton(
-                              context,
-                              StringConstant.Save,
-                              SizeConfig.screenWidth,
-                              50.0,
-                              Theme.of(context).primaryColor,
-                              Theme.of(context).hintColor.withOpacity(0.8),
-                              18,
-                              10,
-                              snapshot.data != true ? false : true,
-                              onTap: () {
-                            snapshot.data != true
-                                ? ToastMessage.message(
-                                    StringConstant.fillOut,context)
-                                : widget.isAlreadyAdded == true
-                                    ? cartViewData
-                                        .updateExistingAddress(
-                                            context,
-                                            widget.addressId ?? '',
-                                            firstNameController.text,
-                                            lastNameController.text,
-                                            emailController.text,
-                                            mobileNumberController.text,
-                                            addressFirstController.text,
-                                            addressSecondController.text,
-                                           landmarkController.text,
-                                           pinCodeController.text,
-                                            cityController.text,
-                                            stateController.text,
-                                           ''
-
-                            )
-                                    : addNewAddress();
-                          });
-                        }),
-                  ),
-                  SizedBox(height: 10.0),
-                ]),
-              ],
-            ),
+              ),
+              Positioned(
+                  top: 1,right: 10,
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                        alignment: Alignment.topRight,
+                        child:Image.asset(AssetsConstants.icCross, color: Theme.of(context).canvasColor,width:ResponsiveWidget.isMediumScreen(context)?20: 25,height:ResponsiveWidget.isMediumScreen(context)?20: 25)),
+                  )),
+            ],
           ),
         ));
   }

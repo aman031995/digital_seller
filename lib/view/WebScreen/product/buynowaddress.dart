@@ -191,7 +191,7 @@ class _BuynowAddressState extends State<BuynowAddress> {
                                 SizedBox(height:cartViewData.addressListModel!.length ==0 ?20 :0),
 
                                 SizedBox(height: 10),
-                                checkBox(),
+                                checkbox(),
                                 SizedBox(height:20),
                                 returnPolicy(),
                                 SizedBox(height: 20),
@@ -214,31 +214,46 @@ class _BuynowAddressState extends State<BuynowAddress> {
                                       .start,
                                   children: [
                                     addressList(cartViewData),
+                                    SizedBox(width: 10),
                                     Column(
                                       children: [
+                                        Container(
+                                          decoration: BoxDecoration(
+                                              color: Theme.of(context).cardColor,
+                                              borderRadius: BorderRadius.circular(8)
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                width: SizeConfig.screenWidth*0.36,
+                                                padding: EdgeInsets.all(14),
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.only(
+                                                        topRight: Radius.circular(8),
+                                                        topLeft: Radius.circular(8)
+                                                    ),
+                                                    color: Theme.of(context).canvasColor.withOpacity(0.2)),
+                                                child: AppBoldFont(context, msg: StringConstant.orderSummary,color: Theme.of(context).canvasColor),
+                                              ),
+                                              billcard(),
+                                              SizedBox(height: 15)
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(height: 15),
+                                        checkbox(),
                                         SizedBox(height: 5),
-                                        billcard(),
-
-                                        SizedBox(
-                                            height:
-                                            5),
-                                        checkBox(),
                                         returnPolicy(),
-                                        SizedBox(
-                                            height:
-                                            5),
-                                        checkout(),
-
+                                        SizedBox(height: 5),
                                       ],
                                     )
                                   ],
                                 ),
-                              SizedBox(height: 300),
+                              SizedBox(height: 100),
                                 footerDesktop()
                               ],
                             ),
                           ),
-
 
                           ResponsiveWidget.isMediumScreen(context)
                               ? Container()
@@ -359,7 +374,7 @@ class _BuynowAddressState extends State<BuynowAddress> {
         width:
         ResponsiveWidget.isMediumScreen(
             context)
-            ?SizeConfig.screenWidth: SizeConfig.screenWidth / 3.22,
+            ?SizeConfig.screenWidth: SizeConfig.screenWidth *0.36,
         child:
         Column(
           children: [
@@ -370,7 +385,6 @@ class _BuynowAddressState extends State<BuynowAddress> {
         ),
       );
     }).toList());
-
   }
 
   checkout(){
@@ -432,42 +446,31 @@ class _BuynowAddressState extends State<BuynowAddress> {
                     .hintColor)));
   }
 
- checkBox(){
-    return  Container(
-      width: ResponsiveWidget.isMediumScreen(
-          context)
-          ?SizeConfig.screenWidth: SizeConfig
-          .screenWidth /
-          3.22,
-      color: Theme.of(
-          context)
-          .cardColor,
+  checkbox(){
+    return Container(
+      width:ResponsiveWidget.isMediumScreen(context) ?SizeConfig.screenWidth: SizeConfig.screenWidth *0.36,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(8),
+              topLeft: Radius.circular(8)),
+          color: Theme.of(context).cardColor  ),
       child:
       Column(
         crossAxisAlignment:
-        CrossAxisAlignment
-            .start,
+        CrossAxisAlignment.center,
         mainAxisSize:
-        MainAxisSize
-            .min,
-        mainAxisAlignment:
-        MainAxisAlignment
-            .end,
+        MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Container(
-              padding: EdgeInsets.only(
-                  left: 20,
-                  top: 8,
-                  bottom: 10),
+          Container( decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(8),
+                  topLeft: Radius.circular(8)),
+              color: Theme.of(context).canvasColor.withOpacity(0.2) ),
+
+              width:ResponsiveWidget.isMediumScreen(context) ?SizeConfig.screenWidth: SizeConfig.screenWidth *0.36,
+              padding: EdgeInsets.all(14),
               child: AppBoldFont(context, msg: StringConstant.selectPayment)),
-          Divider(
-            color:
-            Theme.of(context).canvasColor,
-            thickness:
-            0.2,
-            height:
-            1,
-          ),
           Theme(
             data:
             ThemeData(
@@ -476,12 +479,9 @@ class _BuynowAddressState extends State<BuynowAddress> {
             ),
             child:
             RadioListTile(
-              tileColor:
-              Theme.of(context).canvasColor,
-              value:
-              1,
-              dense:
-              true,
+              tileColor: Theme.of(context).canvasColor,
+              value: 1,
+              dense: true,
               groupValue:
               selectedRadioTile,
               materialTapTargetSize:
@@ -492,7 +492,8 @@ class _BuynowAddressState extends State<BuynowAddress> {
               EdgeInsets.only(left: 8),
               title: AppBoldFont(context,
                   msg: StringConstant.cardWalletsText,
-                  fontSize: 14.0),
+                  fontSize: 16.0,fontWeight: FontWeight.w500),
+              subtitle: AppRegularFont(context, msg: "Add and secure your card as per RBI Guide lines",fontSize: 12),
               onChanged:
                   (val) {
                 print("Radio Tile pressed $val");
@@ -514,13 +515,11 @@ class _BuynowAddressState extends State<BuynowAddress> {
             color:
             Theme.of(context).canvasColor,
             thickness:
-            0.2,
+            0.1,
             height:
-            1,
+            0.1,
           ),
-          GlobalVariable.cod ==
-              true
-              ? Theme(
+          GlobalVariable.cod == true ? Theme(
             data: ThemeData(
               unselectedWidgetColor: Theme.of(context).canvasColor,
             ),
@@ -532,7 +531,7 @@ class _BuynowAddressState extends State<BuynowAddress> {
               value: 2,
               groupValue: selectedRadioTile,
               contentPadding: EdgeInsets.only(left: 8),
-              title: AppBoldFont(context, msg: StringConstant.COD, fontSize: 14.0),
+              title: AppBoldFont(context, msg: StringConstant.COD,   fontSize: 16.0,fontWeight: FontWeight.w500),
               onChanged: (val) {
                 print("Radio Tile pressed $val");
                 if (val == 2) {
@@ -547,11 +546,23 @@ class _BuynowAddressState extends State<BuynowAddress> {
               selected: cod,
             ),
           )
-              : SizedBox()
+              : SizedBox(),
+          Divider(
+            color:
+            Theme.of(context).canvasColor,
+            thickness:
+            0.1,
+            height:
+            0.1,
+          ),
+          SizedBox(height: 15),
+          checkout(),
+          SizedBox(height: 15),
+
         ],
       ),
     );
- }
+  }
 
   Row returnPolicy(){
    return Row(
@@ -561,6 +572,8 @@ class _BuynowAddressState extends State<BuynowAddress> {
               .scaffoldBackgroundColor,
           child:
           Checkbox(
+            fillColor: MaterialStateColor.resolveWith((states) =>Theme.of(context).cardColor),
+
             checkColor:
             Theme.of(context).primaryColor,
             activeColor: Theme.of(context)
@@ -620,6 +633,7 @@ class _BuynowAddressState extends State<BuynowAddress> {
       ],
     );
 }
+
   // payment selection
   setSelectedRadioTile(int val) {
     selectedRadioTile = val;

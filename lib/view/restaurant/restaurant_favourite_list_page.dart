@@ -1,4 +1,3 @@
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
@@ -9,6 +8,7 @@ import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
+import 'package:TychoStream/view/restaurant/product_list_restaurant.dart';
 import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/footerDesktop.dart';
@@ -153,7 +153,7 @@ class _RestaurantFavouriteListPageState extends State<RestaurantFavouriteListPag
                                                     physics: NeverScrollableScrollPhysics(),
                                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                                       crossAxisCount:ResponsiveWidget.isSmallScreen(context) ? 2:3,
-                                                      childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.65:0.80,mainAxisSpacing: 5,crossAxisSpacing: 5
+                                                      childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.85:0.80,mainAxisSpacing: 5,crossAxisSpacing: 5
                                                     ),
                                                     itemCount: viewmodel
                                                         .productListModel
@@ -165,7 +165,7 @@ class _RestaurantFavouriteListPageState extends State<RestaurantFavouriteListPag
                                                           viewmodel
                                                               .productListModel
                                                               ?.productList?[index];
-                                                      return productListItems(
+                                                      return productListRestaurantItems(
                                                           context,
                                                           productListData,
                                                           index,
@@ -189,7 +189,7 @@ class _RestaurantFavouriteListPageState extends State<RestaurantFavouriteListPag
                                                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                                                         mainAxisSpacing:
                                                         10,crossAxisSpacing: 10,
-                                                            mainAxisExtent: 500,
+                                                            mainAxisExtent: 300,
                                                             maxCrossAxisExtent:
                                                                 400),
                                                     itemCount: viewmodel
@@ -202,7 +202,7 @@ class _RestaurantFavouriteListPageState extends State<RestaurantFavouriteListPag
                                                           cartViewModel
                                                               .productListModel
                                                               ?.productList?[index];
-                                                      return productListItems(
+                                                      return productListRestaurantItems(
                                                           context,
                                                           productListData,
                                                           index,
@@ -216,9 +216,9 @@ class _RestaurantFavouriteListPageState extends State<RestaurantFavouriteListPag
                                                   context)
                                               ?   SizedBox(height:ResponsiveWidget.isSmallScreen(context)
                                               ? 50:150)
-                                              : SizedBox(height: 200),
+                                              : SizedBox(height:viewmodel.productListModel!.productList!.length <4? 310:250),
                                           ResponsiveWidget.isMediumScreen(
-                                                  context)
+                                              context)
                                               ? footerMobile(context,homeViewModel)
                                               : footerDesktop(),
                                         ],

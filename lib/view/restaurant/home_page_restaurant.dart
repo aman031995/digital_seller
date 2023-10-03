@@ -1,6 +1,5 @@
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/services/global_variable.dart';
-import 'package:TychoStream/services/session_storage.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -8,13 +7,11 @@ import 'package:TychoStream/view/WebScreen/effect/OnHover.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
 import 'package:TychoStream/view/restaurant/food_deatil.dart';
-import 'package:TychoStream/view/widgets/EmailNotificationPage.dart';
 import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/footerDesktop.dart';
 import 'package:TychoStream/view/widgets/getAppBar.dart';
 import 'package:TychoStream/view/widgets/no_internet.dart';
-import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
@@ -24,7 +21,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scroll_to_index/scroll_to_index.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:TychoStream/utilities/AssetsConstants.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/view/widgets/CommonCarousel.dart';
@@ -105,7 +101,6 @@ class _HomePageRestaurantState extends State<HomePageRestaurant> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    final authVM = Provider.of<AuthViewModel>(context);
     AppNetwork.checkInternet((isSuccess, result) {
       setState(() {
         checkInternet = result;
@@ -156,7 +151,7 @@ class _HomePageRestaurantState extends State<HomePageRestaurant> {
                                     } else {
                                       closeAppbarProperty();
 
-                                      context.router.push(FavouriteListPage());
+                                      context.router.push(RestaurantFavouriteListPage());
                                     }
                                   }, () async {
                                     SharedPreferences sharedPreferences =
@@ -240,10 +235,13 @@ class _HomePageRestaurantState extends State<HomePageRestaurant> {
                                                                     color: Theme.of(context).cardColor,
                                                                     child: Icon(
                                                                         Icons.arrow_back_ios_new_outlined,
-                                                                        size: 25, color:counter2 <= 6 ? Theme.of(context).canvasColor.withOpacity(0.4):Theme.of(context).canvasColor),
+                                                                        size: 25, color:cartViewModel.categoryListModel!.length <6? Theme.of(context).canvasColor.withOpacity(0.4) :counter2 <= 6 ? Theme.of(context).canvasColor.withOpacity(0.4):Theme.of(context).canvasColor),
                                                                   ),
                                                                   onTap: () {
-                                                                    _prev2();
+                                                                    if(counter2>6){
+                                                                      _prev2();
+                                                                    }
+
                                                                     setState(() {});
                                                                   }),
                                                               SizedBox(width: 5),
@@ -254,9 +252,10 @@ class _HomePageRestaurantState extends State<HomePageRestaurant> {
                                                                 child: Icon(
                                                                     Icons.arrow_forward_ios_rounded,
                                                                     size:  25,
-                                                                    color: counter2 == cartViewModel.categoryListModel?.length? Theme.of(context).canvasColor.withOpacity(0.4):Theme.of(context).canvasColor),
+                                                                    color:cartViewModel.categoryListModel!.length <6? Theme.of(context).canvasColor.withOpacity(0.4) : counter2 == cartViewModel.categoryListModel?.length? Theme.of(context).canvasColor.withOpacity(0.4):Theme.of(context).canvasColor),
                                                               ),
                                                                   onTap: () {
+                                                                if(counter2 < cartViewModel.categoryListModel!.length)
                                                                     _nextCounter2();
                                                                     setState(() {});
                                                                   }),
@@ -390,10 +389,13 @@ class _HomePageRestaurantState extends State<HomePageRestaurant> {
                                                                     color: Theme.of(context).cardColor,
                                                                     child: Icon(
                                                                         Icons.arrow_back_ios_new_outlined,
-                                                                        size: 25, color:counter <= 4 ? Theme.of(context).canvasColor.withOpacity(0.4):Theme.of(context).canvasColor),
+                                                                        size: 25, color:cartViewModel.recommendedView!.length <4? Theme.of(context).canvasColor.withOpacity(0.4) :counter <= 4 ? Theme.of(context).canvasColor.withOpacity(0.4):Theme.of(context).canvasColor),
                                                                   ),
                                                                   onTap: () {
-                                                                    _prev();
+                                                                    if(counter>4){
+                                                                      _prev();
+                                                                    }
+
                                                                     setState(() {});
                                                                   }),
                                                               SizedBox(width: 5),
@@ -404,10 +406,14 @@ class _HomePageRestaurantState extends State<HomePageRestaurant> {
                                                                 child: Icon(
                                                                     Icons.arrow_forward_ios_rounded,
                                                                     size:  25,
-                                                                    color: counter == cartViewModel.recommendedView?.length? Theme.of(context).canvasColor.withOpacity(0.4):Theme.of(context).canvasColor),
+                                                                    color: cartViewModel.recommendedView!.length<4? Theme.of(context).canvasColor.withOpacity(0.4) : counter ==cartViewModel.recommendedView!.length?Theme.of(context).canvasColor.withOpacity(0.4) :Theme.of(context).canvasColor),
                                                               ),
                                                                   onTap: () {
-                                                                    _nextCounter();
+                                                                    if(counter < cartViewModel.recommendedView!.length)
+                                                                    {
+                                                                      _nextCounter();
+                                                                    }
+
                                                                     setState(() {});
                                                                   }),
 
@@ -438,9 +444,8 @@ class _HomePageRestaurantState extends State<HomePageRestaurant> {
                                                                   child: OnHover(
                                                                     builder: (isHovered) {
                                                                       return InkWell(
-                                                                        onTap: () async{
+                                                                        onTap: () {
                                                                           closeAppbarProperty();
-                                                                          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                                                                             if (cartViewModel.recommendedView?[position].productDetails?.isAvailable == true) {
                                                                                 // SessionStorageHelper.removeValue("itemCount");
                                                                                 // context.router.push(BuynowCart(
@@ -580,10 +585,13 @@ class _HomePageRestaurantState extends State<HomePageRestaurant> {
                                                                           color: Theme.of(context).cardColor,
                                                                           child: Icon(
                                                                               Icons.arrow_back_ios_new_outlined,
-                                                                              size: 25, color:counter1 <= 4 ? Theme.of(context).canvasColor.withOpacity(0.4):Theme.of(context).canvasColor),
+                                                                              size: 25, color:cartViewModel.recentView!.length <4? Theme.of(context).canvasColor.withOpacity(0.4) :counter1 <= 4 ? Theme.of(context).canvasColor.withOpacity(0.4):Theme.of(context).canvasColor),
                                                                         ),
                                                                         onTap: () {
+                                                                        if(counter1>4){
                                                                           _prev1();
+                                                                        }
+
                                                                           setState(() {});
                                                                         }),
                                                                     SizedBox(width: 5),
@@ -594,10 +602,14 @@ class _HomePageRestaurantState extends State<HomePageRestaurant> {
                                                                       child: Icon(
                                                                           Icons.arrow_forward_ios_rounded,
                                                                           size:  25,
-                                                                          color:  counter1 >cartViewModel.recentView!.length?Theme.of(context).canvasColor.withOpacity(0.4) :Theme.of(context).canvasColor),
+                                                                          color: cartViewModel.recentView!.length<4? Theme.of(context).canvasColor.withOpacity(0.4) : counter1 ==cartViewModel.recentView!.length?Theme.of(context).canvasColor.withOpacity(0.4) :Theme.of(context).canvasColor),
                                                                     ),
                                                                         onTap: () {
+                                                                      if(counter1 < cartViewModel.recentView!.length)
+                                                                        {
                                                                           _nextCounter1();
+                                                                        }
+
                                                                           setState(() {});
                                                                         }),
 

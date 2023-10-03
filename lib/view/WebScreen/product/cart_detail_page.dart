@@ -1,12 +1,12 @@
 import 'package:TychoStream/AppRouter.gr.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/services/session_storage.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
+import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
@@ -148,91 +148,160 @@ class _CartDetailState extends State<CartDetail> {
                                     ? cartViewData.cartListData!.cartList!.length > 0
                                     ?   SingleChildScrollView(
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
                                             cartPageViewIndicator(context, 0),
                                             SizedBox(height: 10),
                                             ResponsiveWidget.isMediumScreen(context)
                                                 ? Container(
+                                              width: SizeConfig.screenWidth/1.05,
                                               decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(1)),
+                                                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                  color: Theme.of(context).cardColor  ),
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        width: SizeConfig.screenWidth/1.05,
+                                                        padding: EdgeInsets.all(10),
+                                                        decoration: BoxDecoration(
+                                                            color: Theme.of(context).canvasColor.withOpacity(0.2),borderRadius: BorderRadius.only(
+                                                            topRight: Radius.circular(8),
+                                                            topLeft: Radius.circular(8))),
+                                                        child: Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          children: [
+                                                            AppBoldFont(context, msg: StringConstant.cartCollection,color: Theme.of(context).canvasColor),
+                                                            SizedBox(width: SizeConfig.screenWidth * 0.16),
+                                                            AppBoldFont(context, msg: "Item(${cartViewData.cartListData?.cartList?.length})",color: Theme.of(context).canvasColor)
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Container(
                                               child: ListView.builder(
-                                                itemCount: cartViewData.cartListData?.cartList?.length ?? 0,
-                                                shrinkWrap: true,
-                                                    padding: EdgeInsets.zero,
-                                                physics: NeverScrollableScrollPhysics(),
-                                                itemBuilder: (context, index) {
-                                                  final itemInCart = cartViewData
-                                                      .cartListData?.cartList?[index];
-                                                  return Container(
-                                                    color: Theme.of(context).cardColor,
-                                                      margin: EdgeInsets.only(bottom: 5,left: ResponsiveWidget.isSmallScreen(context) ? 10:16,right: ResponsiveWidget.isSmallScreen(context) ? 10:16),
-                                                    child:ProductcardDeatils(context,itemInCart!,index,cartViewData)
-                                                  );
-                                                },
+                                                      itemCount: cartViewData.cartListData?.cartList?.length ?? 0,
+                                                      shrinkWrap: true,
+                                                          padding: EdgeInsets.zero,
+                                                      physics: NeverScrollableScrollPhysics(),
+                                                      itemBuilder: (context, index) {
+                                                        final itemInCart = cartViewData
+                                                            .cartListData?.cartList?[index];
+                                                        return Container(
+                                                          color: Theme.of(context).cardColor,
+                                                            margin: EdgeInsets.only(bottom: 10,left: 10,right: 10),
+                                                          child:ProductcardDeatils(context,itemInCart!,index,cartViewData)
+                                                        );
+                                                      },
                                               ),
-                                            ):
+                                            ),
+                                                    ],
+                                                  ),
+                                                ):
+
                                             Row(
                                               mainAxisAlignment:
                                               MainAxisAlignment.center,
                                               crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                               children: [
-                                                Container(
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                    BorderRadius.circular(5)),
-                                                width:
-                                                SizeConfig.screenWidth * 0.30,
-                                                // height:
-                                                // SizeConfig.screenHeight / 1.2,
-                                                child: ListView.builder(
-                                                  itemCount: cartViewData
-                                                      .cartListData
-                                                      ?.cartList
-                                                      ?.length ??
-                                                      0,
-                                                  shrinkWrap: true,
-                                                  physics: NeverScrollableScrollPhysics(),
-                                                  itemBuilder: (context, index) {
-                                                    final itemInCart = cartViewData.cartListData?.cartList?[index];
-                                                    return Container(
-                                                      color: Theme.of(context).cardColor,
-                                                      margin: EdgeInsets.only(bottom: 5,right: 15),
-                                                      child:ProductcardDeatils(context,itemInCart!,index,cartViewData)
-                                                    );
-                                                  },
-                                                )),
-                                                SizedBox(width: 5),
-                                                Column(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                                  children: [
-                                                    pricedetails(context,cartViewData),
-                                                    SizedBox(height: 10),
-                                                    Center(
-                                                      child: checkoutButton(
-                                                          context,
-                                                          StringConstant.continueText,
-                                                          cartViewData, () {                       closeAppbarProperty();
 
-                                                      if(hasOutOfStockItems(cartViewData.cartListData!.cartList!)){
-                                                          ToastMessage.message(StringConstant.removeOutofStock,context);
-                                                      } else {
-                                                        if(hasOutOfQuantityLeft(cartViewData.cartListData!.cartList!)){
-                                                          ToastMessage.message(StringConstant.removeOutofStock,context);
-                                                        }
-                                                        else{ context.router.push(
-                                                            AddressListPage()) ;}
-                                                        }
-                                                      }),
-                                                    )
-                                                  ],
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                        color: Theme.of(context).cardColor  ),
+
+                                                  child: Column(
+                                                    children: [
+                                                      Container(
+                                                        width: SizeConfig.screenWidth * 0.36,
+                                                        padding: EdgeInsets.all(10),
+                                                        decoration: BoxDecoration(
+                                                            color: Theme.of(context).canvasColor.withOpacity(0.2),borderRadius: BorderRadius.only(
+                                                            topRight: Radius.circular(8),
+                                                            topLeft: Radius.circular(8))),
+                                                        child: Row(
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          children: [
+                                                            AppBoldFont(context, msg: StringConstant.cartCollection,color: Theme.of(context).canvasColor),
+                                                            SizedBox(width: SizeConfig.screenWidth * 0.16),
+                                                            AppBoldFont(context, msg: "Item(${cartViewData.cartListData?.cartList?.length})",color: Theme.of(context).canvasColor)
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                      width: SizeConfig.screenWidth * 0.36,
+                                                          height: SizeConfig.screenWidth * 0.115 * cartViewData.cartListData!.cartList!.length,
+                                                          decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.only(
+                                                                  bottomLeft: Radius.circular(8),
+                                                                  bottomRight: Radius.circular(8)),
+                                                              color: Theme.of(context).cardColor),
+                                                          child: ListView.builder(
+                                                            padding: EdgeInsets.only(left: 12,right: 12,bottom: 8,top: 8),
+                                                        itemCount: cartViewData.cartListData?.cartList?.length ?? 0,
+                                                        shrinkWrap: true,
+                                                        physics:NeverScrollableScrollPhysics(),
+                                                        itemBuilder: (context, index) {
+                                                          final itemInCart = cartViewData.cartListData?.cartList?[index];
+                                                          return Container(
+                                                            color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
+                                                            margin: EdgeInsets.only(bottom: 5),
+                                                              height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context) ? 140:150 : SizeConfig.screenWidth * 0.1,
+
+                                                              child:ProductcardDeatils(context,itemInCart!,index,cartViewData)
+                                                          );
+                                                        },
+                                                      )),
+                                                    ],
+                                                  ),
+                                                ),
+                                                SizedBox(width: 5),
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                      color: Theme.of(context).cardColor  ),
+
+                                                  width: SizeConfig.screenWidth*0.36,
+                                                  padding: EdgeInsets.only(bottom: 12),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                    children: [
+                                                      Container(
+                                                        width: SizeConfig.screenWidth *0.36,
+                                                        padding: EdgeInsets.all(10),
+                                                        decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.only(
+                                                                topRight: Radius.circular(8),
+                                                                topLeft: Radius.circular(8)),
+                                                            color: Theme.of(context).canvasColor.withOpacity(0.2)),
+                                                        child: AppBoldFont(context, msg: StringConstant.priceDetails,color: Theme.of(context).canvasColor),
+                                                      ),
+                                                      pricedetails(context,cartViewData),
+                                                      SizedBox(height: 10),
+                                                      Center(
+                                                        child: checkoutButton(
+                                                            context,
+                                                            StringConstant.continueText,
+                                                            cartViewData, () {                       closeAppbarProperty();
+
+                                                        if(hasOutOfStockItems(cartViewData.cartListData!.cartList!)){
+                                                            ToastMessage.message(StringConstant.removeOutofStock,context);
+                                                        } else {
+                                                          if(hasOutOfQuantityLeft(cartViewData.cartListData!.cartList!)){
+                                                            ToastMessage.message(StringConstant.removeOutofStock,context);
+                                                          }
+                                                          else{ context.router.push(
+                                                              AddressListPage()) ;}
+                                                          }
+                                                        }),
+                                                      )
+                                                    ],
+                                                  ),
                                                 )
                                               ],
                                             ),
@@ -245,42 +314,52 @@ class _CartDetailState extends State<CartDetail> {
                                               children: [
                                                 SizedBox(height: 5),
                                                 Container(
+                                                    decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                                                      color: Theme.of(context).cardColor,),
                                                     margin: EdgeInsets.only(
-                                                        left: ResponsiveWidget.isSmallScreen(context) ? 10:16, right: ResponsiveWidget.isSmallScreen(context) ? 10:16),
-                                                    child: pricedetails(context,cartViewData)),
-                                                SizedBox(height: 10),
+                                                        left:10, right: 10,top: 10),
+                                                    child: Column(
+                                                      children: [
+                                                        Container(
+                                                          width: SizeConfig.screenWidth,
+                                                          padding: EdgeInsets.all(10),
+                                                          decoration: BoxDecoration(
+                                                              borderRadius: BorderRadius.only(
+                                                                  topRight: Radius.circular(8),
+                                                                  topLeft: Radius.circular(8)),
+                                                              color: Theme.of(context).canvasColor.withOpacity(0.2)),
+                                                          child: AppBoldFont(context, msg: StringConstant.priceDetails,color: Theme.of(context).canvasColor),
+                                                        ),
+                                                        pricedetails(context,cartViewData),
+                                                        SizedBox(height: 10),
+                                                      ],
+                                                    )),
+                                                SizedBox(height: 30),
                                                  Container(
                                                     height: 50,
                                                     margin: EdgeInsets.only(
-                                                        left: ResponsiveWidget.isSmallScreen(context) ? 20:26, right: ResponsiveWidget.isSmallScreen(context) ? 20:26),
-                                                    width: SizeConfig
-                                                        .screenWidth,
+                                                        left: 20, right: 20),
+                                                    width: SizeConfig.screenWidth,
                                                     child: checkoutButton(
                                                         context,
                                                         StringConstant
                                                             .continueText,
                                                         cartViewData, () {
                                                       closeAppbarProperty();
-
                                                       if(hasOutOfStockItems(cartViewData.cartListData!.cartList!)){
-
                                                         ToastMessage.message(StringConstant.removeOutofStock,context);
-
-                                                    } else {
+                                                      } else {
                                                       if(hasOutOfQuantityLeft(cartViewData.cartListData!.cartList!)){
                                                         ToastMessage.message(StringConstant.removeOutofStock,context);
                                                       }
                                                       else{
-                                                        context.router.push(
-                                                            AddressListPage()) ;
-                                                      }
-                                                       }
-                                                    }),
-                                                )
-                                              ],
+                                                        context.router.push(AddressListPage()) ;
+                                                      }}}))],
                                             ):SizedBox(height: 20),
-                                            SizedBox(height:ResponsiveWidget.isSmallScreen(context)
-                                                ? 200:300),
+                                            cartViewData.cartListData!.cartList!.length==1?SizedBox(height: 265) :
+
+                                            SizedBox(height: 80),
                                             ResponsiveWidget.isMediumScreen(context)
                                                 ?  footerMobile(context,homeViewModel):footerDesktop()
                                           ],

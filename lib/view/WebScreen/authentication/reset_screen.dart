@@ -14,7 +14,7 @@ import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ResetPassword extends StatefulWidget {
-  String? phone;
+   String? phone;
   String? loginType;
   bool? product;
 

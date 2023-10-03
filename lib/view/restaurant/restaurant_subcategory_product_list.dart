@@ -1,4 +1,3 @@
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/services/session_storage.dart';
@@ -122,7 +121,7 @@ class _RestaurantSubcategoryProductListState extends State<RestaurantSubcategory
                   } else {
                     closeAppbarProperty();
 
-                    context.router.push(FavouriteListPage());
+                    context.router.push(RestaurantFavouriteListPage());
                   }
                 }, () async {
                   SharedPreferences sharedPreferences =
@@ -259,7 +258,7 @@ class _RestaurantSubcategoryProductListState extends State<RestaurantSubcategory
                               ResponsiveWidget.isMediumScreen(context)
                                   ?   SizedBox(height:ResponsiveWidget.isSmallScreen(context)
                                   ? 50:100)
-                                  : SizedBox(height: 100),
+                                  : SizedBox(height:viewmodel.productListModel!.productList!.length <4? 310:150),
                               ResponsiveWidget.isMediumScreen(context)
                                   ? footerMobile(context,homeViewModel)
                                   : footerDesktop()

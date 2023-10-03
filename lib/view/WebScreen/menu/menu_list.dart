@@ -1,6 +1,5 @@
 import 'package:TychoStream/AppRouter.gr.dart';
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/AppConfigModel.dart';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
@@ -19,7 +18,7 @@ import '../../../model/data/app_menu_model.dart';
 import '../../widgets/AppDialog.dart';
 
 class MenuList extends StatefulWidget {
-  AppMenuModel? menuItem;
+  final AppMenuModel? menuItem;
 
 
   MenuList({Key? key, required this.menuItem}) : super(key: key);
@@ -58,7 +57,6 @@ class _MenuListState extends State<MenuList> {
                             AssetsConstants.webLogo,
                             width: 70,
                             height: 70,
-
                           ),
                           viewmodel.appConfigModel != null
                               ? Container(
@@ -105,7 +103,7 @@ class _MenuListState extends State<MenuList> {
                               title: Transform(
                                   transform: Matrix4.translationValues(-20, 0.0, 0.0),
                                   child: AppRegularFont(context, msg:StringConstant.myOrder, fontSize: 15,color: Theme.of(context).canvasColor)),
-                              leading: Image.asset(AssetsConstants.ic_myOrder?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.8)),
+                              leading: Image.asset(AssetsConstants.ic_myOrder, height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.8)),
                               onTap: () {
                                 GlobalVariable.names == "null"?
                                 showDialog(
@@ -115,32 +113,8 @@ class _MenuListState extends State<MenuList> {
                                     }):context.pushRoute(MyOrderPage());
                                 if (GlobalVariable.isSearch == true) {
                                   GlobalVariable.isSearch = false;
-
                                 }
                               }),
-
-                          // GlobalVariable.names == "null"
-                          //     ? ListTile(
-                          //     title: Transform(
-                          //         transform: Matrix4.translationValues(-20, 0.0, 0.0),
-                          //         child: AppRegularFont(context, msg: StringConstant.SignIn, fontSize: 15,color: Theme.of(context).canvasColor)),
-                          //     leading: Image.asset(AssetsConstants.icProfile?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.9)),
-                          //     onTap: () =>  showDialog(
-                          //         context: context,
-                          //         builder: (BuildContext context) {
-                          //           return LoginUp();
-                          //         }))
-                          //     : ListTile(
-                          //     title: Transform(
-                          //         transform: Matrix4.translationValues(-20, 0.0, 0.0),
-                          //         child: AppRegularFont(context, msg:StringConstant.profile, fontSize: 15,color: Theme.of(context).canvasColor)),
-                          //     leading: Image.asset(AssetsConstants.icProfile?? '', height: 20, width: 20,color: Theme.of(context).canvasColor.withOpacity(0.9)),
-                          //     onTap: () {
-                          //       if (GlobalVariable.isSearch == true) {
-                          //         GlobalVariable.isSearch = false;
-                          //       }
-                          //       context.router.push(EditProfile());
-                          //     }),
                           ChangeNotifierProvider.value(
                               value: homeViewModel,
                               child: Consumer<HomeViewModel>(builder: (context, viewmodel, _){
@@ -166,11 +140,11 @@ class _MenuListState extends State<MenuList> {
       closeAppbarProperty();
 
 
-      return context.router.push(HomePageRestaurant());
+      return context.router.push(HomePageWeb());
     } else if (url.path == RoutesName.productPage) {
       closeAppbarProperty();
 
-      return context.router.push(ProductListRestaurantGallery());
+      return context.router.push(ProductListGallery());
     } else if (url.path == RoutesName.profilePage) {                      closeAppbarProperty();
 
 
@@ -219,7 +193,6 @@ class _MenuListState extends State<MenuList> {
               'FAQ',
               html:
               'faq'));
-
 
         }
         else if (appMenu.url?.contains('return_policy') == true) {

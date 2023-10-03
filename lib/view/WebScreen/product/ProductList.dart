@@ -1,4 +1,3 @@
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/services/session_storage.dart';
@@ -26,7 +25,6 @@ import 'package:number_paginator/number_paginator.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../AppRouter.gr.dart';
-
 @RoutePage()
 class ProductListGallery extends StatefulWidget {
   final List<String>? discountdata;
@@ -62,12 +60,12 @@ class _ProductListGalleryState extends State<ProductListGallery> {
 
   getProduct() {
     widget.discountdata?.length == null
-          ? cartViewModel.getProductList(context,  SessionStorageHelper.getValue("pageList").toString()=="null"?1:int.parse(SessionStorageHelper.getValue("pageList").toString()),(result, isSuccess){})
-          : cartViewModel.getOfferDiscountList(
-              context,
-              widget.discountdata?[1] ?? "",
-              pageNum,
-              widget.discountdata?[0] ?? "",(result, isSuccess){});
+        ? cartViewModel.getProductList(context,  SessionStorageHelper.getValue("pageList").toString()=="null"?1:int.parse(SessionStorageHelper.getValue("pageList").toString()),(result, isSuccess){})
+        : cartViewModel.getOfferDiscountList(
+        context,
+        widget.discountdata?[2] ?? "",
+        pageNum,
+        widget.discountdata?[1] ?? "",(result, isSuccess){});
   }
 
   @override
@@ -81,193 +79,193 @@ class _ProductListGalleryState extends State<ProductListGallery> {
     return checkInternet == "Offline"
         ? NOInternetScreen()
         : ChangeNotifierProvider.value(
-            value: cartViewModel,
-            child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
-              return ChangeNotifierProvider.value(
-                  value: notificationViewModel,
-                  child: Consumer<NotificationViewModel>(
-                      builder: (context, model, _) {
-                        return viewmodel.productListModel?.productList != null
-                              ?   GestureDetector(
-                                onTap: () {
-                                  closeAppbarProperty();
+        value: cartViewModel,
+        child: Consumer<CartViewModel>(builder: (context, viewmodel, _) {
+          return ChangeNotifierProvider.value(
+              value: notificationViewModel,
+              child: Consumer<NotificationViewModel>(
+                  builder: (context, model, _) {
+                    return viewmodel.productListModel?.productList != null
+                        ?   GestureDetector(
+                        onTap: () {
+                          closeAppbarProperty();
 
-                                },
-                           child: Scaffold(
-                          appBar: ResponsiveWidget.isMediumScreen(context)
-                        ? homePageTopBar(
-                            context,
-                            _scaffoldKey,
-                            cartViewModel.cartItemCount,
-                            homeViewModel,
-                            profileViewModel, model )
-                        : getAppBar(
-                            context,model,
-                            homeViewModel,
-                            profileViewModel,
-                            cartViewModel.cartItemCount,
-                            1,
-                            searchController, () async {
-                            SharedPreferences sharedPreferences =
-                                await SharedPreferences.getInstance();
-                            if (sharedPreferences.getString('token') == null) {
-                              showDialog(
-                                  context: context,
-                                  barrierColor: Theme.of(context)
-                                      .canvasColor
-                                      .withOpacity(0.6),
-                                  builder: (BuildContext context) {
-                                    return LoginUp(
-                                      product: true,
-                                    );
-                                  });
-                            } else {
-                              closeAppbarProperty();
+                        },
+                        child: Scaffold(
+                            appBar: ResponsiveWidget.isMediumScreen(context)
+                                ? homePageTopBar(
+                                context,
+                                _scaffoldKey,
+                                cartViewModel.cartItemCount,
+                                homeViewModel,
+                                profileViewModel, model )
+                                : getAppBar(
+                                context,model,
+                                homeViewModel,
+                                profileViewModel,
+                                cartViewModel.cartItemCount,
+                                1,
+                                searchController, () async {
+                              SharedPreferences sharedPreferences =
+                              await SharedPreferences.getInstance();
+                              if (sharedPreferences.getString('token') == null) {
+                                showDialog(
+                                    context: context,
+                                    barrierColor: Theme.of(context)
+                                        .canvasColor
+                                        .withOpacity(0.6),
+                                    builder: (BuildContext context) {
+                                      return LoginUp(
+                                        product: true,
+                                      );
+                                    });
+                              } else {
+                                closeAppbarProperty();
 
-                              context.router.push(FavouriteListPage());
-                            }
-                          }, () async {
-                            SharedPreferences sharedPreferences =
-                                await SharedPreferences.getInstance();
-                            if (sharedPreferences.getString('token') == null) {
-                              showDialog(
-                                  context: context,
-                                  barrierColor: Theme.of(context)
-                                      .canvasColor
-                                      .withOpacity(0.6),
-                                  builder: (BuildContext context) {
-                                    return LoginUp(
-                                      product: true,
-                                    );
-                                  });
-                            } else {
-                              closeAppbarProperty();
+                                context.router.push(FavouriteListPage());
+                              }
+                            }, () async {
+                              SharedPreferences sharedPreferences =
+                              await SharedPreferences.getInstance();
+                              if (sharedPreferences.getString('token') == null) {
+                                showDialog(
+                                    context: context,
+                                    barrierColor: Theme.of(context)
+                                        .canvasColor
+                                        .withOpacity(0.6),
+                                    builder: (BuildContext context) {
+                                      return LoginUp(
+                                        product: true,
+                                      );
+                                    });
+                              } else {
+                                closeAppbarProperty();
 
-                              context.router.push(CartDetail(
-                                  itemCount: '${cartViewModel.cartItemCount}'));
-                            }
-                          }),
-                    body: Scaffold(
-                      extendBodyBehindAppBar: true,
-                      key: _scaffoldKey,
-                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                      drawer: ResponsiveWidget.isMediumScreen(context)
-                          ? AppMenu()
-                          : SizedBox(),
-                      body:  Stack(
+                                context.router.push(CartDetail(
+                                    itemCount: '${cartViewModel.cartItemCount}'));
+                              }
+                            }),
+                            body: Scaffold(
+                                extendBodyBehindAppBar: true,
+                                key: _scaffoldKey,
+                                backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                                drawer: ResponsiveWidget.isMediumScreen(context)
+                                    ? AppMenu()
+                                    : SizedBox(),
+                                body:  Stack(
                                   children: [
                                     viewmodel.productListModel?.productList != null
                                         ? (viewmodel.productListModel?.productList?.length ?? 0) > 0
                                         ?  SingleChildScrollView(
-                                      controller: scrollController1,
+                                        controller: scrollController1,
                                         child: Column(
-                                      children: [
-                                        ResponsiveWidget.isMediumScreen(context)
-                                            ? Column(
-                                                children: [
-                                                  Container(
-                                                    margin: EdgeInsets.only(
-                                                        right: 12,
-                                                        left: 12,
-                                                        top: 12),
-                                                    width:
-                                                        SizeConfig.screenWidth,
-                                                    child: GridView.builder(
-                                                      shrinkWrap: true,
-                                                      physics:
-                                                          NeverScrollableScrollPhysics(),
-                                                      gridDelegate:
-                                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                          children: [
+                                            ResponsiveWidget.isMediumScreen(context)
+                                                ? Column(
+                                              children: [
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      right: 12,
+                                                      left: 12,
+                                                      top: 12),
+                                                  width:
+                                                  SizeConfig.screenWidth,
+                                                  child: GridView.builder(
+                                                    shrinkWrap: true,
+                                                    physics:
+                                                    NeverScrollableScrollPhysics(),
+                                                    gridDelegate:
+                                                    SliverGridDelegateWithFixedCrossAxisCount(
                                                         crossAxisCount:ResponsiveWidget.isSmallScreen(context) ? 2:3,
                                                         childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.6:0.80,mainAxisSpacing: 5,crossAxisSpacing: 5
-                                                      ),
-                                                      itemCount: viewmodel
-                                                          .productListModel
-                                                          ?.productList
-                                                          ?.length,
-                                                      itemBuilder:
-                                                          (context, index) {
+                                                    ),
+                                                    itemCount: viewmodel
+                                                        .productListModel
+                                                        ?.productList
+                                                        ?.length,
+                                                    itemBuilder:
+                                                        (context, index) {
 
-                                                        final productListData =
+                                                      final productListData =
+                                                      viewmodel
+                                                          .productListModel
+                                                          ?.productList?[index];
+                                                      return productListItems(
+                                                          context,
+                                                          productListData,
+                                                          index,
+                                                          viewmodel);
+                                                    },
+                                                  ),
+                                                ),
+                                                onPagination(viewmodel)
+                                              ],
+                                            )
+                                                : Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                // CategoryFilterScreen(items: []),
+                                                Column(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment
+                                                      .center,
+                                                  children: [
+                                                    // Container(
+                                                    //     alignment: Alignment.topLeft,
+                                                    //     padding: EdgeInsets.only(top: 30, right: 20),
+                                                    //     width: SizeConfig.screenWidth /1.75,
+                                                    //     child: catrgoryTopSortWidget(context)),
+                                                    Container(
+                                                        width: SizeConfig.screenWidth/1.38,
+                                                        child: GridView.builder(
+                                                          shrinkWrap: true,
+                                                          physics: NeverScrollableScrollPhysics(),
+                                                          padding: EdgeInsets.only(top: 10),
+                                                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                                                              mainAxisSpacing:
+                                                              10,crossAxisSpacing: 10,
+                                                              mainAxisExtent:
+                                                              500,
+                                                              maxCrossAxisExtent:
+                                                              400),
+                                                          itemCount: viewmodel
+                                                              .productListModel
+                                                              ?.productList
+                                                              ?.length,
+                                                          itemBuilder:
+                                                              (context,
+                                                              index) {
+
+                                                            final productListData =
                                                             viewmodel
                                                                 .productListModel
                                                                 ?.productList?[index];
-                                                        return productListItems(
-                                                            context,
-                                                            productListData,
-                                                            index,
-                                                            viewmodel);
-                                                      },
-                                                    ),
-                                                  ),
-                                                  onPagination(viewmodel)
-                                                ],
-                                              )
-                                            : Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  // CategoryFilterScreen(items: []),
-                                                  Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      // Container(
-                                                      //     alignment: Alignment.topLeft,
-                                                      //     padding: EdgeInsets.only(top: 30, right: 20),
-                                                      //     width: SizeConfig.screenWidth /1.75,
-                                                      //     child: catrgoryTopSortWidget(context)),
-                                                      Container(
-                                                          width: SizeConfig.screenWidth/1.38,
-                                                          child: GridView.builder(
-                                                            shrinkWrap: true,
-                                                            physics: NeverScrollableScrollPhysics(),
-                                                            padding: EdgeInsets.only(top: 10),
-                                                            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                                                                mainAxisSpacing:
-                                                                10,crossAxisSpacing: 10,
-                                                                mainAxisExtent:
-                                                                    500,
-                                                                maxCrossAxisExtent:
-                                                                    400),
-                                                            itemCount: viewmodel
-                                                                .productListModel
-                                                                ?.productList
-                                                                ?.length,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index) {
-
-                                                              final productListData =
-                                                                  viewmodel
-                                                                      .productListModel
-                                                                      ?.productList?[index];
-                                                              return productListItems(
-                                                                  context,
-                                                                  productListData,
-                                                                  index,
-                                                                  viewmodel);
-                                                            },
-                                                          )),
-                                                      onPagination(viewmodel)
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                        ResponsiveWidget.isMediumScreen(context)
-                                            ?   SizedBox(height:ResponsiveWidget.isSmallScreen(context)
-                                            ? 50:100)
-                                            : SizedBox(height: 120),
-                                        ResponsiveWidget.isMediumScreen(context)
-                                            ? footerMobile(context,homeViewModel)
-                                            : footerDesktop()
-                                      ],
-                                    )):
+                                                            return productListItems(
+                                                                context,
+                                                                productListData,
+                                                                index,
+                                                                viewmodel);
+                                                          },
+                                                        )),
+                                                    onPagination(viewmodel)
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            ResponsiveWidget.isMediumScreen(context)
+                                                ?   SizedBox(height:ResponsiveWidget.isSmallScreen(context)
+                                                ? 50:100)
+                                                : SizedBox(height: 120),
+                                            ResponsiveWidget.isMediumScreen(context)
+                                                ? footerMobile(context,homeViewModel)
+                                                : footerDesktop()
+                                          ],
+                                        )):
                                     noDataFoundMessage(context,StringConstant.noProductAdded,homeViewModel) :
                                     Center(child: ThreeArchedCircle(size: 45.0)),
                                     ResponsiveWidget.isMediumScreen(context)
@@ -282,46 +280,46 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                     ResponsiveWidget.isMediumScreen(context)
                                         ? Container()
                                         : GlobalVariable.isLogins == true
-                                            ? Positioned(
-                                                top: 0,
-                                                right: 180,
-                                                child: profile(context,
-                                                    setState, profileViewModel))
-                                            : Container(),
+                                        ? Positioned(
+                                        top: 0,
+                                        right: 180,
+                                        child: profile(context,
+                                            setState, profileViewModel))
+                                        : Container(),
                                     ResponsiveWidget.isMediumScreen(context)
                                         ? Container()
                                         : GlobalVariable.isSearch == true
-                                            ? Positioned(
-                                                top: 1,
-                                                right: ResponsiveWidget
-                                                        .isMediumScreen(context)
-                                                    ? 0
-                                                    : SizeConfig.screenWidth * 0.20,
-                                                child: searchList(
-                                                    context,
-                                                    homeViewModel,
-                                                    scrollController,
-                                                    searchController!,
-                                                    cartViewModel
-                                                        .cartItemCount))
-                                            : Container()
+                                        ? Positioned(
+                                        top: 1,
+                                        right: ResponsiveWidget
+                                            .isMediumScreen(context)
+                                            ? 0
+                                            : SizeConfig.screenWidth * 0.20,
+                                        child: searchList(
+                                            context,
+                                            homeViewModel,
+                                            scrollController,
+                                            searchController!,
+                                            cartViewModel
+                                                .cartItemCount))
+                                        : Container()
                                   ],
                                 )
-                    ))
-                        )
-                            : Container(
-                            width: SizeConfig.screenWidth,
-                            height: SizeConfig.screenHeight,
-                            color: Theme.of(context).scaffoldBackgroundColor,
-                            child: Center(
-                              child: ThreeArchedCircle(size: 45.0),
-                            ),
-                          );
-                      }));
-            }));
+                            ))
+                    )
+                        : Container(
+                      width: SizeConfig.screenWidth,
+                      height: SizeConfig.screenHeight,
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: Center(
+                        child: ThreeArchedCircle(size: 45.0),
+                      ),
+                    );
+                  }));
+        }));
   }
 
- onPagination(CartViewModel viewmodel){
+  onPagination(CartViewModel viewmodel){
     return viewmodel.productListModel!.pagination!.lastPage==1?Container():   Container(
       height: 40,
       margin: EdgeInsets.only(
@@ -370,22 +368,22 @@ class _ProductListGalleryState extends State<ProductListGallery> {
           setState(() {
             AppIndicator.loadingIndicator(context);
             widget.discountdata?.length == null
-                  ? cartViewModel.getProductList(context, index + 1,(result, isSuccess){
-                    if(isSuccess){scrollController1.jumpTo(0);}})
+                ? cartViewModel.getProductList(context, index + 1,(result, isSuccess){
+              if(isSuccess){scrollController1.jumpTo(0);}})
 
-                  : cartViewModel.getOfferDiscountList(
-                  context,
-                  widget.discountdata?[1] ?? "",
-                  index +
-                      1,
-                  widget.discountdata?[0] ?? "",(result, isSuccess){
-                    if(isSuccess){
-                      scrollController1.jumpTo(0);
-                    }
-              });
+                : cartViewModel.getOfferDiscountList(
+                context,
+                widget.discountdata?[1] ?? "",
+                index +
+                    1,
+                widget.discountdata?[0] ?? "",(result, isSuccess){
+              if(isSuccess){
+                scrollController1.jumpTo(0);
+              }
+            });
           });
         },
       ),
     );
- }
+  }
 }

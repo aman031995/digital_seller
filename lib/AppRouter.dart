@@ -13,8 +13,8 @@ class AppRouter extends $AppRouter {
 
   @override
   List<AutoRoute> routes = [
-    // AutoRoute(page: HomePageWeb.page, path: '/',initial: true),
-   AutoRoute(page: HomePageRestaurant.page,path: '/',initial: true),
+     AutoRoute(page: HomePageWeb.page, path: '/',initial: true),
+  // AutoRoute(page: HomePageRestaurant.page,path: '/',initial: true),
     AutoRoute(page: ProductListRestaurantGallery.page,path: "/ProductListRestaurantGallery"),
     AutoRoute(page: RestaurantSubcategoryProductList.page,path: '/RestaurantSubcategoryProductList/:SubcategoryProductName'),
     AutoRoute(page: RestaurantFavouriteListPage.page,path: '/RestaurantFavouriteListPage',guards: [AutoRouteGuard.simple(
@@ -27,10 +27,6 @@ class AppRouter extends $AppRouter {
         }
       },
     )]),
-
-
-    AutoRoute(page: SearchPage.page,path: '/SearchPage'),
-
     AutoRoute(page: EditProfile.page,path: '/EditProfile',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
@@ -42,35 +38,32 @@ class AppRouter extends $AppRouter {
           }
         },
       )]),
-
     AutoRoute(page: NotificationRoute.page,path: '/NotificationScreen'),
-    AutoRoute(page: ProductListGallery.page,path: '/ProductListGallery'),
+    AutoRoute(page: ProductListGallery.page,path: '/Category'),
     AutoRoute(page: BuynowAddress.page,path: '/BuynowAddress'),
-
-
     AutoRoute(page: FavouriteListPage.page,path: '/FavouriteListPage',guards: [AutoRouteGuard.simple(
-            (resolver, scope) async {
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-          if (sharedPreferences.get('token') != null) {
-            resolver.next();
-          } else {
-            resolver.redirect(HomePageWeb());
-          }
-        },
-      )]),
+          (resolver, scope) async {
+        SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        if (sharedPreferences.get('token') != null) {
+          resolver.next();
+        } else {
+          resolver.redirect(HomePageWeb());
+        }
+      },
+    )]),
 
-    AutoRoute(page: AddressListPage.page,path: '/AddressListPage/:buynow',guards: [
+    AutoRoute(page: AddressListPage.page,path: '/AddressListPage',guards: [
       AutoRouteGuard.simple((resolver, scope) async {
         GlobalVariable.token= SessionStorageHelper.getValue("payment");
-          if(GlobalVariable.token==null){
-            resolver.next();
-          }
-          else if (GlobalVariable.token=='false') {
-            resolver.next();
-          } else {
-            resolver.redirect(HomePageWeb());
-          }
-        },
+        if(GlobalVariable.token==null){
+          resolver.next();
+        }
+        else if (GlobalVariable.token=='false') {
+          resolver.next();
+        } else {
+          resolver.redirect(HomePageWeb());
+        }
+      },
       )]),
 
     AutoRoute(page: MyOrderPage.page,path:'/MyOrderPage',guards: [
@@ -86,15 +79,15 @@ class AppRouter extends $AppRouter {
         },
       )]),
 
-    AutoRoute(page: ProductDetailPage.page,path: '/ProductDetailPage/:productName'),
+    AutoRoute(page: ProductDetailPage.page,path: '/:productName'),
 
-    AutoRoute(page: CategorySubcategoryProduct.page,path: '/CategorySubcategoryProduct/:CategoryName'),
+    AutoRoute(page: CategorySubcategoryProduct.page,path: '/Cs/:CategoryName'),
 
-    AutoRoute(page: SubcategoryProductList.page,path: '/SubcategoryProductList/:SubcategoryProductName'),
+    AutoRoute(page: SubcategoryProductList.page,path: '/Sp/:SubcategoryProductName'),
 
-    AutoRoute(page: BannerProductDetailPage.page,path: '/BannerProductDetailPage'),
+    AutoRoute(page: BannerProductDetailPage.page,path: '/BPD'),
 
-    AutoRoute(page: CartDetail.page,path: '/CartDetails/:itemCount',guards: [
+    AutoRoute(page: CartDetail.page,path: '/CartDetail/:itemCount',guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -106,24 +99,24 @@ class AppRouter extends $AppRouter {
         },
       )]),
 
-    AutoRoute(page: WebHtmlPage.page,path: '/WebHtmlPage/:title'),
+    AutoRoute(page: WebHtmlPage.page,path: '/Web/:title'),
 
     AutoRoute(page: ContactUs.page,path: '/ContactUs',guards: [
-  AutoRouteGuard.simple(
-  (resolver, scope) async {
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  if (sharedPreferences.get('token') != null) {
-  resolver.next();
-  } else {
-    resolver.redirect(HomePageWeb());
-  }
-  },
-  )]),
+      AutoRouteGuard.simple(
+            (resolver, scope) async {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          if (sharedPreferences.get('token') != null) {
+            resolver.next();
+          } else {
+            resolver.redirect(HomePageWeb());
+          }
+        },
+      )]),
 
     AutoRoute(page: ThankYouPage.page,path: '/ThankYouPage',keepHistory: false,guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
-              GlobalVariable.token= SessionStorageHelper.getValue("payment");
+          GlobalVariable.token= SessionStorageHelper.getValue("payment");
           if(GlobalVariable.token==null){
             resolver.next();
           }
@@ -145,7 +138,9 @@ class AppRouter extends $AppRouter {
             resolver.redirect(HomePageWeb());
           }
         },
-      )])
+      )]),
+    RedirectRoute(path: '*', redirectTo: '/')
+
   ];
 }
 

@@ -8,6 +8,7 @@ import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/network/result.dart';
 import 'package:TychoStream/repository/CartDetalRepository.dart';
 import 'package:TychoStream/services/global_variable.dart';
+import 'package:TychoStream/utilities/AppColor.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
@@ -106,9 +107,7 @@ class _AddressListPageState extends State<AddressListPage> {
                         child: Consumer<NotificationViewModel>(builder: (context, model, _) {
                           return (cartViewData.addressListModel != null && cartViewData.cartListData != null)
                   ? GestureDetector(
-                      onTap: () {                      closeAppbarProperty();
-
-                      },
+                      onTap: () { closeAppbarProperty();},
                       child: Scaffold(
                         backgroundColor:
                             Theme.of(context).scaffoldBackgroundColor,
@@ -159,7 +158,6 @@ class _AddressListPageState extends State<AddressListPage> {
                                       });
                                 } else {
                                   closeAppbarProperty();
-
                                   context.router.push(CartDetail(
                                       itemCount:
                                           '${cartViewModel.cartItemCount}'));
@@ -184,7 +182,6 @@ class _AddressListPageState extends State<AddressListPage> {
                                                       AddressButton(context,
                                                           () {
                                                             closeAppbarProperty();
-
                                                             showDialog(
                                                             context:
                                                                 context,
@@ -219,9 +216,30 @@ class _AddressListPageState extends State<AddressListPage> {
                                                         ),
                                                       )
                                                           : addressDetails(context, addressId, cartViewData),
-
-                                                         pricedetails(context, cartViewData),
-
+                                                      Container(
+                                                        width: SizeConfig.screenWidth/1.05,
+                                                        decoration: BoxDecoration(
+                                                            color: Theme.of(context).cardColor,
+                                                            borderRadius: BorderRadius.circular(8)
+                                                        ),
+                                                        child: Column(
+                                                          children: [
+                                                            Container(
+                                                              width: SizeConfig.screenWidth/1.05,
+                                                              padding: EdgeInsets.all(14),
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius: BorderRadius.only(
+                                                                      topRight: Radius.circular(8),
+                                                                      topLeft: Radius.circular(8)
+                                                                  ),
+                                                                  color: Theme.of(context).canvasColor.withOpacity(0.2)),
+                                                              child: AppBoldFont(context, msg: StringConstant.orderSummary,color: Theme.of(context).canvasColor),
+                                                            ),
+                                                            pricedetails(context, cartViewData),
+                                                            SizedBox(height: 15)
+                                                          ],
+                                                        ),
+                                                      ),
                                                       SizedBox(height: 10),
                                                       checkbox(),
                                                       SizedBox(height:ResponsiveWidget.isSmallScreen(context) ? 10:20),
@@ -246,7 +264,6 @@ class _AddressListPageState extends State<AddressListPage> {
                                                           cartViewData.addressListModel != null
                                                               ? Column(
                                                                   children: [
-
                                                                     AddressButton(
                                                                         context,
                                                                         () {
@@ -256,16 +273,13 @@ class _AddressListPageState extends State<AddressListPage> {
                                                                             return ShippingAddressPage(isAlreadyAdded: false);
                                                                           });
                                                                     }),
-
-                                                                    cartViewData.addressListModel?.length ==
-                                                                            0
+                                                                    cartViewData.addressListModel?.length == 0
                                                                         ?  Container(
                                                                       height: 250,
                                                                       decoration: BoxDecoration(boxShadow: [
                                                                         BoxShadow(
                                                                           color: Theme.of(context).scaffoldBackgroundColor,
-                                                                        )
-                                                                      ]),
+                                                                        )]),
                                                                       child: Column(
                                                                         crossAxisAlignment: CrossAxisAlignment.center,
                                                                         children: [
@@ -278,15 +292,12 @@ class _AddressListPageState extends State<AddressListPage> {
                                                                               context,msg: StringConstant.noadress,
                                                                               fontSize: 16,
                                                                               color: Theme.of(context).canvasColor,textAlign: TextAlign.center),
-                                                                        ],
-                                                                      ),
-                                                                    )
+                                                                        ]))
                                                                         : addressDetails(
                                                                             context,
                                                                             addressId,
                                                                             cartViewData)
-                                                                  ],
-                                                                )
+                                                                  ])
                                                               : Container(
                                                                   width: ResponsiveWidget.isMediumScreen(
                                                                           context)
@@ -296,40 +307,51 @@ class _AddressListPageState extends State<AddressListPage> {
                                                                           0.30,
                                                                   child: ThreeArchedCircle(
                                                                       size:
-                                                                          45.0),
-                                                                ),
-
+                                                                          45.0)),
+                                                           SizedBox(width: 15),
                                                           Column(
                                                             children: [
-                                                              SizedBox(height: 5),
+                                                              Container(
+                                                                decoration: BoxDecoration(
+                                                                    color: Theme.of(context).cardColor,
+                                                                    borderRadius: BorderRadius.circular(8)
+                                                                ),
+                                                                child: Column(
+                                                                  children: [
+                                                                    Container(
+                                                                      width: SizeConfig.screenWidth*0.36,
+                                                                      padding: EdgeInsets.all(14),
+                                                                      decoration: BoxDecoration(
+                                                                          borderRadius: BorderRadius.only(
+                                                                            topRight: Radius.circular(8),
+                                                                            topLeft: Radius.circular(8)
+                                                                          ),
+                                                                          color: Theme.of(context).canvasColor.withOpacity(0.2)),
+                                                                      child: AppBoldFont(context, msg: StringConstant.orderSummary,color: Theme.of(context).canvasColor),
+                                                                    ),
+                                                                    pricedetails(context, cartViewData),
+                                                                    SizedBox(height: 15)
+                                                                  ])),
 
-                                                          pricedetails(context, cartViewData),
-                                                              SizedBox(height: 5),
-
+                                                              SizedBox(height: 15),
                                                               checkbox(),
                                                               SizedBox(height: 5),
                                                               returnpolicy(),
-                                                              SizedBox(height: 5),
-                                                              checkoutbutton()
-
-                                                            ],
-                                                          )
-                                                        ],
-                                                      ),
+                                                              SizedBox(height: 10),
+                                                               checkoutbutton()
+                                                            ])]),
                                                        SizedBox(height: 300),
                                                       footerDesktop()
-                                                    ],
-                                                  ),
+                                                    ]),
                                             ResponsiveWidget.isMediumScreen(context)
                                                 ? Container()
                                                 : GlobalVariable.isnotification == true
-                                                ?    Positioned(
+                                                ?  Positioned(
                                                 top:  0,
                                                 right:  SizeConfig
                                                     .screenWidth *
                                                     0.20,
                                                 child: notification(notificationViewModel,context,_scrollController)):Container(),
-
                                             ResponsiveWidget.isMediumScreen(
                                                     context)
                                                 ? Container()
@@ -342,7 +364,6 @@ class _AddressListPageState extends State<AddressListPage> {
                                                             setState,
                                                             profileViewModel))
                                                     : Container(),
-
                                             ResponsiveWidget.isMediumScreen(
                                                     context)
                                                 ? Container()
@@ -360,59 +381,38 @@ class _AddressListPageState extends State<AddressListPage> {
                                                             cartViewModel
                                                                 .cartItemCount))
                                                     : Container()
-                                          ],
-                                        ),
-                            )
-
-                      )))
+                                          ])))))
                   : Container(
                       width: SizeConfig.screenWidth,
                       height: SizeConfig.screenHeight,
                       color: Theme.of(context).scaffoldBackgroundColor,
-                      child: Center(
-                        child: ThreeArchedCircle(size: 45.0),
-                      ),
-                    );
-            })); }));
+                      child: Center(child: ThreeArchedCircle(size: 45.0)));
+            }));}));
             }));
   }
 
   checkbox(){
     return Container(
-      width:ResponsiveWidget.isMediumScreen(
-          context)
-          ?SizeConfig.screenWidth: SizeConfig
-          .screenWidth /
-          3.22,
-      color: Theme.of(
-          context)
-          .cardColor,
+      width:ResponsiveWidget.isMediumScreen(context) ?SizeConfig.screenWidth/1.05: SizeConfig.screenWidth *0.36,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          color: Theme.of(context).cardColor  ),
       child:
       Column(
         crossAxisAlignment:
-        CrossAxisAlignment
-            .start,
+        CrossAxisAlignment.center,
         mainAxisSize:
-        MainAxisSize
-            .min,
-        mainAxisAlignment:
-        MainAxisAlignment
-            .end,
+        MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Container(
-              padding: EdgeInsets.only(
-                  left: 20,
-                  top: 8,
-                  bottom: 10),
+          Container( decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(8),
+                  topLeft: Radius.circular(8)),
+    color: Theme.of(context).canvasColor.withOpacity(0.2) ),
+              width:ResponsiveWidget.isMediumScreen(context) ?SizeConfig.screenWidth: SizeConfig.screenWidth *0.36,
+              padding: EdgeInsets.all(14),
               child: AppBoldFont(context, msg: StringConstant.selectPayment)),
-          Divider(
-            color:
-            Theme.of(context).canvasColor,
-            thickness:
-            0.2,
-            height:
-            1,
-          ),
           Theme(
             data:
             ThemeData(
@@ -421,12 +421,9 @@ class _AddressListPageState extends State<AddressListPage> {
             ),
             child:
             RadioListTile(
-              tileColor:
-              Theme.of(context).canvasColor,
-              value:
-              1,
-              dense:
-              true,
+              tileColor: Theme.of(context).canvasColor,
+              value: 1,
+              dense: true,
               groupValue:
               selectedRadioTile,
               materialTapTargetSize:
@@ -437,7 +434,8 @@ class _AddressListPageState extends State<AddressListPage> {
               EdgeInsets.only(left: 8),
               title: AppBoldFont(context,
                   msg: StringConstant.cardWalletsText,
-                  fontSize: 14.0),
+                  fontSize: 16.0,fontWeight: FontWeight.w500),
+              subtitle: AppRegularFont(context, msg: "Add and secure your card as per RBI Guide lines",fontSize: 12),
               onChanged:
                   (val) {
                 print("Radio Tile pressed $val");
@@ -459,9 +457,9 @@ class _AddressListPageState extends State<AddressListPage> {
             color:
             Theme.of(context).canvasColor,
             thickness:
-            0.2,
+            0.1,
             height:
-            1,
+            0.1,
           ),
           GlobalVariable.cod == true ? Theme(
             data: ThemeData(
@@ -475,7 +473,7 @@ class _AddressListPageState extends State<AddressListPage> {
               value: 2,
               groupValue: selectedRadioTile,
               contentPadding: EdgeInsets.only(left: 8),
-              title: AppBoldFont(context, msg: StringConstant.COD, fontSize: 14.0),
+              title: AppBoldFont(context, msg: StringConstant.COD,   fontSize: 16.0,fontWeight: FontWeight.w500),
               onChanged: (val) {
                 print("Radio Tile pressed $val");
                 if (val == 2) {
@@ -490,28 +488,39 @@ class _AddressListPageState extends State<AddressListPage> {
               selected: cod,
             ),
           )
-              : SizedBox()
+              : SizedBox(),
+          SizedBox(height: 15),
+
+
         ],
       ),
     );
   }
-
+//selection button ......
+  radioTileButton(BuildContext context, int? selectedAddressIndex, int index) {
+    return CircleAvatar(
+      radius: 9,
+      backgroundColor: Theme.of(context).canvasColor,
+      child: CircleAvatar(
+        radius: 8,
+        backgroundColor: selectedAddressIndex == index
+            ? Theme.of(context).primaryColor
+            : WHITE_COLOR,
+      ),
+    );
+  }
   returnpolicy(){
-    return    Row(
+    return  Row(
       children: [
+        SizedBox(width: 10),
         Material(
           color: Theme.of(
               context)
               .scaffoldBackgroundColor,
           child: Checkbox(
-            checkColor: Theme.of(
-                context)
-                .primaryColor,
-            activeColor: Theme.of(
-                context)
-                .canvasColor
-                .withOpacity(
-                0.8),
+            fillColor: MaterialStateColor.resolveWith((states) =>Theme.of(context).cardColor),
+            checkColor: Theme.of(context).primaryColor,
+            activeColor: Theme.of(context).canvasColor.withOpacity(0.8),
             side: MaterialStateBorderSide
                 .resolveWith(
                   (states) => BorderSide(
@@ -619,17 +628,13 @@ class _AddressListPageState extends State<AddressListPage> {
                 .primaryColor),
             padding: MaterialStateProperty.all(EdgeInsets.symmetric(
                 horizontal:
-                ResponsiveWidget.isMediumScreen(
-                    context)
-                    ?50:80,
-                vertical:
-                20)),
+                ResponsiveWidget.isMediumScreen(context) ?50:90, vertical: 20)),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(ResponsiveWidget.isMediumScreen(context) ? 0 : 5.0),
                 ))),
         child: AppBoldFont(
-            context,
+            context,textAlign: TextAlign.center,
             msg: StringConstant
                 .checkout,
             color: Theme.of(context)

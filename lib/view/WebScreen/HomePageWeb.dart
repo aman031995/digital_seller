@@ -59,7 +59,6 @@ class _HomePageWebState extends State<HomePageWeb> {
     'images/Frame7.webp',
     'images/Frame8.webp'
   ];
-
   void initState() {
     controller = AutoScrollController(
         viewportBoundaryGetter: () =>
@@ -78,7 +77,6 @@ class _HomePageWebState extends State<HomePageWeb> {
     notificationViewModel.getNotificationCountText(context);
     super.initState();
   }
-
   User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     GlobalVariable.names = sharedPreferences.get('name').toString();
@@ -87,7 +85,6 @@ class _HomePageWebState extends State<HomePageWeb> {
       profileViewModel.getProfileDetails(context);
     }
   }
-
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -107,17 +104,14 @@ class _HomePageWebState extends State<HomePageWeb> {
                   child: Consumer<HomeViewModel>(builder: (context, viewmodel, _) {
                    return ChangeNotifierProvider.value(
                         value: notificationViewModel,
-                        child: Consumer<NotificationViewModel>(
-                            builder: (context, model, _) {  return GestureDetector(
+                        child: Consumer<NotificationViewModel>(builder: (context, model, _) {  return GestureDetector(
                         onTap: () {
                           closeAppbarProperty();
-
-                        },
+                          },
                         child: Scaffold(
                             extendBodyBehindAppBar:false,
                             appBar: ResponsiveWidget.isMediumScreen(context)
-                                ? homePageTopBar(context, _scaffoldKey,
-                                    cartViewModel.cartItemCount,
+                                ? homePageTopBar(context, _scaffoldKey, cartViewModel.cartItemCount,
                               viewmodel,
                               profilemodel,notificationViewModel)
                                 : getAppBar(
@@ -141,7 +135,6 @@ class _HomePageWebState extends State<HomePageWeb> {
                                           });
                                     } else {
                                       closeAppbarProperty();
-
                                       context.router.push(FavouriteListPage());
                                     }
                                   }, () async {
@@ -179,16 +172,14 @@ class _HomePageWebState extends State<HomePageWeb> {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               CommonCarousel(),
-                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
                                               ///category product list............
                                               (cartViewModel.categoryListModel?.length ?? 0) > 0 ?CategoryList(context, cartViewModel):SizedBox(),
-                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
                                               //Recommend product .................
                                               (cartViewModel.recommendedView?.length ?? 0) > 0
                                                   ?   Container(
                                                 height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context)
                                                     ?275 :SizeConfig.screenHeight/3 : SizeConfig.screenWidth * 0.37,
-                                                margin: EdgeInsets.zero,
+                                                margin: EdgeInsets.only(top:  ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
                                                 padding: EdgeInsets.only(
                                                     left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11,
                                                     right: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11,
@@ -197,7 +188,6 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                 child: Stack(
                                                   children: [
                                                     recommended(context,controller,cartViewModel),
-
                                                     ResponsiveWidget.isMediumScreen(context)
                                                         ?Container():    Positioned(
                                                         top:  SizeConfig.screenWidth * 0.15,
@@ -214,7 +204,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                               color: Theme.of(context).canvasColor),
                                                         ),
                                                             onTap: () {
-                                                              _nextCounter();
+                                                              _nextCounterRecommended();
                                                               setState(() {});
                                                             })),
                                                     ResponsiveWidget.isMediumScreen(context)
@@ -231,16 +221,13 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                   size: 25, color: Theme.of(context).canvasColor),
                                                             ),
                                                             onTap: () {
-                                                              _prev();
+                                                              _prevCounterRecommended();
                                                               setState(() {});
-                                                            }))
-                                                  ],
-                                                ),
+                                                            }))]),
                                               ):SizedBox(),
-                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
                                               //recent view images .......
                                               (cartViewModel.recentView?.length ?? 0) > 0
-                                                  ? Container(margin: EdgeInsets.zero,
+                                                  ? Container(margin: EdgeInsets.only(top:  ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
                                                       color: Theme.of(context).cardColor.withOpacity(0.6),
                                                       height: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context) ?260: SizeConfig.screenHeight/4.8  : SizeConfig.screenWidth * 0.32,
                                                       padding: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context) ? 8 : SizeConfig.screenWidth * 0.11,
@@ -251,9 +238,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                           ResponsiveWidget.isMediumScreen(context)
                                                               ?Container():
                                                           Positioned(
-                                                              top:  SizeConfig
-                                                                          .screenWidth *
-                                                                      0.10,
+                                                              top:  SizeConfig.screenWidth * 0.10,
                                                               right: 0.5,
                                                               child: cartViewModel.recentView!.length>4 ? counter1 == cartViewModel.recentView?.length ? Container() : InkWell(
                                                                       child:
@@ -268,11 +253,11 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                         Theme.of(context).canvasColor)
                                                                       ),
                                                                       onTap: () {
-                                                                        _nextCounter1();
+                                                                        _nextCounterRecentView();
                                                                       }):
                                                               Container()),
                                                           ResponsiveWidget.isMediumScreen(context)
-                                                              ?Container():   Positioned(
+                                                              ?Container(): Positioned(
                                                               top: SizeConfig
                                                                           .screenWidth *
                                                                       0.10,
@@ -294,40 +279,25 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                                       ),
                                                                       onTap:
                                                                           () {
-                                                                        _prev1();
+                                                                            _prevCounterRecentView();
                                                                       }))
-                                                        ],
-                                                      ),
-                                                    )
+                                                        ]))
                                                   : SizedBox(),
-                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
-
                                               // what we offer.....
                                               offerList(context),
-                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? ResponsiveWidget.isSmallScreen(context)
-                                                  ?12:16 : 24),
                                               //Discount product List .......
                                               (cartViewModel.offerDiscountModel?.length ?? 0) > 0 ?   discountView(cartViewModel):SizedBox(),
-
                                               SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
-
                                               Image.asset(AssetsConstants.icbanner, width: SizeConfig.screenWidth, height: SizeConfig.screenWidth * 0.25, fit: BoxFit.fill),
-
-                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
-                                                   // product-gallery view .........
+                                              // product-gallery view .........
                                               gallery(context,images),
-
-                                              SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
-
-                                               //emailNotification method ......
+                                              //emailNotification method ......
                                               emailNotificationUpdatePage(context,emailController,authVM),
                                               //footer method.......
-
                                               ResponsiveWidget.isMediumScreen(context) ? footerMobile(context,homeViewModel) : footerDesktop(),
                                             ],
                                           ),
                                         ),
-
                                         ResponsiveWidget.isMediumScreen(context)
                                             ? Container()
                                             : GlobalVariable.isLogins == true
@@ -342,9 +312,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                             : GlobalVariable.isSearch == true
                                                 ? Positioned(
                                                     top: 1,
-                                                    right:  SizeConfig
-                                                                .screenWidth *
-                                                            0.20,
+                                                    right: SizeConfig.screenWidth * 0.20,
                                                     child: searchList(
                                                         context,
                                                         viewmodel,
@@ -353,15 +321,12 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                         cartViewModel
                                                             .cartItemCount))
                                                 : Container(),
-
                                         ResponsiveWidget.isMediumScreen(context)
                                             ? Container()
                                             : GlobalVariable.isnotification == true
-                                            ?    Positioned(
-                                            top:  1,
-                                            right:  SizeConfig
-                                                .screenWidth *
-                                                0.20,
+                                            ? Positioned(
+                                            top: 1,
+                                            right: SizeConfig.screenWidth * 0.20,
                                             child: notification(notificationViewModel,context,_scrollController)):Container()
                                       ],
                                     ))));
@@ -370,34 +335,26 @@ class _HomePageWebState extends State<HomePageWeb> {
             }));
   }
 
-  Future _nextCounter() async {
+  Future _nextCounterRecommended() async {
     setState(() => counter = (counter + 1));
     await controller.scrollToIndex(counter-1,
         preferPosition: AutoScrollPosition.end);
     controller.highlight(counter);
   }
-
-  Future _prev() async {
-    setState(() {
-      counter =counter-1;
-    });
+  Future _prevCounterRecommended() async {
+    setState(() {counter =counter-1;});
     await controller.scrollToIndex(counter-4,
         preferPosition: AutoScrollPosition.begin);
     controller.highlight(counter);
   }
-
-  Future _nextCounter1() async {
+  Future _nextCounterRecentView() async {
     setState(() => counter1 = (counter1 + 1));
     await controller1.scrollToIndex(counter1-1,
         preferPosition: AutoScrollPosition.end);
     controller1.highlight(counter1);
   }
-
-  Future _prev1() async {
-    setState(() {
-      counter1 =counter1-1;
-    });
-
+  Future _prevCounterRecentView() async {
+    setState(() {counter1 =counter1-1;});
     await controller1.scrollToIndex(counter1-4,
         preferPosition: AutoScrollPosition.begin);
     controller1.highlight(counter1);

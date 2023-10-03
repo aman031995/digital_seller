@@ -5,13 +5,9 @@ import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/repository/subscription_provider.dart';
@@ -21,15 +17,14 @@ import 'package:TychoStream/viewmodel/sociallogin_view_model.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'dart:html' as html;
 
-
 Future<void> main() async {
  // Stripe.publishableKey = "pk_test_51NXhtjSJK48GkIWFjJzBm88uzgrwb7i4aIyls9YoPHT5IvYAV9rMnlEW0U8AUY1VpIJB3ZOBFTFdSFuMYnxM0fkK00KqwNEEeH";
   setPathUrlStrategy();
   await WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey = "pk_test_51NXhtjSJK48GkIWFjJzBm88uzgrwb7i4aIyls9YoPHT5IvYAV9rMnlEW0U8AUY1VpIJB3ZOBFTFdSFuMYnxM0fkK00KqwNEEeH";
-  Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
-  Stripe.urlScheme = 'flutterstripe';
-  await Stripe.instance.applySettings();
+  // Stripe.publishableKey = "pk_test_51NXhtjSJK48GkIWFjJzBm88uzgrwb7i4aIyls9YoPHT5IvYAV9rMnlEW0U8AUY1VpIJB3ZOBFTFdSFuMYnxM0fkK00KqwNEEeH";
+  // Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
+  // Stripe.urlScheme = 'flutterstripe';
+  // await Stripe.instance.applySettings();
   await Firebase.initializeApp(
       options: FirebaseOptions(
           apiKey: "AIzaSyCJld8j8yV8TC-PeC1XpqvThaVTYvI6bbw",
@@ -48,7 +43,6 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]).then((value) => runApp(MyApp()));
-  //runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -63,23 +57,12 @@ class _MyAppState extends State<MyApp> {
 
   void initState() {
     User();
-    getFCMToken();
     homeViewModel.getAppConfig(context);
     super.initState();
   }
-
   User() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     GlobalVariable.names = sharedPreferences.get('name').toString();
-  }
-
-  Future<void> getFCMToken() async {
-    try {
-     final fcmToken = await FirebaseMessaging.instance.getToken();
-      print('FCM Token: $fcmToken');
-    } catch (e) {
-      print('Error getting FCM token: $e');
-    }
   }
   @override
   Widget build(BuildContext context) {
@@ -124,12 +107,9 @@ class _MyAppState extends State<MyApp> {
                  scrollBehavior: MyCustomScrollBehavior(),
                 routerConfig: _appRouter.config(),
               );
-            })
-        )
+            }))
     );
   }}
-
-
 
 class MyCustomScrollBehavior extends MaterialScrollBehavior {
   @override
@@ -140,7 +120,6 @@ class MyCustomScrollBehavior extends MaterialScrollBehavior {
        PointerDeviceKind.trackpad
       };
 }
-
 extension ColorExtension on String {
   toColor() {
     var hexColor = this.replaceAll("#", "");

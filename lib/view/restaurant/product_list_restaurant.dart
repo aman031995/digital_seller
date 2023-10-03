@@ -1,5 +1,4 @@
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/services/global_variable.dart';
@@ -129,7 +128,7 @@ class _ProductListRestaurantGalleryState extends State<ProductListRestaurantGall
                             } else {
                               closeAppbarProperty();
 
-                              context.router.push(FavouriteListPage());
+                              context.router.push(RestaurantFavouriteListPage());
                             }
                           }, () async {
                             SharedPreferences sharedPreferences =

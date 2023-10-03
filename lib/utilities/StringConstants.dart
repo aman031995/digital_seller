@@ -13,8 +13,10 @@ class StringConstant {
   static String kRecommended='recommeded_list';
   static String kcategory='category_list';
   static String discard = 'Discard';
+  static String delete="Delete";
 
-static String noSearchProductFound='We always try to give the best\nresult on your Search';
+
+  static String noSearchProductFound='We always try to give the best\nresult on your Search';
   static String deleteAccountMessage = "This Account connot be recovered once deleted.";
   static String cancelYourOrder = "Do you really want to cancel your order.";
 // **************Login Page ***************
@@ -81,6 +83,10 @@ static String noSearchProductFound='We always try to give the best\nresult on yo
   static String cameraPer = 'Camera Permission';
   static String galleryPer = 'Gallery Permission';
   static String enterEmail='Enter your email';
+  static String orderSummary="Order Summary";
+  static String cartCollection='Cart Collection';
+
+
 
   static String cameraPerMessage =
       'This app needs camera access to take pictures/videos to upload.';
@@ -102,11 +108,8 @@ static String noSearchProductFound='We always try to give the best\nresult on yo
   static String kids = "Kids";
   static String drama = "Drama";
   static String profile = "Profile";
-  static String notFoundMsg =
-      "There is no data , sorry try again \n any time later.";
+  static String notFoundMsg = "There is no data , sorry try again \n any time later.";
   static String noItemInCart = "No item in your cart";
-  static String forumTitle = "Product";
-
   static String contactDetails = 'CONTACT DETAILS';
   static String shippingAddress = "Shipping Address";
   static String address = 'ADDRESS';

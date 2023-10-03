@@ -60,7 +60,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
       children: [
         Container(
          // margin: EdgeInsets.only(top: 60),
-          height: SizeConfig.screenWidth/3,
+          height: SizeConfig.screenWidth/4.5,
           width: SizeConfig.screenWidth,
           child: CarouselSlider(
             items: imageSliders,
@@ -85,6 +85,8 @@ class _CommonCarouselState extends State<CommonCarousel> {
       ],
     );
   }
+
+
   List<Widget> generateImageTilesWeb(BuildContext context) {
     return homeViewModel.bannerDataModal!.bannerList!
         .map((element) =>  InkWell(
@@ -99,7 +101,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
       CachedNetworkImage(
           imageUrl:element.bannerUrl ?? "",
           imageBuilder: (context, imageProvider) => Container(
-            height: SizeConfig.screenWidth/3,
+            height: SizeConfig.screenWidth/4.5,
             width: SizeConfig.screenWidth,
             decoration: BoxDecoration(
               image: DecorationImage(

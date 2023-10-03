@@ -34,7 +34,6 @@ class _footerDesktopState extends State<footerDesktop> {
     return  ChangeNotifierProvider.value(
         value: homeViewModel,
         child: Consumer<HomeViewModel>(builder: (context, viewmodel, _){
-          final followUs = viewmodel.appConfigModel?.androidConfig?.socialMedia;
           return Container(
       color: Theme.of(context).canvasColor,
       height: ResponsiveWidget.isSmallScreen(context)

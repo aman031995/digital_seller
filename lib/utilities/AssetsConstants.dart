@@ -36,6 +36,8 @@ static String icbanner='images/banner.webp';
   static String icTermsCondition = "images/ic_termscondition.png";
   static String icLogout = "images/ic_logout.png";
   static String icAddImage = "images/ic_icAdd.png";
+  static String icEdit="images/edit.png";
+
 
   // Added B Aman Singh -------------------------
   static String icNotification = "images/ic_notification.png";
@@ -67,5 +69,7 @@ static String icbanner='images/banner.webp';
   static String ic_shoppingSuccess='images/ShoppingSuccess.png';
   static String ic_noProductFound='images/ic_NotFoundLogo.png';
   static String ic_noInternet="images/ic_error.png";
+  static String ic_addIcon="images/addicon.png";
+  static String ic_minusIcon="images/minus.png";
 
 }

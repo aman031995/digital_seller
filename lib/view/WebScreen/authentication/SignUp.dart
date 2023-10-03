@@ -110,7 +110,7 @@ class _SignUpState extends State<SignUp> {
                                           authVM,
                                           nameController.text,
                                           emailController.text,
-                                          phoneController.text ?? '',
+                                          phoneController.text,
                                           passwordController.text,
                                           viewmodel.appConfigModel?.androidConfig?.loginWithPhone == true? 'phone':'email', viewmodel);
                                     });

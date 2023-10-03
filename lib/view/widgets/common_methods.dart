@@ -1,6 +1,5 @@
 import 'package:TychoStream/AppRouter.gr.dart';
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/AppColor.dart';
@@ -395,321 +394,377 @@ Widget productListItems(BuildContext context, ProductList? productListData,
     hovered: Matrix4.identity()..translate(0, 0, 0),
   );
 }
+
 // ProductcardDeatils ......
-Widget ProductcardDeatils(BuildContext context, ProductList itemInCart, int index,
-    CartViewModel cartViewData) {
+Widget ProductcardDeatils(BuildContext context, ProductList itemInCart, int index, CartViewModel cartViewData) {
   return Row(
-    mainAxisAlignment: MainAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          itemInCart.productDetails?.inStock == true ?
-          (itemInCart.productDetails?.quantityLeft ?? 0) > 0 ?
-           Container(
-            height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context) ? 120:150 : SizeConfig.screenWidth * 0.11,
-            width: ResponsiveWidget.isMediumScreen(context)
-                ?  ResponsiveWidget.isSmallScreen(context) ? 120:150
-                : SizeConfig.screenWidth * 0.11,
-            margin: EdgeInsets.only(top: 12, right: 8, left: 12, bottom: 5),
+      itemInCart.productDetails?.inStock == true ?
+      (itemInCart.productDetails?.quantityLeft ?? 0) > 0 ?
+      CachedNetworkImage(
+          imageUrl: '${itemInCart.productDetails?.productImages?[0] ?? ""}',
+          fit: BoxFit.cover,
+          width: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context) ? 100:150 : SizeConfig.screenWidth * 0.08,
+          height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context) ? 140:150 : SizeConfig.screenWidth * 0.095,
+          imageBuilder: (context, imageProvider) => Container(
+              margin: EdgeInsets.only(top:ResponsiveWidget.isSmallScreen(context) ?4: 10,bottom:ResponsiveWidget.isSmallScreen(context) ?2: 10,left: ResponsiveWidget.isSmallScreen(context) ?2: 0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  image: DecorationImage(image: imageProvider, fit: BoxFit.cover))),
+          placeholder: (context, url) => Container(height: ResponsiveWidget.isMediumScreen(context) ? 140 : SizeConfig.screenWidth * 0.04, child: Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2)))):
+      Banner(
+        message:StringConstant.OutofStock,
+        location: BannerLocation.topStart,
+        color: Colors.red,
+        child: Container(
+            width: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context) ? 100:150 : SizeConfig.screenWidth * 0.08,
+            height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context) ? 140:150 : SizeConfig.screenWidth * 0.095,
+            margin: EdgeInsets.only(top:ResponsiveWidget.isSmallScreen(context) ?4: 10,bottom:ResponsiveWidget.isSmallScreen(context) ?4: 10,left: ResponsiveWidget.isSmallScreen(context) ?4: 0),
+
             child: Image.network(
-              itemInCart.productDetails?.productImages?[0] ?? "",
-              fit: BoxFit.fill,
-            ),
-          ):
-          Banner(
-            message:StringConstant.OutofStock,
-            location: BannerLocation.topStart,
-            color: Colors.red,
-            child: Container(height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context) ? 120:150 : 200,
-                width: ResponsiveWidget.isMediumScreen(context)
-                    ?  ResponsiveWidget.isSmallScreen(context) ? 120:150
-                    : SizeConfig.screenWidth * 0.11,
-                margin: EdgeInsets.only(top: 12, right: 8, left: 12, bottom: 5),
-                child: Image.network(
-                    itemInCart.productDetails?.productImages?[0] ?? "",
-                    fit: BoxFit.fill)),
-          ):
-          Banner(
-            message:StringConstant.OutofStock,
-            location: BannerLocation.topStart,
-            color: Colors.red,
-            child: Container(height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context) ? 120:150 : 200,
-                width: ResponsiveWidget.isMediumScreen(context)
-                    ?  ResponsiveWidget.isSmallScreen(context) ? 120:150
-                    : SizeConfig.screenWidth * 0.11,
-                margin: EdgeInsets.only(top: 12, right: 8, left: 12, bottom: 5),
-                child: Image.network(
-                    itemInCart.productDetails?.productImages?[0] ?? "",
-                    fit: BoxFit.fill)),
-          ),
-          itemInCart.productDetails?.inStock == true ?  Container(
-            height: 30,
-            width: ResponsiveWidget.isMediumScreen(context)
-                ?  ResponsiveWidget.isSmallScreen(context) ? 120:150
-                : SizeConfig.screenWidth * 0.11,
-            decoration: BoxDecoration(
-                border: Border.all(
-                    color: Theme.of(context).canvasColor.withOpacity(0.2),
-                    width: 1)),
-            margin: EdgeInsets.only(left: 12, top: 5, right: 8, bottom: 5),
-            child: Row(children: [
-              Expanded(
-                flex: 25,
-                child: GestureDetector(
-                  child: itemInCart.cartQuantity == 1
-                      ? Container(
-                          child: Icon(Icons.delete,
-                              color: Theme.of(context).canvasColor, size: 18))
-                      : Icon(Icons.remove,
-                          color: Theme.of(context).canvasColor, size: 18.0),
-                  onTap: () async {
-                    if (cartViewData.deactiveQuantity == false) {
-                      cartViewData.deactiveQuantity = true;
-                      itemInCart.cartQuantity =
-                          (itemInCart.cartQuantity ?? 1) - 1;
-                      if (itemInCart.cartQuantity! > 0) {
-                        cartViewData.addToCart(
-                            itemInCart.productId ?? '',
-                            itemInCart.cartQuantity.toString(),
-                            itemInCart.productDetails?.variantId ?? '',
-                            true,
-                            context,
-                            (result, isSuccess) {});
-                      } else {
-                        if (itemInCart.cartQuantity == 0)
-                          cartViewData.removeProductFromCart(
-                              context,
-                              itemInCart.productDetails?.variantId ?? "",
-                              index);
-                      }
-                    }
-                  },
-                ),
-              ),
-              Container(
-                  height: 30,
-                  width: 1,
-                  color: Theme.of(context).canvasColor.withOpacity(0.2)),
-              Expanded(
-                flex: 50,
-                child: AppBoldFont(context,
-                    textAlign: TextAlign.center,
-                    color: Theme.of(context).canvasColor,
-                    msg: itemInCart.cartQuantity.toString(),
-                    fontSize: 16.0),
-              ),
-              Container(
-                  height: 30,
-                  width: 1,
-                  color: Theme.of(context).canvasColor.withOpacity(0.2)),
-              Expanded(
-                flex: 25,
-                child: GestureDetector(
-                  child: Icon(
-                    Icons.add,
-                    size: 18.0,
-                    color: Theme.of(context).canvasColor,
-                  ),
-                  onTap: () {
-                    if (cartViewData.activeQuantity == false) {
-                      if ((itemInCart.productDetails?.quantityLeft)! >
-                          (itemInCart.cartQuantity ?? 1)) {
-                        cartViewData.activeQuantity = true;
-                        itemInCart.cartQuantity =
-                            (itemInCart.cartQuantity ?? 1) + 1;
-                        cartViewData.addToCart(
-                            itemInCart.productId ?? '',
-                            itemInCart.cartQuantity.toString() ?? '1',
-                            itemInCart.productDetails?.variantId ?? '',
-                            true,
-                            context,
-                            (result, isSuccess) {});
-                      } else {
-                        ToastMessage.message(
-                            "Sorry only ${itemInCart.productDetails?.quantityLeft} quantity is left.",
-                            context);
-                      }
-                    }
-                  },
-                ),
-              ),
-            ]),
-          ):Container(),
-          SizedBox(height: 10)
-        ],
+                itemInCart.productDetails?.productImages?[0] ?? "",
+                fit: BoxFit.cover)),
+      ):
+      Banner(
+        message:StringConstant.OutofStock,
+        location: BannerLocation.topStart,
+        color: Colors.red,
+        child: Container(
+            width: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context) ? 100:150 : SizeConfig.screenWidth * 0.08,
+            height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context) ? 140:150 : SizeConfig.screenWidth * 0.095,
+            margin: EdgeInsets.only(top:ResponsiveWidget.isSmallScreen(context) ?4: 10,bottom:ResponsiveWidget.isSmallScreen(context) ?4: 10,left: ResponsiveWidget.isSmallScreen(context) ?4: 0),
+            child: Image.network(
+                itemInCart.productDetails?.productImages?[0] ?? "",
+                fit: BoxFit.cover)),
       ),
-      Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(height: 15),
-          Container(
-            width: ResponsiveWidget.isMediumScreen(context)
-                ? SizeConfig.screenWidth * 0.50
-                : SizeConfig.screenWidth * 0.15,
-            child: AppMediumFont(
+      Container(
+        width: ResponsiveWidget.isMediumScreen(context) ? SizeConfig.screenWidth * 0.43 : SizeConfig.screenWidth * 0.20,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height:ResponsiveWidget.isSmallScreen(context) ?4: 10),
+            AppMediumFont(
                 color: Theme.of(context).canvasColor,
                 context,
                 msg: itemInCart.productDetails?.productVariantTitle,
-                fontSize: 18.0),
-          ),
-          SizedBox(height: 5),
-          Row(
-            children: [
-              AppMediumFont(context,
-                  color: Theme.of(context).canvasColor,
-                  msg: "₹" + "${itemInCart.productDetails?.productPrice}",
-                  textDecoration: TextDecoration.lineThrough,
-                  fontSize:
-                      ResponsiveWidget.isMediumScreen(context) ? 12.0 : 14),
-              SizedBox(
-                width: SizeConfig.safeBlockVertical * 1,
+                fontSize:ResponsiveWidget.isSmallScreen(context) ?15: 16.0),
+            SizedBox(height: 5),
+            itemInCart.productSelectedSku?.color?.name != null
+                ? RichText(
+                text: TextSpan(
+                    text: 'Color  :  ',
+                    style: TextStyle(
+                        fontSize: ResponsiveWidget.isSmallScreen(context) ?14:16,
+                        fontWeight: FontWeight.w400,
+                        color: Theme.of(context).canvasColor.withOpacity(0.7),
+                        fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                    children: <InlineSpan>[
+                      TextSpan(
+                        style: TextStyle(
+                            fontSize: ResponsiveWidget.isSmallScreen(context) ?14: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context).canvasColor,
+                            fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                        text: '${itemInCart.productSelectedSku?.color?.name}',
+                      )
+                    ]))
+                : SizedBox(),
+            itemInCart.productSelectedSku?.size?.name != null
+                ? RichText(
+                text: TextSpan(
+                    text: 'Size  :  ',
+                    style: TextStyle(
+                        fontSize:  ResponsiveWidget.isSmallScreen(context) ?14:16,
+                        fontWeight: FontWeight.w400,
+                        color: Theme.of(context).canvasColor.withOpacity(0.7),
+                        fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                    children: <InlineSpan>[
+                      TextSpan(
+                        style: TextStyle(
+                            fontSize: ResponsiveWidget.isSmallScreen(context) ?14: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context).canvasColor,
+                            fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                        text: '${itemInCart.productSelectedSku?.size?.name}',
+                      )
+                    ]))
+                : SizedBox(),
+            itemInCart.productSelectedSku?.style?.name != null
+                ? RichText(
+                text: TextSpan(
+                    text: 'Style  :  ',
+                    style: TextStyle(
+                        fontSize:  ResponsiveWidget.isSmallScreen(context) ?14:16,
+                        fontWeight: FontWeight.w400,
+                        color: Theme.of(context).canvasColor.withOpacity(0.7),
+                        fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                    children: <InlineSpan>[
+                      TextSpan(
+                        style: TextStyle(
+                            fontSize: ResponsiveWidget.isSmallScreen(context) ?14: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context).canvasColor,
+                            fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                        text: '${itemInCart.productSelectedSku?.style?.name}',
+                      )
+                    ]))
+                : SizedBox(),
+            itemInCart.productSelectedSku?.materialType?.name != null
+                ? RichText(
+                text: TextSpan(
+                    text: 'MaterialType  :  ',
+                    style: TextStyle(
+                        fontSize:  ResponsiveWidget.isSmallScreen(context) ?14:16,
+                        fontWeight: FontWeight.w400,
+                        color: Theme.of(context).canvasColor.withOpacity(0.7),
+                        fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                    children: <InlineSpan>[
+                      TextSpan(
+                        style: TextStyle(
+                            fontSize: ResponsiveWidget.isSmallScreen(context) ?14: 16,
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context).canvasColor,
+                            fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                        text: '${itemInCart.productSelectedSku!.materialType!.name!.length > 35 ? itemInCart.productSelectedSku?.materialType?.name!.replaceRange(35, itemInCart.productSelectedSku?.materialType?.name?.length, '...') : itemInCart.productSelectedSku?.materialType?.name ?? ""}',
+                      )
+                    ]))
+                : SizedBox(),
+            itemInCart.productSelectedSku?.unitCount?.name != null
+                ? RichText(
+                text: TextSpan(
+                    text: 'UnitCount  :  ',
+                    style: TextStyle(
+                        fontSize: ResponsiveWidget.isSmallScreen(context) ?14: 16,
+                        fontWeight: FontWeight.w400,
+                        color: Theme.of(context).canvasColor.withOpacity(0.7),
+                        fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                    children: <InlineSpan>[
+                      TextSpan(
+                        style: TextStyle(
+                            fontSize:  ResponsiveWidget.isSmallScreen(context) ?14:16,
+                            fontWeight: FontWeight.w400,
+                            color: Theme.of(context).canvasColor,
+                            fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                        text: '${itemInCart.productSelectedSku?.unitCount?.name}',
+                      )
+                    ]))
+                : SizedBox(),
+            Row(
+              children: [
+                AppBoldFont(context,
+                    msg: "₹" +
+                        "${itemInCart.productDetails?.productDiscountPrice}",
+                    color: Theme.of(context).canvasColor,
+                    fontSize:  ResponsiveWidget.isSmallScreen(context) ?14:16.0),
+                SizedBox(
+                  width: 5,
+                ),
+                AppMediumFont(context,
+                    color: Theme.of(context).canvasColor,
+                    msg: "₹" + "${itemInCart.productDetails?.productPrice}",
+                    textDecoration: TextDecoration.lineThrough,
+                    fontSize:
+                    ResponsiveWidget.isMediumScreen(context) ? 12.0 : 14),
+                AppMediumFont(context,
+                    msg: "${itemInCart.productDetails?.productDiscountPercent}" +
+                        r"% OFF",
+                    color: GREEN,
+                    fontSize: 12),
+                GestureDetector(
+                  onTap: () async {
+                    cartViewData.removeProductFromCart(
+                        context, itemInCart.productDetails?.variantId ?? "", index);
+                  },
+                  child: Container(
+                      padding: EdgeInsets.all(5),
+                      margin: EdgeInsets.only(left:SizeConfig.screenWidth*0.06 ),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                      child: Text(
+                        StringConstant.remove,
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          decorationColor: Theme.of(context).primaryColor,
+                          decorationThickness: 1,
+                          fontSize:  ResponsiveWidget.isSmallScreen(context) ?12:14.0,
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      )
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      itemInCart.productDetails?.inStock == true ?  Container(
+        height: 24,
+        width: 70,
+        margin: EdgeInsets.only(top: 10),
+        child: Row(children: [
+          Expanded(
+            flex: 25,
+            child: GestureDetector(
+              child:Container(
+                child: Image.asset(AssetsConstants.ic_minusIcon,height: 18,
+                  color: Theme.of(context).canvasColor,fit: BoxFit.fill,),
               ),
-              AppBoldFont(context,
-                  msg: "₹" +
-                      " ${itemInCart.productDetails?.productDiscountPrice}",
-                  color: Theme.of(context).canvasColor,
-                  fontSize: 16.0),
-              SizedBox(
-                width: SizeConfig.safeBlockVertical * 1,
-              ),
-              AppMediumFont(context,
-                  msg: "${itemInCart.productDetails?.productDiscountPercent}" +
-                      r" % OFF",
-                  color: GREEN,
-                  fontSize:
-                      ResponsiveWidget.isMediumScreen(context) ? 12.0 : 14),
-              SizedBox(
-                width: SizeConfig.safeBlockVertical * 1,
-              ),
-            ],
-          ),
-          SizedBox(height: 5),
-          itemInCart.productSelectedSku?.color?.name != null
-              ? AppMediumFont(context,
-                  maxLines: 1,
-                  msg: "Color" +
-                      '- ${itemInCart.productSelectedSku?.color?.name}',
-                  color: Theme.of(context).canvasColor,
-                  fontSize: 16.0)
-              : SizedBox(),
-          itemInCart.productSelectedSku?.size?.name != null
-              ? AppMediumFont(context,
-                  maxLines: 1,
-                  msg:
-                      "Size" + '- ${itemInCart.productSelectedSku?.size?.name}',
-                  color: Theme.of(context).canvasColor,
-                  fontSize: 16.0)
-              : SizedBox(),
-          itemInCart.productSelectedSku?.style?.name != null
-              ? AppMediumFont(context,
-                  maxLines: 1,
-                  msg: "Style" +
-                      '- ${itemInCart.productSelectedSku?.style?.name}',
-                  color: Theme.of(context).canvasColor,
-                  fontSize: 16.0)
-              : SizedBox(),
-          itemInCart.productSelectedSku?.materialType?.name != null
-              ? AppMediumFont(context,
-                  maxLines: 2,
-                  msg: "MaterialType" +
-                      '- ${itemInCart.productSelectedSku!.materialType!.name!.length > 35 ? itemInCart.productSelectedSku?.materialType?.name!.replaceRange(35, itemInCart.productSelectedSku?.materialType?.name?.length, '...') : itemInCart.productSelectedSku?.materialType?.name ?? ""}',
-                  color: Theme.of(context).canvasColor,
-                  fontSize: 16.0)
-              : SizedBox(),
-          itemInCart.productSelectedSku?.unitCount?.name != null
-              ? AppMediumFont(context,
-                  color: Theme.of(context).canvasColor,
-                  maxLines: 1,
-                  msg: "UnitCount" +
-                      '- ${itemInCart.productSelectedSku?.unitCount?.name}',
-                  fontSize: 16.0)
-              : SizedBox(),
-          SizedBox(height: 15),
-          GestureDetector(
-            onTap: () async {
-              cartViewData.removeProductFromCart(
-                  context, itemInCart.productDetails?.variantId ?? "", index);
-            },
-            child: Container(
-              padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor,
-                borderRadius: BorderRadius.circular(2),
-              ),
-              child: AppRegularFont(context,
-                  color: Theme.of(context).hintColor,
-                  msg: StringConstant.remove,
-                  fontSize: 14.0),
+              onTap: () async {
+                if (cartViewData.deactiveQuantity == false) {
+                  cartViewData.deactiveQuantity = true;
+                  itemInCart.cartQuantity =
+                      (itemInCart.cartQuantity ?? 1) - 1;
+                  if (itemInCart.cartQuantity! > 0) {
+                    cartViewData.addToCart(
+                        itemInCart.productId ?? '',
+                        itemInCart.cartQuantity.toString(),
+                        itemInCart.productDetails?.variantId ?? '',
+                        true,
+                        context,
+                            (result, isSuccess) {});
+                  } else {
+                    if (itemInCart.cartQuantity == 0)
+                      cartViewData.removeProductFromCart(
+                          context,
+                          itemInCart.productDetails?.variantId ?? "",
+                          index);
+                  }
+                }
+              },
             ),
           ),
-          SizedBox(height: 5),
-        ],
-      )
+          Expanded(
+            flex: 50,
+            child: AppBoldFont(context,
+                textAlign: TextAlign.center,
+                color: Theme.of(context).canvasColor,
+                msg: itemInCart.cartQuantity.toString(),
+                fontSize: 16.0),
+          ),
+          Expanded(
+            flex: 25,
+            child: GestureDetector(
+              child: Container(
+                  child: Image.asset(AssetsConstants.ic_addIcon,height: 18,
+                    color: Theme.of(context).canvasColor,fit: BoxFit.fill,)),
+              onTap: () {
+                if (cartViewData.activeQuantity == false) {
+                  if ((itemInCart.productDetails?.quantityLeft)! >
+                      (itemInCart.cartQuantity ?? 1)) {
+                    cartViewData.activeQuantity = true;
+                    itemInCart.cartQuantity =
+                        (itemInCart.cartQuantity ?? 1) + 1;
+                    cartViewData.addToCart(
+                        itemInCart.productId ?? '',
+                        itemInCart.cartQuantity.toString() ?? '1',
+                        itemInCart.productDetails?.variantId ?? '',
+                        true,
+                        context,
+                            (result, isSuccess) {});
+                  } else {
+                    ToastMessage.message(
+                        "Sorry only ${itemInCart.productDetails?.quantityLeft} quantity is left.",
+                        context);
+                  }
+                }
+              },
+            ),
+          ),
+        ]),
+      ):Container(),
+      SizedBox(width: 4)
     ],
   );
 }
+
+
 // price details card view .......
 Widget pricedetails(BuildContext context, CartViewModel cartViewData) {
   return Column(
       children: cartViewData.cartListData!.checkoutDetails!.map((e) {
-    return Container(
+        return Container(
+          padding: EdgeInsets.only(left: 12,right: 12),
+          width: ResponsiveWidget.isMediumScreen(context)
+              ? SizeConfig.screenWidth
+              : SizeConfig.screenWidth *0.36,
 
-      width: ResponsiveWidget.isMediumScreen(context)
-          ? SizeConfig.screenWidth
-          : SizeConfig.screenWidth / 3.22,
-      color: Theme.of(context).cardColor,
-      child: Column(
-        children: [
-          SizedBox(height: 8),
-          priceDetailWidget(context, e.name ?? "", e.value ?? ""),
-          SizedBox(height: 8)
-        ],
-      ),
-    );
-  }).toList());
+          child: Column(
+            children: [
+              SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  e.name  == "Total Amount"
+                      ? AppBoldFont(context,
+                      msg: e.name! + ":",
+                      fontSize: 16.0,
+                      color: Theme.of(context).canvasColor)
+                      : AppRegularFont(context,
+                      msg: e.name! + ":",
+                      fontSize: 16.0,
+                      color: Theme.of(context).canvasColor),
+                  e.name! == "Total Amount"
+                      ? AppBoldFont(context,
+                      msg: "₹" + e.value!,
+                      fontSize: 16.0,
+                      color: Theme.of(context).canvasColor.withOpacity(0.9))
+                      : AppRegularFont(context,
+                      msg: (e.name! == "Total items" ? "" : "₹") + e.value!,
+                      fontSize: 16.0,
+                      color: e.name!.contains("Discount")
+                          ? Colors.green
+                          : Theme.of(context).canvasColor.withOpacity(0.8))
+                ],
+              ),
+            ],
+          ),
+        );
+      }).toList());
 }
+
 // address detail view......
 Widget addressDetails(
     BuildContext context, String? addressId, CartViewModel cartViewData) {
   return Container(
-    // height: ResponsiveWidget.isMediumScreen(context)
-    //     ?ResponsiveWidget.isSmallScreen(context) ?SizeConfig.screenHeight-290:SizeConfig.screenHeight/7.8:SizeConfig.screenHeight/2,
-    decoration: BoxDecoration(borderRadius: BorderRadius.circular(5)),
+    height: ResponsiveWidget.isMediumScreen(context)
+        ?ResponsiveWidget.isSmallScreen(context) ?SizeConfig.screenHeight- 350:SizeConfig.screenHeight/7.8: 165.0*cartViewData.addressListModel!.length,
+    decoration: BoxDecoration( color: Theme.of(context).cardColor,
+      borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(8),
+          bottomLeft: Radius.circular(8)
+      ),
+    ),
     margin: EdgeInsets.only(bottom: 8),
-    width: ResponsiveWidget.isMediumScreen(context) ? SizeConfig.screenWidth : SizeConfig.screenWidth * 0.30,
+    width: ResponsiveWidget.isMediumScreen(context) ? SizeConfig.screenWidth/1.05 : SizeConfig.screenWidth * 0.30,
     child: ListView.builder(
         scrollDirection: Axis.vertical,
-        physics: NeverScrollableScrollPhysics(),
+        physics:NeverScrollableScrollPhysics(),
         shrinkWrap: true,
+        padding: EdgeInsets.all(8),
         itemCount: cartViewData.addressListModel?.length,
         itemBuilder: (context, index) {
           final addressItem = cartViewData.addressListModel?[index];
           cartViewData.selectedAddress =
-              cartViewData.addressListModel?[cartViewData.selectedAddressIndex];
+          cartViewData.addressListModel?[cartViewData.selectedAddressIndex];
           return Stack(
             children: [
               Container(
-                width: ResponsiveWidget.isMediumScreen(context)
-                    ? SizeConfig.screenWidth
-                    : SizeConfig.screenWidth * 0.30,
+                height: 150,
                 padding: EdgeInsets.only(left: 8, top: 8, bottom: 10),
-                margin: EdgeInsets.only(
-                    left: ResponsiveWidget.isMediumScreen(context) ? 0 : 5,
-                    right: ResponsiveWidget.isMediumScreen(context) ? 0 : 5,
-                    top: 8),
-                color: Theme.of(context).cardColor,
+                margin: EdgeInsets.only(bottom: 5),
+                color: Theme.of(context).scaffoldBackgroundColor.withOpacity(0.5),
                 child: Row(
                   children: [
                     GestureDetector(
                       onTap: () {
                         cartViewData.selectedAddressIndex = index;
                         cartViewData.selectedAddress =
-                            cartViewData.addressListModel?[
-                                cartViewData.selectedAddressIndex];
+                        cartViewData.addressListModel?[
+                        cartViewData.selectedAddressIndex];
                         addressId = cartViewData.selectedAddress?.addressId;
                       },
                       child: radioTileButton(
@@ -724,20 +779,20 @@ Widget addressDetails(
                         cartViewData.selectedAddressIndex = index;
 
                         cartViewData.selectedAddress =
-                            cartViewData.addressListModel?[
-                                cartViewData.selectedAddressIndex];
+                        cartViewData.addressListModel?[
+                        cartViewData.selectedAddressIndex];
                         addressId = cartViewData.selectedAddress?.addressId;
                       },
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Container(
-                            width: ResponsiveWidget.isMediumScreen(context) ? SizeConfig.screenWidth/1.14:SizeConfig.screenWidth * 0.25,
+                            width: ResponsiveWidget.isMediumScreen(context) ? SizeConfig.screenWidth/1.5:SizeConfig.screenWidth * 0.25,
                             child: AppMediumFont(context,
                                 msg: (addressItem?.firstName?.toUpperCase() ??
-                                        '') +
+                                    '') +
                                     " " +
                                     (addressItem?.lastName?.toUpperCase() ?? ''),
                                 color: Theme.of(context).canvasColor,
@@ -745,7 +800,7 @@ Widget addressDetails(
                           ),
                           Container(
                             margin: EdgeInsets.only(top: 1),
-                            width:ResponsiveWidget.isMediumScreen(context) ? SizeConfig.screenWidth/1.14 : SizeConfig.screenWidth * 0.25,
+                            width:ResponsiveWidget.isMediumScreen(context) ? SizeConfig.screenWidth/1.5 : SizeConfig.screenWidth * 0.25,
                             child: AppRegularFont(context,
                                 msg: (addressItem?.firstAddress ?? '') +
                                     ", " +
@@ -769,34 +824,34 @@ Widget addressDetails(
                 ),
               ),
               Positioned(
-                  bottom: 0,
+                  bottom: 10,
                   right: 20,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.delete,
-                      size: 18,
-                      color: Theme.of(context).primaryColor,
+                  child: InkWell(
+                    child: Text(
+                      StringConstant.delete,
+                      style: TextStyle(
+                        decoration: TextDecoration.underline,
+                        decorationColor: Theme.of(context).primaryColor,
+                        decorationThickness: 1,
+                        fontSize: 14.0,
+                        color: Theme.of(context).primaryColor,
+                      ),
                     ),
-                    onPressed: () {
+                    onTap: () {
                       cartViewData
                           .deleteAddress(
-                              context,
-                              cartViewData.addressListModel?[index].addressId ??
-                                  "")
+                          context,
+                          cartViewData.addressListModel?[index].addressId ??
+                              "")
                           .whenComplete(
                               () => {cartViewData.selectedAddressIndex = 0});
                     },
                   )),
               Positioned(
-                  bottom: 0,
-                  right: 50,
-                  child: IconButton(
-                      icon: Icon(
-                        Icons.edit,
-                        size: 18,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                      onPressed: () {
+                  top: 5,
+                  right: 30,
+                  child: InkWell(child: Image.asset(AssetsConstants.icEdit,height: 15,fit: BoxFit.fill,color: Theme.of(context).canvasColor,),
+                      onTap: () {
                         showDialog(
                             context: context,
                             builder: (BuildContext context) {
@@ -811,13 +866,13 @@ Widget addressDetails(
                                 mobileNumber: cartViewData
                                     .addressListModel?[index].mobileNumber,
                                 email:
-                                    cartViewData.addressListModel?[index].email,
+                                cartViewData.addressListModel?[index].email,
                                 firstAddress: cartViewData
                                     .addressListModel?[index].firstAddress,
                                 secondAddress: cartViewData
                                     .addressListModel?[index].secondAddress,
                                 state:
-                                    cartViewData.addressListModel?[index].state,
+                                cartViewData.addressListModel?[index].state,
                                 cityName: cartViewData
                                     .addressListModel?[index].cityName,
                                 pinCode: cartViewData
@@ -853,7 +908,7 @@ radioTileButton(BuildContext context, int? selectedAddressIndex, int index) {
 // category Product List........
 Widget CategoryList(BuildContext context, CartViewModel cartViewModel) {
   return Container(
-    margin: EdgeInsets.zero,
+    margin: EdgeInsets.only(top:  ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
     color: Theme.of(context).cardColor.withOpacity(0.6),
     padding: EdgeInsets.only(
         left: ResponsiveWidget.isMediumScreen(context)
@@ -896,8 +951,9 @@ Widget CategoryList(BuildContext context, CartViewModel cartViewModel) {
                                   ?.length ==
                               0
                           ? context.router.push(SubcategoryProductList(
-                              SubcategoryProductName: cartViewModel
-                                  .categoryListModel?[position].categoryId))
+                        SubcategoryProductName: cartViewModel.categoryListModel?[position].categoryTitle?.replaceAll(' ', '-'),
+                        pd: ["${cartViewModel.categoryListModel?[position].categoryId}",""],
+                      ))
                           : context.router.push(CategorySubcategoryProduct(
                               CategoryName: cartViewModel
                                   .categoryListModel?[position].categoryId));
@@ -971,6 +1027,7 @@ Widget CategoryList(BuildContext context, CartViewModel cartViewModel) {
 //OfferList.......
 Widget offerList(BuildContext context) {
   return Container(
+    margin: EdgeInsets.only(top:  ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
     padding: EdgeInsets.only(
       left: ResponsiveWidget.isMediumScreen(context)
           ? 16
@@ -1164,7 +1221,7 @@ Widget  discountView(CartViewModel cartview) {
       return Container(
         width: SizeConfig.screenWidth,
         color: Theme.of(context).primaryColor.withOpacity(0.5),
-        margin: EdgeInsets.zero,
+        margin: EdgeInsets.only(top:  ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
         height: ResponsiveWidget.isMediumScreen(context) ?  ResponsiveWidget.isSmallScreen(context)
             ?300:SizeConfig.screenHeight/3.5: SizeConfig.screenWidth * 0.29,
         padding: EdgeInsets.only(
@@ -1219,8 +1276,11 @@ Widget  discountView(CartViewModel cartview) {
                           onTap: () {
                             closeAppbarProperty();
 
-                            context.router.push(ProductListRestaurantGallery(
-                                discountdata: ["${cartview.offerDiscountModel?[position].categoryId}","${cartview.offerDiscountModel?[position].discountPercentage}"]
+                            context.router.push(ProductListGallery(
+                                discountdata: [
+                                  "${cartview.offerDiscountModel?[position].title?.replaceAll(' ', '-')}",
+
+                                  "${cartview.offerDiscountModel?[position].categoryId}","${cartview.offerDiscountModel?[position].discountPercentage}"]
                             ));
                           },
                           child: Container(
@@ -1259,7 +1319,7 @@ Widget gallery(BuildContext context,List images){
   return  Center(
     child: Container(
       width: SizeConfig.screenWidth,
-      margin: EdgeInsets.zero,
+      margin: EdgeInsets.only(top:  ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
       color: Theme.of(context)
           .cardColor
           .withOpacity(0.6),
@@ -1383,9 +1443,8 @@ Widget recommended(BuildContext context,controller,cartViewModel){
                         return InkWell(
                           onTap: () {
                             closeAppbarProperty();
-
                             context.router.push(ProductDetailPage(
-                              productName: '${cartViewModel.recommendedView?[position].productName?.replaceAll(' ', '')}',
+                              productName: '${cartViewModel.recommendedView?[position].productName?.replaceAll(' ', '-')}',
                               productdata: [
                                 '${cartViewModel.recommendedView?[position].productId}',
                                 '${cartViewModel.cartItemCount}',
@@ -1502,7 +1561,7 @@ Widget recentView(BuildContext context,controller1,cartViewModel){
                             closeAppbarProperty();
 
                             context.router.push(ProductDetailPage(
-                              productName: '${cartViewModel.recentView?[position].productName}',
+                              productName: '${cartViewModel.recentView?[position].productDetails?.productVariantTitle.replaceAll(' ', '-')}',
                               productdata: [
                                 '${cartViewModel.recentView?[position].productId}',
                                 '${cartViewModel.cartItemCount}',

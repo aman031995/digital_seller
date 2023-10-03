@@ -14,6 +14,7 @@ Widget emailNotificationUpdatePage(BuildContext context, TextEditingController e
     return Container(
       height: ResponsiveWidget.isMediumScreen(context) ?220: SizeConfig.screenWidth * 0.2,
       width: SizeConfig.screenWidth,
+      margin: EdgeInsets.only(top:  ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
       padding: EdgeInsets.only(left: ResponsiveWidget.isMediumScreen(context) ?8:0,right: ResponsiveWidget.isMediumScreen(context) ?8:0),
       color: Theme.of(context).primaryColor.withOpacity(0.4),
       child: Column(

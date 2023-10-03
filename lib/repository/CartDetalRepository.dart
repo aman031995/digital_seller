@@ -10,7 +10,6 @@ import 'package:TychoStream/network/CacheDataManager.dart';
 import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:TychoStream/model/data/product_list_model.dart';
 import 'package:TychoStream/model/data/category_product_model.dart';
@@ -169,42 +168,42 @@ class CartDetailRepository {
           //   expirationMonth: 04,
           //   expirationYear: 2025,
           // ));
-           await Stripe.instance.createPaymentMethod(
-              params:
-              PaymentMethodParams.card(
-                paymentMethodData: PaymentMethodData(
-                  billingDetails:BillingDetails(  name: 'Flutter Stripe',
-                                               email: 'email@stripe.com',
-                                               phone: '+48888000888',
-                                               address: Address(
-                                                 city: 'Houston',
-                                                 country: 'US',
-                                                 line1: '1459  Circle Drive',
-                                                 line2: '',
-                                                 state: 'Texas',
-                                                 postalCode: '77063',
-                                               )),
-                  shippingDetails: ShippingDetails(
-                    name: "sadafa",
-                    carrier: "sasaf",
-                    phone: "9898989898",
-                    trackingNumber: "12121",
-                      address: Address(
-                        city: 'Houston',
-                        country: 'US',
-                        line1: '1459  Circle Drive',
-                        line2: '',
-                        state: 'Texas',
-                        postalCode: '77063',
-                      )
-
-                  )
-                ),
-              ),
-             options: PaymentMethodOptions(
-               setupFutureUsage: PaymentIntentsFutureUsage.OffSession,
-             ),
-           );
+          //  await Stripe.instance.createPaymentMethod(
+          //     params:
+          //     PaymentMethodParams.card(
+          //       paymentMethodData: PaymentMethodData(
+          //         billingDetails:BillingDetails(  name: 'Flutter Stripe',
+          //                                      email: 'email@stripe.com',
+          //                                      phone: '+48888000888',
+          //                                      address: Address(
+          //                                        city: 'Houston',
+          //                                        country: 'US',
+          //                                        line1: '1459  Circle Drive',
+          //                                        line2: '',
+          //                                        state: 'Texas',
+          //                                        postalCode: '77063',
+          //                                      )),
+          //         shippingDetails: ShippingDetails(
+          //           name: "sadafa",
+          //           carrier: "sasaf",
+          //           phone: "9898989898",
+          //           trackingNumber: "12121",
+          //             address: Address(
+          //               city: 'Houston',
+          //               country: 'US',
+          //               line1: '1459  Circle Drive',
+          //               line2: '',
+          //               state: 'Texas',
+          //               postalCode: '77063',
+          //             )
+          //
+          //         )
+          //       ),
+          //     ),
+          //    options: PaymentMethodOptions(
+          //      setupFutureUsage: PaymentIntentsFutureUsage.OffSession,
+          //    ),
+          //  );
            responseHandler(paymentIntent);
 
 

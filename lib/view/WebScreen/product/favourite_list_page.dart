@@ -1,4 +1,3 @@
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/AppIndicator.dart';
@@ -154,7 +153,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                     physics: NeverScrollableScrollPhysics(),
                                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                                       crossAxisCount:ResponsiveWidget.isSmallScreen(context) ? 2:3,
-                                                      childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.85:0.80,mainAxisSpacing: 5,crossAxisSpacing: 5
+                                                      childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.6:0.80,mainAxisSpacing: 5,crossAxisSpacing: 5
                                                     ),
                                                     itemCount: viewmodel
                                                         .productListModel
@@ -166,7 +165,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                           viewmodel
                                                               .productListModel
                                                               ?.productList?[index];
-                                                      return productListRestaurantItems(
+                                                      return productListItems(
                                                           context,
                                                           productListData,
                                                           index,
@@ -190,7 +189,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                     gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                                                         mainAxisSpacing:
                                                         10,crossAxisSpacing: 10,
-                                                            mainAxisExtent: 300,
+                                                            mainAxisExtent: 500,
                                                             maxCrossAxisExtent:
                                                                 400),
                                                     itemCount: viewmodel
@@ -203,7 +202,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                           cartViewModel
                                                               .productListModel
                                                               ?.productList?[index];
-                                                      return productListRestaurantItems(
+                                                      return productListItems(
                                                           context,
                                                           productListData,
                                                           index,

@@ -143,7 +143,6 @@ class ProductSkuView extends StatelessWidget {
               ]
           ));
 
-      AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.color?.name}', fontSize: 18);
     } else if (e.variationKey == 'unit_count') {
       return RichText(
           text: TextSpan(

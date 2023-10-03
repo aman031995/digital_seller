@@ -1,12 +1,8 @@
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/model/data/AppConfigModel.dart';
 import 'package:TychoStream/services/global_variable.dart';
-import 'package:TychoStream/utilities/AppColor.dart';
-import 'package:TychoStream/utilities/AppIndicator.dart';
 import 'package:TychoStream/utilities/AppTextButton.dart';
 import 'package:TychoStream/utilities/AppTextField.dart';
-import 'package:TychoStream/utilities/AppToast.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/StringConstants.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
@@ -222,7 +218,7 @@ PreferredSize getAppBar(
                           color: Colors.red,
                         ),
                         child: Text(
-                          notificationViewModel.notificationItem ?? '',
+                          notificationViewModel.notificationItem,
                           style: TextStyle(color: Theme.of(context).hintColor, fontSize: 12),
                         ),
                       ))
@@ -309,11 +305,11 @@ getPages(BottomNavigation navItem, BuildContext context,
     closeAppbarProperty();
 
 
-    return context.router.push(HomePageRestaurant());
+    return context.router.push(HomePageWeb());
   } else if (url.path == RoutesName.productPage) {
     closeAppbarProperty();
 
-    return context.router.push(ProductListRestaurantGallery());
+    return context.router.push(ProductListGallery());
   } else if (url.path == RoutesName.profilePage) {                      closeAppbarProperty();
 
 
@@ -444,7 +440,7 @@ PreferredSize homePageTopBar(BuildContext context,
                             color: Colors.red,
                           ),
                           child: Text(
-                            itemCount ?? '',
+                            itemCount,
                             style: TextStyle(color: Theme.of(context).hintColor, fontSize: 10),
                           ),
                         ))

@@ -151,17 +151,30 @@ Widget AddressButton(BuildContext context,GestureTapCallback? ontap){
   return GestureDetector(
     onTap: ontap,
     child: Container(
-      width:ResponsiveWidget.isMediumScreen(context)
-          ?SizeConfig.screenWidth/0.5:SizeConfig.screenWidth*0.30,
-      margin: EdgeInsets.only(top:5,bottom: 5,left: 10,right: 10),
-      alignment: Alignment.center,
+      padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,  borderRadius: BorderRadius.circular(5)
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(8),
+              topLeft: Radius.circular(8)
+          ),
+          color: Theme.of(context).canvasColor.withOpacity(0.2))       ,
+      width: ResponsiveWidget.isMediumScreen(context) ? SizeConfig.screenWidth/1.05 : SizeConfig.screenWidth * 0.30,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          AppBoldFont(context, msg: "Delivery Address",fontSize: 16,color: Theme.of(context).canvasColor),
+          Container(
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.circular(5)
+            ),
+            padding: EdgeInsets.all(6),
+            child: AppBoldFont(context,
+                msg: "Add New",fontSize: 16,color: Theme.of(context).hintColor),
+          ),
+        ],
       ),
-      padding: EdgeInsets.only(left: 10,top: 10,bottom: 10),
-
-      child: AppBoldFont(context,
-          msg: "AddAddress",fontSize: 18,color: Theme.of(context).hintColor),
     ),
   );
 }

@@ -1,7 +1,6 @@
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/AssetsConstants.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
@@ -44,19 +43,19 @@ class _LoginUpState extends State<LoginUp> {
 
   @override
   void initState() {
-    getFCMToken();
+  //  getFCMToken();
     homeViewModel.getAppConfig(context);
     super.initState();
   }
 
-  Future<void> getFCMToken() async {
-    try {
-       fcmToken = await FirebaseMessaging.instance.getToken();
-      print('FCM Token: $fcmToken');
-    } catch (e) {
-      print('Error getting FCM token: $e');
-    }
-  }
+  // Future<void> getFCMToken() async {
+  //   try {
+  //      fcmToken = await FirebaseMessaging.instance.getToken();
+  //     print('FCM Token: $fcmToken');
+  //   } catch (e) {
+  //     print('Error getting FCM token: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {

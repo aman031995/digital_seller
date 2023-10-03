@@ -79,7 +79,7 @@ class _ThankYouPageState extends State<ThankYouPage> {
                 ?150:SizeConfig.screenWidth/7.6,
             child: InkWell(
               onTap: () {
-                context.router.push(HomePageWeb());
+                context.router.push(HomePageRestaurant());
               },
               child: Center(
                   child: AppMediumFont(context,

@@ -1,6 +1,5 @@
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/bloc_validation/Bloc_Validation.dart';
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/network/ASResponseModal.dart';
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/network/result.dart';
@@ -29,7 +28,6 @@ import 'package:TychoStream/viewmodel/auth_view_model.dart';
 import 'package:TychoStream/viewmodel/cart_view_model.dart';
 import 'package:TychoStream/viewmodel/notification_view_model.dart';
 import 'package:TychoStream/viewmodel/profile_view_model.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
