@@ -57,6 +57,7 @@ class AuthViewModel with ChangeNotifier {
             if (_userInfoModel?.isEmailVerified == false && _userInfoModel?.isPhoneVerified == false) {
               AppIndicator.disposeIndicator();
               Navigator.pop(context);
+              GlobalVariable.isLogin=true;
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -74,6 +75,7 @@ class AuthViewModel with ChangeNotifier {
             else if (checkPhoneEmailValid == true && loginType == 'phone') {
               AppIndicator.disposeIndicator();
               Navigator.pop(context);
+              GlobalVariable.isLogin=true;
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -92,6 +94,7 @@ class AuthViewModel with ChangeNotifier {
             else if ((_userInfoModel?.isEmailVerified == false && _userInfoModel?.isPhoneVerified == true) && loginType == 'phone') {
               AppIndicator.disposeIndicator();
               Navigator.pop(context);
+              GlobalVariable.isLogin=true;
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -109,6 +112,7 @@ class AuthViewModel with ChangeNotifier {
             else if (_userInfoModel?.isEmailVerified == false && checkPhoneEmailValid == false) {
               AppIndicator.disposeIndicator();
               Navigator.pop(context);
+              GlobalVariable.isLogin=true;
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -129,10 +133,14 @@ class AuthViewModel with ChangeNotifier {
               print('Login api Successfully');
               User();
               AppIndicator.disposeIndicator();
-              product==true? Navigator.pop(context):context.router.push(HomePageWeb());
+
+              product==true? Navigator.pop(context):context.router.push(HomePageRestaurant());
               if(product==true)
               reloadPage();
+
             }
+
+
             notifyListeners();
           }
         });
@@ -140,10 +148,12 @@ class AuthViewModel with ChangeNotifier {
 
   logoutButtonPressed(BuildContext context) async {
     ToastMessage.message("logout user successfully",context);
+
     AppDataManager.deleteSavedDetails();
     CacheDataManager.clearCachedData();
     GlobalVariable.isLogins = false;
-    context.router.push(HomePageWeb());
+    GlobalVariable.isLogin=false;
+    context.router.push(HomePageRestaurant());
   }
 
 // method for user register from api
@@ -220,7 +230,8 @@ class AuthViewModel with ChangeNotifier {
               ToastMessage.message('Login User Successfully',context);
               AppIndicator.disposeIndicator();
               AppDataManager.getInstance.updateUserDetails(_userInfoModel!);
-              product==true?  Navigator.pop(context):context.router.push(HomePageWeb());
+
+              product==true?  Navigator.pop(context):context.router.push(HomePageRestaurant());
               if(product==true)
                 reloadPage();
               notifyListeners();

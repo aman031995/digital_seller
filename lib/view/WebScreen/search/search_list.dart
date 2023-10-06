@@ -3,7 +3,6 @@ import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
-import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -93,10 +92,13 @@ margin: EdgeInsets.only(bottom: 6),
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Container(child: AppMediumFont(context, msg: getNameTitle(item) ?? '', maxLines: 1)),
+                                        Container(
+                                            width: SizeConfig.screenWidth*0.10,
+                                            child: AppMediumFont(context, msg: item?.productName ?? '', maxLines: 1)),
                                         AppRegularFont(context, msg: item?.productDetails?.productDiscountPrice)
                                       ],
                                     )
+
                                   ])));
                     },
                     itemCount: viewmodel.searchDataModel?.productList?.length)

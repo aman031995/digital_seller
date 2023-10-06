@@ -29,13 +29,16 @@ import '../../../AppRouter.gr.dart';
 @RoutePage()
 class CategorySubcategoryProduct extends StatefulWidget {
   final String? CategoryName;
+
   CategorySubcategoryProduct({
     @PathParam('CategoryName') this.CategoryName,
     Key? key,
   }) : super(key: key);
+
   @override
   State<CategorySubcategoryProduct> createState() => _CategorySubcategoryProductState();
 }
+
 class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct> {
   CartViewModel cartViewModel = CartViewModel();
   String? checkInternet;
@@ -51,13 +54,16 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
   void initState() {
     homeViewModel.getAppConfig(context);
     getProduct();
-    notificationViewModel.getNotificationCountText(context);cartViewModel.getCartCount(context);
+    notificationViewModel.getNotificationCountText(context);
+    cartViewModel.getCartCount(context);
     super.initState();
   }
+
   getProduct() {
     cartViewModel.getCategorySubcategoryProductList(
         context, widget.CategoryName ?? "");
   }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -75,12 +81,14 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
               value: notificationViewModel,
               child: Consumer<NotificationViewModel>(
                   builder: (context, model, _) {
+
                     return  ChangeNotifierProvider.value(
                         value: homeViewModel,
                         child: Consumer<HomeViewModel>(builder: (context, s, _) {
                           return GestureDetector(
                               onTap: () {
                                 closeAppbarProperty();
+
                               },
                               child: Scaffold(
                                   appBar: ResponsiveWidget.isMediumScreen(context)
@@ -108,9 +116,13 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                               .canvasColor
                                               .withOpacity(0.6),
                                           builder: (BuildContext context) {
-                                            return LoginUp(product: true);});
+                                            return LoginUp(
+                                              product: true,
+                                            );
+                                          });
                                     } else {
                                       closeAppbarProperty();
+
                                       context.router.push(FavouriteListPage());
                                     }
                                   }, () async {
@@ -120,20 +132,32 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                         null) {
                                       showDialog(
                                           context: context,
-                                          barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
+                                          barrierColor: Theme.of(context)
+                                              .canvasColor
+                                              .withOpacity(0.6),
                                           builder: (BuildContext context) {
-                                            return LoginUp(product: true);});
+                                            return LoginUp(
+                                              product: true,
+                                            );
+                                          });
                                     } else {
                                       closeAppbarProperty();
+
                                       context.router.push(CartDetail(
                                           itemCount:
-                                          '${cartViewModel.cartItemCount}'));}
+                                          '${cartViewModel.cartItemCount}'));
+                                    }
                                   }),
+                                  backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
                                   body: Scaffold(
                                       extendBodyBehindAppBar: true,
                                       key: _scaffoldKey,
-                                      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                                      drawer: ResponsiveWidget.isMediumScreen(context) ? AppMenu() : SizedBox(),
+                                      backgroundColor:
+                                      Theme.of(context).scaffoldBackgroundColor,
+                                      drawer: ResponsiveWidget.isMediumScreen(context)
+                                          ? AppMenu()
+                                          : SizedBox(),
                                       body:viewmodel.CategoryProduct!=null
                                           ?  Stack(
                                           children: [
@@ -142,8 +166,11 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                                   children: [
                                                     SizedBox(height: 20),
                                                     Container(
-                                                        height: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context) ? 150:200 : SizeConfig.screenWidth * 0.16,
-                                                        width: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context) ?SizeConfig.screenWidth/1.08 :SizeConfig.screenWidth/1.03:SizeConfig.screenWidth/1.38,
+                                                        height: ResponsiveWidget.isMediumScreen(
+                                                            context) ?ResponsiveWidget.isSmallScreen(context)
+                                                            ? 150:200 : SizeConfig.screenWidth * 0.16,
+                                                        width: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context)
+                                                            ?SizeConfig.screenWidth/1.08 :SizeConfig.screenWidth/1.03:SizeConfig.screenWidth/1.38,
                                                         margin: EdgeInsets.zero,
                                                         padding: EdgeInsets.zero,
                                                         child: ListView.builder(
@@ -153,27 +180,37 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                                             scrollDirection:
                                                             Axis.horizontal,
                                                             itemCount: viewmodel.CategoryProduct?.subCategoryList?.length,
-                                                            itemBuilder: (context, position) {
+                                                            itemBuilder:
+                                                                (context,
+                                                                position) {
                                                               return InkWell(
                                                                   onTap: () {
                                                                     closeAppbarProperty();
+
                                                                     SessionStorageHelper.clearAll();
+
                                                                     context.router.push(SubcategoryProductList(
                                                                       SubcategoryProductName: viewmodel.CategoryProduct?.subCategoryList?[position].title?.replaceAll(' ', '-'),
-                                                                      pd: ["${ viewmodel.CategoryProduct?.subCategoryList?[position].catId}",""]
+                                                                      pd: ["${ viewmodel.CategoryProduct?.subCategoryList?[position].catId}",""],
+
                                                                     ));
                                                                   },
-                                                                  child: Container(
+                                                                  child:
+                                                                  Container(
                                                                       color: Theme.of(context).cardColor,
                                                                       padding: EdgeInsets.all(15),
                                                                       margin: EdgeInsets.only(
-                                                                          right: ResponsiveWidget.isMediumScreen(context) ? 8 : 18),
+                                                                          right: ResponsiveWidget.isMediumScreen(
+                                                                              context)
+                                                                              ? 8
+                                                                              : 18),
                                                                       child: Column(
                                                                           mainAxisAlignment: MainAxisAlignment.start,
                                                                           crossAxisAlignment: CrossAxisAlignment.center,
                                                                           children: [
                                                                             CircleAvatar(
-                                                                              radius: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context) ? 50:70 : SizeConfig.screenWidth * 0.055,
+                                                                              radius: ResponsiveWidget.isMediumScreen(context) ?ResponsiveWidget.isSmallScreen(context)
+                                                                                  ? 50:70 : SizeConfig.screenWidth * 0.055,
                                                                               child: CachedNetworkImage(
                                                                                   imageUrl: viewmodel.CategoryProduct?.subCategoryList?[position].imageUrl ?? "",
                                                                                   fit: BoxFit.fill,
@@ -182,13 +219,16 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                                                                       shape: BoxShape.circle,
                                                                                       image: DecorationImage(
                                                                                         image: imageProvider,
-                                                                                        fit: BoxFit.fill))
+                                                                                        fit: BoxFit.fill,
+                                                                                      ),
+                                                                                    ),
                                                                                   ),
                                                                                   placeholder: (context, url) => Center(child: CircularProgressIndicator(color: Colors.grey,strokeWidth: 2))),
                                                                             ),
                                                                             SizedBox(height: SizeConfig.screenWidth*0.01),
-                                                                            AppBoldFont(maxLines:
-                                                                            1,
+                                                                            AppBoldFont(
+                                                                                maxLines:
+                                                                                1,
                                                                                 context,
                                                                                 msg: viewmodel.CategoryProduct?.subCategoryList?[position].title ??
                                                                                     "",
@@ -196,8 +236,10 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                                                                     ? 14
                                                                                     : 18,
                                                                                 color:
-                                                                                Theme.of(context).canvasColor)
-                                                                          ]))
+                                                                                Theme.of(context).canvasColor),
+                                                                          ]
+                                                                      )
+                                                                  )
                                                               );
                                                             })),
                                                     ResponsiveWidget.isMediumScreen(context)
@@ -278,14 +320,14 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                                                           AssetsConstants.ic_noProductFound,
                                                                           height: SizeConfig.screenHeight * 0.2,
                                                                           width: 300,
-                                                                        )
+                                                                        ),
                                                                       ),
                                                                       AppBoldFont(
                                                                           context,msg: StringConstant.nodatafound,
                                                                           fontSize: 16,
                                                                           color: Theme.of(context).canvasColor,textAlign: TextAlign.center),
-                                                                    ]
-                                                                  )
+                                                                    ],
+                                                                  ),
                                                                 ) : Container(
                                                                     width:SizeConfig.screenWidth/1.38,
                                                                     child: GridView.builder(
@@ -315,7 +357,7 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                                               ])]
                                                     ),
                                                     ResponsiveWidget.isMediumScreen(context)
-                                                        ? SizedBox(height:ResponsiveWidget.isSmallScreen(context)
+                                                        ?   SizedBox(height:ResponsiveWidget.isSmallScreen(context)
                                                         ? 50:100)
                                                         : SizedBox(height: 120),
                                                     ResponsiveWidget.isMediumScreen(context)
@@ -326,9 +368,11 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                             ResponsiveWidget.isMediumScreen(context)
                                                 ? Container()
                                                 : GlobalVariable.isnotification == true
-                                                ? Positioned(
+                                                ?    Positioned(
                                                 top:  0,
-                                                right:SizeConfig.screenWidth * 0.20,
+                                                right:  SizeConfig
+                                                    .screenWidth *
+                                                    0.20,
                                                 child: notification(notificationViewModel,context,_scrollController)):Container(),
                                             ResponsiveWidget.isMediumScreen(context)
                                                 ? Container()
@@ -336,14 +380,16 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                                 ? Positioned(
                                                 top: 0,
                                                 right: 180,
-                                                child: profile(context, setState, profileViewModel))
+                                                child: profile(context, setState,
+                                                    profileViewModel))
                                                 : Container(),
                                             ResponsiveWidget.isMediumScreen(context)
                                                 ? Container()
                                                 : GlobalVariable.isSearch == true
                                                 ? Positioned(
                                                 top: 1,
-                                                right: SizeConfig.screenWidth * 0.20,
+                                                right: SizeConfig.screenWidth *
+                                                    0.20,
                                                 child: searchList(
                                                     context,
                                                     homeViewModel,
@@ -351,7 +397,8 @@ class _CategorySubcategoryProductState extends State<CategorySubcategoryProduct>
                                                     searchController!,
                                                     cartViewModel.cartItemCount))
                                                 : Container()
-                                          ]) :Center(child: ThreeArchedCircle(size: 45.0),
+                                          ]) :Center(
+                                        child: ThreeArchedCircle(size: 45.0),
                                       ))));}));
                   }));
         }));

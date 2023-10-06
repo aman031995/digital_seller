@@ -56,7 +56,7 @@ class _SignUpState extends State<SignUp> {
             AlertDialog(
                   elevation: 10,
                   titlePadding: EdgeInsets.zero,
-                insetPadding: EdgeInsets.all(10),
+                insetPadding: EdgeInsets.all(ResponsiveWidget.isSmallScreen(context) ?10:130),
                 actionsPadding: EdgeInsets.zero,
                 contentPadding: EdgeInsets.zero,
                 backgroundColor:Theme.of(context).cardColor,

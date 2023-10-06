@@ -106,7 +106,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
         titlePadding: EdgeInsets.zero,
         backgroundColor: Theme.of(context).cardColor,
         contentPadding: EdgeInsets.zero,
-        insetPadding: EdgeInsets.all(10),
+        insetPadding: EdgeInsets.all(ResponsiveWidget.isSmallScreen(context) ?10:130),
 
         content: verificationSection(authVM,mobileOTPVerificaton!));
   }

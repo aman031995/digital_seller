@@ -17,8 +17,6 @@ import 'package:TychoStream/viewmodel/sociallogin_view_model.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'dart:html' as html;
 
-import 'network/NetworkConstants.dart';
-
 Future<void> main() async {
  // Stripe.publishableKey = "pk_test_51NXhtjSJK48GkIWFjJzBm88uzgrwb7i4aIyls9YoPHT5IvYAV9rMnlEW0U8AUY1VpIJB3ZOBFTFdSFuMYnxM0fkK00KqwNEEeH";
   setPathUrlStrategy();
@@ -29,30 +27,18 @@ Future<void> main() async {
   // await Stripe.instance.applySettings();
   await Firebase.initializeApp(
       options: FirebaseOptions(
-        //production
-          // apiKey: "AIzaSyCJld8j8yV8TC-PeC1XpqvThaVTYvI6bbw",
-          // authDomain: "digital-fashion-seller.firebaseapp.com",
-          // projectId: "digital-fashion-seller",
-          // storageBucket: "digital-fashion-seller.appspot.com",
-          // messagingSenderId: "986127637622",
-          // appId: "1:986127637622:web:0ac78b2a3626755edfd357",
-          // measurementId: "G-B37TDNX53B"
-
-//stagging
-          apiKey: "AIzaSyBaAbG2eNrQR2e1JmJcLj0N4QoKSv59Sb0",
-          authDomain: "tychostreams.firebaseapp.com",
-          projectId: "tychostreams",
-          storageBucket: "tychostreams.appspot.com",
-          messagingSenderId: "746850038788",
-          appId: "1:746850038788:web:0e231dc5e9ead255407151",
-          measurementId: "G-2Q4LD5W403"
+          apiKey: "AIzaSyCJld8j8yV8TC-PeC1XpqvThaVTYvI6bbw",
+          authDomain: "digital-fashion-seller.firebaseapp.com",
+          projectId: "digital-fashion-seller",
+          storageBucket: "digital-fashion-seller.appspot.com",
+          messagingSenderId: "986127637622",
+          appId: "1:986127637622:web:0ac78b2a3626755edfd357",
+          measurementId: "G-B37TDNX53B"
 
   ));
-
-  // html.window.onPopState.listen((event) {
-  //   html.window.location.reload();
-  // });
-
+  html.window.onPopState.listen((event) {
+    html.window.location.reload();
+  });
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -98,8 +84,6 @@ class _MyAppState extends State<MyApp> {
               final secondaryColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.secondaryColor?.hex;
               final txtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.textColor?.hex;
               final buttonTxtColor = viewmodel.appConfigModel?.androidConfig?.appTheme?.buttonTextColor?.hex;
-              // final appCat = viewmodel.appConfigModel?.appCatTypes?[0];
-              // NetworkConstants.updateBaseUrl('${appCat?.baseUrl}');
               return MaterialApp.router(
                 title:StringConstant.kappName,
                   theme: ThemeData(

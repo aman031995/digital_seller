@@ -360,7 +360,7 @@ PreferredSize homePageTopBar(BuildContext context,
                 SizedBox(width: 5),
                 InkWell(
                     onTap: () {
-                      context.router.push(SearchPage());
+                      context.pushRoute(SearchPage());
                     },
                     child:Container(
                         height: 35,

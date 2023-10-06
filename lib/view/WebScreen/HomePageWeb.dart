@@ -25,6 +25,7 @@ import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import '../../AppRouter.gr.dart';
 
+
 @RoutePage()
 class HomePageWeb extends StatefulWidget {
   const HomePageWeb({Key? key}) : super(key: key);
@@ -71,7 +72,7 @@ class _HomePageWebState extends State<HomePageWeb> {
     homeViewModel.getAppConfig(context);
     cartViewModel.getCartCount(context);
     cartViewModel.getProductCategoryList(context,1);
-    cartViewModel.getRecommendedView(context);
+    cartViewModel.getRecommendedViewData(context);
     cartViewModel.getOfferDiscount(context);
     notificationViewModel.getNotificationCountText(context);
     super.initState();
@@ -81,7 +82,7 @@ class _HomePageWebState extends State<HomePageWeb> {
     GlobalVariable.names = sharedPreferences.get('name').toString();
     if (sharedPreferences.get('token') != null) {
       cartViewModel.getRecentView(context);
-      profileViewModel.getProfileDetail(context);
+      profileViewModel.getProfileDetails(context);
     }
   }
   @override
@@ -143,6 +144,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                                         null) {
                                       showDialog(
                                           context: context,
+                                          barrierColor: Theme.of(context)
+                                              .canvasColor
+                                              .withOpacity(0.6),
                                           builder: (BuildContext context) {
                                             return LoginUp(
                                               product: true,
@@ -150,7 +154,9 @@ class _HomePageWebState extends State<HomePageWeb> {
                                           });
                                     } else {
                                       closeAppbarProperty();
-                                      context.router.push(CartDetail(itemCount: '${cartViewModel.cartItemCount}'));
+                                      context.router.push(CartDetail(
+                                          itemCount:
+                                              '${cartViewModel.cartItemCount}'));
                                     }
                                   }),
                             body: Scaffold(

@@ -3,7 +3,6 @@ class AppConfigModel {
   String? clientId;
   String? appId;
   String? appName;
-  List<AppCatTypes>? appCatTypes;
   String? appType;
   String? fileBaseUrl;
   AndroidConfig? androidConfig;
@@ -24,12 +23,6 @@ class AppConfigModel {
     clientId = json['clientId'];
     appId = json['appId'];
     appName = json['appName'];
-    if (json['appCatTypes'] != null) {
-      appCatTypes = <AppCatTypes>[];
-      json['appCatTypes'].forEach((v) {
-        appCatTypes!.add(new AppCatTypes.fromJson(v));
-      });
-    }
     appType = json['appType'];
     fileBaseUrl = json['fileBaseUrl'];
     androidConfig = json['androidConfig'] != null
@@ -44,40 +37,12 @@ class AppConfigModel {
     data['clientId'] = this.clientId;
     data['appId'] = this.appId;
     data['appName'] = this.appName;
-    if (this.appCatTypes != null) {
-      data['appCatTypes'] = this.appCatTypes!.map((v) => v.toJson()).toList();
-    }
     data['appType'] = this.appType;
     data['fileBaseUrl'] = this.fileBaseUrl;
     if (this.androidConfig != null) {
       data['androidConfig'] = this.androidConfig!.toJson();
     }
     data['iosConfig'] = this.iosConfig;
-    return data;
-  }
-}
-
-class AppCatTypes {
-  String? appCatTypeId;
-  String? appCatType;
-  String? icon;
-  String? baseUrl;
-
-  AppCatTypes({this.appCatTypeId, this.appCatType, this.icon, this.baseUrl});
-
-  AppCatTypes.fromJson(Map<String, dynamic> json) {
-    appCatTypeId = json['appCatTypeId'];
-    appCatType = json['appCatType'];
-    icon = json['icon'];
-    baseUrl = json['baseUrl'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['appCatTypeId'] = this.appCatTypeId;
-    data['appCatType'] = this.appCatType;
-    data['icon'] = this.icon;
-    data['baseUrl'] = this.baseUrl;
     return data;
   }
 }
@@ -232,7 +197,13 @@ class AppTheme {
   ThemeColor? textColor;
   ThemeColor? buttonTextColor;
 
-  AppTheme({this.themeColor, this.primaryColor, this.secondaryColor, this.textColor, this.buttonTextColor});
+  AppTheme(
+      {this.themeColor,
+        this.primaryColor,
+        this.secondaryColor,
+        this.textColor,
+        this.buttonTextColor});
+
   AppTheme.fromJson(Map<String, dynamic> json) {
     themeColor = json['themeColor'] != null ? new ThemeColor.fromJson(json['themeColor']) : null;
     primaryColor = json['primaryColor'] != null ? new ThemeColor.fromJson(json['primaryColor']) : null;
@@ -283,6 +254,7 @@ class ThemeColor {
 
 class FontStyle {
   String? fontFamily;
+
   FontStyle({this.fontFamily});
 
   FontStyle.fromJson(Map<String, dynamic> json) {
@@ -339,6 +311,7 @@ class SocialMedia {
 
 class SocialMediaUrl {
   String? url;
+
   SocialMediaUrl({this.url});
 
   SocialMediaUrl.fromJson(Map<String, dynamic> json) {
@@ -354,6 +327,7 @@ class SocialMediaUrl {
 
 class Localization {
   String? text;
+
   Localization({this.text});
 
   Localization.fromJson(Map<String, dynamic> json) {
@@ -370,6 +344,7 @@ class Localization {
 class SocialLogin {
   SocialLoginData? facebook;
   SocialLoginData? google;
+
   SocialLogin({this.facebook, this.google});
 
   SocialLogin.fromJson(Map<String, dynamic> json) {

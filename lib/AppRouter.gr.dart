@@ -125,17 +125,13 @@ abstract class $AppRouter extends _i23.RootStackRouter {
       );
     },
     BannerProductDetailPage.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
       final queryParams = routeData.queryParams;
       final args = routeData.argsAs<BannerProductDetailPageArgs>(
           orElse: () => BannerProductDetailPageArgs(
-                Dp: pathParams.optString('ds'),
-                ProductDetails: queryParams.get('ProductDetails'),
-              ));
+              ProductDetails: queryParams.get('ProductDetails')));
       return _i23.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i10.BannerProductDetailPage(
-          Dp: args.Dp,
           ProductDetails: args.ProductDetails,
           key: args.key,
         ),
@@ -150,17 +146,12 @@ abstract class $AppRouter extends _i23.RootStackRouter {
       );
     },
     BuynowCart.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
       final queryParams = routeData.queryParams;
       final args = routeData.argsAs<BuynowCartArgs>(
-          orElse: () => BuynowCartArgs(
-                productName: pathParams.optString('product'),
-                buynow: queryParams.get('buynow'),
-              ));
+          orElse: () => BuynowCartArgs(buynow: queryParams.get('buynow')));
       return _i23.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i12.BuynowCart(
-          productName: args.productName,
           buynow: args.buynow,
           key: args.key,
         ),
@@ -500,18 +491,15 @@ class AddressListPageArgs {
 class BannerProductDetailPage
     extends _i23.PageRouteInfo<BannerProductDetailPageArgs> {
   BannerProductDetailPage({
-    String? Dp,
     List<String>? ProductDetails,
     _i24.Key? key,
     List<_i23.PageRouteInfo>? children,
   }) : super(
           BannerProductDetailPage.name,
           args: BannerProductDetailPageArgs(
-            Dp: Dp,
             ProductDetails: ProductDetails,
             key: key,
           ),
-          rawPathParams: {'ds': Dp},
           rawQueryParams: {'ProductDetails': ProductDetails},
           initialChildren: children,
         );
@@ -524,12 +512,9 @@ class BannerProductDetailPage
 
 class BannerProductDetailPageArgs {
   const BannerProductDetailPageArgs({
-    this.Dp,
     this.ProductDetails,
     this.key,
   });
-
-  final String? Dp;
 
   final List<String>? ProductDetails;
 
@@ -537,7 +522,7 @@ class BannerProductDetailPageArgs {
 
   @override
   String toString() {
-    return 'BannerProductDetailPageArgs{Dp: $Dp, ProductDetails: $ProductDetails, key: $key}';
+    return 'BannerProductDetailPageArgs{ProductDetails: $ProductDetails, key: $key}';
   }
 }
 
@@ -574,18 +559,15 @@ class BuynowAddressArgs {
 /// [_i12.BuynowCart]
 class BuynowCart extends _i23.PageRouteInfo<BuynowCartArgs> {
   BuynowCart({
-    String? productName,
     List<String>? buynow,
     _i24.Key? key,
     List<_i23.PageRouteInfo>? children,
   }) : super(
           BuynowCart.name,
           args: BuynowCartArgs(
-            productName: productName,
             buynow: buynow,
             key: key,
           ),
-          rawPathParams: {'product': productName},
           rawQueryParams: {'buynow': buynow},
           initialChildren: children,
         );
@@ -598,12 +580,9 @@ class BuynowCart extends _i23.PageRouteInfo<BuynowCartArgs> {
 
 class BuynowCartArgs {
   const BuynowCartArgs({
-    this.productName,
     this.buynow,
     this.key,
   });
-
-  final String? productName;
 
   final List<String>? buynow;
 
@@ -611,7 +590,7 @@ class BuynowCartArgs {
 
   @override
   String toString() {
-    return 'BuynowCartArgs{productName: $productName, buynow: $buynow, key: $key}';
+    return 'BuynowCartArgs{buynow: $buynow, key: $key}';
   }
 }
 

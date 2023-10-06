@@ -6,11 +6,7 @@ typedef void NotificationHandler(dynamic response);
 typedef void ApiCallback(dynamic response);
 class NetworkConstants{
   //static String kAppBaseUrl = 'https://api.digitalseller.in:8011/api/';
-//static String kAppBaseUrl = 'https://eacademyeducation.com:8011/api/';
-//eccommerce
-  static String kAppBaseUrl='https://eacademyeducation.com:8011/api/v1/ecomdh2wy/';
-  //Grocery
-
+static String kAppBaseUrl = 'https://eacademyeducation.com:8011/api/';
   static String kGetAppConfig = 'getAppConfigurations?appId={APP_ID}';
   static String kContactUs = "add-contactUs";
   static String kOpenWebViewUrl = "web-view?appId={APP_ID}&query={QUERY}";
@@ -94,14 +90,10 @@ static String kOfferList = "offer-product-list?appId={APP_ID}&categoryId={CATEGO
 
 //static String kAppID = 'c5d97fa9-a6b9-48c5-bf23-b847f1a12b09';
 //ishu
-static String kAppID = 'f11e5fd9-a395-49fb-bbd8-7e6554dc4549';
+  static String kAppID = 'f11e5fd9-a395-49fb-bbd8-7e6554dc4549';
 //Grocery
  //static String kAppID = '36feccb4-5260-40ce-8eab-67537db14b7b';
 //restaurant
 //static String kAppID='6609de8a-f505-4286-b442-16eb355f0612';
 
-
-  static void updateBaseUrl(String newBaseUrl) {
-    kAppBaseUrl = newBaseUrl;
-  }
 }

@@ -89,6 +89,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                         ?   GestureDetector(
                         onTap: () {
                           closeAppbarProperty();
+
                         },
                         child: Scaffold(
                             appBar: ResponsiveWidget.isMediumScreen(context)
@@ -110,6 +111,9 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                               if (sharedPreferences.getString('token') == null) {
                                 showDialog(
                                     context: context,
+                                    barrierColor: Theme.of(context)
+                                        .canvasColor
+                                        .withOpacity(0.6),
                                     builder: (BuildContext context) {
                                       return LoginUp(
                                         product: true,
@@ -117,6 +121,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                     });
                               } else {
                                 closeAppbarProperty();
+
                                 context.router.push(FavouriteListPage());
                               }
                             }, () async {
@@ -125,6 +130,9 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                               if (sharedPreferences.getString('token') == null) {
                                 showDialog(
                                     context: context,
+                                    barrierColor: Theme.of(context)
+                                        .canvasColor
+                                        .withOpacity(0.6),
                                     builder: (BuildContext context) {
                                       return LoginUp(
                                         product: true,
@@ -132,6 +140,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                     });
                               } else {
                                 closeAppbarProperty();
+
                                 context.router.push(CartDetail(
                                     itemCount: '${cartViewModel.cartItemCount}'));
                               }
@@ -176,6 +185,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                                         ?.length,
                                                     itemBuilder:
                                                         (context, index) {
+
                                                       final productListData =
                                                       viewmodel
                                                           .productListModel
@@ -230,6 +240,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                                           itemBuilder:
                                                               (context,
                                                               index) {
+
                                                             final productListData =
                                                             viewmodel
                                                                 .productListModel
@@ -239,10 +250,13 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                                                 productListData,
                                                                 index,
                                                                 viewmodel);
-                                                          }
+                                                          },
                                                         )),
                                                     onPagination(viewmodel)
-                                                  ])]),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
                                             ResponsiveWidget.isMediumScreen(context)
                                                 ?   SizedBox(height:ResponsiveWidget.isSmallScreen(context)
                                                 ? 50:100)
@@ -250,7 +264,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                             ResponsiveWidget.isMediumScreen(context)
                                                 ? footerMobile(context,homeViewModel)
                                                 : footerDesktop()
-                                          ]
+                                          ],
                                         )):
                                     noDataFoundMessage(context,StringConstant.noProductAdded,homeViewModel) :
                                     Center(child: ThreeArchedCircle(size: 45.0)),
@@ -289,12 +303,17 @@ class _ProductListGalleryState extends State<ProductListGallery> {
                                             cartViewModel
                                                 .cartItemCount))
                                         : Container()
-                                  ]))))
+                                  ],
+                                )
+                            ))
+                    )
                         : Container(
                       width: SizeConfig.screenWidth,
                       height: SizeConfig.screenHeight,
                       color: Theme.of(context).scaffoldBackgroundColor,
-                      child: Center(child: ThreeArchedCircle(size: 45.0))
+                      child: Center(
+                        child: ThreeArchedCircle(size: 45.0),
+                      ),
                     );
                   }));
         }));
@@ -308,6 +327,7 @@ class _ProductListGalleryState extends State<ProductListGallery> {
           left: 12,
           top: 20),
       width:  ResponsiveWidget.isMediumScreen(context) ?viewmodel.productListModel!.pagination!.lastPage! < 4?SizeConfig.screenWidth/1.6  :ResponsiveWidget.isSmallScreen(context) ?SizeConfig.screenWidth:SizeConfig.screenWidth/1.4:
+
       viewmodel.productListModel!.pagination!.lastPage! < 4?SizeConfig.screenWidth/5:SizeConfig.screenWidth/4,
       child: NumberPaginator(
         numberPages: viewmodel.productListModel!.pagination!.lastPage!,
@@ -353,15 +373,17 @@ class _ProductListGalleryState extends State<ProductListGallery> {
 
                 : cartViewModel.getOfferDiscountList(
                 context,
-                widget.discountdata?[2] ?? "",
+                widget.discountdata?[1] ?? "",
                 index +
                     1,
-                widget.discountdata?[1] ?? "",(result, isSuccess){
+                widget.discountdata?[0] ?? "",(result, isSuccess){
               if(isSuccess){
                 scrollController1.jumpTo(0);
               }
             });
           });
-        }));
+        },
+      ),
+    );
   }
 }
