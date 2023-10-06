@@ -242,12 +242,25 @@ class _MenuListState extends State<MenuList> {
           Share.share(appMenu.url ?? '');
         }
         else if (appMenu.title!.contains('Home') == true){
-          context.router.push(HomePageRestaurant());
-
+          context.router.push(HomePageWeb());
         }
-
-
-        else {}
+        else if (url.path.contains('notify_setting') == true){
+          SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+          if (sharedPreferences.getString('token') == null) {
+            showDialog(
+                context: context,
+                barrierColor:
+                Theme.of(context).canvasColor.withOpacity(0.6),
+                builder: (BuildContext context) {
+                  return LoginUp(
+                    product: true,
+                  );
+                });
+          } else {
+            context.router.push(NotificationRoute());
+          }
+        }
       });
     }
   }

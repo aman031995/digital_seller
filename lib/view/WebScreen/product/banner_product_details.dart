@@ -31,9 +31,12 @@ import '../../../AppRouter.gr.dart';
 
 @RoutePage()
 class BannerProductDetailPage extends StatefulWidget {
+  final String? Dp;
   final List<String>? ProductDetails;
   BannerProductDetailPage(
-      {@QueryParam() this.ProductDetails,
+      {
+        @PathParam('ds') this.Dp ,
+        @QueryParam() this.ProductDetails,
         Key? key, }) : super(key: key);
 
   @override

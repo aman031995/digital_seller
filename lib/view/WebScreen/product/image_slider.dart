@@ -7,14 +7,10 @@ import 'package:flutter/material.dart';
 
 class ImageSlider extends StatefulWidget {
   List<String>? images;
-
-
   ImageSlider({required this.images});
-
   @override
   _ImageSliderState createState() => _ImageSliderState();
 }
-
 class _ImageSliderState extends State<ImageSlider> {
   int _current = 0;
   @override
@@ -64,7 +60,6 @@ class _ImageSliderState extends State<ImageSlider> {
       ],
     );
   }
-
   // carousel indicators
   Widget _indicator(bool isActive) {
     return AnimatedContainer(
@@ -77,7 +72,6 @@ class _ImageSliderState extends State<ImageSlider> {
           borderRadius: BorderRadius.circular(5)),
     );
   }
-
   List<Widget> _buildIndicator() {
     List<Widget> indicators = [];
     for (int i = 0; i < getCarouselIndicator(); i++) {
@@ -89,7 +83,6 @@ class _ImageSliderState extends State<ImageSlider> {
     }
     return indicators;
   }
-
   getCarouselIndicator() {
     if (widget.images!.length >1) {
       return widget.images?.length;

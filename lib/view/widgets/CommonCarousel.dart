@@ -29,7 +29,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
 
   @override
   void initState() {
-    homeViewModel.getBannerList(context);
+    homeViewModel.getBannerLists(context);
     super.initState();
   }
 
@@ -94,7 +94,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
       onTap: () async {
         closeAppbarProperty();
 
-        redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
+        redirectPage(homeViewModel.bannerDataModal?.bannerList?[current],context);
 
         },
       child:
@@ -114,12 +114,13 @@ class _CommonCarouselState extends State<CommonCarousel> {
         .toList();
   }
   // image click redirection handling
-  void redirectPage(BannerList? element) {
+  void redirectPage(BannerList? element, BuildContext context) {
     if (element != null) {
 
       if(element.bannerType == 'Product'){
         if(element.productId != ""){
           context.router.push(BannerProductDetailPage(
+            Dp: element.bannerTitle,
               ProductDetails: ['${element.catId}','${element.productId}']
           ));
 
@@ -173,7 +174,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
       onTap: () async {
         closeAppbarProperty();
 
-        redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
+        redirectPage(homeViewModel.bannerDataModal?.bannerList?[current],context);
 
       },
       child:

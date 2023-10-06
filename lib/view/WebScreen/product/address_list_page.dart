@@ -96,38 +96,38 @@ class _AddressListPageState extends State<AddressListPage> {
     return checkInternet == "Offline"
         ? NOInternetScreen()
         : ChangeNotifierProvider.value(
-            value: cartViewModel,
-            child:  Consumer<CartViewModel>(builder: (context, cartViewData, _) {
-              cartViewModel.addressListModel?.length == 0 ? 0 : addressId = cartViewModel.addressListModel?[0].addressId;
-              return ChangeNotifierProvider.value(
-                  value: homeViewModel,
-                  child: Consumer<HomeViewModel>(builder: (context, s, _) {
-                    return ChangeNotifierProvider.value(
-                        value: notificationViewModel,
-                        child: Consumer<NotificationViewModel>(builder: (context, model, _) {
-                          return (cartViewData.addressListModel != null && cartViewData.cartListData != null)
-                  ? GestureDetector(
-                      onTap: () { closeAppbarProperty();},
-                      child: Scaffold(
-                        backgroundColor:
-                            Theme.of(context).scaffoldBackgroundColor,
-                        appBar: ResponsiveWidget.isMediumScreen(context)
-                            ? homePageTopBar(
-                                context,
-                                _scaffoldKey,
-                                cartViewData.cartItemCount,
-                                homeViewModel,
-                                profileViewModel,notificationViewModel
+        value: cartViewModel,
+        child:  Consumer<CartViewModel>(builder: (context, cartViewData, _) {
+          cartViewModel.addressListModel?.length == 0 ? 0 : addressId = cartViewModel.addressListModel?[0].addressId;
+          return ChangeNotifierProvider.value(
+              value: homeViewModel,
+              child: Consumer<HomeViewModel>(builder: (context, s, _) {
+                return ChangeNotifierProvider.value(
+                    value: notificationViewModel,
+                    child: Consumer<NotificationViewModel>(builder: (context, model, _) {
+                      return (cartViewData.addressListModel != null && cartViewData.cartListData != null)
+                          ? GestureDetector(
+                          onTap: () { closeAppbarProperty();},
+                          child: Scaffold(
+                              backgroundColor:
+                              Theme.of(context).scaffoldBackgroundColor,
+                              appBar: ResponsiveWidget.isMediumScreen(context)
+                                  ? homePageTopBar(
+                                  context,
+                                  _scaffoldKey,
+                                  cartViewData.cartItemCount,
+                                  homeViewModel,
+                                  profileViewModel,notificationViewModel
                               )
-                            : getAppBar(
-                                context,notificationViewModel,
-                                homeViewModel,
-                                profileViewModel,
-                                cartViewData.cartItemCount,
-                                1,
-                                searchController, () async {
+                                  : getAppBar(
+                                  context,notificationViewModel,
+                                  homeViewModel,
+                                  profileViewModel,
+                                  cartViewData.cartItemCount,
+                                  1,
+                                  searchController, () async {
                                 SharedPreferences sharedPreferences =
-                                    await SharedPreferences.getInstance();
+                                await SharedPreferences.getInstance();
                                 if (sharedPreferences.get('token') == null) {
                                   showDialog(
                                       context: context,
@@ -143,7 +143,7 @@ class _AddressListPageState extends State<AddressListPage> {
                                 }
                               }, () async {
                                 SharedPreferences sharedPreferences =
-                                    await SharedPreferences.getInstance();
+                                await SharedPreferences.getInstance();
                                 if (sharedPreferences.getString('token') ==
                                     null) {
                                   showDialog(
@@ -160,235 +160,261 @@ class _AddressListPageState extends State<AddressListPage> {
                                   closeAppbarProperty();
                                   context.router.push(CartDetail(
                                       itemCount:
-                                          '${cartViewModel.cartItemCount}'));
+                                      '${cartViewModel.cartItemCount}'));
                                 }
                               }),
-                        body: Scaffold(
-                            extendBodyBehindAppBar: true,
-                            key: _scaffoldKey,
-                            backgroundColor:
-                                Theme.of(context).scaffoldBackgroundColor,
-                            drawer: ResponsiveWidget.isMediumScreen(context)
-                                ? AppMenu()
-                                : SizedBox(),
-                            body: SingleChildScrollView(
-                              child: Stack(
+                              body: Scaffold(
+                                  extendBodyBehindAppBar: true,
+                                  key: _scaffoldKey,
+                                  backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                                  drawer: ResponsiveWidget.isMediumScreen(context)
+                                      ? AppMenu()
+                                      : SizedBox(),
+                                  body: SingleChildScrollView(
+                                    child: Stack(
+                                      children: [
+                                        ResponsiveWidget.isMediumScreen(
+                                            context)
+                                            ? Column(
                                           children: [
-                                            ResponsiveWidget.isMediumScreen(
-                                                    context)
-                                                ? Column(
-                                                    children: [
-                                                      cartPageViewIndicator(context, 1),
-                                                      AddressButton(context,
-                                                          () {
-                                                            closeAppbarProperty();
-                                                            showDialog(
-                                                            context:
-                                                                context,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return ShippingAddressPage(
-                                                                  isAlreadyAdded:
-                                                                      false);
-                                                            });
-                                                      }),
-                                                      cartViewData.addressListModel?.length == 0 ? Container(
-                                                        height: 250,
-                                                        decoration: BoxDecoration(boxShadow: [
-                                                          BoxShadow(
-                                                            color: Theme.of(context).scaffoldBackgroundColor,
-                                                          )
-                                                        ]),
-                                                        child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                                          children: [
-                                                            Image.asset(
-                                                              AssetsConstants.ic_noProductFound,
-                                                              height: 150,
-                                                              width: 150,fit: BoxFit.fill,
-                                                            ),
-                                                            AppBoldFont(
-                                                                context,msg: StringConstant.noadress,
-                                                                fontSize: 16,
-                                                                color: Theme.of(context).canvasColor,textAlign: TextAlign.center),
-                                                          ],
-                                                        ),
-                                                      )
-                                                          : addressDetails(context, addressId, cartViewData),
-                                                      Container(
-                                                        width: SizeConfig.screenWidth/1.05,
-                                                        decoration: BoxDecoration(
-                                                            color: Theme.of(context).cardColor,
-                                                            borderRadius: BorderRadius.circular(8)
-                                                        ),
-                                                        child: Column(
-                                                          children: [
-                                                            Container(
-                                                              width: SizeConfig.screenWidth/1.05,
-                                                              padding: EdgeInsets.all(14),
-                                                              decoration: BoxDecoration(
-                                                                  borderRadius: BorderRadius.only(
-                                                                      topRight: Radius.circular(8),
-                                                                      topLeft: Radius.circular(8)
-                                                                  ),
-                                                                  color: Theme.of(context).canvasColor.withOpacity(0.2)),
-                                                              child: AppBoldFont(context, msg: StringConstant.orderSummary,color: Theme.of(context).canvasColor),
-                                                            ),
-                                                            pricedetails(context, cartViewData),
-                                                            SizedBox(height: 15)
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: 10),
-                                                      checkbox(),
-                                                      SizedBox(height:ResponsiveWidget.isSmallScreen(context) ? 10:20),
-                                                      returnpolicy(),
-                                                      SizedBox(height:ResponsiveWidget.isSmallScreen(context) ? 20:50),
-                                                      checkoutbutton(),
-                                                      SizedBox(height:ResponsiveWidget.isSmallScreen(context) ? 20:250),
-                                                      footerMobile(context,
-                                                          homeViewModel)
-                                                    ],
-                                                  )
-                                                : Column(
-                                                    children: [
-                                                      cartPageViewIndicator(context, 1),
-                                                      Row(
-                                                        mainAxisAlignment: MainAxisAlignment
-                                                                .center,
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          cartViewData.addressListModel != null
-                                                              ? Column(
-                                                                  children: [
-                                                                    AddressButton(
-                                                                        context,
-                                                                        () {
-                                                                      showDialog(
-                                                                          context: context,
-                                                                          builder: (BuildContext context) {
-                                                                            return ShippingAddressPage(isAlreadyAdded: false);
-                                                                          });
-                                                                    }),
-                                                                    cartViewData.addressListModel?.length == 0
-                                                                        ?  Container(
-                                                                      height: 250,
-                                                                      decoration: BoxDecoration(boxShadow: [
-                                                                        BoxShadow(
-                                                                          color: Theme.of(context).scaffoldBackgroundColor,
-                                                                        )]),
-                                                                      child: Column(
-                                                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                                                        children: [
-                                                                          Image.asset(
-                                                                            AssetsConstants.ic_noProductFound,
-                                                                            height: 150,
-                                                                            width: 150,fit: BoxFit.fill,
-                                                                          ),
-                                                                          AppBoldFont(
-                                                                              context,msg: StringConstant.noadress,
-                                                                              fontSize: 16,
-                                                                              color: Theme.of(context).canvasColor,textAlign: TextAlign.center),
-                                                                        ]))
-                                                                        : addressDetails(
-                                                                            context,
-                                                                            addressId,
-                                                                            cartViewData)
-                                                                  ])
-                                                              : Container(
-                                                                  width: ResponsiveWidget.isMediumScreen(
-                                                                          context)
-                                                                      ? SizeConfig.screenWidth /
-                                                                          0.5
-                                                                      : SizeConfig.screenWidth *
-                                                                          0.30,
-                                                                  child: ThreeArchedCircle(
-                                                                      size:
-                                                                          45.0)),
-                                                           SizedBox(width: 15),
-                                                          Column(
-                                                            children: [
-                                                              Container(
-                                                                decoration: BoxDecoration(
-                                                                    color: Theme.of(context).cardColor,
-                                                                    borderRadius: BorderRadius.circular(8)
-                                                                ),
-                                                                child: Column(
-                                                                  children: [
-                                                                    Container(
-                                                                      width: SizeConfig.screenWidth*0.36,
-                                                                      padding: EdgeInsets.all(14),
-                                                                      decoration: BoxDecoration(
-                                                                          borderRadius: BorderRadius.only(
-                                                                            topRight: Radius.circular(8),
-                                                                            topLeft: Radius.circular(8)
-                                                                          ),
-                                                                          color: Theme.of(context).canvasColor.withOpacity(0.2)),
-                                                                      child: AppBoldFont(context, msg: StringConstant.orderSummary,color: Theme.of(context).canvasColor),
-                                                                    ),
-                                                                    pricedetails(context, cartViewData),
-                                                                    SizedBox(height: 15)
-                                                                  ])),
+                                            cartPageViewIndicator(context, 1),
+                                            AddressButton(context,
+                                                    () {
+                                                  closeAppbarProperty();
+                                                  showDialog(
+                                                      context:
+                                                      context,
+                                                      builder:
+                                                          (BuildContext
+                                                      context) {
+                                                        return ShippingAddressPage(
+                                                            isAlreadyAdded:
+                                                            false);
+                                                      });
+                                                }),
+                                            cartViewData.addressListModel?.length == 0 ? Container(
+                                              height: 250,
+                                              decoration: BoxDecoration(boxShadow: [
+                                                BoxShadow(
+                                                  color: Theme.of(context).scaffoldBackgroundColor,
+                                                )
+                                              ]),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                    AssetsConstants.ic_noProductFound,
+                                                    height: 150,
+                                                    width: 150,fit: BoxFit.fill,
+                                                  ),
+                                                  AppBoldFont(
+                                                      context,msg: StringConstant.noadress,
+                                                      fontSize: 16,
+                                                      color: Theme.of(context).canvasColor,textAlign: TextAlign.center),
+                                                ],
+                                              ),
+                                            )
+                                                : addressDetails(context, addressId, cartViewData),
 
-                                                              SizedBox(height: 15),
-                                                              checkbox(),
-                                                              SizedBox(height: 5),
-                                                              returnpolicy(),
-                                                              SizedBox(height: 10),
-                                                               checkoutbutton()
-                                                            ])]),
-                                                       SizedBox(height: 300),
-                                                      footerDesktop()
-                                                    ]),
-                                            ResponsiveWidget.isMediumScreen(context)
-                                                ? Container()
-                                                : GlobalVariable.isnotification == true
-                                                ?  Positioned(
-                                                top:  0,
-                                                right:  SizeConfig
-                                                    .screenWidth *
-                                                    0.20,
-                                                child: notification(notificationViewModel,context,_scrollController)):Container(),
-                                            ResponsiveWidget.isMediumScreen(
-                                                    context)
-                                                ? Container()
-                                                : GlobalVariable.isLogins == true
-                                                    ? Positioned(
-                                                        top: 0,
-                                                        right: 180,
-                                                        child: profile(
-                                                            context,
-                                                            setState,
-                                                            profileViewModel))
-                                                    : Container(),
-                                            ResponsiveWidget.isMediumScreen(
-                                                    context)
-                                                ? Container()
-                                                : GlobalVariable.isSearch == true
-                                                    ? Positioned(
-                                                        top: 0,
-                                                        right: SizeConfig
-                                                                .screenWidth *
-                                                            0.20,
-                                                        child: searchList(
-                                                            context,
-                                                            homeViewModel,
-                                                            scrollController,
-                                                            searchController!,
-                                                            cartViewModel
-                                                                .cartItemCount))
-                                                    : Container()
-                                          ])))))
-                  : Container(
-                      width: SizeConfig.screenWidth,
-                      height: SizeConfig.screenHeight,
-                      color: Theme.of(context).scaffoldBackgroundColor,
-                      child: Center(child: ThreeArchedCircle(size: 45.0)));
-            }));}));
-            }));
+                                            Container(
+                                              width: SizeConfig.screenWidth/1.05,
+                                              decoration: BoxDecoration(
+                                                  color: Theme.of(context).cardColor,
+                                                  borderRadius: BorderRadius.circular(8)
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    width: SizeConfig.screenWidth/1.05,
+                                                    padding: EdgeInsets.all(14),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.only(
+                                                            topRight: Radius.circular(8),
+                                                            topLeft: Radius.circular(8)
+                                                        ),
+                                                        color: Theme.of(context).canvasColor.withOpacity(0.2)),
+                                                    child: AppBoldFont(context, msg: StringConstant.orderSummary,color: Theme.of(context).canvasColor),
+                                                  ),
+                                                  pricedetails(context, cartViewData),
+                                                  SizedBox(height: 15)
+                                                ],
+                                              ),
+                                            ),
+
+                                            SizedBox(height: 10),
+                                            checkbox(),
+                                            SizedBox(height:ResponsiveWidget.isSmallScreen(context) ? 10:20),
+                                            returnpolicy(),
+                                            SizedBox(height:ResponsiveWidget.isSmallScreen(context) ? 20:50),
+                                            checkoutbutton(),
+                                            SizedBox(height:ResponsiveWidget.isSmallScreen(context) ? 20:250),
+                                            footerMobile(context,
+                                                homeViewModel)
+                                          ],
+                                        )
+                                            : Column(
+                                          children: [
+                                            cartPageViewIndicator(context, 1),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment
+                                                  .center,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                              children: [
+                                                cartViewData.addressListModel != null
+                                                    ? Column(
+                                                  children: [
+
+                                                    AddressButton(
+                                                        context,
+                                                            () {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder: (BuildContext context) {
+                                                                return ShippingAddressPage(isAlreadyAdded: false);
+                                                              });
+                                                        }),
+
+                                                    cartViewData.addressListModel?.length ==
+                                                        0
+                                                        ?  Container(
+                                                      height: 250,
+                                                      decoration: BoxDecoration(boxShadow: [
+                                                        BoxShadow(
+                                                          color: Theme.of(context).scaffoldBackgroundColor,
+                                                        )
+                                                      ]),
+                                                      child: Column(
+                                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                                        children: [
+                                                          Image.asset(
+                                                            AssetsConstants.ic_noProductFound,
+                                                            height: 150,
+                                                            width: 150,fit: BoxFit.fill,
+                                                          ),
+                                                          AppBoldFont(
+                                                              context,msg: StringConstant.noadress,
+                                                              fontSize: 16,
+                                                              color: Theme.of(context).canvasColor,textAlign: TextAlign.center),
+                                                        ],
+                                                      ),
+                                                    )
+                                                        : addressDetails(
+                                                        context,
+                                                        addressId,
+                                                        cartViewData)
+                                                  ],
+                                                )
+                                                    : Container(
+                                                  width: ResponsiveWidget.isMediumScreen(
+                                                      context)
+                                                      ? SizeConfig.screenWidth /
+                                                      0.5
+                                                      : SizeConfig.screenWidth *
+                                                      0.30,
+                                                  child: ThreeArchedCircle(
+                                                      size:
+                                                      45.0),
+                                                ),
+                                                SizedBox(width: 15),
+                                                Column(
+                                                  children: [
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                          color: Theme.of(context).cardColor,
+                                                          borderRadius: BorderRadius.circular(8)
+                                                      ),
+                                                      child: Column(
+                                                        children: [
+                                                          Container(
+                                                            width: SizeConfig.screenWidth*0.36,
+                                                            padding: EdgeInsets.all(14),
+                                                            decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.only(
+                                                                    topRight: Radius.circular(8),
+                                                                    topLeft: Radius.circular(8)
+                                                                ),
+                                                                color: Theme.of(context).canvasColor.withOpacity(0.2)),
+                                                            child: AppBoldFont(context, msg: StringConstant.orderSummary,color: Theme.of(context).canvasColor),
+                                                          ),
+                                                          pricedetails(context, cartViewData),
+                                                          SizedBox(height: 15)
+                                                        ],
+                                                      ),
+                                                    ),
+
+                                                    SizedBox(height: 15),
+                                                    checkbox(),
+                                                    SizedBox(height: 5),
+                                                    returnpolicy(),
+                                                    SizedBox(height: 10),
+                                                    checkoutbutton()
+
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(height: 300),
+                                            footerDesktop()
+                                          ],
+                                        ),
+                                        ResponsiveWidget.isMediumScreen(context)
+                                            ? Container()
+                                            : GlobalVariable.isnotification == true
+                                            ?    Positioned(
+                                            top:  0,
+                                            right:  SizeConfig
+                                                .screenWidth *
+                                                0.20,
+                                            child: notification(notificationViewModel,context,_scrollController)):Container(),
+
+                                        ResponsiveWidget.isMediumScreen(
+                                            context)
+                                            ? Container()
+                                            : GlobalVariable.isLogins == true
+                                            ? Positioned(
+                                            top: 0,
+                                            right: 180,
+                                            child: profile(
+                                                context,
+                                                setState,
+                                                profileViewModel))
+                                            : Container(),
+
+                                        ResponsiveWidget.isMediumScreen(
+                                            context)
+                                            ? Container()
+                                            : GlobalVariable.isSearch == true
+                                            ? Positioned(
+                                            top: 0,
+                                            right: SizeConfig
+                                                .screenWidth *
+                                                0.20,
+                                            child: searchList(
+                                                context,
+                                                homeViewModel,
+                                                scrollController,
+                                                searchController!,
+                                                cartViewModel
+                                                    .cartItemCount))
+                                            : Container()
+                                      ],
+                                    ),
+                                  )
+
+                              )))
+                          : Container(
+                        width: SizeConfig.screenWidth,
+                        height: SizeConfig.screenHeight,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: Center(
+                          child: ThreeArchedCircle(size: 45.0),
+                        ),
+                      );
+                    })); }));
+        }));
   }
 
   checkbox(){
@@ -409,7 +435,8 @@ class _AddressListPageState extends State<AddressListPage> {
               borderRadius: BorderRadius.only(
                   topRight: Radius.circular(8),
                   topLeft: Radius.circular(8)),
-    color: Theme.of(context).canvasColor.withOpacity(0.2) ),
+              color: Theme.of(context).canvasColor.withOpacity(0.2) ),
+
               width:ResponsiveWidget.isMediumScreen(context) ?SizeConfig.screenWidth: SizeConfig.screenWidth *0.36,
               padding: EdgeInsets.all(14),
               child: AppBoldFont(context, msg: StringConstant.selectPayment)),
@@ -590,7 +617,7 @@ class _AddressListPageState extends State<AddressListPage> {
     );
   }
 
- checkoutbutton(){
+  checkoutbutton(){
     return  ElevatedButton(
         onPressed:
             () {
@@ -641,7 +668,7 @@ class _AddressListPageState extends State<AddressListPage> {
                 .hintColor,
             fontSize:
             18));
- }
+  }
 
   // payment selection
   setSelectedRadioTile(int val) {
@@ -654,32 +681,32 @@ class _AddressListPageState extends State<AddressListPage> {
     AppIndicator.loadingIndicator(context);
     _cartRepo.createOrder(
         paymentMethod, productId, variantId, quantity, gateway, context,
-        (result, isSuccess) {
-      if (isSuccess) {
-        AppIndicator.disposeIndicator();
-        _createOrderModel =
-            ((result as SuccessState).value as ASResponseModal).dataModal;
-        if (paymentMethod == "online") {
-          if (gateway == "stripe") {
-            cartViewModel.createPaymentIntent(context, createOrderModel,
-                addressId, productId, variantId, quantity);
-          } else if (gateway == "razorpay") {
-            openPaymentGateway(_createOrderModel);
+            (result, isSuccess) {
+          if (isSuccess) {
+            AppIndicator.disposeIndicator();
+            _createOrderModel =
+                ((result as SuccessState).value as ASResponseModal).dataModal;
+            if (paymentMethod == "online") {
+              if (gateway == "stripe") {
+                cartViewModel.createPaymentIntent(context, createOrderModel,
+                    addressId, productId, variantId, quantity);
+              } else if (gateway == "razorpay") {
+                openPaymentGateway(_createOrderModel);
+              }
+            } else {
+              cartViewModel.placeOrder(
+                  context,
+                  addressId ?? '',
+                  '',
+                  "",
+                  paymentMethod,
+                  '',
+                  '',
+                  '',
+                  'Success');
+            }
           }
-        } else {
-          cartViewModel.placeOrder(
-              context,
-              addressId ?? '',
-              '',
-              "",
-              paymentMethod,
-             '',
-          '',
-             '',
-              'Success');
-        }
-      }
-    });
+        });
   }
 
   void openPaymentGateway(CreateOrderModel? createOrderModel) async {
@@ -723,8 +750,8 @@ class _AddressListPageState extends State<AddressListPage> {
         response.paymentId,
         response.orderId,
         'Online',
-      '',
-         '',
+        '',
+        '',
         '',
         'Success');
   }

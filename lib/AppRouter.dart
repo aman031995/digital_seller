@@ -1,5 +1,4 @@
 
-import 'package:TychoStream/main.dart';
 import 'package:TychoStream/services/global_variable.dart';
 import 'package:TychoStream/services/session_storage.dart';
 import 'package:auto_route/auto_route.dart';
@@ -13,7 +12,7 @@ class AppRouter extends $AppRouter {
 
   @override
   List<AutoRoute> routes = [
-     AutoRoute(page: HomePageWeb.page, path: '/',initial: true),
+     AutoRoute(page: HomePageWeb.page, path: '/',initial: true,maintainState: false),
   // AutoRoute(page: HomePageRestaurant.page,path: '/',initial: true),
     AutoRoute(page: ProductListRestaurantGallery.page,path: "/ProductListRestaurantGallery"),
     AutoRoute(page: RestaurantSubcategoryProductList.page,path: '/RestaurantSubcategoryProductList/:SubcategoryProductName'),
@@ -27,7 +26,7 @@ class AppRouter extends $AppRouter {
         }
       },
     )]),
-    AutoRoute(page: EditProfile.page,path: '/EditProfile',guards: [
+    AutoRoute(page: EditProfile.page,path: '/EditProfile',maintainState: false,guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -38,10 +37,12 @@ class AppRouter extends $AppRouter {
           }
         },
       )]),
-    AutoRoute(page: NotificationRoute.page,path: '/NotificationScreen'),
-    AutoRoute(page: ProductListGallery.page,path: '/Category'),
-    AutoRoute(page: BuynowAddress.page,path: '/BuynowAddress'),
-    AutoRoute(page: FavouriteListPage.page,path: '/FavouriteListPage',guards: [AutoRouteGuard.simple(
+    AutoRoute(page: NotificationRoute.page,path: '/NotificationScreen',maintainState: false),
+    AutoRoute(page: SearchPage.page,path: '/SearchPage',maintainState: false),
+
+    AutoRoute(page: ProductListGallery.page,path: '/Category',maintainState: false),
+    AutoRoute(page: BuynowAddress.page,path: '/BuynowAddress',maintainState: false),
+    AutoRoute(page: FavouriteListPage.page,path: '/FavouriteListPage',maintainState: false,guards: [AutoRouteGuard.simple(
           (resolver, scope) async {
         SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         if (sharedPreferences.get('token') != null) {
@@ -52,7 +53,7 @@ class AppRouter extends $AppRouter {
       },
     )]),
 
-    AutoRoute(page: AddressListPage.page,path: '/AddressListPage',guards: [
+    AutoRoute(page: AddressListPage.page,path: '/AddressListPage',maintainState: false,guards: [
       AutoRouteGuard.simple((resolver, scope) async {
         GlobalVariable.token= SessionStorageHelper.getValue("payment");
         if(GlobalVariable.token==null){
@@ -66,7 +67,7 @@ class AppRouter extends $AppRouter {
       },
       )]),
 
-    AutoRoute(page: MyOrderPage.page,path:'/MyOrderPage',guards: [
+    AutoRoute(page: MyOrderPage.page,path:'/MyOrderPage',maintainState: false,guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -79,15 +80,15 @@ class AppRouter extends $AppRouter {
         },
       )]),
 
-    AutoRoute(page: ProductDetailPage.page,path: '/:productName'),
+    AutoRoute(page: ProductDetailPage.page,path: '/:productName',maintainState: false),
 
-    AutoRoute(page: CategorySubcategoryProduct.page,path: '/Cs/:CategoryName'),
+    AutoRoute(page: CategorySubcategoryProduct.page,path: '/Cs/:CategoryName',maintainState: false),
 
-    AutoRoute(page: SubcategoryProductList.page,path: '/Sp/:SubcategoryProductName'),
+    AutoRoute(page: SubcategoryProductList.page,path: '/Sp/:SubcategoryProductName',maintainState: false),
 
-    AutoRoute(page: BannerProductDetailPage.page,path: '/BPD'),
+    AutoRoute(page: BannerProductDetailPage.page,path: '/BPD/:ds',maintainState: false),
 
-    AutoRoute(page: CartDetail.page,path: '/CartDetail/:itemCount',guards: [
+    AutoRoute(page: CartDetail.page,path: '/CartDetail/:itemCount',maintainState: false,guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -99,9 +100,9 @@ class AppRouter extends $AppRouter {
         },
       )]),
 
-    AutoRoute(page: WebHtmlPage.page,path: '/Web/:title'),
+    AutoRoute(page: WebHtmlPage.page,path: '/Web/:title',maintainState: false),
 
-    AutoRoute(page: ContactUs.page,path: '/ContactUs',guards: [
+    AutoRoute(page: ContactUs.page,path: '/ContactUs',maintainState: true,guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -113,7 +114,7 @@ class AppRouter extends $AppRouter {
         },
       )]),
 
-    AutoRoute(page: ThankYouPage.page,path: '/ThankYouPage',keepHistory: false,guards: [
+    AutoRoute(page: ThankYouPage.page,path: '/ThankYouPage',maintainState: false,keepHistory: false,guards: [
       AutoRouteGuard.simple(
             (resolver, scope) async {
           GlobalVariable.token= SessionStorageHelper.getValue("payment");
@@ -128,17 +129,7 @@ class AppRouter extends $AppRouter {
         },
       )]),
 
-    AutoRoute(page:BuynowCart.page,path: '/Buynow',guards: [
-      AutoRouteGuard.simple(
-            (resolver, scope) async {
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-          if (sharedPreferences.get('token') != null) {
-            resolver.next();
-          } else {
-            resolver.redirect(HomePageWeb());
-          }
-        },
-      )]),
+    AutoRoute(page:BuynowCart.page,path: '/Buynow/:product',maintainState: false),
     RedirectRoute(path: '*', redirectTo: '/')
 
   ];

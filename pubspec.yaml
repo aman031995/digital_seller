@@ -40,7 +40,7 @@ dependencies:
   pagination_flutter: ^0.0.8
   carousel_slider: ^4.1.1
   connectivity_plus: ^4.0.2
-  http: ^1.1.0
+  http:
   shared_preferences: ^2.2.1
   image_picker: ^1.0.4
   flutter_easyloading: ^3.0.5
@@ -71,6 +71,7 @@ dependencies:
   flutter_html: ^3.0.0-alpha.6
   injectable: ^2.3.0
   universal_html: ^2.2.3
+
 
 
 

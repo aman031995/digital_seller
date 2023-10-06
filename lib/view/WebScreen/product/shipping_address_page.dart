@@ -19,19 +19,9 @@ import 'package:flutter/material.dart';
 class ShippingAddressPage extends StatefulWidget {
   bool isAlreadyAdded;
   AddressListModel? address;
-  String? firstName;
-  String? lastName;
-  String? mobileNumber;
-  String? email;
-  String? firstAddress;
-  String? secondAddress;
-  String? state;
-  String? cityName;
-  String? pinCode;
-  String? addressId;
-  String? landmark;
 
-  ShippingAddressPage({Key? key, this.address, required this.isAlreadyAdded,this.addressId,this.firstName,this.lastName,this.mobileNumber,this.pinCode,this.state,this.cityName,this.secondAddress,this.firstAddress,this.email,this.landmark})
+
+  ShippingAddressPage({Key? key, this.address, required this.isAlreadyAdded})
       : super(key: key);
 
   @override
@@ -55,31 +45,31 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
   CityStateModel _cityStateModel=CityStateModel();
   @override
   void initState() {
-    firstNameController.text = widget.firstName ?? '';
-    lastNameController.text = widget.lastName ?? '';
-    mobileNumberController.text = widget.mobileNumber ?? '';
-    emailController.text = widget.email ?? '';
-    addressFirstController.text = widget.firstAddress ?? '';
-    addressSecondController.text = widget.secondAddress ?? '';
-    stateController.text = widget.state ?? '';
-    cityController.text = widget.cityName ?? '';
-    pinCodeController.text = widget.pinCode ?? '';
-    landmarkController.text=widget.landmark?? '';
+    firstNameController.text = widget.address?.firstName ?? '';
+    lastNameController.text = widget.address?.lastName ?? '';
+    mobileNumberController.text = widget.address?.mobileNumber ?? '';
+    emailController.text = widget.address?.email ?? '';
+    addressFirstController.text = widget.address?.firstAddress ?? '';
+    addressSecondController.text = widget.address?.secondAddress ?? '';
+    landmarkController.text = widget.address?.landmark ?? '';
+    stateController.text = widget.address?.state ?? '';
+    cityController.text = widget.address?.cityName ?? '';
+    pinCodeController.text = widget.address?.pinCode.toString() ?? '';
     validateAddressDetails();
     super.initState();
   }
 
   validateAddressDetails() {
-    validation.sinkFirstName.add(widget.firstName ?? '');
-    validation.sinkLastName.add(widget.lastName ?? '');
-    validation.sinkPhoneNo.add(widget.mobileNumber ?? '');
-    validation.sinkEmail.add(widget.email ?? '');
-    validation.sinkAddress.add(widget.firstAddress ?? '');
-    validation.sinkAddressOne.add(widget.secondAddress ?? '');
-    validation.sinkPincode.add(widget.pinCode ?? '');
-    validation.sinkCityName.add(widget.cityName ?? '');
-    validation.sinkState.add(widget.state ?? '');
-    validation.sinkAddress.add(widget.landmark?? "");
+    validation.sinkFirstName.add(widget.address?.firstName ?? '');
+    validation.sinkLastName.add(widget.address?.lastName ?? '');
+    validation.sinkPhoneNo.add(widget.address?.mobileNumber ?? '');
+    validation.sinkEmail.add(widget.address?.email ?? '');
+    validation.sinkAddress.add(widget.address?.firstAddress ?? '');
+    validation.sinkAddressOne.add(widget.address?.secondAddress ?? '');
+    validation.sinkLandmark.add(widget.address?.landmark ?? '');
+    validation.sinkPincode.add(widget.address?.pinCode.toString() ?? '');
+    validation.sinkCityName.add(widget.address?.cityName ?? '');
+    validation.sinkState.add(widget.address?.state ?? '');
   }
 
   @override
@@ -100,7 +90,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
             borderRadius: BorderRadius.circular(2)),
         backgroundColor: Theme.of(context).cardColor.withOpacity(0.9),
         content:  Container(
-        //  height: ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenHeight/1.2:ResponsiveWidget.isSmallScreen(context) ?SizeConfig.screenHeight/1.6:SizeConfig.screenHeight/1.4,
+          //  height: ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenHeight/1.2:ResponsiveWidget.isSmallScreen(context) ?SizeConfig.screenHeight/1.6:SizeConfig.screenHeight/1.4,
           width:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth:ResponsiveWidget.isSmallScreen(context) ? SizeConfig.screenWidth*0.35:SizeConfig.screenWidth*0.40,
 
           child: Stack(
@@ -157,49 +147,47 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                           stream: validation.pincode,
                           builder: (context, snapshot) {
                             return AppTextField(
-                                maxLine: null,
-                                prefixText: '',
-                                controller: pinCodeController,
+                              maxLine: null,
+                              prefixText: '',
+                              controller: pinCodeController,
                               floatingLabelBehavior: FloatingLabelBehavior.never,
-                                isShowCountryCode: true,
-                                isShowPassword: false,
-                                secureText: false,
-                                isColor: false,
-                                isTick: false,
-                                maxLength: 6,
-                                errorText: snapshot.hasError
-                                    ? snapshot.error.toString()
-                                    : null,
-                                onChanged: (m) {
-                                  validation.sinkPincode.add(m);
-                                  if(m.length==6){
-                                    cityController.clear();
-                                    stateController.clear();
-                                    AppIndicator.loadingIndicator(context);
-                                    cartViewData.getCityState(context, m, (result, isSuccess) {
-                                      if(isSuccess){
-                                        setState(() {
-                                          _cityStateModel = ((result as SuccessState).value as ASResponseModal).dataModal;
-                                          if(_cityStateModel.state==null || _cityStateModel.city==null ){
-                                            ToastMessage.message(StringConstant.pinCodeNotfound,context);
-                                          }
-                                          else{
-                                            cityController.text = _cityStateModel.city ?? "";
-                                            stateController.text = _cityStateModel.state ?? "";
-                                            validation.sinkState.add(stateController.text);
-                                            validation.sinkCityName.add(cityController.text);
-                                          }
-                                        });
-                                      }
-                                      else{
+                              isShowCountryCode: true,
+                              isShowPassword: false,
+                              secureText: false,
+                              isColor: false,
+                              isTick: false,
+                              maxLength: 6,
+                              errorText: snapshot.hasError
+                                  ? snapshot.error.toString()
+                                  : null,
+                              onChanged: (m) {
+                                validation.sinkPincode.add(m);
+                                if(m.length==6){
+                                  cityController.clear();
+                                  stateController.clear();
+                                  AppIndicator.loadingIndicator(context);
+                                  cartViewData.getCityState(context, m, (result, isSuccess) {
+                                    if(isSuccess){
+                                      setState(() {
+                                        _cityStateModel = ((result as SuccessState).value as ASResponseModal).dataModal;
+                                        if(_cityStateModel.state==null || _cityStateModel.city==null ){
+                                          ToastMessage.message(StringConstant.pinCodeNotfound,context);
+                                        }
+                                        else{
+                                          cityController.text = _cityStateModel.city ?? "";
+                                          stateController.text = _cityStateModel.state ?? "";
+                                          validation.sinkState.add(stateController.text);
+                                          validation.sinkCityName.add(cityController.text);
+                                        }
+                                      });
+                                    }
+                                  });
 
-                                      }
-
-                                    });
-
-                                  }},
-                                keyBoardType: TextInputType.number,
-                               );
+                                }
+                                setState(() {});
+                              },
+                              keyBoardType: TextInputType.number,
+                            );
                           }),
                     ),
                     SizedBox(height: 5.0),
@@ -211,25 +199,25 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                     ),
                     Container(
                       margin: EdgeInsets.only(left: 20,bottom: 4,right: 20),
-
                       child: StreamBuilder(
                           stream: validation.cityName,
                           builder: (context, snapshot) {
                             return AppTextField(
-                                maxLine: null,
-                                prefixText: '',isRead: true,
-                                controller: cityController,
+                              maxLine: null,
+                              prefixText: '',isRead: true,
+                              controller: cityController,
+                              labelText: StringConstant.cityName,
                               floatingLabelBehavior: FloatingLabelBehavior.never,
-                                isShowCountryCode: true,
-                                isShowPassword: false,
-                                secureText: false,
-                                isColor: false,
-                                isTick: false,
-                                maxLength: 30,
-                                errorText: snapshot.hasError
-                                    ? snapshot.error.toString()
-                                    : null,
-                                keyBoardType: TextInputType.streetAddress,
+                              isShowCountryCode: true,
+                              isShowPassword: false,
+                              secureText: false,
+                              isColor: false,
+                              isTick: false,
+                              maxLength: 30,
+                              errorText: snapshot.hasError
+                                  ? snapshot.error.toString()
+                                  : null,
+                              keyBoardType: TextInputType.streetAddress,
                             );
                           }),
                     ),
@@ -240,8 +228,8 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                       width: SizeConfig.screenWidth,
                       child: AppMediumFont(context, msg:StringConstant.state),
                     ),
-                    Container(          margin: EdgeInsets.only(left: 20,bottom: 4,right: 20),
-
+                    Container(
+                      margin: EdgeInsets.only(left: 20,bottom: 4,right: 20),
                       child: StreamBuilder(
                           stream: validation.state,
                           builder: (context, snapshot) {
@@ -249,6 +237,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                 maxLine: null,isRead: true,
                                 prefixText: '',
                                 controller: stateController,
+                                labelText: StringConstant.state,
                                 floatingLabelBehavior: FloatingLabelBehavior.never,
                                 isShowCountryCode: true,
                                 isShowPassword: false,
@@ -263,8 +252,8 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                           }),
                     ),
                     SizedBox(height: 5.0),
-                    Container(                    margin: EdgeInsets.only(left: 30,bottom: 4,right: 30),
-
+                    Container(
+                      margin: EdgeInsets.only(left: 30,bottom: 4,right: 30),
                       child: StreamBuilder(
                           stream: validation.validateAddAddress,
                           builder: (context, snapshot) {
@@ -279,29 +268,29 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
                                 10,
                                 snapshot.data != true ? false : true,
                                 onTap: () {
-                              snapshot.data != true
-                                  ? ToastMessage.message(
+                                  snapshot.data != true
+                                      ? ToastMessage.message(
                                       StringConstant.fillOut,context)
-                                  : widget.isAlreadyAdded == true
+                                      : widget.isAlreadyAdded == true
                                       ? cartViewData
-                                          .updateExistingAddress(
-                                              context,
-                                              widget.addressId ?? '',
-                                              firstNameController.text,
-                                              lastNameController.text,
-                                              emailController.text,
-                                              mobileNumberController.text,
-                                              addressFirstController.text,
-                                              addressSecondController.text,
-                                             landmarkController.text,
-                                             pinCodeController.text,
-                                              cityController.text,
-                                              stateController.text,
-                                             ''
+                                      .updateExistingAddress(
+                                      context,
+                                      widget.address?.addressId ?? '',
+                                      firstNameController.text,
+                                      lastNameController.text,
+                                      emailController.text,
+                                      mobileNumberController.text,
+                                      addressFirstController.text,
+                                      addressSecondController.text,
+                                      landmarkController.text,
+                                      pinCodeController.text,
+                                      cityController.text,
+                                      stateController.text,
+                                      ''
 
-                              )
+                                  )
                                       : addNewAddress();
-                            });
+                                });
                           }),
                     ),
                     SizedBox(height: 10.0),
@@ -337,7 +326,7 @@ class _ShippingAddressPageState extends State<ShippingAddressPage> {
         pinCode,
         cityController.text,
         stateController.text
-       );
+    );
   }
 
   Widget addAddressTextField(TextEditingController addAddressController, String msg, var keyBoardType, var validationType, int maximumLength, var streamValidationType, String title){

@@ -44,7 +44,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         titlePadding: EdgeInsets.zero,
         backgroundColor: Theme.of(context).cardColor,
         contentPadding: EdgeInsets.zero,
-        insetPadding: EdgeInsets.all(ResponsiveWidget.isSmallScreen(context) ?10:130),
+        insetPadding: EdgeInsets.all(10),
         content: forgotPasswordSection(authVM));
   }
 

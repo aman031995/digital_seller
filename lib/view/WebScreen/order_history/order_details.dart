@@ -17,13 +17,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class OrderDetails extends StatefulWidget {
   OrderList? orderItem;
    Function? callback;
-
    OrderDetails({Key? key,this.orderItem,this.callback}) : super(key: key);
-
   @override
   State<OrderDetails> createState() => _OrderDetailsState();
 }

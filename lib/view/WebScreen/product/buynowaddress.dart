@@ -106,208 +106,230 @@ class _BuynowAddressState extends State<BuynowAddress> {
                     value: notificationViewModel,
                     child: Consumer<NotificationViewModel>(builder: (context, model, _) {
                       return (cartViewModel.addressListModel != null)
-              ? GestureDetector(
-              onTap: () {
+                          ? GestureDetector(
+                          onTap: () {
 
-                closeAppbarProperty();
+                            closeAppbarProperty();
 
-              },
-              child: Scaffold(
-                  backgroundColor:
-                  Theme.of(context).scaffoldBackgroundColor,
-                  appBar: ResponsiveWidget.isMediumScreen(context)
-                      ? homePageTopBar(
-                      context,
-                      _scaffoldKey,
-                      cartViewData.cartItemCount,
-                      homeViewModel,
-                      profileViewModel,notificationViewModel
-                  )
-                      : getAppBar(
-                      context,notificationViewModel,
-                      homeViewModel,
-                      profileViewModel,
-                      cartViewData.cartItemCount,
-                      1,
-                      searchController, () async {
-                    SharedPreferences sharedPreferences =
-                    await SharedPreferences.getInstance();
-                    if (sharedPreferences.get('token') == null) {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return LoginUp(
-                              product: true,
-                            );
-                          });
-                    } else {
-                      closeAppbarProperty();
-
-                      context.router.push(FavouriteListPage());
-                    }
-                  }, () async {
-                    SharedPreferences sharedPreferences =
-                    await SharedPreferences.getInstance();
-                    if (sharedPreferences.getString('token') ==
-                        null) {
-                      showDialog(
-                          context: context,
-                          barrierColor: Theme.of(context)
-                              .canvasColor
-                              .withOpacity(0.6),
-                          builder: (BuildContext context) {
-                            return LoginUp(
-                              product: true,
-                            );
-                          });
-                    } else {
-                      closeAppbarProperty();
-
-                      context.router.push(CartDetail(
-                          itemCount:
-                          '${cartViewModel.cartItemCount}'));
-                    }
-                  }),
-                  body: Scaffold(
-                      extendBodyBehindAppBar: true,
-                      key: _scaffoldKey,
-                      backgroundColor:
-                      Theme.of(context).scaffoldBackgroundColor,
-                      drawer: ResponsiveWidget.isMediumScreen(context)
-                          ? AppMenu()
-                          : SizedBox(),
-                      body: Stack(
-                        children: [
-                          SingleChildScrollView(
-                            child: ResponsiveWidget.isMediumScreen(context)
-                                ? Column(
-                              children: [
-                                cartPageViewIndicator(context, 1),
-                                SizedBox(height:cartViewData.addressListModel!.length ==0 ?20 :0),
-                                addressList(cartViewData),
-                                SizedBox(height:cartViewData.addressListModel!.length ==0 ?20 :0),
-
-                                billcard(),
-                                SizedBox(height:cartViewData.addressListModel!.length ==0 ?20 :0),
-
-                                SizedBox(height: 10),
-                                checkbox(),
-                                SizedBox(height:20),
-                                returnPolicy(),
-                                SizedBox(height: 20),
-                                checkout(),
-                                SizedBox(height:ResponsiveWidget.isSmallScreen(context)
-                                    ? 20:cartViewData.addressListModel!.length > 3 ?50 :250),
-                                footerMobile(context,
-                                    homeViewModel)
-                              ],
-                            )
-                                : Column(
-                              children: [
-                                cartPageViewIndicator(context, 1),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment
-                                      .center,
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment
-                                      .start,
-                                  children: [
-                                    addressList(cartViewData),
-                                    SizedBox(width: 10),
-                                    Column(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                              color: Theme.of(context).cardColor,
-                                              borderRadius: BorderRadius.circular(8)
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                width: SizeConfig.screenWidth*0.36,
-                                                padding: EdgeInsets.all(14),
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.only(
-                                                        topRight: Radius.circular(8),
-                                                        topLeft: Radius.circular(8)
-                                                    ),
-                                                    color: Theme.of(context).canvasColor.withOpacity(0.2)),
-                                                child: AppBoldFont(context, msg: StringConstant.orderSummary,color: Theme.of(context).canvasColor),
-                                              ),
-                                              billcard(),
-                                              SizedBox(height: 15)
-                                            ],
-                                          ),
-                                        ),
-                                        SizedBox(height: 15),
-                                        checkbox(),
-                                        SizedBox(height: 5),
-                                        returnPolicy(),
-                                        SizedBox(height: 5),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              SizedBox(height: 100),
-                                footerDesktop()
-                              ],
-                            ),
-                          ),
-
-                          ResponsiveWidget.isMediumScreen(context)
-                              ? Container()
-                              : GlobalVariable.isnotification == true
-                              ?    Positioned(
-                              top:  0,
-                              right:  SizeConfig
-                                  .screenWidth *
-                                  0.20,
-                              child: notification(notificationViewModel,context,_scrollController)):Container(),
-                          ResponsiveWidget.isMediumScreen(
-                              context)
-                              ? Container()
-                              : GlobalVariable.isLogins == true
-                              ? Positioned(
-                              top: 0,
-                              right: 180,
-                              child: profile(
+                          },
+                          child: Scaffold(
+                              backgroundColor:
+                              Theme.of(context).scaffoldBackgroundColor,
+                              appBar: ResponsiveWidget.isMediumScreen(context)
+                                  ? homePageTopBar(
                                   context,
-                                  setState,
-                                  profileViewModel))
-                              : Container(),
-                          ResponsiveWidget.isMediumScreen(
-                              context)
-                              ? Container()
-                              : GlobalVariable.isSearch == true
-                              ? Positioned(
-                              top: SizeConfig
-                                  .screenWidth *
-                                  0.001,
-                              right: SizeConfig
-                                  .screenWidth *
-                                  0.20,
-                              child: searchList(
-                                  context,
+                                  _scaffoldKey,
+                                  cartViewData.cartItemCount,
                                   homeViewModel,
-                                  scrollController,
-                                  searchController!,
-                                  cartViewModel
-                                      .cartItemCount))
-                              : Container()
-                        ],
-                      )
+                                  profileViewModel,notificationViewModel
+                              )
+                                  : getAppBar(
+                                  context,notificationViewModel,
+                                  homeViewModel,
+                                  profileViewModel,
+                                  cartViewData.cartItemCount,
+                                  1,
+                                  searchController, () async {
+                                SharedPreferences sharedPreferences =
+                                await SharedPreferences.getInstance();
+                                if (sharedPreferences.get('token') == null) {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return LoginUp(
+                                          product: true,
+                                        );
+                                      });
+                                } else {
+                                  closeAppbarProperty();
 
-                  )))
-              : Container(
-            width: SizeConfig.screenWidth,
-            height: SizeConfig.screenHeight,
-            color: Theme.of(context).scaffoldBackgroundColor,
-            child: Center(
-              child: ThreeArchedCircle(size: 45.0),
-            ),
-          );
-        })); }));
+                                  context.router.push(FavouriteListPage());
+                                }
+                              }, () async {
+                                SharedPreferences sharedPreferences =
+                                await SharedPreferences.getInstance();
+                                if (sharedPreferences.getString('token') ==
+                                    null) {
+                                  showDialog(
+                                      context: context,
+                                      barrierColor: Theme.of(context)
+                                          .canvasColor
+                                          .withOpacity(0.6),
+                                      builder: (BuildContext context) {
+                                        return LoginUp(
+                                          product: true,
+                                        );
+                                      });
+                                } else {
+                                  closeAppbarProperty();
+
+                                  context.router.push(CartDetail(
+                                      itemCount:
+                                      '${cartViewModel.cartItemCount}'));
+                                }
+                              }),
+                              body: Scaffold(
+                                  extendBodyBehindAppBar: true,
+                                  key: _scaffoldKey,
+                                  backgroundColor:
+                                  Theme.of(context).scaffoldBackgroundColor,
+                                  drawer: ResponsiveWidget.isMediumScreen(context)
+                                      ? AppMenu()
+                                      : SizedBox(),
+                                  body: Stack(
+                                    children: [
+                                      SingleChildScrollView(
+                                        child: ResponsiveWidget.isMediumScreen(context)
+                                            ? Column(
+                                          children: [
+                                            cartPageViewIndicator(context, 1),
+                                            SizedBox(height:cartViewData.addressListModel!.length ==0 ?20 :0),
+                                            addressList(cartViewData),
+                                            SizedBox(height:cartViewData.addressListModel!.length ==0 ?20 :0),
+                                            Container(width: SizeConfig.screenWidth/1.05,
+                                              decoration: BoxDecoration(
+                                                  color: Theme.of(context).cardColor,
+                                                  borderRadius: BorderRadius.circular(8)
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    width: SizeConfig.screenWidth/1.05,
+                                                    padding: EdgeInsets.all(14),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius: BorderRadius.only(
+                                                            topRight: Radius.circular(8),
+                                                            topLeft: Radius.circular(8)
+                                                        ),
+                                                        color: Theme.of(context).canvasColor.withOpacity(0.2)),
+                                                    child: AppBoldFont(context, msg: StringConstant.orderSummary,color: Theme.of(context).canvasColor),
+                                                  ),
+                                                  billcard(),
+                                                  SizedBox(height: 15)
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                            checkbox(),
+
+                                            SizedBox(height:cartViewData.addressListModel!.length ==0 ?20 :0),
+                                            SizedBox(height:20),
+                                            returnPolicy(),
+                                            SizedBox(height: 20),
+                                            checkout(),
+                                            SizedBox(height:ResponsiveWidget.isSmallScreen(context)
+                                                ? 20:cartViewData.addressListModel!.length > 3 ?50 :250),
+                                            footerMobile(context,
+                                                homeViewModel)
+                                          ],
+                                        )
+                                            : Column(
+                                          children: [
+                                            cartPageViewIndicator(context, 1),
+                                            Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .center,
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment
+                                                  .start,
+                                              children: [
+                                                addressList(cartViewData),
+                                                SizedBox(width: 10),
+                                                Column(
+                                                  children: [
+                                                    Container(
+                                                      decoration: BoxDecoration(
+                                                          color: Theme.of(context).cardColor,
+                                                          borderRadius: BorderRadius.circular(8)
+                                                      ),
+                                                      child: Column(
+                                                        children: [
+                                                          Container(
+                                                            width: SizeConfig.screenWidth*0.36,
+                                                            padding: EdgeInsets.all(14),
+                                                            decoration: BoxDecoration(
+                                                                borderRadius: BorderRadius.only(
+                                                                    topRight: Radius.circular(8),
+                                                                    topLeft: Radius.circular(8)
+                                                                ),
+                                                                color: Theme.of(context).canvasColor.withOpacity(0.2)),
+                                                            child: AppBoldFont(context, msg: StringConstant.orderSummary,color: Theme.of(context).canvasColor),
+                                                          ),
+                                                          billcard(),
+                                                          SizedBox(height: 15)
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 15),
+                                                    checkbox(),
+                                                    SizedBox(height: 5),
+                                                    returnPolicy(),
+                                                    SizedBox(height: 20),
+                                                    checkout(),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            SizedBox(height: 100),
+                                            footerDesktop()
+                                          ],
+                                        ),
+                                      ),
+
+                                      ResponsiveWidget.isMediumScreen(context)
+                                          ? Container()
+                                          : GlobalVariable.isnotification == true
+                                          ?    Positioned(
+                                          top:  0,
+                                          right:  SizeConfig
+                                              .screenWidth *
+                                              0.20,
+                                          child: notification(notificationViewModel,context,_scrollController)):Container(),
+                                      ResponsiveWidget.isMediumScreen(
+                                          context)
+                                          ? Container()
+                                          : GlobalVariable.isLogins == true
+                                          ? Positioned(
+                                          top: 0,
+                                          right: 180,
+                                          child: profile(
+                                              context,
+                                              setState,
+                                              profileViewModel))
+                                          : Container(),
+                                      ResponsiveWidget.isMediumScreen(
+                                          context)
+                                          ? Container()
+                                          : GlobalVariable.isSearch == true
+                                          ? Positioned(
+                                          top: SizeConfig
+                                              .screenWidth *
+                                              0.001,
+                                          right: SizeConfig
+                                              .screenWidth *
+                                              0.20,
+                                          child: searchList(
+                                              context,
+                                              homeViewModel,
+                                              scrollController,
+                                              searchController!,
+                                              cartViewModel
+                                                  .cartItemCount))
+                                          : Container()
+                                    ],
+                                  )
+
+                              )))
+                          : Container(
+                        width: SizeConfig.screenWidth,
+                        height: SizeConfig.screenHeight,
+                        color: Theme.of(context).scaffoldBackgroundColor,
+                        child: Center(
+                          child: ThreeArchedCircle(size: 45.0),
+                        ),
+                      );
+                    })); }));
         }));
   }
 
@@ -326,27 +348,27 @@ class _BuynowAddressState extends State<BuynowAddress> {
             }),
         cartViewData.addressListModel?.length == 0
             ? Container(
-              height: 250,
-              decoration: BoxDecoration(boxShadow: [
-                BoxShadow(
-                  color: Theme.of(context).scaffoldBackgroundColor,
-                )
-              ]),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset(
-                    AssetsConstants.ic_noProductFound,
-                    height: 150,
-                    width: 150,fit: BoxFit.fill,
-                  ),
-                  AppBoldFont(
-                      context,msg: StringConstant.noadress,
-                      fontSize: 16,
-                      color: Theme.of(context).canvasColor,textAlign: TextAlign.center),
-                ],
-              ),
+          height: 250,
+          decoration: BoxDecoration(boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).scaffoldBackgroundColor,
             )
+          ]),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset(
+                AssetsConstants.ic_noProductFound,
+                height: 150,
+                width: 150,fit: BoxFit.fill,
+              ),
+              AppBoldFont(
+                  context,msg: StringConstant.noadress,
+                  fontSize: 16,
+                  color: Theme.of(context).canvasColor,textAlign: TextAlign.center),
+            ],
+          ),
+        )
             : addressDetails(
             context,
             addressId,
@@ -448,7 +470,7 @@ class _BuynowAddressState extends State<BuynowAddress> {
 
   checkbox(){
     return Container(
-      width:ResponsiveWidget.isMediumScreen(context) ?SizeConfig.screenWidth: SizeConfig.screenWidth *0.36,
+      width:ResponsiveWidget.isMediumScreen(context) ?SizeConfig.screenWidth/1.05: SizeConfig.screenWidth *0.36,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
               topRight: Radius.circular(8),
@@ -547,17 +569,8 @@ class _BuynowAddressState extends State<BuynowAddress> {
             ),
           )
               : SizedBox(),
-          Divider(
-            color:
-            Theme.of(context).canvasColor,
-            thickness:
-            0.1,
-            height:
-            0.1,
-          ),
           SizedBox(height: 15),
-          checkout(),
-          SizedBox(height: 15),
+
 
         ],
       ),
@@ -565,8 +578,9 @@ class _BuynowAddressState extends State<BuynowAddress> {
   }
 
   Row returnPolicy(){
-   return Row(
+    return Row(
       children: [
+        SizedBox(width: 10),
         Material(
           color: Theme.of(context)
               .scaffoldBackgroundColor,
@@ -632,7 +646,7 @@ class _BuynowAddressState extends State<BuynowAddress> {
                 fontSize: 16.0)),
       ],
     );
-}
+  }
 
   // payment selection
   setSelectedRadioTile(int val) {
@@ -665,7 +679,7 @@ class _BuynowAddressState extends State<BuynowAddress> {
                   "",
                   paymentMethod,
                   cartListData?.cartList![0].productId ?? "",
-                 cartListData?.cartList![0].productDetails?.variantId ?? "",
+                  cartListData?.cartList![0].productDetails?.variantId ?? "",
                   cartListData?.checkoutDetails!.elementAt(0).value ?? "",
                   'Success');
             }
@@ -714,9 +728,9 @@ class _BuynowAddressState extends State<BuynowAddress> {
         response.paymentId,
         response.orderId,
         'Online',
-       cartListData?.cartList![0].productId ?? "" ,
-       cartListData?.cartList![0].productDetails?.variantId ?? "",
-      cartListData?.checkoutDetails!.elementAt(0).value ?? "",
+        cartListData?.cartList![0].productId ?? "" ,
+        cartListData?.cartList![0].productDetails?.variantId ?? "",
+        cartListData?.checkoutDetails!.elementAt(0).value ?? "",
         'Success');
   }
 

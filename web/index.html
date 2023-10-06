@@ -16,28 +16,10 @@
 
   <title>Digital Fashion Street</title>
   <link rel="manifest" href="manifest.json">
-  <style>
-      .container {
-      width: 100vw;
-        height: 100vh;
-        display: flex;
-        background: transparent;
-        justify-content: center;
-        align-items: center;
-      }
-      .indicator{
-         width: 20vh;
-        height: 20vh;
-
-
-      }
-</style>
 </head>
 
-<body style="overflow: hidden">
-<div id="loading_indicator" class="container">
-  <img class="indicator" src="images/Loader.gif"/>
-</div>
+<body>
+
 <script type="text/javascript">
     window.flutterWebRenderer = "html";
 </script>
@@ -53,16 +35,13 @@
     }
   </script>
 <script src="main.dart.js" type="application/javascript"></script>
-<script>
-  window.onload = function () {
-        setTimeout(function () {
-          var loadingIndicator = document.getElementById("loading_indicator");
-          if (loadingIndicator) {
-            loadingIndicator.remove();
-          }
-        }, 1000);
-};
-</script>
+<!--<script>-->
+<!--window.addEventListener('popstate', function(event) {-->
+<!--      // Reload the home page when the back button is pressed-->
+<!--      window.location.reload();-->
+<!--});-->
+<!--</script>-->
+
 
 </body>
 

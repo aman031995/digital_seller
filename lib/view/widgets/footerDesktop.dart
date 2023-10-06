@@ -113,12 +113,12 @@ class _footerDesktopState extends State<footerDesktop> {
             SizedBox(width: 5),
             InkWell(
               onTap: () async {
-                // var url = StringConstant.playestoreurl;
-                // if (await canLaunch(url)) {
-                //   await launch(url);
-                // } else {
-                //   throw 'Could not launch $url';
-                // }
+                var url = StringConstant.playestoreurl;
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
               },
               child: Image.asset(AssetsConstants.icPlaystore,  color: Theme.of(context).scaffoldBackgroundColor,
                   height: 35),
@@ -429,13 +429,13 @@ Widget footerMobile(BuildContext context,HomeViewModel homeViewModel) {
                     SizedBox(width: SizeConfig.screenWidth * 0.01),
                     GestureDetector(
                         onTap: () async {
-                          // var url = StringConstant.playestoreurl;
-                          //
-                          // if (await canLaunch(url)) {
-                          //   await launch(url);
-                          // } else {
-                          //   throw 'Could not launch $url';
-                          // }
+                          var url = StringConstant.playestoreurl;
+
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
                         },
                         child:
                             Image.asset(AssetsConstants.icPlaystore,   color: Theme.of(context).scaffoldBackgroundColor,height: 30)),

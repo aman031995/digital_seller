@@ -14,7 +14,6 @@ class ProductSkuView extends StatelessWidget {
   DefaultVariationSku? productList;
   bool? selected;
   ProductSkuView({this.skuDetails, this.cartView, this.productList,this.selected});
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
@@ -142,7 +141,6 @@ class ProductSkuView extends StatelessWidget {
                 )
               ]
           ));
-
     } else if (e.variationKey == 'unit_count') {
       return RichText(
           text: TextSpan(
@@ -155,8 +153,6 @@ class ProductSkuView extends StatelessWidget {
                 )
               ]
           ));
-
-      // AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.unitCount?.name}', fontSize: 18);
     } else if (e.variationKey == 'size') {
       return RichText(
           text: TextSpan(
@@ -169,8 +165,6 @@ class ProductSkuView extends StatelessWidget {
                 )
               ]
           ));
-
-      //AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.size?.name}', fontSize: 18);
     } else if (e.variationKey == 'material_type') {
       return
         RichText(
@@ -184,7 +178,6 @@ class ProductSkuView extends StatelessWidget {
                   )
                 ]
             ));
-      //AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.materialType?.name}', fontSize: 18);
     } else if (e.variationKey == 'style') {
       return  RichText(
           text: TextSpan(
