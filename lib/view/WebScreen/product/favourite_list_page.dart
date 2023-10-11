@@ -8,7 +8,6 @@ import 'package:TychoStream/utilities/three_arched_circle.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
-import 'package:TychoStream/view/restaurant/product_list_restaurant.dart';
 import 'package:TychoStream/view/widgets/NotificationScreen.dart';
 import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/view/widgets/footerDesktop.dart';
@@ -26,11 +25,9 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../AppRouter.gr.dart';
 
-
 @RoutePage()
 class FavouriteListPage extends StatefulWidget {
   FavouriteListPage({Key? key}) : super(key: key);
-
   @override
   State<FavouriteListPage> createState() => _FavouriteListPageState();
 }
@@ -48,15 +45,12 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
   ScrollController _scrollController = ScrollController();
   ScrollController scrollController1 = ScrollController();
 
-
-
   @override
   void initState() {
     homeViewModel.getAppConfig(context);
     cartViewModel.getCartCount(context);
     cartViewModel.getFavList(context, pageNum,(result, isSuccess){});
     notificationViewModel.getNotificationCountText(context);
-
     super.initState();
   }
   @override
@@ -67,7 +61,6 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
         checkInternet = result;
       });
     });
-
     return checkInternet == "Offline"
         ? NOInternetScreen()
         : ChangeNotifierProvider.value(
@@ -77,10 +70,7 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                   value: notificationViewModel,
                   child: Consumer<NotificationViewModel>(
                       builder: (context, model, _) {return GestureDetector(
-                onTap: () {
-                  closeAppbarProperty();
-
-                },
+                onTap: () {closeAppbarProperty();},
                 child: Scaffold(
                     appBar: ResponsiveWidget.isMediumScreen(context)
                         ? homePageTopBar(context, _scaffoldKey, viewmodel.cartItemCount,homeViewModel, profileViewModel,model)
@@ -113,17 +103,12 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                             if (sharedPreferences.getString('token') == null) {
                               showDialog(
                                   context: context,
-                                  barrierColor: Theme.of(context)
-                                      .canvasColor
-                                      .withOpacity(0.6),
+                                  barrierColor: Theme.of(context).canvasColor.withOpacity(0.6),
                                   builder: (BuildContext context) {
-                                    return LoginUp(
-                                      product: true,
-                                    );
+                                    return LoginUp(product: true);
                                   });
                             } else {
                               closeAppbarProperty();
-
                               context.router.push(CartDetail(
                                   itemCount: '${viewmodel.cartItemCount}'));
                             }
@@ -132,20 +117,15 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                       extendBodyBehindAppBar: true,
                       key: _scaffoldKey,
                       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                      drawer:
-                      ResponsiveWidget.isMediumScreen(context)
-                          ? AppMenu()
-                          : SizedBox(),
-                      body:  Stack(
-                                  children: [
+                      drawer: ResponsiveWidget.isMediumScreen(context) ? AppMenu() : SizedBox(),
+                      body:  Stack(children: [
                                     viewmodel.productListModel?.productList != null
                                         ? viewmodel.productListModel!.productList!.length > 0
                                         ?SingleChildScrollView(
                                       controller: scrollController1,
                                       child: Column(
                                         children: [
-                                          ResponsiveWidget.isMediumScreen(
-                                                  context)
+                                          ResponsiveWidget.isMediumScreen(context)
                                               ? Container(
                                             margin: EdgeInsets.only(right: 12,left: 12,top: 12),
                                             child: GridView.builder(
@@ -170,8 +150,8 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                           productListData,
                                                           index,
                                                           viewmodel,favouritepage: true);
-                                                    },
-                                                  ),
+                                                    }
+                                                  )
                                                 )
                                               : Container(
                                                   width: SizeConfig.screenWidth,
@@ -207,50 +187,36 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                           productListData,
                                                           index,
                                                           viewmodel,favouritepage: true);
-                                                    },
-                                                  ),
+                                                    })
                                                 ),
-
                                           onPagination(viewmodel),
-                                          ResponsiveWidget.isMediumScreen(
-                                                  context)
-                                              ?   SizedBox(height:ResponsiveWidget.isSmallScreen(context)
+                                          ResponsiveWidget.isMediumScreen(context)
+                                              ? SizedBox(height:ResponsiveWidget.isSmallScreen(context)
                                               ? 50:150)
                                               : SizedBox(height: 200),
-                                          ResponsiveWidget.isMediumScreen(
-                                                  context)
+                                          ResponsiveWidget.isMediumScreen(context)
                                               ? footerMobile(context,homeViewModel)
-                                              : footerDesktop(),
-                                        ],
-                                      ),
-                                    ): noDataFoundMessage(
-                                        context,StringConstant.noProductFound,homeViewModel): Center(
-                                      child: ThreeArchedCircle(size: 45.0),
-                                    ),
+                                              : footerDesktop()])
+                                    ): noDataFoundMessage(context,StringConstant.noProductFound,homeViewModel):
+                                    Center(child: ThreeArchedCircle(size: 45.0)),
                                     ResponsiveWidget.isMediumScreen(context)
                                         ? Container()
                                         : GlobalVariable.isnotification == true
-                                        ?    Positioned(
-                                        top:  0,
-                                        right:  SizeConfig
-                                            .screenWidth *
-                                            0.20,
+                                        ? Positioned(
+                                        top:0,
+                                        right:SizeConfig.screenWidth * 0.20,
                                         child: notification(notificationViewModel,context,_scrollController)):Container(),
-                                    ResponsiveWidget
-                                        .isMediumScreen(context)
-                                        ?Container():    GlobalVariable.isLogins == true
+                                    ResponsiveWidget.isMediumScreen(context)
+                                        ?Container(): GlobalVariable.isLogins == true
                                         ? Positioned(
                                             top: 0,
-                                            right:  180,
-                                            child: profile(context, setState,
-                                                profileViewModel))
+                                            right: 180,
+                                            child: profile(context, setState, profileViewModel))
                                         : Container(),
-
-                                    ResponsiveWidget
-                                        .isMediumScreen(context)
-                                        ? Container():   GlobalVariable.isSearch == true
+                        ResponsiveWidget.isMediumScreen(context)
+                                        ? Container(): GlobalVariable.isSearch == true
                                         ? Positioned(
-                                            top: SizeConfig.screenWidth * 0.001,
+                                            top: 0,
                                             right:  SizeConfig.screenWidth * 0.20,
                                             child: searchList(
                                                 context,
@@ -258,17 +224,12 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                                                 scrollController,
                                                 searchController!,
                                                 cartViewModel.cartItemCount))
-                                        : Container(),
-                                  ],
-                                )
-
-
-                    )),
-              );
+                                        : Container()
+                                  ]
+                                ))));
             }));
   }));
   }
-
   onPagination( CartViewModel viewmodel){
     return  viewmodel.productListModel!.pagination!.lastPage==1?Container():   Container(
       height: 40,
@@ -279,41 +240,17 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
       width:ResponsiveWidget.isMediumScreen(context)
           ?viewmodel.productListModel!.pagination!.lastPage! < 4?SizeConfig.screenWidth/1.6  : SizeConfig.screenWidth:SizeConfig.screenWidth/4,
       child: NumberPaginator(
-        numberPages: viewmodel
-            .productListModel!
-            .pagination!
-            .lastPage!,
-        config:
-        NumberPaginatorUIConfig(
-          mode: ContentDisplayMode
-              .numbers,
+        numberPages: viewmodel.productListModel!.pagination!.lastPage!,
+        config: NumberPaginatorUIConfig(
+          mode: ContentDisplayMode.numbers,
           height: 40,
           contentPadding:
           EdgeInsets.zero,
-          buttonShape:
-          RoundedRectangleBorder(
-            borderRadius:
-            BorderRadius
-                .circular(4),
-          ),
-          buttonSelectedForegroundColor:
-          Theme.of(context)
-              .canvasColor,
-          buttonUnselectedForegroundColor:
-          Theme.of(context)
-              .canvasColor
-              .withOpacity(
-              0.8),
-          buttonUnselectedBackgroundColor:
-          Theme.of(context)
-              .cardColor
-              .withOpacity(
-              0.8),
-          buttonSelectedBackgroundColor:
-          Theme.of(context)
-              .primaryColor
-              .withOpacity(
-              0.8),
+          buttonShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4),),
+          buttonSelectedForegroundColor: Theme.of(context).canvasColor,
+          buttonUnselectedForegroundColor: Theme.of(context).canvasColor.withOpacity(0.8),
+          buttonUnselectedBackgroundColor: Theme.of(context).cardColor.withOpacity(0.8),
+          buttonSelectedBackgroundColor: Theme.of(context).primaryColor.withOpacity(0.8),
         ),
         initialPage: 0,
         onPageChange:
@@ -325,8 +262,6 @@ class _FavouriteListPageState extends State<FavouriteListPage> {
                 scrollController1.jumpTo(0);}
             });
           });
-        },
-      ),
-    );
+        }));
   }
 }

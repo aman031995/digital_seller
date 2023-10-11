@@ -71,7 +71,7 @@ class _LoginUpState extends State<LoginUp> {
         elevation: 10,
         actionsPadding: EdgeInsets.zero,
         contentPadding: EdgeInsets.zero,
-             insetPadding:EdgeInsets.all(ResponsiveWidget.isSmallScreen(context) ? 10:130),
+             insetPadding: EdgeInsets.all(10),
              backgroundColor:Theme.of(context).cardColor,
         content: Container(
           margin:  EdgeInsets.only(left:ResponsiveWidget.isMediumScreen(context)?15: 50, right:ResponsiveWidget.isMediumScreen(context)?15: 50,top:ResponsiveWidget.isMediumScreen(context)?10: 20),

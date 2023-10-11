@@ -308,8 +308,7 @@ class CartViewModel extends ChangeNotifier {
         (result, isSuccess) {
       if (isSuccess) {
         isAddedToCart = true;
-        _itemCountModel =
-            ((result as SuccessState).value as ASResponseModal).dataModal;
+        _itemCountModel = ((result as SuccessState).value as ASResponseModal).dataModal;
         if (cartDetail == true) {
           getCartListData(context);
         }
@@ -376,6 +375,7 @@ class CartViewModel extends ChangeNotifier {
         AppIndicator.disposeIndicator();
         updateCartCount(context, _itemCountModel?.count.toString() ?? '');
         ToastMessage.message(((result).value as ASResponseModal).message,context);
+        reloadPage();
         notifyListeners();
       }
     });

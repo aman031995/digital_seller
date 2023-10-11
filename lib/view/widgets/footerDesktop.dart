@@ -113,12 +113,12 @@ class _footerDesktopState extends State<footerDesktop> {
             SizedBox(width: 5),
             InkWell(
               onTap: () async {
-                // var url = StringConstant.playestoreurl;
-                // if (await canLaunch(url)) {
-                //   await launch(url);
-                // } else {
-                //   throw 'Could not launch $url';
-                // }
+                var url = StringConstant.playestoreurl;
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
               },
               child: Image.asset(AssetsConstants.icPlaystore,  color: Theme.of(context).scaffoldBackgroundColor,
                   height: 35),
@@ -351,10 +351,11 @@ Widget footerMobile(BuildContext context,HomeViewModel homeViewModel) {
             Column(
               children: [
                 AppBoldFont(context,
-                    fontWeight: FontWeight.w200,
+                    fontWeight: FontWeight.w600,
                     msg: StringConstant.connectus,
                     color: Theme.of(context).scaffoldBackgroundColor,
-                    fontSize: 16),
+                    fontSize: ResponsiveWidget.isMediumScreen(context)
+                        ?14:16),
                 SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -406,10 +407,11 @@ Widget footerMobile(BuildContext context,HomeViewModel homeViewModel) {
             Column(
               children: [
                 AppBoldFont(context,
-                    fontWeight: FontWeight.w200,
+                    fontWeight: FontWeight.w600,
                     msg: StringConstant.Download,
                     color: Theme.of(context).scaffoldBackgroundColor,
-                    fontSize: 16),
+                    fontSize: ResponsiveWidget.isMediumScreen(context)
+                        ?14:16),
                 SizedBox(height: 8),
                 Row(
                   children: [
@@ -429,13 +431,13 @@ Widget footerMobile(BuildContext context,HomeViewModel homeViewModel) {
                     SizedBox(width: SizeConfig.screenWidth * 0.01),
                     GestureDetector(
                         onTap: () async {
-                          // var url = StringConstant.playestoreurl;
-                          //
-                          // if (await canLaunch(url)) {
-                          //   await launch(url);
-                          // } else {
-                          //   throw 'Could not launch $url';
-                          // }
+                          var url = StringConstant.playestoreurl;
+
+                          if (await canLaunch(url)) {
+                            await launch(url);
+                          } else {
+                            throw 'Could not launch $url';
+                          }
                         },
                         child:
                             Image.asset(AssetsConstants.icPlaystore,   color: Theme.of(context).scaffoldBackgroundColor,height: 30)),

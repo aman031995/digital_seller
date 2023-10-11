@@ -36,9 +36,7 @@ Future<void> main() async {
           measurementId: "G-B37TDNX53B"
 
   ));
-  html.window.onPopState.listen((event) {
-    html.window.location.reload();
-  });
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

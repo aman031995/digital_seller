@@ -14,7 +14,6 @@ class ProductSkuView extends StatelessWidget {
   DefaultVariationSku? productList;
   bool? selected;
   ProductSkuView({this.skuDetails, this.cartView, this.productList,this.selected});
-
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
@@ -134,65 +133,59 @@ class ProductSkuView extends StatelessWidget {
       return RichText(
           text: TextSpan(
               text: '${e.variationName!}  :  ',
-              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+              style: TextStyle(fontSize:ResponsiveWidget.isMediumScreen(context)? 14 : 16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
               children: <InlineSpan>[
                 TextSpan(
-                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                  style: TextStyle(fontSize:ResponsiveWidget.isMediumScreen(context)? 14 : 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                   text: '${defaultProduct?.color?.name}',
                 )
               ]
           ));
-
     } else if (e.variationKey == 'unit_count') {
       return RichText(
           text: TextSpan(
               text: '${e.variationName!}  :  ',
-              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+              style: TextStyle(fontSize:ResponsiveWidget.isMediumScreen(context)? 14 : 16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
               children: <InlineSpan>[
                 TextSpan(
-                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                  style: TextStyle(fontSize:ResponsiveWidget.isMediumScreen(context)? 14 : 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                   text: '${defaultProduct?.unitCount?.name}',
                 )
               ]
           ));
-
-      // AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.unitCount?.name}', fontSize: 18);
     } else if (e.variationKey == 'size') {
       return RichText(
           text: TextSpan(
               text: '${e.variationName!}  :  ',
-              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+              style: TextStyle(fontSize:ResponsiveWidget.isMediumScreen(context)? 14 : 16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
               children: <InlineSpan>[
                 TextSpan(
-                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                  style: TextStyle(fontSize:ResponsiveWidget.isMediumScreen(context)? 14 : 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                   text: '${defaultProduct?.size?.name}',
                 )
               ]
           ));
-
-      //AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.size?.name}', fontSize: 18);
     } else if (e.variationKey == 'material_type') {
       return
         RichText(
             text: TextSpan(
                 text: '${e.variationName!}  :  ',
-                style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                style: TextStyle(fontSize:ResponsiveWidget.isMediumScreen(context)? 14 : 16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                 children: <InlineSpan>[
                   TextSpan(
-                    style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                    style: TextStyle(fontSize:ResponsiveWidget.isMediumScreen(context)? 14 : 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                     text: '${defaultProduct?.materialType?.name}',
                   )
                 ]
             ));
-      //AppBoldFont(context, msg: e.variationName! + ' : ${defaultProduct?.materialType?.name}', fontSize: 18);
     } else if (e.variationKey == 'style') {
       return  RichText(
           text: TextSpan(
               text: '${e.variationName!}  :  ',
-              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+              style: TextStyle(fontSize: ResponsiveWidget.isMediumScreen(context)? 14 :16,fontWeight: FontWeight.w700,color: Theme.of(context).canvasColor,fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
               children: <InlineSpan>[
                 TextSpan(
-                  style: TextStyle(fontSize: 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
+                  style: TextStyle(fontSize:ResponsiveWidget.isMediumScreen(context)? 14 : 16,fontWeight:FontWeight.w400,color: Theme.of(context).canvasColor.withOpacity(0.7),  fontFamily: Theme.of(context).textTheme.displayMedium?.fontFamily),
                   text: '${defaultProduct?.style?.name}',
                 )
               ]

@@ -24,7 +24,7 @@ import 'package:TychoStream/view/widgets/CommonCarousel.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import '../../AppRouter.gr.dart';
-
+import 'dart:js' as js;
 
 @RoutePage()
 class HomePageWeb extends StatefulWidget {
@@ -72,7 +72,7 @@ class _HomePageWebState extends State<HomePageWeb> {
     homeViewModel.getAppConfig(context);
     cartViewModel.getCartCount(context);
     cartViewModel.getProductCategoryList(context,1);
-    cartViewModel.getRecommendedViewData(context);
+    cartViewModel.getRecommendedView(context);
     cartViewModel.getOfferDiscount(context);
     notificationViewModel.getNotificationCountText(context);
     super.initState();
@@ -82,7 +82,7 @@ class _HomePageWebState extends State<HomePageWeb> {
     GlobalVariable.names = sharedPreferences.get('name').toString();
     if (sharedPreferences.get('token') != null) {
       cartViewModel.getRecentView(context);
-      profileViewModel.getProfileDetails(context);
+      profileViewModel.getProfileDetail(context);
     }
   }
   @override
@@ -144,9 +144,6 @@ class _HomePageWebState extends State<HomePageWeb> {
                                         null) {
                                       showDialog(
                                           context: context,
-                                          barrierColor: Theme.of(context)
-                                              .canvasColor
-                                              .withOpacity(0.6),
                                           builder: (BuildContext context) {
                                             return LoginUp(
                                               product: true,
@@ -154,9 +151,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                           });
                                     } else {
                                       closeAppbarProperty();
-                                      context.router.push(CartDetail(
-                                          itemCount:
-                                              '${cartViewModel.cartItemCount}'));
+                                      context.router.push(CartDetail(itemCount: '${cartViewModel.cartItemCount}'));
                                     }
                                   }),
                             body: Scaffold(
@@ -204,6 +199,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                                               color: Theme.of(context).canvasColor),
                                                         ),
                                                             onTap: () {
+                                                             // js.context.callMethod('customAlertMessage',["hey using java script code"]);
                                                               _nextCounterRecommended();
                                                               setState(() {});
                                                             })),
@@ -286,7 +282,7 @@ class _HomePageWebState extends State<HomePageWeb> {
                                               // what we offer.....
                                               offerList(context),
                                               //Discount product List .......
-                                              (cartViewModel.offerDiscountModel?.length ?? 0) > 0 ?   discountView(cartViewModel):SizedBox(),
+                                              (cartViewModel.offerDiscountModel?.length ?? 0) > 0 ? discountView(cartViewModel):SizedBox(),
                                               SizedBox(height: ResponsiveWidget.isMediumScreen(context) ? 12 : 24),
                                               Image.asset(AssetsConstants.icbanner, width: SizeConfig.screenWidth, height: SizeConfig.screenWidth * 0.25, fit: BoxFit.fill),
                                               // product-gallery view .........

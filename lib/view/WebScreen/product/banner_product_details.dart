@@ -31,9 +31,12 @@ import '../../../AppRouter.gr.dart';
 
 @RoutePage()
 class BannerProductDetailPage extends StatefulWidget {
+  final String? Dp;
   final List<String>? ProductDetails;
   BannerProductDetailPage(
-      {@QueryParam() this.ProductDetails,
+      {
+        @PathParam('ds') this.Dp ,
+        @QueryParam() this.ProductDetails,
         Key? key, }) : super(key: key);
 
   @override
@@ -454,7 +457,9 @@ class _BannerProductDetailPageState extends State<BannerProductDetailPage> {
                         ],)
                       )
                           : Center(child: ThreeArchedCircle(size: 45.0))),
-                )): Center(child:CircularProgressIndicator(color: Colors.grey,strokeWidth: 2));
+                )): Container(
+                                  height: SizeConfig.screenHeight,width: SizeConfig.screenWidth,color: Theme.of(context).scaffoldBackgroundColor,
+                                  child: Center(child:CircularProgressIndicator(color: Colors.grey,strokeWidth: 2)));
           })
       );
           })); }));

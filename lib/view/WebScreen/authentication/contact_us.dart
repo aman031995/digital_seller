@@ -1,5 +1,6 @@
 import 'package:TychoStream/network/AppNetwork.dart';
 import 'package:TychoStream/services/global_variable.dart';
+import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/view/WebScreen/authentication/LoginUp.dart';
 import 'package:TychoStream/view/WebScreen/menu/app_menu.dart';
 import 'package:TychoStream/view/WebScreen/search/search_list.dart';
@@ -195,10 +196,14 @@ class _ContactUsState extends State<ContactUs> {
                               ResponsiveWidget.isMediumScreen(context)
                                   ? SingleChildScrollView(
                                 child: Container(
-                                  margin: EdgeInsets.only(top: 50),
+                                  margin: EdgeInsets.only(top: 10),
                                   child: Column(
                                     children: [
-                                      SizedBox(height: 12),
+                                  Container(
+                                    margin: const EdgeInsets.all(10),
+                                    width: SizeConfig.screenWidth,
+                                    alignment: Alignment.center,
+                                    child:AppBoldFont(context, msg: "Helpdesk",fontSize: 18)),
                                       Container(
                                         margin: const EdgeInsets.all(20),
                                         width: SizeConfig.screenWidth,
@@ -335,6 +340,11 @@ class _ContactUsState extends State<ContactUs> {
                                         child: Column(
                                           children: [
                                             SizedBox(height: 12),
+                                            Container(
+                                                margin: const EdgeInsets.all(20),
+                                                width: SizeConfig.screenWidth,
+                                                alignment: Alignment.center,
+                                                child:AppBoldFont(context, msg: "Helpdesk",fontSize: 22)),
                                             Container(
                                               margin: const EdgeInsets.all(20),
                                               width: SizeConfig.screenWidth,

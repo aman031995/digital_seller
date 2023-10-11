@@ -423,21 +423,6 @@ Widget productListRestaurantItems(BuildContext context, ProductList? productList
                         } );
                   });
             }
-            // context.router.push(
-            //   ProductDetailPage(
-            //     productName:
-            //     '${productListData?.productName?.replaceAll(' ', '')}',
-            //     productdata: [
-            //       '${productListData?.productId}',
-            //       '${viewmodel.cartItemCount}',
-            //       '${productListData?.productDetails?.defaultVariationSku?.size?.name}',
-            //       '${productListData?.productDetails?.defaultVariationSku?.color?.name}',
-            //       '${productListData?.productDetails?.defaultVariationSku?.style?.name}',
-            //       '${productListData?.productDetails?.defaultVariationSku?.unitCount?.name}',
-            //       '${productListData?.productDetails?.defaultVariationSku?.materialType?.name}',
-            //     ],
-            //   ),
-            // );
           },
           child: Container(
             decoration: isHovered == true

@@ -1,8 +1,11 @@
 import 'package:TychoStream/Utilities/AssetsConstants.dart';
 import 'package:TychoStream/services/global_variable.dart';
+import 'package:TychoStream/utilities/AppColor.dart';
+import 'package:TychoStream/utilities/Responsive.dart';
 import 'package:TychoStream/utilities/SizeConfig.dart';
 import 'package:TychoStream/utilities/TextHelper.dart';
 import 'package:TychoStream/utilities/three_arched_circle.dart';
+import 'package:TychoStream/view/widgets/common_methods.dart';
 import 'package:TychoStream/viewmodel/HomeViewModel.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -92,13 +95,32 @@ margin: EdgeInsets.only(bottom: 6),
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Container(
-                                            width: SizeConfig.screenWidth*0.10,
-                                            child: AppMediumFont(context, msg: item?.productName ?? '', maxLines: 1)),
-                                        AppRegularFont(context, msg: item?.productDetails?.productDiscountPrice)
+                                        Container(child: AppMediumFont(context, msg: getNameTitle(item) ?? '', maxLines: 1)),
+                                      //  AppRegularFont(context, msg: item?.productDetails?.productDiscountPrice),
+                                        Row(
+                                            children: [
+                                              AppBoldFont(context,
+                                                  msg: "₹" +
+                                                      "${item?.productDetails?.productDiscountPrice}",
+                                                  color: Theme.of(context).canvasColor,
+                                                  fontSize:  ResponsiveWidget.isSmallScreen(context) ?14:16.0),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              AppMediumFont(context,
+                                                  color: Theme.of(context).canvasColor,
+                                                  msg: "₹" + "${item?.productDetails?.productPrice} ",
+                                                  textDecoration: TextDecoration.lineThrough,
+                                                  fontSize:
+                                                  ResponsiveWidget.isMediumScreen(context) ? 12.0 : 14),
+                                              AppMediumFont(context,
+                                                  msg: "${item?.productDetails?.productDiscountPercent}" +
+                                                      r"% OFF",
+                                                  color: GREEN,
+                                                  fontSize: 12),
+                                            ]),
                                       ],
                                     )
-
                                   ])));
                     },
                     itemCount: viewmodel.searchDataModel?.productList?.length)

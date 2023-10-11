@@ -29,7 +29,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
 
   @override
   void initState() {
-    homeViewModel.getBannerList(context);
+    homeViewModel.getBannerLists(context);
     super.initState();
   }
 
@@ -94,7 +94,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
       onTap: () async {
         closeAppbarProperty();
 
-        redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
+        redirectPage(homeViewModel.bannerDataModal?.bannerList?[current],context);
 
         },
       child:
@@ -114,18 +114,20 @@ class _CommonCarouselState extends State<CommonCarousel> {
         .toList();
   }
   // image click redirection handling
-  void redirectPage(BannerList? element) {
+  void redirectPage(BannerList? element, BuildContext context) {
     if (element != null) {
 
       if(element.bannerType == 'Product'){
         if(element.productId != ""){
           context.router.push(BannerProductDetailPage(
+            Dp: element.bannerTitle?.replaceAll(" ", "-"),
               ProductDetails: ['${element.catId}','${element.productId}']
           ));
 
         } else {
           context.router.push(SubcategoryProductList(
-            SubcategoryProductName: element.catId
+              SubcategoryProductName: element.catId,
+              pd: ["${element.catId}", ""]
           ));
 
         }
@@ -142,12 +144,11 @@ class _CommonCarouselState extends State<CommonCarousel> {
   Widget carouselImageMobile() {
     var imageSliders = generateImageTileMobile(context);
     return Container(
-     // margin: EdgeInsets.only(left: 20.0,right: 20,top: 8),
       width: SizeConfig.screenWidth,
       child: CarouselSlider(
         items: imageSliders,
         options: CarouselOptions(
-            height: SizeConfig.screenHeight*0.4,
+            height: SizeConfig.screenHeight*0.35,
             scrollDirection: Axis.horizontal,
             scrollPhysics: PageScrollPhysics(),
             viewportFraction: 1,
@@ -173,7 +174,7 @@ class _CommonCarouselState extends State<CommonCarousel> {
       onTap: () async {
         closeAppbarProperty();
 
-        redirectPage(homeViewModel.bannerDataModal?.bannerList?[current]);
+        redirectPage(homeViewModel.bannerDataModal?.bannerList?[current],context);
 
       },
       child:

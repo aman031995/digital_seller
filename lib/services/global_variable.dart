@@ -16,7 +16,6 @@ class GlobalVariable {
 
   static String? names;
   static String? token = 'false';
-  static bool isLogin = false;
   static bool isLogins = false;
   static bool isSearch = false;
   static bool isnotification=false;

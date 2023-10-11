@@ -29,16 +29,12 @@ import '../../../AppRouter.gr.dart';
 @RoutePage()
 class SubcategoryProductList extends StatefulWidget {
   final List<String>? pd;
-
   final String? SubcategoryProductName;
-
-
   SubcategoryProductList({
     @PathParam('SubcategoryProductName') this.SubcategoryProductName,
     @QueryParam() this.pd,
     Key? key,
   }) : super(key: key);
-
   @override
   State<SubcategoryProductList> createState() => _SubcategoryProductListState();
 }
@@ -55,7 +51,6 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
   NotificationViewModel notificationViewModel = NotificationViewModel();
   ScrollController _scrollController = ScrollController();
   ScrollController scrollController1 = ScrollController();
-
   void initState() {
     notificationViewModel.getNotificationCountText(context);
     homeViewModel.getAppConfig(context);
@@ -63,11 +58,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
     cartViewModel.getCartCount(context);
     super.initState();
   }
-
-  getProduct() {
-    cartViewModel.getProductListCategory(context, "", widget.pd?[0] ?? "",  SessionStorageHelper.getValue("pageNum").toString()=="null"?1:int.parse(SessionStorageHelper.getValue("pageNum").toString()),(result, isSuccess){});
-  }
-
+  getProduct() {cartViewModel.getProductListCategory(context, "", widget.pd?[0] ?? "",  SessionStorageHelper.getValue("pageNum").toString()=="null"?1:int.parse(SessionStorageHelper.getValue("pageNum").toString()),(result, isSuccess){});}
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -88,10 +79,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                     value: homeViewModel,
                     child: Consumer<HomeViewModel>(builder: (context, s, _) {
                       return GestureDetector(
-                        onTap: () {
-                          closeAppbarProperty();
-
-                        },
+                        onTap: () {closeAppbarProperty();},
                         child: Scaffold(
                             appBar: ResponsiveWidget.isMediumScreen(context)
                                 ? homePageTopBar(
@@ -99,8 +87,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                 _scaffoldKey,
                                 cartViewModel.cartItemCount,
                                 homeViewModel,
-                                profileViewModel,model
-                            )
+                                profileViewModel,model)
                                 : getAppBar(
                                 context,model,
                                 homeViewModel,
@@ -113,17 +100,11 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                               if (sharedPreferences.getString('token') == null) {
                                 showDialog(
                                     context: context,
-                                    barrierColor: Theme.of(context)
-                                        .canvasColor
-                                        .withOpacity(0.6),
                                     builder: (BuildContext context) {
-                                      return LoginUp(
-                                        product: true,
-                                      );
-                                    });
+                                      return LoginUp(product: true
+                                      );});
                               } else {
                                 closeAppbarProperty();
-
                                 context.router.push(FavouriteListPage());
                               }
                             }, () async {
@@ -132,9 +113,6 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                               if (sharedPreferences.getString('token') == null) {
                                 showDialog(
                                     context: context,
-                                    barrierColor: Theme.of(context)
-                                        .canvasColor
-                                        .withOpacity(0.6),
                                     builder: (BuildContext context) {
                                       return LoginUp(
                                         product: true,
@@ -142,10 +120,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                     });
                               } else {
                                 closeAppbarProperty();
-
-                                context.router.push(CartDetail(
-                                    itemCount: '${cartViewModel.cartItemCount}'));
-                              }
+                                context.router.push(CartDetail(itemCount: '${cartViewModel.cartItemCount}'));}
                             }),
                             body: Scaffold(
                                 extendBodyBehindAppBar: true,
@@ -157,8 +132,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                     : SizedBox(),
                                 body:  Stack(
                                   children: [
-                                    viewmodel.productListModel?.productList != null
-                                        ? (viewmodel.productListModel?.productList?.length ?? 0) > 0
+                                    viewmodel.productListModel?.productList != null ? (viewmodel.productListModel?.productList?.length ?? 0) > 0
                                         ? SingleChildScrollView(
                                         controller: scrollController1,
                                         child: Column(
@@ -174,7 +148,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                                     physics: NeverScrollableScrollPhysics(),
                                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                                         crossAxisCount:ResponsiveWidget.isSmallScreen(context) ? 2:3,
-                                                        childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.6:0.80,mainAxisSpacing: 5,crossAxisSpacing: 5
+                                                        childAspectRatio: ResponsiveWidget.isSmallScreen(context) ? 0.7:0.80,mainAxisSpacing: 5,crossAxisSpacing: 5
                                                     ),
                                                     itemCount: viewmodel.productListModel?.productList?.length,
                                                     itemBuilder: (context, index) {
@@ -184,12 +158,9 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                                           productListData,
                                                           index,
                                                           viewmodel);
-                                                    },
-                                                  ),
-                                                ),
+                                                    })),
                                                 onPagination(viewmodel),
-                                              ],
-                                            )
+                                              ])
                                                 : Row(
                                               mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -224,39 +195,21 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                                           shrinkWrap: true,
                                                           physics:
                                                           NeverScrollableScrollPhysics(),
-                                                          padding:
-                                                          EdgeInsets.only(
-                                                              top: 30,
-                                                              right: 5),
-                                                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                                                              mainAxisSpacing:
-                                                              10,crossAxisSpacing: 10,
-                                                              mainAxisExtent:
-                                                              500,
-                                                              maxCrossAxisExtent:
-                                                              400),
-                                                          itemCount: viewmodel
-                                                              .productListModel
-                                                              ?.productList
-                                                              ?.length,
-                                                          itemBuilder:
-                                                              (context,
-                                                              index) {
+                                                          padding: EdgeInsets.only(top: 30, right: 5),
+                                                          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(mainAxisSpacing: 10,crossAxisSpacing: 10, mainAxisExtent: 500,
+                                                              maxCrossAxisExtent: 400),
+                                                          itemCount: viewmodel.productListModel?.productList?.length,
+                                                          itemBuilder: (context, index) {
                                                             final productListData =
-                                                            viewmodel
-                                                                .productListModel
-                                                                ?.productList?[index];
+                                                            viewmodel.productListModel?.productList?[index];
                                                             return productListItems(
                                                                 context,
                                                                 productListData,
                                                                 index,
                                                                 viewmodel);
-                                                          },
-                                                        )),
+                                                          })),
                                                     onPagination(viewmodel),
-                                                  ],
-                                                ),
-                                              ],
+                                                  ])]
                                             ),
                                             ResponsiveWidget.isMediumScreen(context)
                                                 ?   SizedBox(height:ResponsiveWidget.isSmallScreen(context)
@@ -265,20 +218,15 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                             ResponsiveWidget.isMediumScreen(context)
                                                 ? footerMobile(context,homeViewModel)
                                                 : footerDesktop()
-                                          ],
-                                        )):
+                                          ])):
                                     noDataFoundMessage(context,StringConstant.noProductAdded,homeViewModel):
-                                    Center(
-                                      child: ThreeArchedCircle(size: 45.0),
-                                    ),
+                                    Center(child: ThreeArchedCircle(size: 45.0)),
                                     ResponsiveWidget.isMediumScreen(context)
                                         ? Container()
                                         : GlobalVariable.isnotification == true
                                         ?    Positioned(
                                         top:  1,
-                                        right:  SizeConfig
-                                            .screenWidth *
-                                            0.20,
+                                        right:  SizeConfig.screenWidth * 0.20,
                                         child: notification(notificationViewModel,context,_scrollController)):Container(),
                                     ResponsiveWidget.isMediumScreen(context)
                                         ? Container()
@@ -304,10 +252,7 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
                                             cartViewModel
                                                 .cartItemCount))
                                         : Container()
-                                  ],
-                                )
-                            )),
-                      );
+                                  ]))));
                     }));
               })); }));
   }
@@ -315,63 +260,37 @@ class _SubcategoryProductListState extends State<SubcategoryProductList> {
   onPagination( CartViewModel viewmodel){
     return  viewmodel.productListModel!.pagination!.lastPage==1?Container():   Container(
       height: 40,
-      margin: EdgeInsets.only(
-          right: 12,
-          left: 12,
-          top: 20),
+      margin: EdgeInsets.only(right: 12, left: 12, top: 20),
       width:ResponsiveWidget.isMediumScreen(context)
-          ? viewmodel.productListModel!.pagination!.lastPage! < 4?SizeConfig.screenWidth/1.6  :SizeConfig.screenWidth:      viewmodel.productListModel!.pagination!.lastPage! < 4?SizeConfig.screenWidth/5:SizeConfig.screenWidth/4,
+          ? viewmodel.productListModel!.pagination!.lastPage! < 4?SizeConfig.screenWidth/1.6 :SizeConfig.screenWidth:viewmodel.productListModel!.pagination!.lastPage! < 4?SizeConfig.screenWidth/5:SizeConfig.screenWidth/4,
       child: NumberPaginator(
-        numberPages: viewmodel
-            .productListModel!
-            .pagination!
-            .lastPage!,
-        config:
-        NumberPaginatorUIConfig(
-          mode: ContentDisplayMode
-              .numbers,
+        numberPages: viewmodel.productListModel!.pagination!.lastPage!,
+        config: NumberPaginatorUIConfig(
+          mode: ContentDisplayMode.numbers,
           height: 40,
-          contentPadding:
-          EdgeInsets.zero,
-          buttonShape:
-          RoundedRectangleBorder(
-            borderRadius:
-            BorderRadius
-                .circular(4),
-          ),
+          contentPadding: EdgeInsets.zero,
+          buttonShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4)),
           buttonSelectedForegroundColor:
-          Theme.of(context)
-              .canvasColor,
+          Theme.of(context).canvasColor,
           buttonUnselectedForegroundColor:
-          Theme.of(context)
-              .canvasColor
-              .withOpacity(
-              0.8),
+          Theme.of(context).canvasColor.withOpacity(0.8),
           buttonUnselectedBackgroundColor:
-          Theme.of(context)
-              .cardColor
-              .withOpacity(
-              0.8),
+          Theme.of(context).cardColor.withOpacity(0.8),
           buttonSelectedBackgroundColor:
-          Theme.of(context)
-              .primaryColor
-              .withOpacity(
-              0.8),
-        ),
+          Theme.of(context).primaryColor.withOpacity(0.8)),
         initialPage: viewmodel.productListModel!.pagination!.current!-1,
         onPageChange: (int index) {
           setState(() {
             AppIndicator.loadingIndicator(context);
             cartViewModel.getProductListCategory(
-                context, "", widget.SubcategoryProductName ?? "", index + 1,(result, isSuccess){
+                context, "",widget.pd?[0] ?? "", index + 1,(result, isSuccess){
               if(isSuccess){
                 scrollController1.jumpTo(0);}
-
-
             });
           });
-        },
-      ),
+        }
+      )
     );
   }
 }

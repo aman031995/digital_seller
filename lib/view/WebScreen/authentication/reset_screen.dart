@@ -46,7 +46,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       titlePadding: EdgeInsets.zero,
       backgroundColor: Theme.of(context).cardColor,
       contentPadding: EdgeInsets.zero,
-      insetPadding: EdgeInsets.all(ResponsiveWidget.isSmallScreen(context) ?10:130),
+      insetPadding: EdgeInsets.all(10),
       content: Container(
         margin:  EdgeInsets.only(left:ResponsiveWidget.isMediumScreen(context)?15: 50, right:ResponsiveWidget.isMediumScreen(context)?15: 50,top:ResponsiveWidget.isMediumScreen(context)?10: 20),
         width:ResponsiveWidget.isMediumScreen(context)?SizeConfig.screenWidth :SizeConfig.screenWidth * 0.25,
